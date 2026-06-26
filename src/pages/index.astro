@@ -1,11 +1,621 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { calculatePanchang } from '../lib/panchang';
+import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
+import { getDefaultLocation } from '../lib/locations';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const today = new Date();
+const loc = getDefaultLocation(); // New Delhi, will be overridden client-side
+const panchang = calculatePanchang(today, loc.lat, loc.lng, loc.tzOffset);
+const todayFestivals = getTodayFestivals(today);
+const upcoming = getUpcomingFestivals(today, 6);
+
+const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="PanchangPath — Today's Hindu Panchang">
+  <!-- HERO -->
+  <section style="position:relative;overflow:hidden;background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);">
+    <div class="gradient-mesh" style="position:absolute;inset:0;pointer-events:none;opacity:0.7;"></div>
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;position:relative;padding-top:56px;padding-bottom:48px;">
+
+      <!-- Festival badge -->
+      {todayFestivals.length > 0 && (
+        <div style="margin-bottom:20px;">
+          <a href="/festivals" style="display:inline-flex;align-items:center;gap:8px;background:var(--color-saffron-soft);color:var(--color-saffron-deep);font-size:13px;font-weight:500;padding:5px 12px;border-radius:100px;text-decoration:none;border:1px solid rgba(255,153,51,0.3);">
+            <span>🪔</span>
+            <span>{todayFestivals[0].name} today</span>
+            <span style="opacity:0.6;">→</span>
+          </a>
+        </div>
+      )}
+
+      <!-- Headline -->
+      <h1 style="font-size:42px;font-weight:600;letter-spacing:-1.6px;line-height:1.05;color:var(--color-ink);margin:0 0 16px;max-width:680px;" id="hero-title">
+        Today's Panchang.
+      </h1>
+      <p style="font-size:17px;color:var(--color-body-text);margin:0 0 32px;line-height:1.6;max-width:520px;" id="hero-sub">
+        Precise Hindu almanac for <strong id="loc-display" style="color:var(--color-ink);">{loc.name}</strong> — auto-detected from your location.
+      </p>
+
+      <!-- Controls row -->
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <!-- Date picker -->
+        <div style="display:flex;align-items:center;gap:8px;background:var(--color-canvas);border:1px solid var(--color-hairline);border-radius:8px;padding:6px 12px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-mute)" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <input type="date" id="date-picker" class="input" style="border:none;background:transparent;height:auto;padding:0;font-size:14px;width:140px;color:var(--color-ink);"
+            value={today.toISOString().split('T')[0]} />
+        </div>
+        <!-- Location selector -->
+        <div style="display:flex;align-items:center;gap:8px;background:var(--color-canvas);border:1px solid var(--color-hairline);border-radius:8px;padding:6px 12px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-mute)" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          <select id="city-select" class="input" style="border:none;background:transparent;height:auto;padding:0;font-size:14px;color:var(--color-ink);cursor:pointer;">
+            <option value="">Detecting location…</option>
+          </select>
+        </div>
+        <!-- Detect location -->
+        <button id="detect-btn" class="btn-secondary" style="height:36px;font-size:13px;gap:6px;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
+          </svg>
+          Auto-detect
+        </button>
+      </div>
+
+      <!-- Date display -->
+      <p class="caption-mono" style="color:var(--color-mute);margin-top:20px;" id="date-display">{dateStr}</p>
+    </div>
+  </section>
+
+  <!-- MAIN PANCHANG GRID -->
+  <section style="padding:40px 0;" id="panchang-section">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <!-- Live indicator -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;">
+        <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+          <div class="live-pulse"></div>
+          <div class="live-pulse-dot"></div>
+        </div>
+        <span class="caption-mono" style="color:var(--color-mute);">Panchang for <span id="panchang-date-label">{today.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}</span></span>
+      </div>
+
+      <!-- 5 Panchang elements -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:12px;" class="panchang-grid" id="pancha-grid">
+        <!-- Vara -->
+        <div class="card animate-in" style="padding:20px;animation-delay:0ms;">
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Vara</p>
+          <p class="en-text" style="font-size:22px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="vara-name">{panchang.vara.name}</p>
+          <p class="hi-text" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="vara-name-hi">{panchang.vara.nameHi}</p>
+          <p style="font-size:12px;color:var(--color-mute);margin:0;" id="vara-lord">Lord: {panchang.vara.lord}</p>
+        </div>
+
+        <!-- Tithi -->
+        <div class="card animate-in" style="padding:20px;animation-delay:60ms;">
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Tithi</p>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;">
+            <div>
+              <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="tithi-name">{panchang.tithi.paksha} {panchang.tithi.name}</p>
+              <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="tithi-name-hi">{panchang.tithi.pakshaNi} {panchang.tithi.nameHi}</p>
+            </div>
+            <span class="badge" id="tithi-type" style="flex-shrink:0;font-size:10px;">{panchang.tithi.type}</span>
+          </div>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);" id="tithi-end">Ends: {panchang.tithi.endTime}</p>
+        </div>
+
+        <!-- Nakshatra -->
+        <div class="card animate-in" style="padding:20px;animation-delay:120ms;">
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Nakshatra</p>
+          <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="nakshatra-name">{panchang.nakshatra.name}</p>
+          <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="nakshatra-name-hi">{panchang.nakshatra.nameHi}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:2px 0;font-family:var(--font-mono);" id="nakshatra-meta">Pada {panchang.nakshatra.pada} · {panchang.nakshatra.lord}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" id="nakshatra-end">Ends: {panchang.nakshatra.endTime}</p>
+        </div>
+
+        <!-- Yoga -->
+        <div class="card animate-in" style="padding:20px;animation-delay:180ms;">
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Yoga</p>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;">
+            <div>
+              <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="yoga-name">{panchang.yoga.name}</p>
+              <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="yoga-name-hi">{panchang.yoga.nameHi}</p>
+            </div>
+            <span class="badge" id="yoga-type" style="flex-shrink:0;font-size:10px;">{panchang.yoga.type}</span>
+          </div>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);" id="yoga-end">Ends: {panchang.yoga.endTime}</p>
+        </div>
+
+        <!-- Karana -->
+        <div class="card animate-in" style="padding:20px;animation-delay:240ms;">
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Karana</p>
+          <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="karana-name">{panchang.karana.name}</p>
+          <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="karana-name-hi">{panchang.karana.nameHi}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);" id="karana-end">Ends: {panchang.karana.endTime}</p>
+        </div>
+      </div>
+
+      <!-- Sun times + Muhurtas row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <!-- Sun & Moon times -->
+        <div class="card" style="padding:24px;">
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 16px;">Sun & Moon</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;">
+            <div>
+              <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">SUNRISE</p>
+              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-ink);margin:0;" id="sunrise">{panchang.sunrise}</p>
+            </div>
+            <div>
+              <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">SUNSET</p>
+              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-ink);margin:0;" id="sunset">{panchang.sunset}</p>
+            </div>
+            <div>
+              <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">MOONRISE</p>
+              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-ink);margin:0;" id="moonrise">{panchang.moonrise}</p>
+            </div>
+            <div>
+              <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">DAY LENGTH</p>
+              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-ink);margin:0;" id="day-duration">{panchang.durationDay}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Abhijit Muhurta -->
+        <div class="card" style="padding:24px;background:var(--color-canvas);">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <p class="caption-mono" style="color:var(--color-mute);margin:0;">Abhijit Muhurta</p>
+            <span class="badge-auspicious badge" style="font-size:10px;">Most Auspicious</span>
+          </div>
+          <p class="en-text" style="font-size:26px;font-weight:600;letter-spacing:-0.8px;color:var(--color-ink);margin:0 0 4px;" id="abhijit-time">{panchang.abhijitMuhurta.start} – {panchang.abhijitMuhurta.end}</p>
+          <p style="font-size:13px;color:var(--color-body-text);margin:0;">Solar noon window — ideal for any important work, travel, or ceremony.</p>
+        </div>
+      </div>
+
+      <!-- Inauspicious times -->
+      <div class="card" style="padding:24px;margin-bottom:12px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
+          <p class="caption-mono" style="color:var(--color-mute);margin:0;">Inauspicious Periods</p>
+          <span class="badge-inauspicious badge" style="font-size:10px;">Avoid important work</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+          <div>
+            <p style="font-size:11px;color:var(--color-mute);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Rahu Kalam</p>
+            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 0 2px;" id="rahu-time">{panchang.rahuKalam.start} – {panchang.rahuKalam.end}</p>
+            <p style="font-size:12px;color:var(--color-mute);margin:0;">Shadow of Rahu — most inauspicious</p>
+          </div>
+          <div>
+            <p style="font-size:11px;color:var(--color-mute);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Gulika Kalam</p>
+            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 0 2px;" id="gulika-time">{panchang.gulikaKalam.start} – {panchang.gulikaKalam.end}</p>
+            <p style="font-size:12px;color:var(--color-mute);margin:0;">Son of Saturn — avoid new ventures</p>
+          </div>
+          <div>
+            <p style="font-size:11px;color:var(--color-mute);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Yamaganda</p>
+            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 0 2px;" id="yama-time">{panchang.yamaganda.start} – {panchang.yamaganda.end}</p>
+            <p style="font-size:12px;color:var(--color-mute);margin:0;">Period of Yama — avoid travel</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day timeline bar -->
+      <div class="card" style="padding:20px 24px;margin-bottom:12px;overflow:hidden;">
+        <p class="caption-mono" style="color:var(--color-mute);margin:0 0 14px;">Day Timeline</p>
+        <div style="position:relative;height:32px;background:var(--color-canvas-soft-2);border-radius:4px;overflow:hidden;" id="timeline-bar">
+          <!-- Filled by JS -->
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:6px;">
+          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="tl-sunrise">{panchang.sunrise}</span>
+          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="tl-sunset">{panchang.sunset}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPCOMING FESTIVALS -->
+  <section style="padding:40px 0;background:var(--color-canvas);border-top:1px solid var(--color-hairline);border-bottom:1px solid var(--color-hairline);">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
+        <div>
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 6px;">Coming up</p>
+          <h2 style="font-size:24px;font-weight:600;letter-spacing:-0.8px;color:var(--color-ink);margin:0;">Festivals & Vrats</h2>
+        </div>
+        <a href="/festivals" class="btn-secondary">View all →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        {upcoming.map((f, i) => {
+          const days = daysUntil(today, f.date);
+          const fd = new Date(f.date);
+          return (
+            <div class="card" style="padding:20px;" key={i}>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <span class={f.type === 'major' ? 'badge-saffron badge' : 'badge'} style="font-size:10px;">{f.type === 'major' ? '✦ Major' : f.type === 'vrat' ? 'Vrat' : 'Regional'}</span>
+                <span style="font-size:11px;font-weight:600;color:var(--color-link);font-family:var(--font-mono);">{days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : `${days}d`}</span>
+              </div>
+              <p class="en-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;">{f.name}</p>
+              <p class="hi-text" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;">{f.nameHi}</p>
+              <p style="font-size:12px;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">{fd.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' })}</p>
+              <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.5;">{f.description}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY PANCHANGPATH section -->
+  <section style="padding:64px 0;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="text-align:center;max-width:560px;margin:0 auto 40px;">
+        <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Why PanchangPath</p>
+        <h2 style="font-size:28px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0 0 12px;">Better than every other Panchang site.</h2>
+        <p style="font-size:15px;color:var(--color-body-text);margin:0;line-height:1.7;">Built on Drik (astronomical) calculations with Lahiri Ayanamsha. Zero ads. Loads instantly.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+        {[
+          { icon: '🎯', title: 'Astronomically Precise', desc: 'Drik method with Lahiri Ayanamsha — same calculations used by traditional pandits and modern ephemerides.' },
+          { icon: '📍', title: 'Location-Aware', desc: 'Sunrise, Kalam periods, and Muhurtas auto-adjusted for your exact GPS coordinates.' },
+          { icon: '🌙', title: 'Dark Mode', desc: 'First-class dark mode that actually looks good. None of our competitors have this.' },
+          { icon: '📅', title: 'Monthly Calendar', desc: 'See the full month Panchang at a glance — Tithis, Nakshatras, and festivals on one calendar.' },
+          { icon: '⚡', title: 'No Ads. Ever.', desc: 'The entire site is ad-free. We believe sacred information should not be cluttered with ads.' },
+          { icon: '🌐', title: 'Hindi + English', desc: 'Every Panchang element shown in both English and Hindi — switch instantly with one tap.' },
+        ].map(f => (
+          <div class="card" style="padding:24px;">
+            <div style="font-size:24px;margin-bottom:12px;">{f.icon}</div>
+            <p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">{f.title}</p>
+            <p style="font-size:13px;color:var(--color-body-text);margin:0;line-height:1.6;">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section style="background:var(--color-ink);padding:64px 0;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;text-align:center;">
+      <h2 style="font-size:30px;font-weight:600;letter-spacing:-1px;color:#ffffff;margin:0 0 12px;">Start every day with Panchang.</h2>
+      <p style="font-size:16px;color:rgba(255,255,255,0.6);margin:0 0 28px;">Bookmark this page, or set it as your homepage.</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
+        <a href="/" style="display:inline-flex;align-items:center;gap:6px;background:#ffffff;color:#171717;font-size:14px;font-weight:500;padding:0 20px;height:40px;border-radius:100px;text-decoration:none;">
+          🕉️ Open Today's Panchang
+        </a>
+        <a href="/festivals" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);color:#ffffff;font-size:14px;font-weight:500;padding:0 20px;height:40px;border-radius:100px;text-decoration:none;border:1px solid rgba(255,255,255,0.2);">
+          View Festival Calendar →
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+// ─── Client-side Panchang engine ───────────────────────────────────────────
+// All calculation functions (mirrored from src/lib/panchang.ts)
+
+const toRad = (d: number) => d * Math.PI / 180;
+const toDeg = (r: number) => r * 180 / Math.PI;
+const norm360 = (a: number) => ((a % 360) + 360) % 360;
+
+function julianDay(year: number, month: number, day: number, hour = 0): number {
+  if (month <= 2) { year -= 1; month += 12; }
+  const A = Math.floor(year / 100);
+  const B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + hour / 24 + B - 1524.5;
+}
+
+function sunTrueLon(jd: number): number {
+  const T = (jd - 2451545.0) / 36525;
+  const L0 = norm360(280.46646 + 36000.76983 * T);
+  const M = norm360(357.52911 + 35999.05029 * T);
+  const Mr = toRad(M);
+  return norm360(L0 + (1.914602 - 0.004817 * T) * Math.sin(Mr) + 0.019993 * Math.sin(2 * Mr));
+}
+
+function moonLon(jd: number): number {
+  const T = (jd - 2451545.0) / 36525;
+  const L = norm360(218.3164477 + 481267.88123421 * T);
+  const D = norm360(297.8501921 + 445267.1114034 * T);
+  const M = norm360(357.5291092 + 35999.0502909 * T);
+  const Mp = norm360(134.9633964 + 477198.8675055 * T);
+  const F = norm360(93.2720950 + 483202.0175233 * T);
+  const Dr = toRad(D), Mr = toRad(M), Mpr = toRad(Mp), Fr = toRad(F);
+  const dL = 6.288774*Math.sin(Mpr)+1.274027*Math.sin(2*Dr-Mpr)+0.658314*Math.sin(2*Dr)
+    +0.213618*Math.sin(2*Mpr)-0.185116*Math.sin(Mr)-0.114332*Math.sin(2*Fr)
+    +0.058793*Math.sin(2*Dr-2*Mpr)+0.057066*Math.sin(2*Dr-Mr-Mpr)+0.053322*Math.sin(2*Dr+Mpr)
+    +0.045758*Math.sin(2*Dr-Mr)-0.040923*Math.sin(Mr-Mpr)-0.034720*Math.sin(Dr)
+    -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010980*Math.sin(Mpr-2*Fr)
+    +0.010675*Math.sin(4*Dr-Mpr)+0.010034*Math.sin(3*Mpr)+0.008548*Math.sin(4*Dr-2*Mpr);
+  return norm360(L + dL / 1000);
+}
+
+function ayanamsha(jd: number): number {
+  const T = (jd - 2451545.0) / 36525;
+  return 23.85 + 1.3612 * T;
+}
+
+function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): number {
+  const T = (jd - 2451545.0) / 36525;
+  const M = norm360(357.52911 + 35999.05029 * T);
+  const L0 = norm360(280.46646 + 36000.76983 * T);
+  const Mr = toRad(M);
+  const sunLon = L0 + (1.914602 - 0.004817 * T) * Math.sin(Mr) + 0.019993 * Math.sin(2 * Mr);
+  const obliq = 23.4393 - 0.0000004 * T * 36525;
+  const sinDec = Math.sin(toRad(obliq)) * Math.sin(toRad(sunLon));
+  const dec = Math.asin(sinDec);
+  const latR = toRad(lat);
+  const cosHA = (Math.sin(toRad(-0.8333)) - Math.sin(latR) * Math.sin(dec)) / (Math.cos(latR) * Math.cos(dec));
+  if (cosHA < -1 || cosHA > 1) return NaN;
+  const HA = toDeg(Math.acos(cosHA));
+  const noon = 12 - lng / 15;
+  return rising ? noon - HA / 15 : noon + HA / 15;
+}
+
+function fmtTime(h: number, tz: number): string {
+  let local = h + tz;
+  local = ((local % 24) + 24) % 24;
+  const hh = Math.floor(local), mm = Math.round((local - hh) * 60);
+  const ap = hh < 12 ? 'AM' : 'PM';
+  return `${hh % 12 || 12}:${String(mm).padStart(2,'0')} ${ap}`;
+}
+
+function minsToFmt(m: number): string {
+  const h = Math.floor((m / 60) % 24), mn = Math.round(m % 60);
+  const ap = h < 12 ? 'AM' : 'PM';
+  return `${h % 12 || 12}:${String(mn).padStart(2,'0')} ${ap}`;
+}
+
+function estimateEnd(lon: number, step: number, jd: number, tz: number, rate: number): string {
+  const remaining = step - (lon % step);
+  const hoursToEnd = (remaining / rate) * 24;
+  const hourUTC = (jd - (Math.floor(jd - 0.5) + 0.5)) * 24;
+  return fmtTime(hourUTC + hoursToEnd, tz);
+}
+
+const TITHIS = ['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+const TITHIS_HI = ['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा','प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','अमावस्या'];
+const TITHI_TYPES = ['Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna'];
+const NAKSHATRAS = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAKSHATRAS_HI = ['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
+const NAKSHATRA_LORDS = ['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
+const YOGAS = ['Vishkambha','Preeti','Ayushman','Saubhagya','Shobhana','Atiganda','Sukarma','Dhriti','Shula','Ganda','Vriddhi','Dhruva','Vyaghata','Harshana','Vajra','Siddhi','Vyatipata','Variyan','Parigha','Shiva','Siddha','Sadhya','Shubha','Shukla','Brahma','Indra','Vaidhriti'];
+const YOGAS_HI = ['विष्कम्भ','प्रीति','आयुष्मान','सौभाग्य','शोभन','अतिगण्ड','सुकर्मा','धृति','शूल','गण्ड','वृद्धि','ध्रुव','व्याघात','हर्षण','वज्र','सिद्धि','व्यतिपात','वरीयान','परिघ','शिव','सिद्ध','साध्य','शुभ','शुक्ल','ब्रह्म','इन्द्र','वैधृति'];
+const YOGA_TYPES = ['Inauspicious','Auspicious','Auspicious','Auspicious','Auspicious','Inauspicious','Auspicious','Auspicious','Inauspicious','Inauspicious','Auspicious','Auspicious','Inauspicious','Auspicious','Inauspicious','Auspicious','Inauspicious','Auspicious','Inauspicious','Auspicious','Auspicious','Auspicious','Auspicious','Auspicious','Auspicious','Auspicious','Inauspicious'];
+const KARANAS = ['Kimstughna','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Shakuni','Chatushpada','Naga','Kimstughna'];
+const KARANAS_HI = ['किंस्तुघ्न','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','शकुनि','चतुष्पाद','नाग','किंस्तुघ्न'];
+const VARAS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const VARAS_HI = ['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const VARA_LORDS = ['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn'];
+const RAHU = [7,1,6,4,5,2,3];
+const GULIKA = [6,5,4,3,2,1,0];
+const YAMA = [3,5,2,7,4,6,1];
+
+interface Location { name: string; nameHi: string; lat: number; lng: number; tzOffset: number; country: string; }
+const LOCS: Location[] = [
+  {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.2090,tzOffset:5.5,country:'India'},
+  {name:'Mumbai',nameHi:'मुंबई',lat:19.0760,lng:72.8777,tzOffset:5.5,country:'India'},
+  {name:'Bengaluru',nameHi:'बेंगलुरू',lat:12.9716,lng:77.5946,tzOffset:5.5,country:'India'},
+  {name:'Chennai',nameHi:'चेन्नई',lat:13.0827,lng:80.2707,tzOffset:5.5,country:'India'},
+  {name:'Kolkata',nameHi:'कोलकाता',lat:22.5726,lng:88.3639,tzOffset:5.5,country:'India'},
+  {name:'Hyderabad',nameHi:'हैदराबाद',lat:17.3850,lng:78.4867,tzOffset:5.5,country:'India'},
+  {name:'Ahmedabad',nameHi:'अहमदाबाद',lat:23.0225,lng:72.5714,tzOffset:5.5,country:'India'},
+  {name:'Pune',nameHi:'पुणे',lat:18.5204,lng:73.8567,tzOffset:5.5,country:'India'},
+  {name:'Jaipur',nameHi:'जयपुर',lat:26.9124,lng:75.7873,tzOffset:5.5,country:'India'},
+  {name:'Varanasi',nameHi:'वाराणसी',lat:25.3176,lng:82.9739,tzOffset:5.5,country:'India'},
+  {name:'Lucknow',nameHi:'लखनऊ',lat:26.8467,lng:80.9462,tzOffset:5.5,country:'India'},
+  {name:'Surat',nameHi:'सूरत',lat:21.1702,lng:72.8311,tzOffset:5.5,country:'India'},
+  {name:'Chandigarh',nameHi:'चंडीगढ़',lat:30.7333,lng:76.7794,tzOffset:5.5,country:'India'},
+  {name:'Prayagraj',nameHi:'प्रयागराज',lat:25.4358,lng:81.8463,tzOffset:5.5,country:'India'},
+  {name:'Haridwar',nameHi:'हरिद्वार',lat:29.9457,lng:78.1642,tzOffset:5.5,country:'India'},
+  {name:'Mathura',nameHi:'मथुरा',lat:27.4924,lng:77.6737,tzOffset:5.5,country:'India'},
+  {name:'Ujjain',nameHi:'उज्जैन',lat:23.1765,lng:75.7885,tzOffset:5.5,country:'India'},
+  {name:'Ayodhya',nameHi:'अयोध्या',lat:26.7922,lng:82.1998,tzOffset:5.5,country:'India'},
+  {name:'Dubai',nameHi:'दुबई',lat:25.2048,lng:55.2708,tzOffset:4,country:'UAE'},
+  {name:'Singapore',nameHi:'सिंगापुर',lat:1.3521,lng:103.8198,tzOffset:8,country:'Singapore'},
+  {name:'London',nameHi:'लंदन',lat:51.5074,lng:-0.1278,tzOffset:1,country:'UK'},
+  {name:'New York',nameHi:'न्यूयॉर्क',lat:40.7128,lng:-74.0060,tzOffset:-4,country:'USA'},
+  {name:'Toronto',nameHi:'टोरंटो',lat:43.6532,lng:-79.3832,tzOffset:-4,country:'Canada'},
+  {name:'Sydney',nameHi:'सिडनी',lat:-33.8688,lng:151.2093,tzOffset:10,country:'Australia'},
+];
+
+let currentLoc = LOCS[0];
+let currentDate = new Date();
+let isHindi = false;
+
+function calcPanchang(date: Date, loc: Location) {
+  const year = date.getFullYear(), month = date.getMonth()+1, day = date.getDate();
+  const hour = 6 - loc.tzOffset;
+  const jd = julianDay(year, month, day, hour);
+  const sLon = sunTrueLon(jd);
+  const mLon = moonLon(jd);
+  const ay = ayanamsha(jd);
+  const sSid = norm360(sLon - ay);
+  const mSid = norm360(mLon - ay);
+  const elong = norm360(mLon - sLon);
+  const tithiIdx = Math.floor(elong / 12) % 30;
+  const paksha = tithiIdx < 15 ? 'Shukla' : 'Krishna';
+  const nIdx = Math.floor(mSid / (360/27)) % 27;
+  const pada = Math.floor((mSid % (360/27)) / (360/27/4)) + 1;
+  const yLon = norm360(sSid + mSid);
+  const yIdx = Math.floor(yLon / (360/27)) % 27;
+  const kIdx = Math.floor(elong / 6) % 60;
+  const wd = date.getDay();
+  const srUTC = sunriseUTC(jd, loc.lat, loc.lng, true);
+  const ssUTC = sunriseUTC(jd, loc.lat, loc.lng, false);
+  const srMins = srUTC * 60 + loc.tzOffset * 60;
+  const ssMins = ssUTC * 60 + loc.tzOffset * 60;
+  const dayMins = ssMins - srMins;
+  const slotDur = dayMins / 8;
+  const slot = (s: number) => ({ start: minsToFmt(srMins + s * slotDur), end: minsToFmt(srMins + (s+1) * slotDur) });
+  const moonAge = elong / 360 * 29.53;
+  const mrMins = srMins + moonAge * 48;
+  const noonMins = (srMins + ssMins) / 2;
+  const abStart = noonMins - 24, abEnd = noonMins + 24;
+  return {
+    vara: { name: VARAS[wd], nameHi: VARAS_HI[wd], lord: VARA_LORDS[wd] },
+    tithi: { name: TITHIS[tithiIdx], nameHi: TITHIS_HI[tithiIdx], paksha, pakshaNi: paksha==='Shukla'?'शुक्ल':'कृष्ण', type: TITHI_TYPES[tithiIdx], endTime: estimateEnd(elong, 12, jd, loc.tzOffset, 13.17) },
+    nakshatra: { name: NAKSHATRAS[nIdx], nameHi: NAKSHATRAS_HI[nIdx], lord: NAKSHATRA_LORDS[nIdx], pada, endTime: estimateEnd(mSid, 360/27, jd, loc.tzOffset, 13.17) },
+    yoga: { name: YOGAS[yIdx], nameHi: YOGAS_HI[yIdx], type: YOGA_TYPES[yIdx], endTime: estimateEnd(yLon, 360/27, jd, loc.tzOffset, 14.17) },
+    karana: { name: KARANAS[kIdx]||'Bava', nameHi: KARANAS_HI[kIdx]||'बव', endTime: estimateEnd(elong, 6, jd, loc.tzOffset, 13.17) },
+    sunrise: fmtTime(srUTC, loc.tzOffset),
+    sunset: fmtTime(ssUTC, loc.tzOffset),
+    moonrise: minsToFmt(((mrMins % 1440) + 1440) % 1440),
+    durationDay: `${Math.floor(dayMins/60)}h ${Math.round(dayMins%60)}m`,
+    rahuKalam: slot(RAHU[wd]),
+    gulikaKalam: slot(GULIKA[wd]),
+    yamaganda: slot(YAMA[wd] < 8 ? YAMA[wd] : 7),
+    abhijitMuhurta: { start: minsToFmt(abStart), end: minsToFmt(abEnd) },
+    srMins, ssMins,
+  };
+}
+
+function setText(id: string, val: string) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function updateUI(p: ReturnType<typeof calcPanchang>) {
+  // Vara
+  setText('vara-name', p.vara.name); setText('vara-name-hi', p.vara.nameHi);
+  setText('vara-lord', `Lord: ${p.vara.lord}`);
+  // Tithi
+  setText('tithi-name', `${p.tithi.paksha} ${p.tithi.name}`);
+  setText('tithi-name-hi', `${p.tithi.pakshaNi} ${p.tithi.nameHi}`);
+  setText('tithi-type', p.tithi.type); setText('tithi-end', `Ends: ${p.tithi.endTime}`);
+  // Nakshatra
+  setText('nakshatra-name', p.nakshatra.name); setText('nakshatra-name-hi', p.nakshatra.nameHi);
+  setText('nakshatra-meta', `Pada ${p.nakshatra.pada} · ${p.nakshatra.lord}`);
+  setText('nakshatra-end', `Ends: ${p.nakshatra.endTime}`);
+  // Yoga
+  setText('yoga-name', p.yoga.name); setText('yoga-name-hi', p.yoga.nameHi);
+  setText('yoga-type', p.yoga.type); setText('yoga-end', `Ends: ${p.yoga.endTime}`);
+  // Karana
+  setText('karana-name', p.karana.name); setText('karana-name-hi', p.karana.nameHi);
+  setText('karana-end', `Ends: ${p.karana.endTime}`);
+  // Sun times
+  setText('sunrise', p.sunrise); setText('sunset', p.sunset);
+  setText('moonrise', p.moonrise); setText('day-duration', p.durationDay);
+  // Abhijit
+  setText('abhijit-time', `${p.abhijitMuhurta.start} – ${p.abhijitMuhurta.end}`);
+  // Kalam
+  setText('rahu-time', `${p.rahuKalam.start} – ${p.rahuKalam.end}`);
+  setText('gulika-time', `${p.gulikaKalam.start} – ${p.gulikaKalam.end}`);
+  setText('yama-time', `${p.yamaganda.start} – ${p.yamaganda.end}`);
+  // Timeline
+  setText('tl-sunrise', p.sunrise); setText('tl-sunset', p.sunset);
+  drawTimeline(p);
+  // Yoga badge color
+  const yogaBadge = document.getElementById('yoga-type');
+  if (yogaBadge) {
+    yogaBadge.className = p.yoga.type === 'Auspicious' ? 'badge badge-auspicious' : 'badge badge-inauspicious';
+  }
+}
+
+function drawTimeline(p: ReturnType<typeof calcPanchang>) {
+  const bar = document.getElementById('timeline-bar');
+  if (!bar) return;
+  const sr = p.srMins, ss = p.ssMins, total = ss - sr;
+  if (total <= 0) return;
+  const pct = (m: number) => Math.max(0, Math.min(100, ((m - sr) / total) * 100));
+  const now = new Date();
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const segments = [
+    { start: pct(p.rahuKalam.start), end: pct(p.rahuKalam.end), color: '#ef4444', label: 'Rahu', startM: sr + RAHU[currentDate.getDay()] * (total/8) },
+    { start: pct(p.gulikaKalam.start), end: pct(p.gulikaKalam.end), color: '#f59e0b', label: 'Gulika', startM: sr + GULIKA[currentDate.getDay()] * (total/8) },
+    { start: pct(p.yamaganda.start), end: pct(p.yamaganda.end), color: '#8b5cf6', label: 'Yama', startM: sr + (YAMA[currentDate.getDay()] < 8 ? YAMA[currentDate.getDay()] : 7) * (total/8) },
+  ];
+  const nowPct = pct(nowMins);
+  bar.innerHTML = segments.map(s => {
+    const sp = typeof s.start === 'number' ? s.start : pct(s.startM);
+    const ep = typeof s.end === 'number' ? s.end : pct(s.startM + total/8);
+    return `<div style="position:absolute;left:${sp}%;width:${ep-sp}%;height:100%;background:${s.color};opacity:0.25;" title="${s.label} Kalam"></div>`;
+  }).join('') + `<div style="position:absolute;left:${nowPct}%;top:0;width:2px;height:100%;background:var(--color-ink);border-radius:1px;" title="Now"></div>`;
+}
+
+function applyLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
+  document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
+  const locDisplay = document.getElementById('loc-display');
+  if (locDisplay) locDisplay.textContent = hindi ? currentLoc.nameHi : currentLoc.name;
+}
+
+function renderWithLoc(loc: Location, date: Date) {
+  currentLoc = loc; currentDate = date;
+  const p = calcPanchang(date, loc);
+  updateUI(p);
+  // Update date label
+  const d = date.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  setText('date-display', d);
+  setText('panchang-date-label', date.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }));
+  const locDisplay = document.getElementById('loc-display');
+  if (locDisplay) locDisplay.textContent = isHindi ? loc.nameHi : loc.name;
+}
+
+// Populate city selector
+const sel = document.getElementById('city-select') as HTMLSelectElement;
+if (sel) {
+  sel.innerHTML = LOCS.map(l => `<option value="${l.name}">${l.name}${l.country !== 'India' ? ` (${l.country})` : ''}</option>`).join('');
+  sel.value = 'New Delhi';
+}
+
+// Date picker
+const dp = document.getElementById('date-picker') as HTMLInputElement;
+dp?.addEventListener('change', () => {
+  const d = new Date(dp.value + 'T12:00:00');
+  renderWithLoc(currentLoc, d);
+});
+
+// City select
+sel?.addEventListener('change', () => {
+  const loc = LOCS.find(l => l.name === sel.value);
+  if (loc) renderWithLoc(loc, currentDate);
+});
+
+// Auto-detect
+document.getElementById('detect-btn')?.addEventListener('click', () => {
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude, longitude } = pos.coords;
+    const tzOffset = -(new Date().getTimezoneOffset()) / 60;
+    const custom: Location = { name: 'My Location', nameHi: 'मेरा स्थान', lat: latitude, lng: longitude, tzOffset, country: '' };
+    LOCS.unshift(custom);
+    if (sel) {
+      const opt = document.createElement('option');
+      opt.value = 'My Location'; opt.text = '📍 My Location'; opt.selected = true;
+      sel.prepend(opt);
+    }
+    renderWithLoc(custom, currentDate);
+  });
+});
+
+// Language change
+document.addEventListener('langchange', (e: Event) => {
+  const evt = e as CustomEvent;
+  applyLang(evt.detail.hindi);
+});
+
+// Initial render
+renderWithLoc(currentLoc, currentDate);
+
+// Draw timeline every minute
+setInterval(() => { const p = calcPanchang(currentDate, currentLoc); drawTimeline(p); }, 60000);
+</script>
+
+<style>
+  @media (max-width: 1024px) {
+    .panchang-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  }
+  @media (max-width: 640px) {
+    .panchang-grid { grid-template-columns: 1fr 1fr !important; }
+    #pancha-grid > div:last-child { grid-column: span 2; }
+  }
+  @media (max-width: 768px) {
+    #festivals-grid { grid-template-columns: 1fr 1fr !important; }
+    #features-grid { grid-template-columns: 1fr 1fr !important; }
+  }
+  @media (max-width: 480px) {
+    #festivals-grid { grid-template-columns: 1fr !important; }
+    #features-grid { grid-template-columns: 1fr !important; }
+    #sun-moon-grid { grid-template-columns: 1fr 1fr !important; }
+  }
+</style>
 </Layout>

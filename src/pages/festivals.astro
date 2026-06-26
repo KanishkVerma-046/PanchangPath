@@ -1,0 +1,131 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { FESTIVALS_2025_2026, daysUntil } from '../lib/festivals';
+
+const today = new Date();
+const upcoming = FESTIVALS_2025_2026.filter(f => f.date >= today.toISOString().split('T')[0])
+  .sort((a, b) => a.date.localeCompare(b.date));
+const past = FESTIVALS_2025_2026.filter(f => f.date < today.toISOString().split('T')[0])
+  .sort((a, b) => b.date.localeCompare(a.date))
+  .slice(0, 6);
+
+// Group upcoming by month
+const byMonth: Record<string, typeof upcoming> = {};
+for (const f of upcoming) {
+  const key = f.date.slice(0, 7);
+  if (!byMonth[key]) byMonth[key] = [];
+  byMonth[key].push(f);
+}
+
+function monthLabel(key: string) {
+  const [y, m] = key.split('-');
+  return new Date(+y, +m - 1, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+}
+---
+
+<Layout title="Hindu Festival Calendar 2025-2026 — PanchangPath" description="Complete Hindu festival and vrat calendar for 2025 and 2026. All major festivals with dates, descriptions, and countdowns.">
+  <!-- Hero -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Complete Calendar</p>
+      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Hindu Festivals & Vrats.</h1>
+      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;">All major Hindu festivals, vrats, and auspicious days for 2025–2026 with detailed information.</p>
+    </div>
+  </section>
+
+  <!-- Filter row -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:12px 0;position:sticky;top:60px;z-index:40;">
+    <div class="container" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+      <button class="filter-btn active" data-filter="all" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-ink);color:var(--color-on-primary);cursor:pointer;">All</button>
+      <button class="filter-btn" data-filter="major" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">✦ Major</button>
+      <button class="filter-btn" data-filter="vrat" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">Vrat</button>
+      <button class="filter-btn" data-filter="regional" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">Regional</button>
+    </div>
+  </section>
+
+  <!-- Festival list by month -->
+  <section style="padding:40px 0;">
+    <div class="container" id="festival-list">
+      {Object.entries(byMonth).map(([key, festivals]) => (
+        <div class="month-section" style="margin-bottom:40px;">
+          <h2 style="font-size:13px;font-weight:500;color:var(--color-mute);letter-spacing:0.06em;text-transform:uppercase;font-family:var(--font-mono);margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--color-hairline);">{monthLabel(key)}</h2>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            {festivals.map(f => {
+              const fd = new Date(f.date);
+              const days = daysUntil(today, f.date);
+              return (
+                <div class={`festival-item card`} data-type={f.type} style="padding:16px 20px;display:flex;align-items:center;gap:16px;">
+                  <!-- Date box -->
+                  <div style="width:52px;flex-shrink:0;text-align:center;background:var(--color-canvas-soft-2);border-radius:8px;padding:8px 4px;">
+                    <p style="font-size:20px;font-weight:700;line-height:1;color:var(--color-ink);margin:0;">{fd.getDate()}</p>
+                    <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;font-family:var(--font-mono);text-transform:uppercase;">{fd.toLocaleDateString('en-IN',{month:'short'})}</p>
+                  </div>
+                  <!-- Info -->
+                  <div style="flex:1;min-width:0;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap;">
+                      <p class="en-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">{f.name}</p>
+                      <p class="hi-text" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;display:none;">{f.nameHi}</p>
+                      <span class={f.type === 'major' ? 'badge badge-saffron' : 'badge'} style="font-size:10px;">{f.type === 'major' ? '✦ Major' : f.type === 'vrat' ? 'Vrat' : 'Regional'}</span>
+                    </div>
+                    <p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">{fd.toLocaleDateString('en-IN',{weekday:'long'})}</p>
+                    <p style="font-size:13px;color:var(--color-body-text);margin:4px 0 0;">{f.description}</p>
+                  </div>
+                  <!-- Countdown -->
+                  <div style="flex-shrink:0;text-align:right;">
+                    {days === 0 ? (
+                      <span class="badge badge-saffron" style="font-size:12px;">Today 🎉</span>
+                    ) : days === 1 ? (
+                      <span class="badge badge-auspicious" style="font-size:12px;">Tomorrow</span>
+                    ) : (
+                      <div>
+                        <p style="font-size:22px;font-weight:700;color:var(--color-ink);margin:0;letter-spacing:-0.5px;line-height:1;">{days}</p>
+                        <p style="font-size:10px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">days away</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Filter buttons
+  const btns = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.festival-item');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => {
+        (b as HTMLElement).style.background = 'var(--color-canvas)';
+        (b as HTMLElement).style.color = 'var(--color-ink)';
+      });
+      (btn as HTMLElement).style.background = 'var(--color-ink)';
+      (btn as HTMLElement).style.color = 'var(--color-on-primary)';
+      const filter = btn.getAttribute('data-filter');
+      items.forEach(item => {
+        const type = item.getAttribute('data-type');
+        (item as HTMLElement).style.display = (filter === 'all' || type === filter) ? 'flex' : 'none';
+      });
+      // Hide empty month sections
+      document.querySelectorAll('.month-section').forEach(sec => {
+        const visible = sec.querySelectorAll('.festival-item:not([style*="none"])').length;
+        (sec as HTMLElement).style.display = visible ? 'block' : 'none';
+      });
+    });
+  });
+
+  // Language toggle
+  document.addEventListener('langchange', (e: Event) => {
+    const evt = e as CustomEvent;
+    const hindi = evt.detail.hindi;
+    document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
+    document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
+  });
+</script>
+</Layout>

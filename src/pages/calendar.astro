@@ -1,0 +1,280 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { FESTIVALS_2025_2026 } from '../lib/festivals';
+
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth(); // 0-indexed
+
+// Build calendar grid for current month
+const firstDay = new Date(year, month, 1).getDay();
+const daysInMonth = new Date(year, month + 1, 0).getDate();
+const monthName = today.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+
+// Festival lookup map
+const festMap: Record<string, typeof FESTIVALS_2025_2026[0][]> = {};
+for (const f of FESTIVALS_2025_2026) {
+  if (!festMap[f.date]) festMap[f.date] = [];
+  festMap[f.date].push(f);
+}
+
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+---
+
+<Layout title="Monthly Panchang Calendar — PanchangPath" description="Monthly Panchang calendar view with Tithi, Nakshatra, and festival highlights for every day.">
+  <!-- Hero -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Monthly View</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <h1 style="font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0;" id="cal-title">{monthName}</h1>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <button id="prev-month" class="btn-secondary" style="height:32px;width:32px;padding:0;display:flex;align-items:center;justify-content:center;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button id="today-btn" class="btn-secondary" style="height:32px;font-size:13px;">Today</button>
+          <button id="next-month" class="btn-secondary" style="height:32px;width:32px;padding:0;display:flex;align-items:center;justify-content:center;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Legend -->
+  <div style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:10px 0;">
+    <div class="container" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#FF9933;display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Major festival</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#0070f3;display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Vrat</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#22c55e;display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Regional</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--color-ink);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Today</span></div>
+    </div>
+  </div>
+
+  <!-- Calendar grid -->
+  <section style="padding:32px 0;">
+    <div class="container">
+      <!-- Weekday headers -->
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;" id="cal-header">
+        {WEEKDAYS.map((w, i) => (
+          <div style={`text-align:center;padding:8px 4px;font-size:11px;font-weight:500;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:${i===0?'#ef4444':i===6?'#0070f3':'var(--color-mute)'};`}>{w}</div>
+        ))}
+      </div>
+      <!-- Day cells -->
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;" id="cal-grid">
+        <!-- Filled by JS + static fallback below -->
+        {Array.from({ length: firstDay }, (_, i) => (
+          <div key={`e-${i}`} style="min-height:100px;border-radius:8px;"></div>
+        ))}
+        {Array.from({ length: daysInMonth }, (_, i) => {
+          const d = i + 1;
+          const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+          const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+          const feasts = festMap[dateStr] || [];
+          const isSun = new Date(year, month, d).getDay() === 0;
+          const isSat = new Date(year, month, d).getDay() === 6;
+          return (
+            <div class="cal-cell" data-date={dateStr} style={`min-height:100px;border-radius:8px;padding:10px 8px;cursor:pointer;background:${isToday?'var(--color-ink)':'var(--color-canvas)'};box-shadow:var(--shadow-card);transition:box-shadow 0.15s;position:relative;`}>
+              <p style={`font-size:16px;font-weight:${isToday?'700':'600'};margin:0 0 6px;line-height:1;color:${isToday?'var(--color-on-primary)':isSun?'#ef4444':isSat?'#0070f3':'var(--color-ink)'};`}>{d}</p>
+              {feasts.slice(0,2).map(f => (
+                <p class={`en-text cal-fest`} style={`font-size:10px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${isToday?'rgba(255,255,255,0.8)':f.type==='major'?'var(--color-saffron-deep)':f.type==='vrat'?'var(--color-link)':'#15803d'};`}>{f.name}</p>
+              ))}
+              {feasts.slice(0,2).map(f => (
+                <p class={`hi-text cal-fest`} style={`font-size:10px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${isToday?'rgba(255,255,255,0.8)':f.type==='major'?'var(--color-saffron-deep)':f.type==='vrat'?'var(--color-link)':'#15803d'};display:none;`}>{f.nameHi}</p>
+              ))}
+              <!-- Panchang info populated by JS -->
+              <p class="cal-tithi" style={`font-size:9px;font-family:var(--font-mono);margin:4px 0 0;color:${isToday?'rgba(255,255,255,0.6)':'var(--color-mute)'};`}></p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Day detail panel (bottom sheet on mobile, sidebar on desktop) -->
+  <div id="day-panel" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--color-canvas);border-top:1px solid var(--color-hairline);padding:20px 24px;box-shadow:0 -8px 32px rgba(0,0,0,0.1);z-index:30;max-height:60vh;overflow-y:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <h3 id="panel-date" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;"></h3>
+      <button id="close-panel" style="background:none;border:none;cursor:pointer;color:var(--color-mute);font-size:18px;padding:4px;">✕</button>
+    </div>
+    <div id="panel-content" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;"></div>
+    <div style="margin-top:16px;">
+      <a id="panel-link" href="/" class="btn-primary" style="width:100%;justify-content:center;">View Full Panchang →</a>
+    </div>
+  </div>
+</Layout>
+
+<script>
+const NAKSHATRAS = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const TITHIS = ['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+const toRad = (d: number) => d * Math.PI / 180;
+const norm = (a: number) => ((a % 360) + 360) % 360;
+
+function quickPanchang(date: Date) {
+  const yr = date.getFullYear(), mo = date.getMonth()+1, dy = date.getDate();
+  let y = yr, m = mo;
+  if (m <= 2) { y -= 1; m += 12; }
+  const A = Math.floor(y/100), B = 2 - A + Math.floor(A/4);
+  const jd = Math.floor(365.25*(y+4716)) + Math.floor(30.6001*(m+1)) + dy + 6/24 + B - 1524.5;
+  const T = (jd - 2451545)/36525;
+  const L0 = norm(280.46646 + 36000.76983*T);
+  const Msun = norm(357.52911 + 35999.05029*T);
+  const sunLon = norm(L0 + (1.914602-0.004817*T)*Math.sin(toRad(Msun)) + 0.019993*Math.sin(2*toRad(Msun)));
+  const moonL = norm(218.3164477 + 481267.88123421*T);
+  const moonD = norm(297.8501921 + 445267.1114034*T);
+  const moonMp = norm(134.9633964 + 477198.8675055*T);
+  const dL = 6.288774*Math.sin(toRad(moonMp)) + 1.274027*Math.sin(toRad(2*moonD-moonMp)) + 0.658314*Math.sin(toRad(2*moonD)) + 0.213618*Math.sin(toRad(2*moonMp));
+  const moonLon = norm(moonL + dL/1000);
+  const ay = 23.85 + 1.3612*T;
+  const moonSid = norm(moonLon - ay);
+  const elong = norm(moonLon - sunLon);
+  const tithiIdx = Math.floor(elong/12)%30;
+  const nakIdx = Math.floor(moonSid/(360/27))%27;
+  const paksha = tithiIdx < 15 ? 'S' : 'K';
+  return { tithi: paksha + ' ' + TITHIS[tithiIdx], nakshatra: NAKSHATRAS[nakIdx] };
+}
+
+// Populate Tithi on calendar cells
+document.querySelectorAll('.cal-cell').forEach(cell => {
+  const dateStr = cell.getAttribute('data-date');
+  if (!dateStr) return;
+  const p = quickPanchang(new Date(dateStr + 'T06:00:00'));
+  const tithiEl = cell.querySelector('.cal-tithi');
+  if (tithiEl) tithiEl.textContent = p.tithi;
+});
+
+// Month navigation
+let displayDate = new Date();
+displayDate.setDate(1);
+
+const festivals: Record<string, {name:string,nameHi:string,type:string}[]> = {};
+// Festival data from festivals.ts (subset injected)
+const FEST_DATA = [
+  {date:'2025-01-13',name:'Lohri',nameHi:'लोहड़ी',type:'regional'},
+  {date:'2025-01-14',name:'Makar Sankranti',nameHi:'मकर संक्रांति',type:'major'},
+  {date:'2025-02-02',name:'Basant Panchami',nameHi:'बसंत पंचमी',type:'major'},
+  {date:'2025-02-26',name:'Maha Shivaratri',nameHi:'महाशिवरात्रि',type:'major'},
+  {date:'2025-03-13',name:'Holika Dahan',nameHi:'होलिका दहन',type:'major'},
+  {date:'2025-03-14',name:'Holi',nameHi:'होली',type:'major'},
+  {date:'2025-03-30',name:'Ugadi / Gudi Padwa',nameHi:'उगादि / गुड़ी पड़वा',type:'major'},
+  {date:'2025-04-06',name:'Ram Navami',nameHi:'राम नवमी',type:'major'},
+  {date:'2025-04-12',name:'Hanuman Jayanti',nameHi:'हनुमान जयंती',type:'major'},
+  {date:'2025-04-30',name:'Akshaya Tritiya',nameHi:'अक्षय तृतीया',type:'major'},
+  {date:'2025-05-12',name:'Buddha Purnima',nameHi:'बुद्ध पूर्णिमा',type:'major'},
+  {date:'2025-07-11',name:'Guru Purnima',nameHi:'गुरु पूर्णिमा',type:'major'},
+  {date:'2025-08-09',name:'Raksha Bandhan',nameHi:'रक्षा बंधन',type:'major'},
+  {date:'2025-08-16',name:'Krishna Janmashtami',nameHi:'कृष्ण जन्माष्टमी',type:'major'},
+  {date:'2025-08-27',name:'Ganesh Chaturthi',nameHi:'गणेश चतुर्थी',type:'major'},
+  {date:'2025-10-02',name:'Navratri Begins',nameHi:'नवरात्रि प्रारंभ',type:'major'},
+  {date:'2025-10-12',name:'Dussehra',nameHi:'दशहरा',type:'major'},
+  {date:'2025-10-20',name:'Diwali',nameHi:'दीपावली',type:'major'},
+  {date:'2025-10-20',name:'Dhanteras',nameHi:'धनतेरस',type:'major'},
+  {date:'2025-10-23',name:'Bhai Dooj',nameHi:'भाई दूज',type:'major'},
+  {date:'2025-10-28',name:'Chhath Puja',nameHi:'छठ पूजा',type:'major'},
+  {date:'2026-01-14',name:'Makar Sankranti',nameHi:'मकर संक्रांति',type:'major'},
+  {date:'2026-02-15',name:'Maha Shivaratri',nameHi:'महाशिवरात्रि',type:'major'},
+  {date:'2026-03-04',name:'Holi',nameHi:'होली',type:'major'},
+  {date:'2026-08-22',name:'Krishna Janmashtami',nameHi:'कृष्ण जन्माष्टमी',type:'major'},
+  {date:'2026-10-09',name:'Diwali',nameHi:'दीपावली',type:'major'},
+];
+for (const f of FEST_DATA) {
+  if (!festivals[f.date]) festivals[f.date] = [];
+  festivals[f.date].push(f);
+}
+
+function renderCalendar(d: Date) {
+  const yr = d.getFullYear(), mo = d.getMonth();
+  const firstDay = new Date(yr, mo, 1).getDay();
+  const daysInMonth = new Date(yr, mo+1, 0).getDate();
+  const today = new Date();
+  const monthName = d.toLocaleDateString('en-IN', { month:'long', year:'numeric' });
+  const calTitle = document.getElementById('cal-title');
+  if (calTitle) calTitle.textContent = monthName;
+  const grid = document.getElementById('cal-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  // Empty slots
+  for (let i = 0; i < firstDay; i++) {
+    const div = document.createElement('div');
+    div.style.minHeight = '100px';
+    grid.appendChild(div);
+  }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${yr}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const isToday = day === today.getDate() && mo === today.getMonth() && yr === today.getFullYear();
+    const feasts = festivals[dateStr] || [];
+    const wd = new Date(yr, mo, day).getDay();
+    const isSun = wd === 0, isSat = wd === 6;
+    const p = quickPanchang(new Date(dateStr + 'T06:00:00'));
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell';
+    cell.setAttribute('data-date', dateStr);
+    cell.style.cssText = `min-height:90px;border-radius:8px;padding:10px 8px;cursor:pointer;background:${isToday?'var(--color-ink)':'var(--color-canvas)'};box-shadow:var(--shadow-card);transition:box-shadow 0.15s;position:relative;`;
+    const dayColor = isToday ? 'var(--color-on-primary)' : isSun ? '#ef4444' : isSat ? '#0070f3' : 'var(--color-ink)';
+    const muteColor = isToday ? 'rgba(255,255,255,0.5)' : 'var(--color-mute)';
+    const festColor = (type: string) => isToday ? 'rgba(255,255,255,0.85)' : type === 'major' ? 'var(--color-saffron-deep)' : type === 'vrat' ? 'var(--color-link)' : '#15803d';
+    cell.innerHTML = `
+      <p style="font-size:16px;font-weight:${isToday?'700':'600'};margin:0 0 4px;line-height:1;color:${dayColor};">${day}</p>
+      ${feasts.slice(0,1).map(f => `<p style="font-size:9px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${festColor(f.type)};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${f.name}</p>`).join('')}
+      <p style="font-size:9px;font-family:var(--font-mono);margin:4px 0 0;color:${muteColor};white-space:nowrap;overflow:hidden;">${p.tithi}</p>
+      <p style="font-size:9px;font-family:var(--font-mono);margin:1px 0 0;color:${muteColor};white-space:nowrap;overflow:hidden;">${p.nakshatra}</p>
+    `;
+    cell.addEventListener('click', () => showPanel(dateStr, feasts, p));
+    grid.appendChild(cell);
+  }
+}
+
+function showPanel(dateStr: string, feasts: typeof FEST_DATA, p: {tithi:string,nakshatra:string}) {
+  const panel = document.getElementById('day-panel');
+  const panelDate = document.getElementById('panel-date');
+  const panelContent = document.getElementById('panel-content');
+  const panelLink = document.getElementById('panel-link') as HTMLAnchorElement;
+  if (!panel || !panelDate || !panelContent) return;
+  const d = new Date(dateStr + 'T12:00:00');
+  panelDate.textContent = d.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  panelLink.href = `/?date=${dateStr}`;
+  panelContent.innerHTML = `
+    <div style="background:var(--color-canvas-soft-2);border-radius:8px;padding:12px;">
+      <p style="font-size:10px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Tithi</p>
+      <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${p.tithi}</p>
+    </div>
+    <div style="background:var(--color-canvas-soft-2);border-radius:8px;padding:12px;">
+      <p style="font-size:10px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Nakshatra</p>
+      <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${p.nakshatra}</p>
+    </div>
+    ${feasts.map(f => `<div style="background:var(--color-saffron-soft);border-radius:8px;padding:12px;grid-column:span 2;">
+      <p style="font-size:10px;color:var(--color-saffron-deep);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Festival</p>
+      <p style="font-size:14px;font-weight:600;color:var(--color-saffron-deep);margin:0;">${f.name}</p>
+    </div>`).join('')}
+  `;
+  panel.style.display = 'block';
+}
+
+document.getElementById('close-panel')?.addEventListener('click', () => {
+  const p = document.getElementById('day-panel');
+  if (p) p.style.display = 'none';
+});
+
+document.getElementById('prev-month')?.addEventListener('click', () => {
+  displayDate.setMonth(displayDate.getMonth() - 1);
+  renderCalendar(displayDate);
+});
+document.getElementById('next-month')?.addEventListener('click', () => {
+  displayDate.setMonth(displayDate.getMonth() + 1);
+  renderCalendar(displayDate);
+});
+document.getElementById('today-btn')?.addEventListener('click', () => {
+  displayDate = new Date(); displayDate.setDate(1);
+  renderCalendar(displayDate);
+});
+
+renderCalendar(displayDate);
+
+document.addEventListener('langchange', (e: Event) => {
+  const evt = e as CustomEvent;
+  const hindi = evt.detail.hindi;
+  document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
+  document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
+});
+</script>
