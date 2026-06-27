@@ -1,0 +1,1008 @@
+---
+// Header.astro — sticky top header with clock, search, lang toggle, theme switcher, mobile drawer
+---
+
+<!-- HEADER -->
+<header id="site-header">
+  <!-- Top bar -->
+  <div id="header-top">
+    <div class="header-container">
+
+      <!-- LEFT: Logo -->
+      <a href="/" class="logo-link" aria-label="PanchangPath Home">
+        <span class="logo-om">🕉️</span>
+        <span class="logo-text">PanchangPath</span>
+      </a>
+
+      <!-- CENTER: Live clock + search -->
+      <div class="header-center">
+        <!-- Live clock (links to sunrise page) -->
+        <a href="/" class="clock-widget" id="clock-link" title="Today's Panchang">
+          <span class="clock-time" id="live-time">00:00:00</span>
+          <span class="clock-sep">|</span>
+          <span class="clock-date" id="live-date">—</span>
+        </a>
+
+        <!-- Search bar -->
+        <div class="search-wrap">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            id="search-input"
+            class="search-input"
+            type="search"
+            placeholder="Search panchang, festivals, muhurta…"
+            aria-label="Search"
+            autocomplete="off"
+          />
+          <button class="mic-btn" id="mic-btn" title="Voice search" aria-label="Voice search">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="2" width="6" height="11" rx="3"/>
+              <path d="M5 10a7 7 0 0 0 14 0"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/>
+            </svg>
+          </button>
+          <!-- Search results dropdown -->
+          <div id="search-dropdown" class="search-dropdown" hidden></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Controls -->
+      <div class="header-right">
+        <!-- Language toggle -->
+        <button id="lang-toggle" class="hdr-btn lang-btn" title="Switch language">
+          <span id="lang-label">हिं</span>
+        </button>
+
+        <!-- Theme switcher: Modern / Classic -->
+        <div class="theme-switcher" id="theme-switcher" title="Switch theme">
+          <button class="theme-opt active" id="theme-modern" data-theme="modern">Modern</button>
+          <button class="theme-opt" id="theme-classic" data-theme="classic">Classic</button>
+        </div>
+
+        <!-- Dark mode -->
+        <button id="dark-toggle" class="hdr-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode">
+          <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <!-- Settings -->
+        <button class="hdr-icon-btn" id="settings-btn" title="Settings" aria-label="Settings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+
+        <!-- App store badges (desktop only) -->
+        <div class="app-badges">
+          <a href="#" class="app-badge" title="Get on Google Play" aria-label="Android app">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76a2 2 0 0 0 2.17-.22l11.28-6.51-2.54-2.54L3.18 23.76zM20.77 10.6 17.9 9l-3.18 3.18 3.18 3.18 2.9-1.67a1.94 1.94 0 0 0 0-3.09zM1.08.3A1.94 1.94 0 0 0 .5 1.72v20.56a1.94 1.94 0 0 0 .58 1.42l.07.07 11.52-11.52v-.27L1.15.23l-.07.07zM14.62 7.73 3.35 1.22a2 2 0 0 0-2.17-.22l11 10.99 2.44-3.26z"/></svg>
+            <span>Android</span>
+          </a>
+          <a href="#" class="app-badge" title="Get on App Store" aria-label="iOS app">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.14-2.19 1.28-2.17 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.77M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            <span>iOS</span>
+          </a>
+        </div>
+
+        <!-- Hamburger (mobile) -->
+        <button id="hamburger" class="hdr-icon-btn hamburger-btn" aria-label="Open menu" aria-expanded="false">
+          <svg id="hamburger-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <svg id="close-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:none">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop nav categories -->
+  <nav id="desktop-nav" aria-label="Main navigation">
+    <div class="header-container">
+      <ul class="desktop-nav-list">
+        <li class="nav-item has-dropdown">
+          <a href="/" class="nav-cat">Panchang <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/" class="dd-link">Today's Panchang</a>
+            <a href="/calendar" class="dd-link">Monthly Calendar</a>
+            <a href="/" class="dd-link">Sunrise &amp; Sunset</a>
+            <a href="/" class="dd-link">Moonrise &amp; Moonset</a>
+            <a href="/" class="dd-link">Rahu Kalam</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/calendar" class="nav-cat">Calendars <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/calendar" class="dd-link">Hindu Calendar</a>
+            <a href="/calendar" class="dd-link">Vikram Samvat</a>
+            <a href="/calendar" class="dd-link">Saka Calendar</a>
+            <a href="/calendar" class="dd-link">Tamil Calendar</a>
+            <a href="/calendar" class="dd-link">Malayalam Calendar</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/muhurta" class="nav-cat">Muhurat <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/muhurta" class="dd-link">Muhurat Finder</a>
+            <a href="/muhurta" class="dd-link">Vivah Muhurat</a>
+            <a href="/muhurta" class="dd-link">Griha Pravesh</a>
+            <a href="/muhurta" class="dd-link">Namkaran Muhurat</a>
+            <a href="/muhurta" class="dd-link">Vehicle Purchase</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/festivals" class="nav-cat">Vrat &amp; Upavas <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/festivals" class="dd-link">Vrat Calendar</a>
+            <a href="/festivals" class="dd-link">Ekadashi</a>
+            <a href="/festivals" class="dd-link">Pradosh Vrat</a>
+            <a href="/festivals" class="dd-link">Sankashti Chaturthi</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/festivals" class="nav-cat">Festivals <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/festivals" class="dd-link">All Festivals</a>
+            <a href="/festivals" class="dd-link">Diwali 2025</a>
+            <a href="/festivals" class="dd-link">Navratri 2025</a>
+            <a href="/festivals" class="dd-link">Holi 2026</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/" class="nav-cat">Jyotish <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/" class="dd-link">Kundli / Birth Chart</a>
+            <a href="/" class="dd-link">Rashifal</a>
+            <a href="/" class="dd-link">Numerology</a>
+            <a href="/" class="dd-link">Tarot</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/" class="nav-cat">Planets <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/" class="dd-link">Planetary Positions</a>
+            <a href="/" class="dd-link">Rahu &amp; Ketu</a>
+            <a href="/" class="dd-link">Shani (Saturn)</a>
+            <a href="/" class="dd-link">Gochara</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/" class="nav-cat">Lyrics <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/" class="dd-link">Aarti Sangrah</a>
+            <a href="/" class="dd-link">Chalisa</a>
+            <a href="/" class="dd-link">Stotram</a>
+            <a href="/" class="dd-link">Mantra</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/" class="nav-cat">Gallery <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/" class="dd-link">God Images</a>
+            <a href="/" class="dd-link">Festival Photos</a>
+            <a href="/" class="dd-link">Wallpapers</a>
+          </div>
+        </li>
+        <li class="nav-item has-dropdown">
+          <a href="/" class="nav-cat">Others <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown">
+            <a href="/" class="dd-link">Baby Names</a>
+            <a href="/" class="dd-link">Compatibility</a>
+            <a href="/" class="dd-link">Dream Meaning</a>
+            <a href="/" class="dd-link">About</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<!-- Overlay for mobile drawer -->
+<div id="drawer-overlay" class="drawer-overlay" aria-hidden="true"></div>
+
+<!-- Mobile slide-out drawer -->
+<aside id="mobile-drawer" class="mobile-drawer" aria-label="Mobile navigation" aria-hidden="true">
+  <div class="drawer-header">
+    <a href="/" class="logo-link">
+      <span class="logo-om">🕉️</span>
+      <span class="logo-text">PanchangPath</span>
+    </a>
+    <button id="drawer-close" class="hdr-icon-btn" aria-label="Close menu">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="drawer-body">
+    <!-- Drawer search -->
+    <div class="drawer-search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--color-mute)">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" class="drawer-search-input" placeholder="Search…" aria-label="Search" />
+    </div>
+
+    <!-- Nav tree in accordion -->
+    <nav class="drawer-nav">
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-panchang">
+          Panchang <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-panchang">
+          <a href="/" class="drawer-link">Today's Panchang</a>
+          <a href="/calendar" class="drawer-link">Monthly Calendar</a>
+          <a href="/" class="drawer-link">Sunrise &amp; Sunset</a>
+          <a href="/" class="drawer-link">Moonrise &amp; Moonset</a>
+          <a href="/" class="drawer-link">Rahu Kalam</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-calendars">
+          Calendars <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-calendars">
+          <a href="/calendar" class="drawer-link">Hindu Calendar</a>
+          <a href="/calendar" class="drawer-link">Vikram Samvat</a>
+          <a href="/calendar" class="drawer-link">Saka Calendar</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-muhurat">
+          Muhurat <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-muhurat">
+          <a href="/muhurta" class="drawer-link">Muhurat Finder</a>
+          <a href="/muhurta" class="drawer-link">Vivah Muhurat</a>
+          <a href="/muhurta" class="drawer-link">Griha Pravesh</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-vrat">
+          Vrat &amp; Upavas <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-vrat">
+          <a href="/festivals" class="drawer-link">Vrat Calendar</a>
+          <a href="/festivals" class="drawer-link">Ekadashi</a>
+          <a href="/festivals" class="drawer-link">Pradosh Vrat</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-festivals">
+          Festivals <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-festivals">
+          <a href="/festivals" class="drawer-link">All Festivals</a>
+          <a href="/festivals" class="drawer-link">Diwali 2025</a>
+          <a href="/festivals" class="drawer-link">Navratri 2025</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-jyotish">
+          Jyotish <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-jyotish">
+          <a href="/" class="drawer-link">Kundli / Birth Chart</a>
+          <a href="/" class="drawer-link">Rashifal</a>
+          <a href="/" class="drawer-link">Numerology</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-planets">
+          Planets <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-planets">
+          <a href="/" class="drawer-link">Planetary Positions</a>
+          <a href="/" class="drawer-link">Rahu &amp; Ketu</a>
+          <a href="/" class="drawer-link">Shani (Saturn)</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-lyrics">
+          Lyrics <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-lyrics">
+          <a href="/" class="drawer-link">Aarti Sangrah</a>
+          <a href="/" class="drawer-link">Chalisa</a>
+          <a href="/" class="drawer-link">Stotram</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-gallery">
+          Gallery <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-gallery">
+          <a href="/" class="drawer-link">God Images</a>
+          <a href="/" class="drawer-link">Festival Photos</a>
+          <a href="/" class="drawer-link">Wallpapers</a>
+        </div>
+      </div>
+      <div class="drawer-section">
+        <button class="drawer-cat" data-target="m-others">
+          Others <span class="drawer-caret">›</span>
+        </button>
+        <div class="drawer-sub" id="m-others">
+          <a href="/" class="drawer-link">Baby Names</a>
+          <a href="/" class="drawer-link">Compatibility</a>
+          <a href="/" class="drawer-link">About</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Drawer bottom controls -->
+    <div class="drawer-controls">
+      <button id="m-lang-toggle" class="hdr-btn lang-btn" style="flex:1;">
+        <span id="m-lang-label">हिं / EN</span>
+      </button>
+      <button id="m-dark-toggle" class="hdr-icon-btn">
+        <svg id="m-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+        </svg>
+        <svg id="m-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</aside>
+
+<style>
+  /* ── Header shell ── */
+  #site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-canvas);
+    border-bottom: 1px solid var(--color-hairline);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ── Top bar ── */
+  #header-top {
+    height: 56px;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  #header-top .header-container {
+    height: 100%;
+    gap: 16px;
+  }
+
+  /* ── Logo ── */
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .logo-om { font-size: 20px; line-height: 1; }
+  .logo-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--color-ink);
+    letter-spacing: -0.3px;
+    white-space: nowrap;
+  }
+
+  /* ── Center: clock + search ── */
+  .header-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .clock-widget {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    flex-shrink: 0;
+    background: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    padding: 4px 12px;
+    transition: background 0.15s;
+  }
+  .clock-widget:hover { background: var(--color-canvas-soft); }
+  .clock-time {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-saffron-deep);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .clock-sep { color: var(--color-hairline-strong); font-size: 11px; }
+  .clock-date { font-size: 11px; color: var(--color-body-text); white-space: nowrap; }
+
+  /* ── Search bar ── */
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    max-width: 480px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-mute);
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    height: 34px;
+    padding: 0 36px 0 32px;
+    background: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--color-ink);
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .search-input::placeholder { color: var(--color-mute); }
+  .search-input:focus {
+    border-color: var(--color-saffron);
+    background: var(--color-canvas);
+  }
+  .search-input::-webkit-search-cancel-button { display: none; }
+
+  .mic-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-mute);
+    padding: 4px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s, background 0.15s;
+  }
+  .mic-btn:hover { color: var(--color-saffron); background: var(--color-saffron-soft); }
+  .mic-btn.listening { color: var(--color-error); animation: mic-pulse 1s infinite; }
+  @keyframes mic-pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+
+  /* Search dropdown */
+  .search-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-modal);
+    z-index: 200;
+    overflow: hidden;
+  }
+  .search-dropdown:not([hidden]) { display: block; }
+
+  /* ── Right controls ── */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .hdr-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 30px;
+    padding: 0 12px;
+    background: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-ink);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .hdr-btn:hover { background: var(--color-canvas-soft); border-color: var(--color-hairline-strong); }
+
+  .lang-btn { font-size: 13px; min-width: 40px; justify-content: center; }
+
+  .hdr-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-sm);
+    color: var(--color-body-text);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    padding: 0;
+  }
+  .hdr-icon-btn:hover { background: var(--color-canvas-soft); color: var(--color-ink); }
+
+  /* Theme switcher pill */
+  .theme-switcher {
+    display: flex;
+    align-items: center;
+    background: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    padding: 2px;
+    gap: 2px;
+  }
+  .theme-opt {
+    height: 24px;
+    padding: 0 10px;
+    background: none;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-mute);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .theme-opt.active {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  /* App badges */
+  .app-badges {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .app-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 28px;
+    padding: 0 9px;
+    background: var(--color-ink);
+    color: var(--color-on-primary);
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: opacity 0.15s;
+  }
+  .app-badge:hover { opacity: 0.8; }
+
+  /* Hamburger — hidden on desktop */
+  .hamburger-btn { display: none; }
+
+  /* ── Desktop nav bar (second row) ── */
+  #desktop-nav {
+    height: 38px;
+    display: flex;
+    align-items: stretch;
+  }
+  #desktop-nav .header-container { height: 100%; }
+
+  .desktop-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    height: 100%;
+  }
+
+  .nav-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-cat {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 0 11px;
+    height: 100%;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--color-body-text);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color 0.12s, border-color 0.12s;
+  }
+  .nav-cat:hover { color: var(--color-saffron-deep); border-bottom-color: var(--color-saffron); }
+  .nav-caret { font-size: 9px; opacity: 0.6; }
+
+  /* Dropdown */
+  .nav-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 180px;
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-modal);
+    padding: 6px 0;
+    z-index: 200;
+    display: none;
+    animation: fadeIn 0.14s ease both;
+  }
+  .nav-item.has-dropdown:hover .nav-dropdown { display: block; }
+
+  .dd-link {
+    display: block;
+    padding: 7px 14px;
+    font-size: 13px;
+    color: var(--color-body-text);
+    text-decoration: none;
+    transition: background 0.1s, color 0.1s;
+  }
+  .dd-link:hover { background: var(--color-canvas-soft-2); color: var(--color-ink); }
+
+  /* ── Mobile drawer ── */
+  .drawer-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(2px);
+  }
+  .drawer-overlay.open { display: block; }
+
+  .mobile-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: min(320px, 88vw);
+    z-index: 160;
+    background: var(--color-canvas);
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .mobile-drawer.open { transform: translateX(0); }
+
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--color-hairline);
+    flex-shrink: 0;
+  }
+
+  .drawer-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .drawer-search-wrap {
+    position: relative;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .drawer-search-input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px 0 32px;
+    background: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--color-ink);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .drawer-search-input:focus { border-color: var(--color-saffron); }
+
+  .drawer-nav { flex: 1; }
+
+  .drawer-section { border-bottom: 1px solid var(--color-hairline); }
+
+  .drawer-cat {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    background: none;
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-ink);
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.12s;
+  }
+  .drawer-cat:hover { background: var(--color-canvas-soft-2); }
+  .drawer-cat[aria-expanded="true"] .drawer-caret { transform: rotate(90deg); }
+
+  .drawer-caret {
+    font-size: 14px;
+    color: var(--color-mute);
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+
+  .drawer-sub {
+    display: none;
+    padding: 4px 0 8px;
+    background: var(--color-canvas-soft);
+  }
+  .drawer-sub.open { display: block; }
+
+  .drawer-link {
+    display: block;
+    padding: 9px 28px;
+    font-size: 13.5px;
+    color: var(--color-body-text);
+    text-decoration: none;
+    transition: color 0.12s, background 0.12s;
+  }
+  .drawer-link:hover { color: var(--color-saffron-deep); background: var(--color-saffron-soft); }
+
+  .drawer-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 16px;
+    border-top: 1px solid var(--color-hairline);
+    flex-shrink: 0;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .app-badges { display: none; }
+    .theme-switcher { display: none; }
+  }
+  @media (max-width: 768px) {
+    #desktop-nav { display: none; }
+    .hamburger-btn { display: inline-flex !important; }
+    .search-wrap { max-width: none; }
+    .clock-widget { display: none; }
+    #header-top { height: 52px; }
+  }
+  @media (max-width: 480px) {
+    .app-badges { display: none; }
+    .header-container { padding: 0 12px; }
+  }
+</style>
+
+<script>
+  // ── Live clock ──
+  function updateClock() {
+    const now = new Date();
+    const timeEl = document.getElementById('live-time');
+    const dateEl = document.getElementById('live-date');
+    if (!timeEl || !dateEl) return;
+
+    const h = String(now.getHours()).padStart(2, '0');
+    const m = String(now.getMinutes()).padStart(2, '0');
+    const s = String(now.getSeconds()).padStart(2, '0');
+    timeEl.textContent = `${h}:${m}:${s}`;
+
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ── Dark mode ──
+  const html = document.documentElement;
+  const darkToggle = document.getElementById('dark-toggle');
+  const mDarkToggle = document.getElementById('m-dark-toggle');
+  const iconSun = document.getElementById('icon-sun');
+  const iconMoon = document.getElementById('icon-moon');
+  const mIconSun = document.getElementById('m-icon-sun');
+  const mIconMoon = document.getElementById('m-icon-moon');
+
+  function applyDark(isDark: boolean) {
+    if (isDark) {
+      html.classList.remove('light');
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+      html.classList.add('light');
+    }
+    if (iconSun) iconSun.style.display = isDark ? 'block' : 'none';
+    if (iconMoon) iconMoon.style.display = isDark ? 'none' : 'block';
+    if (mIconSun) mIconSun.style.display = isDark ? 'block' : 'none';
+    if (mIconMoon) mIconMoon.style.display = isDark ? 'none' : 'block';
+    localStorage.setItem('dark', String(isDark));
+  }
+
+  applyDark(localStorage.getItem('dark') === 'true');
+
+  darkToggle?.addEventListener('click', () => applyDark(!html.classList.contains('dark')));
+  mDarkToggle?.addEventListener('click', () => applyDark(!html.classList.contains('dark')));
+
+  // ── Language toggle ──
+  const langToggle = document.getElementById('lang-toggle');
+  const langLabel = document.getElementById('lang-label');
+  const mLangToggle = document.getElementById('m-lang-toggle');
+  let isHindi = localStorage.getItem('lang') === 'hi';
+
+  function applyLang(hindi: boolean) {
+    isHindi = hindi;
+    if (langLabel) langLabel.textContent = hindi ? 'EN' : 'हिं';
+    localStorage.setItem('lang', hindi ? 'hi' : 'en');
+    document.dispatchEvent(new CustomEvent('langchange', { detail: { hindi } }));
+  }
+
+  langToggle?.addEventListener('click', () => applyLang(!isHindi));
+  mLangToggle?.addEventListener('click', () => applyLang(!isHindi));
+  if (isHindi) setTimeout(() => applyLang(true), 100);
+
+  // ── Theme switcher ──
+  const themeBtns = document.querySelectorAll<HTMLButtonElement>('.theme-opt');
+  const savedTheme = localStorage.getItem('site-theme') || 'modern';
+  themeBtns.forEach(btn => {
+    if (btn.dataset.theme === savedTheme) btn.classList.add('active');
+    else btn.classList.remove('active');
+    btn.addEventListener('click', () => {
+      themeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      localStorage.setItem('site-theme', btn.dataset.theme || 'modern');
+      html.dataset.theme = btn.dataset.theme || 'modern';
+    });
+  });
+
+  // ── Mobile drawer ──
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('mobile-drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  const drawerClose = document.getElementById('drawer-close');
+  const hamburgerIcon = document.getElementById('hamburger-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  function openDrawer() {
+    drawer?.classList.add('open');
+    overlay?.classList.add('open');
+    hamburger?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    if (hamburgerIcon) hamburgerIcon.style.display = 'none';
+    if (closeIcon) closeIcon.style.display = 'block';
+  }
+  function closeDrawer() {
+    drawer?.classList.remove('open');
+    overlay?.classList.remove('open');
+    hamburger?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    if (hamburgerIcon) hamburgerIcon.style.display = 'block';
+    if (closeIcon) closeIcon.style.display = 'none';
+  }
+
+  hamburger?.addEventListener('click', openDrawer);
+  drawerClose?.addEventListener('click', closeDrawer);
+  overlay?.addEventListener('click', closeDrawer);
+
+  // Keyboard: Escape closes drawer
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeDrawer();
+  });
+
+  // ── Drawer accordion ──
+  document.querySelectorAll<HTMLButtonElement>('.drawer-cat').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.dataset.target;
+      if (!targetId) return;
+      const sub = document.getElementById(targetId);
+      const isOpen = sub?.classList.contains('open');
+      // close all
+      document.querySelectorAll('.drawer-sub').forEach(s => s.classList.remove('open'));
+      document.querySelectorAll('.drawer-cat').forEach(b => b.setAttribute('aria-expanded', 'false'));
+      // toggle clicked
+      if (!isOpen) {
+        sub?.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  // ── Voice search ──
+  const micBtn = document.getElementById('mic-btn');
+  const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
+
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const recog = new SR();
+    recog.lang = 'en-IN';
+    recog.interimResults = false;
+
+    micBtn?.addEventListener('click', () => {
+      micBtn.classList.add('listening');
+      recog.start();
+    });
+    recog.onresult = (e: any) => {
+      if (searchInput) searchInput.value = e.results[0][0].transcript;
+      micBtn?.classList.remove('listening');
+    };
+    recog.onerror = () => micBtn?.classList.remove('listening');
+    recog.onend = () => micBtn?.classList.remove('listening');
+  } else {
+    micBtn?.setAttribute('title', 'Voice search not supported in this browser');
+  }
+
+  // ── Search: simple keyword filter ──
+  const searchItems = [
+    { label: "Today's Panchang", url: "/" },
+    { label: "Monthly Calendar", url: "/calendar" },
+    { label: "All Festivals", url: "/festivals" },
+    { label: "Muhurat Finder", url: "/muhurta" },
+    { label: "Diwali 2025", url: "/festivals" },
+    { label: "Navratri 2025", url: "/festivals" },
+    { label: "Ekadashi", url: "/festivals" },
+    { label: "Rahu Kalam", url: "/" },
+    { label: "Vivah Muhurat", url: "/muhurta" },
+    { label: "Sunrise & Sunset", url: "/" },
+  ];
+
+  const dropdown = document.getElementById('search-dropdown');
+
+  searchInput?.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q || !dropdown) { dropdown && (dropdown.hidden = true); return; }
+    const matches = searchItems.filter(i => i.label.toLowerCase().includes(q));
+    if (!matches.length) { dropdown.hidden = true; return; }
+    dropdown.innerHTML = matches.map(i =>
+      `<a href="${i.url}" style="display:block;padding:8px 14px;font-size:13px;color:var(--color-body-text);text-decoration:none;transition:background 0.1s;" onmouseover="this.style.background='var(--color-canvas-soft-2)'" onmouseout="this.style.background=''">${i.label}</a>`
+    ).join('');
+    dropdown.hidden = false;
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!searchInput?.contains(e.target as Node) && !dropdown?.contains(e.target as Node)) {
+      if (dropdown) dropdown.hidden = true;
+    }
+  });
+</script>

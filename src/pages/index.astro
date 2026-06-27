@@ -1,16 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { calculatePanchang } from '../lib/panchang';
+import PanchangSummaryCard from '../components/PanchangSummaryCard.astro';
+import KundaliWidget from '../components/KundaliWidget.astro';
+import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
 import { getDefaultLocation } from '../lib/locations';
 
 const today = new Date();
 const loc = getDefaultLocation(); // New Delhi, will be overridden client-side
 const panchang = calculatePanchang(today, loc.lat, loc.lng, loc.tzOffset);
+const hinduCal = getHinduCalendarInfo(today, panchang.sunLongitude, panchang.moonLongitude, panchang.tithi.paksha);
 const todayFestivals = getTodayFestivals(today);
 const upcoming = getUpcomingFestivals(today, 6);
 
-const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <Layout title="PanchangPath — Today's Hindu Panchang">
@@ -71,8 +74,20 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', year: 'nume
     </div>
   </section>
 
+  <!-- PANCHANG SUMMARY CARD -->
+  <PanchangSummaryCard
+    city={loc.name}
+    cityHi={loc.nameHi ?? loc.name}
+    dateStr={dateStr}
+    panchang={panchang}
+    hinduCal={hinduCal}
+  />
+
+  <!-- LAGNA KUNDALI WIDGET -->
+  <KundaliWidget />
+
   <!-- MAIN PANCHANG GRID -->
-  <section style="padding:40px 0;" id="panchang-section">
+  <section style="padding:0 0 40px;" id="panchang-section">
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
       <!-- Live indicator -->
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:24px;">
@@ -288,8 +303,14 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', year: 'nume
 </Layout>
 
 <script>
-// ─── Client-side Panchang engine ───────────────────────────────────────────
-// All calculation functions (mirrored from src/lib/panchang.ts)
+// ─── Client-side Panchang engine ─────────────────────────────────────────
+// Mirrors src/lib/panchang.ts + src/lib/panchang.ts#getHinduCalendarInfo
+
+// ── Global display state ──
+let timeFormat: '12h' | '24h' | '24p' = '12h';
+let calSchool: 'amanta' | 'purnimanta' = 'amanta';
+let chartVisible = false;
+let srMinsGlobal = 0; // sunrise (mins from midnight) for 24+ format
 
 const toRad = (d: number) => d * Math.PI / 180;
 const toDeg = (r: number) => r * 180 / Math.PI;
@@ -349,18 +370,28 @@ function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): numb
   return rising ? noon - HA / 15 : noon + HA / 15;
 }
 
-function fmtTime(h: number, tz: number): string {
-  let local = h + tz;
-  local = ((local % 24) + 24) % 24;
-  const hh = Math.floor(local), mm = Math.round((local - hh) * 60);
-  const ap = hh < 12 ? 'AM' : 'PM';
-  return `${hh % 12 || 12}:${String(mm).padStart(2,'0')} ${ap}`;
-}
-
-function minsToFmt(m: number): string {
-  const h = Math.floor((m / 60) % 24), mn = Math.round(m % 60);
+function minsToFmt(totalMins: number): string {
+  const m = ((totalMins % 1440) + 1440) % 1440;
+  const h = Math.floor(m / 60);
+  const mn = Math.round(m % 60);
+  if (timeFormat === '24h') {
+    return `${String(h).padStart(2,'0')}:${String(mn).padStart(2,'0')}`;
+  } else if (timeFormat === '24p') {
+    // Times before sunrise are part of the panchang day that started the previous sunrise;
+    // display them as 24+ (e.g. 1:30 AM → 25:30 when sunrise is ~5:30 AM)
+    const display = m < srMinsGlobal ? m + 1440 : m;
+    const dh = Math.floor(display / 60);
+    const dm = Math.round(display % 60);
+    return `${String(dh).padStart(2,'0')}:${String(dm).padStart(2,'0')}`;
+  }
+  // 12h (default)
   const ap = h < 12 ? 'AM' : 'PM';
   return `${h % 12 || 12}:${String(mn).padStart(2,'0')} ${ap}`;
+}
+
+function fmtTime(h: number, tz: number): string {
+  const local = ((h + tz) % 24 + 24) % 24;
+  return minsToFmt(local * 60);
 }
 
 function estimateEnd(lon: number, step: number, jd: number, tz: number, rate: number): string {
@@ -445,6 +476,8 @@ function calcPanchang(date: Date, loc: Location) {
   const dayMins = ssMins - srMins;
   const slotDur = dayMins / 8;
   const slot = (s: number) => ({ start: minsToFmt(srMins + s * slotDur), end: minsToFmt(srMins + (s+1) * slotDur) });
+  srMinsGlobal = srMins; // store for 24+ format
+
   const moonAge = elong / 360 * 29.53;
   const mrMins = srMins + moonAge * 48;
   const noonMins = (srMins + ssMins) / 2;
@@ -464,7 +497,47 @@ function calcPanchang(date: Date, loc: Location) {
     yamaganda: slot(YAMA[wd] < 8 ? YAMA[wd] : 7),
     abhijitMuhurta: { start: minsToFmt(abStart), end: minsToFmt(abEnd) },
     srMins, ssMins,
+    sunSidereal: sSid,
+    moonSidereal: mSid,
+    tithiPaksha: paksha as 'Shukla' | 'Krishna',
   };
+}
+
+// ── Hindu calendar info (mirrors panchang.ts#getHinduCalendarInfo) ──
+const RASHIS_CL = [
+  {name:'Mesha',nameHi:'मेष',en:'Aries'},{name:'Vrishabha',nameHi:'वृषभ',en:'Taurus'},
+  {name:'Mithuna',nameHi:'मिथुन',en:'Gemini'},{name:'Karka',nameHi:'कर्क',en:'Cancer'},
+  {name:'Simha',nameHi:'सिंह',en:'Leo'},{name:'Kanya',nameHi:'कन्या',en:'Virgo'},
+  {name:'Tula',nameHi:'तुला',en:'Libra'},{name:'Vrishchika',nameHi:'वृश्चिक',en:'Scorpio'},
+  {name:'Dhanu',nameHi:'धनु',en:'Sagittarius'},{name:'Makara',nameHi:'मकर',en:'Capricorn'},
+  {name:'Kumbha',nameHi:'कुम्भ',en:'Aquarius'},{name:'Meena',nameHi:'मीन',en:'Pisces'},
+];
+const AMANTA_CL = [
+  {name:'Chaitra',nameHi:'चैत्र'},{name:'Vaishakha',nameHi:'वैशाख'},{name:'Jyeshtha',nameHi:'ज्येष्ठ'},
+  {name:'Ashadha',nameHi:'आषाढ़'},{name:'Shravana',nameHi:'श्रावण'},{name:'Bhadrapada',nameHi:'भाद्रपद'},
+  {name:'Ashwin',nameHi:'आश्विन'},{name:'Kartika',nameHi:'कार्तिक'},{name:'Margashirsha',nameHi:'मार्गशीर्ष'},
+  {name:'Pausha',nameHi:'पौष'},{name:'Magha',nameHi:'माघ'},{name:'Phalguna',nameHi:'फाल्गुन'},
+];
+const SAMVATSARA_CL = [
+  'Prabhava','Vibhava','Shukla','Pramoda','Prajapati','Angirasa','Shrimukha','Bhava','Yuva','Dhatri',
+  'Ishvara','Bahudhanya','Pramathi','Vikrama','Vrisha','Chitrabhanu','Subhanu','Tarana','Parthiva','Vyaya',
+  'Sarvajit','Sarvadharin','Virodhi','Vikrita','Khara','Nandana','Vijaya','Jaya','Manmatha','Durmukhi',
+  'Hevilambi','Vilambi','Vikari','Sharvari','Plava','Shubhakrit','Shobhana','Krodhi','Vishvavasu','Parabhava',
+  'Plavanga','Kilaka','Saumya','Sadharana','Virodhikrit','Paridahvi','Pramadi','Ananda','Rakshasa','Anala',
+  'Pingala','Kalayukti','Siddharthi','Raudri','Durmati','Dundubhi','Rudhirodgari','Raktakshi','Krodhana','Akshaya',
+];
+
+function getHinduCalInfo(date: Date, sunSidereal: number, moonSidereal: number, paksha: 'Shukla' | 'Krishna') {
+  const sunRashiIdx  = Math.floor(sunSidereal  / 30) % 12;
+  const moonRashiIdx = Math.floor(moonSidereal / 30) % 12;
+  const amantaIdx    = sunRashiIdx;
+  const purnimantaIdx = paksha === 'Shukla' ? amantaIdx : (amantaIdx + 1) % 12;
+  const year = date.getFullYear();
+  const dayOfYear = Math.floor((Date.UTC(year, date.getMonth(), date.getDate()) - Date.UTC(year, 0, 0)) / 86400000);
+  const vsYear = dayOfYear >= 91 ? year + 57 : year + 56;
+  const ssYear = vsYear - 135;
+  const vsName = SAMVATSARA_CL[(vsYear - 1) % 60];
+  return { vsYear, ssYear, vsName, sunRashi: RASHIS_CL[sunRashiIdx], moonRashi: RASHIS_CL[moonRashiIdx], amantaMonth: AMANTA_CL[amantaIdx], purnimantaMonth: AMANTA_CL[purnimantaIdx] };
 }
 
 function setText(id: string, val: string) {
@@ -536,12 +609,129 @@ function applyLang(hindi: boolean) {
   document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
   const locDisplay = document.getElementById('loc-display');
   if (locDisplay) locDisplay.textContent = hindi ? currentLoc.nameHi : currentLoc.name;
+  // Refresh summary card to update bilingual fields
+  const p = calcPanchang(currentDate, currentLoc);
+  updateSummaryCard(p, currentDate, currentLoc);
+}
+
+function updateSummaryCard(p: ReturnType<typeof calcPanchang>, date: Date, loc: Location) {
+  const cal = getHinduCalInfo(date, p.sunSidereal, p.moonSidereal, p.tithiPaksha);
+
+  // Header
+  setText('ps-city', loc.name); setText('ps-city-hi', loc.nameHi ?? loc.name);
+  setText('ps-date', date.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' }));
+
+  // Vikrama / Shaka
+  setText('ps-vs-year', String(cal.vsYear));
+  setText('ps-vs-name', cal.vsName);
+  setText('ps-ss-year', String(cal.ssYear));
+
+  // Hindu month (Amanta / Purnimanta)
+  const month = calSchool === 'purnimanta' ? cal.purnimantaMonth : cal.amantaMonth;
+  const monthLbl = document.getElementById('ps-month-lbl');
+  if (monthLbl) monthLbl.textContent = calSchool === 'purnimanta' ? 'Purnimanta Month' : 'Amanta Month';
+  setText('ps-month', month.name);
+  setText('ps-month-hi', month.nameHi);
+
+  // Vara
+  setText('ps-vara', p.vara.name);
+  setText('ps-vara-hi', p.vara.nameHi);
+
+  // Sun / moon times
+  setText('ps-sunrise', p.sunrise); setText('ps-sunset', p.sunset);
+  setText('ps-tl-sunrise', p.sunrise); setText('ps-tl-sunset', p.sunset);
+
+  // Rashis
+  const enMode = !isHindi;
+  if (enMode) {
+    setText('ps-sunsign', `${cal.sunRashi.name} (${cal.sunRashi.en})`);
+    setText('ps-moonsign', `${cal.moonRashi.name} (${cal.moonRashi.en})`);
+  } else {
+    setText('ps-sunsign-hi', cal.sunRashi.nameHi);
+    setText('ps-moonsign-hi', cal.moonRashi.nameHi);
+  }
+
+  // Paksha badge
+  const pakshaBadge = document.getElementById('ps-paksha-badge');
+  if (pakshaBadge) {
+    pakshaBadge.dataset.isShukla = p.tithiPaksha === 'Shukla' ? 'true' : 'false';
+    const isShukla = p.tithiPaksha === 'Shukla';
+    pakshaBadge.innerHTML = `${isShukla ? '🌕' : '🌑'}
+      <span class="en-text" style="${isHindi ? 'display:none' : ''}">${p.tithiPaksha} Paksha</span>
+      <span class="hi-text" style="${isHindi ? '' : 'display:none'}">${p.tithi.pakshaNi} पक्ष</span>`;
+    pakshaBadge.style.cssText = isShukla
+      ? 'background:rgba(255,153,51,0.12);color:var(--color-saffron-deep);border:1px solid rgba(255,153,51,0.25);display:inline-flex;align-items:center;gap:5px;padding:2px 10px 2px 6px;border-radius:var(--radius-pill);font-size:12.5px;font-weight:600;'
+      : 'background:var(--color-canvas-soft-2);color:var(--color-body-text);border:1px solid var(--color-hairline);display:inline-flex;align-items:center;gap:5px;padding:2px 10px 2px 6px;border-radius:var(--radius-pill);font-size:12.5px;font-weight:600;';
+  }
+
+  // Tithi
+  setText('ps-tithi', p.tithi.name); setText('ps-tithi-hi', p.tithi.nameHi);
+  setText('ps-tithi-ends', `ends ${p.tithi.endTime}`);
+
+  // Nakshatra
+  setText('ps-nakshatra', p.nakshatra.name); setText('ps-nakshatra-hi', p.nakshatra.nameHi);
+  setText('ps-nakshatra-sub', `, Pada ${p.nakshatra.pada} · ${p.nakshatra.lord}`);
+  setText('ps-nakshatra-ends', `ends ${p.nakshatra.endTime}`);
+
+  // Yoga
+  setText('ps-yoga', p.yoga.name); setText('ps-yoga-hi', p.yoga.nameHi);
+  setText('ps-yoga-ends', `ends ${p.yoga.endTime}`);
+  const yogaBadge = document.getElementById('ps-yoga-badge');
+  if (yogaBadge) {
+    yogaBadge.textContent = p.yoga.type;
+    yogaBadge.style.cssText = p.yoga.type === 'Auspicious'
+      ? 'background:var(--color-auspicious-soft);color:#15803d;border-color:rgba(34,197,94,0.3);display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 7px;border-radius:9999px;border:1px solid;'
+      : 'background:var(--color-inauspicious-soft);color:#b91c1c;border-color:rgba(239,68,68,0.3);display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 7px;border-radius:9999px;border:1px solid;';
+  }
+
+  // Karana
+  setText('ps-karana', p.karana.name); setText('ps-karana-hi', p.karana.nameHi);
+  setText('ps-karana-ends', `ends ${p.karana.endTime}`);
+
+  // Kalam + Abhijit
+  setText('ps-rahu-kalam', `${p.rahuKalam.start} – ${p.rahuKalam.end}`);
+  setText('ps-abhijit', `${p.abhijitMuhurta.start} – ${p.abhijitMuhurta.end}`);
+  setText('ps-day-length', p.durationDay);
+
+  // Draw chart if visible
+  if (chartVisible) drawSummaryTimeline(p);
+}
+
+function drawSummaryTimeline(p: ReturnType<typeof calcPanchang>) {
+  const bar = document.getElementById('ps-timeline');
+  if (!bar) return;
+  const sr = p.srMins, ss = p.ssMins, total = ss - sr;
+  if (total <= 0) return;
+  const pct = (m: number) => Math.max(0, Math.min(100, ((m - sr) / total) * 100));
+  const now = new Date();
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const wd = currentDate.getDay();
+  const RAHU_S = [7,1,6,4,5,2,3], GULIKA_S = [6,5,4,3,2,1,0], YAMA_S = [3,5,2,7,4,6,1];
+  const slotDur = total / 8;
+  const segments = [
+    { s: pct(sr + RAHU_S[wd] * slotDur), e: pct(sr + (RAHU_S[wd]+1) * slotDur), color: '#ef4444' },
+    { s: pct(sr + GULIKA_S[wd] * slotDur), e: pct(sr + (GULIKA_S[wd]+1) * slotDur), color: '#f59e0b' },
+    { s: pct(sr + (YAMA_S[wd] < 8 ? YAMA_S[wd] : 7) * slotDur), e: pct(sr + ((YAMA_S[wd] < 8 ? YAMA_S[wd] : 7)+1) * slotDur), color: '#8b5cf6' },
+  ];
+  const nowPct = pct(nowMins);
+  bar.innerHTML =
+    `<div style="position:absolute;inset:0;background:linear-gradient(90deg,#fef3c7 0%,#fed7aa 50%,#fde68a 100%);opacity:0.3;"></div>` +
+    segments.map(sg =>
+      `<div style="position:absolute;left:${sg.s}%;width:${sg.e - sg.s}%;height:100%;background:${sg.color};opacity:0.35;"></div>`
+    ).join('') +
+    `<div style="position:absolute;left:${nowPct}%;top:0;width:2px;height:100%;background:var(--color-ink);border-radius:1px;" title="Now"></div>` +
+    `<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:9px;color:var(--color-mute);font-family:var(--font-mono);pointer-events:none;">Noon</div>`;
 }
 
 function renderWithLoc(loc: Location, date: Date) {
   currentLoc = loc; currentDate = date;
   const p = calcPanchang(date, loc);
   updateUI(p);
+  updateSummaryCard(p, date, loc);
+  // Update Kundali widget
+  if (typeof (window as any).updateKundaliWidget === 'function') {
+    (window as any).updateKundaliWidget(loc.lat, loc.lng, isHindi ? (loc.nameHi ?? loc.name) : loc.name);
+  }
   // Update date label
   const d = date.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
   setText('date-display', d);
@@ -591,6 +781,46 @@ document.getElementById('detect-btn')?.addEventListener('click', () => {
 document.addEventListener('langchange', (e: Event) => {
   const evt = e as CustomEvent;
   applyLang(evt.detail.hindi);
+});
+
+// ── Toolbar: time format ──
+document.querySelectorAll<HTMLButtonElement>('.ps-seg-btn[data-fmt]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    timeFormat = btn.dataset.fmt as '12h' | '24h' | '24p';
+    document.querySelectorAll<HTMLButtonElement>('.ps-seg-btn[data-fmt]').forEach(b => {
+      b.classList.toggle('active', b.dataset.fmt === timeFormat);
+      b.setAttribute('aria-pressed', String(b.dataset.fmt === timeFormat));
+    });
+    renderWithLoc(currentLoc, currentDate);
+  });
+});
+
+// ── Toolbar: calendar school ──
+document.querySelectorAll<HTMLButtonElement>('.ps-seg-btn[data-school]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    calSchool = btn.dataset.school as 'amanta' | 'purnimanta';
+    document.querySelectorAll<HTMLButtonElement>('.ps-seg-btn[data-school]').forEach(b => {
+      b.classList.toggle('active', b.dataset.school === calSchool);
+      b.setAttribute('aria-pressed', String(b.dataset.school === calSchool));
+    });
+    // Re-render summary card only (month label changes)
+    const p = calcPanchang(currentDate, currentLoc);
+    updateSummaryCard(p, currentDate, currentLoc);
+  });
+});
+
+// ── Toolbar: chart toggle ──
+const chartToggleBtn = document.getElementById('ps-chart-toggle');
+const chartWrap = document.getElementById('ps-chart-wrap');
+chartToggleBtn?.addEventListener('click', () => {
+  chartVisible = !chartVisible;
+  if (chartWrap) chartWrap.hidden = !chartVisible;
+  chartToggleBtn.classList.toggle('active', chartVisible);
+  chartToggleBtn.setAttribute('aria-expanded', String(chartVisible));
+  if (chartVisible) {
+    const p = calcPanchang(currentDate, currentLoc);
+    drawSummaryTimeline(p);
+  }
 });
 
 // Initial render

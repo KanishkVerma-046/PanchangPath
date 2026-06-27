@@ -426,5 +426,95 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
     sunLongitude: sunSidereal,
     moonLongitude: moonSidereal,
     ayanamsha,
+    srMins,
+    ssMins,
+  };
+}
+
+// ── Hindu Calendar Info ────────────────────────────────────────────────────
+
+export const RASHIS = [
+  { name: 'Mesha',      nameHi: 'मेष',      en: 'Aries' },
+  { name: 'Vrishabha',  nameHi: 'वृषभ',     en: 'Taurus' },
+  { name: 'Mithuna',    nameHi: 'मिथुन',    en: 'Gemini' },
+  { name: 'Karka',      nameHi: 'कर्क',     en: 'Cancer' },
+  { name: 'Simha',      nameHi: 'सिंह',     en: 'Leo' },
+  { name: 'Kanya',      nameHi: 'कन्या',    en: 'Virgo' },
+  { name: 'Tula',       nameHi: 'तुला',     en: 'Libra' },
+  { name: 'Vrishchika', nameHi: 'वृश्चिक',  en: 'Scorpio' },
+  { name: 'Dhanu',      nameHi: 'धनु',      en: 'Sagittarius' },
+  { name: 'Makara',     nameHi: 'मकर',      en: 'Capricorn' },
+  { name: 'Kumbha',     nameHi: 'कुम्भ',    en: 'Aquarius' },
+  { name: 'Meena',      nameHi: 'मीन',      en: 'Pisces' },
+];
+
+export const AMANTA_MONTHS = [
+  { name: 'Chaitra',      nameHi: 'चैत्र' },
+  { name: 'Vaishakha',    nameHi: 'वैशाख' },
+  { name: 'Jyeshtha',     nameHi: 'ज्येष्ठ' },
+  { name: 'Ashadha',      nameHi: 'आषाढ़' },
+  { name: 'Shravana',     nameHi: 'श्रावण' },
+  { name: 'Bhadrapada',   nameHi: 'भाद्रपद' },
+  { name: 'Ashwin',       nameHi: 'आश्विन' },
+  { name: 'Kartika',      nameHi: 'कार्तिक' },
+  { name: 'Margashirsha', nameHi: 'मार्गशीर्ष' },
+  { name: 'Pausha',       nameHi: 'पौष' },
+  { name: 'Magha',        nameHi: 'माघ' },
+  { name: 'Phalguna',     nameHi: 'फाल्गुन' },
+];
+
+export const SAMVATSARA_NAMES = [
+  'Prabhava','Vibhava','Shukla','Pramoda','Prajapati','Angirasa',
+  'Shrimukha','Bhava','Yuva','Dhatri','Ishvara','Bahudhanya',
+  'Pramathi','Vikrama','Vrisha','Chitrabhanu','Subhanu','Tarana',
+  'Parthiva','Vyaya','Sarvajit','Sarvadharin','Virodhi','Vikrita',
+  'Khara','Nandana','Vijaya','Jaya','Manmatha','Durmukhi',
+  'Hevilambi','Vilambi','Vikari','Sharvari','Plava','Shubhakrit',
+  'Shobhana','Krodhi','Vishvavasu','Parabhava','Plavanga','Kilaka',
+  'Saumya','Sadharana','Virodhikrit','Paridahvi','Pramadi','Ananda',
+  'Rakshasa','Anala','Pingala','Kalayukti','Siddharthi','Raudri',
+  'Durmati','Dundubhi','Rudhirodgari','Raktakshi','Krodhana','Akshaya',
+];
+
+export interface HinduCalendarInfo {
+  vikramaSamvat: number;
+  vikramaSamvatsara: string;
+  shakaSamvat: number;
+  sunRashi: typeof RASHIS[0];
+  moonRashi: typeof RASHIS[0];
+  amantaMonth: typeof AMANTA_MONTHS[0];
+  purnimantaMonth: typeof AMANTA_MONTHS[0];
+}
+
+export function getHinduCalendarInfo(
+  date: Date,
+  sunSidereal: number,
+  moonSidereal: number,
+  paksha: 'Shukla' | 'Krishna',
+): HinduCalendarInfo {
+  const sunRashiIdx  = Math.floor(sunSidereal  / 30) % 12;
+  const moonRashiIdx = Math.floor(moonSidereal / 30) % 12;
+
+  const amantaIdx = sunRashiIdx;
+  // Purnimanta: same month in Shukla paksha, one ahead in Krishna paksha
+  const purnimantaIdx = paksha === 'Shukla' ? amantaIdx : (amantaIdx + 1) % 12;
+
+  const year = date.getFullYear();
+  // Ugadi (Hindu New Year) ≈ April 1; before it VS = year+56, after VS = year+57
+  const dayOfYear = Math.floor(
+    (Date.UTC(year, date.getMonth(), date.getDate()) - Date.UTC(year, 0, 0)) / 86_400_000,
+  );
+  const vsYear = dayOfYear >= 91 ? year + 57 : year + 56;
+  const ssYear = vsYear - 135;
+  const vsName = SAMVATSARA_NAMES[(vsYear - 1) % 60];
+
+  return {
+    vikramaSamvat: vsYear,
+    vikramaSamvatsara: vsName,
+    shakaSamvat: ssYear,
+    sunRashi:       RASHIS[sunRashiIdx],
+    moonRashi:      RASHIS[moonRashiIdx],
+    amantaMonth:    AMANTA_MONTHS[amantaIdx],
+    purnimantaMonth: AMANTA_MONTHS[purnimantaIdx],
   };
 }

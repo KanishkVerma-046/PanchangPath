@@ -1,0 +1,554 @@
+---
+import type { PanchangData, HinduCalendarInfo } from '../lib/panchang';
+
+interface Props {
+  city: string;
+  cityHi: string;
+  dateStr: string;
+  panchang: PanchangData;
+  hinduCal: HinduCalendarInfo;
+}
+
+const { city, cityHi, dateStr, panchang: p, hinduCal: h } = Astro.props;
+const paksha    = p.tithi.paksha;
+const pakshaHi  = p.tithi.pakshaNi;
+---
+
+<!-- ═══ PANCHANG SUMMARY CARD ═══════════════════════════════════════════ -->
+<section id="summary-section" style="padding:0 0 0;">
+  <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+
+    <!-- Toolbar -->
+    <div class="ps-toolbar" id="ps-toolbar">
+      <!-- Time format -->
+      <div class="ps-tool-group">
+        <span class="ps-tool-label">Time</span>
+        <div class="ps-seg" role="group" aria-label="Time format">
+          <button class="ps-seg-btn active" data-fmt="12h" id="fmt-12h" aria-pressed="true">12h</button>
+          <button class="ps-seg-btn" data-fmt="24h" id="fmt-24h" aria-pressed="false">24h</button>
+          <button class="ps-seg-btn" data-fmt="24p" id="fmt-24p" aria-pressed="false">24+</button>
+        </div>
+      </div>
+
+      <div class="ps-tool-sep" aria-hidden="true"></div>
+
+      <!-- Calendar school -->
+      <div class="ps-tool-group">
+        <span class="ps-tool-label">Calendar</span>
+        <div class="ps-seg" role="group" aria-label="Calendar school">
+          <button class="ps-seg-btn active" data-school="amanta" id="school-amanta" aria-pressed="true">Amanta</button>
+          <button class="ps-seg-btn" data-school="purnimanta" id="school-purnimanta" aria-pressed="false">Purnimanta</button>
+        </div>
+      </div>
+
+      <div class="ps-tool-sep" aria-hidden="true"></div>
+
+      <!-- Chart toggle -->
+      <button class="ps-tool-btn" id="ps-chart-toggle" aria-expanded="false" aria-controls="ps-chart-wrap">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/>
+          <rect x="17" y="3" width="4" height="18"/>
+        </svg>
+        Chart
+      </button>
+
+      <!-- Spacer -->
+      <div style="flex:1;"></div>
+
+      <!-- Full Panchang link -->
+      <a href="/" class="ps-more-link">
+        Full Panchang
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Card -->
+    <div class="ps-card card">
+      <!-- Card header -->
+      <div class="ps-card-header">
+        <div>
+          <div class="ps-city">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:0.6;">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span class="en-text" id="ps-city">{city}</span>
+            <span class="hi-text" id="ps-city-hi" style="display:none;">{cityHi}</span>
+          </div>
+          <div class="ps-header-date" id="ps-date">{dateStr}</div>
+        </div>
+        <div class="ps-om" aria-hidden="true">🕉️</div>
+      </div>
+
+      <!-- Data grid (2-column table) -->
+      <div class="ps-data-grid">
+
+        <!-- ── LEFT COLUMN ── -->
+        <div class="ps-col">
+          <div class="ps-row">
+            <div class="ps-row-lbl">Vikram Samvat</div>
+            <div class="ps-row-val">
+              <strong id="ps-vs-year">{h.vikramaSamvat}</strong>
+              <span class="ps-muted" id="ps-vs-name">{h.vikramaSamvatsara}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Shaka Samvat</div>
+            <div class="ps-row-val">
+              <strong id="ps-ss-year">{h.shakaSamvat}</strong>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl ps-month-lbl" id="ps-month-lbl">Amanta Month</div>
+            <div class="ps-row-val">
+              <span class="en-text" id="ps-month">{h.amantaMonth.name}</span>
+              <span class="hi-text" id="ps-month-hi" style="display:none;">{h.amantaMonth.nameHi}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Var (Weekday)</div>
+            <div class="ps-row-val">
+              <span class="en-text" id="ps-vara">{p.vara.name}</span>
+              <span class="hi-text" id="ps-vara-hi" style="display:none;">{p.vara.nameHi}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Sunrise</div>
+            <div class="ps-row-val ps-sun">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-saffron)" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+              <span id="ps-sunrise">{p.sunrise}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Sunset</div>
+            <div class="ps-row-val ps-sun">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-mute)" stroke-width="2">
+                <path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="9" x2="12" y2="2"/>
+                <line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/>
+                <line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/>
+              </svg>
+              <span id="ps-sunset">{p.sunset}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Sun Sign</div>
+            <div class="ps-row-val">
+              <span class="en-text" id="ps-sunsign">{h.sunRashi.name} ({h.sunRashi.en})</span>
+              <span class="hi-text" id="ps-sunsign-hi" style="display:none;">{h.sunRashi.nameHi}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Moon Sign</div>
+            <div class="ps-row-val">
+              <span class="en-text" id="ps-moonsign">{h.moonRashi.name} ({h.moonRashi.en})</span>
+              <span class="hi-text" id="ps-moonsign-hi" style="display:none;">{h.moonRashi.nameHi}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vertical divider -->
+        <div class="ps-col-divider" aria-hidden="true"></div>
+
+        <!-- ── RIGHT COLUMN ── -->
+        <div class="ps-col">
+          <div class="ps-row">
+            <div class="ps-row-lbl">Paksha</div>
+            <div class="ps-row-val">
+              <span class="ps-paksha-badge" id="ps-paksha-badge"
+                data-is-shukla={paksha === 'Shukla' ? 'true' : 'false'}>
+                {paksha === 'Shukla' ? '🌕' : '🌑'}
+                <span class="en-text">{paksha} Paksha</span>
+                <span class="hi-text" style="display:none;">{pakshaHi} पक्ष</span>
+              </span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Tithi</div>
+            <div class="ps-row-val ps-multi">
+              <span>
+                <span class="en-text" id="ps-tithi">{p.tithi.name}</span>
+                <span class="hi-text" id="ps-tithi-hi" style="display:none;">{p.tithi.nameHi}</span>
+              </span>
+              <span class="ps-time-hint" id="ps-tithi-ends">ends {p.tithi.endTime}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Nakshatra</div>
+            <div class="ps-row-val ps-multi">
+              <span>
+                <span class="en-text" id="ps-nakshatra">{p.nakshatra.name}</span>
+                <span class="hi-text" id="ps-nakshatra-hi" style="display:none;">{p.nakshatra.nameHi}</span>
+                <span class="ps-muted" id="ps-nakshatra-sub">, Pada {p.nakshatra.pada} · {p.nakshatra.lord}</span>
+              </span>
+              <span class="ps-time-hint" id="ps-nakshatra-ends">ends {p.nakshatra.endTime}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Yoga</div>
+            <div class="ps-row-val ps-multi">
+              <span style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span class="en-text" id="ps-yoga">{p.yoga.name}</span>
+                <span class="hi-text" id="ps-yoga-hi" style="display:none;">{p.yoga.nameHi}</span>
+                <span class="ps-badge" id="ps-yoga-badge"
+                  data-type={p.yoga.type}
+                  style={p.yoga.type === 'Auspicious'
+                    ? 'background:var(--color-auspicious-soft);color:#15803d;border-color:rgba(34,197,94,0.3);'
+                    : 'background:var(--color-inauspicious-soft);color:#b91c1c;border-color:rgba(239,68,68,0.3);'}
+                >{p.yoga.type}</span>
+              </span>
+              <span class="ps-time-hint" id="ps-yoga-ends">ends {p.yoga.endTime}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Karana</div>
+            <div class="ps-row-val ps-multi">
+              <span class="en-text" id="ps-karana">{p.karana.name}</span>
+              <span class="hi-text" id="ps-karana-hi" style="display:none;">{p.karana.nameHi}</span>
+              <span class="ps-time-hint" id="ps-karana-ends">ends {p.karana.endTime}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Rahu Kalam</div>
+            <div class="ps-row-val">
+              <span class="ps-inauspicious-time" id="ps-rahu-kalam">{p.rahuKalam.start} – {p.rahuKalam.end}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Abhijit Muhurta</div>
+            <div class="ps-row-val">
+              <span class="ps-auspicious-time" id="ps-abhijit">{p.abhijitMuhurta.start} – {p.abhijitMuhurta.end}</span>
+            </div>
+          </div>
+          <div class="ps-row">
+            <div class="ps-row-lbl">Day Length</div>
+            <div class="ps-row-val" id="ps-day-length">{p.durationDay}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collapsible Day Chart -->
+      <div class="ps-chart-wrap" id="ps-chart-wrap" hidden>
+        <div class="ps-chart-inner">
+          <div class="ps-chart-header">
+            <span class="caption-mono" style="color:var(--color-mute);font-size:10px;">Day Timeline</span>
+            <div class="ps-chart-legend">
+              <span class="ps-legend-dot" style="background:#ef4444;"></span><span>Rahu Kalam</span>
+              <span class="ps-legend-dot" style="background:#f59e0b;"></span><span>Gulika</span>
+              <span class="ps-legend-dot" style="background:#8b5cf6;"></span><span>Yamaganda</span>
+            </div>
+          </div>
+          <div class="ps-timeline" id="ps-timeline" aria-label="Day timeline chart"></div>
+          <div class="ps-timeline-labels">
+            <span id="ps-tl-sunrise">{p.sunrise}</span>
+            <span id="ps-tl-noon">Noon</span>
+            <span id="ps-tl-sunset">{p.sunset}</span>
+          </div>
+        </div>
+      </div>
+    </div><!-- /ps-card -->
+
+  </div>
+</section>
+
+<style>
+  /* ── Toolbar ─────────────────────────────────────────────────────── */
+  .ps-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 0 10px;
+    flex-wrap: wrap;
+  }
+  .ps-tool-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ps-tool-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-mute);
+    white-space: nowrap;
+  }
+  .ps-tool-sep {
+    width: 1px;
+    height: 20px;
+    background: var(--color-hairline);
+  }
+  .ps-seg {
+    display: flex;
+    background: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    padding: 2px;
+    gap: 1px;
+  }
+  .ps-seg-btn {
+    height: 24px;
+    padding: 0 10px;
+    background: none;
+    border: none;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--color-mute);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    white-space: nowrap;
+  }
+  .ps-seg-btn.active {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .ps-tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 28px;
+    padding: 0 10px;
+    background: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--color-body-text);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+  }
+  .ps-tool-btn:hover, .ps-tool-btn.active {
+    background: var(--color-canvas-soft);
+    color: var(--color-ink);
+    border-color: var(--color-hairline-strong);
+  }
+  .ps-more-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--color-saffron-deep);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    transition: background 0.12s;
+    white-space: nowrap;
+  }
+  .ps-more-link:hover { background: var(--color-saffron-soft); }
+
+  /* ── Card ────────────────────────────────────────────────────────── */
+  .ps-card {
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  /* Card header */
+  .ps-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px 14px;
+    border-bottom: 1px solid var(--color-hairline);
+    background: linear-gradient(135deg, var(--color-saffron-soft) 0%, var(--color-canvas) 60%);
+  }
+  .ps-city {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-saffron-deep);
+    margin-bottom: 3px;
+  }
+  .ps-header-date {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-ink);
+    letter-spacing: -0.2px;
+  }
+  .ps-om {
+    font-size: 28px;
+    opacity: 0.7;
+    line-height: 1;
+  }
+
+  /* ── Data grid ───────────────────────────────────────────────────── */
+  .ps-data-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 0;
+  }
+  .ps-col-divider {
+    background: var(--color-hairline);
+    width: 1px;
+  }
+  .ps-col {
+    padding: 6px 0;
+  }
+  .ps-row {
+    display: grid;
+    grid-template-columns: 148px 1fr;
+    align-items: start;
+    gap: 8px;
+    padding: 9px 24px;
+    border-bottom: 1px solid var(--color-hairline);
+    transition: background 0.1s;
+  }
+  .ps-row:last-child { border-bottom: none; }
+  .ps-row:hover { background: var(--color-canvas-soft); }
+  .ps-row-lbl {
+    font-size: 12px;
+    color: var(--color-mute);
+    font-weight: 500;
+    padding-top: 1px;
+    white-space: nowrap;
+  }
+  .ps-row-val {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--color-ink);
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .ps-multi {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .ps-muted {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--color-mute);
+  }
+  .ps-time-hint {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-mute);
+    font-family: var(--font-mono);
+  }
+  .ps-sun {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ps-paksha-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 10px 2px 6px;
+    border-radius: var(--radius-pill);
+    font-size: 12.5px;
+    font-weight: 600;
+  }
+  [data-is-shukla="true"].ps-paksha-badge {
+    background: rgba(255,153,51,0.12);
+    color: var(--color-saffron-deep);
+    border: 1px solid rgba(255,153,51,0.25);
+  }
+  [data-is-shukla="false"].ps-paksha-badge {
+    background: var(--color-canvas-soft-2);
+    color: var(--color-body-text);
+    border: 1px solid var(--color-hairline);
+  }
+  .ps-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: var(--radius-full);
+    border: 1px solid transparent;
+  }
+  .ps-auspicious-time {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: #15803d;
+    background: var(--color-auspicious-soft);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+  }
+  .ps-inauspicious-time {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: #b91c1c;
+    background: var(--color-inauspicious-soft);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* ── Chart ───────────────────────────────────────────────────────── */
+  .ps-chart-wrap {
+    border-top: 1px solid var(--color-hairline);
+    padding: 16px 24px;
+    background: var(--color-canvas-soft);
+  }
+  .ps-chart-wrap[hidden] { display: none; }
+  .ps-chart-wrap:not([hidden]) { display: block; }
+
+  .ps-chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ps-chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10.5px;
+    color: var(--color-mute);
+  }
+  .ps-legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .ps-timeline {
+    position: relative;
+    height: 28px;
+    background: var(--color-canvas-soft-2);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .ps-timeline-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--color-mute);
+  }
+
+  /* ── Responsive ──────────────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .ps-data-grid {
+      grid-template-columns: 1fr;
+    }
+    .ps-col-divider { display: none; }
+    .ps-col:first-child { border-bottom: 1px solid var(--color-hairline); }
+    .ps-row { grid-template-columns: 130px 1fr; padding: 8px 16px; }
+    .ps-card-header { padding: 14px 16px; }
+    .ps-chart-wrap { padding: 12px 16px; }
+    .ps-toolbar { padding: 10px 0 8px; }
+  }
+  @media (max-width: 480px) {
+    .ps-tool-sep { display: none; }
+    .ps-row { grid-template-columns: 110px 1fr; }
+  }
+</style>

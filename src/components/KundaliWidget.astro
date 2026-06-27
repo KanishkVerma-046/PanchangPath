@@ -1,0 +1,825 @@
+---
+import { calculateKundali, RASHIS, GRAHA_META, jdFull } from '../lib/kundali';
+import { getDefaultLocation } from '../lib/locations';
+
+const loc  = getDefaultLocation();
+const now  = new Date();
+const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
+---
+
+<!-- ─── Lagna Kundali Widget ─── -->
+<section class="kw-section">
+  <div class="kw-card">
+
+    <!-- Header row -->
+    <div class="kw-header">
+      <div>
+        <h2 class="kw-title">Lagna Kundali</h2>
+        <p class="kw-subtitle" id="kw-subtitle">
+          {loc.name} · <span id="kw-timestamp"></span>
+        </p>
+      </div>
+      <div class="kw-tabs" role="group" aria-label="Chart style">
+        <button class="kw-tab active" data-style="north">North</button>
+        <button class="kw-tab"        data-style="south">South</button>
+      </div>
+    </div>
+
+    <!-- Content: chart + table -->
+    <div class="kw-body">
+
+      <!-- Chart panel -->
+      <div class="kw-chart-panel">
+        <div class="kw-grid" id="kw-grid">
+          <!-- 4×4 = 16 cells; JS fills content -->
+          {Array.from({length: 16}).map((_, idx) => {
+            const r = Math.floor(idx / 4), c = idx % 4;
+            const isCenter = r >= 1 && r <= 2 && c >= 1 && c <= 2;
+            return (
+              <div class={`kw-cell${isCenter ? ' kw-center' : ''}`} id={`kw-r${r}c${c}`}>
+                {isCenter && r === 1 && c === 1 && <span class="kw-om">🕉</span>}
+              </div>
+            );
+          })}
+        </div>
+        <!-- Lagna info under chart -->
+        <div class="kw-lagna-row">
+          <span class="kw-lagna-label">Lagna:</span>
+          <span id="kw-lagna-sign" class="kw-lagna-val">{init.lagna.signName}</span>
+          <span id="kw-lagna-deg"  class="kw-lagna-deg">{init.lagna.deg}° {init.lagna.min}'</span>
+        </div>
+      </div>
+
+      <!-- Planet table -->
+      <div class="kw-table-wrap">
+        <table class="kw-table">
+          <thead>
+            <tr>
+              <th>Graha</th>
+              <th>Rashi</th>
+              <th>Deg</th>
+              <th>Motion</th>
+            </tr>
+          </thead>
+          <tbody id="kw-tbody">
+            {init.grahas.map(g => (
+              <tr class="kw-row" data-planet={g.id} title={`Click for details — ${g.name}`}>
+                <td>
+                  <span class="kw-sym">{g.symbol}</span>
+                  <span class="en-text">{g.name}</span>
+                  <span class="hi-text">{g.nameHi}</span>
+                </td>
+                <td>
+                  <span class="en-text">{g.signName}</span>
+                  <span class="hi-text">{g.signNameHi}</span>
+                </td>
+                <td class="kw-deg-cell">{g.deg}°{String(g.min).padStart(2,'0')}'</td>
+                <td>
+                  <span class={`kw-badge ${g.isRetrograde ? 'vakri' : 'margi'}`}>{g.motion}</span>
+                  {g.isCombust && <span class="kw-badge asta">Asta</span>}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+    </div><!-- .kw-body -->
+
+    <!-- Footer -->
+    <div class="kw-footer">
+      <span class="kw-note">Lahiri Ayanamsha · Tropical-to-Sidereal</span>
+      <a href="/kundali" class="ps-more-link">Full Kundali →</a>
+    </div>
+
+  </div><!-- .kw-card -->
+
+  <!-- Planet detail popup -->
+  <div class="kw-popup" id="kw-popup" aria-live="polite" hidden>
+    <button class="kw-popup-close" id="kw-popup-close" aria-label="Close">×</button>
+    <div id="kw-popup-body"></div>
+  </div>
+
+</section>
+
+<!-- ─── Styles ─── -->
+<style>
+.kw-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+  position: relative;
+}
+
+.kw-card {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg, 12px);
+  overflow: hidden;
+}
+
+/* ── Header ── */
+.kw-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--color-hairline);
+  background: linear-gradient(135deg, var(--color-saffron-soft) 0%, var(--color-canvas) 60%);
+}
+.kw-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 4px;
+}
+.kw-subtitle {
+  font-size: 12px;
+  color: var(--color-mute);
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+}
+
+/* ── Tabs ── */
+.kw-tabs {
+  display: flex;
+  border: 1px solid var(--color-hairline);
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.kw-tab {
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-mute);
+  transition: background 0.15s, color 0.15s;
+}
+.kw-tab + .kw-tab { border-left: 1px solid var(--color-hairline); }
+.kw-tab.active {
+  background: var(--color-saffron);
+  color: #fff;
+}
+.kw-tab:not(.active):hover { background: var(--color-canvas-soft); color: var(--color-ink); }
+
+/* ── Body layout ── */
+.kw-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .kw-body { grid-template-columns: 1fr; }
+}
+
+/* ── Chart panel ── */
+.kw-chart-panel {
+  padding: 20px 16px 20px 20px;
+  border-right: 1px solid var(--color-hairline);
+}
+@media (max-width: 640px) {
+  .kw-chart-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--color-hairline);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.kw-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 68px);
+  grid-template-rows: repeat(4, 68px);
+  border: 2px solid var(--color-hairline-strong, #ccc);
+  border-radius: 4px;
+  width: 272px;
+  height: 272px;
+}
+
+.kw-cell {
+  border: 1px solid var(--color-hairline);
+  position: relative;
+  overflow: hidden;
+  padding: 3px;
+  font-size: 10px;
+  line-height: 1.3;
+  box-sizing: border-box;
+}
+.kw-cell.kw-center {
+  background: var(--color-canvas-soft);
+  border-color: var(--color-hairline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.kw-cell.kw-lagna-cell {
+  background: color-mix(in srgb, var(--color-saffron) 12%, var(--color-canvas));
+}
+.kw-om {
+  font-size: 18px;
+  opacity: 0.25;
+}
+
+/* ── Lagna info row ── */
+.kw-lagna-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 12px;
+}
+.kw-lagna-label { color: var(--color-mute); }
+.kw-lagna-val   { font-weight: 600; color: var(--color-saffron-deep); }
+.kw-lagna-deg   { font-family: var(--font-mono, monospace); color: var(--color-mute); font-size: 11px; }
+
+/* ── Planet table ── */
+.kw-table-wrap {
+  overflow-x: auto;
+  padding: 16px 20px;
+}
+.kw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.kw-table th {
+  text-align: left;
+  color: var(--color-mute);
+  font-weight: 600;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 8px 8px 0;
+  border-bottom: 1px solid var(--color-hairline);
+}
+.kw-table td {
+  padding: 7px 8px 7px 0;
+  border-bottom: 1px solid var(--color-hairline);
+  color: var(--color-ink);
+  vertical-align: middle;
+}
+.kw-row { cursor: pointer; }
+.kw-row:hover td { background: var(--color-canvas-soft); }
+.kw-sym {
+  font-size: 14px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.kw-deg-cell { font-family: var(--font-mono, monospace); font-size: 11.5px; }
+
+.kw-badge {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  margin-right: 3px;
+}
+.kw-badge.margi  { background: #e8f5e9; color: #2e7d32; }
+.kw-badge.vakri  { background: #fce4ec; color: #c62828; }
+.kw-badge.asta   { background: #f3e5f5; color: #6a1b9a; }
+html.dark .kw-badge.margi { background: #1b3a1e; color: #81c784; }
+html.dark .kw-badge.vakri { background: #3e1212; color: #ef9a9a; }
+html.dark .kw-badge.asta  { background: #2d1040; color: #ce93d8; }
+
+/* ── Footer ── */
+.kw-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  border-top: 1px solid var(--color-hairline);
+  background: var(--color-canvas-soft);
+}
+.kw-note { font-size: 11px; color: var(--color-mute); font-family: var(--font-mono, monospace); }
+
+/* ── Popup ── */
+.kw-popup {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  width: 240px;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  z-index: 1000;
+  padding: 16px;
+}
+.kw-popup[hidden] { display: none; }
+.kw-popup-close {
+  position: absolute;
+  top: 8px; right: 10px;
+  background: none; border: none;
+  font-size: 18px; color: var(--color-mute);
+  cursor: pointer;
+  line-height: 1;
+}
+#kw-popup-body { font-size: 12.5px; color: var(--color-ink); }
+
+/* ── Cell content generated by JS ── */
+.kwc-house {
+  position: absolute;
+  top: 2px; right: 3px;
+  font-size: 8.5px;
+  color: var(--color-mute);
+  font-family: var(--font-mono, monospace);
+}
+.kwc-rashi {
+  position: absolute;
+  top: 2px; left: 3px;
+  font-size: 8px;
+  color: var(--color-mute);
+}
+.kwc-planets {
+  position: absolute;
+  bottom: 3px; left: 3px; right: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+}
+.kwc-chip {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 3px;
+  border-radius: 2px;
+  background: var(--color-canvas-soft);
+  cursor: pointer;
+  transition: background 0.12s;
+  user-select: none;
+}
+.kwc-chip:hover { background: color-mix(in srgb, var(--color-saffron) 25%, var(--color-canvas)); }
+.kwc-chip.vakri { color: #c62828; }
+.kwc-chip.asta  { color: var(--color-mute); }
+.kwc-lagna-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--color-saffron-deep);
+  opacity: 0.6;
+  pointer-events: none;
+}
+/* South Indian rashi label */
+.kwc-si-rashi {
+  position: absolute;
+  top: 2px; left: 0; right: 0;
+  text-align: center;
+  font-size: 8px;
+  color: var(--color-mute);
+  font-weight: 500;
+}
+.kwc-si-lagna {
+  position: absolute;
+  top: 12px; left: 0; right: 0;
+  text-align: center;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--color-saffron-deep);
+}
+.kwc-si-planets {
+  position: absolute;
+  bottom: 3px; left: 2px; right: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  justify-content: center;
+}
+</style>
+
+<!-- ─── Client script ─── -->
+<script>
+// ─── Constants ───────────────────────────────────────────────────────────────
+const RASHIS_K = [
+  { name:'Mesha',      nameHi:'मेष',      abbr:'Msh' },
+  { name:'Vrishabha',  nameHi:'वृषभ',     abbr:'Vrb' },
+  { name:'Mithuna',    nameHi:'मिथुन',    abbr:'Mth' },
+  { name:'Karka',      nameHi:'कर्क',     abbr:'Krk' },
+  { name:'Simha',      nameHi:'सिंह',     abbr:'Smh' },
+  { name:'Kanya',      nameHi:'कन्या',    abbr:'Kny' },
+  { name:'Tula',       nameHi:'तुला',     abbr:'Tla' },
+  { name:'Vrishchika', nameHi:'वृश्चिक',  abbr:'Vrk' },
+  { name:'Dhanu',      nameHi:'धनु',      abbr:'Dhn' },
+  { name:'Makara',     nameHi:'मकर',      abbr:'Mkr' },
+  { name:'Kumbha',     nameHi:'कुम्भ',    abbr:'Kmb' },
+  { name:'Meena',      nameHi:'मीन',      abbr:'Men' },
+];
+
+const GRAHA_K = [
+  { id:'surya',   name:'Surya',   nameHi:'सूर्य',  abbr:'Sy', symbol:'☉', combustDeg:0  },
+  { id:'chandra', name:'Chandra', nameHi:'चन्द्र', abbr:'Ch', symbol:'☽', combustDeg:12 },
+  { id:'mangal',  name:'Mangal',  nameHi:'मंगल',   abbr:'Ma', symbol:'♂', combustDeg:17 },
+  { id:'budha',   name:'Budha',   nameHi:'बुध',    abbr:'Bu', symbol:'☿', combustDeg:14 },
+  { id:'guru',    name:'Guru',    nameHi:'गुरु',   abbr:'Gu', symbol:'♃', combustDeg:11 },
+  { id:'shukra',  name:'Shukra',  nameHi:'शुक्र',  abbr:'Sk', symbol:'♀', combustDeg:10 },
+  { id:'shani',   name:'Shani',   nameHi:'शनि',    abbr:'Sa', symbol:'♄', combustDeg:15 },
+  { id:'rahu',    name:'Rahu',    nameHi:'राहु',   abbr:'Ra', symbol:'☊', combustDeg:0  },
+  { id:'ketu',    name:'Ketu',    nameHi:'केतु',   abbr:'Ke', symbol:'☋', combustDeg:0  },
+];
+
+// North Indian: cell (row,col) → house number (0=center/skip)
+const NI_CELL_HOUSE: number[][] = [
+  [12,1,2,3],[11,0,0,4],[10,0,0,5],[9,8,7,6]
+];
+// Perimeter order: house→[row,col] (houses 1-12)
+const NI_HOUSE_POS: [number,number][] = [
+  [0,0],[0,1],[0,2],[0,3],[1,3],[2,3],[3,3],[3,2],[3,1],[3,0],[2,0],[1,0]
+]; // index 0 = house 12, index 1 = house 1, etc.
+
+// South Indian: cell → rashi index (−1 = center)
+const SI_CELL_RASHI: number[][] = [
+  [11,0,1,2],[10,-1,-1,3],[9,-1,-1,4],[8,7,6,5]
+];
+
+// ─── Math helpers ─────────────────────────────────────────────────────────────
+const toR = (d: number) => d * Math.PI / 180;
+const toD = (r: number) => r * 180 / Math.PI;
+const n360 = (a: number) => ((a % 360) + 360) % 360;
+
+// ─── Orbital elements ─────────────────────────────────────────────────────────
+const ORB_K: Record<string,[number,number,number,number,number,number,number,number,number,number,number]> = {
+  // [L, Ld, wp, wpd, Om, Omd, i, id, e, ed, a]
+  mercury:[252.250906,149472.6746358, 77.456119,0.1588643, 48.330893,-0.1254229,7.004979,-0.005952,0.20563069, 0.00002527,0.38709831],
+  venus:  [181.979801, 58517.8156760,131.563707,0.0036096, 76.679920,-0.2780080,3.394662,-0.000857,0.00677323,-0.00004938,0.72332102],
+  earth:  [100.464457, 36000.7698278,102.937348,0.3225557,174.873174,-0.2410908,0.000000, 0.013055,0.01671022,-0.00003804,1.00000018],
+  mars:   [355.432818, 19140.2993313,336.040768,0.4439016, 49.558093,-0.2950250,1.849726,-0.008148,0.09341233, 0.00011902,1.52371243],
+  jupiter:[ 34.351484,  3034.9056746, 14.331309,0.2155402,100.464441, 0.1350208,1.303270,-0.001987,0.04839266,-0.00012880,5.20248019],
+  saturn: [ 50.077444,  1222.1137943, 93.056787,0.5691095,113.665524,-0.2566722,2.488878, 0.002552,0.05415060,-0.00036762,9.54149883],
+};
+
+function solveK(M: number, e: number): number {
+  let E = M;
+  for (let k = 0; k < 50; k++) {
+    const dE = (M - E + e * Math.sin(E)) / (1 - e * Math.cos(E));
+    E += dE;
+    if (Math.abs(dE) < 1e-10) break;
+  }
+  return E;
+}
+
+function helioXY_K(key: string, T: number): [number, number] {
+  const o = ORB_K[key];
+  const e  = o[8] + o[9] * T;
+  const wp = n360(o[2] + o[3] * T);
+  const Om = n360(o[4] + o[5] * T);
+  const inc = o[6] + o[7] * T;
+  const L  = n360(o[0] + o[1] * T);
+  const M  = toR(n360(L - wp));
+  const w  = toR(n360(wp - Om));
+  const Omr = toR(Om);
+  const ir = toR(inc);
+  const E = solveK(M, e);
+  const nu = 2 * Math.atan2(Math.sqrt(1+e)*Math.sin(E/2), Math.sqrt(1-e)*Math.cos(E/2));
+  const r = o[10] * (1 - e * Math.cos(E));
+  const arg = nu + w;
+  const x = r*(Math.cos(Omr)*Math.cos(arg) - Math.sin(Omr)*Math.sin(arg)*Math.cos(ir));
+  const y = r*(Math.sin(Omr)*Math.cos(arg) + Math.cos(Omr)*Math.sin(arg)*Math.cos(ir));
+  return [x, y];
+}
+
+function sunLon_K(jd: number): number {
+  const T = (jd-2451545)/36525;
+  const L0 = n360(280.46646+36000.76983*T+0.0003032*T*T);
+  const M  = n360(357.52911+35999.05029*T-0.0001537*T*T);
+  const Mr = toR(M);
+  const C  = (1.914602-0.004817*T-0.000014*T*T)*Math.sin(Mr)+(0.019993-0.000101*T)*Math.sin(2*Mr)+0.000289*Math.sin(3*Mr);
+  return n360(L0+C);
+}
+
+function moonLon_K(jd: number): number {
+  const T = (jd-2451545)/36525;
+  const Lm = n360(218.3164477+481267.88123421*T);
+  const D  = n360(297.8501921+445267.1114034*T);
+  const M  = n360(357.5291092+35999.0502909*T);
+  const Mp = n360(134.9633964+477198.8675055*T);
+  const F  = n360(93.2720950+483202.0175233*T);
+  const [Dr,Mr,Mpr,Fr] = [D,M,Mp,F].map(toR);
+  const dL = 6.288774*Math.sin(Mpr)+1.274027*Math.sin(2*Dr-Mpr)+0.658314*Math.sin(2*Dr)
+    +0.213618*Math.sin(2*Mpr)-0.185116*Math.sin(Mr)-0.114332*Math.sin(2*Fr)
+    +0.058793*Math.sin(2*Dr-2*Mpr)+0.057066*Math.sin(2*Dr-Mr-Mpr)+0.053322*Math.sin(2*Dr+Mpr)
+    +0.045758*Math.sin(2*Dr-Mr)-0.040923*Math.sin(Mr-Mpr)-0.034720*Math.sin(Dr)
+    -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010034*Math.sin(3*Mpr);
+  return n360(Lm + dL/1000);
+}
+
+function rahuLon_K(T: number): number {
+  return n360(125.04452 - 1934.136261*T + 0.0020708*T*T);
+}
+
+function ayanamsha_K(T: number): number {
+  return 23.85 + 1.3612*T - 0.000136*T*T;
+}
+
+function jdFull_K(date: Date): number {
+  const y = date.getUTCFullYear(), m = date.getUTCMonth()+1;
+  const d = date.getUTCDate()+(date.getUTCHours()+date.getUTCMinutes()/60+date.getUTCSeconds()/3600)/24;
+  const yr = m<=2?y-1:y, mo = m<=2?m+12:m;
+  const A = Math.floor(yr/100), B = 2-A+Math.floor(A/4);
+  return Math.floor(365.25*(yr+4716))+Math.floor(30.6001*(mo+1))+d+B-1524.5;
+}
+
+function calcLagna_K(jd: number, lat: number, lng: number): number {
+  const T  = (jd-2451545)/36525;
+  const eps = 23.439291111 - 0.013004167*T;
+  const GMST = n360(280.46061837 + 360.98564736629*(jd-2451545) + 0.000387933*T*T);
+  const RAMC = toR(n360(GMST + lng));
+  const e  = toR(eps), phi = toR(lat);
+  const tanA = -Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));
+  let A = toD(Math.atan(tanA));
+  if (Math.cos(RAMC) > 0) A += 180;
+  return n360(A);
+}
+
+// ─── Main calculate ───────────────────────────────────────────────────────────
+function calcKundali_K(date: Date, lat: number, lng: number) {
+  const jd  = jdFull_K(date);
+  const T   = (jd-2451545)/36525;
+  const ay  = ayanamsha_K(T);
+
+  const [xE, yE] = helioXY_K('earth', T);
+  const geoLon = (key: string) => {
+    const [xP, yP] = helioXY_K(key, T);
+    return n360(toD(Math.atan2(yP-yE, xP-xE)));
+  };
+
+  const jd1 = jd+1;
+  const T1  = (jd1-2451545)/36525;
+  const [xE1,yE1] = helioXY_K('earth', T1);
+  const geoLon1 = (key: string) => {
+    const [xP,yP] = helioXY_K(key, T1);
+    return n360(toD(Math.atan2(yP-yE1, xP-xE1)));
+  };
+  const spd = (l0: number, l1: number) => { let d = l1-l0; if(d>180)d-=360; if(d<-180)d+=360; return d; };
+
+  const TROP: Record<string,number> = {
+    surya:   sunLon_K(jd),
+    chandra: moonLon_K(jd),
+    mangal:  geoLon('mars'),
+    budha:   geoLon('mercury'),
+    guru:    geoLon('jupiter'),
+    shukra:  geoLon('venus'),
+    shani:   geoLon('saturn'),
+    rahu:    rahuLon_K(T),
+  };
+  TROP.ketu = n360(TROP.rahu+180);
+
+  const TROP1: Record<string,number> = {
+    surya:   sunLon_K(jd1),
+    chandra: moonLon_K(jd1),
+    mangal:  geoLon1('mars'),
+    budha:   geoLon1('mercury'),
+    guru:    geoLon1('jupiter'),
+    shukra:  geoLon1('venus'),
+    shani:   geoLon1('saturn'),
+    rahu:    rahuLon_K(T1),
+  };
+  TROP1.ketu = n360(TROP1.rahu+180);
+
+  const sunT = TROP.surya;
+
+  const grahas = GRAHA_K.map(meta => {
+    const trop  = TROP[meta.id];
+    const sid   = n360(trop - ay);
+    const sign  = Math.floor(sid/30)%12;
+    const df    = sid%30;
+    const deg   = Math.floor(df);
+    const min   = Math.floor((df-deg)*60);
+    const speed = spd(trop, TROP1[meta.id]);
+    const retroFwd = meta.id!=='surya' && meta.id!=='chandra' ? speed<0 : false;
+    const isRet = (meta.id==='rahu'||meta.id==='ketu') ? true : retroFwd;
+    let angD = Math.abs(trop-sunT); if(angD>180)angD=360-angD;
+    const cDeg = meta.id==='budha'&&isRet?12:meta.id==='shukra'&&isRet?8:meta.combustDeg;
+    const comb = meta.id!=='surya'&&meta.id!=='rahu'&&meta.id!=='ketu'&&angD<cDeg;
+    return { ...meta, sign, signName: RASHIS_K[sign].name, signNameHi: RASHIS_K[sign].nameHi,
+             abbr: meta.abbr, deg, min, speed, isRetrograde:isRet, isCombust:comb };
+  });
+
+  const lagT  = calcLagna_K(jd, lat, lng);
+  const lagS  = n360(lagT-ay);
+  const lagSn = Math.floor(lagS/30)%12;
+  const lagDf = lagS%30;
+
+  return {
+    lagna: { sign:lagSn, signName:RASHIS_K[lagSn].name, signNameHi:RASHIS_K[lagSn].nameHi,
+             deg:Math.floor(lagDf), min:Math.floor((lagDf-Math.floor(lagDf))*60) },
+    grahas,
+  };
+}
+
+// ─── Chart rendering ──────────────────────────────────────────────────────────
+let currentStyle = 'north';
+let currentData: ReturnType<typeof calcKundali_K> | null = null;
+
+function renderChart(data: ReturnType<typeof calcKundali_K>, style: string) {
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 4; c++) {
+      const cell = document.getElementById(`kw-r${r}c${c}`)!;
+      // Reset (keep center cells unchanged)
+      const isCenter = r>=1&&r<=2&&c>=1&&c<=2;
+      if (isCenter) continue;
+
+      cell.classList.remove('kw-lagna-cell');
+      cell.innerHTML = '';
+
+      if (style === 'north') {
+        // House at this cell
+        const house = NI_CELL_HOUSE[r][c];
+        if (house === 0) continue; // shouldn't happen for non-center
+        // Sign at this house = (lagna.sign + house - 1) % 12
+        const signIdx = (data.lagna.sign + house - 1) % 12;
+        const isLagna = house === 1;
+        if (isLagna) cell.classList.add('kw-lagna-cell');
+
+        const planetsHere = data.grahas.filter(g => g.sign === signIdx);
+
+        cell.innerHTML = `
+          <span class="kwc-house">${house}</span>
+          <span class="kwc-rashi">${RASHIS_K[signIdx].abbr}</span>
+          ${isLagna ? '<span class="kwc-lagna-mark">La</span>' : ''}
+          <span class="kwc-planets">${planetsHere.map(p =>
+            `<span class="kwc-chip ${p.isRetrograde?'vakri':''} ${p.isCombust?'asta':''}" data-pid="${p.id}">${p.abbr}${p.isRetrograde?'ᴿ':''}</span>`
+          ).join('')}</span>
+        `;
+
+      } else {
+        // South Indian: fixed rashi positions
+        const rashiIdx = SI_CELL_RASHI[r][c];
+        if (rashiIdx === -1) continue;
+
+        const isLagna = rashiIdx === data.lagna.sign;
+        if (isLagna) cell.classList.add('kw-lagna-cell');
+
+        const planetsHere = data.grahas.filter(g => g.sign === rashiIdx);
+
+        cell.innerHTML = `
+          <span class="kwc-si-rashi">${RASHIS_K[rashiIdx].abbr}</span>
+          ${isLagna ? '<span class="kwc-si-lagna">La</span>' : ''}
+          <span class="kwc-si-planets">${planetsHere.map(p =>
+            `<span class="kwc-chip ${p.isRetrograde?'vakri':''} ${p.isCombust?'asta':''}" data-pid="${p.id}">${p.abbr}${p.isRetrograde?'ᴿ':''}</span>`
+          ).join('')}</span>
+        `;
+      }
+    }
+  }
+}
+
+// ─── Planet table ─────────────────────────────────────────────────────────────
+function renderTable(data: ReturnType<typeof calcKundali_K>, isHindi: boolean) {
+  const tbody = document.getElementById('kw-tbody')!;
+  const isHi = isHindi || document.documentElement.dataset.lang === 'hi';
+  tbody.innerHTML = data.grahas.map(g => `
+    <tr class="kw-row" data-planet="${g.id}" style="cursor:pointer">
+      <td><span class="kw-sym">${g.symbol}</span><span>${isHi ? g.nameHi : g.name}</span></td>
+      <td>${isHi ? g.signNameHi : g.signName}</td>
+      <td class="kw-deg-cell">${g.deg}°${String(g.min).padStart(2,'0')}'</td>
+      <td>
+        <span class="kw-badge ${g.isRetrograde?'vakri':'margi'}">${g.isRetrograde?'Vakri':'Margi'}</span>
+        ${g.isCombust?'<span class="kw-badge asta">Asta</span>':''}
+      </td>
+    </tr>
+  `).join('');
+
+  // Re-attach row click listeners
+  tbody.querySelectorAll<HTMLElement>('.kw-row').forEach(row => {
+    row.addEventListener('click', () => showPopup(row.dataset.planet!, data));
+  });
+}
+
+// ─── Lagna info ───────────────────────────────────────────────────────────────
+function updateLagnaInfo(data: ReturnType<typeof calcKundali_K>) {
+  const isHi = document.documentElement.dataset.lang === 'hi';
+  const ls = document.getElementById('kw-lagna-sign');
+  const ld = document.getElementById('kw-lagna-deg');
+  if (ls) ls.textContent = isHi ? data.lagna.signNameHi : data.lagna.signName;
+  if (ld) ld.textContent = `${data.lagna.deg}° ${data.lagna.min}'`;
+}
+
+// ─── Popup ────────────────────────────────────────────────────────────────────
+function showPopup(pid: string, data: ReturnType<typeof calcKundali_K>) {
+  const g = data.grahas.find(x => x.id === pid);
+  if (!g) return;
+  const isHi = document.documentElement.dataset.lang === 'hi';
+  const popup = document.getElementById('kw-popup')!;
+  const body  = document.getElementById('kw-popup-body')!;
+  body.innerHTML = `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+      <span style="font-size:22px">${g.symbol}</span>
+      <div>
+        <div style="font-weight:700;font-size:14px">${isHi?g.nameHi:g.name}</div>
+        <div style="font-size:11px;color:var(--color-mute)">${isHi?g.name:g.nameHi}</div>
+      </div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr><td style="color:var(--color-mute);padding:3px 0">Rashi</td><td style="font-weight:600">${isHi?g.signNameHi:g.signName}</td></tr>
+      <tr><td style="color:var(--color-mute);padding:3px 0">Degree</td><td style="font-family:monospace">${g.deg}° ${g.min}'</td></tr>
+      <tr><td style="color:var(--color-mute);padding:3px 0">Motion</td><td><span class="kw-badge ${g.isRetrograde?'vakri':'margi'}">${g.isRetrograde?'Vakri':'Margi'}</span></td></tr>
+      <tr><td style="color:var(--color-mute);padding:3px 0">Visibility</td><td><span class="kw-badge ${g.isCombust?'asta':'margi'}">${g.isCombust?'Asta':'Udita'}</span></td></tr>
+    </table>
+  `;
+  popup.hidden = false;
+}
+
+function hidePopup() {
+  const p = document.getElementById('kw-popup');
+  if (p) p.hidden = true;
+}
+
+// ─── Full render ──────────────────────────────────────────────────────────────
+function fullRender(data: ReturnType<typeof calcKundali_K>) {
+  currentData = data;
+  renderChart(data, currentStyle);
+  renderTable(data, false);
+  updateLagnaInfo(data);
+}
+
+// ─── Timestamp ────────────────────────────────────────────────────────────────
+function updateTimestamp(date: Date, cityName: string) {
+  const el = document.getElementById('kw-timestamp');
+  const sub = document.getElementById('kw-subtitle');
+  if (!el) return;
+  const t = date.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+  el.textContent = t;
+  if (sub) {
+    const cityEl = sub.querySelector('span:first-child');
+    if (!cityEl) {
+      sub.innerHTML = `${cityName} · <span id="kw-timestamp">${t}</span>`;
+    }
+  }
+}
+
+// ─── State ────────────────────────────────────────────────────────────────────
+let kwLat = 28.6139, kwLng = 77.2090, kwCity = 'New Delhi';
+
+// Global function called by index.astro after location changes
+(window as any).updateKundaliWidget = function(lat: number, lng: number, cityName: string) {
+  kwLat = lat; kwLng = lng; kwCity = cityName;
+  const now = new Date();
+  const data = calcKundali_K(now, lat, lng);
+  fullRender(data);
+  updateTimestamp(now, cityName);
+};
+
+// ─── Init & live Lagna update ─────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Initial calculation
+  const now = new Date();
+  const data = calcKundali_K(now, kwLat, kwLng);
+  fullRender(data);
+  updateTimestamp(now, kwCity);
+
+  // Tab switching
+  document.querySelectorAll<HTMLElement>('.kw-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.kw-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentStyle = btn.dataset.style!;
+      if (currentData) renderChart(currentData, currentStyle);
+    });
+  });
+
+  // Planet chip clicks (delegated to grid)
+  document.getElementById('kw-grid')!.addEventListener('click', e => {
+    const chip = (e.target as HTMLElement).closest<HTMLElement>('.kwc-chip');
+    if (chip && currentData) showPopup(chip.dataset.pid!, currentData);
+  });
+
+  // Close popup
+  document.getElementById('kw-popup-close')?.addEventListener('click', hidePopup);
+  document.addEventListener('click', e => {
+    const popup = document.getElementById('kw-popup');
+    if (popup && !popup.hidden && !popup.contains(e.target as Node)) {
+      const grid = document.getElementById('kw-grid');
+      const tbody = document.getElementById('kw-tbody');
+      if (!grid?.contains(e.target as Node) && !tbody?.contains(e.target as Node)) {
+        hidePopup();
+      }
+    }
+  });
+
+  // Language change: re-render table labels
+  document.addEventListener('langchange', () => {
+    if (currentData) {
+      renderTable(currentData, false);
+      updateLagnaInfo(currentData);
+    }
+  });
+
+  // Live Lagna update every 2 minutes (Lagna changes ~2° per minute)
+  setInterval(() => {
+    const now = new Date();
+    const data = calcKundali_K(now, kwLat, kwLng);
+    fullRender(data);
+    updateTimestamp(now, kwCity);
+  }, 120_000);
+});
+</script>

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Header from '../components/Header.astro';
 
 interface Props {
   title?: string;
@@ -29,60 +30,10 @@ const {
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap" />
 </head>
 <body>
-  <!-- NAV -->
-  <nav id="nav" style="position:sticky;top:0;z-index:50;background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);height:60px;display:flex;align-items:center;">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1200px;margin:0 auto;padding:0 24px;">
-      <!-- Logo -->
-      <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;">
-        <span style="font-size:20px;">🕉️</span>
-        <span style="font-size:16px;font-weight:600;color:var(--color-ink);letter-spacing:-0.3px;">PanchangPath</span>
-      </a>
-
-      <!-- Desktop nav links -->
-      <div class="nav-links" style="display:flex;align-items:center;gap:4px;">
-        <a href="/" class="nav-link" style="color:var(--color-body-text);font-size:14px;text-decoration:none;padding:6px 10px;border-radius:100px;transition:background 0.12s;">Today</a>
-        <a href="/calendar" class="nav-link" style="color:var(--color-body-text);font-size:14px;text-decoration:none;padding:6px 10px;border-radius:100px;transition:background 0.12s;">Calendar</a>
-        <a href="/festivals" class="nav-link" style="color:var(--color-body-text);font-size:14px;text-decoration:none;padding:6px 10px;border-radius:100px;transition:background 0.12s;">Festivals</a>
-        <a href="/muhurta" class="nav-link" style="color:var(--color-body-text);font-size:14px;text-decoration:none;padding:6px 10px;border-radius:100px;transition:background 0.12s;">Muhurta</a>
-      </div>
-
-      <!-- Right cluster -->
-      <div style="display:flex;align-items:center;gap:8px;">
-        <!-- Language toggle -->
-        <button id="lang-toggle" class="btn-secondary" style="height:28px;font-size:12px;padding:0 10px;" title="Toggle language">
-          <span id="lang-label">हिं</span>
-        </button>
-        <!-- Dark mode toggle -->
-        <button id="dark-toggle" class="btn-secondary" style="height:28px;width:28px;padding:0;display:flex;align-items:center;justify-content:center;" title="Toggle dark mode" aria-label="Toggle dark mode">
-          <svg id="icon-sun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
-            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-          </svg>
-          <svg id="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-          </svg>
-        </button>
-        <!-- Hamburger (mobile) -->
-        <button id="menu-toggle" style="display:none;background:none;border:none;cursor:pointer;padding:4px;color:var(--color-ink);" aria-label="Menu">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Mobile menu -->
-  <div id="mobile-menu" style="display:none;position:fixed;inset:0;z-index:40;background:var(--color-canvas);padding:80px 24px 24px;">
-    <div style="display:flex;flex-direction:column;gap:4px;">
-      <a href="/" style="color:var(--color-ink);font-size:18px;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--color-hairline);">Today</a>
-      <a href="/calendar" style="color:var(--color-ink);font-size:18px;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--color-hairline);">Calendar</a>
-      <a href="/festivals" style="color:var(--color-ink);font-size:18px;text-decoration:none;padding:12px 0;border-bottom:1px solid var(--color-hairline);">Festivals</a>
-      <a href="/muhurta" style="color:var(--color-ink);font-size:18px;text-decoration:none;padding:12px 0;">Muhurta</a>
-    </div>
-  </div>
+  <Header />
 
   <!-- Page content -->
   <main>
@@ -139,66 +90,8 @@ const {
 
   <style>
     @media (max-width: 768px) {
-      .nav-links { display: none !important; }
-      #menu-toggle { display: flex !important; }
-      footer > div > div:first-child > div:first-child { grid-template-columns: 1fr 1fr !important; }
+      footer > div > div:first-child { grid-template-columns: 1fr 1fr !important; }
     }
-    .nav-link:hover { background: var(--color-canvas-soft-2); }
   </style>
-
-  <script>
-    // Dark mode
-    const html = document.documentElement;
-    const darkToggle = document.getElementById('dark-toggle');
-    const iconSun = document.getElementById('icon-sun');
-    const iconMoon = document.getElementById('icon-moon');
-
-    const savedDark = localStorage.getItem('dark') === 'true';
-    if (savedDark) {
-      html.classList.replace('light', 'dark');
-      iconSun!.style.display = 'block';
-      iconMoon!.style.display = 'none';
-    }
-
-    darkToggle?.addEventListener('click', () => {
-      const isDark = html.classList.contains('dark');
-      if (isDark) {
-        html.classList.replace('dark', 'light');
-        iconSun!.style.display = 'none';
-        iconMoon!.style.display = 'block';
-        localStorage.setItem('dark', 'false');
-      } else {
-        html.classList.replace('light', 'dark');
-        iconSun!.style.display = 'block';
-        iconMoon!.style.display = 'none';
-        localStorage.setItem('dark', 'true');
-      }
-    });
-
-    // Mobile menu
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuToggle?.addEventListener('click', () => {
-      const open = mobileMenu!.style.display !== 'none';
-      mobileMenu!.style.display = open ? 'none' : 'block';
-    });
-
-    // Language toggle — dispatches a custom event that the page handles
-    const langToggle = document.getElementById('lang-toggle');
-    const langLabel = document.getElementById('lang-label');
-    let isHindi = false;
-    langToggle?.addEventListener('click', () => {
-      isHindi = !isHindi;
-      langLabel!.textContent = isHindi ? 'EN' : 'हिं';
-      document.dispatchEvent(new CustomEvent('langchange', { detail: { hindi: isHindi } }));
-      localStorage.setItem('lang', isHindi ? 'hi' : 'en');
-    });
-    // Restore lang
-    if (localStorage.getItem('lang') === 'hi') {
-      isHindi = true;
-      langLabel!.textContent = 'EN';
-      setTimeout(() => document.dispatchEvent(new CustomEvent('langchange', { detail: { hindi: true } })), 100);
-    }
-  </script>
 </body>
 </html>
