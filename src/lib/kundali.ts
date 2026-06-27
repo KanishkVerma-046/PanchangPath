@@ -198,6 +198,29 @@ function sunLon(jd: number): number {
   return n360(L0 + C);
 }
 
+// ── Batch tropical longitudes (for event scanning) ───────────────────────
+
+export function allTropicalLons(jd: number): {
+  surya: number; chandra: number; mangal: number; budha: number;
+  guru: number; shukra: number; shani: number; rahu: number; ketu: number;
+  ayanamsha: number;
+} {
+  const T  = (jd - 2451545.0) / 36525;
+  const ay = ayanamsha(T);
+  const [xE, yE] = helioXY(ORB.earth, T);
+  const geo = (key: string) => {
+    const [xP, yP] = helioXY(ORB[key], T);
+    return n360(toD(Math.atan2(yP - yE, xP - xE)));
+  };
+  const rahu = rahuLon(T);
+  return {
+    surya: sunLon(jd), chandra: moonLon(jd),
+    mangal: geo('mars'), budha: geo('mercury'),
+    guru: geo('jupiter'), shukra: geo('venus'), shani: geo('saturn'),
+    rahu, ketu: n360(rahu + 180), ayanamsha: ay,
+  };
+}
+
 // ── Main export ───────────────────────────────────────────────────────────
 
 export function calculateKundali(date: Date, lat: number, lng: number, tzOffset: number): KundaliData {

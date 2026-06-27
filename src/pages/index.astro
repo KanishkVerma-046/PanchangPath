@@ -3,8 +3,10 @@ import Layout from '../layouts/Layout.astro';
 import PanchangSummaryCard from '../components/PanchangSummaryCard.astro';
 import KundaliWidget from '../components/KundaliWidget.astro';
 import FestivalFeed from '../components/FestivalFeed.astro';
+import PlanetaryEventsFeed from '../components/PlanetaryEventsFeed.astro';
 import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
+import { computeUpcomingEvents } from '../lib/planetaryEvents';
 import { getDefaultLocation } from '../lib/locations';
 
 const today = new Date();
@@ -13,6 +15,7 @@ const panchang = calculatePanchang(today, loc.lat, loc.lng, loc.tzOffset);
 const hinduCal = getHinduCalendarInfo(today, panchang.sunLongitude, panchang.moonLongitude, panchang.tithi.paksha);
 const todayFestivals = getTodayFestivals(today);
 const upcoming = getUpcomingFestivals(today, 8);
+const planetaryEvents = computeUpcomingEvents(today, 180);
 
 const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 ---
@@ -230,6 +233,9 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
 
   <!-- UPCOMING FESTIVALS & VRATS FEED -->
   <FestivalFeed festivals={upcoming} today={today} />
+
+  <!-- UPCOMING PLANETARY EVENTS FEED -->
+  <PlanetaryEventsFeed events={planetaryEvents} today={today} />
 
   <!-- WHY PANCHANGPATH section -->
   <section style="padding:64px 0;">

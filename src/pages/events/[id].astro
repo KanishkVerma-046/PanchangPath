@@ -1,0 +1,454 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime } from '../../lib/planetaryEvents';
+
+export function getStaticPaths() {
+  const today  = new Date();
+  const events = computeUpcomingEvents(today, 365);
+  return events.map(ev => ({
+    params: { id: ev.id },
+    props:  { event: ev },
+  }));
+}
+
+const { event: ev } = Astro.props;
+const today = new Date();
+const countdown = formatCountdownLabel(ev.daysAway);
+const datetime  = formatEventDateTime(ev);
+const isToday   = ev.daysAway === 0;
+const isPast    = ev.daysAway < 0;
+
+function typeLabel(type: string): string {
+  switch (type) {
+    case 'sign_transit':     return 'Sign Transit';
+    case 'retrograde_start': return 'Retrograde Station';
+    case 'direct_start':     return 'Direct Station';
+    case 'conjunction':      return 'Conjunction';
+    case 'opposition':       return 'Opposition';
+    case 'solar_eclipse':    return 'Solar Eclipse';
+    case 'lunar_eclipse':    return 'Lunar Eclipse';
+    case 'solstice_equinox': return 'Solstice / Equinox';
+    default:                 return 'Planetary Event';
+  }
+}
+
+function typeClass(type: string): string {
+  switch (type) {
+    case 'sign_transit':     return 'ed-tag-transit';
+    case 'retrograde_start': return 'ed-tag-retro';
+    case 'direct_start':     return 'ed-tag-direct';
+    case 'conjunction':
+    case 'opposition':       return 'ed-tag-aspect';
+    case 'solar_eclipse':
+    case 'lunar_eclipse':    return 'ed-tag-eclipse';
+    case 'solstice_equinox': return 'ed-tag-season';
+    default:                 return '';
+  }
+}
+
+function heroBg(type: string): string {
+  switch (type) {
+    case 'sign_transit':     return 'linear-gradient(135deg,#431407 0%,#c2410c 100%)';
+    case 'retrograde_start': return 'linear-gradient(135deg,#450a0a 0%,#991b1b 100%)';
+    case 'direct_start':     return 'linear-gradient(135deg,#052e16 0%,#166534 100%)';
+    case 'conjunction':
+    case 'opposition':       return 'linear-gradient(135deg,#2e1065 0%,#5b21b6 100%)';
+    case 'solar_eclipse':
+    case 'lunar_eclipse':    return 'linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%)';
+    case 'solstice_equinox': return 'linear-gradient(135deg,#0c4a6e 0%,#0369a1 100%)';
+    default:                 return 'linear-gradient(135deg,#18181b 0%,#3f3f46 100%)';
+  }
+}
+---
+
+<Layout
+  title={`${ev.title} — PanchangPath`}
+  description={ev.description}
+>
+
+  <!-- ── Hero ── -->
+  <section class="ed-hero" style={`background:${heroBg(ev.type)}`}>
+    <div class="ed-hero-inner">
+      <nav class="ed-breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">›</span>
+        <a href="/events">Planetary Events</a>
+        <span aria-hidden="true">›</span>
+        <span>Event</span>
+      </nav>
+
+      <div class="ed-hero-body">
+        <div class="ed-icon-wrap" aria-hidden="true">
+          <span class="ed-big-icon">{ev.icon}</span>
+        </div>
+        <div class="ed-hero-text">
+          <h1 class="ed-heading en-text">{ev.title}</h1>
+          <h1 class="ed-heading hi-text">{ev.titleHi}</h1>
+          <div class="ed-hero-meta">
+            <span class={`ed-tag ${typeClass(ev.type)}`}>{typeLabel(ev.type)}</span>
+            {!isPast && (
+              <span class={`ed-countdown ${isToday ? 'ed-now' : ''}`}>
+                {isToday && <span class="ed-pulse" aria-hidden="true"></span>}
+                {countdown}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main layout ── -->
+  <div class="ed-wrapper">
+    <div class="ed-grid">
+
+      <!-- Main column -->
+      <article class="ed-main">
+
+        <!-- Date / time card -->
+        <div class="ed-date-card">
+          <div class="ed-date-col">
+            <p class="ed-label">Date</p>
+            <p class="ed-value">
+              {new Date(ev.dateISO + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+            </p>
+          </div>
+          <div class="ed-sep"></div>
+          <div class="ed-date-col">
+            <p class="ed-label">Time (IST)</p>
+            <p class="ed-value">{datetime.split('·')[1]?.trim() ?? '—'}</p>
+          </div>
+          <div class="ed-sep"></div>
+          <div class="ed-date-col">
+            <p class="ed-label">Countdown</p>
+            <p class="ed-value" style={isPast ? 'color:var(--color-mute)' : isToday ? 'color:var(--color-saffron-deep)' : ''}>
+              {isPast ? `${Math.abs(ev.daysAway)}d ago` : countdown}
+            </p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="ed-section">
+          <h2 class="ed-section-title">About this Event</h2>
+          <p class="ed-body">{ev.description}</p>
+        </div>
+
+        <!-- Jyotish significance -->
+        <div class="ed-section">
+          <h2 class="ed-section-title">Jyotish Significance</h2>
+          <p class="ed-body">{ev.significance}</p>
+        </div>
+
+        <!-- Planets involved -->
+        {ev.planets.length > 0 && (
+          <div class="ed-section">
+            <h2 class="ed-section-title">Planets Involved</h2>
+            <div class="ed-planets">
+              {ev.planets.map(p => (
+                <span class="ed-planet-chip">
+                  {p === 'surya'   ? '☉ Surya (Sun)'         :
+                   p === 'chandra' ? '☽ Chandra (Moon)'       :
+                   p === 'mangal'  ? '♂ Mangal (Mars)'        :
+                   p === 'budha'   ? '☿ Budha (Mercury)'      :
+                   p === 'guru'    ? '♃ Guru (Jupiter)'       :
+                   p === 'shukra'  ? '♀ Shukra (Venus)'       :
+                   p === 'shani'   ? '♄ Shani (Saturn)'       :
+                   p === 'rahu'    ? '☊ Rahu (North Node)'    :
+                   p === 'ketu'    ? '☋ Ketu (South Node)'    : p}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+      </article>
+
+      <!-- Sidebar -->
+      <aside class="ed-sidebar">
+
+        <div class="ed-side-card">
+          <h3 class="ed-side-title">Quick Info</h3>
+          <dl class="ed-facts">
+            <div class="ed-fact-row">
+              <dt>Type</dt>
+              <dd>{typeLabel(ev.type)}</dd>
+            </div>
+            <div class="ed-fact-row">
+              <dt>Date</dt>
+              <dd>{new Date(ev.dateISO + 'T00:00:00Z').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</dd>
+            </div>
+            <div class="ed-fact-row">
+              <dt>Time (IST)</dt>
+              <dd>{datetime.split('·')[1]?.trim() ?? '—'}</dd>
+            </div>
+            {!isPast && (
+              <div class="ed-fact-row">
+                <dt>Countdown</dt>
+                <dd style={isToday ? 'color:var(--color-saffron-deep);font-weight:700' : ''}>{countdown}</dd>
+              </div>
+            )}
+          </dl>
+        </div>
+
+        <div class="ed-side-card">
+          <h3 class="ed-side-title">More Events</h3>
+          <p class="ed-side-body">Browse all upcoming transits, retrogrades, eclipses, and seasonal crossings.</p>
+          <a href="/events" class="ed-side-btn">All Planetary Events →</a>
+        </div>
+
+        <div class="ed-side-card">
+          <h3 class="ed-side-title">Today's Panchang</h3>
+          <p class="ed-side-body">View the full Panchang — Tithi, Nakshatra, Yoga, Karana, and Muhurtas.</p>
+          <a href="/" class="ed-side-btn">View Panchang →</a>
+        </div>
+
+      </aside>
+
+    </div><!-- .ed-grid -->
+
+    <!-- Back link -->
+    <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--color-hairline);">
+      <a href="/events" style="font-size:13px;font-weight:500;color:var(--color-saffron-deep);text-decoration:none;">
+        ← Back to Planetary Events
+      </a>
+    </div>
+
+  </div><!-- .ed-wrapper -->
+</Layout>
+
+<style>
+/* ── Hero ── */
+.ed-hero {
+  padding: 48px 0 40px;
+  position: relative;
+  overflow: hidden;
+}
+.ed-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.2) 100%);
+  pointer-events: none;
+}
+.ed-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+.ed-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 18px;
+}
+.ed-breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
+.ed-breadcrumb a:hover { color: #fff; }
+
+.ed-hero-body {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.ed-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  backdrop-filter: blur(4px);
+}
+.ed-big-icon {
+  font-size: 34px;
+  line-height: 1;
+}
+.ed-hero-text { flex: 1; }
+.ed-heading {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 10px;
+  line-height: 1.2;
+  letter-spacing: -0.7px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.22);
+}
+@media (max-width: 640px) {
+  .ed-heading { font-size: 20px; }
+  .ed-big-icon { font-size: 24px; }
+  .ed-icon-wrap { width: 52px; height: 52px; }
+  .ed-hero-body { gap: 14px; }
+}
+.ed-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ed-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono, monospace);
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.28);
+}
+.ed-now { background: rgba(255,153,51,0.35); border-color: rgba(255,153,51,0.5); }
+.ed-pulse {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  animation: edp 1.4s ease-in-out infinite;
+}
+@keyframes edp { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* ── Tags ── */
+.ed-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.26);
+}
+
+/* ── Wrapper ── */
+.ed-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+.ed-grid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .ed-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Date card ── */
+.ed-date-card {
+  display: flex;
+  border: 1px solid var(--color-hairline);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.ed-date-col { flex: 1; padding: 16px 18px; }
+.ed-sep { width: 1px; background: var(--color-hairline); flex-shrink: 0; }
+.ed-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-mute);
+  margin: 0 0 5px;
+}
+.ed-value {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0;
+  line-height: 1.4;
+}
+@media (max-width: 500px) {
+  .ed-date-card { flex-direction: column; }
+  .ed-sep { width: auto; height: 1px; }
+}
+
+/* ── Sections ── */
+.ed-section { margin-bottom: 28px; }
+.ed-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-hairline);
+}
+.ed-body {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--color-body-text);
+  margin: 0;
+}
+
+/* ── Planet chips ── */
+.ed-planets { display: flex; flex-wrap: wrap; gap: 8px; }
+.ed-planet-chip {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-ink);
+  background: var(--color-canvas-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: 999px;
+  padding: 4px 12px;
+}
+
+/* ── Sidebar ── */
+.ed-side-card {
+  border: 1px solid var(--color-hairline);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+.ed-side-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 8px;
+}
+.ed-side-body {
+  font-size: 12.5px;
+  color: var(--color-body-text);
+  margin: 0 0 12px;
+  line-height: 1.6;
+}
+.ed-side-btn {
+  display: block;
+  text-align: center;
+  padding: 8px 16px;
+  background: var(--color-canvas-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+}
+.ed-side-btn:hover { background: var(--color-saffron-soft); border-color: var(--color-saffron); }
+
+/* ── Facts ── */
+.ed-facts { margin: 0; display: flex; flex-direction: column; gap: 0; }
+.ed-fact-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--color-hairline);
+  font-size: 12.5px;
+}
+.ed-fact-row:last-child { border-bottom: none; }
+.ed-fact-row dt { color: var(--color-mute); font-weight: 500; }
+.ed-fact-row dd { color: var(--color-ink);  font-weight: 500; margin: 0; }
+</style>
