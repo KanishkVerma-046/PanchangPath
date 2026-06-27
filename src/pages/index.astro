@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import PanchangSummaryCard from '../components/PanchangSummaryCard.astro';
 import KundaliWidget from '../components/KundaliWidget.astro';
+import FestivalFeed from '../components/FestivalFeed.astro';
 import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
 import { getDefaultLocation } from '../lib/locations';
@@ -11,7 +12,7 @@ const loc = getDefaultLocation(); // New Delhi, will be overridden client-side
 const panchang = calculatePanchang(today, loc.lat, loc.lng, loc.tzOffset);
 const hinduCal = getHinduCalendarInfo(today, panchang.sunLongitude, panchang.moonLongitude, panchang.tithi.paksha);
 const todayFestivals = getTodayFestivals(today);
-const upcoming = getUpcomingFestivals(today, 6);
+const upcoming = getUpcomingFestivals(today, 8);
 
 const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 ---
@@ -227,36 +228,8 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
     </div>
   </section>
 
-  <!-- UPCOMING FESTIVALS -->
-  <section style="padding:40px 0;background:var(--color-canvas);border-top:1px solid var(--color-hairline);border-bottom:1px solid var(--color-hairline);">
-    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
-        <div>
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 6px;">Coming up</p>
-          <h2 style="font-size:24px;font-weight:600;letter-spacing:-0.8px;color:var(--color-ink);margin:0;">Festivals & Vrats</h2>
-        </div>
-        <a href="/festivals" class="btn-secondary">View all →</a>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-        {upcoming.map((f, i) => {
-          const days = daysUntil(today, f.date);
-          const fd = new Date(f.date);
-          return (
-            <div class="card" style="padding:20px;" key={i}>
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                <span class={f.type === 'major' ? 'badge-saffron badge' : 'badge'} style="font-size:10px;">{f.type === 'major' ? '✦ Major' : f.type === 'vrat' ? 'Vrat' : 'Regional'}</span>
-                <span style="font-size:11px;font-weight:600;color:var(--color-link);font-family:var(--font-mono);">{days === 0 ? 'Today' : days === 1 ? 'Tomorrow' : `${days}d`}</span>
-              </div>
-              <p class="en-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;">{f.name}</p>
-              <p class="hi-text" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;">{f.nameHi}</p>
-              <p style="font-size:12px;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">{fd.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' })}</p>
-              <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.5;">{f.description}</p>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  </section>
+  <!-- UPCOMING FESTIVALS & VRATS FEED -->
+  <FestivalFeed festivals={upcoming} today={today} />
 
   <!-- WHY PANCHANGPATH section -->
   <section style="padding:64px 0;">

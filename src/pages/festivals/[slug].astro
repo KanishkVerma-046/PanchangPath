@@ -1,0 +1,433 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {
+  FESTIVALS_2025_2026,
+  getFestivalSlug,
+  getFestivalIcon,
+  getFestivalGradient,
+  daysUntil,
+  formatCountdown,
+} from '../../lib/festivals';
+
+export function getStaticPaths() {
+  return FESTIVALS_2025_2026.map(f => ({
+    params: { slug: getFestivalSlug(f) },
+    props:  { festival: f },
+  }));
+}
+
+const { festival: f } = Astro.props;
+const today     = new Date();
+const days      = daysUntil(today, f.date);
+const countdown = formatCountdown(days);
+const icon      = getFestivalIcon(f);
+const gradient  = getFestivalGradient(f);
+const fd        = new Date(f.date);
+const dateLabel = fd.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const isToday   = days === 0;
+const isPast    = days < 0;
+
+// Build sorted list for prev/next navigation
+const thisSlug  = getFestivalSlug(f);
+const allSorted = [...FESTIVALS_2025_2026].sort((a, b) => a.date.localeCompare(b.date));
+const idx       = allSorted.findIndex(x => getFestivalSlug(x) === thisSlug);
+const prev      = idx > 0            ? allSorted[idx - 1] : null;
+const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
+---
+
+<Layout
+  title={`${f.name} ${f.date.slice(0,4)} — PanchangPath`}
+  description={f.description}
+>
+  <!-- ── Hero ── -->
+  <section class="fd-hero" style={`background:${gradient}`}>
+    <div class="fd-hero-inner">
+      <span class="fd-icon" aria-hidden="true">{icon}</span>
+      <div class="fd-hero-text">
+        <div class="fd-breadcrumb">
+          <a href="/">Home</a>
+          <span aria-hidden="true">›</span>
+          <a href="/festivals">Festivals</a>
+          <span aria-hidden="true">›</span>
+          <span>{f.name}</span>
+        </div>
+        <h1 class="fd-heading en-text">{f.name}</h1>
+        <h1 class="fd-heading hi-text">{f.nameHi}</h1>
+        <div class="fd-hero-badges">
+          <span class={`fd-type-badge fd-type-${f.type}`}>
+            {f.type === 'major' ? '✦ Major Festival' : f.type === 'vrat' ? '🙏 Vrat / Fast' : '🌏 Regional Festival'}
+          </span>
+          {!isPast && (
+            <span class={`fd-countdown-badge ${isToday ? 'fd-countdown-today' : ''}`}>
+              {isToday && <span class="fd-dot" aria-hidden="true"></span>}
+              {countdown}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main content ── -->
+  <div class="fd-wrapper">
+    <div class="fd-grid">
+
+      <!-- Left: main info -->
+      <article class="fd-main">
+
+        <!-- Date card -->
+        <div class="fd-date-card">
+          <div class="fd-date-col">
+            <p class="fd-label">Date</p>
+            <p class="fd-value en-text">{dateLabel}</p>
+            <p class="fd-value hi-text">
+              {fd.toLocaleDateString('hi-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}
+            </p>
+          </div>
+          <div class="fd-date-sep"></div>
+          <div class="fd-date-col">
+            <p class="fd-label">Countdown</p>
+            <p class="fd-value" style={isToday ? 'color:var(--color-saffron-deep)' : isPast ? 'color:var(--color-mute)' : ''}>
+              {isPast ? `${Math.abs(days)} days ago` : countdown}
+            </p>
+          </div>
+          <div class="fd-date-sep"></div>
+          <div class="fd-date-col">
+            <p class="fd-label">Year</p>
+            <p class="fd-value">{f.date.slice(0, 4)}</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="fd-section">
+          <h2 class="fd-section-title">About this Festival</h2>
+          <p class="fd-body">
+            {f.longDesc ?? f.description}
+          </p>
+        </div>
+
+        <!-- Quick facts -->
+        <div class="fd-section">
+          <h2 class="fd-section-title">Quick Facts</h2>
+          <dl class="fd-facts">
+            <div class="fd-fact-row">
+              <dt>Type</dt>
+              <dd>
+                {f.type === 'major' ? 'Major Hindu Festival' : f.type === 'vrat' ? 'Vrat / Fasting Day' : 'Regional Festival'}
+              </dd>
+            </div>
+            <div class="fd-fact-row">
+              <dt>Sanskrit Name</dt>
+              <dd class="hi-text">{f.nameHi}</dd>
+            </div>
+            <div class="fd-fact-row">
+              <dt>Date ({f.date.slice(0,4)})</dt>
+              <dd>{dateLabel}</dd>
+            </div>
+            <div class="fd-fact-row">
+              <dt>Observed in</dt>
+              <dd>
+                {f.type === 'major' ? 'Pan-India' : f.type === 'vrat' ? 'Hindu households across India' : 'Regional communities'}
+              </dd>
+            </div>
+          </dl>
+        </div>
+
+      </article>
+
+      <!-- Right: sidebar -->
+      <aside class="fd-sidebar">
+
+        <!-- Add to calendar (decorative for now) -->
+        <div class="fd-side-card">
+          <h3 class="fd-side-title">Add to Calendar</h3>
+          <p class="fd-side-body">{dateLabel}</p>
+          <a
+            href={`/festivals`}
+            class="fd-side-btn"
+          >← Back to Calendar</a>
+        </div>
+
+        <!-- Related panchang -->
+        <div class="fd-side-card">
+          <h3 class="fd-side-title">Panchang</h3>
+          <p class="fd-side-body">See the full Panchang for this day — Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, and Muhurtas.</p>
+          <a href="/" class="fd-side-btn">View Today's Panchang →</a>
+        </div>
+
+      </aside>
+
+    </div><!-- .fd-grid -->
+
+    <!-- Prev / Next navigation -->
+    <nav class="fd-nav" aria-label="Festival navigation">
+      {prev && (
+        <a href={`/festivals/${getFestivalSlug(prev)}`} class="fd-nav-btn fd-nav-prev">
+          <span class="fd-nav-arrow">←</span>
+          <div class="fd-nav-meta">
+            <span class="fd-nav-label">Previous</span>
+            <span class="fd-nav-name en-text">{prev.name}</span>
+            <span class="fd-nav-name hi-text">{prev.nameHi}</span>
+          </div>
+        </a>
+      )}
+      {!prev && <div></div>}
+      {next && (
+        <a href={`/festivals/${getFestivalSlug(next)}`} class="fd-nav-btn fd-nav-next">
+          <div class="fd-nav-meta">
+            <span class="fd-nav-label">Next</span>
+            <span class="fd-nav-name en-text">{next.name}</span>
+            <span class="fd-nav-name hi-text">{next.nameHi}</span>
+          </div>
+          <span class="fd-nav-arrow">→</span>
+        </a>
+      )}
+    </nav>
+
+  </div><!-- .fd-wrapper -->
+</Layout>
+
+<style>
+/* ── Hero ── */
+.fd-hero {
+  padding: 48px 0 40px;
+  position: relative;
+  overflow: hidden;
+}
+.fd-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.22) 100%);
+  pointer-events: none;
+}
+.fd-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  position: relative;
+  z-index: 1;
+}
+.fd-icon {
+  font-size: 64px;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.22));
+  flex-shrink: 0;
+  line-height: 1;
+}
+.fd-hero-text { flex: 1; min-width: 0; }
+.fd-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 10px;
+}
+.fd-breadcrumb a { color: rgba(255,255,255,0.75); text-decoration: none; }
+.fd-breadcrumb a:hover { color: #fff; }
+.fd-heading {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: #fff;
+  margin: 0 0 12px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  line-height: 1.15;
+}
+@media (max-width: 640px) {
+  .fd-heading { font-size: 24px; }
+  .fd-icon    { font-size: 48px; }
+}
+.fd-hero-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.fd-type-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.22);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.fd-countdown-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  background: rgba(255,255,255,0.22);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  font-family: var(--font-mono, monospace);
+}
+.fd-countdown-today { background: rgba(255,255,255,0.35); }
+.fd-dot {
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #fff;
+  animation: fd-pulse 1.5s ease-in-out infinite;
+}
+@keyframes fd-pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ── Wrapper & Grid ── */
+.fd-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+.fd-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 768px) {
+  .fd-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Date card ── */
+.fd-date-card {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--color-hairline);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 28px;
+}
+.fd-date-col {
+  flex: 1;
+  padding: 16px 18px;
+}
+.fd-date-sep {
+  width: 1px;
+  background: var(--color-hairline);
+  flex-shrink: 0;
+}
+.fd-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-mute);
+  margin: 0 0 5px;
+}
+.fd-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0;
+  line-height: 1.4;
+}
+@media (max-width: 500px) {
+  .fd-date-card { flex-direction: column; }
+  .fd-date-sep  { width: auto; height: 1px; }
+}
+
+/* ── Sections ── */
+.fd-section { margin-bottom: 32px; }
+.fd-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-hairline);
+}
+.fd-body {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--color-body-text);
+  margin: 0;
+}
+
+/* ── Facts ── */
+.fd-facts { margin: 0; display: flex; flex-direction: column; gap: 0; }
+.fd-fact-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--color-hairline);
+  font-size: 13.5px;
+}
+.fd-fact-row:last-child { border-bottom: none; }
+.fd-fact-row dt { color: var(--color-mute); font-weight: 500; }
+.fd-fact-row dd { color: var(--color-ink);  font-weight: 500; margin: 0; }
+@media (max-width: 400px) {
+  .fd-fact-row { grid-template-columns: 1fr; gap: 2px; }
+}
+
+/* ── Sidebar ── */
+.fd-side-card {
+  border: 1px solid var(--color-hairline);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.fd-side-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 8px;
+}
+.fd-side-body {
+  font-size: 12.5px;
+  color: var(--color-body-text);
+  margin: 0 0 14px;
+  line-height: 1.6;
+}
+.fd-side-btn {
+  display: block;
+  text-align: center;
+  padding: 8px 16px;
+  background: var(--color-canvas-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.fd-side-btn:hover { background: var(--color-saffron-soft); border-color: var(--color-saffron); }
+
+/* ── Prev/Next nav ── */
+.fd-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--color-hairline);
+}
+.fd-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--color-hairline);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--color-ink);
+  transition: border-color 0.15s, background 0.15s;
+  max-width: 260px;
+}
+.fd-nav-btn:hover { border-color: var(--color-saffron); background: var(--color-saffron-soft); }
+.fd-nav-next { text-align: right; margin-left: auto; }
+.fd-nav-arrow { font-size: 18px; color: var(--color-saffron); flex-shrink: 0; }
+.fd-nav-meta { display: flex; flex-direction: column; gap: 2px; }
+.fd-nav-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-mute); font-weight: 600; }
+.fd-nav-name  { font-size: 13px; font-weight: 600; line-height: 1.3; }
+</style>
