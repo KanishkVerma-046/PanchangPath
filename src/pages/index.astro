@@ -4,6 +4,7 @@ import PanchangSummaryCard from '../components/PanchangSummaryCard.astro';
 import KundaliWidget from '../components/KundaliWidget.astro';
 import FestivalFeed from '../components/FestivalFeed.astro';
 import PlanetaryEventsFeed from '../components/PlanetaryEventsFeed.astro';
+import RashifalFeed from '../components/RashifalFeed.astro';
 import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
 import { computeUpcomingEvents } from '../lib/planetaryEvents';
@@ -236,6 +237,9 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
 
   <!-- UPCOMING PLANETARY EVENTS FEED -->
   <PlanetaryEventsFeed events={planetaryEvents} today={today} />
+
+  <!-- RASHIFAL SECTION -->
+  <RashifalFeed today={today} />
 
   <!-- WHY PANCHANGPATH section -->
   <section style="padding:64px 0;">

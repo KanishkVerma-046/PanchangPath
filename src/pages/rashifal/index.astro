@@ -1,0 +1,369 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { RASHIS, getDailyPrediction } from '../../lib/rashifal';
+
+const today = new Date();
+const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Layout
+  title="Today's Rashifal — Daily Horoscope for All 12 Rashis | PanchangPath"
+  description="Read today's Rashifal (daily horoscope) for all 12 Vedic rashis. Daily, weekly, monthly and yearly predictions based on Jyotish principles."
+>
+
+  <!-- Hero -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 36px;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Jyotish · Vedic Astrology</p>
+      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 12px;">
+        <span class="en-text">Today's Rashifal</span>
+        <span class="hi-text" style="display:none;">आज का राशिफल</span>
+      </h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0 0 24px;max-width:560px;line-height:1.6;">
+        Daily horoscope for all 12 Vedic rashis based on planetary positions and Jyotish principles.
+      </p>
+
+      <!-- Period tabs -->
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <button class="period-btn active" data-period="daily">Daily</button>
+        <button class="period-btn" data-period="weekly">Weekly</button>
+        <button class="period-btn" data-period="monthly">Monthly</button>
+        <button class="period-btn" data-period="yearly">Yearly</button>
+        <span style="font-size:12px;color:var(--color-mute);margin-left:8px;font-family:var(--font-mono);">{dateLabel}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rashifal grid -->
+  <section style="padding:40px 0 56px;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div class="rfi-grid" id="rfi-grid">
+        {RASHIS.map((rashi, idx) => {
+          const daily = getDailyPrediction(rashi, today);
+          return (
+            <div class="rfi-card animate-in" style={`animation-delay:${idx * 35}ms`} data-rashi={rashi.id}>
+              <!-- Colored header strip -->
+              <div class="rfi-strip" style={`background:${rashi.gradient}`}>
+                <span class="rfi-sym">{rashi.symbol}</span>
+                <div class="rfi-strip-text">
+                  <span class="rfi-name-en en-text">{rashi.name}</span>
+                  <span class="rfi-name-hi hi-text" style="display:none;">{rashi.nameHi}</span>
+                  <span class="rfi-eng"> — {rashi.english}</span>
+                </div>
+                <span class="rfi-lord-pill">{rashi.lord}</span>
+              </div>
+
+              <!-- Prediction content area — all periods pre-rendered, toggled by JS -->
+              <div class="rfi-body">
+                <p class="rfi-text" data-for="daily">{daily}</p>
+                <p class="rfi-text" data-for="weekly" hidden>{rashi.predictions.weekly}</p>
+                <p class="rfi-text" data-for="monthly" hidden>{rashi.predictions.monthly}</p>
+                <p class="rfi-text" data-for="yearly" hidden>{rashi.predictions.yearly}</p>
+
+                <div class="rfi-footer">
+                  <div class="rfi-lucky">
+                    <span class="rfi-lucky-item">
+                      <span class="rfi-lucky-dot" style={`background:${rashi.luckyColorHex}`}></span>
+                      {rashi.luckyColor}
+                    </span>
+                    <span class="rfi-lucky-item">🔢 {rashi.luckyNumbers.join(', ')}</span>
+                    <span class="rfi-lucky-item">📅 {rashi.luckyDay}</span>
+                  </div>
+                  <a href={`/rashifal/${rashi.id}`} class="rfi-detail-link">
+                    Full prediction →
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Prashnavali + Find Rashi tools -->
+  <section style="background:var(--color-canvas);border-top:1px solid var(--color-hairline);padding:48px 0;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;" class="tools-grid">
+
+        <!-- Prashnavali -->
+        <a href="/prashnavali" class="tool-card prashnavali-card">
+          <div style="font-size:40px;margin-bottom:12px;">🔮</div>
+          <p style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">Prashnavali</p>
+          <p style="font-size:13px;color:var(--color-body-text);margin:0 0 16px;line-height:1.6;">Think of a question, focus your mind, and receive a divine answer from the cosmic oracle.</p>
+          <span style="font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open Oracle →</span>
+        </a>
+
+        <!-- Find by Name -->
+        <div class="tool-card">
+          <div style="font-size:40px;margin-bottom:12px;">🔤</div>
+          <p style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">
+            <span class="en-text">Find Rashi by Name</span>
+            <span class="hi-text" style="display:none;">नाम से राशि</span>
+          </p>
+          <p style="font-size:13px;color:var(--color-body-text);margin:0 0 12px;line-height:1.6;">
+            In Vedic tradition, your Janma Rashi is linked to the first syllable of your birth name.
+          </p>
+          <div style="display:flex;gap:6px;">
+            <input type="text" id="name-input-full" class="tool-input" placeholder="First name…" maxlength="40" />
+            <button class="tool-btn" id="name-btn-full">Find</button>
+          </div>
+          <p id="name-res-full" class="tool-result" hidden></p>
+        </div>
+
+        <!-- Find by Birth Date -->
+        <div class="tool-card">
+          <div style="font-size:40px;margin-bottom:12px;">🗓️</div>
+          <p style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">
+            <span class="en-text">Find Rashi by Birth Date</span>
+            <span class="hi-text" style="display:none;">जन्म तिथि से राशि</span>
+          </p>
+          <p style="font-size:13px;color:var(--color-body-text);margin:0 0 12px;line-height:1.6;">
+            Discover your Surya (Sun) Rashi based on Vedic sidereal calculations using your date of birth.
+          </p>
+          <div style="display:flex;gap:6px;">
+            <input type="date" id="dob-input-full" class="tool-input" />
+            <button class="tool-btn" id="dob-btn-full">Find</button>
+          </div>
+          <p id="dob-res-full" class="tool-result" hidden></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<script>
+// Period toggle
+let activePeriod = 'daily';
+
+document.querySelectorAll<HTMLButtonElement>('.period-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activePeriod = btn.dataset.period ?? 'daily';
+    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll<HTMLElement>('.rfi-text').forEach(el => {
+      el.hidden = el.dataset.for !== activePeriod;
+    });
+  });
+});
+
+// Rashi finders (same logic as feed component)
+const NAME_MAP: Record<string, string> = {
+  chu:"Mesha",che:"Mesha",cho:"Mesha",la:"Mesha",li:"Mesha",lu:"Mesha",le:"Mesha",lo:"Mesha",
+  i:"Vrishabha",u:"Vrishabha",e:"Vrishabha",o:"Vrishabha",va:"Vrishabha",vi:"Vrishabha",vu:"Vrishabha",ve:"Vrishabha",vo:"Vrishabha",
+  ka:"Mithuna",ki:"Mithuna",ku:"Mithuna",gha:"Mithuna",cha:"Mithuna",ke:"Mithuna",
+  hi:"Karka",hu:"Karka",he:"Karka",ho:"Karka",
+  ma:"Simha",mi:"Simha",mu:"Simha",me:"Simha",mo:"Simha",ta:"Simha",ti:"Simha",tu:"Simha",te:"Simha",
+  pa:"Kanya",pi:"Kanya",pu:"Kanya",sha:"Kanya",na:"Kanya",tha:"Kanya",pe:"Kanya",po:"Kanya",
+  ra:"Tula",ri:"Tula",ru:"Tula",re:"Tula",ro:"Tula",
+  to:"Vrishchika",ni:"Vrishchika",nu:"Vrishchika",ne:"Vrishchika",no:"Vrishchika",ya:"Vrishchika",yi:"Vrishchika",yu:"Vrishchika",
+  ye:"Dhanu",yo:"Dhanu",bha:"Dhanu",bhi:"Dhanu",bhu:"Dhanu",dha:"Dhanu",fa:"Dhanu",bhe:"Dhanu",
+  bho:"Makara",ja:"Makara",ji:"Makara",khi:"Makara",khu:"Makara",khe:"Makara",kho:"Makara",ga:"Makara",gi:"Makara",
+  gu:"Kumbha",ge:"Kumbha",go:"Kumbha",sa:"Kumbha",si:"Kumbha",su:"Kumbha",se:"Kumbha",so:"Kumbha",
+  di:"Meena",du:"Meena",jha:"Meena",de:"Meena",do:"Meena",chi:"Meena",
+};
+const RASHI_HI: Record<string, string> = {
+  Mesha:"मेष",Vrishabha:"वृषभ",Mithuna:"मिथुन",Karka:"कर्क",Simha:"सिंह",Kanya:"कन्या",
+  Tula:"तुला",Vrishchika:"वृश्चिक",Dhanu:"धनु",Makara:"मकर",Kumbha:"कुम्भ",Meena:"मीन",
+};
+const RASHI_SLUG: Record<string, string> = {
+  Mesha:"mesha",Vrishabha:"vrishabha",Mithuna:"mithuna",Karka:"karka",Simha:"simha",Kanya:"kanya",
+  Tula:"tula",Vrishchika:"vrishchika",Dhanu:"dhanu",Makara:"makara",Kumbha:"kumbha",Meena:"meena",
+};
+
+function findByName(n: string): string | undefined {
+  const lower = n.trim().toLowerCase();
+  for (let len = 3; len >= 1; len--) { const k = lower.slice(0, len); if (NAME_MAP[k]) return NAME_MAP[k]; }
+  return undefined;
+}
+function findByDate(ds: string): string {
+  const d = new Date(ds + 'T12:00:00');
+  const md = (d.getMonth() + 1) * 100 + d.getDate();
+  if (md >= 414 && md <= 514) return "Mesha";
+  if (md >= 515 && md <= 614) return "Vrishabha";
+  if (md >= 615 && md <= 715) return "Mithuna";
+  if (md >= 716 && md <= 816) return "Karka";
+  if (md >= 817 && md <= 916) return "Simha";
+  if (md >= 917 && md <= 1017) return "Kanya";
+  if (md >= 1018 && md <= 1115) return "Tula";
+  if (md >= 1116 && md <= 1214) return "Vrishchika";
+  if (md >= 1215 || md <= 113) return "Dhanu";
+  if (md >= 114 && md <= 212) return "Makara";
+  if (md >= 213 && md <= 313) return "Kumbha";
+  return "Meena";
+}
+function showRes(el: HTMLElement, rashi: string) {
+  const slug = RASHI_SLUG[rashi] ?? rashi.toLowerCase();
+  el.innerHTML = `Your Rashi: <strong>${rashi} (${RASHI_HI[rashi] ?? ''})</strong> — <a href="/rashifal/${slug}" style="color:var(--color-saffron-deep);font-weight:600;">View prediction →</a>`;
+  el.hidden = false;
+}
+
+document.getElementById('name-btn-full')?.addEventListener('click', () => {
+  const val = (document.getElementById('name-input-full') as HTMLInputElement)?.value ?? '';
+  const res = document.getElementById('name-res-full') as HTMLElement;
+  const r = findByName(val);
+  if (r) showRes(res, r); else { res.textContent = 'Could not determine Rashi. Try the birth date tool.'; res.hidden = false; }
+});
+document.getElementById('dob-btn-full')?.addEventListener('click', () => {
+  const val = (document.getElementById('dob-input-full') as HTMLInputElement)?.value ?? '';
+  const res = document.getElementById('dob-res-full') as HTMLElement;
+  if (!val) { res.textContent = 'Please select a date.'; res.hidden = false; return; }
+  showRes(res, findByDate(val));
+});
+document.getElementById('name-input-full')?.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') document.getElementById('name-btn-full')?.click(); });
+document.getElementById('dob-input-full')?.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') document.getElementById('dob-btn-full')?.click(); });
+</script>
+
+<style>
+.period-btn {
+  height: 34px;
+  padding: 0 16px;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-body-text);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.period-btn:hover { border-color: var(--color-saffron); color: var(--color-saffron-deep); }
+.period-btn.active { background: var(--color-ink); color: var(--color-on-primary); border-color: var(--color-ink); }
+
+.rfi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.rfi-card {
+  background: var(--color-canvas);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.rfi-card:hover { box-shadow: var(--shadow-card-hover); }
+
+.rfi-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+}
+.rfi-sym { font-size: 24px; }
+.rfi-strip-text { flex: 1; }
+.rfi-name-en, .rfi-name-hi {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+.rfi-eng {
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  font-weight: 400;
+}
+.rfi-lord-pill {
+  font-size: 10.5px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.rfi-body { padding: 16px; }
+.rfi-text {
+  font-size: 13.5px;
+  color: var(--color-body-text);
+  line-height: 1.7;
+  margin: 0 0 14px;
+}
+.rfi-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-hairline);
+}
+.rfi-lucky { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rfi-lucky-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--color-mute);
+  font-family: var(--font-mono);
+}
+.rfi-lucky-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.rfi-detail-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-saffron-deep);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.rfi-detail-link:hover { text-decoration: underline; }
+
+/* Tools section */
+.tool-card {
+  background: var(--color-canvas-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.15s;
+}
+.tool-card:hover { box-shadow: var(--shadow-card); }
+.prashnavali-card { background: linear-gradient(135deg, var(--color-saffron-soft) 0%, var(--color-canvas) 100%); }
+.tool-input {
+  flex: 1;
+  min-width: 0;
+  height: 34px;
+  padding: 0 10px;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-ink);
+  outline: none;
+}
+.tool-input:focus { border-color: var(--color-saffron); }
+.tool-btn {
+  height: 34px;
+  padding: 0 14px;
+  background: var(--color-saffron);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+.tool-btn:hover { opacity: 0.85; }
+.tool-result {
+  font-size: 13px;
+  color: var(--color-body-text);
+  margin: 10px 0 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .rfi-grid { grid-template-columns: repeat(2, 1fr); }
+  .tools-grid { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 640px) {
+  .rfi-grid { grid-template-columns: 1fr; }
+  .tools-grid { grid-template-columns: 1fr !important; }
+}
+</style>

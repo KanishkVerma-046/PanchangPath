@@ -1,0 +1,278 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { PRASHNAVALI_ANSWERS } from '../lib/rashifal';
+
+const answerCount = PRASHNAVALI_ANSWERS.length;
+---
+
+<Layout
+  title="Prashnavali — Divine Question Oracle | PanchangPath"
+  description="Ask the divine oracle your deepest question. Prashnavali offers 108 cosmic answers drawn from Vedic tradition."
+>
+
+  <!-- Hero -->
+  <section style="min-height:calc(100vh - 94px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 24px;background:var(--color-canvas);position:relative;overflow:hidden;">
+
+    <!-- Decorative background -->
+    <div class="pv-bg" aria-hidden="true"></div>
+    <div class="pv-mandala" aria-hidden="true">🕉️</div>
+
+    <div class="pv-content">
+      <!-- Header -->
+      <div style="text-align:center;margin-bottom:48px;">
+        <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 12px;letter-spacing:0.12em;">DIVINE ORACLE</p>
+        <h1 style="font-size:42px;font-weight:700;letter-spacing:-1.5px;color:var(--color-ink);margin:0 0 8px;">
+          <span class="en-text">Prashnavali</span>
+          <span class="hi-text" style="display:none;">प्रश्नावली</span>
+        </h1>
+        <p style="font-size:18px;color:var(--color-mute);margin:0 0 24px;font-family:var(--font-mono);">प्रश्नावली</p>
+        <p style="font-size:16px;color:var(--color-body-text);max-width:480px;margin:0 auto;line-height:1.7;">
+          Close your eyes. Breathe deeply. Hold your question clearly in your mind and heart. When you are ready, touch the oracle.
+        </p>
+      </div>
+
+      <!-- Oracle button -->
+      <div style="text-align:center;margin-bottom:40px;">
+        <button id="oracle-btn" class="pv-oracle-btn" aria-label="Receive divine answer">
+          <span class="pv-lotus" id="btn-icon">🪷</span>
+          <span id="btn-text">Touch to receive</span>
+        </button>
+      </div>
+
+      <!-- Answer reveal -->
+      <div id="answer-card" class="pv-answer-card" hidden>
+        <div class="pv-answer-inner">
+          <div class="pv-answer-header">
+            <span style="font-size:20px;">✨</span>
+            <span class="caption-mono" style="color:var(--color-saffron-deep);">THE ORACLE SPEAKS</span>
+            <span style="font-size:20px;">✨</span>
+          </div>
+          <blockquote id="oracle-answer" class="pv-answer-text"></blockquote>
+          <div style="text-align:center;margin-top:20px;">
+            <button id="ask-again-btn" class="pv-again-btn">Ask another question</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Instructions -->
+      <div id="instructions" class="pv-instructions">
+        <div class="pv-step">
+          <span class="pv-step-num">1</span>
+          <p>Sit quietly, close your eyes, and settle your mind.</p>
+        </div>
+        <div class="pv-step">
+          <span class="pv-step-num">2</span>
+          <p>Formulate your sincere question clearly in your heart.</p>
+        </div>
+        <div class="pv-step">
+          <span class="pv-step-num">3</span>
+          <p>With devotion, touch the lotus to receive the divine answer.</p>
+        </div>
+        <div class="pv-step">
+          <span class="pv-step-num">4</span>
+          <p>Receive with an open heart. Trust what the cosmos offers you.</p>
+        </div>
+      </div>
+
+      <!-- Info note -->
+      <p style="text-align:center;font-size:12px;color:var(--color-mute);margin-top:40px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;">
+        Prashnavali contains {answerCount} cosmic answers drawn from Vedic wisdom. The oracle speaks through the language of synchronicity.
+      </p>
+    </div>
+  </section>
+
+</Layout>
+
+<script define:vars={{ answers: PRASHNAVALI_ANSWERS }}>
+let revealed = false;
+
+const oracleBtn = document.getElementById('oracle-btn');
+const answerCard = document.getElementById('answer-card');
+const oracleAnswer = document.getElementById('oracle-answer');
+const askAgainBtn = document.getElementById('ask-again-btn');
+const instructions = document.getElementById('instructions');
+const btnIcon = document.getElementById('btn-icon');
+const btnText = document.getElementById('btn-text');
+
+function revealAnswer() {
+  if (revealed) return;
+  revealed = true;
+
+  // Pulse animation on button
+  oracleBtn.classList.add('pv-pulse');
+
+  setTimeout(() => {
+    const idx = Math.floor(Math.random() * answers.length);
+    oracleAnswer.textContent = answers[idx];
+
+    oracleBtn.classList.remove('pv-pulse');
+    oracleBtn.style.display = 'none';
+    instructions.style.display = 'none';
+
+    answerCard.hidden = false;
+    answerCard.classList.add('pv-fade-in');
+  }, 600);
+}
+
+function resetOracle() {
+  revealed = false;
+  answerCard.hidden = true;
+  answerCard.classList.remove('pv-fade-in');
+  oracleBtn.style.display = '';
+  instructions.style.display = '';
+  oracleBtn.classList.remove('pv-pulse');
+}
+
+oracleBtn?.addEventListener('click', revealAnswer);
+askAgainBtn?.addEventListener('click', resetOracle);
+</script>
+
+<style>
+.pv-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(255,153,51,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 60%, rgba(121,40,202,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 20%, rgba(80,227,194,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.pv-mandala {
+  position: absolute;
+  top: 10%;
+  right: 8%;
+  font-size: 80px;
+  opacity: 0.04;
+  animation: pv-spin 120s linear infinite;
+  pointer-events: none;
+  user-select: none;
+}
+@keyframes pv-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.pv-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 580px;
+}
+
+.pv-oracle-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 160px;
+  height: 160px;
+  background: var(--color-canvas-soft);
+  border: 2px solid var(--color-saffron);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  box-shadow: 0 0 0 0 rgba(255,153,51,0);
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+}
+.pv-oracle-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 32px rgba(255,153,51,0.25);
+  border-color: var(--color-saffron-deep);
+}
+.pv-lotus { font-size: 40px; line-height: 1; }
+#btn-text { font-size: 13px; font-weight: 600; color: var(--color-saffron-deep); }
+
+.pv-pulse {
+  animation: pulse-oracle 0.6s ease;
+}
+@keyframes pulse-oracle {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,153,51,0.4); }
+  50% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(255,153,51,0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,153,51,0); }
+}
+
+.pv-answer-card {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+}
+.pv-answer-inner { padding: 32px; }
+.pv-answer-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 24px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+}
+.pv-answer-text {
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--color-ink);
+  font-style: italic;
+  text-align: center;
+  margin: 0;
+  padding: 0 8px;
+  border: none;
+}
+.pv-again-btn {
+  height: 40px;
+  padding: 0 24px;
+  background: var(--color-saffron);
+  border: none;
+  border-radius: var(--radius-pill);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.pv-again-btn:hover { opacity: 0.85; }
+
+.pv-fade-in {
+  animation: pv-fade 0.5s ease both;
+}
+@keyframes pv-fade {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pv-instructions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 0;
+}
+.pv-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--color-canvas-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-md);
+}
+.pv-step-num {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-saffron-soft);
+  color: var(--color-saffron-deep);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+.pv-step p { font-size: 13px; color: var(--color-body-text); margin: 0; line-height: 1.5; }
+
+@media (max-width: 480px) {
+  .pv-instructions { grid-template-columns: 1fr; }
+  .pv-answer-text { font-size: 16px; }
+}
+</style>

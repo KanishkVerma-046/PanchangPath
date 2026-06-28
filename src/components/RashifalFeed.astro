@@ -1,0 +1,475 @@
+---
+import { RASHIS, getDailyPrediction } from '../lib/rashifal';
+
+interface Props { today: Date; }
+const { today } = Astro.props;
+
+const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<section class="rf-section">
+  <div class="rf-container">
+
+    <!-- Section header -->
+    <div class="rf-header">
+      <div>
+        <p class="caption-mono" style="color:var(--color-mute);margin:0 0 6px;">Jyotish · Astrology</p>
+        <h2 class="rf-title">
+          <span class="en-text">Today's Rashifal</span>
+          <span class="hi-text" style="display:none;">आज का राशिफल</span>
+        </h2>
+        <p class="rf-date-label">{dateLabel}</p>
+      </div>
+      <div class="rf-header-right">
+        <!-- Period tabs -->
+        <div class="rf-period-tabs" role="tablist" aria-label="Rashifal period">
+          <a href="/rashifal?period=daily" class="rf-tab rf-tab-active">Daily</a>
+          <a href="/rashifal?period=weekly" class="rf-tab">Weekly</a>
+          <a href="/rashifal?period=monthly" class="rf-tab">Monthly</a>
+          <a href="/rashifal?period=yearly" class="rf-tab">Yearly</a>
+        </div>
+        <a href="/rashifal" class="rf-more-link">
+          <span class="en-text">All Rashis →</span>
+          <span class="hi-text" style="display:none;">सभी राशियाँ →</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 12-rashi grid -->
+    <div class="rf-grid" id="rashifal-grid">
+      {RASHIS.map((rashi, idx) => {
+        const prediction = getDailyPrediction(rashi, today);
+        const short = prediction.length > 130 ? prediction.slice(0, 130).trim() + '…' : prediction;
+        return (
+          <a href={`/rashifal/${rashi.id}`} class="rf-card animate-in" style={`animation-delay:${idx * 40}ms`}>
+            <!-- Icon strip -->
+            <div class="rf-card-thumb" style={`background:${rashi.gradient}`}>
+              <span class="rf-symbol" aria-hidden="true">{rashi.symbol}</span>
+              <div class="rf-card-overlay"></div>
+            </div>
+            <!-- Content -->
+            <div class="rf-card-body">
+              <div class="rf-card-meta">
+                <div>
+                  <p class="rf-rashi-name en-text">{rashi.name}</p>
+                  <p class="rf-rashi-name hi-text" style="display:none;">{rashi.nameHi}</p>
+                  <p class="rf-rashi-en">{rashi.english}</p>
+                </div>
+                <span class="rf-lord-badge">{rashi.lord}</span>
+              </div>
+              <p class="rf-prediction">{short}</p>
+              <span class="rf-read-more">
+                Full prediction <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+
+    <!-- Tools row -->
+    <div class="rf-tools-row">
+
+      <!-- Prashnavali card -->
+      <a href="/prashnavali" class="rf-tool-card rf-prashnavali">
+        <div class="rf-tool-icon">🔮</div>
+        <div>
+          <p class="rf-tool-title">
+            <span class="en-text">Prashnavali</span>
+            <span class="hi-text" style="display:none;">प्रश्नावली</span>
+          </p>
+          <p class="rf-tool-desc">
+            <span class="en-text">Divine question oracle — focus on your question and receive a cosmic answer</span>
+            <span class="hi-text" style="display:none;">दिव्य प्रश्नावली — अपना प्रश्न मन में रखें</span>
+          </p>
+        </div>
+        <span class="rf-tool-arrow">→</span>
+      </a>
+
+      <!-- Find Rashi by Name -->
+      <div class="rf-tool-card rf-finder" id="rashi-name-finder">
+        <div class="rf-tool-icon">🔤</div>
+        <div style="flex:1;min-width:0;">
+          <p class="rf-tool-title">
+            <span class="en-text">Find Rashi by Name</span>
+            <span class="hi-text" style="display:none;">नाम से राशि जानें</span>
+          </p>
+          <div class="rf-finder-input-row">
+            <input
+              type="text"
+              id="name-input"
+              class="rf-input"
+              placeholder="Enter first name…"
+              maxlength="40"
+              autocomplete="off"
+            />
+            <button class="rf-find-btn" id="name-find-btn">Find</button>
+          </div>
+          <p class="rf-finder-result" id="name-result" hidden></p>
+        </div>
+      </div>
+
+      <!-- Find Rashi by Birth Date -->
+      <div class="rf-tool-card rf-finder" id="rashi-date-finder">
+        <div class="rf-tool-icon">📅</div>
+        <div style="flex:1;min-width:0;">
+          <p class="rf-tool-title">
+            <span class="en-text">Find Rashi by Birth Date</span>
+            <span class="hi-text" style="display:none;">जन्म तिथि से राशि जानें</span>
+          </p>
+          <div class="rf-finder-input-row">
+            <input type="date" id="dob-input" class="rf-input" />
+            <button class="rf-find-btn" id="dob-find-btn">Find</button>
+          </div>
+          <p class="rf-finder-result" id="dob-result" hidden></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── Name-to-Rashi lookup ─────────────────────────────────────────────────
+const NAME_MAP: Record<string, string> = {
+  chu:"Mesha",che:"Mesha",cho:"Mesha",la:"Mesha",li:"Mesha",lu:"Mesha",le:"Mesha",lo:"Mesha",
+  i:"Vrishabha",u:"Vrishabha",e:"Vrishabha",o:"Vrishabha",va:"Vrishabha",vi:"Vrishabha",vu:"Vrishabha",ve:"Vrishabha",vo:"Vrishabha",
+  ka:"Mithuna",ki:"Mithuna",ku:"Mithuna",gha:"Mithuna",cha:"Mithuna",ke:"Mithuna",
+  hi:"Karka",hu:"Karka",he:"Karka",ho:"Karka",
+  ma:"Simha",mi:"Simha",mu:"Simha",me:"Simha",mo:"Simha",
+  ta:"Simha",ti:"Simha",tu:"Simha",te:"Simha",
+  pa:"Kanya",pi:"Kanya",pu:"Kanya",sha:"Kanya",na:"Kanya",tha:"Kanya",pe:"Kanya",po:"Kanya",
+  ra:"Tula",ri:"Tula",ru:"Tula",re:"Tula",ro:"Tula",
+  to:"Vrishchika",ni:"Vrishchika",nu:"Vrishchika",ne:"Vrishchika",no:"Vrishchika",ya:"Vrishchika",yi:"Vrishchika",yu:"Vrishchika",
+  ye:"Dhanu",yo:"Dhanu",bha:"Dhanu",bhi:"Dhanu",bhu:"Dhanu",dha:"Dhanu",fa:"Dhanu",bhe:"Dhanu",
+  bho:"Makara",ja:"Makara",ji:"Makara",khi:"Makara",khu:"Makara",khe:"Makara",kho:"Makara",ga:"Makara",gi:"Makara",
+  gu:"Kumbha",ge:"Kumbha",go:"Kumbha",sa:"Kumbha",si:"Kumbha",su:"Kumbha",se:"Kumbha",so:"Kumbha",
+  di:"Meena",du:"Meena",jha:"Meena",de:"Meena",do:"Meena",chi:"Meena",
+};
+const RASHI_HI: Record<string, string> = {
+  Mesha:"मेष",Vrishabha:"वृषभ",Mithuna:"मिथुन",Karka:"कर्क",Simha:"सिंह",Kanya:"कन्या",
+  Tula:"तुला",Vrishchika:"वृश्चिक",Dhanu:"धनु",Makara:"मकर",Kumbha:"कुम्भ",Meena:"मीन",
+};
+const RASHI_ID: Record<string, string> = {
+  Mesha:"mesha",Vrishabha:"vrishabha",Mithuna:"mithuna",Karka:"karka",Simha:"simha",Kanya:"kanya",
+  Tula:"tula",Vrishchika:"vrishchika",Dhanu:"dhanu",Makara:"makara",Kumbha:"kumbha",Meena:"meena",
+};
+
+function findByName(name: string): string | undefined {
+  const lower = name.trim().toLowerCase();
+  for (let len = 3; len >= 1; len--) {
+    const k = lower.slice(0, len);
+    if (NAME_MAP[k]) return NAME_MAP[k];
+  }
+  return undefined;
+}
+
+function findByDate(dateStr: string): string {
+  const d = new Date(dateStr + 'T12:00:00');
+  const m = d.getMonth() + 1, day = d.getDate(), md = m * 100 + day;
+  if (md >= 414 && md <= 514) return "Mesha";
+  if (md >= 515 && md <= 614) return "Vrishabha";
+  if (md >= 615 && md <= 715) return "Mithuna";
+  if (md >= 716 && md <= 816) return "Karka";
+  if (md >= 817 && md <= 916) return "Simha";
+  if (md >= 917 && md <= 1017) return "Kanya";
+  if (md >= 1018 && md <= 1115) return "Tula";
+  if (md >= 1116 && md <= 1214) return "Vrishchika";
+  if (md >= 1215 || md <= 113) return "Dhanu";
+  if (md >= 114 && md <= 212) return "Makara";
+  if (md >= 213 && md <= 313) return "Kumbha";
+  return "Meena";
+}
+
+function showResult(el: HTMLElement, rashi: string) {
+  const hi = RASHI_HI[rashi] ?? '';
+  const id = RASHI_ID[rashi] ?? rashi.toLowerCase();
+  el.innerHTML = `Your Rashi is <strong>${rashi} (${hi})</strong>. <a href="/rashifal/${id}" style="color:var(--color-saffron-deep);text-decoration:none;font-weight:600;">View prediction →</a>`;
+  el.hidden = false;
+}
+
+document.getElementById('name-find-btn')?.addEventListener('click', () => {
+  const val = (document.getElementById('name-input') as HTMLInputElement)?.value ?? '';
+  const result = document.getElementById('name-result') as HTMLElement;
+  if (!val.trim()) { result.textContent = 'Please enter a name.'; result.hidden = false; return; }
+  const rashi = findByName(val);
+  if (rashi) showResult(result, rashi);
+  else { result.textContent = 'Could not determine Rashi from this name. Try the birth date tool.'; result.hidden = false; }
+});
+
+document.getElementById('dob-find-btn')?.addEventListener('click', () => {
+  const val = (document.getElementById('dob-input') as HTMLInputElement)?.value ?? '';
+  const result = document.getElementById('dob-result') as HTMLElement;
+  if (!val) { result.textContent = 'Please select a date.'; result.hidden = false; return; }
+  const rashi = findByDate(val);
+  showResult(result, rashi);
+});
+
+document.getElementById('name-input')?.addEventListener('keydown', (e) => {
+  if ((e as KeyboardEvent).key === 'Enter') document.getElementById('name-find-btn')?.click();
+});
+document.getElementById('dob-input')?.addEventListener('keydown', (e) => {
+  if ((e as KeyboardEvent).key === 'Enter') document.getElementById('dob-find-btn')?.click();
+});
+</script>
+
+<style>
+.rf-section {
+  padding: 56px 0 48px;
+  background: var(--color-canvas-soft);
+}
+.rf-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Header */
+.rf-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.rf-title {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.8px;
+  color: var(--color-ink);
+  margin: 0 0 4px;
+}
+.rf-date-label {
+  font-size: 13px;
+  color: var(--color-mute);
+  margin: 0;
+}
+.rf-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.rf-period-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+}
+.rf-tab {
+  padding: 4px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-mute);
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.rf-tab:hover { color: var(--color-ink); }
+.rf-tab-active {
+  background: var(--color-ink);
+  color: var(--color-on-primary) !important;
+}
+.rf-more-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-saffron-deep);
+  text-decoration: none;
+}
+.rf-more-link:hover { text-decoration: underline; }
+
+/* Grid */
+.rf-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Card */
+.rf-card {
+  background: var(--color-canvas);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.rf-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+.rf-card-thumb {
+  height: 52px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+.rf-symbol {
+  font-size: 22px;
+  position: relative;
+  z-index: 1;
+}
+.rf-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.15) 0%, transparent 60%);
+}
+
+.rf-card-body {
+  padding: 14px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.rf-card-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.rf-rashi-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0 0 1px;
+  letter-spacing: -0.3px;
+}
+.rf-rashi-en {
+  font-size: 11px;
+  color: var(--color-mute);
+  margin: 0;
+  font-family: var(--font-mono);
+}
+.rf-lord-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-saffron-deep);
+  background: var(--color-saffron-soft);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,153,51,0.2);
+}
+.rf-prediction {
+  font-size: 12.5px;
+  color: var(--color-body-text);
+  line-height: 1.6;
+  margin: 0 0 10px;
+  flex: 1;
+}
+.rf-read-more {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-saffron-deep);
+  margin-top: auto;
+}
+
+/* Tools row */
+.rf-tools-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.rf-tool-card {
+  background: var(--color-canvas);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-decoration: none;
+  transition: box-shadow 0.15s;
+}
+.rf-tool-card:hover { box-shadow: var(--shadow-card-hover); }
+.rf-tool-icon { font-size: 26px; flex-shrink: 0; }
+.rf-tool-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin: 0 0 6px;
+}
+.rf-tool-desc {
+  font-size: 12.5px;
+  color: var(--color-body-text);
+  margin: 0;
+  line-height: 1.5;
+}
+.rf-tool-arrow {
+  font-size: 16px;
+  color: var(--color-saffron-deep);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.rf-finder { flex-direction: row; cursor: default; }
+.rf-finder:hover { box-shadow: var(--shadow-card); }
+
+.rf-finder-input-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.rf-input {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  padding: 0 10px;
+  background: var(--color-canvas-soft-2);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-ink);
+  outline: none;
+}
+.rf-input:focus { border-color: var(--color-saffron); background: var(--color-canvas); }
+.rf-find-btn {
+  height: 32px;
+  padding: 0 14px;
+  background: var(--color-saffron);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+.rf-find-btn:hover { opacity: 0.85; }
+.rf-finder-result {
+  font-size: 12.5px;
+  color: var(--color-body-text);
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .rf-grid { grid-template-columns: repeat(3, 1fr); }
+  .rf-tools-row { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .rf-grid { grid-template-columns: repeat(2, 1fr); }
+  .rf-header { flex-direction: column; }
+  .rf-header-right { align-items: flex-start; }
+  .rf-tools-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .rf-period-tabs { flex-wrap: wrap; }
+}
+</style>

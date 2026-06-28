@@ -1,0 +1,305 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { RASHIS, getDailyPrediction, type Rashi } from '../../lib/rashifal';
+
+export function getStaticPaths() {
+  return RASHIS.map(r => ({ params: { rashi: r.id }, props: { rashi: r } }));
+}
+
+interface Props { rashi: Rashi; }
+const { rashi } = Astro.props;
+
+const today = new Date();
+const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const daily = getDailyPrediction(rashi, today);
+
+const allRashis = RASHIS;
+const currentIdx = allRashis.findIndex(r => r.id === rashi.id);
+const prevRashi = allRashis[(currentIdx - 1 + allRashis.length) % allRashis.length];
+const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
+---
+
+<Layout
+  title={`${rashi.name} (${rashi.english}) Rashifal — Daily Horoscope | PanchangPath`}
+  description={`Read today's ${rashi.name} Rashifal. Daily, weekly, monthly and yearly horoscope for ${rashi.english} (${rashi.name}) based on Vedic Jyotish.`}
+>
+
+  <!-- Breadcrumb -->
+  <div style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:10px 0;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <nav style="font-size:12.5px;color:var(--color-mute);">
+        <a href="/" style="color:var(--color-mute);text-decoration:none;">Home</a>
+        <span style="margin:0 6px;">›</span>
+        <a href="/rashifal" style="color:var(--color-mute);text-decoration:none;">Rashifal</a>
+        <span style="margin:0 6px;">›</span>
+        <span style="color:var(--color-ink);">{rashi.name}</span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Rashi hero banner -->
+  <section style={`background:${rashi.gradient};padding:48px 0 40px;`}>
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="font-size:64px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2));">
+          {rashi.symbol}
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 6px;font-family:var(--font-mono);">
+            {rashi.element} · {rashi.quality}
+          </p>
+          <h1 style="font-size:40px;font-weight:700;letter-spacing:-1.5px;color:#fff;margin:0 0 4px;">
+            {rashi.name}
+            <span style="font-size:22px;opacity:0.8;font-weight:400;margin-left:8px;">({rashi.english})</span>
+          </h1>
+          <p style="font-size:20px;color:rgba(255,255,255,0.85);margin:0;font-weight:500;">{rashi.nameHi}</p>
+        </div>
+        <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
+          <a href={`/rashifal/${prevRashi.id}`} class="rashi-nav-btn" title={`${prevRashi.name} Rashifal`}>
+            ← {prevRashi.symbol} {prevRashi.name}
+          </a>
+          <a href={`/rashifal/${nextRashi.id}`} class="rashi-nav-btn" title={`${nextRashi.name} Rashifal`}>
+            {nextRashi.name} {nextRashi.symbol} →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main content -->
+  <section style="padding:40px 0 56px;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div class="rd-layout">
+
+        <!-- Left: Predictions -->
+        <div class="rd-main">
+
+          <!-- Period tabs -->
+          <div style="display:flex;gap:4px;margin-bottom:24px;flex-wrap:wrap;">
+            <button class="rp-tab active" data-period="daily">📅 Daily</button>
+            <button class="rp-tab" data-period="weekly">🗓️ Weekly</button>
+            <button class="rp-tab" data-period="monthly">📆 Monthly</button>
+            <button class="rp-tab" data-period="yearly">🌟 Yearly</button>
+          </div>
+
+          <!-- Daily prediction -->
+          <div class="rp-panel" data-period="daily">
+            <div class="card" style="padding:28px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+                <span style="font-size:20px;">☀️</span>
+                <div>
+                  <p class="caption-mono" style="color:var(--color-mute);margin:0;">Daily Rashifal</p>
+                  <p style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
+                </div>
+              </div>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{daily}</p>
+            </div>
+          </div>
+
+          <!-- Weekly prediction -->
+          <div class="rp-panel" data-period="weekly" hidden>
+            <div class="card" style="padding:28px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+                <span style="font-size:20px;">🗓️</span>
+                <div>
+                  <p class="caption-mono" style="color:var(--color-mute);margin:0;">Weekly Rashifal</p>
+                  <p style="font-size:13px;color:var(--color-body-text);margin:0;">Current week's overview</p>
+                </div>
+              </div>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{rashi.predictions.weekly}</p>
+            </div>
+          </div>
+
+          <!-- Monthly prediction -->
+          <div class="rp-panel" data-period="monthly" hidden>
+            <div class="card" style="padding:28px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+                <span style="font-size:20px;">📆</span>
+                <div>
+                  <p class="caption-mono" style="color:var(--color-mute);margin:0;">Monthly Rashifal</p>
+                  <p style="font-size:13px;color:var(--color-body-text);margin:0;">
+                    {today.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+              </div>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{rashi.predictions.monthly}</p>
+            </div>
+          </div>
+
+          <!-- Yearly prediction -->
+          <div class="rp-panel" data-period="yearly" hidden>
+            <div class="card" style="padding:28px;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+                <span style="font-size:20px;">🌟</span>
+                <div>
+                  <p class="caption-mono" style="color:var(--color-mute);margin:0;">Yearly Rashifal</p>
+                  <p style="font-size:13px;color:var(--color-body-text);margin:0;">{today.getFullYear()} Overview</p>
+                </div>
+              </div>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{rashi.predictions.yearly}</p>
+            </div>
+          </div>
+
+          <!-- Prashnavali CTA -->
+          <a href="/prashnavali" class="card" style="display:flex;align-items:center;gap:16px;padding:20px 24px;margin-top:12px;text-decoration:none;background:linear-gradient(135deg,var(--color-saffron-soft) 0%,var(--color-canvas) 100%);border:1px solid rgba(255,153,51,0.2);">
+            <span style="font-size:32px;">🔮</span>
+            <div>
+              <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">Ask the Prashnavali Oracle</p>
+              <p style="font-size:12.5px;color:var(--color-body-text);margin:0;">Focus on your deepest question and receive a divine cosmic answer</p>
+            </div>
+            <span style="margin-left:auto;font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open →</span>
+          </a>
+        </div>
+
+        <!-- Right sidebar: Rashi info -->
+        <aside class="rd-sidebar">
+          <!-- Rashi details -->
+          <div class="card" style="padding:20px;margin-bottom:12px;">
+            <p class="caption-mono" style="color:var(--color-mute);margin:0 0 16px;">{rashi.name} · Overview</p>
+            <div class="rd-info-grid">
+              <div class="rd-info-item">
+                <span class="rd-info-label">Ruling Planet</span>
+                <span class="rd-info-val">{rashi.lord} ({rashi.lordHi})</span>
+              </div>
+              <div class="rd-info-item">
+                <span class="rd-info-label">Element</span>
+                <span class="rd-info-val">{rashi.element}</span>
+              </div>
+              <div class="rd-info-item">
+                <span class="rd-info-label">Quality</span>
+                <span class="rd-info-val">{rashi.quality}</span>
+              </div>
+              <div class="rd-info-item">
+                <span class="rd-info-label">Lucky Color</span>
+                <span class="rd-info-val" style="display:flex;align-items:center;gap:6px;">
+                  <span style={`width:12px;height:12px;border-radius:50%;background:${rashi.luckyColorHex};flex-shrink:0;`}></span>
+                  {rashi.luckyColor}
+                </span>
+              </div>
+              <div class="rd-info-item">
+                <span class="rd-info-label">Lucky Numbers</span>
+                <span class="rd-info-val">{rashi.luckyNumbers.join(', ')}</span>
+              </div>
+              <div class="rd-info-item">
+                <span class="rd-info-label">Lucky Day</span>
+                <span class="rd-info-val">{rashi.luckyDay}</span>
+              </div>
+              <div class="rd-info-item">
+                <span class="rd-info-label">Symbol</span>
+                <span class="rd-info-val">{rashi.symbol} {rashi.english}</span>
+              </div>
+              <div class="rd-info-item">
+                <span class="rd-info-label">Name Letters</span>
+                <span class="rd-info-val" style="font-size:11.5px;">{rashi.nameLetters.join(', ')}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- All 12 rashis quick nav -->
+          <div class="card" style="padding:20px;">
+            <p class="caption-mono" style="color:var(--color-mute);margin:0 0 14px;">All Rashis</p>
+            <div class="rd-rashi-nav">
+              {allRashis.map(r => (
+                <a
+                  href={`/rashifal/${r.id}`}
+                  class={`rd-rashi-link ${r.id === rashi.id ? 'rd-rashi-active' : ''}`}
+                  title={r.english}
+                >
+                  <span class="rd-rashi-sym">{r.symbol}</span>
+                  <span class="rd-rashi-nm">{r.name}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<script>
+document.querySelectorAll<HTMLButtonElement>('.rp-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const period = btn.dataset.period ?? 'daily';
+    document.querySelectorAll('.rp-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll<HTMLElement>('.rp-panel').forEach(p => {
+      p.hidden = p.dataset.period !== period;
+    });
+  });
+});
+</script>
+
+<style>
+.rd-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  align-items: start;
+}
+.rd-sidebar { position: sticky; top: 100px; }
+
+.rashi-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+  backdrop-filter: blur(4px);
+  white-space: nowrap;
+}
+.rashi-nav-btn:hover { background: rgba(255,255,255,0.25); }
+
+.rp-tab {
+  height: 36px;
+  padding: 0 16px;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-body-text);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.rp-tab:hover { border-color: var(--color-saffron); color: var(--color-saffron-deep); }
+.rp-tab.active { background: var(--color-ink); color: var(--color-on-primary); border-color: var(--color-ink); }
+
+.rd-info-grid { display: flex; flex-direction: column; gap: 10px; }
+.rd-info-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.rd-info-label { font-size: 11.5px; color: var(--color-mute); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.04em; }
+.rd-info-val { font-size: 13px; color: var(--color-ink); font-weight: 500; text-align: right; }
+
+.rd-rashi-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.rd-rashi-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-size: 12.5px;
+  color: var(--color-body-text);
+  transition: background 0.12s, color 0.12s;
+}
+.rd-rashi-link:hover { background: var(--color-canvas-soft-2); color: var(--color-ink); }
+.rd-rashi-active { background: var(--color-saffron-soft) !important; color: var(--color-saffron-deep) !important; font-weight: 600; }
+.rd-rashi-sym { font-size: 14px; }
+.rd-rashi-nm { font-size: 12px; }
+
+@media (max-width: 900px) {
+  .rd-layout { grid-template-columns: 1fr; }
+  .rd-sidebar { position: static; }
+}
+@media (max-width: 640px) {
+  .rashi-nav-btn { display: none; }
+}
+</style>
