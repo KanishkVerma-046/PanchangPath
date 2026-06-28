@@ -10,6 +10,23 @@ import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
 import { computeUpcomingEvents } from '../lib/planetaryEvents';
 import { getDefaultLocation } from '../lib/locations';
+import { REGIONS } from '../lib/panchang-i18n';
+
+// Build a compact client-side i18n lookup keyed by language code
+const clientI18N = Object.fromEntries(
+  REGIONS.map(r => [r.code, {
+    name: r.name,
+    nativeName: r.nativeName,
+    monthSystem: r.monthSystem,
+    solarMonthMap: r.solarMonthMap,
+    months: r.months,
+    tithiShukla: r.tithiShukla,
+    tithiKrishna: r.tithiKrishna,
+    nakshatras: r.nakshatras,
+    varas: r.varas,
+    paksha: r.paksha,
+  }])
+);
 
 const today = new Date();
 const loc = getDefaultLocation(); // New Delhi, will be overridden client-side
@@ -274,7 +291,7 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
   </section>
 </Layout>
 
-<script>
+<script define:vars={{ clientI18N }}>
 // ─── Client-side Panchang engine ─────────────────────────────────────────
 // Mirrors src/lib/panchang.ts + src/lib/panchang.ts#getHinduCalendarInfo
 
@@ -396,7 +413,55 @@ interface Location { name: string; nameHi?: string; lat: number; lng: number; tz
 // Default — overridden immediately by LocationPicker's locationchange event
 let currentLoc: Location = { name:'New Delhi', nameHi:'नई दिल्ली', lat:28.6139, lng:77.2090, tzOffset:5.5, tz:'Asia/Kolkata', elevation:216, country:'India' };
 let currentDate = new Date();
-let isHindi = false;
+let currentLang: string = localStorage.getItem('pp-lang') || 'en';
+let isHindi = currentLang === 'hi';
+
+// Return i18n translations for the current lang (null for en/hi)
+function getI18N() {
+  if (currentLang === 'en' || currentLang === 'hi') return null;
+  return (clientI18N as Record<string, any>)[currentLang] || null;
+}
+
+// Look up regional tithi name (tithiNumber 1-30)
+function regionalTithi(tithiNumber: number, paksha: string): string | null {
+  const i = getI18N(); if (!i) return null;
+  const idx = (tithiNumber - 1) % 15;
+  return (paksha === 'Shukla' ? i.tithiShukla[idx] : i.tithiKrishna[idx]) || null;
+}
+
+// Look up regional nakshatra name (0-based)
+function regionalNakshatra(idx: number): string | null {
+  const i = getI18N(); if (!i) return null;
+  return i.nakshatras[idx] || null;
+}
+
+// Look up regional vara name (weekday 0=Sun)
+function regionalVara(weekday: number): string | null {
+  const i = getI18N(); if (!i) return null;
+  return i.varas[weekday] || null;
+}
+
+// Look up regional month name using sun sidereal longitude
+function regionalMonth(sunSidereal: number, amantaMonthName: string): string | null {
+  const i = getI18N(); if (!i) return null;
+  if (i.monthSystem === 'solar') {
+    const sunRashiIdx = Math.floor(sunSidereal / 30) % 12;
+    const monthIdx = (i.solarMonthMap as number[])[sunRashiIdx];
+    return i.months[monthIdx] || null;
+  }
+  // Lunar: map amanta month name to 0-based index
+  const AMANTA_IDX: Record<string, number> = {
+    Chaitra:0,Vaishakha:1,Jyeshtha:2,Ashadha:3,Shravana:4,Bhadrapada:5,
+    Ashwin:6,Kartika:7,Margashirsha:8,Pausha:9,Magha:10,Phalguna:11,
+  };
+  return i.months[AMANTA_IDX[amantaMonthName] ?? 0] || null;
+}
+
+// Regional paksha labels
+function regionalPaksha(paksha: string): string | null {
+  const i = getI18N(); if (!i) return null;
+  return i.paksha[paksha === 'Shukla' ? 0 : 1] || null;
+}
 
 function calcPanchang(date: Date, loc: Location) {
   const year = date.getFullYear(), month = date.getMonth()+1, day = date.getDate();
@@ -550,13 +615,15 @@ function drawTimeline(p: ReturnType<typeof calcPanchang>) {
   }).join('') + `<div style="position:absolute;left:${nowPct}%;top:0;width:2px;height:100%;background:var(--color-ink);border-radius:1px;" title="Now"></div>`;
 }
 
-function applyLang(hindi: boolean) {
-  isHindi = hindi;
-  document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
-  document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
+function applyLang(langCode: string) {
+  currentLang = langCode;
+  isHindi = langCode === 'hi';
+  const showHindi = isHindi;
+  document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = showHindi ? 'none' : 'block');
+  document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = showHindi ? 'block' : 'none');
   const locDisplay = document.getElementById('loc-display');
-  if (locDisplay) locDisplay.textContent = hindi ? currentLoc.nameHi : currentLoc.name;
-  // Refresh summary card to update bilingual fields
+  if (locDisplay) locDisplay.textContent = isHindi ? (currentLoc.nameHi ?? currentLoc.name) : currentLoc.name;
+  // Refresh summary card so regional names apply
   const p = calcPanchang(currentDate, currentLoc);
   updateSummaryCard(p, currentDate, currentLoc);
 }
@@ -577,11 +644,13 @@ function updateSummaryCard(p: ReturnType<typeof calcPanchang>, date: Date, loc: 
   const month = calSchool === 'purnimanta' ? cal.purnimantaMonth : cal.amantaMonth;
   const monthLbl = document.getElementById('ps-month-lbl');
   if (monthLbl) monthLbl.textContent = calSchool === 'purnimanta' ? 'Purnimanta Month' : 'Amanta Month';
-  setText('ps-month', month.name);
+  const monthDisplay = regionalMonth(p.sunSidereal, month.name) ?? month.name;
+  setText('ps-month', monthDisplay);
   setText('ps-month-hi', month.nameHi);
 
   // Vara
-  setText('ps-vara', p.vara.name);
+  const varaDisplay = regionalVara(date.getDay()) ?? p.vara.name;
+  setText('ps-vara', varaDisplay);
   setText('ps-vara-hi', p.vara.nameHi);
 
   // Sun / moon times
@@ -603,8 +672,9 @@ function updateSummaryCard(p: ReturnType<typeof calcPanchang>, date: Date, loc: 
   if (pakshaBadge) {
     pakshaBadge.dataset.isShukla = p.tithiPaksha === 'Shukla' ? 'true' : 'false';
     const isShukla = p.tithiPaksha === 'Shukla';
+    const pakshaLabel = regionalPaksha(p.tithiPaksha) ?? (p.tithiPaksha + ' Paksha');
     pakshaBadge.innerHTML = `${isShukla ? '🌕' : '🌑'}
-      <span class="en-text" style="${isHindi ? 'display:none' : ''}">${p.tithiPaksha} Paksha</span>
+      <span class="en-text" style="${isHindi ? 'display:none' : ''}">${pakshaLabel}</span>
       <span class="hi-text" style="${isHindi ? '' : 'display:none'}">${p.tithi.pakshaNi} पक्ष</span>`;
     pakshaBadge.style.cssText = isShukla
       ? 'background:rgba(255,153,51,0.12);color:var(--color-saffron-deep);border:1px solid rgba(255,153,51,0.25);display:inline-flex;align-items:center;gap:5px;padding:2px 10px 2px 6px;border-radius:var(--radius-pill);font-size:12.5px;font-weight:600;'
@@ -612,11 +682,15 @@ function updateSummaryCard(p: ReturnType<typeof calcPanchang>, date: Date, loc: 
   }
 
   // Tithi
-  setText('ps-tithi', p.tithi.name); setText('ps-tithi-hi', p.tithi.nameHi);
+  const elongation = ((p.moonSidereal - p.sunSidereal) + 360) % 360;
+  const tithiDisplay = regionalTithi(Math.floor(elongation / 12) + 1, p.tithiPaksha) ?? p.tithi.name;
+  setText('ps-tithi', tithiDisplay); setText('ps-tithi-hi', p.tithi.nameHi);
   setText('ps-tithi-ends', `ends ${p.tithi.endTime}`);
 
   // Nakshatra
-  setText('ps-nakshatra', p.nakshatra.name); setText('ps-nakshatra-hi', p.nakshatra.nameHi);
+  const nakshIdx = Math.floor(p.moonSidereal / (360/27)) % 27;
+  const nakshatraDisplay = regionalNakshatra(nakshIdx) ?? p.nakshatra.name;
+  setText('ps-nakshatra', nakshatraDisplay); setText('ps-nakshatra-hi', p.nakshatra.nameHi);
   setText('ps-nakshatra-sub', `, Pada ${p.nakshatra.pada} · ${p.nakshatra.lord}`);
   setText('ps-nakshatra-ends', `ends ${p.nakshatra.endTime}`);
 
@@ -722,7 +796,9 @@ window.addEventListener('locationchange', (e: Event) => {
 // Language change
 document.addEventListener('langchange', (e: Event) => {
   const evt = e as CustomEvent;
-  applyLang(evt.detail.hindi);
+  // LanguagePicker dispatches { langCode }; old toggle dispatched { hindi }
+  const langCode: string = evt.detail.langCode ?? (evt.detail.hindi ? 'hi' : 'en');
+  applyLang(langCode);
 });
 
 // ── Toolbar: time format ──

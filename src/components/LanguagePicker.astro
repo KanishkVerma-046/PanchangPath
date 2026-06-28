@@ -1,0 +1,271 @@
+---
+import { REGIONS } from '../lib/panchang-i18n';
+
+interface LangOption {
+  code: string;
+  nativeName: string;
+  label: string;   // short pill label
+  name: string;    // English name
+}
+
+const LANGS: LangOption[] = [
+  { code: 'en', nativeName: 'English', label: 'EN',  name: 'English' },
+  { code: 'hi', nativeName: 'हिन्दी',  label: 'हिं', name: 'Hindi' },
+  ...REGIONS.map(r => ({
+    code: r.code,
+    nativeName: r.nativeName,
+    label: r.nativeName,
+    name: r.name,
+  })),
+];
+---
+
+<!-- Language picker pill + dropdown -->
+<div class="lng-root" id="lng-root">
+  <button class="lng-pill" id="lng-pill" aria-haspopup="listbox" aria-expanded="false" title="Change language">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+      <circle cx="12" cy="12" r="10"/>
+      <line x1="2" y1="12" x2="22" y2="12"/>
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+    </svg>
+    <span id="lng-label" class="lng-label-txt">EN</span>
+    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </button>
+
+  <div class="lng-dropdown" id="lng-dropdown" role="listbox" aria-label="Select language" hidden>
+    <!-- Interface section -->
+    <p class="lng-section-head">Interface</p>
+    {LANGS.slice(0, 2).map(l => (
+      <button class="lng-opt" data-code={l.code} role="option">
+        <span class="lng-opt-native">{l.nativeName}</span>
+        <span class="lng-opt-name">{l.name}</span>
+        <svg class="lng-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </button>
+    ))}
+
+    <div class="lng-divider"></div>
+
+    <!-- Regional section -->
+    <p class="lng-section-head">Regional Panchang</p>
+    {LANGS.slice(2).map(l => (
+      <button class="lng-opt" data-code={l.code} role="option">
+        <span class="lng-opt-native">{l.nativeName}</span>
+        <span class="lng-opt-name">{l.name}</span>
+        <svg class="lng-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </button>
+    ))}
+  </div>
+</div>
+
+<div class="lng-backdrop" id="lng-backdrop" hidden></div>
+
+<script define:vars={{ LANGS }}>
+let currentLang = localStorage.getItem('pp-lang') || 'en';
+
+function getLang(code) {
+  return LANGS.find(l => l.code === code) || LANGS[0];
+}
+
+function updatePill() {
+  const lang = getLang(currentLang);
+  const label = document.getElementById('lng-label');
+  if (label) label.textContent = lang.label;
+
+  // Update checked state
+  document.querySelectorAll('.lng-opt').forEach(btn => {
+    const isActive = btn.getAttribute('data-code') === currentLang;
+    btn.classList.toggle('lng-opt-active', isActive);
+  });
+}
+
+function openDropdown() {
+  const dd = document.getElementById('lng-dropdown');
+  const pill = document.getElementById('lng-pill');
+  const backdrop = document.getElementById('lng-backdrop');
+  if (!dd) return;
+
+  const pillRect = pill ? pill.getBoundingClientRect() : null;
+  if (pillRect) {
+    dd.style.top = (pillRect.bottom + 6) + 'px';
+    const rightEdge = window.innerWidth - pillRect.right;
+    dd.style.right = Math.max(8, rightEdge) + 'px';
+    dd.style.left = 'auto';
+  }
+
+  dd.hidden = false;
+  if (backdrop) backdrop.hidden = false;
+  pill?.setAttribute('aria-expanded', 'true');
+}
+
+function closeDropdown() {
+  const dd = document.getElementById('lng-dropdown');
+  const pill = document.getElementById('lng-pill');
+  const backdrop = document.getElementById('lng-backdrop');
+  if (dd) dd.hidden = true;
+  if (backdrop) backdrop.hidden = true;
+  pill?.setAttribute('aria-expanded', 'false');
+}
+
+function selectLang(code) {
+  currentLang = code;
+  localStorage.setItem('pp-lang', code);
+  updatePill();
+  closeDropdown();
+
+  // Notify the page (index.astro listens)
+  document.dispatchEvent(new CustomEvent('langchange', { detail: { langCode: code } }));
+}
+
+// Wire up
+document.getElementById('lng-pill')?.addEventListener('click', () => {
+  const dd = document.getElementById('lng-dropdown');
+  dd?.hidden ? openDropdown() : closeDropdown();
+});
+
+document.getElementById('lng-backdrop')?.addEventListener('click', closeDropdown);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDropdown();
+});
+
+document.querySelectorAll('.lng-opt').forEach(btn => {
+  btn.addEventListener('click', () => selectLang(btn.getAttribute('data-code') || 'en'));
+});
+
+// Init
+updatePill();
+
+// Fire initial langchange so index.astro renders with the stored language
+if (currentLang !== 'en') {
+  // Slight delay so index.astro's listener is registered first
+  setTimeout(() => {
+    document.dispatchEvent(new CustomEvent('langchange', { detail: { langCode: currentLang } }));
+  }, 80);
+}
+</script>
+
+<style>
+/* ── Pill ── */
+.lng-root { position: relative; flex-shrink: 0; }
+.lng-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 30px;
+  padding: 0 9px;
+  background: var(--color-canvas-soft-2);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-ink);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.lng-pill:hover { background: var(--color-canvas-soft); border-color: var(--color-saffron); color: var(--color-saffron-deep); }
+.lng-pill[aria-expanded="true"] { border-color: var(--color-saffron); background: var(--color-saffron-soft); color: var(--color-saffron-deep); }
+.lng-pill svg:first-child { color: var(--color-mute); flex-shrink: 0; }
+.lng-label-txt { min-width: 18px; text-align: center; font-family: sans-serif; }
+
+/* ── Backdrop ── */
+.lng-backdrop { position: fixed; inset: 0; z-index: 199; }
+
+/* ── Dropdown ── */
+.lng-dropdown {
+  position: fixed;
+  z-index: 200;
+  width: 220px;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+  max-height: 70vh;
+  overflow-y: auto;
+  animation: lng-in 0.13s ease both;
+  overscroll-behavior: contain;
+}
+@keyframes lng-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Section head ── */
+.lng-section-head {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-mute);
+  font-family: var(--font-mono);
+  padding: 8px 12px 4px;
+  margin: 0;
+  position: sticky;
+  top: 0;
+  background: var(--color-canvas);
+}
+
+.lng-divider { height: 1px; background: var(--color-hairline); margin: 4px 0; }
+
+/* ── Options ── */
+.lng-opt {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  transition: background 0.08s;
+}
+.lng-opt:hover { background: var(--color-canvas-soft); }
+.lng-opt-active { background: var(--color-saffron-soft); }
+.lng-opt-active .lng-opt-native { color: var(--color-saffron-deep); }
+.lng-opt-native {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-ink);
+  min-width: 42px;
+  font-family: sans-serif;
+}
+.lng-opt-name {
+  font-size: 12px;
+  color: var(--color-body-text);
+  flex: 1;
+}
+.lng-check {
+  color: var(--color-saffron);
+  flex-shrink: 0;
+  opacity: 0;
+}
+.lng-opt-active .lng-check { opacity: 1; }
+
+/* ── Mobile: bottom sheet ── */
+@media (max-width: 600px) {
+  .lng-dropdown {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    animation: lng-sheet-in 0.2s cubic-bezier(0.4,0,0.2,1) both;
+  }
+  @keyframes lng-sheet-in {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+}
+</style>

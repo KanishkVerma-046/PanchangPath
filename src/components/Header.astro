@@ -1,6 +1,7 @@
 ---
-// Header.astro — sticky top header with clock, search, lang toggle, theme switcher, mobile drawer
+// Header.astro — sticky top header with clock, search, lang/region picker, theme switcher, mobile drawer
 import LocationPicker from './LocationPicker.astro';
+import LanguagePicker from './LanguagePicker.astro';
 ---
 
 <!-- HEADER -->
@@ -50,10 +51,8 @@ import LocationPicker from './LocationPicker.astro';
 
       <!-- RIGHT: Controls -->
       <div class="header-right">
-        <!-- Language toggle -->
-        <button id="lang-toggle" class="hdr-btn lang-btn" title="Switch language">
-          <span id="lang-label">हिं</span>
-        </button>
+        <!-- Language / Region picker -->
+        <LanguagePicker />
 
         <!-- Theme switcher: Modern / Classic -->
         <div class="theme-switcher" id="theme-switcher" title="Switch theme">
@@ -351,9 +350,7 @@ import LocationPicker from './LocationPicker.astro';
 
     <!-- Drawer bottom controls -->
     <div class="drawer-controls">
-      <button id="m-lang-toggle" class="hdr-btn lang-btn" style="flex:1;">
-        <span id="m-lang-label">हिं / EN</span>
-      </button>
+      <!-- Language picker is in the header bar -->
       <button id="m-dark-toggle" class="hdr-icon-btn">
         <svg id="m-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
           <circle cx="12" cy="12" r="5"/>
@@ -878,22 +875,7 @@ import LocationPicker from './LocationPicker.astro';
   darkToggle?.addEventListener('click', () => applyDark(!html.classList.contains('dark')));
   mDarkToggle?.addEventListener('click', () => applyDark(!html.classList.contains('dark')));
 
-  // ── Language toggle ──
-  const langToggle = document.getElementById('lang-toggle');
-  const langLabel = document.getElementById('lang-label');
-  const mLangToggle = document.getElementById('m-lang-toggle');
-  let isHindi = localStorage.getItem('lang') === 'hi';
-
-  function applyLang(hindi: boolean) {
-    isHindi = hindi;
-    if (langLabel) langLabel.textContent = hindi ? 'EN' : 'हिं';
-    localStorage.setItem('lang', hindi ? 'hi' : 'en');
-    document.dispatchEvent(new CustomEvent('langchange', { detail: { hindi } }));
-  }
-
-  langToggle?.addEventListener('click', () => applyLang(!isHindi));
-  mLangToggle?.addEventListener('click', () => applyLang(!isHindi));
-  if (isHindi) setTimeout(() => applyLang(true), 100);
+  // Language switching is handled by LanguagePicker component
 
   // ── Theme switcher ──
   const themeBtns = document.querySelectorAll<HTMLButtonElement>('.theme-opt');
