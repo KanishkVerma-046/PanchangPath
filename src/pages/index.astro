@@ -57,22 +57,7 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
           <input type="date" id="date-picker" class="input" style="border:none;background:transparent;height:auto;padding:0;font-size:14px;width:140px;color:var(--color-ink);"
             value={today.toISOString().split('T')[0]} />
         </div>
-        <!-- Location selector -->
-        <div style="display:flex;align-items:center;gap:8px;background:var(--color-canvas);border:1px solid var(--color-hairline);border-radius:8px;padding:6px 12px;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-mute)" stroke-width="2">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-          </svg>
-          <select id="city-select" class="input" style="border:none;background:transparent;height:auto;padding:0;font-size:14px;color:var(--color-ink);cursor:pointer;">
-            <option value="">Detecting location…</option>
-          </select>
-        </div>
-        <!-- Detect location -->
-        <button id="detect-btn" class="btn-secondary" style="height:36px;font-size:13px;gap:6px;">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/>
-          </svg>
-          Auto-detect
-        </button>
+        <!-- Location is set via 📍 pin in the header -->
       </div>
 
       <!-- Date display -->
@@ -406,35 +391,10 @@ const RAHU = [7,1,6,4,5,2,3];
 const GULIKA = [6,5,4,3,2,1,0];
 const YAMA = [3,5,2,7,4,6,1];
 
-interface Location { name: string; nameHi: string; lat: number; lng: number; tzOffset: number; country: string; }
-const LOCS: Location[] = [
-  {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.2090,tzOffset:5.5,country:'India'},
-  {name:'Mumbai',nameHi:'मुंबई',lat:19.0760,lng:72.8777,tzOffset:5.5,country:'India'},
-  {name:'Bengaluru',nameHi:'बेंगलुरू',lat:12.9716,lng:77.5946,tzOffset:5.5,country:'India'},
-  {name:'Chennai',nameHi:'चेन्नई',lat:13.0827,lng:80.2707,tzOffset:5.5,country:'India'},
-  {name:'Kolkata',nameHi:'कोलकाता',lat:22.5726,lng:88.3639,tzOffset:5.5,country:'India'},
-  {name:'Hyderabad',nameHi:'हैदराबाद',lat:17.3850,lng:78.4867,tzOffset:5.5,country:'India'},
-  {name:'Ahmedabad',nameHi:'अहमदाबाद',lat:23.0225,lng:72.5714,tzOffset:5.5,country:'India'},
-  {name:'Pune',nameHi:'पुणे',lat:18.5204,lng:73.8567,tzOffset:5.5,country:'India'},
-  {name:'Jaipur',nameHi:'जयपुर',lat:26.9124,lng:75.7873,tzOffset:5.5,country:'India'},
-  {name:'Varanasi',nameHi:'वाराणसी',lat:25.3176,lng:82.9739,tzOffset:5.5,country:'India'},
-  {name:'Lucknow',nameHi:'लखनऊ',lat:26.8467,lng:80.9462,tzOffset:5.5,country:'India'},
-  {name:'Surat',nameHi:'सूरत',lat:21.1702,lng:72.8311,tzOffset:5.5,country:'India'},
-  {name:'Chandigarh',nameHi:'चंडीगढ़',lat:30.7333,lng:76.7794,tzOffset:5.5,country:'India'},
-  {name:'Prayagraj',nameHi:'प्रयागराज',lat:25.4358,lng:81.8463,tzOffset:5.5,country:'India'},
-  {name:'Haridwar',nameHi:'हरिद्वार',lat:29.9457,lng:78.1642,tzOffset:5.5,country:'India'},
-  {name:'Mathura',nameHi:'मथुरा',lat:27.4924,lng:77.6737,tzOffset:5.5,country:'India'},
-  {name:'Ujjain',nameHi:'उज्जैन',lat:23.1765,lng:75.7885,tzOffset:5.5,country:'India'},
-  {name:'Ayodhya',nameHi:'अयोध्या',lat:26.7922,lng:82.1998,tzOffset:5.5,country:'India'},
-  {name:'Dubai',nameHi:'दुबई',lat:25.2048,lng:55.2708,tzOffset:4,country:'UAE'},
-  {name:'Singapore',nameHi:'सिंगापुर',lat:1.3521,lng:103.8198,tzOffset:8,country:'Singapore'},
-  {name:'London',nameHi:'लंदन',lat:51.5074,lng:-0.1278,tzOffset:1,country:'UK'},
-  {name:'New York',nameHi:'न्यूयॉर्क',lat:40.7128,lng:-74.0060,tzOffset:-4,country:'USA'},
-  {name:'Toronto',nameHi:'टोरंटो',lat:43.6532,lng:-79.3832,tzOffset:-4,country:'Canada'},
-  {name:'Sydney',nameHi:'सिडनी',lat:-33.8688,lng:151.2093,tzOffset:10,country:'Australia'},
-];
+interface Location { name: string; nameHi?: string; lat: number; lng: number; tzOffset: number; tz?: string; elevation?: number; country: string; state?: string; }
 
-let currentLoc = LOCS[0];
+// Default — overridden immediately by LocationPicker's locationchange event
+let currentLoc: Location = { name:'New Delhi', nameHi:'नई दिल्ली', lat:28.6139, lng:77.2090, tzOffset:5.5, tz:'Asia/Kolkata', elevation:216, country:'India' };
 let currentDate = new Date();
 let isHindi = false;
 
@@ -745,41 +705,18 @@ function renderWithLoc(loc: Location, date: Date) {
   if (locDisplay) locDisplay.textContent = isHindi ? loc.nameHi : loc.name;
 }
 
-// Populate city selector
-const sel = document.getElementById('city-select') as HTMLSelectElement;
-if (sel) {
-  sel.innerHTML = LOCS.map(l => `<option value="${l.name}">${l.name}${l.country !== 'India' ? ` (${l.country})` : ''}</option>`).join('');
-  sel.value = 'New Delhi';
-}
-
 // Date picker
 const dp = document.getElementById('date-picker') as HTMLInputElement;
 dp?.addEventListener('change', () => {
   const d = new Date(dp.value + 'T12:00:00');
+  currentDate = d;
   renderWithLoc(currentLoc, d);
 });
 
-// City select
-sel?.addEventListener('change', () => {
-  const loc = LOCS.find(l => l.name === sel.value);
+// Listen for location changes broadcast by the header LocationPicker
+window.addEventListener('locationchange', (e: Event) => {
+  const loc = (e as CustomEvent<Location>).detail;
   if (loc) renderWithLoc(loc, currentDate);
-});
-
-// Auto-detect
-document.getElementById('detect-btn')?.addEventListener('click', () => {
-  if (!navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition(pos => {
-    const { latitude, longitude } = pos.coords;
-    const tzOffset = -(new Date().getTimezoneOffset()) / 60;
-    const custom: Location = { name: 'My Location', nameHi: 'मेरा स्थान', lat: latitude, lng: longitude, tzOffset, country: '' };
-    LOCS.unshift(custom);
-    if (sel) {
-      const opt = document.createElement('option');
-      opt.value = 'My Location'; opt.text = '📍 My Location'; opt.selected = true;
-      sel.prepend(opt);
-    }
-    renderWithLoc(custom, currentDate);
-  });
 });
 
 // Language change
@@ -828,8 +765,8 @@ chartToggleBtn?.addEventListener('click', () => {
   }
 });
 
-// Initial render
-renderWithLoc(currentLoc, currentDate);
+// Initial render — use location already set by LocationPicker (fires before this script)
+renderWithLoc(((window as any).__initLoc as Location) || currentLoc, currentDate);
 
 // Draw timeline every minute
 setInterval(() => { const p = calcPanchang(currentDate, currentLoc); drawTimeline(p); }, 60000);

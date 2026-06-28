@@ -1,0 +1,669 @@
+---
+import { getDefaultLocation } from '../lib/locations';
+const defaultCity = getDefaultLocation();
+---
+
+<!-- ── Location pill (visible in header) ───────────────────────────────────── -->
+<div class="lp-root" id="lp-root">
+  <button class="lp-pill" id="lp-pill" aria-haspopup="dialog" aria-expanded="false" title="Change location">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </svg>
+    <span id="lp-pill-name">{defaultCity.name}</span>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="lp-caret" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </button>
+
+  <!-- ── Popover ─────────────────────────────────────────────────────────── -->
+  <div class="lp-popover" id="lp-popover" role="dialog" aria-label="Location picker" hidden>
+
+    <!-- ── Current location info card ────────────────────────────────────── -->
+    <div class="lp-info-card">
+      <div class="lp-info-head">
+        <div>
+          <p class="lp-info-city" id="lp-city">{defaultCity.name}</p>
+          <p class="lp-info-country" id="lp-country">{defaultCity.country}</p>
+        </div>
+        <button class="lp-close-btn" id="lp-close" aria-label="Close location picker">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="lp-grid">
+        <div class="lp-row"><span class="lp-lbl">Latitude</span>    <span class="lp-val" id="lp-lat">—</span></div>
+        <div class="lp-row"><span class="lp-lbl">Longitude</span>   <span class="lp-val" id="lp-lng">—</span></div>
+        <div class="lp-row"><span class="lp-lbl">Elevation</span>   <span class="lp-val" id="lp-elev">—</span></div>
+        <div class="lp-row"><span class="lp-lbl">Timezone</span>    <span class="lp-val lp-tz" id="lp-tz">—</span></div>
+        <div class="lp-row"><span class="lp-lbl">UTC Offset</span>  <span class="lp-val" id="lp-offset">—</span></div>
+        <div class="lp-row"><span class="lp-lbl">DST</span>         <span class="lp-val lp-dst" id="lp-dst">—</span></div>
+      </div>
+    </div>
+
+    <!-- ── Detect + Search row ───────────────────────────────────────────── -->
+    <div class="lp-actions">
+      <button class="lp-geo-btn" id="lp-geo">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span id="lp-geo-txt">Detect My Location</span>
+      </button>
+      <div class="lp-search-wrap">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lp-search-icon">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input
+          id="lp-search"
+          class="lp-search"
+          type="search"
+          placeholder="Search 160+ cities…"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+      </div>
+    </div>
+
+    <!-- ── City results list ─────────────────────────────────────────────── -->
+    <div class="lp-results" id="lp-results" role="listbox" aria-label="City list">
+      <!-- populated by JS -->
+    </div>
+
+  </div><!-- /.lp-popover -->
+</div><!-- /.lp-root -->
+
+<!-- Backdrop for closing popover on outside click -->
+<div class="lp-backdrop" id="lp-backdrop" hidden></div>
+
+<script define:vars={{ defaultCity }}>
+// ── Module-level state ──────────────────────────────────────────────────────
+let allCities = [];
+let citiesLoaded = false;
+let currentLoc = null;
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+function lpSet(id, txt) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = txt;
+}
+
+function fmtCoord(deg, posLabel, negLabel) {
+  return Math.abs(deg).toFixed(4) + '° ' + (deg >= 0 ? posLabel : negLabel);
+}
+
+// ── DST / timezone info ──────────────────────────────────────────────────────
+function getRawOffset(ianaTimezone, date) {
+  try {
+    const utcMs  = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' })).getTime();
+    const tzMs   = new Date(date.toLocaleString('en-US', { timeZone: ianaTimezone })).getTime();
+    return (tzMs - utcMs) / 3600000;
+  } catch (e) {
+    return null;
+  }
+}
+
+function getTzInfo(ianaTimezone) {
+  const now = new Date();
+  const offset = getRawOffset(ianaTimezone, now);
+  if (offset === null) return { offset: 0, isDST: false, observesDST: false, tzAbbr: '', offsetStr: '+00:00' };
+
+  const year = now.getFullYear();
+  const janOff = getRawOffset(ianaTimezone, new Date(year, 0, 15));
+  const julOff = getRawOffset(ianaTimezone, new Date(year, 6, 15));
+  const observesDST = Math.abs(janOff - julOff) > 0.01;
+  const stdOffset = Math.min(janOff, julOff);
+  const isDST = observesDST && (offset - stdOffset > 0.01);
+
+  const parts = new Intl.DateTimeFormat('en-US', { timeZone: ianaTimezone, timeZoneName: 'short' }).formatToParts(now);
+  const tzAbbr = (parts.find(p => p.type === 'timeZoneName') || {}).value || ianaTimezone;
+
+  const ah = Math.floor(Math.abs(offset));
+  const am = Math.round((Math.abs(offset) - ah) * 60);
+  const offsetStr = (offset >= 0 ? '+' : '-') + String(ah).padStart(2, '0') + ':' + String(am).padStart(2, '0');
+
+  return { offset, isDST, observesDST, tzAbbr, offsetStr };
+}
+
+// ── Update the info card ─────────────────────────────────────────────────────
+function updateInfoCard(loc) {
+  const tzInfo = getTzInfo(loc.tz || 'UTC');
+
+  lpSet('lp-pill-name', loc.name);
+  lpSet('lp-city', loc.name + (loc.state ? ', ' + loc.state : ''));
+  lpSet('lp-country', loc.country || 'Custom');
+  lpSet('lp-lat', fmtCoord(loc.lat, 'N', 'S'));
+  lpSet('lp-lng', fmtCoord(loc.lng, 'E', 'W'));
+  lpSet('lp-elev', (loc.elevation != null && loc.elevation !== 0) ? loc.elevation + ' m' : 'N/A');
+  lpSet('lp-tz', loc.tz || '—');
+  lpSet('lp-offset', tzInfo.offsetStr + ' (' + tzInfo.tzAbbr + ')');
+
+  const dstEl = document.getElementById('lp-dst');
+  if (dstEl) {
+    if (tzInfo.isDST) {
+      dstEl.textContent = 'In Effect';
+      dstEl.className = 'lp-val lp-dst lp-dst-on';
+    } else if (tzInfo.observesDST) {
+      dstEl.textContent = 'Not In Effect';
+      dstEl.className = 'lp-val lp-dst';
+    } else {
+      dstEl.textContent = 'Not Observed';
+      dstEl.className = 'lp-val lp-dst lp-dst-none';
+    }
+  }
+}
+
+// ── Set a location as current ────────────────────────────────────────────────
+function selectLocation(loc) {
+  currentLoc = loc;
+  const tzInfo = getTzInfo(loc.tz || 'UTC');
+  const effectiveOffset = tzInfo.offset !== null ? tzInfo.offset : loc.tzOffset;
+
+  // Build the enriched loc object with DST-corrected offset
+  const enriched = Object.assign({}, loc, { tzOffset: effectiveOffset });
+
+  updateInfoCard(loc);
+  localStorage.setItem('pp-location', JSON.stringify(loc));
+
+  // Broadcast to the whole page
+  window.__initLoc = enriched;
+  window.dispatchEvent(new CustomEvent('locationchange', { detail: enriched }));
+
+  closePopover();
+}
+
+// ── City list rendering ──────────────────────────────────────────────────────
+function renderCityList(cities) {
+  const container = document.getElementById('lp-results');
+  if (!container) return;
+
+  if (!cities.length) {
+    container.innerHTML = '<p class="lp-no-results">No cities found. Try a different name or country.</p>';
+    return;
+  }
+
+  // Group by country
+  const groups = {};
+  cities.forEach(c => {
+    const key = c.country || 'Other';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(c);
+  });
+
+  // Order: India first, then alpha
+  const countries = Object.keys(groups).sort((a, b) => {
+    if (a === 'India') return -1;
+    if (b === 'India') return 1;
+    return a.localeCompare(b);
+  });
+
+  let html = '';
+  countries.forEach(country => {
+    html += '<div class="lp-group-label">' + country + '</div>';
+    groups[country].forEach(c => {
+      const latStr = Math.abs(c.lat).toFixed(2) + (c.lat >= 0 ? '°N' : '°S');
+      const lngStr = Math.abs(c.lng).toFixed(2) + (c.lng >= 0 ? '°E' : '°W');
+      html += '<button class="lp-city-row" data-idx="' + allCities.indexOf(c) + '" role="option">' +
+        '<div class="lp-city-main">' +
+          '<span class="lp-city-name">' + c.name + (c.state ? ', ' + c.state : '') + '</span>' +
+          '<span class="lp-city-tz caption-mono">' + c.tz + '</span>' +
+        '</div>' +
+        '<span class="lp-city-coord">' + latStr + ' ' + lngStr + '</span>' +
+      '</button>';
+    });
+  });
+
+  container.innerHTML = html;
+
+  // Bind clicks
+  container.querySelectorAll('.lp-city-row').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-idx') || '-1', 10);
+      if (idx >= 0 && allCities[idx]) selectLocation(allCities[idx]);
+    });
+  });
+}
+
+// ── Load cities (lazy, only on first open) ───────────────────────────────────
+async function ensureCities() {
+  if (citiesLoaded) return;
+  try {
+    const res = await fetch('/cities.json');
+    allCities = await res.json();
+    citiesLoaded = true;
+    renderCityList(allCities.slice(0, 40));
+  } catch (e) {
+    allCities = [];
+  }
+}
+
+// ── Search ───────────────────────────────────────────────────────────────────
+function filterCities(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) return allCities.slice(0, 40);
+  return allCities.filter(c =>
+    c.name.toLowerCase().includes(q) ||
+    (c.nameHi || '').includes(q) ||
+    c.country.toLowerCase().includes(q) ||
+    (c.state || '').toLowerCase().includes(q) ||
+    (c.tz || '').toLowerCase().includes(q)
+  ).slice(0, 30);
+}
+
+// ── Geolocation ──────────────────────────────────────────────────────────────
+function detectLocation() {
+  if (!navigator.geolocation) {
+    alert('Geolocation is not supported by this browser.');
+    return;
+  }
+  const btn = document.getElementById('lp-geo');
+  const txt = document.getElementById('lp-geo-txt');
+  if (txt) txt.textContent = 'Detecting…';
+  if (btn) btn.disabled = true;
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      if (txt) txt.textContent = 'Detect My Location';
+      if (btn) btn.disabled = false;
+
+      const { latitude: lat, longitude: lng, altitude } = pos.coords;
+      const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const tzInfo = getTzInfo(browserTz);
+
+      const myLoc = {
+        name: 'My Location',
+        nameHi: 'मेरा स्थान',
+        lat: Math.round(lat * 10000) / 10000,
+        lng: Math.round(lng * 10000) / 10000,
+        tzOffset: tzInfo.offset || 0,
+        tz: browserTz,
+        elevation: altitude != null ? Math.round(altitude) : 0,
+        country: 'Custom',
+        state: '',
+      };
+
+      selectLocation(myLoc);
+    },
+    err => {
+      if (txt) txt.textContent = 'Detect My Location';
+      if (btn) btn.disabled = false;
+      if (err.code !== 1) alert('Could not detect location. Please select a city.');
+    },
+    { timeout: 10000 }
+  );
+}
+
+// ── Popover open / close ─────────────────────────────────────────────────────
+function openPopover() {
+  const pop = document.getElementById('lp-popover');
+  const pill = document.getElementById('lp-pill');
+  const backdrop = document.getElementById('lp-backdrop');
+  if (!pop) return;
+
+  // Position: try to align with the pill
+  const pillRect = pill ? pill.getBoundingClientRect() : null;
+  if (pillRect) {
+    pop.style.top = (pillRect.bottom + 6) + 'px';
+    // Right-align: don't overflow viewport
+    const rightEdge = window.innerWidth - pillRect.right;
+    pop.style.right = Math.max(8, rightEdge) + 'px';
+    pop.style.left = 'auto';
+  }
+
+  pop.hidden = false;
+  if (backdrop) backdrop.hidden = false;
+  pill?.setAttribute('aria-expanded', 'true');
+  pop.classList.add('lp-pop-open');
+
+  // Load city data
+  ensureCities();
+
+  // Focus search
+  setTimeout(() => document.getElementById('lp-search')?.focus(), 80);
+}
+
+function closePopover() {
+  const pop = document.getElementById('lp-popover');
+  const pill = document.getElementById('lp-pill');
+  const backdrop = document.getElementById('lp-backdrop');
+  if (!pop) return;
+  pop.hidden = true;
+  pop.classList.remove('lp-pop-open');
+  if (backdrop) backdrop.hidden = true;
+  pill?.setAttribute('aria-expanded', 'false');
+}
+
+function isOpen() {
+  return !(document.getElementById('lp-popover')?.hidden ?? true);
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+function init() {
+  // Restore saved location
+  let initLoc = defaultCity;
+  try {
+    const saved = localStorage.getItem('pp-location');
+    if (saved) initLoc = JSON.parse(saved);
+  } catch (e) {}
+
+  updateInfoCard(initLoc);
+  currentLoc = initLoc;
+
+  // Compute DST-corrected offset and publish initial location
+  const tzInfo = getTzInfo(initLoc.tz || 'UTC');
+  const effectiveOffset = tzInfo.offset !== null ? tzInfo.offset : initLoc.tzOffset;
+  const enriched = Object.assign({}, initLoc, { tzOffset: effectiveOffset });
+  window.__initLoc = enriched;
+
+  // Dispatch initial event (index.astro listens)
+  window.dispatchEvent(new CustomEvent('locationchange', { detail: enriched }));
+}
+
+// ── Wire up UI ────────────────────────────────────────────────────────────────
+document.getElementById('lp-pill')?.addEventListener('click', () => {
+  isOpen() ? closePopover() : openPopover();
+});
+
+document.getElementById('lp-close')?.addEventListener('click', closePopover);
+document.getElementById('lp-backdrop')?.addEventListener('click', closePopover);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && isOpen()) closePopover();
+});
+
+document.getElementById('lp-geo')?.addEventListener('click', detectLocation);
+
+const searchEl = document.getElementById('lp-search');
+searchEl?.addEventListener('input', () => {
+  if (!citiesLoaded) return;
+  const filtered = filterCities(searchEl.value);
+  renderCityList(filtered);
+});
+
+// Listen for external locationchange (e.g., from index.astro city-select or date change)
+window.addEventListener('locationchange-external', e => {
+  const loc = (e).detail;
+  if (loc) {
+    updateInfoCard(loc);
+    currentLoc = loc;
+  }
+});
+
+// Start
+init();
+</script>
+
+<style>
+/* ── Pill ── */
+.lp-root { position: relative; flex-shrink: 0; }
+
+.lp-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 10px;
+  background: var(--color-canvas-soft-2);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-ink);
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 160px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.lp-pill:hover { background: var(--color-canvas-soft); border-color: var(--color-saffron); color: var(--color-saffron-deep); }
+.lp-pill[aria-expanded="true"] { border-color: var(--color-saffron); background: var(--color-saffron-soft); }
+.lp-pill svg:first-child { color: var(--color-saffron); flex-shrink: 0; }
+#lp-pill-name { overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.lp-caret { color: var(--color-mute); flex-shrink: 0; }
+
+/* ── Backdrop ── */
+.lp-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}
+
+/* ── Popover ── */
+.lp-popover {
+  position: fixed;
+  z-index: 200;
+  width: 360px;
+  max-width: calc(100vw - 16px);
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.lp-pop-open { animation: lp-in 0.14s ease both; }
+@keyframes lp-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Info card ── */
+.lp-info-card {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--color-hairline);
+  background: var(--color-canvas-soft);
+}
+.lp-info-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.lp-info-city {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin: 0 0 2px;
+  letter-spacing: -0.3px;
+}
+.lp-info-country {
+  font-size: 11.5px;
+  color: var(--color-mute);
+  margin: 0;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.lp-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-mute);
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.lp-close-btn:hover { color: var(--color-ink); background: var(--color-canvas-soft-2); }
+
+.lp-grid { display: flex; flex-direction: column; gap: 5px; }
+.lp-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.lp-lbl {
+  font-size: 11px;
+  color: var(--color-mute);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+.lp-val {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+  text-align: right;
+  font-family: var(--font-mono);
+}
+.lp-tz { color: var(--color-body-text); font-size: 11.5px; }
+.lp-dst-on { color: #059669; }    /* DST active  */
+.lp-dst-none { color: var(--color-mute); font-weight: 400; }  /* no DST */
+
+/* ── Actions row ── */
+.lp-actions {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-hairline);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.lp-geo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 12px;
+  background: var(--color-canvas-soft-2);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-body-text);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.lp-geo-btn:hover { background: var(--color-saffron-soft); border-color: var(--color-saffron); color: var(--color-saffron-deep); }
+.lp-geo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.lp-search-wrap {
+  position: relative;
+  flex: 1;
+}
+.lp-search-icon {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-mute);
+  pointer-events: none;
+}
+.lp-search {
+  width: 100%;
+  height: 32px;
+  padding: 0 10px 0 30px;
+  background: var(--color-canvas-soft-2);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  color: var(--color-ink);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.lp-search::placeholder { color: var(--color-mute); }
+.lp-search:focus { border-color: var(--color-saffron); background: var(--color-canvas); }
+.lp-search::-webkit-search-cancel-button { display: none; }
+
+/* ── City results ── */
+.lp-results {
+  overflow-y: auto;
+  max-height: 280px;
+  overscroll-behavior: contain;
+}
+.lp-group-label {
+  padding: 6px 12px 3px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
+  background: var(--color-canvas-soft);
+  position: sticky;
+  top: 0;
+}
+.lp-city-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  border-bottom: 1px solid var(--color-hairline);
+  transition: background 0.08s;
+}
+.lp-city-row:last-child { border-bottom: none; }
+.lp-city-row:hover { background: var(--color-saffron-soft); }
+.lp-city-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.lp-city-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lp-city-tz {
+  font-size: 10px;
+  color: var(--color-mute);
+  letter-spacing: 0.03em;
+}
+.lp-city-coord {
+  font-size: 10.5px;
+  color: var(--color-mute);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.lp-no-results {
+  padding: 20px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-mute);
+  margin: 0;
+}
+
+/* ── Mobile: bottom sheet ── */
+@media (max-width: 600px) {
+  .lp-popover {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 80vh;
+  }
+  .lp-results { max-height: 40vh; }
+  .lp-pop-open {
+    animation: lp-sheet-in 0.22s cubic-bezier(0.4,0,0.2,1) both;
+  }
+  @keyframes lp-sheet-in {
+    from { transform: translateY(100%); opacity: 0.8; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+}
+</style>

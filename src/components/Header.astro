@@ -1,5 +1,6 @@
 ---
 // Header.astro — sticky top header with clock, search, lang toggle, theme switcher, mobile drawer
+import LocationPicker from './LocationPicker.astro';
 ---
 
 <!-- HEADER -->
@@ -93,6 +94,9 @@
             <span>iOS</span>
           </a>
         </div>
+
+        <!-- Location picker -->
+        <LocationPicker />
 
         <!-- Hamburger (mobile) -->
         <button id="hamburger" class="hdr-icon-btn hamburger-btn" aria-label="Open menu" aria-expanded="false">
