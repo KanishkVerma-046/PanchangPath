@@ -1,0 +1,573 @@
+---
+// VedicClock.astro — fully client-driven via window.updateVedicClock
+// Data is pushed from index.astro's renderWithLoc() on every location/date change.
+---
+
+<section id="vedic-clock-section" style="padding:0 0 40px;">
+  <div class="vc-wrap">
+    <div class="card vc-card">
+
+      <!-- ── Card header ── -->
+      <div class="vc-hd">
+        <div class="vc-hd-left">
+          <div class="vc-live-wrap">
+            <div class="live-pulse"></div>
+            <div class="live-pulse-dot"></div>
+            <span class="caption-mono vc-badge-txt">Vedic Time</span>
+          </div>
+          <p class="vc-city" id="vc-city">—</p>
+        </div>
+        <!-- 60 / 30 Ghati mode toggle -->
+        <div class="vc-seg" role="group" aria-label="Ghati clock style">
+          <button class="vc-seg-btn active" data-mode="60" aria-pressed="true">60-Ghati</button>
+          <button class="vc-seg-btn" data-mode="30" aria-pressed="false">30-Ghati</button>
+        </div>
+      </div>
+
+      <!-- ── Tithi + date strip ── -->
+      <div class="vc-strip">
+        <span class="vc-tithi-txt" id="vc-tithi">—</span>
+        <span class="vc-vs-pill" id="vc-vs">—</span>
+        <span class="vc-weekday-txt" id="vc-weekday">—</span>
+      </div>
+
+      <!-- ── Two-column body ── -->
+      <div class="vc-body">
+
+        <!-- LEFT: clock face -->
+        <div class="vc-face">
+
+          <!-- Big Ghati : Pal : Vipal digits -->
+          <div class="vc-digits" aria-live="polite" aria-atomic="true" aria-label="Vedic time">
+            <div class="vc-col">
+              <span class="vc-num vc-ghati-num" id="vc-ghati">--</span>
+              <span class="vc-unit-lbl">Ghati</span>
+              <span class="vc-unit-hi">घटी</span>
+            </div>
+            <span class="vc-sep" aria-hidden="true">:</span>
+            <div class="vc-col">
+              <span class="vc-num vc-pal-num" id="vc-pal">--</span>
+              <span class="vc-unit-lbl">Pal</span>
+              <span class="vc-unit-hi">पल</span>
+            </div>
+            <span class="vc-sep" aria-hidden="true">:</span>
+            <div class="vc-col">
+              <span class="vc-num vc-vipal-num" id="vc-vipal">--</span>
+              <span class="vc-unit-lbl">Vipal</span>
+              <span class="vc-unit-hi">विपल</span>
+            </div>
+          </div>
+
+          <!-- Period note -->
+          <p class="vc-period" id="vc-period">elapsed since sunrise —</p>
+
+          <!-- Gregorian secondary -->
+          <div class="vc-greg-row">
+            <span class="caption-mono" style="color:var(--color-mute);font-size:10px;letter-spacing:0.08em;">GREGORIAN</span>
+            <span class="vc-greg" id="vc-greg">—</span>
+          </div>
+
+          <!-- Day progress arc -->
+          <div class="vc-bar-outer">
+            <div class="vc-bar-track">
+              <div class="vc-bar-fill" id="vc-fill"></div>
+              <div class="vc-bar-thumb" id="vc-thumb">
+                <span id="vc-thumb-icon" aria-hidden="true">☀️</span>
+              </div>
+            </div>
+            <div class="vc-bar-stamps">
+              <span id="vc-sr-lbl" style="color:var(--color-mute);">—</span>
+              <span style="color:var(--color-mute);">Noon</span>
+              <span id="vc-ss-lbl" style="color:var(--color-mute);">—</span>
+            </div>
+          </div>
+
+        </div><!-- /.vc-face -->
+
+        <!-- RIGHT: info panel -->
+        <div class="vc-info-panel">
+
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 12px;">Unit Equivalences</p>
+          <div class="vc-eq-list">
+            <div class="vc-eq-row">
+              <span class="vc-eq-name">1 Ghati</span>
+              <span class="vc-eq-val" id="eq-ghati">= 24 min</span>
+            </div>
+            <div class="vc-eq-row">
+              <span class="vc-eq-name">1 Pal</span>
+              <span class="vc-eq-val" id="eq-pal">= 24 sec</span>
+            </div>
+            <div class="vc-eq-row">
+              <span class="vc-eq-name">1 Vipal</span>
+              <span class="vc-eq-val" id="eq-vipal">= 0.4 sec</span>
+            </div>
+            <div class="vc-eq-row">
+              <span class="vc-eq-name">1 Day</span>
+              <span class="vc-eq-val" id="eq-day">= 60 Ghati</span>
+            </div>
+          </div>
+
+          <div class="divider" style="margin:16px 0;"></div>
+
+          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 12px;">Solar Times</p>
+          <div class="vc-eq-list">
+            <div class="vc-eq-row">
+              <span class="vc-eq-name">Sunrise</span>
+              <span class="vc-eq-val" id="vc-sr-val">—</span>
+            </div>
+            <div class="vc-eq-row">
+              <span class="vc-eq-name">Sunset</span>
+              <span class="vc-eq-val" id="vc-ss-val">—</span>
+            </div>
+            <div class="vc-eq-row">
+              <span class="vc-eq-name">Day Length</span>
+              <span class="vc-eq-val" id="vc-daylen">—</span>
+            </div>
+          </div>
+
+          <div class="divider" style="margin:16px 0;"></div>
+
+          <p class="vc-explainer" id="vc-explainer">
+            In the 60-Ghati system each Ghati has a fixed duration of 24 minutes.
+            The Vedic day begins at sunrise and counts 60 Ghatis back to the following sunrise.
+          </p>
+
+        </div><!-- /.vc-info-panel -->
+
+      </div><!-- /.vc-body -->
+
+    </div><!-- /.vc-card -->
+  </div>
+</section>
+
+<script>
+// ── Module state ────────────────────────────────────────────────────────────
+let vcSrMins = 360;     // sunrise in minutes from midnight (default 6:00 AM)
+let vcSsMins = 1080;    // sunset in minutes from midnight (default 6:00 PM)
+let vcMode: 60 | 30 = 60;
+let vcSrFmt = "06:00 AM";
+let vcSsFmt = "06:00 PM";
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+function vcPad(n: number): string { return String(Math.max(0, Math.floor(n))).padStart(2, '0'); }
+function vcSet(id: string, txt: string) { const el = document.getElementById(id); if (el) el.textContent = txt; }
+
+// ── Vedic time math ─────────────────────────────────────────────────────────
+interface VedicResult { ghati: number; pal: number; vipal: number; period: string; ghatiSecs: number; palSecs: number; }
+
+function calcVedic60(nowSecs: number, srSecs: number): VedicResult {
+  let elapsed = nowSecs - srSecs;
+  if (elapsed < 0) elapsed += 86400;
+  // 1 Ghati = 1440 s, 1 Pal = 24 s, 1 Vipal = 0.4 s
+  const ghati = Math.floor(elapsed / 1440);
+  const rem1  = elapsed % 1440;
+  const pal   = Math.floor(rem1 / 24);
+  const rem2  = rem1 % 24;
+  const vipal = Math.floor(rem2 * 2.5); // 1/0.4 = 2.5
+  return { ghati, pal, vipal, period: "elapsed", ghatiSecs: 1440, palSecs: 24 };
+}
+
+function calcVedic30(nowSecs: number, srSecs: number, ssSecs: number): VedicResult {
+  const dayDur   = ssSecs - srSecs;
+  const nightDur = 86400 - dayDur;
+  let elapsed: number, dur: number, period: string;
+  if (nowSecs >= srSecs && nowSecs < ssSecs) {
+    elapsed = nowSecs - srSecs; dur = dayDur; period = "daytime";
+  } else {
+    elapsed = nowSecs >= ssSecs ? nowSecs - ssSecs : (86400 - ssSecs) + nowSecs;
+    dur = nightDur; period = "nighttime";
+  }
+  const ghatiSecs = dur / 30;
+  const palSecs   = ghatiSecs / 60;
+  const vipalSecs = palSecs / 60;
+  const ghati = Math.floor(elapsed / ghatiSecs);
+  const rem1  = elapsed % ghatiSecs;
+  const pal   = Math.floor(rem1 / palSecs);
+  const rem2  = rem1 % palSecs;
+  const vipal = Math.floor(rem2 / vipalSecs);
+  return { ghati, pal, vipal, period, ghatiSecs, palSecs };
+}
+
+// ── Live tick (runs every 400 ms — smooth enough for Vipal = 0.4 s) ─────────
+function vcTick() {
+  const now    = new Date();
+  const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
+  const nowSecs = h * 3600 + m * 60 + s;
+  const srSecs  = vcSrMins * 60;
+  const ssSecs  = vcSsMins * 60;
+
+  const { ghati, pal, vipal, period, ghatiSecs, palSecs } =
+    vcMode === 60 ? calcVedic60(nowSecs, srSecs) : calcVedic30(nowSecs, srSecs, ssSecs);
+
+  vcSet("vc-ghati", vcPad(ghati));
+  vcSet("vc-pal",   vcPad(pal));
+  vcSet("vc-vipal", vcPad(vipal));
+
+  // Period note
+  const isDay = nowSecs >= srSecs && nowSecs < ssSecs;
+  const since = isDay ? ("sunrise " + vcSrFmt) : (nowSecs >= ssSecs ? ("sunset " + vcSsFmt) : "midnight");
+  vcSet("vc-period", period + " elapsed since " + since);
+
+  // Gregorian time
+  const ap = h < 12 ? "AM" : "PM";
+  vcSet("vc-greg", (h % 12 || 12) + ":" + vcPad(m) + ":" + vcPad(s) + " " + ap);
+
+  // Progress bar
+  const dayPct = isDay
+    ? ((nowSecs - srSecs) / (ssSecs - srSecs)) * 100
+    : nowSecs < srSecs ? 0 : 100;
+  const clamped = Math.max(0, Math.min(100, dayPct));
+  const fill  = document.getElementById("vc-fill");
+  const thumb = document.getElementById("vc-thumb");
+  const icon  = document.getElementById("vc-thumb-icon");
+  if (fill)  fill.style.width  = clamped + "%";
+  if (thumb) thumb.style.left  = clamped + "%";
+  if (icon)  icon.textContent  = isDay ? "☀️" : "🌙";
+
+  // Equivalence panel
+  if (vcMode === 60) {
+    vcSet("eq-ghati", "= 24 min");
+    vcSet("eq-pal",   "= 24 sec");
+    vcSet("eq-vipal", "= 0.4 sec");
+    vcSet("eq-day",   "= 60 Ghati");
+    vcSet("vc-explainer",
+      "In the 60-Ghati system each Ghati has a fixed duration of 24 minutes. " +
+      "The Vedic day begins at sunrise and counts 60 equal Ghatis back to the following sunrise.");
+  } else {
+    const gMin   = (ghatiSecs / 60).toFixed(1);
+    const pSec   = palSecs.toFixed(1);
+    const vpSec  = (palSecs / 60).toFixed(2);
+    vcSet("eq-ghati", "≈ " + gMin + " min (" + period + ")");
+    vcSet("eq-pal",   "≈ " + pSec + " sec");
+    vcSet("eq-vipal", "≈ " + vpSec + " sec");
+    vcSet("eq-day",   "= 30 day + 30 night");
+    vcSet("vc-explainer",
+      "In the 30-Ghati system, daytime (sunrise to sunset) and nighttime each have 30 Ghatis " +
+      "of variable duration — longer in summer days, shorter in winter days.");
+  }
+}
+
+// ── Public API — called by index.astro's renderWithLoc ──────────────────────
+(window as any).updateVedicClock = function(data: {
+  srMins: number;
+  ssMins: number;
+  cityName: string;
+  tithi: string;
+  vs: string;
+  weekday: string;
+  srFormatted: string;
+  ssFormatted: string;
+  dayLen: string;
+}) {
+  vcSrMins = data.srMins;
+  vcSsMins = data.ssMins;
+  vcSrFmt  = data.srFormatted;
+  vcSsFmt  = data.ssFormatted;
+
+  vcSet("vc-city",    data.cityName);
+  vcSet("vc-tithi",   data.tithi);
+  vcSet("vc-vs",      data.vs);
+  vcSet("vc-weekday", data.weekday);
+  vcSet("vc-sr-lbl",  "☀️ " + data.srFormatted);
+  vcSet("vc-ss-lbl",  data.ssFormatted + " ☁️");
+  vcSet("vc-sr-val",  data.srFormatted);
+  vcSet("vc-ss-val",  data.ssFormatted);
+  vcSet("vc-daylen",  data.dayLen);
+  vcTick();
+};
+
+// ── Mode toggle ─────────────────────────────────────────────────────────────
+document.querySelectorAll<HTMLButtonElement>(".vc-seg-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    vcMode = (parseInt(btn.dataset.mode ?? "60", 10)) as 60 | 30;
+    document.querySelectorAll<HTMLButtonElement>(".vc-seg-btn").forEach(b => {
+      const on = b.dataset.mode === String(vcMode);
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-pressed", String(on));
+    });
+    vcTick();
+  });
+});
+
+// ── Start ────────────────────────────────────────────────────────────────────
+vcTick();
+setInterval(vcTick, 400);
+</script>
+
+<style>
+/* ── Container ── */
+.vc-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.vc-card {
+  padding: 28px 32px;
+  border-top: 3px solid var(--color-saffron);
+}
+
+/* ── Header ── */
+.vc-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.vc-hd-left { display: flex; flex-direction: column; gap: 2px; }
+.vc-live-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+.vc-badge-txt {
+  color: var(--color-mute);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+.vc-city {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+/* Mode seg control */
+.vc-seg {
+  display: flex;
+  gap: 3px;
+  background: var(--color-canvas-soft-2);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+}
+.vc-seg-btn {
+  height: 28px;
+  padding: 0 14px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--color-mute);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.vc-seg-btn:hover { color: var(--color-ink); }
+.vc-seg-btn.active {
+  background: var(--color-ink);
+  color: var(--color-on-primary);
+}
+
+/* ── Tithi strip ── */
+.vc-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-hairline);
+}
+.vc-tithi-txt {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.vc-vs-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--color-saffron-deep);
+  background: var(--color-saffron-soft);
+  border: 1px solid rgba(255,153,51,0.25);
+  border-radius: var(--radius-pill);
+  padding: 2px 10px;
+  font-family: var(--font-mono);
+}
+.vc-weekday-txt {
+  font-size: 13px;
+  color: var(--color-mute);
+  margin-left: auto;
+}
+
+/* ── Two-column body ── */
+.vc-body {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ── Clock face ── */
+.vc-face {
+  background: var(--color-canvas-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  padding: 24px 28px;
+}
+
+/* ── Digits ── */
+.vc-digits {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  margin-bottom: 12px;
+}
+.vc-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+.vc-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1;
+  display: block;
+}
+.vc-ghati-num {
+  font-size: 60px;
+  color: var(--color-saffron);
+}
+.vc-pal-num {
+  font-size: 52px;
+  color: var(--color-ink);
+}
+.vc-vipal-num {
+  font-size: 44px;
+  color: var(--color-body-text);
+}
+.vc-sep {
+  font-size: 52px;
+  color: var(--color-hairline-strong);
+  font-family: var(--font-mono);
+  font-weight: 300;
+  padding: 4px 4px 0;
+  line-height: 1;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+.vc-unit-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-mute);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+}
+.vc-unit-hi {
+  font-size: 13px;
+  color: var(--color-mute);
+  margin-top: 1px;
+}
+
+/* ── Period note ── */
+.vc-period {
+  font-size: 12px;
+  color: var(--color-mute);
+  font-family: var(--font-mono);
+  margin: 0 0 14px;
+}
+
+/* ── Gregorian time ── */
+.vc-greg-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-hairline);
+}
+.vc-greg {
+  font-size: 18px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--color-ink);
+  letter-spacing: -0.3px;
+}
+
+/* ── Progress arc bar ── */
+.vc-bar-outer { padding-top: 4px; }
+.vc-bar-track {
+  position: relative;
+  height: 10px;
+  background: var(--color-canvas-soft-2);
+  border-radius: 5px;
+  overflow: visible;
+  margin-bottom: 8px;
+}
+.vc-bar-fill {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #fef3c7, #fed7aa, var(--color-saffron));
+  border-radius: 5px;
+  transition: width 0.5s ease;
+}
+.vc-bar-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  transition: left 0.5s ease;
+  line-height: 1;
+  pointer-events: none;
+}
+.vc-bar-stamps {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+
+/* ── Info panel ── */
+.vc-info-panel { padding-top: 4px; }
+.vc-eq-list { display: flex; flex-direction: column; gap: 8px; }
+.vc-eq-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.vc-eq-name {
+  font-size: 12.5px;
+  color: var(--color-mute);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.vc-eq-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink);
+  text-align: right;
+}
+.vc-explainer {
+  font-size: 12.5px;
+  color: var(--color-body-text);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .vc-body { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .vc-card { padding: 20px; }
+  .vc-ghati-num { font-size: 48px; }
+  .vc-pal-num   { font-size: 40px; }
+  .vc-vipal-num { font-size: 34px; }
+  .vc-sep { font-size: 40px; }
+  .vc-col { min-width: 64px; }
+  .vc-strip { flex-direction: column; align-items: flex-start; }
+  .vc-weekday-txt { margin-left: 0; }
+}
+</style>

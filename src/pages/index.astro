@@ -5,6 +5,7 @@ import KundaliWidget from '../components/KundaliWidget.astro';
 import FestivalFeed from '../components/FestivalFeed.astro';
 import PlanetaryEventsFeed from '../components/PlanetaryEventsFeed.astro';
 import RashifalFeed from '../components/RashifalFeed.astro';
+import VedicClock from '../components/VedicClock.astro';
 import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
 import { computeUpcomingEvents } from '../lib/planetaryEvents';
@@ -87,6 +88,9 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
     panchang={panchang}
     hinduCal={hinduCal}
   />
+
+  <!-- VEDIC TIME CLOCK -->
+  <VedicClock />
 
   <!-- LAGNA KUNDALI WIDGET -->
   <KundaliWidget />
@@ -714,6 +718,24 @@ function renderWithLoc(loc: Location, date: Date) {
   // Update Kundali widget
   if (typeof (window as any).updateKundaliWidget === 'function') {
     (window as any).updateKundaliWidget(loc.lat, loc.lng, isHindi ? (loc.nameHi ?? loc.name) : loc.name);
+  }
+  // Update Vedic Clock
+  if (typeof (window as any).updateVedicClock === 'function') {
+    const cal = getHinduCalInfo(date, p.sunSidereal, p.moonSidereal, p.tithiPaksha);
+    const tithiStr = cal.amantaMonth.name + " " + p.tithi.paksha + " " + p.tithi.name;
+    const vsStr = "VS " + cal.vsYear;
+    const weekStr = date.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    (window as any).updateVedicClock({
+      srMins: p.srMins,
+      ssMins: p.ssMins,
+      cityName: isHindi ? (loc.nameHi ?? loc.name) : loc.name,
+      tithi: tithiStr,
+      vs: vsStr,
+      weekday: weekStr,
+      srFormatted: p.sunrise,
+      ssFormatted: p.sunset,
+      dayLen: p.durationDay,
+    });
   }
   // Update date label
   const d = date.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
