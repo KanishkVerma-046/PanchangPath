@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Baby Name Calculator — Nakshatra Name Syllables — PanchangPath" description="Find the lucky first syllables for your baby\'s name based on the birth nakshatra and pada (Namakaran). Includes a name checker and alternative syllables.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">नामकरण · BABY NAMES</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Baby Name Finder (Namakaran)</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">In Hindu tradition, a baby\'s name should begin with the syllable of the nakshatra pada in which the Moon sits at birth. Find those lucky syllables here.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Find Syllables</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
+          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">RECOMMENDED FIRST SYLLABLE</p>
+          <div id="big-syl" style="font-size:56px;font-weight:700;color:var(--color-ink);line-height:1;margin-bottom:8px;"></div>
+          <p id="syl-meta" style="font-size:14px;color:var(--color-mute);margin:0;"></p>
+        </div>
+
+        <div class="card" style="padding:20px;margin-bottom:24px;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">All Four Padas of Your Nakshatra</h3>
+          <div id="pada-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;" class="pada-grid"></div>
+        </div>
+
+        <div class="card" style="padding:20px;margin-bottom:24px;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Check a Name</h3>
+          <p style="font-size:12px;color:var(--color-mute);margin:0 0 12px;">Type a name to see if it matches the recommended syllables.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <input type="text" id="name-check" class="input" placeholder="e.g. Aarav" style="height:38px;max-width:240px;" />
+            <span id="name-result" style="font-size:14px;font-weight:600;"></span>
+          </div>
+        </div>
+
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Alternative Syllables (neighbouring nakshatras)</h3>
+          <p style="font-size:12px;color:var(--color-mute);margin:0 0 12px;">If you prefer more options, syllables from adjacent nakshatras are also considered acceptable by many families.</p>
+          <div id="alt-syls" style="display:flex;gap:18px;flex-wrap:wrap;"></div>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Namakaran</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Namakaran is the Hindu naming ceremony, traditionally held on the 11th or 12th day after birth. The first sound of the name is chosen from the Janma Nakshatra and its pada (quarter), as each of the 27 nakshatras is divided into 4 padas, each with an assigned syllable. A name beginning with the correct syllable is believed to align the child with their birth star\'s positive energy.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  @media (max-width:640px){ .pada-grid{ grid-template-columns:1fr 1fr !important; } }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+
+const NAKS=[
+{n:'Ashwini',p:['Chu','Che','Cho','La']},{n:'Bharani',p:['Li','Lu','Le','Lo']},{n:'Krittika',p:['A','I','U','E']},{n:'Rohini',p:['O','Va','Vi','Vu']},{n:'Mrigashira',p:['Ve','Vo','Ka','Ki']},{n:'Ardra',p:['Ku','Gha','Ing','Ja']},{n:'Punarvasu',p:['Ke','Ko','Ha','Hi']},{n:'Pushya',p:['Hu','He','Ho','Da']},{n:'Ashlesha',p:['Di','Du','De','Do']},{n:'Magha',p:['Ma','Mi','Mu','Me']},{n:'Purva Phalguni',p:['Mo','Ta','Ti','Tu']},{n:'Uttara Phalguni',p:['Te','To','Pa','Pi']},{n:'Hasta',p:['Pu','Sha','Na','Tha']},{n:'Chitra',p:['Pe','Po','Ra','Ri']},{n:'Swati',p:['Ru','Re','Ro','Ta']},{n:'Vishakha',p:['Ti','Tu','Te','To']},{n:'Anuradha',p:['Na','Ni','Nu','Ne']},{n:'Jyeshtha',p:['No','Ya','Yi','Yu']},{n:'Mula',p:['Ye','Yo','Bha','Bhi']},{n:'Purva Ashadha',p:['Bhu','Dha','Bha','Pha']},{n:'Uttara Ashadha',p:['Bhe','Bho','Ja','Ji']},{n:'Shravana',p:['Khi','Khu','Khe','Kho']},{n:'Dhanishtha',p:['Ga','Gi','Gu','Ge']},{n:'Shatabhisha',p:['Go','Sa','Si','Su']},{n:'Purva Bhadrapada',p:['Se','So','Da','Di']},{n:'Uttara Bhadrapada',p:['Du','Tha','Jha','Nya']},{n:'Revati',p:['De','Do','Cha','Chi']}];
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+let currentSyllables=[];
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const sid=n360(moonLon(jd)-ayanamsha((jd-2451545)/36525));
+    const idx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;
+    const nk=NAKS[idx];const syl=nk.p[pada-1];
+
+    document.getElementById('big-syl').textContent=syl;
+    document.getElementById('syl-meta').textContent=`${nk.n} Nakshatra · Pada ${pada}`;
+    document.getElementById('pada-grid').innerHTML=nk.p.map((s,i)=>
+      `<div style="padding:14px;border-radius:8px;text-align:center;background:${i===pada-1?'var(--color-saffron-soft)':'var(--color-canvas-soft-2)'};">
+        <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">Pada ${i+1}</p>
+        <p style="font-size:22px;font-weight:700;color:${i===pada-1?'var(--color-saffron-deep)':'var(--color-ink)'};margin:0;">${s}</p>
+      </div>`).join('');
+
+    const prev=NAKS[(idx+26)%27],next=NAKS[(idx+1)%27];
+    document.getElementById('alt-syls').innerHTML=[[prev.n,prev.p],[next.n,next.p]].map(([nm,ps])=>
+      `<div><p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;">${nm}</p><p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${ps.join(' · ')}</p></div>`).join('');
+
+    currentSyllables=nk.p.map(s=>s.toLowerCase());
+    checkName();
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+function checkName(){
+  const v=document.getElementById('name-check').value.trim().toLowerCase();
+  const out=document.getElementById('name-result');
+  if(!v){out.textContent='';return;}
+  const match=currentSyllables.some(s=>v.startsWith(s));
+  if(match){out.textContent='✓ Great match for this nakshatra!';out.style.color='#15803d';}
+  else{out.textContent='✗ Does not start with a recommended syllable';out.style.color='#dc2626';}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+document.getElementById('name-check').addEventListener('input',checkName);
+calculate();
+</script>

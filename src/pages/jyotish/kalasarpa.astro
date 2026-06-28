@@ -1,0 +1,141 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Kalasarpa Yoga Calculator — Dosha Detector — PanchangPath" description="Detect Kalasarpa Yoga / Dosha in your birth chart — when all seven planets lie between Rahu and Ketu. Identifies the type and explains effects and remedies.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">कालसर्प योग · KALASARPA YOGA</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Kalasarpa Yoga Detector</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Kalasarpa Yoga forms when all seven planets are hemmed between Rahu and Ketu. Enter your birth details to check your chart.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Detect</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" id="ks-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
+        <div class="card" style="padding:20px;margin-bottom:24px;overflow-x:auto;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Planet Positions vs Rahu–Ketu Axis</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pos-table"></table>
+        </div>
+        <div class="card" style="padding:24px;">
+          <h3 id="effect-title" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">Effects &amp; Remedies</h3>
+          <p id="effect" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;"></p>
+          <div id="remedies"></div>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Kalasarpa Yoga</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Kalasarpa Yoga (the "serpent of time") occurs when all seven classical planets — Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn — are confined to one side of the Rahu–Ketu axis. There are 12 named types depending on the sign occupied by Rahu. It is said to bring delays, struggles and sudden ups and downs, but also intense focus and the potential for remarkable achievement once the karma is worked through. If even one planet falls outside the axis, the yoga is considered partial or absent.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  #pos-table th { text-align:left;padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.04em; }
+  #pos-table td { padding:8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+const toD=r=>r*180/Math.PI;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function sunLon(jd){const T=(jd-2451545)/36525;const L0=n360(280.46646+36000.76983*T+0.0003032*T*T);const M=n360(357.52911+35999.05029*T-0.0001537*T*T);const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(toR(M))+(0.019993-0.000101*T)*Math.sin(2*toR(M))+0.000289*Math.sin(3*toR(M));return n360(L0+C);}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+function rahuLon(jd){const T=(jd-2451545)/36525;return n360(125.04452-1934.136261*T+0.0020708*T*T);}
+function solveKepler(M,e){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
+const ORB={mercury:{L:252.250906,Ld:149472.6746358,wp:77.456119,wpd:0.1588643,Om:48.330893,Omd:-0.1254229,i:7.004979,id:-0.005952,e:0.20563069,ed:0.00002527,a:0.38709831},venus:{L:181.979801,Ld:58517.815676,wp:131.563707,wpd:0.0036096,Om:76.67992,Omd:-0.278008,i:3.394662,id:-0.000857,e:0.00677323,ed:-0.00004938,a:0.72332102},earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},mars:{L:355.432818,Ld:19140.2993313,wp:336.040768,wpd:0.4439016,Om:49.558093,Omd:-0.295025,i:1.849726,id:-0.008148,e:0.09341233,ed:0.00011902,a:1.52371243},jupiter:{L:34.351484,Ld:3034.9056746,wp:14.331309,wpd:0.2155402,Om:100.464441,Omd:0.1350208,i:1.30327,id:-0.001987,e:0.04839266,ed:-0.0001288,a:5.20248019},saturn:{L:50.077444,Ld:1222.1137943,wp:93.056787,wpd:0.5691095,Om:113.665524,Omd:-0.2566722,i:2.488878,id:0.002552,e:0.0541506,ed:-0.00036762,a:9.54149883}};
+function helioXY(el,T){const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);const E=solveKepler(M,e);const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));const r=el.a*(1-e*Math.cos(E));const arg=nu+w;const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));return[x,y];}
+function allLons(jd){const T=(jd-2451545)/36525;const ay=ayanamsha(T);const[xE,yE]=helioXY(ORB.earth,T);const geo=k=>{const[xP,yP]=helioXY(ORB[k],T);return n360(toD(Math.atan2(yP-yE,xP-xE)));};const rahu=rahuLon(jd);return{surya:sunLon(jd),chandra:moonLon(jd),mangal:geo('mars'),budha:geo('mercury'),guru:geo('jupiter'),shukra:geo('venus'),shani:geo('saturn'),rahu,ketu:n360(rahu+180),ay};}
+
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const KALASARPA_TYPES=['Ananta','Kulika','Vasuki','Shankhapala','Padma','Mahapadma','Takshaka','Karkotak','Shankhachud','Ghatak','Vishadhar','Sheshanaga'];
+const PLANETS=[['surya','Sun'],['chandra','Moon'],['mangal','Mars'],['budha','Mercury'],['guru','Jupiter'],['shukra','Venus'],['shani','Saturn']];
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const L=allLons(jd);const ay=L.ay;
+    const rahu=n360(L.rahu-ay);const ketu=n360(L.ketu-ay);
+
+    let countInArc=0,conjunct=false;
+    const rows=PLANETS.map(([k,full])=>{
+      const p=n360(L[k]-ay);
+      const fromRahu=n360(p-rahu);
+      const inArc=fromRahu<180; // between Rahu and Ketu going forward
+      if(inArc)countInArc++;
+      const dR=Math.min(n360(p-rahu),n360(rahu-p));
+      const dK=Math.min(n360(p-ketu),n360(ketu-p));
+      if(dR<2||dK<2)conjunct=true;
+      return `<tr><td style="color:var(--color-ink);font-weight:600;">${full}</td><td>${RASHI[Math.floor(p/30)]}</td><td>${(p%30).toFixed(1)}°</td><td>${inArc?'Rahu → Ketu side':'Ketu → Rahu side'}</td></tr>`;
+    });
+    document.getElementById('pos-table').innerHTML=
+      `<tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Hemisphere</th></tr>`+rows.join('')+
+      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;">Rahu</td><td>${RASHI[Math.floor(rahu/30)]}</td><td>${(rahu%30).toFixed(1)}°</td><td>—</td></tr>`+
+      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;">Ketu</td><td>${RASHI[Math.floor(ketu/30)]}</td><td>${(ketu%30).toFixed(1)}°</td><td>—</td></tr>`;
+
+    const present=(countInArc===7||countInArc===0);
+    const rahuSign=Math.floor(rahu/30);
+    const type=KALASARPA_TYPES[rahuSign];
+
+    let bg,html;
+    if(present&&conjunct){
+      bg='var(--color-warning-soft)';
+      html=`<div style="font-size:40px;margin-bottom:6px;">🐍</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">Partial Kalasarpa Yoga</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;"><b>${type} Kalasarpa</b> — all planets are on one side, but a planet sits very close to Rahu/Ketu, partially breaking the yoga (Kemdrum-like effect).</p>`;
+    }else if(present){
+      bg='var(--color-inauspicious-soft)';
+      html=`<div style="font-size:40px;margin-bottom:6px;">🐍</div><h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">${type} Kalasarpa Yoga Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All 7 planets fall between Rahu (${RASHI[rahuSign]}) and Ketu (${RASHI[Math.floor(ketu/30)]}).</p>`;
+    }else{
+      bg='var(--color-auspicious-soft)';
+      html=`<div style="font-size:40px;margin-bottom:6px;">✅</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Kalasarpa Yoga</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${7-countInArc>0&&countInArc>0?`${Math.min(countInArc,7-countInArc)} planet(s) lie outside the Rahu–Ketu axis`:''}, so the yoga does not form. Your planets are spread on both sides of the nodal axis.</p>`;
+    }
+    document.getElementById('ks-banner').style.background=bg;
+    document.getElementById('ks-banner').innerHTML=html;
+
+    if(present){
+      document.getElementById('effect-title').textContent=`${type} Kalasarpa — Effects & Remedies`;
+      document.getElementById('effect').textContent=`This yoga can bring delays, unexpected obstacles and karmic challenges, especially in the early part of life. However, it also grants intensity, resilience and the capacity for extraordinary success once the lessons of Rahu and Ketu are integrated. Many famous achievers have Kalasarpa in their charts.`;
+      document.getElementById('remedies').innerHTML=`<p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Common remedies</p><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;">
+        <li style="font-size:13px;color:var(--color-body-text);">Worship Lord Shiva; recite the Maha Mrityunjaya mantra.</li>
+        <li style="font-size:13px;color:var(--color-body-text);">Perform Kalasarpa Dosha Nivaran Puja (often at Trimbakeshwar or Kalahasti).</li>
+        <li style="font-size:13px;color:var(--color-body-text);">Chant Rahu and Ketu beej mantras on appropriate days.</li>
+        <li style="font-size:13px;color:var(--color-body-text);">Offer to Nagas (serpent deities) on Naga Panchami.</li>
+      </ul>`;
+    }else{
+      document.getElementById('effect-title').textContent='No Remedies Needed';
+      document.getElementById('effect').textContent='Since Kalasarpa Yoga does not form in your chart, no specific Kalasarpa remedies are required. The planets are distributed across both hemispheres of the nodal axis.';
+      document.getElementById('remedies').innerHTML='';
+    }
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;document.getElementById('result').style.display='none';}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

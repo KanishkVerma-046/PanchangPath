@@ -1,0 +1,131 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Gemstone Calculator — Find Your Lucky Stone — PanchangPath" description="Find your lucky gemstone (ratna) based on your Vedic birth chart. Get the primary stone for your Lagna lord plus wearing instructions — metal, finger, day and substitutes.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">रत्न · GEMSTONE CALCULATOR</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Gemstone Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Discover the gemstone (ratna) recommended for you based on your Lagna and the placement of benefic planets in your birth chart.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" style="padding:20px;margin-bottom:24px;">
+          <div id="birth-info" style="display:flex;gap:24px;flex-wrap:wrap;"></div>
+        </div>
+        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Primary Recommendation</h3>
+        <p style="font-size:12.5px;color:var(--color-mute);margin:0 0 14px;">The life-stone (Jeevan Ratna) for your Lagna lord — generally safe to wear lifelong.</p>
+        <div id="primary-gem" style="margin-bottom:28px;"></div>
+        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Supporting Gemstones</h3>
+        <div id="secondary-gems" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;"></div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Gemstone Therapy</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">In Jyotish, each of the nine grahas is associated with a primary gemstone. Wearing the right stone is believed to strengthen the energy of its planet. The most commonly recommended stone is that of the Lagna lord, which supports overall vitality and life direction.</p>
+        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">Note: Gemstone selection is highly individual. Strong malefic placements may call for caution. Please consult a qualified astrologer before wearing a powerful stone such as Blue Sapphire (Neelam).</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+const toD=r=>r*180/Math.PI;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function sunLon(jd){const T=(jd-2451545)/36525;const L0=n360(280.46646+36000.76983*T+0.0003032*T*T);const M=n360(357.52911+35999.05029*T-0.0001537*T*T);const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(toR(M))+(0.019993-0.000101*T)*Math.sin(2*toR(M))+0.000289*Math.sin(3*toR(M));return n360(L0+C);}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+function calcLagna(jd,lat,lng){const T=(jd-2451545)/36525;const eps=23.439291111-0.013004167*T;const GMST=n360(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);const RAMC=toR(n360(GMST+lng));const e=toR(eps),phi=toR(lat);const tanA=-Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));let A=toD(Math.atan(tanA));if(Math.cos(RAMC)>0)A+=180;return n360(A);}
+
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
+// Trikona (1,5,9) lords are most benefic for a Lagna; we recommend Lagna lord + 5th + 9th lords
+const GEMS={
+Sun:{p:'Surya',stone:'Ruby',h:'माणिक्य',sub:'Red Garnet',metal:'Gold',finger:'Ring',day:'Sunday',color:'#dc2626',desc:'Enhances leadership, vitality, and confidence. Recommended for a weak Sun.'},
+Moon:{p:'Chandra',stone:'Pearl',h:'मोती',sub:'Moonstone',metal:'Silver',finger:'Little',day:'Monday',color:'#6366f1',desc:'Brings emotional stability, clarity of mind, and strengthens intuition.'},
+Mars:{p:'Mangal',stone:'Red Coral',h:'मूंगा',sub:'Red Carnelian',metal:'Gold/Copper',finger:'Ring',day:'Tuesday',color:'#f97316',desc:'Boosts courage, energy, and helps overcome obstacles and enemies.'},
+Mercury:{p:'Budha',stone:'Emerald',h:'पन्ना',sub:'Green Tourmaline',metal:'Gold',finger:'Little',day:'Wednesday',color:'#10b981',desc:'Improves intellect, communication, business acumen, and memory.'},
+Jupiter:{p:'Guru',stone:'Yellow Sapphire',h:'पुखराज',sub:'Yellow Topaz / Citrine',metal:'Gold',finger:'Index',day:'Thursday',color:'#f59e0b',desc:'Brings wisdom, prosperity, good fortune, and spiritual growth.'},
+Venus:{p:'Shukra',stone:'Diamond',h:'हीरा',sub:'White Sapphire / Zircon',metal:'White Gold/Platinum',finger:'Middle',day:'Friday',color:'#a78bfa',desc:'Attracts love, luxury, beauty, and material comforts.'},
+Saturn:{p:'Shani',stone:'Blue Sapphire',h:'नीलम',sub:'Amethyst / Blue Spinel',metal:'Gold/Silver',finger:'Middle',day:'Saturday',color:'#3b82f6',desc:'Removes obstacles, brings discipline, longevity, and career stability.'}};
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function gemCard(planet,big,roleLabel){
+  const g=GEMS[planet];
+  return `<div class="card" style="padding:18px;border-top:3px solid ${g.color};">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+      <span style="width:${big?40:32}px;height:${big?40:32}px;border-radius:50%;background:${g.color};flex-shrink:0;box-shadow:0 0 0 4px ${g.color}22;"></span>
+      <div>
+        <h4 style="font-size:${big?17:15}px;font-weight:700;color:var(--color-ink);margin:0;">${g.stone} · ${g.h}</h4>
+        <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${roleLabel} · ${planet} (${g.p})</p>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${g.desc}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12px;">
+      ${[['Metal',g.metal],['Finger',g.finger],['Day',g.day],['Substitute',g.sub]].map(r=>
+        `<div><span style="color:var(--color-mute);">${r[0]}: </span><span style="color:var(--color-ink);font-weight:600;">${r[1]}</span></div>`).join('')}
+    </div></div>`;
+}
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const T=(jd-2451545)/36525;const ay=ayanamsha(T);
+    const lagnaSign=Math.floor(n360(calcLagna(jd,loc.lat,loc.lng)-ay)/30);
+    const moonSign=Math.floor(n360(moonLon(jd)-ay)/30);
+    const sunSign=Math.floor(n360(sunLon(jd)-ay)/30);
+
+    document.getElementById('birth-info').innerHTML=[
+      ['Lagna (Asc)',`${RASHI[lagnaSign]} (${RASHI_EN[lagnaSign]})`],
+      ['Moon Rashi',`${RASHI[moonSign]} (${RASHI_EN[moonSign]})`],
+      ['Sun Rashi',`${RASHI[sunSign]} (${RASHI_EN[sunSign]})`],
+    ].map(r=>`<div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">${r[0]}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`).join('');
+
+    const lagnaLord=LORD[lagnaSign];
+    const fifthLord=LORD[(lagnaSign+4)%12];
+    const ninthLord=LORD[(lagnaSign+8)%12];
+    document.getElementById('primary-gem').innerHTML=gemCard(lagnaLord,true,'Lagna Lord (Life-Stone)');
+
+    const sec=[];const seen=new Set([lagnaLord]);
+    if(!seen.has(fifthLord)){sec.push(gemCard(fifthLord,false,'5th Lord (Trikona)'));seen.add(fifthLord);}
+    if(!seen.has(ninthLord)){sec.push(gemCard(ninthLord,false,'9th Lord (Trikona)'));seen.add(ninthLord);}
+    // Always offer Moon stone for the mind if not already there
+    const moonLord='Moon';if(!seen.has(moonLord)){sec.push(gemCard(moonLord,false,'For Mind & Emotions'));seen.add(moonLord);}
+    document.getElementById('secondary-gems').innerHTML=sec.join('');
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

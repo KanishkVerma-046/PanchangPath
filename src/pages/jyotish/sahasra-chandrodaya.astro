@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Sahasra Chandrodaya Calculator — 1000th Full Moon — PanchangPath" description="Calculate the date of your Sahasra Chandra Darshan — the 1000th full moon seen in a lifetime, an auspicious milestone celebrated around age 80.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">सहस्र चंद्रोदय · SAHASRA CHANDRODAYA</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Sahasra Chandrodaya Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Sahasra Chandra Darshan marks the viewing of one\'s 1000th full moon — a revered milestone celebrated at around 80 years and 8 months of age.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" style="padding:32px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
+          <div style="font-size:48px;line-height:1;margin-bottom:8px;">🌕</div>
+          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">YOUR 1000TH FULL MOON</p>
+          <h2 id="big-date" style="font-size:28px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
+          <p id="big-meta" style="font-size:14px;color:var(--color-mute);margin:0;"></p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;" class="stat-grid">
+          <div class="card" style="padding:20px;text-align:center;"><div id="s-moons" style="font-size:28px;font-weight:700;color:var(--color-ink);"></div><p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">Full moons so far</p></div>
+          <div class="card" style="padding:20px;text-align:center;"><div id="s-age" style="font-size:28px;font-weight:700;color:var(--color-ink);"></div><p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">Age at milestone</p></div>
+          <div class="card" style="padding:20px;text-align:center;"><div id="s-remain" style="font-size:28px;font-weight:700;color:var(--color-ink);"></div><p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;" id="s-remain-label">Years remaining</p></div>
+        </div>
+        <div class="card" style="padding:20px;margin-bottom:24px;">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-mute);margin-bottom:6px;"><span>Birth</span><span id="prog-pct"></span><span>1000th Full Moon</span></div>
+          <div style="height:14px;background:var(--color-canvas-soft-2);border-radius:100px;overflow:hidden;"><div id="prog-bar" style="height:100%;background:linear-gradient(90deg,var(--color-saffron),var(--color-saffron-deep));border-radius:100px;transition:width 0.5s;"></div></div>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Sahasra Chandra Darshan</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">In Hindu tradition, witnessing one thousand full moons is a sacred achievement signifying a long, blessed life. Since a lunar (synodic) month is about 29.53 days, 1000 full moons span roughly 80 years and 8 months. The occasion, sometimes called <i>Sahasra Chandra Darshana Shanti</i>, is marked with a special puja and family celebration.</p>
+        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">This calculator estimates the date by adding 999 synodic months to the first full moon after birth. Actual full-moon dates vary slightly due to the Moon\'s elliptical orbit.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  @media (max-width:640px){ .stat-grid{ grid-template-columns:1fr !important; } }
+</style>
+
+<script>
+const SYN=29.530589; // synodic month in days
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+function sunLon(jd){const T=(jd-2451545)/36525;const L0=n360(280.46646+36000.76983*T+0.0003032*T*T);const M=n360(357.52911+35999.05029*T-0.0001537*T*T);const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(toR(M))+(0.019993-0.000101*T)*Math.sin(2*toR(M))+0.000289*Math.sin(3*toR(M));return n360(L0+C);}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+function elong(jd){return n360(moonLon(jd)-sunLon(jd));} // 180 = full moon
+function jdToDate(jd){const z=Math.floor(jd+0.5);let a=z;if(z>=2299161){const al=Math.floor((z-1867216.25)/36524.25);a=z+1+al-Math.floor(al/4);}const b=a+1524,c=Math.floor((b-122.1)/365.25),dd=Math.floor(365.25*c),e=Math.floor((b-dd)/30.6001);const day=b-dd-Math.floor(30.6001*e);const mo=e<14?e-1:e-13;const yr=mo>2?c-4716:c-4715;return new Date(yr,mo-1,day);}
+const MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+document.getElementById('f-date').value='1945-06-15';
+
+function nextFullMoon(jd){
+  // step to find elongation crossing 180
+  let cur=jd;
+  for(let i=0;i<60;i++){
+    const e=elong(cur);
+    // distance to 180 going forward
+    let diff=180-e;if(diff<0)diff+=360;
+    // refine
+    let est=cur+diff/360*SYN;
+    for(let k=0;k<6;k++){let ee=elong(est);let dd=180-ee;if(dd>180)dd-=360;if(dd<-180)dd+=360;est+=dd/360*SYN;}
+    if(est>jd+0.5)return est;
+    cur=est+1;
+  }
+  return jd;
+}
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const [y,m,d]=dateStr.split('-').map(Number);
+    const jdBirth=toJD(y,m,d,12);
+    const firstFM=nextFullMoon(jdBirth);
+    const jd1000=firstFM+999*SYN;
+    const dt=jdToDate(jd1000);
+    const ageMs=jd1000-jdBirth;const ageYears=ageMs/365.25;
+
+    document.getElementById('big-date').textContent=`${dt.getDate()} ${MON[dt.getMonth()]} ${dt.getFullYear()}`;
+    document.getElementById('big-meta').textContent=`Approximately ${Math.floor(ageYears)} years, ${Math.round((ageYears%1)*12)} months after birth`;
+
+    const todayJD=toJD(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate(),12);
+    const moonsSoFar=Math.max(0,Math.min(1000,Math.floor((todayJD-firstFM)/SYN)+1));
+    document.getElementById('s-moons').textContent=`${moonsSoFar}`;
+    document.getElementById('s-age').textContent=`${Math.floor(ageYears)}y`;
+
+    const remDays=jd1000-todayJD;
+    if(remDays>0){
+      document.getElementById('s-remain').textContent=`${(remDays/365.25).toFixed(1)}`;
+      document.getElementById('s-remain-label').textContent='Years remaining';
+    }else{
+      document.getElementById('s-remain').textContent=`${Math.abs(remDays/365.25).toFixed(1)}`;
+      document.getElementById('s-remain-label').textContent='Years since (passed)';
+    }
+
+    const pct=Math.max(0,Math.min(100,(moonsSoFar/1000)*100));
+    document.getElementById('prog-bar').style.width=pct+'%';
+    document.getElementById('prog-pct').textContent=`${pct.toFixed(1)}% (${moonsSoFar} moons)`;
+
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

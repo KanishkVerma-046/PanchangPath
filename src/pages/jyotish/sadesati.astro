@@ -1,0 +1,150 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Shani Sadesati Calculator — 7.5 Year Saturn Cycle — PanchangPath" description="Check your Shani Sadesati status — Saturn\'s 7.5-year transit over your Moon sign. See current phase and a lifetime timeline of all three Sadesati periods.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शनि साढ़ेसाती · SHANI SADESATI</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shani Sadesati Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Sadesati is the 7.5-year period when Saturn transits the sign before, over, and after your Moon sign. Find your status and full timeline.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" id="ss-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
+        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Lifetime Sadesati Timeline</h3>
+        <div id="timeline" style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;"></div>
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">The Three Phases</h3>
+          <div id="phases" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;" class="phase-grid"></div>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shani Sadesati</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Saturn (Shani) takes about 29.5 years to circle the zodiac, spending roughly 2.5 years in each sign. Sadesati ("seven and a half") is the period when Saturn passes through the 12th, 1st and 2nd signs from your natal Moon — about 7.5 years in total. It recurs roughly every 30 years, so most people experience it two to three times in a lifetime. Though known for tests and hard lessons, Sadesati is ultimately a period of maturity, discipline and lasting growth. Dates here are approximate (computed from Saturn\'s sidereal sign ingress).</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  @media (max-width:640px){ .phase-grid{ grid-template-columns:1fr !important; } }
+</style>
+
+<script>
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+const toD=r=>r*180/Math.PI;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+function solveKepler(M,e){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
+const ORB={earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},saturn:{L:50.077444,Ld:1222.1137943,wp:93.056787,wpd:0.5691095,Om:113.665524,Omd:-0.2566722,i:2.488878,id:0.002552,e:0.0541506,ed:-0.00036762,a:9.54149883}};
+function helioXY(el,T){const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);const E=solveKepler(M,e);const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));const r=el.a*(1-e*Math.cos(E));const arg=nu+w;const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));return[x,y];}
+function saturnSign(jd){const T=(jd-2451545)/36525;const[xE,yE]=helioXY(ORB.earth,T);const[xS,yS]=helioXY(ORB.saturn,T);const trop=n360(toD(Math.atan2(yS-yE,xS-xE)));return Math.floor(n360(trop-ayanamsha(T))/30);}
+
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function jdToYMD(jd){const z=Math.floor(jd+0.5);let a=z;if(z>=2299161){const al=Math.floor((z-1867216.25)/36524.25);a=z+1+al-Math.floor(al/4);}const b=a+1524,c=Math.floor((b-122.1)/365.25),dd=Math.floor(365.25*c),e=Math.floor((b-dd)/30.6001);const day=b-dd-Math.floor(30.6001*e);const mo=e<14?e-1:e-13;const yr=mo>2?c-4716:c-4715;return{y:yr,m:mo};}
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [by,bm,bd]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jdBirth=toJD(by,bm,bd,(hh+mm/60)-loc.tz);
+    const moonSign=Math.floor(n360(moonLon(jdBirth)-ayanamsha((jdBirth-2451545)/36525))/30);
+    const setSigns=[(moonSign+11)%12,moonSign,(moonSign+1)%12]; // 12th,1st,2nd from Moon
+
+    // scan monthly from birth to birth+95 years
+    const periods=[];let cur=null;
+    for(let jd=jdBirth;jd<jdBirth+95*365.25;jd+=15){
+      const ss=saturnSign(jd);
+      const inSade=setSigns.includes(ss);
+      if(inSade){
+        if(!cur)cur={start:jd,end:jd};
+        else cur.end=jd;
+      }else if(cur){periods.push(cur);cur=null;}
+    }
+    if(cur)periods.push(cur);
+
+    const todayJD=toJD(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate(),12);
+    let active=null;
+    periods.forEach(p=>{if(todayJD>=p.start&&todayJD<=p.end)active=p;});
+
+    let bg,html;
+    if(active){
+      const ssNow=saturnSign(todayJD);
+      const phaseIdx=setSigns.indexOf(ssNow);
+      const phaseName=['Rising (First Dhaiya)','Peak (Janma Shani)','Setting (Final Dhaiya)'][phaseIdx];
+      const e=jdToYMD(active.end);
+      bg='var(--color-warning-soft)';
+      html=`<div style="font-size:40px;margin-bottom:6px;">🪐</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">In Sadesati</h2>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;">Currently in the <b>${phaseName}</b> phase. Saturn is in ${RASHI[ssNow]}, your Moon is in ${RASHI[moonSign]}.<br>This Sadesati ends around <b>${MON[e.m-1]} ${e.y}</b>.</p>`;
+    }else{
+      // find next
+      let next=periods.find(p=>p.start>todayJD);
+      bg='var(--color-auspicious-soft)';
+      const ns=next?jdToYMD(next.start):null;
+      html=`<div style="font-size:40px;margin-bottom:6px;">✅</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">Not in Sadesati</h2>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;">Your Moon sign is ${RASHI[moonSign]}. ${ns?`Your next Sadesati begins around <b>${MON[ns.m-1]} ${ns.y}</b>.`:'No upcoming Sadesati within the scanned range.'}</p>`;
+    }
+    document.getElementById('ss-banner').style.background=bg;
+    document.getElementById('ss-banner').innerHTML=html;
+
+    document.getElementById('timeline').innerHTML=periods.map((p,i)=>{
+      const s=jdToYMD(p.start),e=jdToYMD(p.end);
+      const isActive=active===p;const isPast=p.end<todayJD;
+      const ageS=Math.floor((p.start-jdBirth)/365.25),ageE=Math.floor((p.end-jdBirth)/365.25);
+      return `<div class="card" style="padding:14px 18px;display:flex;align-items:center;gap:14px;${isActive?'border-left:3px solid var(--color-warning);':''}">
+        <span style="font-size:22px;">${isActive?'🔸':isPast?'✓':'○'}</span>
+        <div style="flex:1;">
+          <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${MON[s.m-1]} ${s.y} – ${MON[e.m-1]} ${e.y}</p>
+          <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">Age ${ageS}–${ageE} · ${isActive?'Currently active':isPast?'Completed':'Upcoming'}</p>
+        </div>
+        <span class="badge ${isActive?'badge-saffron':''}">Cycle ${i+1}</span>
+      </div>`;
+    }).join('')||'<p style="font-size:13px;color:var(--color-mute);">No Sadesati periods found in range.</p>';
+
+    const phaseData=[
+      ['12th House Phase','Rising','Saturn enters the sign before your Moon. Mental unrest, expenses and changes begin. A time to prepare and let go of the unnecessary.'],
+      ['1st House Phase','Peak','Saturn sits over your Moon — the most intense 2.5 years. Health, mind and major life structures are tested and rebuilt.'],
+      ['2nd House Phase','Setting','Saturn moves to the sign after your Moon. Focus shifts to family and finances; the pressure gradually eases toward stability.'],
+    ];
+    document.getElementById('phases').innerHTML=phaseData.map((p,i)=>
+      `<div style="padding:14px;border-radius:8px;background:var(--color-canvas-soft-2);">
+        <p style="font-size:12px;font-weight:700;color:var(--color-saffron-deep);margin:0 0 2px;">${p[1]}</p>
+        <p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${p[0]} (${RASHI[setSigns[i]]})</p>
+        <p style="font-size:12px;color:var(--color-body-text);line-height:1.5;margin:0;">${p[2]}</p>
+      </div>`).join('');
+
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;document.getElementById('result').style.display='none';}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

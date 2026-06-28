@@ -174,12 +174,19 @@ import LanguagePicker from './LanguagePicker.astro';
           </div>
         </li>
         <li class="nav-item has-dropdown">
-          <a href="/rashifal" class="nav-cat">Jyotish <span class="nav-caret">▾</span></a>
-          <div class="nav-dropdown">
-            <a href="/kundali" class="dd-link">Kundli / Birth Chart</a>
-            <a href="/rashifal" class="dd-link">Rashifal (Horoscope)</a>
-            <a href="/prashnavali" class="dd-link">Prashnavali Oracle</a>
-            <a href="/" class="dd-link">Numerology</a>
+          <a href="/jyotish" class="nav-cat">Jyotish <span class="nav-caret">▾</span></a>
+          <div class="nav-dropdown" style="min-width:220px;">
+            <a href="/jyotish/kundali" class="dd-link">Kundali Generator</a>
+            <a href="/jyotish/horoscope-match" class="dd-link">Horoscope Match</a>
+            <a href="/jyotish/rashi" class="dd-link">Rashi Calculator</a>
+            <a href="/jyotish/nakshatra" class="dd-link">Nakshatra Calculator</a>
+            <a href="/jyotish/mangal-dosha" class="dd-link">Mangal Dosha</a>
+            <a href="/jyotish/kalasarpa" class="dd-link">Kalasarpa Yoga</a>
+            <a href="/jyotish/sadesati" class="dd-link">Shani Sadesati</a>
+            <a href="/jyotish/baby-names" class="dd-link">Baby Names</a>
+            <a href="/jyotish/gemstone" class="dd-link">Gemstone Calculator</a>
+            <div class="dd-divider"></div>
+            <a href="/jyotish" class="dd-link dd-link-accent">✨ All Calculators</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -314,10 +321,18 @@ import LanguagePicker from './LanguagePicker.astro';
           Jyotish <span class="drawer-caret">›</span>
         </button>
         <div class="drawer-sub" id="m-jyotish">
-          <a href="/kundali" class="drawer-link">Kundli / Birth Chart</a>
+          <a href="/jyotish" class="drawer-link">All Jyotish Calculators</a>
+          <a href="/jyotish/kundali" class="drawer-link">Kundali Generator</a>
+          <a href="/jyotish/horoscope-match" class="drawer-link">Horoscope Match</a>
+          <a href="/jyotish/rashi" class="drawer-link">Rashi Calculator</a>
+          <a href="/jyotish/nakshatra" class="drawer-link">Nakshatra Calculator</a>
+          <a href="/jyotish/mangal-dosha" class="drawer-link">Mangal Dosha</a>
+          <a href="/jyotish/kalasarpa" class="drawer-link">Kalasarpa Yoga</a>
+          <a href="/jyotish/sadesati" class="drawer-link">Shani Sadesati</a>
+          <a href="/jyotish/baby-names" class="drawer-link">Baby Names</a>
+          <a href="/jyotish/gemstone" class="drawer-link">Gemstone Calculator</a>
           <a href="/rashifal" class="drawer-link">Rashifal (Horoscope)</a>
           <a href="/prashnavali" class="drawer-link">Prashnavali Oracle</a>
-          <a href="/" class="drawer-link">Numerology</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -1003,6 +1018,25 @@ import LanguagePicker from './LanguagePicker.astro';
     { label: "Navratri 2025", url: "/festivals" },
     { label: "Ekadashi", url: "/festivals" },
     { label: "Sunrise & Sunset", url: "/" },
+    { label: "Jyotish Calculators", url: "/jyotish" },
+    { label: "Kundali Generator", url: "/jyotish/kundali" },
+    { label: "Horoscope Matching", url: "/jyotish/horoscope-match" },
+    { label: "Guna Milan", url: "/jyotish/horoscope-match" },
+    { label: "Gemstone Calculator", url: "/jyotish/gemstone" },
+    { label: "Rudraksha Calculator", url: "/jyotish/rudraksha" },
+    { label: "Rashi Calculator", url: "/jyotish/rashi" },
+    { label: "Moon Sign Calculator", url: "/jyotish/rashi" },
+    { label: "Sun Sign Calculator", url: "/jyotish/sunsign" },
+    { label: "Nakshatra Calculator", url: "/jyotish/nakshatra" },
+    { label: "Birth Star", url: "/jyotish/nakshatra" },
+    { label: "Janma Lagna / Ascendant", url: "/jyotish/lagna" },
+    { label: "Mangal Dosha / Manglik", url: "/jyotish/mangal-dosha" },
+    { label: "Kalasarpa Yoga", url: "/jyotish/kalasarpa" },
+    { label: "Shani Sadesati", url: "/jyotish/sadesati" },
+    { label: "Baby Name Finder", url: "/jyotish/baby-names" },
+    { label: "Shraddha Tithi", url: "/jyotish/shraddha" },
+    { label: "Sahasra Chandrodaya", url: "/jyotish/sahasra-chandrodaya" },
+    { label: "Pancha Pakshi", url: "/jyotish/pancha-pakshi" },
   ];
 
   const dropdown = document.getElementById('search-dropdown');

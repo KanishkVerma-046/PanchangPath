@@ -1,0 +1,139 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Mangal Dosha Calculator — Manglik Check — PanchangPath" description="Check if you are Manglik (Mangal Dosha) from your birth chart. Analyses Mars from Lagna, Moon and Venus, with severity and classical cancellation rules.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">मंगल दोष · MANGAL DOSHA</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Mangal Dosha (Manglik) Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find out whether Mars creates Mangal Dosha in your chart. The check is run from the Lagna, the Moon and Venus.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Check Dosha</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" id="dosha-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
+        <div class="card" style="padding:20px;margin-bottom:24px;overflow-x:auto;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Mars Position Analysis</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pos-table"></table>
+        </div>
+        <div class="card" style="padding:24px;">
+          <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">What this means</h3>
+          <p id="meaning" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"></p>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:24px;margin-top:24px;">
+        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Cancellation Rules (Mangal Dosha Bhanga)</h3>
+        <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars in its own sign (Mesha, Vrishchika) or exalted (Makara) loses much of its malefic effect.</li>
+          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars in Karka, Simha, Kumbha or Meena is considered weak and the dosha is reduced.</li>
+          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">When both partners are Manglik, the dosha is mutually cancelled.</li>
+          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars aspected by or conjunct Jupiter or the Moon is greatly pacified.</li>
+          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">For people born with Karka or Simha Lagna, Mars is a yogakaraka/benefic and the dosha does not apply.</li>
+          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">A strong, well-placed Jupiter in a kendra or trikona reduces the impact.</li>
+          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">The dosha is said to weaken naturally after the age of 28.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="padding:28px;margin-top:24px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Mangal Dosha</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Mangal Dosha (also called Kuja Dosha or being "Manglik") occurs when Mars sits in the 1st, 2nd, 4th, 7th, 8th or 12th house. Because Mars is fiery and aggressive, these placements are believed to create friction in marriage. In matchmaking, a Manglik is traditionally paired with another Manglik so the doshas neutralise. Modern practice weighs many cancellation factors, so a Manglik result alone is rarely a deal-breaker.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  #pos-table th { text-align:left;padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.04em; }
+  #pos-table td { padding:8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+const toD=r=>r*180/Math.PI;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+function solveKepler(M,e){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
+const ORB={earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},mars:{L:355.432818,Ld:19140.2993313,wp:336.040768,wpd:0.4439016,Om:49.558093,Omd:-0.295025,i:1.849726,id:-0.008148,e:0.09341233,ed:0.00011902,a:1.52371243},venus:{L:181.979801,Ld:58517.815676,wp:131.563707,wpd:0.0036096,Om:76.67992,Omd:-0.278008,i:3.394662,id:-0.000857,e:0.00677323,ed:-0.00004938,a:0.72332102}};
+function helioXY(el,T){const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);const E=solveKepler(M,e);const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));const r=el.a*(1-e*Math.cos(E));const arg=nu+w;const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));return[x,y];}
+function geoLon(key,jd){const T=(jd-2451545)/36525;const[xE,yE]=helioXY(ORB.earth,T);const[xP,yP]=helioXY(ORB[key],T);return n360(toD(Math.atan2(yP-yE,xP-xE)));}
+function calcLagna(jd,lat,lng){const T=(jd-2451545)/36525;const eps=23.439291111-0.013004167*T;const GMST=n360(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);const RAMC=toR(n360(GMST+lng));const e=toR(eps),phi=toR(lat);const tanA=-Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));let A=toD(Math.atan(tanA));if(Math.cos(RAMC)>0)A+=180;return n360(A);}
+
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const DOSHA_HOUSES=[1,2,4,7,8,12];
+function getHouse(planetSign,refSign){return ((planetSign-refSign+12)%12)+1;}
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const T=(jd-2451545)/36525;const ay=ayanamsha(T);
+    const marsSign=Math.floor(n360(geoLon('mars',jd)-ay)/30);
+    const moonSign=Math.floor(n360(moonLon(jd)-ay)/30);
+    const venusSign=Math.floor(n360(geoLon('venus',jd)-ay)/30);
+    const lagnaSign=Math.floor(n360(calcLagna(jd,loc.lat,loc.lng)-ay)/30);
+
+    const refs=[['Lagna (Ascendant)',lagnaSign],['Moon',moonSign],['Venus',venusSign]];
+    let doshaCount=0;
+    const rows=refs.map(([label,sign])=>{
+      const h=getHouse(marsSign,sign);const isDosha=DOSHA_HOUSES.includes(h);if(isDosha)doshaCount++;
+      return `<tr><td style="color:var(--color-ink);font-weight:600;">From ${label}</td><td>${RASHI[sign]}</td><td>House ${h}</td><td><span style="color:${isDosha?'#dc2626':'#15803d'};font-weight:600;">${isDosha?'Dosha':'Clear'}</span></td></tr>`;
+    });
+    document.getElementById('pos-table').innerHTML=`<tr><th>Reference</th><th>Sign</th><th>Mars House</th><th>Status</th></tr>`+rows.join('');
+
+    const present=doshaCount>0;
+    // severity & weakening
+    const ownExalt=[0,7,9].includes(marsSign); // Mesha, Vrishchika own; Makara exalted
+    const weakSigns=[3,4,10,11].includes(marsSign);
+    let severity,sevColor;
+    if(!present){severity='No Mangal Dosha';sevColor='#15803d';}
+    else if(doshaCount>=2&&!ownExalt&&!weakSigns){severity='High';sevColor='#dc2626';}
+    else{severity='Low to Medium';sevColor='#b45309';}
+
+    const bg=present?(severity==='High'?'var(--color-inauspicious-soft)':'var(--color-warning-soft)'):'var(--color-auspicious-soft)';
+    document.getElementById('dosha-banner').style.background=bg;
+    document.getElementById('dosha-banner').innerHTML=present
+      ?`<div style="font-size:40px;margin-bottom:6px;">🔴</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">Mangal Dosha Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">Severity: <b style="color:${sevColor};">${severity}</b> · Mars in ${RASHI[marsSign]} · Dosha from ${doshaCount} of 3 references</p>`
+      :`<div style="font-size:40px;margin-bottom:6px;">✅</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Mangal Dosha</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">Mars in ${RASHI[marsSign]} does not fall in a dosha house from your Lagna, Moon or Venus.</p>`;
+
+    let meaning;
+    if(!present){meaning=`Your Mars is favourably placed and does not create Mangal Dosha. There are no Manglik-related concerns for marriage from this analysis.`;}
+    else{meaning=`Mars falls in a dosha-causing house from ${doshaCount} reference point${doshaCount>1?'s':''}. `;
+      if(ownExalt)meaning+=`However, Mars is in ${RASHI[marsSign]} (own/exalted sign), which significantly reduces the dosha. `;
+      else if(weakSigns)meaning+=`However, Mars in ${RASHI[marsSign]} is considered weak, lessening the effect. `;
+      meaning+=`Traditionally this calls for matching with a partner who is also Manglik, or applying the cancellation rules below. Mangal Dosha is one factor among many — a full chart reading gives the complete picture.`;}
+    document.getElementById('meaning').textContent=meaning;
+
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;document.getElementById('result').style.display='none';}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

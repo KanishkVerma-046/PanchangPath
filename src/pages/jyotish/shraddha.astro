@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Shraddha Tithi Calculator — Pitru Paksha — PanchangPath" description="Find the tithi of a death anniversary and the correct day to perform Shraddha during Pitru Paksha. Includes the full Pitru Paksha tithi schedule.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">श्राद्ध तिथि · SHRADDHA TITHI</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shraddha Tithi Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Enter the date of passing to find its lunar tithi. Shraddha is then performed on the corresponding tithi during Pitru Paksha.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Passing</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time (approx)</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Find Tithi</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
+          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">TITHI OF PASSING</p>
+          <h2 id="t-name" style="font-size:26px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
+          <p id="t-meta" style="font-size:14px;color:var(--color-mute);margin:0;"></p>
+        </div>
+        <div class="card" id="shraddha-day" style="padding:24px;margin-bottom:24px;"></div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Pitru Paksha 2026 Schedule</h3>
+      <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;">Krishna Paksha of Ashwin · approx 7 – 21 September 2026</p>
+      <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:36px;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pp-table"></table>
+      </div>
+
+      <div class="card" style="padding:28px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shraddha</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Shraddha is the ritual offering made to honour departed ancestors (pitrs). The annual Shraddha is performed on the tithi corresponding to the date of death, during Pitru Paksha — a 16-day fortnight in the Krishna Paksha of the month of Ashwin (September–October).</p>
+        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">Special cases: those who passed on any Amavasya, or whose tithi is unknown, are honoured on <b>Sarva Pitru Amavasya</b> (the final day). Those who died unnaturally are remembered on Chaturdashi. Sanyasis are honoured on Dwadashi.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  #pp-table th { text-align:left;padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.04em; }
+  #pp-table td { padding:8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
+</style>
+
+<script>
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+function sunLon(jd){const T=(jd-2451545)/36525;const L0=n360(280.46646+36000.76983*T+0.0003032*T*T);const M=n360(357.52911+35999.05029*T-0.0001537*T*T);const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(toR(M))+(0.019993-0.000101*T)*Math.sin(2*toR(M))+0.000289*Math.sin(3*toR(M));return n360(L0+C);}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+
+const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima/Amavasya'];
+// Pitru Paksha 2026: Krishna paksha Ashwin. Each day maps to a tithi (Purnima Sep7 start -> Pratipada Sep8 ...). Approx dates.
+const PP2026=[
+  {date:'Sep 7',tithi:'Purnima',note:'Purnima Shraddha (for those who died on a Purnima)'},
+  {date:'Sep 8',tithi:'Pratipada',note:'Pratipada Shraddha'},
+  {date:'Sep 9',tithi:'Dwitiya',note:'Dwitiya Shraddha'},
+  {date:'Sep 10',tithi:'Tritiya',note:'Tritiya Shraddha'},
+  {date:'Sep 11',tithi:'Chaturthi',note:'Chaturthi Shraddha'},
+  {date:'Sep 12',tithi:'Panchami',note:'Panchami Shraddha (Bharani for unmarried)'},
+  {date:'Sep 13',tithi:'Shashthi',note:'Shashthi Shraddha'},
+  {date:'Sep 14',tithi:'Saptami',note:'Saptami Shraddha'},
+  {date:'Sep 15',tithi:'Ashtami',note:'Ashtami Shraddha'},
+  {date:'Sep 16',tithi:'Navami',note:'Navami / Matru Navami (for mothers)'},
+  {date:'Sep 17',tithi:'Dashami',note:'Dashami Shraddha'},
+  {date:'Sep 18',tithi:'Ekadashi',note:'Ekadashi Shraddha'},
+  {date:'Sep 19',tithi:'Dwadashi',note:'Dwadashi Shraddha (for sanyasis)'},
+  {date:'Sep 20',tithi:'Trayodashi',note:'Trayodashi / Chaturdashi Shraddha'},
+  {date:'Sep 21',tithi:'Amavasya',note:'Sarva Pitru Amavasya (all ancestors, unknown tithi)'},
+];
+
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-5.5);
+    const diff=n360(moonLon(jd)-sunLon(jd));
+    const tithiNum=Math.floor(diff/12)+1; // 1..30
+    const paksha=tithiNum<=15?'Shukla':'Krishna';
+    const inPaksha=tithiNum<=15?tithiNum:tithiNum-15;
+    let tName=TITHI_NAMES[inPaksha-1];
+    if(inPaksha===15)tName=paksha==='Shukla'?'Purnima':'Amavasya';
+
+    document.getElementById('t-name').textContent=`${paksha} ${tName}`;
+    document.getElementById('t-meta').textContent=`Tithi #${tithiNum} of the lunar month · Moon–Sun angle ${diff.toFixed(1)}°`;
+
+    // Map to Pitru Paksha day (Krishna paksha)
+    let shraddhaTithi=tName;
+    if(tName==='Purnima')shraddhaTithi='Purnima';
+    let ppDay=PP2026.find(p=>p.tithi===shraddhaTithi);
+    if(!ppDay&&tName==='Amavasya')ppDay=PP2026[PP2026.length-1];
+    if(!ppDay)ppDay=PP2026.find(p=>p.tithi===tName)||PP2026[PP2026.length-1];
+
+    document.getElementById('shraddha-day').innerHTML=
+      `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">When to perform the annual Shraddha</h3>
+       <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. In 2026 this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, 2026</b>.</p>
+       <p style="font-size:13px;color:var(--color-mute);margin:0;">${ppDay.note}</p>
+       <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (Sep 21, 2026).</p>`;
+
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+document.getElementById('pp-table').innerHTML=`<tr><th>Date (2026)</th><th>Tithi</th><th>Who is honoured</th></tr>`+
+  PP2026.map(p=>`<tr><td style="font-weight:600;color:var(--color-ink);">${p.date}</td><td>${p.tithi}</td><td style="font-size:12px;color:var(--color-mute);">${p.note}</td></tr>`).join('');
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

@@ -1,0 +1,154 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Janma Lagna Calculator — Find Your Ascendant — PanchangPath" description="Calculate your Janma Lagna (Ascendant / rising sign) with degree, nakshatra, lagna lord and a house wheel showing all planet placements.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">जन्म लग्न · JANMA LAGNA</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Janma Lagna (Ascendant) Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The Lagna is the rashi rising on the eastern horizon at your birth. It anchors all 12 houses and strongly shapes your body, personality and life path.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" style="padding:24px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 60%,var(--color-saffron-soft));">
+          <div id="l-sym" style="font-size:48px;line-height:1;margin-bottom:6px;"></div>
+          <h2 id="l-name" style="font-size:24px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
+          <p id="l-meta" style="font-size:13px;color:var(--color-mute);margin:0;"></p>
+        </div>
+        <div style="display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;" class="lg-layout">
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Lagna Chart</h3>
+            <div id="chart-box"></div>
+          </div>
+          <div>
+            <div class="card" style="padding:20px;margin-bottom:16px;">
+              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Lagna Details</h3>
+              <div id="detail-list" style="display:flex;flex-direction:column;gap:9px;"></div>
+            </div>
+            <div class="card" style="padding:20px;">
+              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">The 12 Houses (Bhavas)</h3>
+              <div id="house-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About the Lagna</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Because the Earth rotates once a day, the Lagna changes roughly every two hours, making an accurate birth time essential. The Lagna lord — the planet ruling your rising sign — and the house it occupies are among the most important factors in chart analysis, indicating where your life energy is most directed.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  #detail-list .dl-row { display:flex;justify-content:space-between;gap:10px;font-size:13px; }
+  #detail-list .dl-row span:first-child { color:var(--color-mute); }
+  #detail-list .dl-row span:last-child { color:var(--color-ink);font-weight:600;text-align:right; }
+  @media (max-width:820px){ .lg-layout{ grid-template-columns:1fr !important; } }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+const toD=r=>r*180/Math.PI;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function sunLon(jd){const T=(jd-2451545)/36525;const L0=n360(280.46646+36000.76983*T+0.0003032*T*T);const M=n360(357.52911+35999.05029*T-0.0001537*T*T);const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(toR(M))+(0.019993-0.000101*T)*Math.sin(2*toR(M))+0.000289*Math.sin(3*toR(M));return n360(L0+C);}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+function rahuLon(jd){const T=(jd-2451545)/36525;return n360(125.04452-1934.136261*T+0.0020708*T*T);}
+function solveKepler(M,e){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
+const ORB={mercury:{L:252.250906,Ld:149472.6746358,wp:77.456119,wpd:0.1588643,Om:48.330893,Omd:-0.1254229,i:7.004979,id:-0.005952,e:0.20563069,ed:0.00002527,a:0.38709831},venus:{L:181.979801,Ld:58517.815676,wp:131.563707,wpd:0.0036096,Om:76.67992,Omd:-0.278008,i:3.394662,id:-0.000857,e:0.00677323,ed:-0.00004938,a:0.72332102},earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},mars:{L:355.432818,Ld:19140.2993313,wp:336.040768,wpd:0.4439016,Om:49.558093,Omd:-0.295025,i:1.849726,id:-0.008148,e:0.09341233,ed:0.00011902,a:1.52371243},jupiter:{L:34.351484,Ld:3034.9056746,wp:14.331309,wpd:0.2155402,Om:100.464441,Omd:0.1350208,i:1.30327,id:-0.001987,e:0.04839266,ed:-0.0001288,a:5.20248019},saturn:{L:50.077444,Ld:1222.1137943,wp:93.056787,wpd:0.5691095,Om:113.665524,Omd:-0.2566722,i:2.488878,id:0.002552,e:0.0541506,ed:-0.00036762,a:9.54149883}};
+function helioXY(el,T){const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);const E=solveKepler(M,e);const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));const r=el.a*(1-e*Math.cos(E));const arg=nu+w;const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));return[x,y];}
+function allLons(jd){const T=(jd-2451545)/36525;const ay=ayanamsha(T);const[xE,yE]=helioXY(ORB.earth,T);const geo=k=>{const[xP,yP]=helioXY(ORB[k],T);return n360(toD(Math.atan2(yP-yE,xP-xE)));};const rahu=rahuLon(jd);return{surya:sunLon(jd),chandra:moonLon(jd),mangal:geo('mars'),budha:geo('mercury'),guru:geo('jupiter'),shukra:geo('venus'),shani:geo('saturn'),rahu,ketu:n360(rahu+180),ay};}
+function calcLagna(jd,lat,lng){const T=(jd-2451545)/36525;const eps=23.439291111-0.013004167*T;const GMST=n360(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);const RAMC=toR(n360(GMST+lng));const e=toR(eps),phi=toR(lat);const tanA=-Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));let A=toD(Math.atan(tanA));if(Math.cos(RAMC)>0)A+=180;return n360(A);}
+
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const SYM=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
+const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const PLANETS=[['surya','Su'],['chandra','Mo'],['mangal','Ma'],['budha','Me'],['guru','Ju'],['shukra','Ve'],['shani','Sa'],['rahu','Ra'],['ketu','Ke']];
+const HOUSES=['Self, body, personality','Wealth, family, speech','Courage, siblings, effort','Home, mother, happiness','Children, intellect, romance','Enemies, health, debts','Marriage, partnership','Longevity, transformation','Fortune, dharma, father','Career, status, karma','Gains, friends, desires','Loss, expenses, moksha'];
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function drawChart(signOfHouse,planetsByHouse){
+  const S=320;const f=[[0.5,0.25],[0.25,0.12],[0.12,0.25],[0.25,0.5],[0.12,0.75],[0.25,0.88],[0.5,0.75],[0.75,0.88],[0.88,0.75],[0.75,0.5],[0.88,0.25],[0.75,0.12]];
+  let lines=`<line x1="0" y1="0" x2="${S}" y2="${S}" /><line x1="${S}" y1="0" x2="0" y2="${S}" /><polygon points="${S/2},0 ${S},${S/2} ${S/2},${S} 0,${S/2}" fill="none" />`;
+  let txt='';
+  for(let h=0;h<12;h++){const cx=f[h][0]*S,cy=f[h][1]*S;
+    txt+=`<text x="${cx}" y="${cy-18}" text-anchor="middle" font-size="10" fill="var(--color-mute)" font-family="var(--font-mono)">${signOfHouse[h]+1}</text>`;
+    (planetsByHouse[h]||[]).forEach((p,i)=>{const col=i%3,row=Math.floor(i/3);const px=cx+(col-(Math.min((planetsByHouse[h]||[]).length,3)-1)/2)*22;const py=cy+row*14;
+      txt+=`<text x="${px}" y="${py}" text-anchor="middle" font-size="11" font-weight="600" fill="${p==='As'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
+  }
+  return `<svg viewBox="-2 -2 ${S+4} ${S+4}" width="100%" style="max-width:320px;stroke:var(--color-hairline-strong);stroke-width:1;"><rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-canvas-soft)" />${lines}${txt}</svg>`;
+}
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const L=allLons(jd);const ay=L.ay;
+    const lagna=n360(calcLagna(jd,loc.lat,loc.lng)-ay);
+    const lagnaSign=Math.floor(lagna/30);const deg=lagna%30;
+    const nakIdx=Math.floor(lagna/(360/27));const pada=Math.floor((lagna%(360/27))/((360/27)/4))+1;
+    const sid={};PLANETS.forEach(([k])=>sid[k]=n360(L[k]-ay));
+    const lordPlanet=LORD[lagnaSign];
+    const lordKeyMap={Sun:'surya',Moon:'chandra',Mars:'mangal',Mercury:'budha',Jupiter:'guru',Venus:'shukra',Saturn:'shani'};
+    const lordSign=Math.floor(sid[lordKeyMap[lordPlanet]]/30);
+    const lordHouse=((lordSign-lagnaSign)+12)%12+1;
+
+    const signOfHouse=[];for(let h=0;h<12;h++)signOfHouse[h]=(lagnaSign+h)%12;
+    const pbh={};for(let h=0;h<12;h++)pbh[h]=[];pbh[0].push('As');
+    PLANETS.forEach(([k,ab])=>{const sg=Math.floor(sid[k]/30);pbh[((sg-lagnaSign)+12)%12].push(ab);});
+
+    document.getElementById('l-sym').textContent=SYM[lagnaSign];
+    document.getElementById('l-name').textContent=`${RASHI[lagnaSign]} Lagna · ${RASHI_EN[lagnaSign]}`;
+    document.getElementById('l-meta').textContent=`${Math.floor(deg)}°${String(Math.floor((deg%1)*60)).padStart(2,'0')}' · ${NAKS[nakIdx]} Pada ${pada}`;
+    document.getElementById('chart-box').innerHTML=drawChart(signOfHouse,pbh);
+    document.getElementById('detail-list').innerHTML=[
+      ['Ascendant',`${RASHI[lagnaSign]} (${RASHI_EN[lagnaSign]})`],
+      ['Lagna Degree',`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
+      ['Lagna Nakshatra',`${NAKS[nakIdx]} (Pada ${pada})`],
+      ['Lagna Lord',lordPlanet],
+      ['Lord placed in',`House ${lordHouse} (${RASHI[lordSign]})`],
+      ['Ayanamsha',`${ay.toFixed(3)}° Lahiri`],
+    ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+    document.getElementById('house-list').innerHTML=signOfHouse.map((sg,h)=>
+      `<div style="padding:8px 10px;border-radius:7px;background:var(--color-canvas-soft-2);">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-size:12px;font-weight:600;color:var(--color-ink);">House ${h+1}</span>
+          <span style="font-size:10px;color:var(--color-saffron-deep);font-weight:600;">${RASHI[sg]}</span>
+        </div>
+        <p style="font-size:10.5px;color:var(--color-mute);margin:2px 0 0;line-height:1.4;">${HOUSES[h]}</p>
+      </div>`).join('');
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;document.getElementById('result').style.display='none';}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

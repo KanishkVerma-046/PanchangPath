@@ -1,0 +1,131 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Rashi Calculator — Find Your Moon Sign — PanchangPath" description="Find your Vedic Moon sign (Rashi) from your birth date, time and place. Includes nakshatra, pada, ruling planet and rashi characteristics.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">राशि · RASHI CALCULATOR</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rashi (Moon Sign) Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Your Rashi is the zodiac sign occupied by the Moon at your birth. It is the most important sign in Vedic astrology — used for daily Rashifal and muhurta.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 60%,var(--color-saffron-soft));">
+          <div id="r-sym" style="font-size:56px;line-height:1;margin-bottom:8px;"></div>
+          <h2 id="r-name" style="font-size:26px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
+          <p id="r-en" style="font-size:14px;color:var(--color-mute);margin:0 0 14px;"></p>
+          <div id="r-badges" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="two-col">
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Rashi Details</h3>
+            <div id="detail-list" style="display:flex;flex-direction:column;gap:9px;"></div>
+          </div>
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Characteristics</h3>
+            <p id="r-desc" style="font-size:13.5px;color:var(--color-body-text);line-height:1.7;margin:0;"></p>
+          </div>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rashi</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">In Vedic astrology, your Rashi (Moon sign) reflects your mind, emotions and instinctive nature. Because the Moon moves quickly — roughly 2.25 days per sign — accurate birth time gives the most reliable result. This is the sign you should read for daily horoscopes (Rashifal) and use when choosing auspicious timings.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  #detail-list .dl-row { display:flex;justify-content:space-between;gap:10px;font-size:13px; }
+  #detail-list .dl-row span:first-child { color:var(--color-mute); }
+  #detail-list .dl-row span:last-child { color:var(--color-ink);font-weight:600;text-align:right; }
+  @media (max-width:640px){ .two-col{ grid-template-columns:1fr !important; } }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+const SYM=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
+const ELEM=['Fire','Earth','Air','Water','Fire','Earth','Air','Water','Fire','Earth','Air','Water'];
+const QUAL=['Movable','Fixed','Dual','Movable','Fixed','Dual','Movable','Fixed','Dual','Movable','Fixed','Dual'];
+const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const DESC=[
+'Energetic, pioneering and bold. Mesha natives are natural leaders — courageous, competitive and quick to act, though sometimes impatient.',
+'Steady, patient and sensual. Vrishabha values comfort, beauty and security, with strong determination and loyalty.',
+'Curious, witty and communicative. Mithuna is versatile and intellectual, thriving on variety, learning and conversation.',
+'Nurturing, emotional and intuitive. Karka is deeply caring and protective of family, with a strong inner world.',
+'Confident, generous and charismatic. Simha loves recognition and leads with warmth, pride and creativity.',
+'Analytical, practical and meticulous. Kanya is service-minded, detail-oriented and seeks perfection.',
+'Harmonious, diplomatic and charming. Tula craves balance, partnership and beauty, with a strong sense of fairness.',
+'Intense, passionate and secretive. Vrishchika is determined and transformative, with deep emotional power.',
+'Optimistic, philosophical and adventurous. Dhanu loves freedom, travel and the pursuit of truth and wisdom.',
+'Ambitious, disciplined and responsible. Makara is hardworking and practical, climbing steadily toward goals.',
+'Innovative, humanitarian and independent. Kumbha is original and forward-thinking, valuing ideals and community.',
+'Compassionate, imaginative and spiritual. Meena is sensitive and artistic, with deep empathy and intuition.'];
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const T=(jd-2451545)/36525;const ay=ayanamsha(T);
+    const sid=n360(moonLon(jd)-ay);
+    const idx=Math.floor(sid/30);
+    const nakIdx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;
+    const deg=sid%30;
+
+    document.getElementById('r-sym').textContent=SYM[idx];
+    document.getElementById('r-name').textContent=`${RASHI[idx]} · ${RASHI_HI[idx]}`;
+    document.getElementById('r-en').textContent=RASHI_EN[idx];
+    document.getElementById('r-badges').innerHTML=
+      `<span class="badge badge-saffron">${ELEM[idx]}</span><span class="badge">${QUAL[idx]}</span><span class="badge">Lord: ${LORD[idx]}</span>`;
+    document.getElementById('detail-list').innerHTML=[
+      ['Rashi',`${RASHI[idx]} (${RASHI_EN[idx]})`],
+      ['Ruling Planet',LORD[idx]],
+      ['Element',ELEM[idx]],
+      ['Quality',QUAL[idx]],
+      ['Moon Degree',`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
+      ['Nakshatra',NAKS[nakIdx]],
+      ['Pada',String(pada)],
+      ['Ayanamsha',`${ay.toFixed(3)}° Lahiri`],
+    ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+    document.getElementById('r-desc').textContent=DESC[idx];
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

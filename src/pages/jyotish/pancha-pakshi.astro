@@ -1,0 +1,147 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Pancha Pakshi Calculator — Your Birth Bird — PanchangPath" description="Find your Pancha Pakshi birth bird from your nakshatra and see today\'s favourable and unfavourable time periods based on the ancient Tamil bird system.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">पंच पक्षी · PANCHA PAKSHI</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Pancha Pakshi Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Pancha Pakshi is an ancient Tamil system assigning each person one of five birds. Find your birth bird and today\'s favourable periods.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
+          <div id="bird-emoji" style="font-size:48px;line-height:1;margin-bottom:8px;"></div>
+          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">YOUR BIRTH BIRD</p>
+          <h2 id="bird-name" style="font-size:26px;font-weight:700;color:var(--color-ink);margin:0 0 6px;"></h2>
+          <p id="bird-desc" style="font-size:14px;color:var(--color-body-text);margin:0 auto;max-width:460px;line-height:1.6;"></p>
+        </div>
+        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Today\'s Activity Periods</h3>
+        <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;" id="period-sub"></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" class="period-cols">
+          <div>
+            <p style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">☀ DAY (Sunrise → Sunset)</p>
+            <div id="day-periods" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+          <div>
+            <p style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">🌙 NIGHT (Sunset → Sunrise)</p>
+            <div id="night-periods" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Pancha Pakshi</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Pancha Pakshi Shastra ("five birds") is a South Indian system of electional astrology. Each person is governed by one of five birds — Vulture, Owl, Crow, Cock or Peacock — determined by their birth nakshatra. Each bird cycles through five activities (Ruling, Eating, Walking, Sleeping, Dying) across the day and night. Acting when your bird is Ruling or Eating is considered most auspicious, while Sleeping and Dying periods are best avoided for important tasks.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  @media (max-width:640px){ .period-cols{ grid-template-columns:1fr !important; } }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+const toD=r=>r*180/Math.PI;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+function sunriseUTC(jd,lat,lng,rising){const T=(jd-2451545)/36525;const M=n360(357.52911+35999.05029*T);const L0=n360(280.46646+36000.76983*T);const C=(1.914602-0.004817*T)*Math.sin(toR(M))+0.019993*Math.sin(2*toR(M));const sunL=L0+C;const dec=Math.asin(Math.sin(toR(23.4393))*Math.sin(toR(sunL)));const cosHA=(Math.sin(toR(-0.8333))-Math.sin(toR(lat))*Math.sin(dec))/(Math.cos(toR(lat))*Math.cos(dec));if(cosHA<-1||cosHA>1)return NaN;const ha=toD(Math.acos(cosHA));const noon=12-lng/15;return rising?noon-ha/15:noon+ha/15;}
+
+const BIRDS=['Vulture','Owl','Crow','Cock','Peacock'];
+const BIRDS_HI=['गिद्ध','उल्लू','कौआ','मुर्गा','मोर'];
+const BIRD_EMOJI=['🦅','🦉','🐦‍⬛','🐓','🦚'];
+const BIRD_DESC=[
+'Powerful, far-sighted and commanding. Vulture-born are natural leaders with sharp vision, ambition and the ability to rise above obstacles.',
+'Wise, introspective and patient. Owl-born possess deep intuition, work well at night, and excel in research and contemplation.',
+'Clever, social and adaptable. Crow-born are resourceful communicators, quick learners and skilled at networking.',
+'Energetic, disciplined and alert. Cock-born are punctual, courageous and thrive on routine, leadership and protection of others.',
+'Charming, creative and graceful. Peacock-born are artistic, attractive and expressive, drawing admiration wherever they go.'];
+const ACTIVITIES=['Ruling','Eating','Walking','Sleeping','Dying'];
+const ACT_Q=['Best','Good','Neutral','Unfavorable','Worst'];
+const ACT_COLOR=['#15803d','#65a30d','#b45309','#ea580c','#dc2626'];
+// Day ruling bird by weekday (Sun..Sat)
+const DAY_BIRD=[0,1,2,3,4,0,1];
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function fmtMins(m){const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;}
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jdBirth=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const nakIdx=Math.floor(n360(moonLon(jdBirth)-ayanamsha((jdBirth-2451545)/36525))/(360/27));
+    const birthBird=nakIdx%5;
+
+    document.getElementById('bird-emoji').textContent=BIRD_EMOJI[birthBird];
+    document.getElementById('bird-name').textContent=`${BIRDS[birthBird]} · ${BIRDS_HI[birthBird]}`;
+    document.getElementById('bird-desc').textContent=BIRD_DESC[birthBird];
+
+    // Today's periods
+    const now=new Date();
+    const ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
+    const jdT=toJD(ty,tm,td,6-loc.tz);
+    const srMins=sunriseUTC(jdT,loc.lat,loc.lng,true)*60+loc.tz*60;
+    const ssMins=sunriseUTC(jdT,loc.lat,loc.lng,false)*60+loc.tz*60;
+    const jdN=toJD(ty,tm,td+1,6-loc.tz);
+    const srNextMins=sunriseUTC(jdN,loc.lat,loc.lng,true)*60+loc.tz*60+1440;
+    const dayDur=(ssMins-srMins)/5;const nightDur=(srNextMins-ssMins)/5;
+    const wd=now.getDay();const dayBird=DAY_BIRD[wd];
+    const nowMins=now.getHours()*60+now.getMinutes();
+    const isToday=dateStr===new Date().toISOString().split('T')[0];
+    document.getElementById('period-sub').textContent=`${now.toDateString()} · Day ruling bird: ${BIRDS[dayBird]} · Sunrise ${fmtMins(srMins)}, Sunset ${fmtMins(ssMins)}`;
+
+    function makePeriods(startMins,dur,nightOffset){
+      let html='';
+      for(let i=0;i<5;i++){
+        const rulingBird=(dayBird+i+nightOffset)%5;
+        const offset=(birthBird-rulingBird+5)%5; // 0 Ruling .. 4 Dying
+        const s=startMins+i*dur,e=s+dur;
+        const isCur=nowMins>=s%1440&&nowMins<e%1440&&(s<1440)===(nowMins<1440);
+        const cur=(s>=1440?nowMins+1440:nowMins)>=s&&(s>=1440?nowMins+1440:nowMins)<e;
+        html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:${cur?'var(--color-ink)':'var(--color-canvas-soft-2)'};">
+          <span style="width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[offset]};flex-shrink:0;"></span>
+          <div style="flex:1;">
+            <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${ACTIVITIES[offset]} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[offset]};">· ${ACT_Q[offset]}${cur?' · NOW':''}</span></p>
+            <p style="font-size:11px;color:${cur?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:1px 0 0;font-family:var(--font-mono);">${fmtMins(s)} – ${fmtMins(e)}</p>
+          </div>
+        </div>`;
+      }
+      return html;
+    }
+    document.getElementById('day-periods').innerHTML=makePeriods(srMins,dayDur,0);
+    document.getElementById('night-periods').innerHTML=makePeriods(ssMins,nightDur,2);
+
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

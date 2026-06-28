@@ -1,0 +1,109 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Sun Sign Calculator — Vedic & Western — PanchangPath" description="Find both your Vedic (sidereal) and Western (tropical) Sun signs from your birth date, with element, quality, ruler and compatible signs.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">सूर्य राशि · SUNSIGN CALCULATOR</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Sun Sign Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">See both your Sun signs side by side — the Western (tropical) sign you usually read in newspapers, and the Vedic (sidereal) sign used in Jyotish.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div id="result" style="display:none;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;" class="two-col">
+          <div class="card" id="card-w" style="padding:24px;text-align:center;"></div>
+          <div class="card" id="card-v" style="padding:24px;text-align:center;"></div>
+        </div>
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Why are they different?</h3>
+          <p id="diff-note" style="font-size:13.5px;color:var(--color-body-text);line-height:1.7;margin:0;"></p>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Sun Signs</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Western astrology uses the tropical zodiac, fixed to the seasons (Aries always begins at the spring equinox). Vedic astrology uses the sidereal zodiac, fixed to the actual stars. Over millennia the two have drifted apart by about 24° due to the precession of the equinoxes, so a person born in late March may be a Western Aries but a Vedic Pisces. Both are valid within their own systems.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  @media (max-width:640px){ .two-col{ grid-template-columns:1fr !important; } }
+</style>
+
+<script>
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function sunLon(jd){const T=(jd-2451545)/36525;const L0=n360(280.46646+36000.76983*T+0.0003032*T*T);const M=n360(357.52911+35999.05029*T-0.0001537*T*T);const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(toR(M))+(0.019993-0.000101*T)*Math.sin(2*toR(M))+0.000289*Math.sin(3*toR(M));return n360(L0+C);}
+
+const W_SIGNS=[
+{name:'Aries',h:'मेष',sym:'♈',from:[3,21],to:[4,19],el:'Fire',ruler:'Mars',quality:'Cardinal',comp:'Leo, Sagittarius, Gemini'},
+{name:'Taurus',h:'वृषभ',sym:'♉',from:[4,20],to:[5,20],el:'Earth',ruler:'Venus',quality:'Fixed',comp:'Virgo, Capricorn, Cancer'},
+{name:'Gemini',h:'मिथुन',sym:'♊',from:[5,21],to:[6,20],el:'Air',ruler:'Mercury',quality:'Mutable',comp:'Libra, Aquarius, Aries'},
+{name:'Cancer',h:'कर्क',sym:'♋',from:[6,21],to:[7,22],el:'Water',ruler:'Moon',quality:'Cardinal',comp:'Scorpio, Pisces, Taurus'},
+{name:'Leo',h:'सिंह',sym:'♌',from:[7,23],to:[8,22],el:'Fire',ruler:'Sun',quality:'Fixed',comp:'Aries, Sagittarius, Libra'},
+{name:'Virgo',h:'कन्या',sym:'♍',from:[8,23],to:[9,22],el:'Earth',ruler:'Mercury',quality:'Mutable',comp:'Taurus, Capricorn, Cancer'},
+{name:'Libra',h:'तुला',sym:'♎',from:[9,23],to:[10,22],el:'Air',ruler:'Venus',quality:'Cardinal',comp:'Gemini, Aquarius, Leo'},
+{name:'Scorpio',h:'वृश्चिक',sym:'♏',from:[10,23],to:[11,21],el:'Water',ruler:'Mars',quality:'Fixed',comp:'Cancer, Pisces, Virgo'},
+{name:'Sagittarius',h:'धनु',sym:'♐',from:[11,22],to:[12,21],el:'Fire',ruler:'Jupiter',quality:'Mutable',comp:'Aries, Leo, Aquarius'},
+{name:'Capricorn',h:'मकर',sym:'♑',from:[12,22],to:[1,19],el:'Earth',ruler:'Saturn',quality:'Cardinal',comp:'Taurus, Virgo, Scorpio'},
+{name:'Aquarius',h:'कुम्भ',sym:'♒',from:[1,20],to:[2,18],el:'Air',ruler:'Saturn',quality:'Fixed',comp:'Gemini, Libra, Sagittarius'},
+{name:'Pisces',h:'मीन',sym:'♓',from:[2,19],to:[3,20],el:'Water',ruler:'Jupiter',quality:'Mutable',comp:'Cancer, Scorpio, Capricorn'}];
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+
+function westernSign(m,d){
+  for(let i=0;i<12;i++){const s=W_SIGNS[i];const[fm,fd]=s.from;const[tm,td]=s.to;
+    if(fm<=tm){if((m===fm&&d>=fd)||(m===tm&&d<=td)||(m>fm&&m<tm))return i;}
+    else{if((m===fm&&d>=fd)||(m===tm&&d<=td)||m>fm||m<tm)return i;}}
+  return 0;
+}
+function fmtRange(s){const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return `${M[s.from[0]-1]} ${s.from[1]} – ${M[s.to[0]-1]} ${s.to[1]}`;}
+function signCard(s,label,subname){
+  return `<p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 8px;">${label}</p>
+    <div style="font-size:52px;line-height:1;margin-bottom:6px;">${s.sym}</div>
+    <h2 style="font-size:24px;font-weight:700;color:var(--color-ink);margin:0 0 2px;">${s.name}</h2>
+    <p style="font-size:13px;color:var(--color-mute);margin:0 0 14px;">${subname}</p>
+    <div style="display:flex;flex-direction:column;gap:7px;text-align:left;max-width:240px;margin:0 auto;">
+      ${[['Dates',fmtRange(s)],['Element',s.el],['Quality',s.quality],['Ruler',s.ruler],['Compatible',s.comp]].map(r=>
+        `<div style="display:flex;justify-content:space-between;gap:8px;font-size:12.5px;"><span style="color:var(--color-mute);">${r[0]}</span><span style="color:var(--color-ink);font-weight:600;text-align:right;">${r[1]}</span></div>`).join('')}
+    </div>`;
+}
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const [y,m,d]=dateStr.split('-').map(Number);
+    const wIdx=westernSign(m,d);
+    const jd=toJD(y,m,d,6);const T=(jd-2451545)/36525;
+    const vIdx=Math.floor(n360(sunLon(jd)-ayanamsha(T))/30);
+    document.getElementById('card-w').innerHTML=signCard(W_SIGNS[wIdx],'WESTERN (TROPICAL)',W_SIGNS[wIdx].h);
+    document.getElementById('card-v').innerHTML=signCard(W_SIGNS[vIdx],'VEDIC (SIDEREAL)',`${RASHI[vIdx]} · ${W_SIGNS[vIdx].h}`);
+    document.getElementById('diff-note').textContent=wIdx===vIdx
+      ?`Your Western and Vedic Sun signs are both ${W_SIGNS[wIdx].name}. This happens when the Sun is far enough into a sign that the ~24° ayanamsha shift does not move it into the previous sign.`
+      :`Your Western Sun sign is ${W_SIGNS[wIdx].name}, but your Vedic Sun sign is ${RASHI[vIdx]} (${W_SIGNS[vIdx].name}). The difference comes from the ayanamsha — the precession offset between the tropical and sidereal zodiacs (currently about 24°).`;
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

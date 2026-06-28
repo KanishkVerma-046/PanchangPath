@@ -1,0 +1,147 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Nakshatra Calculator — Find Your Birth Star — PanchangPath" description="Find your Janma Nakshatra (birth star) and pada from birth details. Includes lord, gana, nadi, yoni, deity, symbol and name syllables.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">नक्षत्र · NAKSHATRA CALCULATOR</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Nakshatra (Birth Star) Calculator</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The 27 nakshatras are the lunar mansions of Vedic astrology. Your Janma Nakshatra is where the Moon sat at birth — central to your personality, naming and muhurta.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div id="result" style="display:none;margin-bottom:36px;">
+        <div class="card" style="padding:28px;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 60%,var(--color-saffron-soft));">
+          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 4px;">YOUR BIRTH STAR</p>
+          <h2 id="n-name" style="font-size:28px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
+          <p id="n-meta" style="font-size:14px;color:var(--color-mute);margin:0 0 8px;"></p>
+          <div id="n-badges" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="two-col">
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Attributes</h3>
+            <div id="attr-list" style="display:flex;flex-direction:column;gap:9px;"></div>
+          </div>
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">The Four Padas</h3>
+            <div id="pada-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+            <p style="font-size:11.5px;color:var(--color-mute);margin:12px 0 0;line-height:1.5;">Traditionally, a baby\'s name begins with the syllable of the pada in which the Moon falls.</p>
+          </div>
+        </div>
+      </div>
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;margin-bottom:24px;"></div>
+
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 27 Nakshatras</h3>
+      <div id="all-naks" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:36px;"></div>
+
+      <div class="card" style="padding:28px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Nakshatras</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">The ecliptic is divided into 27 nakshatras of 13°20\' each, every one further split into 4 padas of 3°20\'. Each nakshatra has a ruling planet (used for Vimshottari Dasha), a deity, an animal (yoni), a gana (temperament), and a nadi (constitution) — all of which inform compatibility matching, naming and electional astrology.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  #attr-list .dl-row { display:flex;justify-content:space-between;gap:10px;font-size:13px; }
+  #attr-list .dl-row span:first-child { color:var(--color-mute); }
+  #attr-list .dl-row span:last-child { color:var(--color-ink);font-weight:600;text-align:right; }
+  @media (max-width:640px){ .two-col{ grid-template-columns:1fr !important; } }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+
+const NAKS=[
+{n:'Ashwini',h:'अश्विनी',lord:'Ketu',yoni:'Horse',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Ashwini Kumaras',sym:'Horse head',p:['Chu','Che','Cho','La']},
+{n:'Bharani',h:'भरणी',lord:'Venus',yoni:'Elephant',gana:'Manushya',nadi:'Madhya',varna:'Mleccha',deity:'Yama',sym:'Yoni',p:['Li','Lu','Le','Lo']},
+{n:'Krittika',h:'कृत्तिका',lord:'Sun',yoni:'Sheep',gana:'Rakshasa',nadi:'Antya',varna:'Brahmin',deity:'Agni',sym:'Razor/Flame',p:['A','I','U','E']},
+{n:'Rohini',h:'रोहिणी',lord:'Moon',yoni:'Serpent',gana:'Manushya',nadi:'Antya',varna:'Shudra',deity:'Brahma',sym:'Ox cart',p:['O','Va','Vi','Vu']},
+{n:'Mrigashira',h:'मृगशिरा',lord:'Mars',yoni:'Serpent',gana:'Deva',nadi:'Madhya',varna:'Vaishya',deity:'Soma',sym:'Deer head',p:['Ve','Vo','Ka','Ki']},
+{n:'Ardra',h:'आर्द्रा',lord:'Rahu',yoni:'Dog',gana:'Manushya',nadi:'Adi',varna:'Mleccha',deity:'Rudra',sym:'Teardrop',p:['Ku','Gha','Ing','Ja']},
+{n:'Punarvasu',h:'पुनर्वसु',lord:'Jupiter',yoni:'Cat',gana:'Deva',nadi:'Adi',varna:'Brahmin',deity:'Aditi',sym:'Quiver',p:['Ke','Ko','Ha','Hi']},
+{n:'Pushya',h:'पुष्य',lord:'Saturn',yoni:'Sheep',gana:'Deva',nadi:'Madhya',varna:'Kshatriya',deity:'Brihaspati',sym:'Lotus',p:['Hu','He','Ho','Da']},
+{n:'Ashlesha',h:'अश्लेषा',lord:'Mercury',yoni:'Cat',gana:'Rakshasa',nadi:'Antya',varna:'Mleccha',deity:'Nagas',sym:'Coiled serpent',p:['Di','Du','De','Do']},
+{n:'Magha',h:'मघा',lord:'Ketu',yoni:'Rat',gana:'Rakshasa',nadi:'Antya',varna:'Shudra',deity:'Pitris',sym:'Throne',p:['Ma','Mi','Mu','Me']},
+{n:'Purva Phalguni',h:'पूर्व फाल्गुनी',lord:'Venus',yoni:'Rat',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Bhaga',sym:'Bed front',p:['Mo','Ta','Ti','Tu']},
+{n:'Uttara Phalguni',h:'उत्तर फाल्गुनी',lord:'Sun',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Aryaman',sym:'Bed back',p:['Te','To','Pa','Pi']},
+{n:'Hasta',h:'हस्त',lord:'Moon',yoni:'Buffalo',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Savitar',sym:'Hand',p:['Pu','Sha','Na','Tha']},
+{n:'Chitra',h:'चित्रा',lord:'Mars',yoni:'Tiger',gana:'Rakshasa',nadi:'Madhya',varna:'Kshatriya',deity:'Vishwakarma',sym:'Bright jewel',p:['Pe','Po','Ra','Ri']},
+{n:'Swati',h:'स्वाती',lord:'Rahu',yoni:'Buffalo',gana:'Deva',nadi:'Adi',varna:'Mleccha',deity:'Vayu',sym:'Coral',p:['Ru','Re','Ro','Ta']},
+{n:'Vishakha',h:'विशाखा',lord:'Jupiter',yoni:'Tiger',gana:'Rakshasa',nadi:'Madhya',varna:'Brahmin',deity:'Indra-Agni',sym:'Gateway',p:['Ti','Tu','Te','To']},
+{n:'Anuradha',h:'अनुराधा',lord:'Saturn',yoni:'Deer',gana:'Deva',nadi:'Adi',varna:'Kshatriya',deity:'Mitra',sym:'Lotus',p:['Na','Ni','Nu','Ne']},
+{n:'Jyeshtha',h:'ज्येष्ठा',lord:'Mercury',yoni:'Deer',gana:'Rakshasa',nadi:'Madhya',varna:'Brahmin',deity:'Indra',sym:'Amulet',p:['No','Ya','Yi','Yu']},
+{n:'Mula',h:'मूल',lord:'Ketu',yoni:'Dog',gana:'Rakshasa',nadi:'Antya',varna:'Mleccha',deity:'Nirriti',sym:'Tied roots',p:['Ye','Yo','Bha','Bhi']},
+{n:'Purva Ashadha',h:'पूर्वाषाढा',lord:'Venus',yoni:'Monkey',gana:'Manushya',nadi:'Adi',varna:'Brahmin',deity:'Apas',sym:'Fan',p:['Bhu','Dha','Bha','Pha']},
+{n:'Uttara Ashadha',h:'उत्तराषाढा',lord:'Sun',yoni:'Mongoose',gana:'Manushya',nadi:'Madhya',varna:'Kshatriya',deity:'Vishvadevas',sym:'Planks',p:['Bhe','Bho','Ja','Ji']},
+{n:'Shravana',h:'श्रवण',lord:'Moon',yoni:'Monkey',gana:'Deva',nadi:'Antya',varna:'Mleccha',deity:'Vishnu',sym:'Three footprints',p:['Khi','Khu','Khe','Kho']},
+{n:'Dhanishtha',h:'धनिष्ठा',lord:'Mars',yoni:'Lion',gana:'Rakshasa',nadi:'Madhya',varna:'Shudra',deity:'Vasus',sym:'Drum',p:['Ga','Gi','Gu','Ge']},
+{n:'Shatabhisha',h:'शतभिषा',lord:'Rahu',yoni:'Horse',gana:'Rakshasa',nadi:'Adi',varna:'Mleccha',deity:'Varuna',sym:'Empty circle',p:['Go','Sa','Si','Su']},
+{n:'Purva Bhadrapada',h:'पूर्वभाद्रपदा',lord:'Jupiter',yoni:'Lion',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Aja Ekapada',sym:'Funeral cot front',p:['Se','So','Da','Di']},
+{n:'Uttara Bhadrapada',h:'उत्तरभाद्रपदा',lord:'Saturn',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Ahir Budhnya',sym:'Funeral cot back',p:['Du','Tha','Jha','Nya']},
+{n:'Revati',h:'रेवती',lord:'Mercury',yoni:'Elephant',gana:'Deva',nadi:'Antya',varna:'Brahmin',deity:'Pushan',sym:'Fish/Drum',p:['De','Do','Cha','Chi']}];
+
+const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
+    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const T=(jd-2451545)/36525;const ay=ayanamsha(T);
+    const sid=n360(moonLon(jd)-ay);
+    const idx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;
+    const nk=NAKS[idx];
+    document.getElementById('n-name').textContent=`${nk.n} · ${nk.h}`;
+    document.getElementById('n-meta').textContent=`Pada ${pada} · Ruled by ${nk.lord} · Deity: ${nk.deity}`;
+    document.getElementById('n-badges').innerHTML=
+      `<span class="badge badge-saffron">${nk.gana} Gana</span><span class="badge">${nk.nadi} Nadi</span><span class="badge">${nk.yoni} Yoni</span><span class="badge">Syllable: ${nk.p[pada-1]}</span>`;
+    document.getElementById('attr-list').innerHTML=[
+      ['Nakshatra',`${nk.n} (#${idx+1})`],['Pada',String(pada)],['Lord',nk.lord],['Deity',nk.deity],
+      ['Symbol',nk.sym],['Yoni (Animal)',nk.yoni],['Gana',nk.gana],['Nadi',nk.nadi],['Varna',nk.varna],['Ayanamsha',`${ay.toFixed(3)}° Lahiri`]
+    ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
+    document.getElementById('pada-list').innerHTML=nk.p.map((s,i)=>
+      `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;background:${i===pada-1?'var(--color-saffron-soft)':'var(--color-canvas-soft-2)'};">
+        <span style="font-size:11px;font-weight:600;color:var(--color-mute);font-family:var(--font-mono);">Pada ${i+1}</span>
+        <span style="font-size:15px;font-weight:700;color:${i===pada-1?'var(--color-saffron-deep)':'var(--color-ink)'};">${s}</span>
+        ${i===pada-1?'<span class="badge badge-saffron" style="margin-left:auto;">Your pada</span>':''}
+      </div>`).join('');
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+document.getElementById('all-naks').innerHTML=NAKS.map((nk,i)=>
+  `<div class="card" style="padding:12px;">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;">
+      <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${nk.n}</span>
+      <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${i+1}</span>
+    </div>
+    <p style="font-size:11px;color:var(--color-mute);margin:0;">${nk.h} · ${nk.lord}</p>
+    <p style="font-size:10.5px;color:var(--color-body-text);margin:4px 0 0;">${nk.gana} · ${nk.yoni}</p>
+  </div>`).join('');
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

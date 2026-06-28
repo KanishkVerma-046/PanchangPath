@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const CALCS = [
+  { icon: '🔮', title: 'Kundali Generator', desc: 'Full birth chart with planets, signs & interpretations', url: '/jyotish/kundali' },
+  { icon: '💑', title: 'Horoscope Match', desc: 'Ashta Kuta Guna Milan compatibility (out of 36)', url: '/jyotish/horoscope-match' },
+  { icon: '💎', title: 'Gemstone Calculator', desc: 'Find your lucky gemstone by birth chart', url: '/jyotish/gemstone' },
+  { icon: '📿', title: 'Rudraksha Calculator', desc: 'Recommended Rudraksha mukhi for you', url: '/jyotish/rudraksha' },
+  { icon: '🌙', title: 'Rashi Calculator', desc: 'Your Moon sign (Vedic rashi) from birth details', url: '/jyotish/rashi' },
+  { icon: '☀️', title: 'Sunsign Calculator', desc: 'Vedic & Western sun signs side by side', url: '/jyotish/sunsign' },
+  { icon: '⭐', title: 'Nakshatra Calculator', desc: 'Your birth star (nakshatra) and pada', url: '/jyotish/nakshatra' },
+  { icon: '⬆️', title: 'Janma Lagna', desc: 'Ascendant sign, degree and house wheel', url: '/jyotish/lagna' },
+  { icon: '🔴', title: 'Mangal Dosha', desc: 'Check Manglik status from Lagna, Moon & Venus', url: '/jyotish/mangal-dosha' },
+  { icon: '🐍', title: 'Kalasarpa Yoga', desc: 'Detect Kalasarpa dosha and its type', url: '/jyotish/kalasarpa' },
+  { icon: '🪐', title: 'Shani Sadesati', desc: 'Saturn\'s 7.5-year cycle over your Moon sign', url: '/jyotish/sadesati' },
+  { icon: '👶', title: 'Baby Names', desc: 'Lucky name syllables from nakshatra & pada', url: '/jyotish/baby-names' },
+  { icon: '🙏', title: 'Shraddha Tithi', desc: 'Find the right Pitru Paksha day for Shraddha', url: '/jyotish/shraddha' },
+  { icon: '🌕', title: 'Sahasra Chandrodaya', desc: 'Date of your 1000th full moon (~80 years)', url: '/jyotish/sahasra-chandrodaya' },
+  { icon: '🦅', title: 'Pancha Pakshi', desc: 'Your birth bird and today\'s favourable periods', url: '/jyotish/pancha-pakshi' },
+  { icon: '🎴', title: 'Prashnavali', desc: 'Ask a question — the sacred oracle answers', url: '/prashnavali' },
+];
+---
+
+<Layout title="Jyotish Calculators — Free Vedic Astrology Tools — PanchangPath" description="16 free Vedic astrology calculators — Kundali, Horoscope Matching, Gemstone, Rudraksha, Rashi, Nakshatra, Mangal Dosha, Kalasarpa, Sadesati and more. Drik calculations, Lahiri ayanamsha.">
+
+  <!-- Hero -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">ज्योतिष · JYOTISH CALCULATORS</p>
+      <h1 style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Jyotish Calculators</h1>
+      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:600px;line-height:1.6;">A complete suite of free Vedic astrology tools. Generate your birth chart, match horoscopes, find lucky gemstones, check doshas and explore your nakshatra — all computed with precise Drik astronomy and the Lahiri ayanamsha.</p>
+    </div>
+  </section>
+
+  <!-- Calculator grid -->
+  <section style="padding:36px 0 48px;">
+    <div class="container">
+      <div class="calc-grid">
+        {CALCS.map((c) => (
+          <a href={c.url} class="calc-card card">
+            <span class="calc-icon">{c.icon}</span>
+            <div>
+              <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">{c.title}</h3>
+              <p style="font-size:12.5px;color:var(--color-mute);margin:0;line-height:1.5;">{c.desc}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- What is Jyotish -->
+  <section style="padding:0 0 56px;">
+    <div class="container">
+      <div class="card" style="padding:32px;">
+        <h2 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">What is Jyotish?</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Jyotish (ज्योतिष), often called Vedic Astrology, is the ancient Indian science of light — the study of how the positions of the Sun, Moon, planets and stars at the moment of birth influence life on Earth. Considered one of the six Vedangas (limbs of the Vedas), it has been practised for thousands of years to understand personality, timing of events, compatibility and remedies.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Unlike Western astrology, which uses the tropical zodiac, Jyotish uses the <strong style="color:var(--color-ink);">sidereal zodiac</strong> — measured against the fixed stars. The difference between the two systems is corrected by the <strong style="color:var(--color-ink);">ayanamsha</strong>. PanchangPath uses the Lahiri (Chitrapaksha) ayanamsha, the standard adopted by the Government of India.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">The core building blocks are the 12 <strong style="color:var(--color-ink);">rashis</strong> (signs), 27 <strong style="color:var(--color-ink);">nakshatras</strong> (lunar mansions), 9 <strong style="color:var(--color-ink);">grahas</strong> (planets including Rahu &amp; Ketu) and 12 <strong style="color:var(--color-ink);">bhavas</strong> (houses). The calculators above let you explore each of these for your own birth details.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .calc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .calc-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px;
+    text-decoration: none;
+  }
+  .calc-icon {
+    font-size: 26px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  @media (max-width: 900px) {
+    .calc-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .calc-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
