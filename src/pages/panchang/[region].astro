@@ -1,0 +1,415 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import {
+  REGIONS, getRegionBySlug, getSolarMonthIndex,
+  getRegionalTithiName, getRegionalNakshatraName, getRegionalVaraName,
+} from '../../lib/panchang-i18n';
+import { calculatePanchang, getHinduCalendarInfo } from '../../lib/panchang';
+
+export function getStaticPaths() {
+  return REGIONS.map(r => ({ params: { region: r.slug } }));
+}
+
+const { region: slug } = Astro.params;
+const regionDef = getRegionBySlug(slug!)!;
+
+// Compute Panchang for this tradition's default city
+const today = new Date();
+const p = calculatePanchang(today, regionDef.defaultLat, regionDef.defaultLng, regionDef.defaultTzOffset);
+const cal = getHinduCalendarInfo(today, p.sunLongitude, p.moonLongitude, p.tithi.paksha);
+
+// Regional element names
+const varName  = getRegionalVaraName(regionDef, today.getDay());
+const tithiName = getRegionalTithiName(regionDef, p.tithi.number, p.tithi.paksha);
+const nakName  = getRegionalNakshatraName(regionDef, p.nakshatra.number - 1);
+const pakshaName = regionDef.paksha[p.tithi.paksha === 'Shukla' ? 0 : 1];
+
+// Month
+const solarMonthIdx = getSolarMonthIndex(regionDef, p.sunLongitude);
+const AMANTA_TO_IDX: Record<string,number> = {
+  Chaitra:0,Vaishakha:1,Jyeshtha:2,Ashadha:3,Shravana:4,Bhadrapada:5,
+  Ashwin:6,Kartika:7,Margashirsha:8,Pausha:9,Magha:10,Phalguna:11,
+};
+const monthName = regionDef.monthSystem === 'solar'
+  ? (regionDef.months[solarMonthIdx] ?? regionDef.months[0])
+  : (regionDef.months[AMANTA_TO_IDX[cal.amantaMonth.name] ?? 0]);
+
+const yearInfo = regionDef.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat);
+
+// Date label
+const dateLabel = today.toLocaleDateString('en-IN', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+});
+
+const TRADITION_COLORS: Record<string, string> = {
+  bn: '#e8622a', as: '#d4800f', ta: '#0f766e', ml: '#065f46',
+  mr: '#7c3aed', gu: '#b45309', kn: '#1d4ed8', te: '#be185d',
+  or: '#dc2626', ne: '#4f46e5', iskcon: '#92400e',
+};
+const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
+---
+
+<Layout
+  title={`${regionDef.calendarName} — Today's Panchang in ${regionDef.name} | PanchangPath`}
+  description={`Today's Panchang in ${regionDef.name} (${regionDef.nativeName}) — ${monthName} ${yearInfo.displayLabel}. Tithi, Nakshatra, Yoga, Muhurtas for ${regionDef.defaultCity}.`}
+>
+  <!-- ── Hero ────────────────────────────────────────────────────────── -->
+  <section style={`background:var(--color-canvas);border-bottom:4px solid ${accent};padding:48px 0 40px;`}>
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <!-- Breadcrumb -->
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;">
+        <a href="/" style="color:var(--color-mute);text-decoration:none;">Home</a>
+        <span style="color:var(--color-hairline);">/</span>
+        <a href="/panchang/regional" style="color:var(--color-mute);text-decoration:none;">Regional Panchang</a>
+        <span style="color:var(--color-hairline);">/</span>
+        <span style="color:var(--color-body-text);">{regionDef.calendarName}</span>
+      </div>
+
+      <div class="rp-hero">
+        <!-- Left: identity -->
+        <div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">
+            <span class="rp-native-big" style={`color:${accent};`}>{regionDef.nativeName}</span>
+            <span class="rp-calendar-name">{regionDef.calendarName}</span>
+          </div>
+          <!-- Date in regional calendar -->
+          <div class="rp-date-display">
+            <span class="rp-month-big">{monthName}</span>
+            <span class="rp-year-tag">{yearInfo.displayLabel}</span>
+          </div>
+          <p class="rp-greg-date">{varName} · {dateLabel}</p>
+          <p class="rp-city-note">
+            📍 Calculated for {regionDef.defaultCity}
+            <span style="color:var(--color-mute);font-size:11px;"> ({regionDef.defaultLat.toFixed(2)}°, {regionDef.defaultLng.toFixed(2)}°)</span>
+          </p>
+        </div>
+
+        <!-- Right: quick stats pill row -->
+        <div class="rp-pills">
+          <div class="rp-pill">
+            <span class="rp-pill-label">Tithi</span>
+            <span class="rp-pill-val" style={`color:${accent};`}>{tithiName}</span>
+          </div>
+          <div class="rp-pill">
+            <span class="rp-pill-label">Paksha</span>
+            <span class="rp-pill-val">{pakshaName}</span>
+          </div>
+          <div class="rp-pill">
+            <span class="rp-pill-label">Nakshatra</span>
+            <span class="rp-pill-val">{nakName}</span>
+          </div>
+          <div class="rp-pill">
+            <span class="rp-pill-label">Vara</span>
+            <span class="rp-pill-val">{varName}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main Panchang table ───────────────────────────────────────────── -->
+  <section style="padding:40px 0 56px;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div class="rp-layout">
+
+        <!-- ── LEFT: Panchang elements ──────────────────────────────── -->
+        <div class="rp-main">
+          <h2 class="section-head" style={`border-left:3px solid ${accent};`}>
+            {regionDef.nativeName} — आज का पञ्चाङ्ग
+          </h2>
+
+          <!-- 5 angas grid -->
+          <div class="rp-anga-grid">
+            <!-- Vara -->
+            <div class="rp-anga-card">
+              <div class="rp-anga-icon">☀️</div>
+              <div class="rp-anga-content">
+                <p class="rp-anga-label">वार / Vara</p>
+                <p class="rp-anga-regional">{varName}</p>
+                <p class="rp-anga-en">{p.vara.name} · Lord: {p.vara.lord}</p>
+              </div>
+            </div>
+
+            <!-- Tithi -->
+            <div class="rp-anga-card">
+              <div class="rp-anga-icon">🌙</div>
+              <div class="rp-anga-content">
+                <p class="rp-anga-label">तिथि / Tithi</p>
+                <p class="rp-anga-regional">{tithiName}</p>
+                <p class="rp-anga-en">{pakshaName} · {p.tithi.name} · ends {p.tithi.endTime}</p>
+              </div>
+            </div>
+
+            <!-- Nakshatra -->
+            <div class="rp-anga-card">
+              <div class="rp-anga-icon">⭐</div>
+              <div class="rp-anga-content">
+                <p class="rp-anga-label">नक्षत्र / Nakshatra</p>
+                <p class="rp-anga-regional">{nakName}</p>
+                <p class="rp-anga-en">Pada {p.nakshatra.pada} · Lord: {p.nakshatra.lord} · ends {p.nakshatra.endTime}</p>
+              </div>
+            </div>
+
+            <!-- Yoga -->
+            <div class="rp-anga-card">
+              <div class="rp-anga-icon">🔯</div>
+              <div class="rp-anga-content">
+                <p class="rp-anga-label">योग / Yoga</p>
+                <p class="rp-anga-regional">{p.yoga.name}</p>
+                <p class="rp-anga-en">{p.yoga.type} · ends {p.yoga.endTime}</p>
+              </div>
+            </div>
+
+            <!-- Karana -->
+            <div class="rp-anga-card">
+              <div class="rp-anga-icon">🌀</div>
+              <div class="rp-anga-content">
+                <p class="rp-anga-label">करण / Karana</p>
+                <p class="rp-anga-regional">{p.karana.name}</p>
+                <p class="rp-anga-en">ends {p.karana.endTime}</p>
+              </div>
+            </div>
+
+            <!-- Month (regional) -->
+            <div class="rp-anga-card" style={`border-left:3px solid ${accent};`}>
+              <div class="rp-anga-icon">📅</div>
+              <div class="rp-anga-content">
+                <p class="rp-anga-label">माह / Month</p>
+                <p class="rp-anga-regional" style={`color:${accent};`}>{monthName}</p>
+                <p class="rp-anga-en">{yearInfo.displayLabel}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Sun / Moon timings ─────────────────────────────────── -->
+          <h2 class="section-head" style={`border-left:3px solid ${accent};margin-top:32px;`}>
+            Sun & Moon Timings
+          </h2>
+          <div class="rp-timing-grid">
+            <div class="rp-timing-card">
+              <span class="rp-timing-icon">🌅</span>
+              <div>
+                <p class="rp-timing-label">Sunrise</p>
+                <p class="rp-timing-val">{p.sunrise}</p>
+              </div>
+            </div>
+            <div class="rp-timing-card">
+              <span class="rp-timing-icon">🌇</span>
+              <div>
+                <p class="rp-timing-label">Sunset</p>
+                <p class="rp-timing-val">{p.sunset}</p>
+              </div>
+            </div>
+            <div class="rp-timing-card">
+              <span class="rp-timing-icon">🌕</span>
+              <div>
+                <p class="rp-timing-label">Moonrise</p>
+                <p class="rp-timing-val">{p.moonrise}</p>
+              </div>
+            </div>
+            <div class="rp-timing-card">
+              <span class="rp-timing-icon">⏱️</span>
+              <div>
+                <p class="rp-timing-label">Day Duration</p>
+                <p class="rp-timing-val">{p.durationDay}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Inauspicious periods ───────────────────────────────── -->
+          <h2 class="section-head" style={`border-left:3px solid ${accent};margin-top:32px;`}>
+            Inauspicious Periods
+          </h2>
+          <div class="rp-kalam-grid">
+            <div class="rp-kalam-card">
+              <p class="rp-kalam-name">🚫 Rahu Kalam</p>
+              <p class="rp-kalam-time">{p.rahuKalam.start} – {p.rahuKalam.end}</p>
+            </div>
+            <div class="rp-kalam-card">
+              <p class="rp-kalam-name">⚠️ Gulika Kalam</p>
+              <p class="rp-kalam-time">{p.gulikaKalam.start} – {p.gulikaKalam.end}</p>
+            </div>
+            <div class="rp-kalam-card">
+              <p class="rp-kalam-name">⚠️ Yamaganda</p>
+              <p class="rp-kalam-time">{p.yamaganda.start} – {p.yamaganda.end}</p>
+            </div>
+            <div class="rp-kalam-card" style="border-color:var(--color-saffron);">
+              <p class="rp-kalam-name">✨ Abhijit Muhurta</p>
+              <p class="rp-kalam-time">{p.abhijitMuhurta.start} – {p.abhijitMuhurta.end}</p>
+            </div>
+          </div>
+
+          <!-- ── All nakshatra names ─────────────────────────────────── -->
+          <details class="rp-naksha-details">
+            <summary class="rp-naksha-summary">
+              27 Nakshatras in {regionDef.name} · <span style={`color:${accent};`}>{regionDef.script}</span>
+            </summary>
+            <div class="rp-naksha-grid">
+              {regionDef.nakshatras.map((n, i) => (
+                <div class={`rp-naksha-item ${i === p.nakshatra.number - 1 ? 'rp-naksha-current' : ''}`}
+                  style={i === p.nakshatra.number - 1 ? `border-color:${accent};background:var(--color-saffron-soft);` : ''}>
+                  <span class="rp-naksha-num">{i + 1}</span>
+                  <span class="rp-naksha-name">{n}</span>
+                </div>
+              ))}
+            </div>
+          </details>
+        </div>
+
+        <!-- ── RIGHT: sidebar ────────────────────────────────────────── -->
+        <aside class="rp-sidebar">
+
+          <!-- Tradition info card -->
+          <div class="rp-info-card" style={`border-top:4px solid ${accent};`}>
+            <h3 class="rp-info-title">{regionDef.calendarName}</h3>
+            <p class="rp-info-body">{regionDef.description}</p>
+            <div class="rp-info-row">
+              <span class="rp-info-key">Script</span>
+              <span class="rp-info-val">{regionDef.script}</span>
+            </div>
+            <div class="rp-info-row">
+              <span class="rp-info-key">Calendar</span>
+              <span class="rp-info-val">{regionDef.monthSystem === 'solar' ? 'Solar (Sauramana)' : 'Lunar (Chandramana)'}</span>
+            </div>
+            <div class="rp-info-row">
+              <span class="rp-info-key">Year era</span>
+              <span class="rp-info-val">{yearInfo.era}</span>
+            </div>
+            <div class="rp-info-row">
+              <span class="rp-info-key">Current year</span>
+              <span class="rp-info-val" style={`color:${accent};font-weight:700;`}>{yearInfo.num}</span>
+            </div>
+          </div>
+
+          <!-- Special note -->
+          <div class="rp-note-card">
+            <p class="rp-note-icon">💡</p>
+            <p class="rp-note-body">{regionDef.specialNote}</p>
+          </div>
+
+          <!-- Month names list -->
+          <div class="rp-months-card">
+            <h3 class="rp-months-title">12 Months in {regionDef.name}</h3>
+            <div class="rp-months-list">
+              {regionDef.months.map((m, i) => (
+                <div class={`rp-month-item ${m === monthName ? 'rp-month-current' : ''}`}
+                  style={m === monthName ? `border-color:${accent};background:var(--color-saffron-soft);` : ''}>
+                  <span class="rp-month-num">{i + 1}</span>
+                  <span class="rp-month-name">{m}</span>
+                  {m === monthName && <span class="rp-month-badge" style={`background:${accent};`}>Now</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Link back + other traditions -->
+          <div class="rp-other-card">
+            <a href="/panchang/regional" class="rp-back-link">
+              ← All Regional Panchangs
+            </a>
+            <p class="rp-other-head">Other traditions</p>
+            <div class="rp-other-list">
+              {REGIONS.filter(r => r.slug !== slug).slice(0, 5).map(r => (
+                <a href={`/panchang/${r.slug}`} class="rp-other-link">
+                  <span class="rp-other-native" style={`color:${TRADITION_COLORS[r.code]};`}>{r.nativeName}</span>
+                  <span class="rp-other-name">{r.calendarName}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+/* ── Hero ── */
+.rp-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.rp-native-big { font-size: 28px; font-weight: 800; font-family: sans-serif; letter-spacing: -0.5px; }
+.rp-calendar-name { font-size: 14px; font-weight: 600; color: var(--color-mute); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.rp-date-display { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+.rp-month-big { font-size: 36px; font-weight: 800; color: var(--color-ink); letter-spacing: -1px; font-family: sans-serif; }
+.rp-year-tag { font-size: 13px; font-weight: 600; color: var(--color-mute); font-family: var(--font-mono); }
+.rp-greg-date { font-size: 14px; color: var(--color-body-text); margin: 0 0 4px; }
+.rp-city-note { font-size: 13px; color: var(--color-body-text); margin: 0; }
+
+.rp-pills { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; min-width: 260px; }
+.rp-pill { background: var(--color-canvas-soft); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); padding: 12px 14px; }
+.rp-pill-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-mute); font-family: var(--font-mono); margin: 0 0 4px; }
+.rp-pill-val { font-size: 15px; font-weight: 700; color: var(--color-ink); margin: 0; font-family: sans-serif; }
+
+/* ── Layout ── */
+.rp-layout { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: start; }
+@media (max-width: 960px) { .rp-layout { grid-template-columns: 1fr; } .rp-sidebar { order: -1; } }
+
+.section-head { font-size: 14px; font-weight: 700; color: var(--color-ink); letter-spacing: 0.02em; text-transform: uppercase; margin: 0 0 16px; padding-left: 10px; font-family: var(--font-mono); }
+
+/* ── Anga cards ── */
+.rp-anga-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 540px) { .rp-anga-grid { grid-template-columns: 1fr; } }
+.rp-anga-card { display: flex; gap: 12px; background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); padding: 14px 16px; }
+.rp-anga-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.rp-anga-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-mute); font-family: var(--font-mono); margin: 0 0 4px; }
+.rp-anga-regional { font-size: 18px; font-weight: 700; color: var(--color-ink); margin: 0 0 3px; font-family: sans-serif; line-height: 1.2; }
+.rp-anga-en { font-size: 11px; color: var(--color-mute); margin: 0; }
+
+/* ── Timings ── */
+.rp-timing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+@media (max-width: 640px) { .rp-timing-grid { grid-template-columns: 1fr 1fr; } }
+.rp-timing-card { background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); padding: 12px 14px; display: flex; gap: 10px; align-items: center; }
+.rp-timing-icon { font-size: 18px; }
+.rp-timing-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-mute); font-family: var(--font-mono); margin: 0 0 3px; }
+.rp-timing-val { font-size: 14px; font-weight: 700; color: var(--color-ink); margin: 0; font-family: var(--font-mono); }
+
+/* ── Kalam ── */
+.rp-kalam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rp-kalam-card { background: var(--color-canvas-soft); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); padding: 12px 14px; }
+.rp-kalam-name { font-size: 12px; font-weight: 700; color: var(--color-ink); margin: 0 0 4px; }
+.rp-kalam-time { font-size: 13px; font-weight: 600; color: var(--color-body-text); margin: 0; font-family: var(--font-mono); }
+
+/* ── Nakshatra detail ── */
+.rp-naksha-details { margin-top: 32px; border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); overflow: hidden; }
+.rp-naksha-summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--color-ink); padding: 14px 16px; background: var(--color-canvas-soft); list-style: none; user-select: none; }
+.rp-naksha-summary::-webkit-details-marker { display: none; }
+.rp-naksha-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 6px; padding: 14px; }
+.rp-naksha-item { display: flex; gap: 6px; align-items: center; padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid transparent; }
+.rp-naksha-num { font-size: 10px; color: var(--color-mute); font-family: var(--font-mono); font-weight: 600; width: 18px; flex-shrink: 0; }
+.rp-naksha-name { font-size: 13px; font-weight: 600; color: var(--color-ink); font-family: sans-serif; }
+.rp-naksha-current { font-weight: 700; }
+
+/* ── Sidebar cards ── */
+.rp-info-card, .rp-note-card, .rp-months-card, .rp-other-card {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.rp-info-title { font-size: 15px; font-weight: 700; color: var(--color-ink); margin: 0 0 10px; }
+.rp-info-body { font-size: 13px; color: var(--color-body-text); line-height: 1.6; margin: 0 0 14px; }
+.rp-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-top: 1px solid var(--color-hairline); font-size: 13px; }
+.rp-info-key { color: var(--color-mute); font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.rp-info-val { color: var(--color-ink); font-weight: 600; font-family: var(--font-mono); font-size: 12px; }
+
+.rp-note-card { display: flex; gap: 12px; align-items: flex-start; }
+.rp-note-icon { font-size: 18px; flex-shrink: 0; }
+.rp-note-body { font-size: 13px; color: var(--color-body-text); line-height: 1.6; margin: 0; }
+
+.rp-months-title { font-size: 14px; font-weight: 700; color: var(--color-ink); margin: 0 0 12px; }
+.rp-months-list { display: flex; flex-direction: column; gap: 4px; }
+.rp-month-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--radius-sm); border: 1px solid transparent; }
+.rp-month-num { font-size: 10px; color: var(--color-mute); font-family: var(--font-mono); width: 16px; }
+.rp-month-name { font-size: 14px; font-weight: 600; color: var(--color-ink); flex: 1; font-family: sans-serif; }
+.rp-month-badge { font-size: 10px; font-weight: 700; color: #fff; padding: 2px 6px; border-radius: 100px; }
+.rp-month-current { font-weight: 700; }
+
+.rp-back-link { display: inline-block; font-size: 13px; font-weight: 600; color: var(--color-body-text); text-decoration: none; margin-bottom: 14px; }
+.rp-back-link:hover { color: var(--color-ink); }
+.rp-other-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-mute); font-family: var(--font-mono); margin: 0 0 10px; }
+.rp-other-list { display: flex; flex-direction: column; gap: 6px; }
+.rp-other-link { display: flex; align-items: center; gap: 8px; text-decoration: none; padding: 6px 8px; border-radius: var(--radius-sm); border: 1px solid transparent; transition: background 0.1s; }
+.rp-other-link:hover { background: var(--color-canvas-soft); border-color: var(--color-hairline); }
+.rp-other-native { font-size: 16px; font-family: sans-serif; font-weight: 700; }
+.rp-other-name { font-size: 12.5px; color: var(--color-body-text); font-weight: 500; }
+</style>

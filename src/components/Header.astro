@@ -123,6 +123,8 @@ import LocationPicker from './LocationPicker.astro';
             <a href="/" class="dd-link">Sunrise &amp; Sunset</a>
             <a href="/" class="dd-link">Moonrise &amp; Moonset</a>
             <a href="/" class="dd-link">Rahu Kalam</a>
+            <div class="dd-divider"></div>
+            <a href="/panchang/regional" class="dd-link dd-link-accent">🌐 Regional Panchang</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -131,8 +133,10 @@ import LocationPicker from './LocationPicker.astro';
             <a href="/calendar" class="dd-link">Hindu Calendar</a>
             <a href="/calendar" class="dd-link">Vikram Samvat</a>
             <a href="/calendar" class="dd-link">Saka Calendar</a>
-            <a href="/calendar" class="dd-link">Tamil Calendar</a>
-            <a href="/calendar" class="dd-link">Malayalam Calendar</a>
+            <a href="/panchang/tamil" class="dd-link">Tamil Panchangam</a>
+            <a href="/panchang/malayalam" class="dd-link">Malayalam Panchangam</a>
+            <a href="/panchang/bengali" class="dd-link">Bengali Panjika</a>
+            <a href="/panchang/nepali" class="dd-link">Nepali Patro</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -682,6 +686,9 @@ import LocationPicker from './LocationPicker.astro';
     transition: background 0.1s, color 0.1s;
   }
   .dd-link:hover { background: var(--color-canvas-soft-2); color: var(--color-ink); }
+  .dd-divider { height: 1px; background: var(--color-hairline); margin: 4px 8px; }
+  .dd-link-accent { color: var(--color-saffron-deep) !important; font-weight: 600 !important; }
+  .dd-link-accent:hover { background: var(--color-saffron-soft) !important; }
 
   /* ── Mobile drawer ── */
   .drawer-overlay {

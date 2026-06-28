@@ -1,0 +1,188 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { REGIONS } from '../../lib/panchang-i18n';
+import { calculatePanchang, getHinduCalendarInfo } from '../../lib/panchang';
+import { getSolarMonthIndex } from '../../lib/panchang-i18n';
+
+const today = new Date();
+
+// Quick preview data for each tradition (using default city)
+const regionPreviews = REGIONS.map(r => {
+  const p = calculatePanchang(today, r.defaultLat, r.defaultLng, r.defaultTzOffset);
+  const cal = getHinduCalendarInfo(today, p.sunLongitude, p.moonLongitude, p.tithi.paksha);
+  const solarMonthIdx = getSolarMonthIndex(r, p.sunLongitude);
+  const monthName = r.monthSystem === 'solar'
+    ? r.months[solarMonthIdx] ?? r.months[0]
+    : r.months[cal.amantaMonth.name === 'Chaitra' ? 0 : (Object.keys({
+        Chaitra:0,Vaishakha:1,Jyeshtha:2,Ashadha:3,Shravana:4,Bhadrapada:5,
+        Ashwin:6,Kartika:7,Margashirsha:8,Pausha:9,Magha:10,Phalguna:11,
+      } as Record<string,number>)[cal.amantaMonth.name] ?? 0)];
+  const yearInfo = r.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat);
+  const tithiName = p.tithi.paksha === 'Shukla'
+    ? r.tithiShukla[(p.tithi.number - 1) % 15]
+    : r.tithiKrishna[(p.tithi.number - 1) % 15];
+  return { r, monthName, yearInfo, tithiName, paksha: r.paksha[p.tithi.paksha === 'Shukla' ? 0 : 1] };
+});
+
+const TRADITION_COLORS: Record<string, string> = {
+  bn: '#e8622a', as: '#d4800f', ta: '#0f766e', ml: '#065f46',
+  mr: '#7c3aed', gu: '#b45309', kn: '#1d4ed8', te: '#be185d',
+  or: '#dc2626', ne: '#4f46e5', iskcon: '#92400e',
+};
+---
+
+<Layout
+  title="Regional Panchang — Bengali, Tamil, Malayalam, Telugu & More | PanchangPath"
+  description="Today's Panchang in 11 Indian regional languages — Bengali Panjika, Tamil Panchangam, Malayalam, Marathi, Gujarati, Kannada, Telugu, Odia, Nepali, Assamese, and ISKCON Vaishnava Panchang."
+>
+  <!-- ── Hero ─────────────────────────────────────────────────────────── -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:52px 0 44px;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+        <a href="/" style="font-size:13px;color:var(--color-mute);text-decoration:none;">Home</a>
+        <span style="color:var(--color-hairline);">/</span>
+        <span style="font-size:13px;color:var(--color-mute);">Regional Panchang</span>
+      </div>
+      <h1 style="font-size:38px;font-weight:700;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 14px;line-height:1.1;">
+        Panchang in Your Language
+      </h1>
+      <p style="font-size:16px;color:var(--color-body-text);max-width:580px;margin:0 0 28px;line-height:1.65;">
+        Explore today's Panchang across 11 Indian regional traditions — each with authentic month names, regional year systems, and scripts.
+      </p>
+      <!-- Language script showcase -->
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        {REGIONS.map(r => (
+          <a href={`/panchang/${r.slug}`} style={`display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--color-canvas-soft);border:1px solid var(--color-hairline);border-radius:100px;font-size:13px;font-weight:600;color:var(--color-ink);text-decoration:none;transition:all 0.12s;`}
+            onmouseover="this.style.borderColor='var(--color-saffron)';this.style.color='var(--color-saffron-deep)'"
+            onmouseout="this.style.borderColor='var(--color-hairline)';this.style.color='var(--color-ink)'"
+          >
+            <span style={`font-size:16px;font-family:sans-serif;color:${TRADITION_COLORS[r.code]};`}>{r.nativeName[0]}</span>
+            {r.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Grid of traditions ──────────────────────────────────────────── -->
+  <section style="padding:48px 0 64px;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <div class="reg-grid">
+        {regionPreviews.map(({ r, monthName, yearInfo, tithiName, paksha }) => (
+          <a href={`/panchang/${r.slug}`} class="reg-card">
+            <!-- Accent bar -->
+            <div class="reg-accent" style={`background:${TRADITION_COLORS[r.code]};`}></div>
+
+            <div class="reg-card-body">
+              <!-- Header -->
+              <div class="reg-card-head">
+                <div>
+                  <p class="reg-native" style={`color:${TRADITION_COLORS[r.code]};`}>{r.nativeName}</p>
+                  <h2 class="reg-title">{r.calendarName}</h2>
+                </div>
+                <span class="reg-script-badge">{r.script}</span>
+              </div>
+
+              <!-- Month + Year -->
+              <div class="reg-date-block">
+                <span class="reg-month">{monthName}</span>
+                <span class="reg-year">{yearInfo.displayLabel}</span>
+              </div>
+
+              <!-- Tithi preview -->
+              <div class="reg-tithi">
+                <span class="reg-tithi-label">Tithi</span>
+                <span class="reg-tithi-val">{tithiName} · {paksha}</span>
+              </div>
+
+              <!-- Cities covered -->
+              <p class="reg-city">📍 {r.defaultCity} &amp; region</p>
+            </div>
+
+            <!-- Hover arrow -->
+            <div class="reg-arrow">→</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Calendar systems explainer ────────────────────────────────────── -->
+  <section style="background:var(--color-canvas-soft);border-top:1px solid var(--color-hairline);border-bottom:1px solid var(--color-hairline);padding:48px 0;">
+    <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
+      <h2 style="font-size:22px;font-weight:700;color:var(--color-ink);margin:0 0 28px;letter-spacing:-0.5px;">
+        Calendar Systems at a Glance
+      </h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;">
+        <div class="cs-card">
+          <h3 class="cs-title">☀️ Solar Calendar</h3>
+          <p class="cs-body">Month changes when the Sun transits from one Rashi to the next. Used by Tamil, Bengali, Assamese, Malayalam, and Nepali traditions.</p>
+        </div>
+        <div class="cs-card">
+          <h3 class="cs-title">🌙 Lunar Calendar</h3>
+          <p class="cs-body">Month determined by the Moon's position in the lunar cycle. Used by Marathi, Gujarati, Kannada, Telugu, Odia, and ISKCON traditions.</p>
+        </div>
+        <div class="cs-card">
+          <h3 class="cs-title">📅 Vikram Samvat</h3>
+          <p class="cs-body">Most widely used Hindu era. Currently VS {new Date().getFullYear() + 57}. New year falls on Chaitra Shukla Pratipada (Ugadi/Gudi Padwa).</p>
+        </div>
+        <div class="cs-card">
+          <h3 class="cs-title">📅 Shalivahana Saka</h3>
+          <p class="cs-body">Used in Karnataka and Andhra Pradesh. Saka = VS − 135. Government of India's national calendar is based on the Saka era.</p>
+        </div>
+        <div class="cs-card">
+          <h3 class="cs-title">📅 Bangabda</h3>
+          <p class="cs-body">Bengali solar year = Gregorian − 593 (after Poila Boishakh in April). Currently {new Date().getFullYear() - 593} Bangabda.</p>
+        </div>
+        <div class="cs-card">
+          <h3 class="cs-title">📅 Kolla Varsham</h3>
+          <p class="cs-body">Malayalam solar year starting when Sun enters Simha (Chingam 1 ≈ August 17). Currently {new Date().getFullYear() - 825} KV.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+.reg-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 20px;
+}
+.reg-card {
+  position: relative;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+.reg-card:hover { box-shadow: var(--shadow-card); transform: translateY(-2px); }
+.reg-accent { height: 4px; flex-shrink: 0; }
+.reg-card-body { padding: 18px 20px 14px; flex: 1; }
+.reg-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 14px; }
+.reg-native { font-size: 22px; font-weight: 700; margin: 0 0 2px; font-family: sans-serif; }
+.reg-title { font-size: 14px; font-weight: 600; color: var(--color-ink); margin: 0; }
+.reg-script-badge { font-size: 10px; font-weight: 600; color: var(--color-mute); text-transform: uppercase; letter-spacing: 0.06em; background: var(--color-canvas-soft-2); border: 1px solid var(--color-hairline); border-radius: 100px; padding: 3px 8px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; font-family: var(--font-mono); }
+.reg-date-block { display: flex; flex-direction: column; gap: 2px; margin-bottom: 12px; }
+.reg-month { font-size: 26px; font-weight: 700; color: var(--color-ink); line-height: 1.1; font-family: sans-serif; letter-spacing: -0.5px; }
+.reg-year { font-size: 11.5px; color: var(--color-mute); font-family: var(--font-mono); font-weight: 600; }
+.reg-tithi { display: flex; gap: 8px; align-items: baseline; margin-bottom: 10px; }
+.reg-tithi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-mute); font-family: var(--font-mono); flex-shrink: 0; }
+.reg-tithi-val { font-size: 13px; font-weight: 600; color: var(--color-body-text); font-family: sans-serif; }
+.reg-city { font-size: 11.5px; color: var(--color-mute); margin: 0; }
+.reg-arrow { font-size: 18px; color: var(--color-mute); padding: 12px 20px; border-top: 1px solid var(--color-hairline); text-align: right; transition: color 0.12s; }
+.reg-card:hover .reg-arrow { color: var(--color-saffron); }
+
+.cs-card { background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); padding: 18px 20px; }
+.cs-title { font-size: 15px; font-weight: 700; color: var(--color-ink); margin: 0 0 8px; }
+.cs-body { font-size: 13px; color: var(--color-body-text); line-height: 1.6; margin: 0; }
+
+@media (max-width: 640px) {
+  .reg-grid { grid-template-columns: 1fr; }
+}
+</style>
