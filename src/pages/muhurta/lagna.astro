@@ -1,0 +1,188 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Lagna Table Today — Rising Sign — PanchangPath" description="Today's Lagna (ascendant) table — the rising zodiac sign changes every ~2 hours. See when each Lagna begins and ends.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">लग्न तालिका · Lagna Table</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Lagna Table</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The rising sign (Lagna / Ascendant) changes every ~2 hours as Earth rotates. Certain Lagnas are auspicious for specific activities.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <input type="date" id="lg-date" class="input" style="height:38px;" />
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <select id="lg-city" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+        <button id="lg-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <!-- Current lagna banner -->
+      <div id="lg-current" style="margin-bottom:24px;"></div>
+
+      <!-- Lagna table -->
+      <div id="lg-table" style="display:flex;flex-direction:column;gap:6px;max-width:680px;margin-bottom:48px;"></div>
+
+      <!-- Auspicious lagna guide -->
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Auspicious Lagnas for Common Activities</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;" id="lg-guide"></div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+const LOCS = [
+  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+  {name:'Singapore',lat:1.3521,lng:103.8198,tz:8},
+];
+
+const RASHI_NAMES = ['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI = ['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+const RASHI_EN = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const RASHI_LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
+const RASHI_QUALITY: Record<number,string> = {
+  1:'Good', 2:'Best', 3:'Good', 4:'Avoid (Lagna Lord = Moon — ok for water activity)',
+  5:'Good', 6:'Good', 7:'Best', 8:'Avoid', 9:'Good', 10:'Avoid', 11:'Good', 12:'Avoid',
+};
+const RASHI_SUITABLE: Record<number,string> = {
+  0:'Courage, surgery, athletics', 1:'Marriage, luxury, finance', 2:'Communication, travel, education',
+  3:'Home, family, water journeys', 4:'Leadership, authority, creative', 5:'Health, service, precision work',
+  6:'Partnerships, legal, marriage', 7:'Research, occult — avoid auspicious', 8:'Long journeys, philosophy, teaching',
+  9:'Career, structure, property', 10:'Community, innovation, technology', 11:'Spiritual retreat — avoid for material work',
+};
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+
+function calcAscendant(jd:number,lat:number,lng:number){
+  const T=(jd-2451545)/36525;
+  const JD0=Math.floor(jd-0.5)+0.5;
+  const T0=(JD0-2451545)/36525;
+  let GST=((6.697374558+2400.0513369*T0+0.0000258622*T0*T0)%24+24)%24;
+  const UT=(jd-JD0)*24;
+  const LST=((GST+UT*1.00273791+lng/15)%24+24)%24;
+  const RAMC=LST*15;
+  const e=23.4393-0.0000004*T*36525;
+  const eR=toRad(e), RAMC_r=toRad(RAMC), latR=toRad(lat);
+  let asc=toDeg(Math.atan2(Math.cos(RAMC_r),-Math.sin(RAMC_r)*Math.sin(eR)-Math.tan(latR)*Math.cos(eR)));
+  if(asc<0)asc+=360;
+  // Lahiri ayanamsha
+  const ay=23.85+1.3612*T-0.000136*T*T;
+  return n360(asc-ay);
+}
+function fmtMins(m:number){
+  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
+  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
+}
+
+const sel=document.getElementById('lg-city') as HTMLSelectElement;
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+const dateInput=document.getElementById('lg-date') as HTMLInputElement;
+dateInput.value=new Date().toISOString().split('T')[0];
+
+function calculate(){
+  const dateStr=(document.getElementById('lg-date') as HTMLInputElement).value;
+  const cityName=(document.getElementById('lg-city') as HTMLSelectElement).value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const [y,m,d]=dateStr.split('-').map(Number);
+  const isToday=dateStr===new Date().toISOString().split('T')[0];
+  const now=new Date();
+  const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
+
+  // Compute lagna every 10 minutes for 24 hours
+  const baseJD=toJD(y,m,d,0-loc.tz); // midnight local
+  const entries:{rashi:number;startMins:number}[]=[];
+  let lastRashi=-1;
+  for(let i=0;i<144;i++){
+    const tMins=i*10;
+    const tJD=baseJD+tMins/(60*24);
+    const asc=calcAscendant(tJD,loc.lat,loc.lng);
+    const rashi=Math.floor(asc/30)%12;
+    if(rashi!==lastRashi){
+      entries.push({rashi,startMins:tMins});
+      lastRashi=rashi;
+    }
+  }
+
+  // Current lagna
+  let currentRashi=-1;
+  for(let i=0;i<entries.length;i++){
+    const e=entries[i];
+    const end=i+1<entries.length?entries[i+1].startMins:1440;
+    if(nowMins>=e.startMins&&nowMins<end){ currentRashi=e.rashi; break; }
+  }
+
+  const curEl=document.getElementById('lg-current');
+  if(curEl&&isToday&&currentRashi>=0){
+    curEl.innerHTML=`<div style="background:var(--color-canvas-soft-2);border:1px solid var(--color-hairline);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:16px;">
+      <div style="font-size:28px;">${['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'][currentRashi]}</div>
+      <div>
+        <p style="font-size:12px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">Current Lagna</p>
+        <p style="font-size:18px;font-weight:700;color:var(--color-ink);margin:0;">${RASHI_NAMES[currentRashi]} <span style="font-weight:400;font-size:14px;color:var(--color-mute);">${RASHI_EN[currentRashi]}</span></p>
+        <p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">Lord: ${RASHI_LORDS[currentRashi]}</p>
+      </div>
+    </div>`;
+  } else if(curEl){ curEl.innerHTML=''; }
+
+  // Table
+  const tableEl=document.getElementById('lg-table');
+  if(tableEl){
+    const SYMBOLS=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+    tableEl.innerHTML=entries.map((e,i)=>{
+      const endMins=i+1<entries.length?entries[i+1].startMins:entries[0].startMins+1440;
+      const isCurrent=isToday&&nowMins>=e.startMins&&nowMins<endMins;
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:8px;background:${isCurrent?'var(--color-ink)':'var(--color-canvas-soft-2)'};border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
+        <span style="font-size:18px;">${SYMBOLS[e.rashi]}</span>
+        <div style="flex:1;">
+          <span style="font-size:13px;font-weight:600;color:${isCurrent?'#fff':'var(--color-ink)'};">${RASHI_NAMES[e.rashi]}</span>
+          <span style="font-size:11px;color:${isCurrent?'rgba(255,255,255,0.5)':'var(--color-mute)'};margin-left:6px;">${RASHI_HI[e.rashi]}</span>
+        </div>
+        <span style="font-size:12px;color:${isCurrent?'rgba(255,255,255,0.8)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(e.startMins)} – ${fmtMins(endMins)}</span>
+        ${isCurrent?'<span style="font-size:9px;font-weight:700;background:rgba(255,255,255,0.2);color:#fff;padding:2px 8px;border-radius:100px;">NOW</span>':''}
+      </div>`;
+    }).join('');
+  }
+}
+
+const guide=document.getElementById('lg-guide');
+if(guide){
+  guide.innerHTML=[
+    {activity:'Marriage (Vivah)',lagnas:'Taurus, Gemini, Cancer, Virgo, Libra, Sagittarius'},
+    {activity:'Griha Pravesh',lagnas:'Taurus, Gemini, Leo, Virgo, Libra, Sagittarius'},
+    {activity:'Business Start',lagnas:'Gemini, Virgo, Libra, Aquarius, Sagittarius'},
+    {activity:'Travel / Yatra',lagnas:'Aries, Gemini, Libra, Sagittarius, Aquarius'},
+    {activity:'Vehicle Purchase',lagnas:'Taurus, Gemini, Libra, Sagittarius'},
+    {activity:'Surgery / Medical',lagnas:'Aries, Scorpio — avoid Cancer, Capricorn'},
+  ].map(g=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${g.activity}</p><p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${g.lagnas}</p></div>`).join('');
+}
+
+document.getElementById('lg-calc')?.addEventListener('click',calculate);
+calculate();
+</script>

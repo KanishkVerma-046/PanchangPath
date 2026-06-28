@@ -140,12 +140,19 @@ import LanguagePicker from './LanguagePicker.astro';
         </li>
         <li class="nav-item has-dropdown">
           <a href="/muhurta" class="nav-cat">Muhurat <span class="nav-caret">▾</span></a>
-          <div class="nav-dropdown">
-            <a href="/muhurta" class="dd-link">Muhurat Finder</a>
-            <a href="/muhurta" class="dd-link">Vivah Muhurat</a>
-            <a href="/muhurta" class="dd-link">Griha Pravesh</a>
-            <a href="/muhurta" class="dd-link">Namkaran Muhurat</a>
-            <a href="/muhurta" class="dd-link">Vehicle Purchase</a>
+          <div class="nav-dropdown" style="min-width:220px;">
+            <a href="/muhurta/choghadiya" class="dd-link">Choghadiya</a>
+            <a href="/muhurta/hora" class="dd-link">Shubha Hora</a>
+            <a href="/muhurta/rahu-kala" class="dd-link">Rahu Kala</a>
+            <a href="/muhurta/lagna" class="dd-link">Lagna Table</a>
+            <a href="/muhurta/abhijit" class="dd-link">Abhijit Muhurat</a>
+            <a href="/muhurta/panchaka" class="dd-link">Panchaka &amp; Gowri</a>
+            <div class="dd-divider"></div>
+            <a href="/muhurta/vivah" class="dd-link">Vivah Muhurat</a>
+            <a href="/muhurta/griha-pravesh" class="dd-link">Griha Pravesh</a>
+            <a href="/muhurta/shubha-dates?activity=vehicle" class="dd-link">Vehicle Purchase</a>
+            <a href="/muhurta/shubha-dates?activity=property" class="dd-link">Property Purchase</a>
+            <a href="/muhurta/shubha-dates" class="dd-link">Shubha Dates</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -270,9 +277,16 @@ import LanguagePicker from './LanguagePicker.astro';
           Muhurat <span class="drawer-caret">›</span>
         </button>
         <div class="drawer-sub" id="m-muhurat">
-          <a href="/muhurta" class="drawer-link">Muhurat Finder</a>
-          <a href="/muhurta" class="drawer-link">Vivah Muhurat</a>
-          <a href="/muhurta" class="drawer-link">Griha Pravesh</a>
+          <a href="/muhurta" class="drawer-link">Muhurat Hub</a>
+          <a href="/muhurta/choghadiya" class="drawer-link">Choghadiya</a>
+          <a href="/muhurta/hora" class="drawer-link">Shubha Hora</a>
+          <a href="/muhurta/rahu-kala" class="drawer-link">Rahu Kala</a>
+          <a href="/muhurta/lagna" class="drawer-link">Lagna Table</a>
+          <a href="/muhurta/abhijit" class="drawer-link">Abhijit Muhurat</a>
+          <a href="/muhurta/panchaka" class="drawer-link">Panchaka &amp; Gowri</a>
+          <a href="/muhurta/vivah" class="drawer-link">Vivah Muhurat</a>
+          <a href="/muhurta/griha-pravesh" class="drawer-link">Griha Pravesh</a>
+          <a href="/muhurta/shubha-dates" class="drawer-link">Shubha Dates</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -973,11 +987,21 @@ import LanguagePicker from './LanguagePicker.astro';
     { label: "Monthly Calendar", url: "/calendar" },
     { label: "All Festivals", url: "/festivals" },
     { label: "Muhurat Finder", url: "/muhurta" },
+    { label: "Choghadiya", url: "/muhurta/choghadiya" },
+    { label: "Shubha Hora", url: "/muhurta/hora" },
+    { label: "Rahu Kala", url: "/muhurta/rahu-kala" },
+    { label: "Lagna Table", url: "/muhurta/lagna" },
+    { label: "Abhijit Muhurat", url: "/muhurta/abhijit" },
+    { label: "Panchaka", url: "/muhurta/panchaka" },
+    { label: "Gowri Panchangam", url: "/muhurta/panchaka" },
+    { label: "Vivah Muhurat", url: "/muhurta/vivah" },
+    { label: "Griha Pravesh", url: "/muhurta/griha-pravesh" },
+    { label: "Vehicle Purchase Muhurat", url: "/muhurta/shubha-dates?activity=vehicle" },
+    { label: "Property Purchase Muhurat", url: "/muhurta/shubha-dates?activity=property" },
+    { label: "Shubha Dates", url: "/muhurta/shubha-dates" },
     { label: "Diwali 2025", url: "/festivals" },
     { label: "Navratri 2025", url: "/festivals" },
     { label: "Ekadashi", url: "/festivals" },
-    { label: "Rahu Kalam", url: "/" },
-    { label: "Vivah Muhurat", url: "/muhurta" },
     { label: "Sunrise & Sunset", url: "/" },
   ];
 

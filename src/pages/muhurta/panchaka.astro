@@ -1,0 +1,252 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Panchaka & Gowri Panchangam — PanchangPath" description="Check Panchaka Rahita Muhurat (inauspicious Moon periods) and Gowri Panchangam 8-slot daily guide for South India.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">पंचक · गौरी पंचांग</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Panchaka &amp; Gowri Panchangam</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Panchaka is active when Moon transits the last 5 Nakshatras (Aquarius and Pisces signs). Gowri Panchangam is a South Indian 8-slot daily muhurta system.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <input type="date" id="pk-date" class="input" style="height:38px;" />
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <select id="pk-city" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+        <button id="pk-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <!-- Panchaka status -->
+      <div id="pk-status" style="margin-bottom:32px;"></div>
+
+      <!-- Gowri Panchangam -->
+      <div style="margin-bottom:36px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Gowri Panchangam</h2>
+          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">Day slots (sunrise to sunset)</span>
+        </div>
+        <div id="gowri-day" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:24px;"></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">Night Gowri</h2>
+          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">Sunset to next sunrise</span>
+        </div>
+        <div id="gowri-night" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:36px;"></div>
+      </div>
+
+      <!-- Panchaka info -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;" id="pk-info-grid"></div>
+
+      <!-- Gowri legend -->
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Gowri Panchangam Guide</h3>
+      <div id="gowri-legend" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @media (max-width: 640px) {
+    #pk-info-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<script>
+const LOCS = [
+  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+];
+
+// Panchaka: nakshatras 22-26 (0-indexed: Dhanishtha, Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, Revati)
+const PANCHAKA_NAKS = [22,23,24,25,26];
+const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const PANCHAKA_TYPES: Record<number,string> = {22:'Mrityu Panchaka',23:'Agni Panchaka',24:'Raja Panchaka',25:'Chora Panchaka',26:'Roga Panchaka'};
+
+// Gowri Panchangam sequences
+const GOWRI_DAY = [
+  ['Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha'],
+  ['Charam','Visha','Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam'],
+  ['Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam'],
+  ['Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha'],
+  ['Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham'],
+  ['Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham'],
+  ['Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham'],
+];
+const GOWRI_NIGHT = [
+  ['Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham'],
+  ['Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham'],
+  ['Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham'],
+  ['Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham'],
+  ['Visha','Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam','Charam'],
+  ['Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham','Rogam'],
+  ['Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam'],
+];
+const GOWRI_DATA: Record<string,{q:string;bg:string;fg:string;suitable:string}> = {
+  Amrutham: {q:'Best',    bg:'#dcfce7',fg:'#15803d',suitable:'All auspicious activities'},
+  Sudham:   {q:'Good',    bg:'#fef3c7',fg:'#b45309',suitable:'Religious & spiritual work'},
+  Uthamam:  {q:'Good',    bg:'#dbeafe',fg:'#1d4ed8',suitable:'Education, new ventures'},
+  Labham:   {q:'Good',    bg:'#ede9fe',fg:'#6d28d9',suitable:'Business and financial work'},
+  Dhanam:   {q:'Neutral', bg:'#f0fdf4',fg:'#16a34a',suitable:'Wealth activities — OK'},
+  Charam:   {q:'Neutral', bg:'#f8fafc',fg:'#6b7280',suitable:'Travel and movement'},
+  Rogam:    {q:'Avoid',   bg:'#fee2e2',fg:'#dc2626',suitable:'Avoid all auspicious activities'},
+  Visha:    {q:'Avoid',   bg:'#fee2e2',fg:'#b91c1c',suitable:'Avoid — inauspicious'},
+};
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+function moonLon(jd:number){
+  const T=(jd-2451545)/36525;
+  const L=n360(218.3164477+481267.88123421*T);
+  const D=n360(297.8501921+445267.1114034*T);
+  const Mp=n360(134.9633964+477198.8675055*T);
+  const dL=6.288774*Math.sin(toRad(Mp))+1.274027*Math.sin(toRad(2*D-Mp))+0.658314*Math.sin(toRad(2*D));
+  const ay=23.85+1.3612*T;
+  return n360(L+dL/1000-ay);
+}
+function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
+  const T=(jd-2451545)/36525;
+  const M=n360(357.52911+35999.05029*T);
+  const L0=n360(280.46646+36000.76983*T);
+  const C=(1.914602-0.004817*T)*Math.sin(toRad(M))+0.019993*Math.sin(2*toRad(M));
+  const sunL=L0+C;
+  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunL));
+  const dec=Math.asin(sinDec);
+  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(lat))*Math.sin(dec))/(Math.cos(toRad(lat))*Math.cos(dec));
+  if(cosHA<-1||cosHA>1)return NaN;
+  const ha=toDeg(Math.acos(cosHA));
+  return (rising?12-lng/15-ha/15:12-lng/15+ha/15);
+}
+function fmtMins(m:number){
+  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
+  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
+}
+
+const sel=document.getElementById('pk-city') as HTMLSelectElement;
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+const dateInput=document.getElementById('pk-date') as HTMLInputElement;
+dateInput.value=new Date().toISOString().split('T')[0];
+
+function makeGowriSlot(name:string,s:number,e:number,isCurrent:boolean){
+  const d=GOWRI_DATA[name]||{q:'—',bg:'#f3f4f6',fg:'#374151',suitable:''};
+  const bg=isCurrent?'var(--color-ink)':d.bg;
+  const fg=isCurrent?'#fff':d.fg;
+  return `<div style="background:${bg};border-radius:10px;padding:12px 14px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+      <span style="font-size:13px;font-weight:700;color:${fg};">${name}</span>
+      ${isCurrent?'<span style="font-size:9px;font-weight:700;background:rgba(255,255,255,0.2);color:#fff;padding:1px 6px;border-radius:100px;">NOW</span>':''}
+    </div>
+    <p style="font-size:10px;color:${isCurrent?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:0;">${fmtMins(s)} – ${fmtMins(e)}</p>
+    <p style="font-size:10px;color:${isCurrent?'rgba(255,255,255,0.5)':d.fg};margin:2px 0 0;">${d.q}</p>
+  </div>`;
+}
+
+function calculate(){
+  const dateStr=(document.getElementById('pk-date') as HTMLInputElement).value;
+  const cityName=(document.getElementById('pk-city') as HTMLSelectElement).value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const [y,m,d]=dateStr.split('-').map(Number);
+  const date=new Date(dateStr+'T12:00:00');
+  const wd=date.getDay();
+  const jd=toJD(y,m,d,6-loc.tz);
+  const jdNext=toJD(y,m,d+1,6-loc.tz);
+  const moonSid=moonLon(jd);
+  const nakIdx=Math.floor(moonSid/(360/27))%27;
+  const isPanchaka=PANCHAKA_NAKS.includes(nakIdx);
+
+  // Gowri timing
+  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
+  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
+  const srNextUTC=sunriseUTC(jdNext,loc.lat,loc.lng,true);
+  const srMins=srUTC*60+loc.tz*60, ssMins=ssUTC*60+loc.tz*60, srNextMins=srNextUTC*60+loc.tz*60+1440;
+  const dayDur=(ssMins-srMins)/8, nightDur=(srNextMins-ssMins)/8;
+  const isToday=dateStr===new Date().toISOString().split('T')[0];
+  const now=new Date();
+  const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
+
+  // Panchaka status
+  const pkEl=document.getElementById('pk-status');
+  if(pkEl){
+    if(isPanchaka){
+      const pkType=PANCHAKA_TYPES[nakIdx]||'Panchaka';
+      pkEl.innerHTML=`<div style="background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:16px 20px;">
+        <p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 4px;">⚠️ ${pkType} Active Today</p>
+        <p style="font-size:13px;color:#991b1b;margin:0 0 6px;">Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> nakshatra (Nakshatra ${nakIdx+1}). Panchaka is active.</p>
+        <p style="font-size:12px;color:#7f1d1d;margin:0;">Avoid: funeral rites, roof construction, travel south, buying cots/beds, and storing firewood. Panchaka Shanti puja can be performed to mitigate effects.</p>
+      </div>`;
+    } else {
+      pkEl.innerHTML=`<div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;">
+        <p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 4px;">✓ No Panchaka Today</p>
+        <p style="font-size:13px;color:#166534;margin:0;">Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> — outside the Panchaka zone (Nakshatras 23–27).</p>
+      </div>`;
+    }
+  }
+
+  // Gowri day
+  const dayEl=document.getElementById('gowri-day');
+  if(dayEl){
+    dayEl.innerHTML=GOWRI_DAY[wd].map((name,i)=>{
+      const s=srMins+i*dayDur, e=s+dayDur;
+      return makeGowriSlot(name,s,e,nowMins>=s&&nowMins<e);
+    }).join('');
+  }
+
+  // Gowri night
+  const nightEl=document.getElementById('gowri-night');
+  if(nightEl){
+    nightEl.innerHTML=GOWRI_NIGHT[wd].map((name,i)=>{
+      const s=ssMins+i*nightDur, e=s+nightDur;
+      return makeGowriSlot(name,s,e,nowMins>=s&&nowMins<e);
+    }).join('');
+  }
+}
+
+const infoGrid=document.getElementById('pk-info-grid');
+if(infoGrid){
+  infoGrid.innerHTML=[
+    {title:'What is Panchaka?',text:'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.'},
+    {title:'What to avoid in Panchaka?',text:'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.'},
+  ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${i.title}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${i.text}</p></div>`).join('');
+}
+
+const gowriLegend=document.getElementById('gowri-legend');
+if(gowriLegend){
+  gowriLegend.innerHTML=Object.entries(GOWRI_DATA).map(([name,d])=>`
+    <div class="card" style="padding:12px 14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:${d.fg};flex-shrink:0;"></span>
+        <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${name}</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'||d.q==='Good'?d.fg:'#dc2626'};">${d.q}</span>
+      </div>
+      <p style="font-size:11px;color:var(--color-body-text);margin:0;">${d.suitable}</p>
+    </div>
+  `).join('');
+}
+
+document.getElementById('pk-calc')?.addEventListener('click',calculate);
+calculate();
+</script>

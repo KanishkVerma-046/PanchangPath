@@ -1,0 +1,184 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Abhijit Muhurat, Do Ghati & Brahma Muhurta — PanchangPath" description="Abhijit Muhurat (midday auspicious window), Do Ghati Muhurat, and Brahma Muhurta (pre-dawn) for any date and location.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">अभिजित मुहूर्त</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Abhijit Muhurat</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The most universally auspicious time window — centered on solar noon. Also shows Do Ghati (2-Ghati) Muhurat and Brahma Muhurta.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <input type="date" id="ab-date" class="input" style="height:38px;" />
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <select id="ab-city" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+        <button id="ab-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <!-- Three special muhurta cards -->
+      <div id="ab-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:48px;"></div>
+
+      <!-- What is section -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;">
+        {[
+          { title:'Abhijit Muhurat', icon:'☀️', text:'Named after the Nakshatra Abhijit (Vega), this is the 8th Muhurta of the day — centered on true solar noon, ±24 minutes. It is considered so auspicious that it can override most other restrictions. Works on all days except Wednesday (when Abhijit is weak).' },
+          { title:'Do Ghati Muhurat', icon:'⏱️', text:'Two Ghatis (48 minutes) spanning solar noon. 1 Ghati = 24 minutes. This is the core of Abhijit — the most concentrated auspicious window of the day. Ideal for starting important ceremonies that could not find another Muhurta.' },
+          { title:'Brahma Muhurta', icon:'🌅', text:'The "Creator\'s Hour" — 1 hour 36 minutes before sunrise (specifically 3 Muhurtas: 96 min before sunrise to 48 min before sunrise). Best for spiritual practice, meditation, study, and early morning rituals. Associated with clarity, memory, and divine connection.' },
+        ].map(item => (
+          <div class="card" style="padding:20px;">
+            <div style="font-size:24px;margin-bottom:10px;">{item.icon}</div>
+            <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">{item.title}</p>
+            <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.7;">{item.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+const LOCS = [
+  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+];
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
+  const T=(jd-2451545)/36525;
+  const M=n360(357.52911+35999.05029*T);
+  const L0=n360(280.46646+36000.76983*T);
+  const C=(1.914602-0.004817*T)*Math.sin(toRad(M))+0.019993*Math.sin(2*toRad(M));
+  const sunL=L0+C;
+  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunL));
+  const dec=Math.asin(sinDec);
+  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(lat))*Math.sin(dec))/(Math.cos(toRad(lat))*Math.cos(dec));
+  if(cosHA<-1||cosHA>1)return NaN;
+  const ha=toDeg(Math.acos(cosHA));
+  const noon=12-lng/15;
+  return rising?noon-ha/15:noon+ha/15;
+}
+function fmtMins(m:number){
+  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
+  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
+}
+
+const sel=document.getElementById('ab-city') as HTMLSelectElement;
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+const dateInput=document.getElementById('ab-date') as HTMLInputElement;
+dateInput.value=new Date().toISOString().split('T')[0];
+
+function calculate(){
+  const dateStr=(document.getElementById('ab-date') as HTMLInputElement).value;
+  const cityName=(document.getElementById('ab-city') as HTMLSelectElement).value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const [y,m,d]=dateStr.split('-').map(Number);
+  const date=new Date(dateStr+'T12:00:00');
+  const wd=date.getDay();
+  const jd=toJD(y,m,d,6-loc.tz);
+  const jdPrev=toJD(y,m,d-1,6-loc.tz);
+  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
+  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
+  const srPrevUTC=sunriseUTC(jdPrev,loc.lat,loc.lng,true);
+  const srMins=srUTC*60+loc.tz*60;
+  const ssMins=ssUTC*60+loc.tz*60;
+  const srPrevMins=srPrevUTC*60+loc.tz*60;
+
+  // Abhijit = solar noon ±24 min
+  const noonMins=(srMins+ssMins)/2;
+  const abhijitStart=noonMins-24, abhijitEnd=noonMins+24;
+
+  // Do Ghati = noon ±12 min (2 ghatis = 48 min, ±24; but "Do Ghati" as core = ±12 min = 1 Ghati either side)
+  // Actually: Do Ghati Muhurat = 2 Ghatis = 48 minutes centered on noon = noon-24 to noon+24 (same as Abhijit)
+  // The "core" 1 Ghati = noon ±12 min. Let's show: Full Abhijit and the inner Do Ghati core
+  const doGhatiStart=noonMins-12, doGhatiEnd=noonMins+12;
+
+  // Brahma Muhurta = 96 min before sunrise to 48 min before sunrise (previous day's calculation)
+  const brahmaStart=srMins-96, brahmaEnd=srMins-48;
+
+  const isToday=dateStr===new Date().toISOString().split('T')[0];
+  const now=new Date();
+  const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
+
+  const isWednesday=wd===3;
+
+  const cards=document.getElementById('ab-cards');
+  if(cards){
+    const items=[
+      {
+        name:'Abhijit Muhurat',nameHi:'अभिजित मुहूर्त',
+        start:abhijitStart,end:abhijitEnd,
+        icon:'☀️',color:'#b45309',bg:'#fef3c7',
+        note:isWednesday?'⚠️ Wednesday — Abhijit is weaker today':'Universally auspicious — overrides most doshas',
+        disabled:isWednesday,
+      },
+      {
+        name:'Do Ghati Muhurat',nameHi:'दो घटी मुहूर्त',
+        start:doGhatiStart,end:doGhatiEnd,
+        icon:'⏱️',color:'#b45309',bg:'#fef9eb',
+        note:'Inner 24-minute core around solar noon (1 Ghati each side)',
+        disabled:false,
+      },
+      {
+        name:'Brahma Muhurta',nameHi:'ब्रह्म मुहूर्त',
+        start:brahmaStart,end:brahmaEnd,
+        icon:'🌅',color:'#6d28d9',bg:'#ede9fe',
+        note:'Best for meditation, spiritual practice & study',
+        disabled:false,
+      },
+    ];
+    cards.innerHTML=items.map(item=>{
+      const active=nowMins>=item.start&&nowMins<item.end;
+      const border=active?`border:2px solid ${item.color};`:'';
+      return `<div class="card" style="padding:22px;${border}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:28px;">${item.icon}</span>
+            <div>
+              <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0 0 2px;">${item.name}</p>
+              <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${item.nameHi}</p>
+            </div>
+          </div>
+          ${active?`<span style="background:${item.color};color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;">ACTIVE</span>`:''}
+        </div>
+        <div style="background:${item.bg};border-radius:10px;padding:14px 16px;margin-bottom:12px;">
+          <p style="font-size:22px;font-weight:700;color:${item.color};margin:0;font-family:var(--font-mono);">${fmtMins(item.start)} – ${fmtMins(item.end)}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;">Duration: ${item.end-item.start} minutes</p>
+        </div>
+        <p style="font-size:12px;color:${item.disabled?'#dc2626':'var(--color-body-text)'};margin:0;line-height:1.5;">${item.note}</p>
+      </div>`;
+    }).join('');
+  }
+}
+
+document.getElementById('ab-calc')?.addEventListener('click',calculate);
+calculate();
+</script>

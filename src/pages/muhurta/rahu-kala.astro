@@ -1,0 +1,204 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Rahu Kala Today — Inauspicious Period — PanchangPath" description="Today's Rahu Kala, Gulika Kala and Yamaganda — inauspicious periods to avoid when starting new work.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">राहु काल · Rahu Kala</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rahu Kala</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Inauspicious 90-minute period each day. Also shows Gulika Kala and Yamaganda — three periods ruled by malefic influences.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <input type="date" id="rk-date" class="input" style="height:38px;" />
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <select id="rk-city" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+        <button id="rk-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <!-- Today's status banner -->
+      <div id="rk-status" style="margin-bottom:28px;"></div>
+
+      <!-- Three kalam cards -->
+      <div id="kalam-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:40px;"></div>
+
+      <!-- Week view -->
+      <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Rahu Kala — This Week</h3>
+      <div id="rk-week" style="display:flex;flex-direction:column;gap:6px;max-width:600px;margin-bottom:48px;"></div>
+
+      <!-- Info -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;" id="kalam-info"></div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @media (max-width: 640px) {
+    #kalam-info { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<script>
+const LOCS = [
+  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+];
+
+// Slots 0-7 from sunrise; Sun=7,Mon=1,Tue=6,Wed=4,Thu=5,Fri=2,Sat=3
+const RAHU_SLOTS =    [7,1,6,4,5,2,3];
+const GULIKA_SLOTS =  [6,5,4,3,2,1,0];
+const YAMAG_SLOTS =   [3,5,2,7,4,6,1];
+const VARA_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
+  const T=(jd-2451545)/36525;
+  const M=n360(357.52911+35999.05029*T);
+  const L0=n360(280.46646+36000.76983*T);
+  const C=(1.914602-0.004817*T)*Math.sin(toRad(M))+0.019993*Math.sin(2*toRad(M));
+  const sunL=L0+C;
+  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunL));
+  const dec=Math.asin(sinDec);
+  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(lat))*Math.sin(dec))/(Math.cos(toRad(lat))*Math.cos(dec));
+  if(cosHA<-1||cosHA>1)return NaN;
+  const ha=toDeg(Math.acos(cosHA));
+  const noon=12-lng/15;
+  return rising?noon-ha/15:noon+ha/15;
+}
+function fmtMins(m:number){
+  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
+  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
+}
+function slot(srMins:number,ssMins:number,slotIdx:number){
+  const dur=(ssMins-srMins)/8;
+  const s=srMins+slotIdx*dur;
+  return {start:s,end:s+dur};
+}
+
+const sel=document.getElementById('rk-city') as HTMLSelectElement;
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+const dateInput=document.getElementById('rk-date') as HTMLInputElement;
+dateInput.value=new Date().toISOString().split('T')[0];
+
+function calculate(){
+  const dateStr=(document.getElementById('rk-date') as HTMLInputElement).value;
+  const cityName=(document.getElementById('rk-city') as HTMLSelectElement).value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const [y,m,d]=dateStr.split('-').map(Number);
+  const date=new Date(dateStr+'T12:00:00');
+  const wd=date.getDay();
+  const jd=toJD(y,m,d,6-loc.tz);
+  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
+  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
+  const srMins=srUTC*60+loc.tz*60, ssMins=ssUTC*60+loc.tz*60;
+
+  const rahu=slot(srMins,ssMins,RAHU_SLOTS[wd]);
+  const gulika=slot(srMins,ssMins,GULIKA_SLOTS[wd]);
+  const yamag=slot(srMins,ssMins,YAMAG_SLOTS[wd]);
+
+  const isToday=dateStr===new Date().toISOString().split('T')[0];
+  const now=new Date();
+  const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
+
+  const inRahu=nowMins>=rahu.start&&nowMins<rahu.end;
+  const inGulika=nowMins>=gulika.start&&nowMins<gulika.end;
+  const inYamag=nowMins>=yamag.start&&nowMins<yamag.end;
+
+  // Status banner
+  const statusEl=document.getElementById('rk-status');
+  if(statusEl&&isToday){
+    if(inRahu){
+      statusEl.innerHTML=`<div style="background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;"><span style="font-size:20px;">⚠️</span><div><p style="font-size:14px;font-weight:600;color:#dc2626;margin:0 0 2px;">Rahu Kala is active now</p><p style="font-size:12px;color:#991b1b;margin:0;">Avoid starting any new or auspicious work. Ends at ${fmtMins(rahu.end)}.</p></div></div>`;
+    } else if(inGulika){
+      statusEl.innerHTML=`<div style="background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;"><span style="font-size:20px;">⚠️</span><div><p style="font-size:14px;font-weight:600;color:#b45309;margin:0 0 2px;">Gulika Kala is active now</p><p style="font-size:12px;color:#92400e;margin:0;">Inauspicious period. Ends at ${fmtMins(gulika.end)}.</p></div></div>`;
+    } else {
+      // Find next Rahu
+      const minutesUntilRahu = rahu.start > nowMins ? rahu.start-nowMins : null;
+      const msg = minutesUntilRahu ? `Rahu Kala starts in ${Math.round(minutesUntilRahu)} min (${fmtMins(rahu.start)}).` : `Rahu Kala has passed for today (${fmtMins(rahu.start)}–${fmtMins(rahu.end)}).`;
+      statusEl.innerHTML=`<div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:12px;"><span style="font-size:20px;">✓</span><div><p style="font-size:14px;font-weight:600;color:#15803d;margin:0 0 2px;">No inauspicious Kala active now</p><p style="font-size:12px;color:#166534;margin:0;">${msg}</p></div></div>`;
+    }
+  } else if(statusEl) { statusEl.innerHTML=''; }
+
+  // Kalam cards
+  const cards=document.getElementById('kalam-cards');
+  if(cards){
+    const kalamList=[
+      {name:'Rahu Kala',nameHi:'राहु काल',lord:'Rahu',color:'#dc2626',bg:'#fee2e2',slot:rahu,active:inRahu,desc:'Most inauspicious — ruled by Rahu (shadow planet). Never start new work.'},
+      {name:'Gulika Kala',nameHi:'गुलिक काल',lord:'Saturn\'s son',color:'#b45309',bg:'#fef3c7',slot:gulika,active:inGulika,desc:'Inauspicious — ruled by Mandi (Saturn\'s son). Avoid auspicious activities.'},
+      {name:'Yamaganda',nameHi:'यमगण्ड',lord:'Yama',color:'#374151',bg:'#f3f4f6',slot:yamag,active:inYamag,desc:'Inauspicious — ruled by Yama. Avoid new ventures and travel.'},
+    ];
+    cards.innerHTML=kalamList.map(k=>`
+      <div class="card" style="padding:20px;border:2px solid ${k.active?k.color:'var(--color-hairline)'};">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <div>
+            <p style="font-size:15px;font-weight:700;color:${k.color};margin:0 0 2px;">${k.name}</p>
+            <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${k.nameHi} · Lord: ${k.lord}</p>
+          </div>
+          ${k.active?`<span style="background:${k.color};color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;">ACTIVE</span>`:''}
+        </div>
+        <div style="background:${k.bg};border-radius:8px;padding:12px;margin-bottom:10px;">
+          <p style="font-size:20px;font-weight:700;color:${k.color};margin:0;font-family:var(--font-mono);">${fmtMins(k.slot.start)} – ${fmtMins(k.slot.end)}</p>
+        </div>
+        <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.5;">${k.desc}</p>
+      </div>
+    `).join('');
+  }
+
+  // Week view
+  const weekEl=document.getElementById('rk-week');
+  if(weekEl){
+    weekEl.innerHTML=VARA_NAMES.map((dayName,i)=>{
+      const dayJD=toJD(y,m,d+(i-wd+7)%7-7+7,6-loc.tz);
+      const daySr=sunriseUTC(dayJD,loc.lat,loc.lng,true)*60+loc.tz*60;
+      const daySs=sunriseUTC(dayJD,loc.lat,loc.lng,false)*60+loc.tz*60;
+      const r=slot(daySr,daySs,RAHU_SLOTS[i]);
+      const isCurrentDay=i===wd&&isToday;
+      return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:${isCurrentDay?'var(--color-canvas-soft-2)':'transparent'};border:1px solid ${isCurrentDay?'var(--color-hairline)':'transparent'};">
+        <span style="font-size:12px;font-weight:600;color:var(--color-ink);width:90px;">${dayName}</span>
+        <span style="flex:1;font-size:13px;font-weight:600;color:#dc2626;font-family:var(--font-mono);">${fmtMins(r.start)} – ${fmtMins(r.end)}</span>
+        ${isCurrentDay?'<span style="font-size:10px;font-weight:700;color:var(--color-mute);font-family:var(--font-mono);">TODAY</span>':''}
+      </div>`;
+    }).join('');
+  }
+}
+
+const info=document.getElementById('kalam-info');
+if(info){
+  info.innerHTML=[
+    {name:'What is Rahu Kala?',text:'Rahu is the north lunar node — a shadow planet in Jyotish. During Rahu Kala (~90 min/day), Rahu\'s malefic influence is strongest. Auspicious activities started during this time are believed to be obstructed.'},
+    {name:'What to avoid?',text:'Do not start new work, travel, sign contracts, or conduct ceremonies during Rahu Kala, Gulika Kala, or Yamaganda. Routine activities already in progress are unaffected.'},
+    {name:'Remedies',text:'If you must work during Rahu Kala, pray to Lord Ganesha or chant "Om Rahave Namah" 108 times before starting. Alternatively, begin the work a minute before Rahu Kala starts.'},
+  ].map(item=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${item.name}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${item.text}</p></div>`).join('');
+}
+
+document.getElementById('rk-calc')?.addEventListener('click',calculate);
+calculate();
+</script>

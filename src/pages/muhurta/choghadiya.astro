@@ -1,0 +1,223 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Choghadiya Today — Auspicious Time Slots — PanchangPath" description="Today's Choghadiya — 8 day and 8 night time slots with Amrit, Shubh, Labh, Char, Udveg, Kaal and Rog periods.">
+
+  <!-- Hero -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">चौघड़िया · Choghadiya</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Choghadiya</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:480px;">8 equal time slots each for day and night. Plan activities in Amrit, Shubh or Labh choghadiya; avoid Rog, Kaal and Udveg.</p>
+    </div>
+  </section>
+
+  <!-- Controls -->
+  <section style="padding:28px 0 0;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <input type="date" id="chog-date" class="input" style="height:38px;" />
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <select id="chog-city" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+        <button id="chog-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <!-- Day choghadiya -->
+      <div style="margin-bottom:36px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Day Choghadiya</h2>
+          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="sr-label">Sunrise → Sunset</span>
+        </div>
+        <div id="day-chog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;"></div>
+      </div>
+
+      <!-- Night choghadiya -->
+      <div style="margin-bottom:48px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Night Choghadiya</h2>
+          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="ss-label">Sunset → Next Sunrise</span>
+        </div>
+        <div id="night-chog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;"></div>
+      </div>
+
+      <!-- Legend + info -->
+      <div style="margin-bottom:48px;">
+        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Choghadiya Guide</h3>
+        <div id="chog-legend" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;"></div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+const LOCS = [
+  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Haridwar',lat:29.9457,lng:78.1642,tz:5.5},
+  {name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},
+  {name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},
+  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+  {name:'Singapore',lat:1.3521,lng:103.8198,tz:8},
+];
+
+const DAY_CHOG = [
+  ['Udveg','Char','Labh','Amrit','Kaal','Shubh','Rog','Udveg'],
+  ['Amrit','Kaal','Shubh','Rog','Udveg','Char','Labh','Amrit'],
+  ['Rog','Udveg','Char','Labh','Amrit','Kaal','Shubh','Rog'],
+  ['Labh','Amrit','Kaal','Shubh','Rog','Udveg','Char','Labh'],
+  ['Shubh','Rog','Udveg','Char','Labh','Amrit','Kaal','Shubh'],
+  ['Char','Labh','Amrit','Kaal','Shubh','Rog','Udveg','Char'],
+  ['Kaal','Shubh','Rog','Udveg','Char','Labh','Amrit','Kaal'],
+];
+const NIGHT_CHOG = [
+  ['Shubh','Amrit','Char','Rog','Kaal','Labh','Udveg','Shubh'],
+  ['Char','Rog','Kaal','Labh','Udveg','Shubh','Amrit','Char'],
+  ['Kaal','Labh','Udveg','Shubh','Amrit','Char','Rog','Kaal'],
+  ['Udveg','Shubh','Amrit','Char','Rog','Kaal','Labh','Udveg'],
+  ['Amrit','Char','Rog','Kaal','Labh','Udveg','Shubh','Amrit'],
+  ['Rog','Kaal','Labh','Udveg','Shubh','Amrit','Char','Rog'],
+  ['Labh','Udveg','Shubh','Amrit','Char','Rog','Kaal','Labh'],
+];
+
+const CHOG_DATA: Record<string,{hi:string;q:string;planet:string;bg:string;fg:string;suitable:string}> = {
+  Amrit: {hi:'अमृत',q:'Best',planet:'Moon',bg:'#dcfce7',fg:'#15803d',suitable:'All activities · Travel · Business · Marriage · Medicine'},
+  Shubh: {hi:'शुभ',q:'Good',planet:'Jupiter',bg:'#fef3c7',fg:'#b45309',suitable:'Marriage · Religious ceremonies · Education · Ventures'},
+  Labh:  {hi:'लाभ',q:'Good',planet:'Mercury',bg:'#dbeafe',fg:'#1d4ed8',suitable:'Business · Trade · Financial dealings · Accounts'},
+  Char:  {hi:'चर',q:'Neutral',planet:'Venus',bg:'#ede9fe',fg:'#6d28d9',suitable:'Travel · Movement · Shopping'},
+  Udveg: {hi:'उद्वेग',q:'Avoid',planet:'Sun',bg:'#fee2e2',fg:'#dc2626',suitable:'Avoid — Government work only'},
+  Kaal:  {hi:'काल',q:'Avoid',planet:'Saturn',bg:'#f3f4f6',fg:'#374151',suitable:'Avoid all auspicious activities'},
+  Rog:   {hi:'रोग',q:'Avoid',planet:'Mars',bg:'#fee2e2',fg:'#b91c1c',suitable:'Avoid — especially surgery & medicine'},
+};
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+
+function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
+  const T=(jd-2451545)/36525;
+  const M=n360(357.52911+35999.05029*T);
+  const L0=n360(280.46646+36000.76983*T);
+  const C=(1.914602-0.004817*T)*Math.sin(toRad(M))+0.019993*Math.sin(2*toRad(M));
+  const sunL=L0+C;
+  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunL));
+  const dec=Math.asin(sinDec);
+  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(lat))*Math.sin(dec))/(Math.cos(toRad(lat))*Math.cos(dec));
+  if(cosHA<-1||cosHA>1)return NaN;
+  const ha=toDeg(Math.acos(cosHA));
+  const noon=12-lng/15;
+  return rising?noon-ha/15:noon+ha/15;
+}
+function fmtMins(m:number){
+  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
+  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
+}
+
+const sel=document.getElementById('chog-city') as HTMLSelectElement;
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+
+const dateInput=document.getElementById('chog-date') as HTMLInputElement;
+dateInput.value=new Date().toISOString().split('T')[0];
+
+function makeSlot(name:string,startMins:number,endMins:number,isCurrent:boolean){
+  const d=CHOG_DATA[name];
+  const bg=isCurrent?'var(--color-ink)':d.bg;
+  const fg=isCurrent?'#fff':d.fg;
+  const muted=isCurrent?'rgba(255,255,255,0.6)':'var(--color-mute)';
+  const qColor=isCurrent?'rgba(255,255,255,0.5)':(d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626');
+  return `<div style="background:${bg};border-radius:10px;padding:14px 16px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <span style="font-size:15px;font-weight:700;color:${fg};">${name}</span>
+      <span style="font-size:10px;font-weight:600;color:${qColor};${isCurrent?'':'background:'+d.bg+';padding:1px 6px;border-radius:100px;border:1px solid '+d.fg+'33;'}">${d.q}${isCurrent?' · NOW':''}</span>
+    </div>
+    <p style="font-size:11px;color:${fg};margin:0 0 2px;font-family:var(--font-mono);">${fmtMins(startMins)} – ${fmtMins(endMins)}</p>
+    <p style="font-size:10px;color:${muted};margin:2px 0 0;">${d.hi} · ${d.planet}</p>
+  </div>`;
+}
+
+function calculate(){
+  const dateStr=(document.getElementById('chog-date') as HTMLInputElement).value;
+  const cityName=(document.getElementById('chog-city') as HTMLSelectElement).value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const [y,m,d]=dateStr.split('-').map(Number);
+  const date=new Date(dateStr+'T12:00:00');
+  const wd=date.getDay();
+  const jd=toJD(y,m,d,6-loc.tz);
+  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
+  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
+  // Next sunrise (next day)
+  const jdNext=toJD(y,m,d+1,6-loc.tz);
+  const srNextUTC=sunriseUTC(jdNext,loc.lat,loc.lng,true);
+
+  const srMins=srUTC*60+loc.tz*60;
+  const ssMins=ssUTC*60+loc.tz*60;
+  const srNextMins=srNextUTC*60+loc.tz*60+1440; // next day
+
+  const dayDur=(ssMins-srMins)/8;
+  const nightDur=(srNextMins-ssMins)/8;
+
+  const now=new Date();
+  const isToday=dateStr===new Date().toISOString().split('T')[0];
+  const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
+
+  const srEl=document.getElementById('sr-label');
+  const ssEl=document.getElementById('ss-label');
+  if(srEl) srEl.textContent=`Sunrise ${fmtMins(srMins)} → Sunset ${fmtMins(ssMins)}`;
+  if(ssEl) ssEl.textContent=`Sunset ${fmtMins(ssMins)} → Next Sunrise`;
+
+  const dayGrid=document.getElementById('day-chog-grid');
+  if(dayGrid){
+    dayGrid.innerHTML=DAY_CHOG[wd].map((name,i)=>{
+      const s=srMins+i*dayDur, e=s+dayDur;
+      return makeSlot(name,s,e,isToday&&nowMins>=s&&nowMins<e);
+    }).join('');
+  }
+
+  const nightGrid=document.getElementById('night-chog-grid');
+  if(nightGrid){
+    nightGrid.innerHTML=NIGHT_CHOG[wd].map((name,i)=>{
+      const s=ssMins+i*nightDur, e=s+nightDur;
+      return makeSlot(name,s,e,isToday&&nowMins>=s&&nowMins<e);
+    }).join('');
+  }
+}
+
+const legend=document.getElementById('chog-legend');
+if(legend){
+  legend.innerHTML=Object.entries(CHOG_DATA).map(([name,d])=>`
+    <div class="card" style="padding:14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="width:10px;height:10px;border-radius:50%;background:${d.fg};flex-shrink:0;"></span>
+        <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${name}</span>
+        <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${d.hi}</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626'};">${d.q}</span>
+      </div>
+      <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">Planet: ${d.planet}</p>
+      <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${d.suitable}</p>
+    </div>
+  `).join('');
+}
+
+document.getElementById('chog-calc')?.addEventListener('click',calculate);
+calculate();
+</script>

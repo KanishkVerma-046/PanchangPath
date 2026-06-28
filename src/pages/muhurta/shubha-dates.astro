@@ -1,0 +1,273 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Shubha Dates — Vehicle, Property & Business Muhurat — PanchangPath" description="Find auspicious dates for vehicle purchase, property purchase, business start, and general activities using Vedic Panchang.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शुभ दिन · Shubha Dates</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shubha Dates Finder</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find auspicious dates for vehicle purchase, property purchase, business launch, and any important activity — scored by Nakshatra, Tithi, Vara and Yoga.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container" style="max-width:900px;margin:0 auto;">
+      <div class="card" style="padding:28px;margin-bottom:32px;">
+        <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 20px;">Find Auspicious Dates</h2>
+
+        <!-- Activity tabs -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+          {[
+            {id:'vehicle',label:'🚗 Vehicle Purchase'},
+            {id:'property',label:'🏗️ Property Purchase'},
+            {id:'business',label:'💼 Business Start'},
+            {id:'general',label:'📅 General Shubha'},
+          ].map(t => (
+            <button class="activity-tab" data-activity={t.id} style="padding:7px 14px;border-radius:20px;border:1px solid var(--color-hairline);background:var(--color-canvas-soft-2);font-size:13px;cursor:pointer;transition:all 0.15s;">
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div>
+            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
+            <input type="date" id="sd-from" class="input" style="height:38px;" />
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
+            <input type="date" id="sd-to" class="input" style="height:38px;" />
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+            <select id="sd-city" class="input" style="height:38px;"></select>
+          </div>
+        </div>
+        <button id="sd-find" class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:15px;">Find Shubha Dates →</button>
+      </div>
+
+      <div id="sd-results" style="display:none;">
+        <h2 id="sd-results-title" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 16px;"></h2>
+        <div id="sd-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:40px;"></div>
+      </div>
+
+      <!-- Criteria cards by activity -->
+      <div id="sd-criteria" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;"></div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+const LOCS = [
+  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+];
+
+type Activity = 'vehicle'|'property'|'business'|'general';
+
+const CRITERIA: Record<Activity,{label:string;naks:number[];tithis:number[];varas:number[];avoidNaks:number[];avoidTithis:number[];desc:string}> = {
+  vehicle: {
+    label:'Vehicle Purchase', naks:[0,3,4,6,7,12,14,21,26], tithis:[1,2,4,6,9,10,11,12], varas:[0,1,3,4,5],
+    avoidNaks:[5,8,17,23,24], avoidTithis:[3,8,13,29],
+    desc:'Best nakshatras: Ashwini (speed), Rohini, Mrigashira, Punarvasu, Pushya, Hasta, Swati, Shravana, Revati. Good on Monday, Wednesday, Thursday, Friday, and Sunday.',
+  },
+  property: {
+    label:'Property Purchase', naks:[3,6,7,11,12,21,22,25,26], tithis:[1,2,4,6,9,10,11,12], varas:[1,3,4,5],
+    avoidNaks:[5,8,17,23,24], avoidTithis:[3,8,13,29],
+    desc:'Best nakshatras: Rohini, Punarvasu, Pushya, Uttara Phalguni, Hasta, Shravana, Dhanishtha, Uttara Bhadrapada, Revati. Avoid Tuesday (Mars) and Saturday (Saturn).',
+  },
+  business: {
+    label:'Business Start', naks:[0,3,4,6,7,11,12,14,20,21,26], tithis:[1,2,4,6,9,10,11,12], varas:[1,3,4,5],
+    avoidNaks:[5,8,17,23,24], avoidTithis:[3,8,13,29],
+    desc:'Best nakshatras: Ashwini, Rohini, Mrigashira, Punarvasu, Pushya, Uttara Phalguni, Hasta, Swati, Uttara Ashadha, Shravana, Revati. Mercury (Wed) and Jupiter (Thu) days are ideal.',
+  },
+  general: {
+    label:'General Auspicious', naks:[3,4,6,7,11,12,14,16,20,21,26], tithis:[1,2,4,6,9,10,11,12], varas:[1,3,4,5],
+    avoidNaks:[5,8,17,23,24], avoidTithis:[3,8,13,29],
+    desc:'Broadly auspicious Nakshatras: Rohini, Mrigashira, Punarvasu, Pushya, Uttara Phalguni, Hasta, Swati, Anuradha, Uttara Ashadha, Shravana, Revati.',
+  },
+};
+
+const GOOD_YOGAS = [1,2,3,4,6,7,10,11,13,15,19,20,21,22,23,24,25];
+const PANCHAKA_NAKS = [22,23,24,25,26];
+const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+const VARA_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const RAHU_SLOTS=[7,1,6,4,5,2,3];
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+
+function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number}){
+  const jd=toJD(y,m,d,6-loc.tz);
+  const T=(jd-2451545)/36525;
+  const L0=n360(280.46646+36000.76983*T);
+  const Ms=n360(357.52911+35999.05029*T);
+  const sunLon=n360(L0+(1.914602-0.004817*T)*Math.sin(toRad(Ms))+0.019993*Math.sin(2*toRad(Ms)));
+  const moonL=n360(218.3164477+481267.88123421*T);
+  const moonD=n360(297.8501921+445267.1114034*T);
+  const moonMp=n360(134.9633964+477198.8675055*T);
+  const moonF=n360(93.2720950+483202.0175233*T);
+  const dL=6.288774*Math.sin(toRad(moonMp))+1.274027*Math.sin(toRad(2*moonD-moonMp))+0.658314*Math.sin(toRad(2*moonD))+0.213618*Math.sin(toRad(2*moonMp))-0.185116*Math.sin(toRad(Ms))-0.114332*Math.sin(toRad(2*moonF));
+  const moonLon=n360(moonL+dL/1000);
+  const ay=23.85+1.3612*T;
+  const sunSid=n360(sunLon-ay), moonSid=n360(moonLon-ay);
+  const elong=n360(moonLon-sunLon);
+  const tithiIdx=Math.floor(elong/12)%30;
+  const nakIdx=Math.floor(moonSid/(360/27))%27;
+  const yogaIdx=Math.floor(n360(sunSid+moonSid)/(360/27))%27;
+  const sunRashiIdx=Math.floor(sunSid/30)%12;
+  const wd=new Date(y,m-1,d).getDay();
+  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunLon));
+  const dec=Math.asin(sinDec);
+  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(loc.lat))*Math.sin(dec))/(Math.cos(toRad(loc.lat))*Math.cos(dec));
+  const ha=toDeg(Math.acos(Math.max(-1,Math.min(1,cosHA))));
+  const noon=12-loc.lng/15;
+  const srMins=(noon-ha/15)*60+loc.tz*60, ssMins=(noon+ha/15)*60+loc.tz*60;
+  const dur=(ssMins-srMins)/8;
+  const rahuStart=srMins+RAHU_SLOTS[wd]*dur, rahuEnd=rahuStart+dur;
+  return {tithiIdx,nakIdx,yogaIdx,wd,sunRashiIdx,rahuStart,rahuEnd,paksha:tithiIdx<15?'S':'K'};
+}
+
+function scoreDay(res:ReturnType<typeof calcDay>,activity:Activity){
+  const c=CRITERIA[activity];
+  let score=0; const notes:string[]=[],bad:string[]=[];
+  if(c.varas.includes(res.wd)){score+=3;notes.push(VARA_NAMES[res.wd]);}
+  else bad.push(VARA_NAMES[res.wd]+' (not ideal)');
+  if(c.avoidNaks.includes(res.nakIdx)){score-=3;bad.push(NAK_NAMES[res.nakIdx]+' (avoid)');}
+  else if(c.naks.includes(res.nakIdx)){score+=4;notes.push(NAK_NAMES[res.nakIdx]);}
+  else if(PANCHAKA_NAKS.includes(res.nakIdx)){score-=1;bad.push('Panchaka');}
+  if(c.avoidTithis.includes(res.tithiIdx)){score-=3;bad.push(TITHI_NAMES[res.tithiIdx]+' (avoid)');}
+  else if(c.tithis.includes(res.tithiIdx)){score+=3;notes.push(TITHI_NAMES[res.tithiIdx]);}
+  if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push('Auspicious yoga');}
+  if(res.sunRashiIdx===8||res.sunRashiIdx===11){score-=4;bad.push('Kharmas month');}
+  return {score,notes,bad};
+}
+
+function fmtMins(m:number){
+  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
+  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
+}
+
+let currentActivity:Activity='vehicle';
+
+// Init UI
+const sel=document.getElementById('sd-city') as HTMLSelectElement;
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+const now=new Date();
+const fromInput=document.getElementById('sd-from') as HTMLInputElement;
+const toInput=document.getElementById('sd-to') as HTMLInputElement;
+fromInput.value=now.toISOString().split('T')[0];
+const threeMonths=new Date(now); threeMonths.setMonth(threeMonths.getMonth()+3);
+toInput.value=threeMonths.toISOString().split('T')[0];
+
+// Tab activation
+function updateTabs(){
+  document.querySelectorAll<HTMLButtonElement>('.activity-tab').forEach(btn=>{
+    const active=btn.dataset.activity===currentActivity;
+    btn.style.background=active?'var(--color-ink)':'var(--color-canvas-soft-2)';
+    btn.style.color=active?'#fff':'var(--color-body-text)';
+    btn.style.borderColor=active?'var(--color-ink)':'var(--color-hairline)';
+  });
+  // Update criteria
+  const crit=CRITERIA[currentActivity];
+  const critEl=document.getElementById('sd-criteria');
+  if(critEl){
+    critEl.innerHTML=[
+      {label:'Description',text:crit.desc},
+      {label:'Good Nakshatras',text:crit.naks.map(i=>NAK_NAMES[i]).join(', ')},
+      {label:'Good Tithis',text:crit.tithis.map(i=>TITHI_NAMES[i]).join(', ')},
+      {label:'Good Weekdays',text:crit.varas.map(i=>VARA_NAMES[i]).join(', ')},
+    ].map(c=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">${c.label}</p><p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${c.text}</p></div>`).join('');
+  }
+}
+
+// Apply URL params for direct linking (e.g. ?activity=vehicle)
+const urlActivity=(new URLSearchParams(location.search)).get('activity') as Activity|null;
+if(urlActivity&&CRITERIA[urlActivity]) currentActivity=urlActivity;
+
+document.querySelectorAll<HTMLButtonElement>('.activity-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    currentActivity=btn.dataset.activity as Activity;
+    updateTabs();
+  });
+});
+updateTabs();
+
+document.getElementById('sd-find')?.addEventListener('click',()=>{
+  const fromStr=fromInput.value, toStr=toInput.value;
+  const cityName=sel.value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const [fy,fm,fd]=fromStr.split('-').map(Number);
+  const [ty,tm,td]=toStr.split('-').map(Number);
+  const fromD=new Date(fy,fm-1,fd), toD=new Date(ty,tm-1,td);
+  if(toD<=fromD||((toD.getTime()-fromD.getTime())>400*24*3600*1000)){
+    alert('Please select a valid range up to ~13 months.');return;
+  }
+
+  const results:any[]=[];
+  const cur=new Date(fromD);
+  while(cur<=toD){
+    const y=cur.getFullYear(),m=cur.getMonth()+1,d=cur.getDate();
+    const res=calcDay(y,m,d,loc);
+    const {score,notes,bad}=scoreDay(res,currentActivity);
+    if(score>=4) results.push({date:new Date(cur),score,notes,bad,res});
+    cur.setDate(cur.getDate()+1);
+  }
+  results.sort((a,b)=>b.score-a.score);
+  const top=results.slice(0,20);
+
+  const listEl=document.getElementById('sd-list');
+  const titleEl=document.getElementById('sd-results-title');
+  const secEl=document.getElementById('sd-results');
+  if(!listEl||!titleEl||!secEl)return;
+  const actLabel=CRITERIA[currentActivity].label;
+  titleEl.textContent=`${top.length} auspicious ${actLabel} dates found`;
+  if(!top.length){
+    listEl.innerHTML=`<div class="card" style="padding:20px;text-align:center;"><p style="color:var(--color-mute);">No strong dates found. Try extending the date range.</p></div>`;
+  } else {
+    listEl.innerHTML=top.map((r,i)=>{
+      const label=r.score>=9?'Excellent':r.score>=7?'Very Good':r.score>=5?'Good':'Acceptable';
+      const lc=r.score>=9?'#15803d':r.score>=7?'#b45309':r.score>=5?'#1d4ed8':'#6b7280';
+      const isTop=i===0;
+      const tc=isTop?'#fff':'var(--color-ink)';
+      const mut=isTop?'rgba(255,255,255,0.6)':'var(--color-mute)';
+      return `<div class="card" style="padding:18px;${isTop?'background:var(--color-ink);':''}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <p style="font-size:16px;font-weight:700;color:${tc};margin:0;">${r.date.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short',year:'numeric'})}</p>
+            <p style="font-size:11px;color:${mut};margin:3px 0 0;font-family:var(--font-mono);">${NAK_NAMES[r.res.nakIdx]} · ${TITHI_NAMES[r.res.tithiIdx]}</p>
+          </div>
+          <span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;background:${isTop?'rgba(255,255,255,0.15)':lc+'18'};color:${isTop?'#fff':lc};border:1px solid ${isTop?'rgba(255,255,255,0.2)':lc+'44'};">${label}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${r.bad.length?'8px':'0'};">
+          ${r.notes.map((n:string)=>`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:${isTop?'rgba(255,255,255,0.15)':'var(--color-canvas-soft-2)'};color:${isTop?'rgba(255,255,255,0.85)':'var(--color-body-text)'};border:1px solid ${isTop?'rgba(255,255,255,0.2)':'var(--color-hairline)'};">✓ ${n}</span>`).join('')}
+          ${r.bad.map((n:string)=>`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:#fee2e2;color:#dc2626;border:1px solid #fecaca;">✗ ${n}</span>`).join('')}
+        </div>
+        ${isTop?`<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.15);"><p style="font-size:10px;color:rgba(255,255,255,0.5);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">Avoid Rahu Kala</p><p style="font-size:12px;color:rgba(255,255,255,0.85);margin:0;">${fmtMins(r.res.rahuStart)} – ${fmtMins(r.res.rahuEnd)}</p></div>`:''}
+      </div>`;
+    }).join('');
+  }
+  secEl.style.display='block';
+  secEl.scrollIntoView({behavior:'smooth',block:'start'});
+});
+</script>

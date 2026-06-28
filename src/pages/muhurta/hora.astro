@@ -1,0 +1,196 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Shubha Hora — Planetary Hours Today — PanchangPath" description="Today's Shubha Hora — 24 planetary hours ruled by Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शुभ होरा · Shubha Hora</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shubha Hora</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Each day is divided into 24 planetary hours (Horas). The first hour of the day belongs to the day's lord, then cycles through the Chaldean sequence.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container">
+      <!-- Controls -->
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <input type="date" id="hora-date" class="input" style="height:38px;" />
+        </div>
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <select id="hora-city" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+        <button id="hora-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;" id="hora-cols">
+        <div>
+          <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;" id="day-hora-title">Day Horas</h2>
+          <div id="day-hora-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+        </div>
+        <div>
+          <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;" id="night-hora-title">Night Horas</h2>
+          <div id="night-hora-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+        </div>
+      </div>
+
+      <!-- Planet guide -->
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Planetary Hora Guide</h3>
+      <div id="hora-guide" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  @media (max-width: 640px) {
+    #hora-cols { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<script>
+const LOCS = [
+  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+  {name:'Singapore',lat:1.3521,lng:103.8198,tz:8},
+];
+
+// Chaldean sequence: Sun→Venus→Mercury→Moon→Saturn→Jupiter→Mars
+const HORA_SEQ = ['Sun','Venus','Mercury','Moon','Saturn','Jupiter','Mars'];
+const HORA_START = [0,3,6,2,5,1,4]; // weekday → start index
+
+const HORA_DATA: Record<string,{hi:string;q:string;color:string;suitable:string}> = {
+  Sun:     {hi:'सूर्य',  q:'Neutral', color:'#f59e0b', suitable:'Govt matters · Authoritative decisions · Father-related work'},
+  Venus:   {hi:'शुक्र', q:'Good',    color:'#ec4899', suitable:'Romance · Arts · Luxury goods · Beauty · Partnerships'},
+  Mercury: {hi:'बुध',   q:'Good',    color:'#22c55e', suitable:'Writing · Education · Business · Trade · Communication'},
+  Moon:    {hi:'चंद्र', q:'Best',    color:'#3b82f6', suitable:'All auspicious work · Travel · Agriculture · Emotional matters'},
+  Saturn:  {hi:'शनि',  q:'Avoid',   color:'#374151', suitable:'Avoid auspicious work — OK for manual labour & discipline'},
+  Jupiter: {hi:'गुरु',  q:'Best',    color:'#d97706', suitable:'Spiritual work · Teaching · Marriage · Investments · Prosperity'},
+  Mars:    {hi:'मंगल', q:'Neutral',  color:'#ef4444', suitable:'Physical work · Competition · Surgery · Courage'},
+};
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
+  const T=(jd-2451545)/36525;
+  const M=n360(357.52911+35999.05029*T);
+  const L0=n360(280.46646+36000.76983*T);
+  const C=(1.914602-0.004817*T)*Math.sin(toRad(M))+0.019993*Math.sin(2*toRad(M));
+  const sunL=L0+C;
+  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunL));
+  const dec=Math.asin(sinDec);
+  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(lat))*Math.sin(dec))/(Math.cos(toRad(lat))*Math.cos(dec));
+  if(cosHA<-1||cosHA>1)return NaN;
+  const ha=toDeg(Math.acos(cosHA));
+  const noon=12-lng/15;
+  return rising?noon-ha/15:noon+ha/15;
+}
+function fmtMins(m:number){
+  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
+  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
+}
+
+const sel=document.getElementById('hora-city') as HTMLSelectElement;
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+const dateInput=document.getElementById('hora-date') as HTMLInputElement;
+dateInput.value=new Date().toISOString().split('T')[0];
+
+function makeHoraRow(planet:string,startMins:number,endMins:number,isCurrent:boolean,idx:number){
+  const d=HORA_DATA[planet];
+  const qColor=d.q==='Best'?'#15803d':d.q==='Good'?'#1d4ed8':d.q==='Avoid'?'#dc2626':'#6b7280';
+  return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:${isCurrent?'var(--color-ink)':'var(--color-canvas-soft-2)'};border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
+    <span style="font-size:11px;font-weight:700;color:${isCurrent?'rgba(255,255,255,0.5)':'var(--color-mute)'};width:20px;text-align:center;">${idx+1}</span>
+    <span style="width:8px;height:8px;border-radius:50%;background:${d.color};flex-shrink:0;"></span>
+    <div style="flex:1;min-width:0;">
+      <span style="font-size:13px;font-weight:600;color:${isCurrent?'#fff':'var(--color-ink)'};">${planet}</span>
+      <span style="font-size:10px;color:${isCurrent?'rgba(255,255,255,0.5)':'var(--color-mute)'};margin-left:6px;font-family:var(--font-mono);">${d.hi}</span>
+    </div>
+    <div style="text-align:right;">
+      <span style="font-size:11px;color:${isCurrent?'rgba(255,255,255,0.8)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(startMins)}</span>
+      ${isCurrent?'<span style="display:block;font-size:9px;font-weight:700;color:#ffd700;">NOW</span>':`<span style="display:block;font-size:9px;font-weight:600;color:${qColor};">${d.q}</span>`}
+    </div>
+  </div>`;
+}
+
+function calculate(){
+  const dateStr=(document.getElementById('hora-date') as HTMLInputElement).value;
+  const cityName=(document.getElementById('hora-city') as HTMLSelectElement).value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const [y,m,d]=dateStr.split('-').map(Number);
+  const date=new Date(dateStr+'T12:00:00');
+  const wd=date.getDay();
+  const jd=toJD(y,m,d,6-loc.tz);
+  const jdNext=toJD(y,m,d+1,6-loc.tz);
+  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
+  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
+  const srNextUTC=sunriseUTC(jdNext,loc.lat,loc.lng,true);
+  const srMins=srUTC*60+loc.tz*60;
+  const ssMins=ssUTC*60+loc.tz*60;
+  const srNextMins=srNextUTC*60+loc.tz*60+1440;
+  const dayHoraDur=(ssMins-srMins)/12;
+  const nightHoraDur=(srNextMins-ssMins)/12;
+  const startIdx=HORA_START[wd];
+  const isToday=dateStr===new Date().toISOString().split('T')[0];
+  const now=new Date();
+  const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
+
+  document.getElementById('day-hora-title')!.textContent=`Day Horas (${HORA_SEQ[startIdx]} hour first)`;
+  document.getElementById('night-hora-title')!.textContent='Night Horas';
+
+  const dayList=document.getElementById('day-hora-list');
+  if(dayList){
+    dayList.innerHTML=Array.from({length:12},(_,i)=>{
+      const planet=HORA_SEQ[(startIdx+i)%7];
+      const s=srMins+i*dayHoraDur, e=s+dayHoraDur;
+      return makeHoraRow(planet,s,e,nowMins>=s&&nowMins<e,i);
+    }).join('');
+  }
+
+  const nightList=document.getElementById('night-hora-list');
+  if(nightList){
+    nightList.innerHTML=Array.from({length:12},(_,i)=>{
+      const planet=HORA_SEQ[(startIdx+12+i)%7];
+      const s=ssMins+i*nightHoraDur, e=s+nightHoraDur;
+      return makeHoraRow(planet,s,e,nowMins>=s&&nowMins<e,i);
+    }).join('');
+  }
+}
+
+const guide=document.getElementById('hora-guide');
+if(guide){
+  guide.innerHTML=Object.entries(HORA_DATA).map(([planet,d])=>`
+    <div class="card" style="padding:14px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="width:10px;height:10px;border-radius:50%;background:${d.color};flex-shrink:0;"></span>
+        <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${planet}</span>
+        <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${d.hi}</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#1d4ed8':d.q==='Avoid'?'#dc2626':'#6b7280'};">${d.q}</span>
+      </div>
+      <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${d.suitable}</p>
+    </div>
+  `).join('');
+}
+
+document.getElementById('hora-calc')?.addEventListener('click',calculate);
+calculate();
+</script>
