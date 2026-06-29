@@ -68,6 +68,19 @@ function allLons(jd){const T=(jd-2451545)/36525;const ay=ayanamsha(T);const[xE,y
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const KALASARPA_TYPES=['Ananta','Kulika','Vasuki','Shankhapala','Padma','Mahapadma','Takshaka','Karkotak','Shankhachud','Ghatak','Vishadhar','Sheshanaga'];
+const KS_EFFECTS=[
+{a:'Early life brings persistent career and financial struggles requiring extraordinary effort. Delays test patience deeply, yet those who persevere achieve remarkable success. Many great public figures carry this yoga.',v:'Intense ambition and drive for leadership arise, but relationships and health may suffer. True transformation comes through selfless service and the cultivation of humility.'},
+{a:'Instability in wealth and family life — often through sudden loss — is the hallmark of this type. The desire for material security is tested repeatedly. Healing arts and service-based vocations provide the most fulfilling outlet.',v:'Challenges arise through the maternal lineage and through deep attachments to comfort and possessions. Releasing accumulated clinging becomes the central spiritual practice.'},
+{a:'Delays and confusion afflict siblings, communication and business partnerships. The intellect is brilliant but scattered. Research, writing and solitary intellectual pursuits compensate for frustrations in personal relationships.',v:'Mental restlessness and a relentless hunger for knowledge can come at the cost of material stability. Adaptability is both the greatest gift and the greatest challenge.'},
+{a:'Emotional turbulence and disruption to home, mother and the inner life define the early path. Deep sensitivity may cause the native to absorb collective suffering. Water rituals and devotional practice bring profound relief.',v:'Intense psychic sensitivity and an unsettled home life push the native toward surrender. Peace is found through devotion and dedicated spiritual practice rather than outer security.'},
+{a:'One of the most powerful types — associated with extraordinary eventual achievement. Obstacles in progeny, creative expression and authority characterise the early years. Spiritual discipline and persistence unlock remarkable inner potential.',v:'Ego conflicts and battles for recognition are recurring tests. Humility and willingness to serve without credit are the keys that unlock this yoga\'s latent greatness.'},
+{a:'Karmic delays in health, service and analytical work shape the path. A methodical mind struggles with perfectionism and self-criticism. Service, healing and ego-surrender transform this yoga into mastery.',v:'The discriminating faculty becomes hyper-developed, producing intense self-doubt. A spiritual practice emphasising acceptance and self-compassion is the essential remedy.'},
+{a:'Disruptions and sudden separations in marriage and close partnerships are recurring. Legal troubles are possible. Exceptional artistic gifts are the compensating grace — channelling creativity resolves much karma.',v:'Restlessness in partnerships and a tendency toward abrupt separations arise. Deep inner work and devoted creative practice bring the balance that eludes outer relationships.'},
+{a:'Sudden reversals of fortune, intense transformation and a magnetic personality characterise Karkotak. Betrayal and regeneration are recurring themes. Occult knowledge and deep psychology offer the path of power and resolution.',v:'The secretive nature intensifies and the pull toward extremes becomes compelling. Shadow work and psycho-spiritual practice are essential for conscious evolution.'},
+{a:'Philosophical crises and challenges in dharma, higher education and travel mark the path. Faith is tested repeatedly. Those who persist through spiritual drought find profound and lasting wisdom on the other side.',v:'Conflict between personal belief and outer reality creates recurring suffering. Pilgrimage, scriptural study and the practice of teaching what one is learning bring deep relief.'},
+{a:'Obstacles in career, public life and dealings with authority make Ghatak one of the most visible and testing types. The native works with exceptional diligence, often with long-delayed recognition. Worldly success eventually arrives, built on character.',v:'Conflict with institutions and authority figures recurs. Service in a genuinely humble capacity, rather than the pursuit of power, opens the door to lasting achievement.'},
+{a:'Social isolation and gains through unconventional or hidden means characterise Vishadhar. The native is ahead of their time — a visionary humanitarian often misunderstood by contemporaries. Technology and service to the marginalised are natural callings.',v:'Eccentric tendencies intensify and the longing to belong while remaining apart creates a painful paradox. Community service and innovative humanitarian work resolve this tension.'},
+{a:'Losses, expenses and a deep pull toward spiritual renunciation mark the most karmically loaded Kalasarpa type. The material world offers little lasting satisfaction, but the path to moksha and inner liberation becomes directly accessible.',v:'The confusion between spiritual seeking and self-undoing must be consciously navigated. Surrender to a living spiritual tradition and devotional art are the liberating paths.'}];
 const PLANETS=[['surya','Sun'],['chandra','Moon'],['mangal','Mars'],['budha','Mercury'],['guru','Jupiter'],['shukra','Venus'],['shani','Saturn']];
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
@@ -101,35 +114,35 @@ function calculate(){
       `<tr><td style="color:var(--color-saffron-deep);font-weight:600;">Ketu</td><td>${RASHI[Math.floor(ketu/30)]}</td><td>${(ketu%30).toFixed(1)}°</td><td>—</td></tr>`;
 
     const present=(countInArc===7||countInArc===0);
+    const isAnuloma=countInArc===7; // planets go Rahu→Ketu (forward)
+    const direction=isAnuloma?'Anuloma (Direct)':'Viloma (Inverse)';
     const rahuSign=Math.floor(rahu/30);
     const type=KALASARPA_TYPES[rahuSign];
+    const eff=KS_EFFECTS[rahuSign];
 
     let bg,html;
     if(present&&conjunct){
       bg='var(--color-warning-soft)';
-      html=`<div style="font-size:40px;margin-bottom:6px;">🐍</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">Partial Kalasarpa Yoga</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;"><b>${type} Kalasarpa</b> — all planets are on one side, but a planet sits very close to Rahu/Ketu, partially breaking the yoga (Kemdrum-like effect).</p>`;
+      html='<div style="font-size:40px;margin-bottom:6px;">🐍</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">Partial '+type+' Kalasarpa</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All planets are on one side, but one is very close to Rahu/Ketu — this partially breaks the yoga. Direction: <b>'+direction+'</b>.</p>';
     }else if(present){
       bg='var(--color-inauspicious-soft)';
-      html=`<div style="font-size:40px;margin-bottom:6px;">🐍</div><h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">${type} Kalasarpa Yoga Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All 7 planets fall between Rahu (${RASHI[rahuSign]}) and Ketu (${RASHI[Math.floor(ketu/30)]}).</p>`;
+      html='<div style="font-size:40px;margin-bottom:6px;">🐍</div><h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">'+type+' Kalasarpa Yoga Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All 7 planets fall between Rahu ('+RASHI[rahuSign]+') and Ketu ('+RASHI[Math.floor(ketu/30)]+'). Direction: <b>'+direction+'</b>.</p>';
     }else{
       bg='var(--color-auspicious-soft)';
-      html=`<div style="font-size:40px;margin-bottom:6px;">✅</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Kalasarpa Yoga</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${7-countInArc>0&&countInArc>0?`${Math.min(countInArc,7-countInArc)} planet(s) lie outside the Rahu–Ketu axis`:''}, so the yoga does not form. Your planets are spread on both sides of the nodal axis.</p>`;
+      const outside=Math.min(countInArc,7-countInArc);
+      html='<div style="font-size:40px;margin-bottom:6px;">✅</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Kalasarpa Yoga</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+(outside>0?outside+' planet(s) lie outside the Rahu–Ketu axis, so the yoga does not form.':'Your planets are distributed across both hemispheres of the nodal axis.')+'</p>';
     }
     document.getElementById('ks-banner').style.background=bg;
     document.getElementById('ks-banner').innerHTML=html;
 
     if(present){
-      document.getElementById('effect-title').textContent=`${type} Kalasarpa — Effects & Remedies`;
-      document.getElementById('effect').textContent=`This yoga can bring delays, unexpected obstacles and karmic challenges, especially in the early part of life. However, it also grants intensity, resilience and the capacity for extraordinary success once the lessons of Rahu and Ketu are integrated. Many famous achievers have Kalasarpa in their charts.`;
-      document.getElementById('remedies').innerHTML=`<p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Common remedies</p><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;">
-        <li style="font-size:13px;color:var(--color-body-text);">Worship Lord Shiva; recite the Maha Mrityunjaya mantra.</li>
-        <li style="font-size:13px;color:var(--color-body-text);">Perform Kalasarpa Dosha Nivaran Puja (often at Trimbakeshwar or Kalahasti).</li>
-        <li style="font-size:13px;color:var(--color-body-text);">Chant Rahu and Ketu beej mantras on appropriate days.</li>
-        <li style="font-size:13px;color:var(--color-body-text);">Offer to Nagas (serpent deities) on Naga Panchami.</li>
-      </ul>`;
+      const effectText=isAnuloma?eff.a:eff.v;
+      document.getElementById('effect-title').textContent=type+' Kalasarpa ('+direction+') — Effects & Remedies';
+      document.getElementById('effect').textContent=effectText;
+      document.getElementById('remedies').innerHTML='<p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">Classical Remedies</p><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;"><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Worship Lord Shiva and recite the Maha Mrityunjaya Mantra daily.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Perform Kalasarpa Dosha Nivaran Puja — traditionally at Trimbakeshwar (Nashik) or Sri Kalahasteeswara temple.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Chant Rahu Beej Mantra ("Om Bhram Bhreem Bhraum Sah Rahave Namah") on Saturdays and Ketu Beej Mantra on Tuesdays.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Donate to Naga temples and offer milk, flowers and turmeric on Naga Panchami.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Keeping a Kalasarpa Yantra in the puja room and meditating on it regularly is also beneficial.</li></ul>';
     }else{
-      document.getElementById('effect-title').textContent='No Remedies Needed';
-      document.getElementById('effect').textContent='Since Kalasarpa Yoga does not form in your chart, no specific Kalasarpa remedies are required. The planets are distributed across both hemispheres of the nodal axis.';
+      document.getElementById('effect-title').textContent='No Kalasarpa Remedies Needed';
+      document.getElementById('effect').textContent='Kalasarpa Yoga does not form in your chart — planets are spread across both hemispheres of the Rahu–Ketu axis. No specific Kalasarpa remedies are required.';
       document.getElementById('remedies').innerHTML='';
     }
     document.getElementById('result').style.display='block';

@@ -16,10 +16,48 @@ import Layout from '../../layouts/Layout.astro';
 
   <section style="padding:28px 0 56px;">
     <div class="container">
-      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+      <div style="display:flex;gap:8px;margin-bottom:20px;">
+        <button class="sh-mode-btn active" id="mode-date" data-mode="date">By Death Date</button>
+        <button class="sh-mode-btn" id="mode-tithi" data-mode="tithi">By Tithi Directly</button>
+      </div>
+
+      <div id="form-date" style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div><label class="fld-label">Date of Passing</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
         <div><label class="fld-label">Time (approx)</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
         <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Find Tithi</button>
+      </div>
+
+      <div id="form-tithi" style="display:none;margin-bottom:32px;">
+        <p style="font-size:13px;color:var(--color-mute);margin:0 0 14px;">If you already know the Tithi of the death anniversary, select it directly below.</p>
+        <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;">
+          <div><label class="fld-label">Paksha</label>
+            <select id="t-paksha" class="input" style="height:38px;min-width:140px;">
+              <option value="Shukla">Shukla (Waxing)</option>
+              <option value="Krishna">Krishna (Waning)</option>
+            </select>
+          </div>
+          <div><label class="fld-label">Tithi</label>
+            <select id="t-tithi" class="input" style="height:38px;min-width:200px;">
+              <option value="Pratipada">1 - Pratipada</option>
+              <option value="Dwitiya">2 - Dwitiya</option>
+              <option value="Tritiya">3 - Tritiya</option>
+              <option value="Chaturthi">4 - Chaturthi</option>
+              <option value="Panchami">5 - Panchami</option>
+              <option value="Shashthi">6 - Shashthi</option>
+              <option value="Saptami">7 - Saptami</option>
+              <option value="Ashtami">8 - Ashtami</option>
+              <option value="Navami">9 - Navami</option>
+              <option value="Dashami">10 - Dashami</option>
+              <option value="Ekadashi">11 - Ekadashi</option>
+              <option value="Dwadashi">12 - Dwadashi</option>
+              <option value="Trayodashi">13 - Trayodashi</option>
+              <option value="Chaturdashi">14 - Chaturdashi</option>
+              <option value="Purnima">15 - Purnima (Shukla)</option>
+              <option value="Amavasya">30 - Amavasya (Krishna)</option>
+            </select>
+          </div>
+          <button id="f-calc2" class="btn-primary" style="height:38px;padding:0 20px;">Find Shraddha Day</button>
+        </div>
       </div>
 
       <div id="result" style="display:none;">
@@ -51,6 +89,8 @@ import Layout from '../../layouts/Layout.astro';
   .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
   #pp-table th { text-align:left;padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.04em; }
   #pp-table td { padding:8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
+  .sh-mode-btn { padding:7px 16px;border-radius:20px;border:1px solid var(--color-hairline);background:transparent;color:var(--color-mute);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-sans); }
+  .sh-mode-btn.active { background:var(--color-ink);color:var(--color-canvas);border-color:var(--color-ink); }
 </style>
 
 <script>
@@ -118,6 +158,33 @@ function calculate(){
 }
 document.getElementById('pp-table').innerHTML=`<tr><th>Date (2026)</th><th>Tithi</th><th>Who is honoured</th></tr>`+
   PP2026.map(p=>`<tr><td style="font-weight:600;color:var(--color-ink);">${p.date}</td><td>${p.tithi}</td><td style="font-size:12px;color:var(--color-mute);">${p.note}</td></tr>`).join('');
+function showShraddhaResult(paksha,tName){
+  const shraddhaTithi=(tName==='Purnima'||tName==='Amavasya')?tName:tName;
+  let ppDay=PP2026.find(p=>p.tithi===shraddhaTithi)||PP2026[PP2026.length-1];
+  document.getElementById('t-name').textContent=`${paksha} ${tName}`;
+  document.getElementById('t-meta').textContent=`${paksha} Paksha · Tithi entered directly`;
+  document.getElementById('shraddha-day').innerHTML=
+    `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">When to perform the annual Shraddha</h3>
+     <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. In 2026 this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, 2026</b>.</p>
+     <p style="font-size:13px;color:var(--color-mute);margin:0;">${ppDay.note}</p>
+     <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (Sep 21, 2026).</p>`;
+  document.getElementById('result').style.display='block';
+  document.getElementById('err').style.display='none';
+}
+function calculateByTithi(){
+  const paksha=document.getElementById('t-paksha').value;
+  const tName=document.getElementById('t-tithi').value;
+  showShraddhaResult(paksha,tName);
+}
 document.getElementById('f-calc').addEventListener('click',calculate);
+document.getElementById('f-calc2').addEventListener('click',calculateByTithi);
+document.querySelectorAll('.sh-mode-btn').forEach(btn=>btn.addEventListener('click',function(){
+  document.querySelectorAll('.sh-mode-btn').forEach(b=>b.classList.remove('active'));
+  this.classList.add('active');
+  const isDate=this.dataset.mode==='date';
+  document.getElementById('form-date').style.display=isDate?'flex':'none';
+  document.getElementById('form-tithi').style.display=isDate?'none':'block';
+  document.getElementById('result').style.display='none';
+}));
 calculate();
 </script>

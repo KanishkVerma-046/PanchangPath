@@ -36,6 +36,12 @@ import Layout from '../../layouts/Layout.astro';
         </div>
 
         <div class="card" style="padding:20px;margin-bottom:24px;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Suggested Names Starting with <span id="syl-title" style="color:var(--color-saffron-deep);"></span></h3>
+          <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;">Traditional Hindu names beginning with this akshar — consult your family pandit for personalised recommendations.</p>
+          <div id="name-grid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+        </div>
+
+        <div class="card" style="padding:20px;margin-bottom:24px;">
           <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Check a Name</h3>
           <p style="font-size:12px;color:var(--color-mute);margin:0 0 12px;">Type a name to see if it matches the recommended syllables.</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
@@ -73,6 +79,101 @@ const toR=d=>d*Math.PI/180;
 function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
 function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
 
+const NAMES={
+'Chu':['Churamani','Chudamani','Chunilal','Churabhanu'],
+'Che':['Chetak','Chetan','Chelna'],
+'Cho':['Chotan'],
+'La':['Lavanya','Lalita','Laxmi','Labh','Lavkush','Lata','Lakshmikant','Lalit'],
+'Li':['Lila','Lilavati','Lina','Likhit','Lingaraj'],
+'Lu':['Luv','Luvkush'],
+'Le':['Leela','Lekhraj','Leeladhar'],
+'Lo':['Lokesh','Lohit','Lopamudra','Loknath'],
+'A':['Aarav','Aayush','Arjun','Aditya','Amrita','Aarohi','Ayan','Aryan','Ananya','Arnav'],
+'I':['Indra','Indu','Isha','Ishaan','Indira','Inika','Ishani'],
+'U':['Uma','Udaya','Urvashi','Umesh','Uday','Urmila','Ulhas'],
+'E':['Ekta','Eshan'],
+'O':['Omkar','Ojas','Om'],
+'Va':['Varun','Varsha','Vandana','Vasudha','Vasant','Vatsal','Vaibhav','Varuna'],
+'Vi':['Vijay','Vimal','Vineet','Vikas','Vivek','Vikram','Vidya','Vidhya'],
+'Vu':[],
+'Ve':['Vedant','Venu','Veena','Vedika','Veda','Venkatesh'],
+'Vo':[],
+'Ka':['Kartik','Kamal','Kavya','Karan','Kalyani','Kalyan','Kabir','Kajal','Kalpana'],
+'Ki':['Kirti','Kiran','Kishore','Kishen','Kishori'],
+'Ku':['Kumar','Kundan','Kunal','Kusum','Kushal','Kumari'],
+'Gha':['Ghanshyam'],
+'Ing':['Ingit'],
+'Ja':['Jagdish','Jayesh','Janaki','Jatin','Jaya','Jagmohan','Jaswant'],
+'Ke':['Keshav','Keval','Ketaki','Kedar','Keshri'],
+'Ko':['Komal','Kovid','Kohila'],
+'Ha':['Hari','Harsh','Harish','Harsha','Harshal','Harita','Hareram'],
+'Hi':['Himanshu','Hiral','Hitesh','Himanshi','Hina'],
+'Hu':['Hulasi'],
+'He':['Hema','Hemant','Hemangi','Hemendra','Hemlata'],
+'Ho':['Homi'],
+'Da':['Daksh','Darshan','Daya','Dayaram','Damayanti','Damodar','Daivat'],
+'Di':['Divya','Dinesh','Dilip','Diksha','Dipa','Dipak','Dipti'],
+'Du':['Durga','Dushyant','Durgesh'],
+'De':['Devendra','Devi','Devika','Devansh','Devaki'],
+'Do':['Doli','Dolly'],
+'Ma':['Madhav','Mahesh','Manav','Manish','Maya','Mansi','Madhuri','Madhukar'],
+'Mi':['Mihir','Milan','Milind','Mira','Mitali','Minaxi'],
+'Mu':['Mukesh','Mukta','Murali','Mukundh'],
+'Me':['Meera','Mehul','Meenakshi','Megha','Meghna','Meghana'],
+'Mo':['Mohan','Mohit','Mona','Monika','Morari'],
+'Ta':['Tanuj','Tanvi','Tarun','Tara','Tanmay','Tapan','Tapasya'],
+'Ti':['Tirth','Tisha','Tilak','Tina'],
+'Tu':['Tulasi','Tushar','Tulsi','Tukarama'],
+'Te':['Tejas','Tejal','Tejaswin','Tejender'],
+'To':['Toshan'],
+'Pa':['Paresh','Param','Parvati','Pallavi','Parth','Pankaj','Payal','Padmini'],
+'Pi':['Pinak','Piyush','Pintu'],
+'Pu':['Purva','Punit','Puneet','Poornima','Puja','Purushottam'],
+'Sha':['Shashank','Shailesh','Shantanu','Shankar','Sharad','Shambu'],
+'Na':['Nandan','Narayan','Naveen','Nakul','Nandini','Naman','Namrata','Naresh'],
+'Tha':['Thakur'],
+'Pe':['Prema','Pema'],
+'Po':['Poonam','Poorvi','Pooja','Poornima'],
+'Ra':['Rajan','Rakesh','Ram','Ramesh','Rajesh','Rachna','Raveena','Ratna'],
+'Ri':['Rishi','Rita','Ritu','Ritesh','Rishab','Riddhi','Riya','Richa'],
+'Ru':['Ruchika','Rukmini','Ruchi','Rupali','Rudra','Rushabh'],
+'Re':['Rekha','Renuka','Reena','Renu'],
+'Ro':['Rohit','Roma','Roshan','Rohini','Roopa'],
+'Ni':['Nikhil','Nisha','Nitya','Nidhi','Nishant','Nilima','Nirmal'],
+'Nu':['Nutan','Nupur'],
+'Ne':['Neha','Neelam','Neeta','Neeraj'],
+'No':['Noel'],
+'Ya':['Yash','Yashodha','Yashvardhan','Yashwant','Yasmin'],
+'Yi':[],
+'Yu':['Yuvaraj','Yukti','Yuvika','Yuvan'],
+'Ye':['Yeshoda'],
+'Yo':['Yogesh','Yogendra'],
+'Bha':['Bharat','Bhaskar','Bhavana','Bhavesh','Bhakti','Bhagyashri'],
+'Bhi':['Bhimsen'],
+'Bhu':['Bhushan','Bhumi','Bhupendra','Bhuvnesh'],
+'Dha':['Dharamraj','Dharamveer','Dharini','Dhara','Dhananjai'],
+'Pha':['Phalgun'],
+'Bhe':['Bheema'],
+'Bho':['Bholenath','Bhoomi'],
+'Ji':['Jitendra','Jitesh','Jivraj'],
+'Khi':['Khimji'],
+'Khu':['Khushal','Khushi'],
+'Khe':['Khemraj'],
+'Kho':[],
+'Ga':['Ganesh','Gaurav','Garima','Gayatri','Gajanan','Gauri','Gautam'],
+'Gi':['Girish','Girija','Giridhar'],
+'Gu':['Gulab','Gurmeet','Gunvant','Gurpreet'],
+'Ge':['Geeta','Geetika'],
+'Go':['Govinda','Gopal','Goutam','Gomati'],
+'Sa':['Sanjay','Samir','Saroj','Sameera','Sangeeta','Savita','Sapna','Saket'],
+'Si':['Siddharth','Sindhu','Simran','Sita'],
+'Su':['Suresh','Sudha','Sumit','Supriya','Sujata','Sunita','Surya'],
+'Se':['Seema','Sejal'],
+'So':['Sohan','Soma','Sonu','Soumya'],
+'Jha':['Jharna'],
+'Nya':['Nyasa'],
+'Cha':['Chandan','Chandra','Chandrakant','Chaitanya','Charulata'],
+'Chi':['Chitra','Chirag','Chitrangada','Chintamani']};
 const NAKS=[
 {n:'Ashwini',p:['Chu','Che','Cho','La']},{n:'Bharani',p:['Li','Lu','Le','Lo']},{n:'Krittika',p:['A','I','U','E']},{n:'Rohini',p:['O','Va','Vi','Vu']},{n:'Mrigashira',p:['Ve','Vo','Ka','Ki']},{n:'Ardra',p:['Ku','Gha','Ing','Ja']},{n:'Punarvasu',p:['Ke','Ko','Ha','Hi']},{n:'Pushya',p:['Hu','He','Ho','Da']},{n:'Ashlesha',p:['Di','Du','De','Do']},{n:'Magha',p:['Ma','Mi','Mu','Me']},{n:'Purva Phalguni',p:['Mo','Ta','Ti','Tu']},{n:'Uttara Phalguni',p:['Te','To','Pa','Pi']},{n:'Hasta',p:['Pu','Sha','Na','Tha']},{n:'Chitra',p:['Pe','Po','Ra','Ri']},{n:'Swati',p:['Ru','Re','Ro','Ta']},{n:'Vishakha',p:['Ti','Tu','Te','To']},{n:'Anuradha',p:['Na','Ni','Nu','Ne']},{n:'Jyeshtha',p:['No','Ya','Yi','Yu']},{n:'Mula',p:['Ye','Yo','Bha','Bhi']},{n:'Purva Ashadha',p:['Bhu','Dha','Bha','Pha']},{n:'Uttara Ashadha',p:['Bhe','Bho','Ja','Ji']},{n:'Shravana',p:['Khi','Khu','Khe','Kho']},{n:'Dhanishtha',p:['Ga','Gi','Gu','Ge']},{n:'Shatabhisha',p:['Go','Sa','Si','Su']},{n:'Purva Bhadrapada',p:['Se','So','Da','Di']},{n:'Uttara Bhadrapada',p:['Du','Tha','Jha','Nya']},{n:'Revati',p:['De','Do','Cha','Chi']}];
 
@@ -95,6 +196,11 @@ function calculate(){
 
     document.getElementById('big-syl').textContent=syl;
     document.getElementById('syl-meta').textContent=`${nk.n} Nakshatra · Pada ${pada}`;
+    document.getElementById('syl-title').textContent='"'+syl+'"';
+    const suggestions=NAMES[syl]||[];
+    document.getElementById('name-grid').innerHTML=suggestions.length
+      ?suggestions.map(n=>`<span style="padding:6px 14px;background:var(--color-canvas-soft-2);border-radius:20px;font-size:13px;font-weight:600;color:var(--color-ink);border:1px solid var(--color-hairline);">${n}</span>`).join('')
+      :'<p style="font-size:13px;color:var(--color-mute);margin:0;">Consult a pandit for names beginning with this syllable.</p>';
     document.getElementById('pada-grid').innerHTML=nk.p.map((s,i)=>
       `<div style="padding:14px;border-radius:8px;text-align:center;background:${i===pada-1?'var(--color-saffron-soft)':'var(--color-canvas-soft-2)'};">
         <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">Pada ${i+1}</p>

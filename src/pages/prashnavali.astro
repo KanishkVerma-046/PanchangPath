@@ -31,12 +31,24 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
         </p>
       </div>
 
+      <!-- Mode toggle -->
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:32px;">
+        <button class="pv-mode-btn active" id="pv-mode-random">🪷 Touch the Oracle</button>
+        <button class="pv-mode-btn" id="pv-mode-number">🔢 Choose Your Number</button>
+      </div>
+
       <!-- Oracle button -->
-      <div style="text-align:center;margin-bottom:40px;">
+      <div id="pv-oracle-wrap" style="text-align:center;margin-bottom:40px;">
         <button id="oracle-btn" class="pv-oracle-btn" aria-label="Receive divine answer">
           <span class="pv-lotus" id="btn-icon">🪷</span>
           <span id="btn-text">Touch to receive</span>
         </button>
+      </div>
+
+      <!-- Number picker grid -->
+      <div id="pv-number-section" style="display:none;margin-bottom:40px;">
+        <p style="text-align:center;font-size:13px;color:var(--color-mute);margin:0 0 16px;">Think of your question, then choose any number from 1 to 108.</p>
+        <div id="pv-num-grid" class="pv-num-grid"></div>
       </div>
 
       <!-- Answer reveal -->
@@ -48,6 +60,7 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
             <span style="font-size:20px;">✨</span>
           </div>
           <blockquote id="oracle-answer" class="pv-answer-text"></blockquote>
+          <div id="pv-indicator" style="text-align:center;margin-top:16px;"></div>
           <div style="text-align:center;margin-top:20px;">
             <button id="ask-again-btn" class="pv-again-btn">Ask another question</button>
           </div>
@@ -85,32 +98,44 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
 
 <script define:vars={{ answers: PRASHNAVALI_ANSWERS }}>
 let revealed = false;
+let numberMode = false;
 
 const oracleBtn = document.getElementById('oracle-btn');
+const oracleWrap = document.getElementById('pv-oracle-wrap');
 const answerCard = document.getElementById('answer-card');
 const oracleAnswer = document.getElementById('oracle-answer');
 const askAgainBtn = document.getElementById('ask-again-btn');
 const instructions = document.getElementById('instructions');
-const btnIcon = document.getElementById('btn-icon');
-const btnText = document.getElementById('btn-text');
+const indicator = document.getElementById('pv-indicator');
+const numSection = document.getElementById('pv-number-section');
+
+function getIndicatorHtml(text, n) {
+  const pos = /success|victory|bless|favou?r|auspici|will come|achieve|joy|good fortune|prosperi|health|grant|fulfill|yes|favorable|granted|accomplish/i.test(text);
+  const neg = /fail|delay|obstacle|caution|avoid|difficult|loss|trouble|refrain|postpone|beware|danger|unfavour|not advised|abandon|inauspici/i.test(text);
+  const aus = pos || (!neg && n % 3 !== 0);
+  return aus
+    ? '<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 16px;background:#dcfce7;border-radius:20px;font-size:12px;font-weight:600;color:#15803d;letter-spacing:0.04em;">&#10003; Auspicious Omen</span>'
+    : '<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 16px;background:#fff7ed;border-radius:20px;font-size:12px;font-weight:600;color:#c2410c;letter-spacing:0.04em;">&#9650; Proceed with Caution</span>';
+}
+
+function showAnswer(text, n) {
+  oracleAnswer.textContent = text;
+  indicator.innerHTML = getIndicatorHtml(text, n);
+  oracleWrap.style.display = 'none';
+  numSection.style.display = 'none';
+  instructions.style.display = 'none';
+  answerCard.hidden = false;
+  answerCard.classList.add('pv-fade-in');
+  revealed = true;
+}
 
 function revealAnswer() {
   if (revealed) return;
-  revealed = true;
-
-  // Pulse animation on button
   oracleBtn.classList.add('pv-pulse');
-
   setTimeout(() => {
     const idx = Math.floor(Math.random() * answers.length);
-    oracleAnswer.textContent = answers[idx];
-
     oracleBtn.classList.remove('pv-pulse');
-    oracleBtn.style.display = 'none';
-    instructions.style.display = 'none';
-
-    answerCard.hidden = false;
-    answerCard.classList.add('pv-fade-in');
+    showAnswer(answers[idx], idx + 1);
   }, 600);
 }
 
@@ -118,16 +143,96 @@ function resetOracle() {
   revealed = false;
   answerCard.hidden = true;
   answerCard.classList.remove('pv-fade-in');
-  oracleBtn.style.display = '';
-  instructions.style.display = '';
+  indicator.innerHTML = '';
+  if (numberMode) {
+    numSection.style.display = 'block';
+  } else {
+    oracleWrap.style.display = '';
+    instructions.style.display = '';
+  }
   oracleBtn.classList.remove('pv-pulse');
 }
+
+// Build 108-number grid
+const numGrid = document.getElementById('pv-num-grid');
+for (let i = 1; i <= 108; i++) {
+  const btn = document.createElement('button');
+  btn.className = 'pv-num-btn';
+  btn.textContent = String(i);
+  btn.addEventListener('click', () => { if (!revealed) showAnswer(answers[i - 1], i); });
+  numGrid.appendChild(btn);
+}
+
+// Mode toggle
+document.getElementById('pv-mode-random').addEventListener('click', function() {
+  if (revealed) return;
+  numberMode = false;
+  this.classList.add('active');
+  document.getElementById('pv-mode-number').classList.remove('active');
+  numSection.style.display = 'none';
+  oracleWrap.style.display = '';
+  instructions.style.display = '';
+});
+document.getElementById('pv-mode-number').addEventListener('click', function() {
+  if (revealed) return;
+  numberMode = true;
+  this.classList.add('active');
+  document.getElementById('pv-mode-random').classList.remove('active');
+  oracleWrap.style.display = 'none';
+  instructions.style.display = 'none';
+  numSection.style.display = 'block';
+});
 
 oracleBtn?.addEventListener('click', revealAnswer);
 askAgainBtn?.addEventListener('click', resetOracle);
 </script>
 
 <style>
+.pv-mode-btn {
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--color-hairline);
+  background: transparent;
+  color: var(--color-mute);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background 0.15s, color 0.15s;
+}
+.pv-mode-btn.active {
+  background: var(--color-ink);
+  color: var(--color-canvas);
+  border-color: var(--color-ink);
+}
+.pv-num-grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 5px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.pv-num-btn {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  border: 1px solid var(--color-hairline);
+  background: var(--color-canvas-soft);
+  color: var(--color-ink);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  font-family: var(--font-mono);
+}
+.pv-num-btn:hover {
+  background: var(--color-saffron);
+  color: #fff;
+  border-color: var(--color-saffron);
+}
+@media (max-width: 480px) {
+  .pv-num-grid { grid-template-columns: repeat(6, 1fr); }
+}
 .pv-bg {
   position: absolute;
   inset: 0;

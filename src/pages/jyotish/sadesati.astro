@@ -69,6 +69,18 @@ document.getElementById('f-time').value='12:00';
 
 function jdToYMD(jd){const z=Math.floor(jd+0.5);let a=z;if(z>=2299161){const al=Math.floor((z-1867216.25)/36524.25);a=z+1+al-Math.floor(al/4);}const b=a+1524,c=Math.floor((b-122.1)/365.25),dd=Math.floor(365.25*c),e=Math.floor((b-dd)/30.6001);const day=b-dd-Math.floor(30.6001*e);const mo=e<14?e-1:e-13;const yr=mo>2?c-4716:c-4715;return{y:yr,m:mo};}
 
+function findSubPhases(jdStart,jdEnd,setSigns){
+  // Returns [p1start,p2start,p3start,end] JD boundaries for the 3 sub-phases
+  const bds=[jdStart];let phase=0;
+  for(let jd=jdStart+30;jd<=jdEnd;jd+=30){
+    const s=saturnSign(jd);
+    if(phase===0&&s===setSigns[1]){bds.push(jd);phase=1;}
+    else if(phase===1&&s===setSigns[2]){bds.push(jd);phase=2;break;}
+  }
+  bds.push(jdEnd);
+  return bds;
+}
+
 function calculate(){
   try{
     const dateStr=document.getElementById('f-date').value;
@@ -129,17 +141,23 @@ function calculate(){
       </div>`;
     }).join('')||'<p style="font-size:13px;color:var(--color-mute);">No Sadesati periods found in range.</p>';
 
+    // Sub-phase dates for the reference Sadesati period (active, or next, or last)
+    const refPeriod=active||periods.find(p=>p.start>todayJD)||(periods.length?periods[periods.length-1]:null);
+    const subBds=refPeriod?findSubPhases(refPeriod.start,refPeriod.end,setSigns):null;
     const phaseData=[
-      ['12th House Phase','Rising','Saturn enters the sign before your Moon. Mental unrest, expenses and changes begin. A time to prepare and let go of the unnecessary.'],
-      ['1st House Phase','Peak','Saturn sits over your Moon — the most intense 2.5 years. Health, mind and major life structures are tested and rebuilt.'],
-      ['2nd House Phase','Setting','Saturn moves to the sign after your Moon. Focus shifts to family and finances; the pressure gradually eases toward stability.'],
+      ['Rising','12th House ('+RASHI[setSigns[0]]+')','Saturn enters the sign before your Moon. Mental restlessness, unexpected expenses, confusion and health concerns arise. A time to let go of the old and prepare inwardly for transformation.'],
+      ['Peak','1st House — Janma Shani ('+RASHI[setSigns[1]]+')','The most intense 2.5-year phase. Core life pillars are tested: career, health, relationships and self-image. Humility and discipline are the keys to endurance and growth.'],
+      ['Setting','2nd House ('+RASHI[setSigns[2]]+')','Saturn moves past your Moon. Pressure eases gradually. Focus shifts to family, finances and speech. The hard lessons of the first two phases crystallise into lasting wisdom.'],
     ];
-    document.getElementById('phases').innerHTML=phaseData.map((p,i)=>
-      `<div style="padding:14px;border-radius:8px;background:var(--color-canvas-soft-2);">
-        <p style="font-size:12px;font-weight:700;color:var(--color-saffron-deep);margin:0 0 2px;">${p[1]}</p>
-        <p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${p[0]} (${RASHI[setSigns[i]]})</p>
-        <p style="font-size:12px;color:var(--color-body-text);line-height:1.5;margin:0;">${p[2]}</p>
-      </div>`).join('');
+    document.getElementById('phases').innerHTML=phaseData.map((p,i)=>{
+      let dateStr='';
+      if(subBds&&subBds.length>i+1){
+        const s=jdToYMD(subBds[i]),e=jdToYMD(subBds[i+1]);
+        dateStr='<p style="font-size:11px;color:var(--color-saffron-deep);font-family:var(--font-mono);margin:2px 0 5px;font-weight:600;">'+MON[s.m-1]+' '+s.y+' – '+MON[e.m-1]+' '+e.y+'</p>';
+      }
+      const isCurrentPhase=active&&saturnSign(todayJD)===setSigns[i];
+      return '<div style="padding:14px;border-radius:8px;background:var(--color-canvas-soft-2);'+(isCurrentPhase?'border:2px solid var(--color-warning);':'')+'"><p style="font-size:12px;font-weight:700;color:var(--color-saffron-deep);margin:0 0 1px;">'+p[0]+(isCurrentPhase?' • CURRENT':'')+' </p>'+dateStr+'<p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">'+p[1]+'</p><p style="font-size:12px;color:var(--color-body-text);line-height:1.5;margin:0;">'+p[2]+'</p></div>';
+    }).join('');
 
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';

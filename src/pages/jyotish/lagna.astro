@@ -45,6 +45,11 @@ import Layout from '../../layouts/Layout.astro';
             </div>
           </div>
         </div>
+        <div class="card" style="padding:24px;margin-top:16px;">
+          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 4px;">LAGNA NATURE &amp; PERSONALITY</p>
+          <h3 id="trait-title" style="font-size:17px;font-weight:700;color:var(--color-ink);margin:0 0 10px;"></h3>
+          <p id="trait-text" style="font-size:14px;color:var(--color-body-text);line-height:1.75;margin:0;"></p>
+        </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
@@ -80,6 +85,19 @@ function helioXY(el,T){const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const 
 function allLons(jd){const T=(jd-2451545)/36525;const ay=ayanamsha(T);const[xE,yE]=helioXY(ORB.earth,T);const geo=k=>{const[xP,yP]=helioXY(ORB[k],T);return n360(toD(Math.atan2(yP-yE,xP-xE)));};const rahu=rahuLon(jd);return{surya:sunLon(jd),chandra:moonLon(jd),mangal:geo('mars'),budha:geo('mercury'),guru:geo('jupiter'),shukra:geo('venus'),shani:geo('saturn'),rahu,ketu:n360(rahu+180),ay};}
 function calcLagna(jd,lat,lng){const T=(jd-2451545)/36525;const eps=23.439291111-0.013004167*T;const GMST=n360(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);const RAMC=toR(n360(GMST+lng));const e=toR(eps),phi=toR(lat);const tanA=-Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));let A=toD(Math.atan(tanA));if(Math.cos(RAMC)>0)A+=180;return n360(A);}
 
+const LAGNA_TRAITS=[
+'Bold, energetic and action-oriented, Mesha Lagna natives radiate physical vitality. You lead with courage and impatience, charging ahead where others hesitate. The body tends to be athletic and the temperament fiery. Mars as your lord drives intense ambition and a pioneering spirit.',
+'Calm, sensual and steadfast, Vrishabha Lagna gives a well-built body and a deep love of beauty, comfort and earthly pleasures. Venus rules your ascendant, bestowing charm and aesthetic refinement. You are loyal, patient and deliberate — rarely rushed, but difficult to stop once in motion.',
+'Quick-witted, communicative and intellectually nimble, Mithuna Lagna natives are masters of language and ideas. Mercury grants a youthful, curious energy. You adapt swiftly and thrive in varied environments. The mind is your greatest tool; restlessness your greatest challenge.',
+'Nurturing, intuitive and deeply connected to home and family, Karka Lagna is ruled by the Moon, making your personality fluid and emotionally responsive. A natural caregiver with strong instincts, you absorb the moods of those around you. Your inner world is rich, changeable and deeply feeling.',
+'Confident, generous and naturally authoritative, Simha Lagna natives radiate warmth and command attention. Ruled by the Sun, you project dignity, pride and creative flair. Leadership comes naturally, but so does the need for recognition and appreciation from those you love.',
+'Precise, analytical and deeply service-oriented, Kanya Lagna is ruled by Mercury and grants a sharp, discriminating intellect. You notice what others miss, excel at problem-solving and are driven by the desire to improve and refine. Health and daily routine are central to your wellbeing.',
+'Charming, diplomatic and drawn to beauty and balance, Tula Lagna is ruled by Venus and gives a graceful, aesthetic sensibility. You are naturally relational, happiest in partnership, and have a strong sense of fairness. Relationships are your greatest teacher and most rewarding arena.',
+'Intense, magnetic and psychologically penetrating, Vrishchika Lagna is ruled by Mars and carries the energy of deep transformation. You radiate a quiet, compelling power. Privacy is paramount; trust must be earned. Crises that break others often become your greatest launch pads.',
+'Philosophical, expansive and freedom-loving, Dhanu Lagna is ruled by Jupiter and gives an optimistic, wide-ranging worldview. You seek meaning, truth and adventure, and radiate easy generosity. Ethics matter deeply; you struggle with constraint and thrive when teaching or exploring.',
+'Disciplined, ambitious and quietly determined, Makara Lagna is ruled by Saturn and bestows a patient, structured approach to life. You appear reserved but are driven by long-term goals. Success builds slowly and surely — and the older you grow, the lighter life tends to feel.',
+'Independent, idealistic and ahead of your time, Kumbha Lagna is co-ruled by Saturn and Rahu, giving a humanitarian, unconventional outlook. You value community and progress over personal ego, and often feel called to causes larger than yourself. Originality is your hallmark.',
+'Empathetic, imaginative and spiritually attuned, Meena Lagna is ruled by Jupiter and gives a gentle, boundaryless quality to the personality. Compassion flows naturally. Art, faith and service are your most natural expressions, and the spiritual world feels more real than the material.'];
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const SYM=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
@@ -145,6 +163,8 @@ function calculate(){
         </div>
         <p style="font-size:10.5px;color:var(--color-mute);margin:2px 0 0;line-height:1.4;">${HOUSES[h]}</p>
       </div>`).join('');
+    document.getElementById('trait-title').textContent=RASHI[lagnaSign]+' Lagna \xb7 Rising Sign';
+    document.getElementById('trait-text').textContent=LAGNA_TRAITS[lagnaSign];
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;document.getElementById('result').style.display='none';}

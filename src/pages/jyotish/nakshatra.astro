@@ -30,7 +30,7 @@ import Layout from '../../layouts/Layout.astro';
           <p id="n-meta" style="font-size:14px;color:var(--color-mute);margin:0 0 8px;"></p>
           <div id="n-badges" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="two-col">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="two-col">
           <div class="card" style="padding:20px;">
             <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Attributes</h3>
             <div id="attr-list" style="display:flex;flex-direction:column;gap:9px;"></div>
@@ -40,6 +40,12 @@ import Layout from '../../layouts/Layout.astro';
             <div id="pada-list" style="display:flex;flex-direction:column;gap:8px;"></div>
             <p style="font-size:11.5px;color:var(--color-mute);margin:12px 0 0;line-height:1.5;">Traditionally, a baby\'s name begins with the syllable of the pada in which the Moon falls.</p>
           </div>
+        </div>
+        <!-- Personality traits panel -->
+        <div class="card" style="padding:24px;">
+          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 4px;">NAKSHATRA PERSONALITY TRAITS</p>
+          <h3 id="trait-title" style="font-size:17px;font-weight:700;color:var(--color-ink);margin:0 0 10px;"></h3>
+          <p id="trait-text" style="font-size:14px;color:var(--color-body-text);line-height:1.75;margin:0;"></p>
         </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;margin-bottom:24px;"></div>
@@ -72,33 +78,33 @@ function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
 function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
 
 const NAKS=[
-{n:'Ashwini',h:'अश्विनी',lord:'Ketu',yoni:'Horse',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Ashwini Kumaras',sym:'Horse head',p:['Chu','Che','Cho','La']},
-{n:'Bharani',h:'भरणी',lord:'Venus',yoni:'Elephant',gana:'Manushya',nadi:'Madhya',varna:'Mleccha',deity:'Yama',sym:'Yoni',p:['Li','Lu','Le','Lo']},
-{n:'Krittika',h:'कृत्तिका',lord:'Sun',yoni:'Sheep',gana:'Rakshasa',nadi:'Antya',varna:'Brahmin',deity:'Agni',sym:'Razor/Flame',p:['A','I','U','E']},
-{n:'Rohini',h:'रोहिणी',lord:'Moon',yoni:'Serpent',gana:'Manushya',nadi:'Antya',varna:'Shudra',deity:'Brahma',sym:'Ox cart',p:['O','Va','Vi','Vu']},
-{n:'Mrigashira',h:'मृगशिरा',lord:'Mars',yoni:'Serpent',gana:'Deva',nadi:'Madhya',varna:'Vaishya',deity:'Soma',sym:'Deer head',p:['Ve','Vo','Ka','Ki']},
-{n:'Ardra',h:'आर्द्रा',lord:'Rahu',yoni:'Dog',gana:'Manushya',nadi:'Adi',varna:'Mleccha',deity:'Rudra',sym:'Teardrop',p:['Ku','Gha','Ing','Ja']},
-{n:'Punarvasu',h:'पुनर्वसु',lord:'Jupiter',yoni:'Cat',gana:'Deva',nadi:'Adi',varna:'Brahmin',deity:'Aditi',sym:'Quiver',p:['Ke','Ko','Ha','Hi']},
-{n:'Pushya',h:'पुष्य',lord:'Saturn',yoni:'Sheep',gana:'Deva',nadi:'Madhya',varna:'Kshatriya',deity:'Brihaspati',sym:'Lotus',p:['Hu','He','Ho','Da']},
-{n:'Ashlesha',h:'अश्लेषा',lord:'Mercury',yoni:'Cat',gana:'Rakshasa',nadi:'Antya',varna:'Mleccha',deity:'Nagas',sym:'Coiled serpent',p:['Di','Du','De','Do']},
-{n:'Magha',h:'मघा',lord:'Ketu',yoni:'Rat',gana:'Rakshasa',nadi:'Antya',varna:'Shudra',deity:'Pitris',sym:'Throne',p:['Ma','Mi','Mu','Me']},
-{n:'Purva Phalguni',h:'पूर्व फाल्गुनी',lord:'Venus',yoni:'Rat',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Bhaga',sym:'Bed front',p:['Mo','Ta','Ti','Tu']},
-{n:'Uttara Phalguni',h:'उत्तर फाल्गुनी',lord:'Sun',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Aryaman',sym:'Bed back',p:['Te','To','Pa','Pi']},
-{n:'Hasta',h:'हस्त',lord:'Moon',yoni:'Buffalo',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Savitar',sym:'Hand',p:['Pu','Sha','Na','Tha']},
-{n:'Chitra',h:'चित्रा',lord:'Mars',yoni:'Tiger',gana:'Rakshasa',nadi:'Madhya',varna:'Kshatriya',deity:'Vishwakarma',sym:'Bright jewel',p:['Pe','Po','Ra','Ri']},
-{n:'Swati',h:'स्वाती',lord:'Rahu',yoni:'Buffalo',gana:'Deva',nadi:'Adi',varna:'Mleccha',deity:'Vayu',sym:'Coral',p:['Ru','Re','Ro','Ta']},
-{n:'Vishakha',h:'विशाखा',lord:'Jupiter',yoni:'Tiger',gana:'Rakshasa',nadi:'Madhya',varna:'Brahmin',deity:'Indra-Agni',sym:'Gateway',p:['Ti','Tu','Te','To']},
-{n:'Anuradha',h:'अनुराधा',lord:'Saturn',yoni:'Deer',gana:'Deva',nadi:'Adi',varna:'Kshatriya',deity:'Mitra',sym:'Lotus',p:['Na','Ni','Nu','Ne']},
-{n:'Jyeshtha',h:'ज्येष्ठा',lord:'Mercury',yoni:'Deer',gana:'Rakshasa',nadi:'Madhya',varna:'Brahmin',deity:'Indra',sym:'Amulet',p:['No','Ya','Yi','Yu']},
-{n:'Mula',h:'मूल',lord:'Ketu',yoni:'Dog',gana:'Rakshasa',nadi:'Antya',varna:'Mleccha',deity:'Nirriti',sym:'Tied roots',p:['Ye','Yo','Bha','Bhi']},
-{n:'Purva Ashadha',h:'पूर्वाषाढा',lord:'Venus',yoni:'Monkey',gana:'Manushya',nadi:'Adi',varna:'Brahmin',deity:'Apas',sym:'Fan',p:['Bhu','Dha','Bha','Pha']},
-{n:'Uttara Ashadha',h:'उत्तराषाढा',lord:'Sun',yoni:'Mongoose',gana:'Manushya',nadi:'Madhya',varna:'Kshatriya',deity:'Vishvadevas',sym:'Planks',p:['Bhe','Bho','Ja','Ji']},
-{n:'Shravana',h:'श्रवण',lord:'Moon',yoni:'Monkey',gana:'Deva',nadi:'Antya',varna:'Mleccha',deity:'Vishnu',sym:'Three footprints',p:['Khi','Khu','Khe','Kho']},
-{n:'Dhanishtha',h:'धनिष्ठा',lord:'Mars',yoni:'Lion',gana:'Rakshasa',nadi:'Madhya',varna:'Shudra',deity:'Vasus',sym:'Drum',p:['Ga','Gi','Gu','Ge']},
-{n:'Shatabhisha',h:'शतभिषा',lord:'Rahu',yoni:'Horse',gana:'Rakshasa',nadi:'Adi',varna:'Mleccha',deity:'Varuna',sym:'Empty circle',p:['Go','Sa','Si','Su']},
-{n:'Purva Bhadrapada',h:'पूर्वभाद्रपदा',lord:'Jupiter',yoni:'Lion',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Aja Ekapada',sym:'Funeral cot front',p:['Se','So','Da','Di']},
-{n:'Uttara Bhadrapada',h:'उत्तरभाद्रपदा',lord:'Saturn',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Ahir Budhnya',sym:'Funeral cot back',p:['Du','Tha','Jha','Nya']},
-{n:'Revati',h:'रेवती',lord:'Mercury',yoni:'Elephant',gana:'Deva',nadi:'Antya',varna:'Brahmin',deity:'Pushan',sym:'Fish/Drum',p:['De','Do','Cha','Chi']}];
+{n:'Ashwini',h:'अश्विनी',lord:'Ketu',yoni:'Horse',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Ashwini Kumaras',sym:'Horse head',p:['Chu','Che','Cho','La'],traits:'Quick-minded and energetically pioneering, you start projects with great enthusiasm and possess natural healing instincts. Impatience can undermine follow-through, but your courage and spontaneity make you a natural trailblazer and leader.'},
+{n:'Bharani',h:'भरणी',lord:'Venus',yoni:'Elephant',gana:'Manushya',nadi:'Madhya',varna:'Mleccha',deity:'Yama',sym:'Yoni',p:['Li','Lu','Le','Lo'],traits:'Intense, creative and deeply responsible, you carry great burdens with strength and purpose. Passionate and fiercely determined, you are drawn to life\'s extremes — beauty, art and deep transformation. Truth matters to you above all.'},
+{n:'Krittika',h:'कृत्तिका',lord:'Sun',yoni:'Sheep',gana:'Rakshasa',nadi:'Antya',varna:'Brahmin',deity:'Agni',sym:'Razor/Flame',p:['A','I','U','E'],traits:'Sharp-minded, ambitious and highly critical, you burn away the impure and demand excellence from yourself and others. Your fiery clarity can be uncompromising, but it is also your greatest strength — cutting through illusion to find truth.'},
+{n:'Rohini',h:'रोहिणी',lord:'Moon',yoni:'Serpent',gana:'Manushya',nadi:'Antya',varna:'Shudra',deity:'Brahma',sym:'Ox cart',p:['O','Va','Vi','Vu'],traits:'Charming, artistic and deeply sensual, you have a natural magnetism and love of beauty, fertility and comfort. Highly creative and pleasure-loving, you may become possessive of what you cherish. Stability and aesthetic richness are your life\'s rewards.'},
+{n:'Mrigashira',h:'मृगशिरा',lord:'Mars',yoni:'Serpent',gana:'Deva',nadi:'Madhya',varna:'Vaishya',deity:'Soma',sym:'Deer head',p:['Ve','Vo','Ka','Ki'],traits:'Eternally curious and gently searching, you are a seeker of the ideal — in love, knowledge and beauty. Sensitive, communicative and restless, you bring fresh perspectives and creative insight wherever you go.'},
+{n:'Ardra',h:'आर्द्रा',lord:'Rahu',yoni:'Dog',gana:'Manushya',nadi:'Adi',varna:'Mleccha',deity:'Rudra',sym:'Teardrop',p:['Ku','Gha','Ing','Ja'],traits:'Intense and transformative, you possess a sharp and penetrating intellect capable of thriving through storms of change. Your life may include dramatic disruptions, but each one deepens your insight. Raw, honest and unafraid of the dark.'},
+{n:'Punarvasu',h:'पुनर्वसु',lord:'Jupiter',yoni:'Cat',gana:'Deva',nadi:'Adi',varna:'Brahmin',deity:'Aditi',sym:'Quiver',p:['Ke','Ko','Ha','Hi'],traits:'Optimistic, philosophical and gifted with renewal, you bounce back from difficulties with inspiring resilience. Generous, expansive and freedom-loving, you are happiest when learning, growing and sharing wisdom with others.'},
+{n:'Pushya',h:'पुष्य',lord:'Saturn',yoni:'Sheep',gana:'Deva',nadi:'Madhya',varna:'Kshatriya',deity:'Brihaspati',sym:'Lotus',p:['Hu','He','Ho','Da'],traits:'Nurturing, devoted and deeply traditional, you are a natural caretaker who brings stability, prosperity and spiritual warmth to those around you. Patient and principled, your inner strength grows steadily over time.'},
+{n:'Ashlesha',h:'अश्लेषा',lord:'Mercury',yoni:'Cat',gana:'Rakshasa',nadi:'Antya',varna:'Mleccha',deity:'Nagas',sym:'Coiled serpent',p:['Di','Du','De','Do'],traits:'Shrewd, perceptive and emotionally complex, you possess great strategic intelligence and a powerful ability to read people. Persuasive and resilient, you can be secretive, but your determination and psychological depth are formidable gifts.'},
+{n:'Magha',h:'मघा',lord:'Ketu',yoni:'Rat',gana:'Rakshasa',nadi:'Antya',varna:'Shudra',deity:'Pitris',sym:'Throne',p:['Ma','Mi','Mu','Me'],traits:'Proud, regal and rooted in ancestral tradition, you are a natural leader with a strong sense of lineage and dignity. Generous and commanding, you thrive in positions of authority and honour the past as a foundation for greatness.'},
+{n:'Purva Phalguni',h:'पूर्व फाल्गुनी',lord:'Venus',yoni:'Rat',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Bhaga',sym:'Bed front',p:['Mo','Ta','Ti','Tu'],traits:'Creative, romantic and pleasure-loving, you radiate natural charisma and a love of luxury, beauty and sensory experience. Generous in love and friendship, you are a devoted partner and gifted artist who thrives in rest and celebration.'},
+{n:'Uttara Phalguni',h:'उत्तर फाल्गुनी',lord:'Sun',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Aryaman',sym:'Bed back',p:['Te','To','Pa','Pi'],traits:'Reliable, helpful and ethically disciplined, you are the steady, dependable pillar others lean on. Balancing creativity with service, you seek long-term relationships and commitments built on mutual respect and shared values.'},
+{n:'Hasta',h:'हस्त',lord:'Moon',yoni:'Buffalo',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Savitar',sym:'Hand',p:['Pu','Sha','Na','Tha'],traits:'Clever, resourceful and exceptionally skilled with your hands, you are a master of craft, humour and practical intelligence. Sharp-witted and adaptable, you manifest your intentions quickly and have a gift for healing and service.'},
+{n:'Chitra',h:'चित्रा',lord:'Mars',yoni:'Tiger',gana:'Rakshasa',nadi:'Madhya',varna:'Kshatriya',deity:'Vishwakarma',sym:'Bright jewel',p:['Pe','Po','Ra','Ri'],traits:'Artistic, glamorous and technically brilliant, you have an extraordinary aesthetic sensibility and a relentless drive for perfection. Innovative, visually gifted and detail-oriented, you build beautiful things with precision and passion.'},
+{n:'Swati',h:'स्वाती',lord:'Rahu',yoni:'Buffalo',gana:'Deva',nadi:'Adi',varna:'Mleccha',deity:'Vayu',sym:'Coral',p:['Ru','Re','Ro','Ta'],traits:'Independent, diplomatic and fair-minded like the wind, you bend without breaking and excel in commerce, networking and mediation. Self-motivated and socially skilled, you value personal freedom and bring balance wherever you go.'},
+{n:'Vishakha',h:'विशाखा',lord:'Jupiter',yoni:'Tiger',gana:'Rakshasa',nadi:'Madhya',varna:'Brahmin',deity:'Indra-Agni',sym:'Gateway',p:['Ti','Tu','Te','To'],traits:'Goal-oriented, ambitious and fiercely competitive, you are a driven achiever who stays focused until every aim is fulfilled. Patient and persistent beneath your intensity, you have great power to transform society through principled leadership.'},
+{n:'Anuradha',h:'अनुराधा',lord:'Saturn',yoni:'Deer',gana:'Deva',nadi:'Adi',varna:'Kshatriya',deity:'Mitra',sym:'Lotus',p:['Na','Ni','Nu','Ne'],traits:'Devoted, organized and resilient, you excel at building lasting friendships and sustaining organisations. Spiritually inclined and adaptable, you thrive through adversity and your quiet loyalty inspires deep bonds of trust in all relationships.'},
+{n:'Jyeshtha',h:'ज्येष्ठा',lord:'Mercury',yoni:'Deer',gana:'Rakshasa',nadi:'Madhya',varna:'Brahmin',deity:'Indra',sym:'Amulet',p:['No','Ya','Yi','Yu'],traits:'Senior, protective and intensely responsible, you carry a deep sense of duty toward those in your care. Proud and courageous, with a fierce loyalty that demands respect. Jealousy and control are the shadows you are here to master.'},
+{n:'Mula',h:'मूल',lord:'Ketu',yoni:'Dog',gana:'Rakshasa',nadi:'Antya',varna:'Mleccha',deity:'Nirriti',sym:'Tied roots',p:['Ye','Yo','Bha','Bhi'],traits:'Philosophical, investigative and unafraid to uproot the old, you dive to the root of everything. A truth-seeker who questions foundations and transforms through destruction. Freedom, inquiry and spiritual liberation are your deepest drives.'},
+{n:'Purva Ashadha',h:'पूर्वाषाढा',lord:'Venus',yoni:'Monkey',gana:'Manushya',nadi:'Adi',varna:'Brahmin',deity:'Apas',sym:'Fan',p:['Bhu','Dha','Bha','Pha'],traits:'Optimistic, proud and powerfully persuasive, you have a magnetic drive and an unshakeable belief in your path. Resilient under opposition and gifted with natural leadership, you inspire others through your vision and spirited determination.'},
+{n:'Uttara Ashadha',h:'उत्तराषाढा',lord:'Sun',yoni:'Mongoose',gana:'Manushya',nadi:'Madhya',varna:'Kshatriya',deity:'Vishvadevas',sym:'Planks',p:['Bhe','Bho','Ja','Ji'],traits:'Ethical, determined and universally principled, you move slowly but surely toward lofty, lasting goals. An enduring leader with a broad perspective and deep integrity — your victories, once won, are never easily reversed.'},
+{n:'Shravana',h:'श्रवण',lord:'Moon',yoni:'Monkey',gana:'Deva',nadi:'Antya',varna:'Mleccha',deity:'Vishnu',sym:'Three footprints',p:['Khi','Khu','Khe','Kho'],traits:'An exceptional listener and lifelong learner, you have an organized mind, wide knowledge and a deep connection to the spoken and sacred word. Social, empathetic and skilled in communication, you preserve and transmit wisdom across generations.'},
+{n:'Dhanishtha',h:'धनिष्ठा',lord:'Mars',yoni:'Lion',gana:'Rakshasa',nadi:'Madhya',varna:'Shudra',deity:'Vasus',sym:'Drum',p:['Ga','Gi','Gu','Ge'],traits:'Musical, courageous and powerfully ambitious, you have natural rhythm, group leadership and the drive to accumulate wealth. Generous by nature but career-focused, you may at times prioritise achievement over intimate relationships.'},
+{n:'Shatabhisha',h:'शतभिषा',lord:'Rahu',yoni:'Horse',gana:'Rakshasa',nadi:'Adi',varna:'Mleccha',deity:'Varuna',sym:'Empty circle',p:['Go','Sa','Si','Su'],traits:'Independent, scientific and deeply philosophical, you are drawn to healing, hidden knowledge and the mysteries of the cosmos. Introspective and secretive, you carry strong humanitarian ideals and work best when given complete creative freedom.'},
+{n:'Purva Bhadrapada',h:'पूर्वभाद्रपदा',lord:'Jupiter',yoni:'Lion',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Aja Ekapada',sym:'Funeral cot front',p:['Se','So','Da','Di'],traits:'Intense, passionate and deeply idealistic, you are willing to sacrifice comfort and convention for your beliefs. Spiritually powerful and courageous, you can be extreme or impulsive — yet your visionary fire ignites real transformation.'},
+{n:'Uttara Bhadrapada',h:'उत्तरभाद्रपदा',lord:'Saturn',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Ahir Budhnya',sym:'Funeral cot back',p:['Du','Tha','Jha','Nya'],traits:'Wise, patient and profoundly compassionate, you are a deep thinker with extraordinary inner strength and spiritual endurance. A quiet warrior who serves selflessly, your power grows beneath the surface and impacts lives in ways rarely visible.'},
+{n:'Revati',h:'रेवती',lord:'Mercury',yoni:'Elephant',gana:'Deva',nadi:'Antya',varna:'Brahmin',deity:'Pushan',sym:'Fish/Drum',p:['De','Do','Cha','Chi'],traits:'Compassionate, nurturing and deeply spiritual, you carry a universal love and the gift of empathy. Artistic, imaginative and gentle, you are a bridge-builder who completes cycles and guides souls gently across transitions and thresholds.'}];
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
@@ -115,8 +121,10 @@ function calculate(){
     const sid=n360(moonLon(jd)-ay);
     const idx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;
     const nk=NAKS[idx];
-    document.getElementById('n-name').textContent=`${nk.n} · ${nk.h}`;
-    document.getElementById('n-meta').textContent=`Pada ${pada} · Ruled by ${nk.lord} · Deity: ${nk.deity}`;
+    document.getElementById('n-name').textContent=nk.n+' \xb7 '+nk.h;
+    document.getElementById('n-meta').textContent='Pada '+pada+' \xb7 Ruled by '+nk.lord+' \xb7 Deity: '+nk.deity;
+    document.getElementById('trait-title').textContent=nk.n+' — Personality Profile';
+    document.getElementById('trait-text').textContent=nk.traits;
     document.getElementById('n-badges').innerHTML=
       `<span class="badge badge-saffron">${nk.gana} Gana</span><span class="badge">${nk.nadi} Nadi</span><span class="badge">${nk.yoni} Yoni</span><span class="badge">Syllable: ${nk.p[pada-1]}</span>`;
     document.getElementById('attr-list').innerHTML=[

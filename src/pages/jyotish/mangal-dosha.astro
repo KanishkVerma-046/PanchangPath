@@ -33,6 +33,11 @@ import Layout from '../../layouts/Layout.astro';
           <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">What this means</h3>
           <p id="meaning" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"></p>
         </div>
+        <div class="card" style="padding:20px;overflow-x:auto;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Cancellation Analysis (Mangal Dosha Bhanga)</h3>
+          <table id="cancel-table" style="width:100%;border-collapse:collapse;font-size:13px;"></table>
+        </div>
+        <div id="remedy-panel" class="card" style="padding:20px;display:none;"></div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
@@ -72,9 +77,10 @@ const toD=r=>r*180/Math.PI;
 function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
 function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
 function solveKepler(M,e){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
-const ORB={earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},mars:{L:355.432818,Ld:19140.2993313,wp:336.040768,wpd:0.4439016,Om:49.558093,Omd:-0.295025,i:1.849726,id:-0.008148,e:0.09341233,ed:0.00011902,a:1.52371243},venus:{L:181.979801,Ld:58517.815676,wp:131.563707,wpd:0.0036096,Om:76.67992,Omd:-0.278008,i:3.394662,id:-0.000857,e:0.00677323,ed:-0.00004938,a:0.72332102}};
+const ORB={earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},mars:{L:355.432818,Ld:19140.2993313,wp:336.040768,wpd:0.4439016,Om:49.558093,Omd:-0.295025,i:1.849726,id:-0.008148,e:0.09341233,ed:0.00011902,a:1.52371243},venus:{L:181.979801,Ld:58517.815676,wp:131.563707,wpd:0.0036096,Om:76.67992,Omd:-0.278008,i:3.394662,id:-0.000857,e:0.00677323,ed:-0.00004938,a:0.72332102},jupiter:{L:34.351484,Ld:3034.9056746,wp:14.331309,wpd:0.2155402,Om:100.464441,Omd:0.1350208,i:1.30327,id:-0.001987,e:0.04839266,ed:-0.0001288,a:5.20248019}};
 function helioXY(el,T){const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);const E=solveKepler(M,e);const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));const r=el.a*(1-e*Math.cos(E));const arg=nu+w;const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));return[x,y];}
 function geoLon(key,jd){const T=(jd-2451545)/36525;const[xE,yE]=helioXY(ORB.earth,T);const[xP,yP]=helioXY(ORB[key],T);return n360(toD(Math.atan2(yP-yE,xP-xE)));}
+function angDiff(a,b){const d=n360(a-b);return d>180?360-d:d;}
 function calcLagna(jd,lat,lng){const T=(jd-2451545)/36525;const eps=23.439291111-0.013004167*T;const GMST=n360(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);const RAMC=toR(n360(GMST+lng));const e=toR(eps),phi=toR(lat);const tanA=-Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));let A=toD(Math.atan(tanA));if(Math.cos(RAMC)>0)A+=180;return n360(A);}
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
@@ -98,6 +104,11 @@ function calculate(){
     const moonSign=Math.floor(n360(moonLon(jd)-ay)/30);
     const venusSign=Math.floor(n360(geoLon('venus',jd)-ay)/30);
     const lagnaSign=Math.floor(n360(calcLagna(jd,loc.lat,loc.lng)-ay)/30);
+    const sid_mangal=n360(geoLon('mars',jd)-ay);
+    const sid_guru=n360(geoLon('jupiter',jd)-ay);
+    const sid_moon=n360(moonLon(jd)-ay);
+    const dGuruMars=angDiff(sid_guru,sid_mangal);
+    const dMoonMars=angDiff(sid_moon,sid_mangal);
 
     const refs=[['Lagna (Ascendant)',lagnaSign],['Moon',moonSign],['Venus',venusSign]];
     let doshaCount=0;
@@ -130,6 +141,28 @@ function calculate(){
       meaning+=`Traditionally this calls for matching with a partner who is also Manglik, or applying the cancellation rules below. Mangal Dosha is one factor among many — a full chart reading gives the complete picture.`;}
     document.getElementById('meaning').textContent=meaning;
 
+    // Dynamic cancellation analysis
+    const cancels=[
+      {rule:'Mars in own sign (Mesha or Vrishchika)',applies:[0,7].includes(marsSign),strength:'Strong',note:[0,7].includes(marsSign)?'Mars in '+RASHI[marsSign]+' — natural dignity greatly reduces the dosha':'Mars in '+RASHI[marsSign]+' — not in own sign'},
+      {rule:'Mars exalted (Makara)',applies:marsSign===9,strength:'Full',note:marsSign===9?'Mars is exalted in Makara — dosha is effectively cancelled':'Mars is not exalted (exaltation: Makara)'},
+      {rule:'Cancer or Leo Lagna (Yogakaraka)',applies:[3,4].includes(lagnaSign),strength:'Full',note:[3,4].includes(lagnaSign)?'For '+RASHI[lagnaSign]+' Lagna, Mars is a benefic yogakaraka — dosha does not apply':'Lagna is '+RASHI[lagnaSign]+' — Mars is not yogakaraka'},
+      {rule:'Mars in weakening sign (Karka, Simha, Kumbha, Meena)',applies:[3,4,10,11].includes(marsSign),strength:'Partial',note:[3,4,10,11].includes(marsSign)?'Mars in '+RASHI[marsSign]+' is considered weak — dosha impact is reduced':'Mars in '+RASHI[marsSign]+' is not in a weakening sign'},
+      {rule:'Jupiter conjunct Mars (within 10\xb0)',applies:dGuruMars<10,strength:'Strong',note:'Jupiter is '+dGuruMars.toFixed(1)+'\xb0 from Mars — '+(dGuruMars<10?'Guru’s proximity greatly pacifies the fiery Mars energy':'not in close conjunction')},
+      {rule:'Moon conjunct Mars (within 10\xb0)',applies:dMoonMars<10,strength:'Moderate',note:'Moon is '+dMoonMars.toFixed(1)+'\xb0 from Mars — '+(dMoonMars<10?'Moon’s nurturing energy softens Mars':'not in close conjunction')},
+    ];
+    const thSt='text-align:left;padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-size:11px;text-transform:uppercase;letter-spacing:0.04em;font-weight:600;';
+    const tdSt='padding:8px 8px;border-bottom:1px solid var(--color-hairline);';
+    document.getElementById('cancel-table').innerHTML='<tr><th style="'+thSt+'">Rule</th><th style="'+thSt+'">Strength</th><th style="'+thSt+'">Status</th><th style="'+thSt+'">Note</th></tr>'+
+      cancels.map(c=>'<tr><td style="'+tdSt+'color:var(--color-ink);font-weight:600;">'+c.rule+'</td><td style="'+tdSt+'">'+c.strength+'</td><td style="'+tdSt+'"><span style="color:'+(c.applies?'#15803d':'#9ca3af')+';font-weight:600;">'+(c.applies?'✓ Applies':'× Not applicable')+'</span></td><td style="'+tdSt+'color:var(--color-body-text);">'+c.note+'</td></tr>').join('');
+    const anyCancel=cancels.some(c=>c.applies);
+    const remedyPanel=document.getElementById('remedy-panel');
+    if(present){
+      remedyPanel.style.display='block';
+      remedyPanel.innerHTML='<h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">Recommended Remedies</h3>'+(anyCancel?'<p style="font-size:13px;color:var(--color-body-text);margin:0 0 10px;line-height:1.6;">Cancellation factors are present in your chart, which reduce the dosha’s potency. The remedies below can be adopted for further pacification.</p>':'')+
+      '<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;"><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Recite the Mangal Mantra — “Om Angarakaya Namah” — 108 times every Tuesday.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Worship Lord Hanuman or Lord Kartikeya (Murugan) on Tuesdays.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Observe a Tuesday fast and donate red lentils (masoor dal), red cloth or red flowers.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Consider Red Coral (Moonga) in gold on the ring finger — consult a qualified Jyotishi before wearing.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">A Mangal Shanti Puja performed by a trained priest provides deeper karmic relief.</li></ul>';
+    }else{
+      remedyPanel.style.display='none';
+    }
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;document.getElementById('result').style.display='none';}

@@ -30,7 +30,7 @@ import Layout from '../../layouts/Layout.astro';
           <p id="r-en" style="font-size:14px;color:var(--color-mute);margin:0 0 14px;"></p>
           <div id="r-badges" style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;"></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;" class="two-col">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="two-col">
           <div class="card" style="padding:20px;">
             <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Rashi Details</h3>
             <div id="detail-list" style="display:flex;flex-direction:column;gap:9px;"></div>
@@ -39,6 +39,11 @@ import Layout from '../../layouts/Layout.astro';
             <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Characteristics</h3>
             <p id="r-desc" style="font-size:13.5px;color:var(--color-body-text);line-height:1.7;margin:0;"></p>
           </div>
+        </div>
+        <!-- Lucky Attributes -->
+        <div class="card" style="padding:20px;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Lucky Attributes</h3>
+          <div id="lucky-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;"></div>
         </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
@@ -75,6 +80,11 @@ const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupi
 const ELEM=['Fire','Earth','Air','Water','Fire','Earth','Air','Water','Fire','Earth','Air','Water'];
 const QUAL=['Movable','Fixed','Dual','Movable','Fixed','Dual','Movable','Fixed','Dual','Movable','Fixed','Dual'];
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const COLOR=['Red, Orange','White, Cream','Green, Yellow','Silver, Pearl','Gold, Orange','Grey, Dark Green','White, Light Blue','Red, Maroon','Yellow, Orange','Black, Dark Blue','Sky Blue, Violet','Sea Green, Lavender'];
+const DAY=['Tuesday','Friday','Wednesday','Monday','Sunday','Wednesday','Friday','Tuesday','Thursday','Saturday','Saturday','Thursday'];
+const GEM=['Red Coral','Diamond / Pearl','Emerald','Pearl','Ruby','Emerald','Diamond','Red Coral','Yellow Sapphire','Blue Sapphire','Blue Sapphire','Yellow Sapphire'];
+const COMPAT=['Leo, Sagittarius','Virgo, Capricorn','Libra, Aquarius','Scorpio, Pisces','Aries, Sagittarius','Taurus, Capricorn','Gemini, Aquarius','Cancer, Pisces','Aries, Leo','Taurus, Virgo','Gemini, Libra','Cancer, Scorpio'];
+const NUM=['1, 9','2, 6','3, 5','2, 7','1, 4','3, 5','1, 6','2, 3','3, 9','6, 8','4, 8','3, 7'];
 const DESC=[
 'Energetic, pioneering and bold. Mesha natives are natural leaders — courageous, competitive and quick to act, though sometimes impatient.',
 'Steady, patient and sensual. Vrishabha values comfort, beauty and security, with strong determination and loyalty.',
@@ -122,6 +132,14 @@ function calculate(){
       ['Ayanamsha',`${ay.toFixed(3)}° Lahiri`],
     ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
     document.getElementById('r-desc').textContent=DESC[idx];
+    document.getElementById('lucky-list').innerHTML=[
+      ['Lucky Color',COLOR[idx],'🎨'],
+      ['Lucky Day',DAY[idx],'📅'],
+      ['Lucky Gemstone',GEM[idx],'💎'],
+      ['Lucky Number',NUM[idx],'🔢'],
+      ['Compatible Rashis',COMPAT[idx],'❤️'],
+      ['Ruling Planet',LORD[idx],'🪐'],
+    ].map(r=>`<div style="padding:12px 14px;background:var(--color-canvas-soft);border-radius:8px;"><p style="font-size:10px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">${r[0]}</p><p style="font-size:13.5px;font-weight:600;color:var(--color-ink);margin:0;">${r[2]} ${r[1]}</p></div>`).join('');
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}

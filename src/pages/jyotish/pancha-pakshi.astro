@@ -23,6 +23,15 @@ import Layout from '../../layouts/Layout.astro';
         <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
+      <div style="border-top:1px solid var(--color-hairline);padding-top:22px;margin-bottom:32px;">
+        <p style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Quick Lookup — Know Your Nakshatra</p>
+        <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;">
+          <div><label class="fld-label">Birth Nakshatra</label><select id="f-nak" class="input" style="height:38px;min-width:220px;"></select></div>
+          <div><label class="fld-label">Place (for sunrise)</label><select id="f-city2" class="input" style="height:38px;min-width:150px;"></select></div>
+          <button id="f-calc-nak" class="btn-primary" style="height:38px;padding:0 20px;">Find My Bird</button>
+        </div>
+      </div>
+
       <div id="result" style="display:none;">
         <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
           <div id="bird-emoji" style="font-size:48px;line-height:1;margin-bottom:8px;"></div>
@@ -142,6 +151,52 @@ function calculate(){
     document.getElementById('err').style.display='none';
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
 }
+const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+document.getElementById('f-nak').innerHTML=NAK_NAMES.map((n,i)=>`<option value="${i}">${i+1}. ${n}</option>`).join('');
+document.getElementById('f-city2').innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+function calculateByNak(){
+  try{
+    const nakIdx=parseInt(document.getElementById('f-nak').value);
+    const loc=LOCS.find(l=>l.name===document.getElementById('f-city2').value)||LOCS[0];
+    const birthBird=nakIdx%5;
+    document.getElementById('bird-emoji').textContent=BIRD_EMOJI[birthBird];
+    document.getElementById('bird-name').textContent=`${BIRDS[birthBird]} \xb7 ${BIRDS_HI[birthBird]}`;
+    document.getElementById('bird-desc').textContent=BIRD_DESC[birthBird];
+    const now=new Date();
+    const ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
+    const jdT=toJD(ty,tm,td,6-loc.tz);
+    const srMins=sunriseUTC(jdT,loc.lat,loc.lng,true)*60+loc.tz*60;
+    const ssMins=sunriseUTC(jdT,loc.lat,loc.lng,false)*60+loc.tz*60;
+    const jdN=toJD(ty,tm,td+1,6-loc.tz);
+    const srNextMins=sunriseUTC(jdN,loc.lat,loc.lng,true)*60+loc.tz*60+1440;
+    const dayDur=(ssMins-srMins)/5;const nightDur=(srNextMins-ssMins)/5;
+    const wd=now.getDay();const dayBird=DAY_BIRD[wd];
+    const nowMins=now.getHours()*60+now.getMinutes();
+    document.getElementById('period-sub').textContent=`${now.toDateString()} \xb7 Day ruling bird: ${BIRDS[dayBird]} \xb7 Sunrise ${fmtMins(srMins)}, Sunset ${fmtMins(ssMins)}`;
+    function makePeriods2(startMins,dur,nightOffset){
+      let html='';
+      for(let i=0;i<5;i++){
+        const rulingBird=(dayBird+i+nightOffset)%5;
+        const offset=(birthBird-rulingBird+5)%5;
+        const s=startMins+i*dur,e=s+dur;
+        const cur=(s>=1440?nowMins+1440:nowMins)>=s&&(s>=1440?nowMins+1440:nowMins)<e;
+        html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:${cur?'var(--color-ink)':'var(--color-canvas-soft-2)'};">
+          <span style="width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[offset]};flex-shrink:0;"></span>
+          <div style="flex:1;">
+            <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${ACTIVITIES[offset]} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[offset]};">\xb7 ${ACT_Q[offset]}${cur?' \xb7 NOW':''}</span></p>
+            <p style="font-size:11px;color:${cur?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:1px 0 0;font-family:var(--font-mono);">${fmtMins(s)} – ${fmtMins(e)}</p>
+          </div>
+        </div>`;
+      }
+      return html;
+    }
+    document.getElementById('day-periods').innerHTML=makePeriods2(srMins,dayDur,0);
+    document.getElementById('night-periods').innerHTML=makePeriods2(ssMins,nightDur,2);
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
+}
+document.getElementById('f-calc-nak').addEventListener('click',calculateByNak);
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
 </script>

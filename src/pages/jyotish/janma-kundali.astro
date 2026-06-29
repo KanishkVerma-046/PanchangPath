@@ -1,0 +1,320 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Janma Kundali — Detailed Natal Chart Report — PanchangPath" description="Generate a detailed Janma Kundali report with ascendant, sidereal planetary positions, house lords, dignity analysis, yoga detection and Vimshottari Dasha. Lahiri ayanamsha.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">जन्म कुंडली · NATAL CHART REPORT</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Janma Kundali</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">A complete natal chart report — Lagna, sidereal planetary positions, house lords, dignity, key yogas and your Vimshottari Dasha balance at birth.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 56px;">
+    <div class="container">
+
+      <!-- Form -->
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:28px;">
+        <div><label class="fld-label">Name (optional)</label><input type="text" id="f-name" class="input" placeholder="Your name" style="height:38px;min-width:150px;" /></div>
+        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label">Place of Birth</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Generate Report</button>
+      </div>
+
+      <div id="result" style="display:none;">
+
+        <!-- Row 1: Chart + Birth Summary -->
+        <div style="display:grid;grid-template-columns:300px 1fr;gap:24px;margin-bottom:24px;" class="r1">
+          <div class="card" style="padding:20px;">
+            <h2 id="chart-title" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">Lagna Chart</h2>
+            <p id="chart-sub" style="font-size:11px;color:var(--color-mute);margin:0 0 12px;font-family:var(--font-mono);"></p>
+            <div id="chart-box"></div>
+          </div>
+          <div>
+            <div class="card" style="padding:20px;height:100%;box-sizing:border-box;">
+              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Birth Summary</h3>
+              <div id="summary-list" style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Planetary Positions (full) -->
+        <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:24px;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Graha Sphuta — Planetary Positions</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:640px;" id="planet-table"></table>
+        </div>
+
+        <!-- Row 3: House Lords -->
+        <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:24px;">
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Bhava Lords — House Analysis</h3>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:560px;" id="house-table"></table>
+        </div>
+
+        <!-- Row 4: Yogas + Dasha side by side -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;" class="r4">
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Yoga Vichar — Key Planetary Yogas</h3>
+            <div id="yoga-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+          </div>
+          <div class="card" style="padding:20px;">
+            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Vimshottari Dasha</h3>
+            <p style="font-size:12px;color:var(--color-mute);margin:0 0 12px;">120-year planetary period cycle from birth</p>
+            <div id="dasha-balance" style="margin-bottom:12px;"></div>
+            <table style="width:100%;border-collapse:collapse;font-size:12.5px;" id="dasha-table"></table>
+          </div>
+        </div>
+
+      </div><!-- /result -->
+
+      <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
+
+      <!-- About -->
+      <div class="card" style="padding:28px;margin-top:36px;">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Understanding Your Janma Kundali</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">The Janma Kundali is the complete map of the sky at your birth moment. Every planet's sidereal longitude (after applying the Lahiri ayanamsha) places it in one of 12 rashis (signs) and 12 bhavas (houses), revealing your karmic blueprint.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><b>House Lords:</b> Each house is owned by the sign lord of the rashi that falls there. The lord's own placement determines whether the house's themes flourish or face challenges.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><b>Planetary Dignity:</b> A planet in its own sign or exaltation functions at full strength; in debilitation it may need conscious cultivation. Neecha Bhanga (cancellation of debilitation) can restore its energy.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"><b>Vimshottari Dasha:</b> The 120-year planetary period system activated by the Moon's nakshatra at birth. The remaining years of the birth dasha, then the full sequence, are shown. Consult a qualified Jyotishi for a personalised reading.</p>
+      </div>
+
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  #planet-table th,#house-table th,#dasha-table th { text-align:left;padding:6px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.04em; }
+  #planet-table td,#house-table td,#dasha-table td { padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
+  .dignity-exalt { color:#15803d;font-weight:700; }
+  .dignity-own { color:#0369a1;font-weight:600; }
+  .dignity-debil { color:#dc2626;font-weight:600; }
+  .dasha-active { background:var(--color-auspicious-soft); }
+  @media(max-width:820px){ .r1,.r4 { grid-template-columns:1fr !important; } }
+</style>
+
+<script>
+const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
+const n360=a=>((a%360)+360)%360;
+const toR=d=>d*Math.PI/180;
+const toD=r=>r*180/Math.PI;
+function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
+function sunLon(jd){const T=(jd-2451545)/36525;const L0=n360(280.46646+36000.76983*T+0.0003032*T*T);const M=n360(357.52911+35999.05029*T-0.0001537*T*T);const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(toR(M))+(0.019993-0.000101*T)*Math.sin(2*toR(M))+0.000289*Math.sin(3*toR(M));return n360(L0+C);}
+function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
+function rahuLon(jd){const T=(jd-2451545)/36525;return n360(125.04452-1934.136261*T+0.0020708*T*T);}
+function solveKepler(M,e){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
+const ORB={mercury:{L:252.250906,Ld:149472.6746358,wp:77.456119,wpd:0.1588643,Om:48.330893,Omd:-0.1254229,i:7.004979,id:-0.005952,e:0.20563069,ed:0.00002527,a:0.38709831},venus:{L:181.979801,Ld:58517.815676,wp:131.563707,wpd:0.0036096,Om:76.67992,Omd:-0.278008,i:3.394662,id:-0.000857,e:0.00677323,ed:-0.00004938,a:0.72332102},earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},mars:{L:355.432818,Ld:19140.2993313,wp:336.040768,wpd:0.4439016,Om:49.558093,Omd:-0.295025,i:1.849726,id:-0.008148,e:0.09341233,ed:0.00011902,a:1.52371243},jupiter:{L:34.351484,Ld:3034.9056746,wp:14.331309,wpd:0.2155402,Om:100.464441,Omd:0.1350208,i:1.30327,id:-0.001987,e:0.04839266,ed:-0.0001288,a:5.20248019},saturn:{L:50.077444,Ld:1222.1137943,wp:93.056787,wpd:0.5691095,Om:113.665524,Omd:-0.2566722,i:2.488878,id:0.002552,e:0.0541506,ed:-0.00036762,a:9.54149883}};
+function helioXY(el,T){const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);const E=solveKepler(M,e);const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));const r=el.a*(1-e*Math.cos(E));const arg=nu+w;const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));return[x,y];}
+function allLons(jd){const T=(jd-2451545)/36525;const ay=ayanamsha(T);const[xE,yE]=helioXY(ORB.earth,T);const geo=k=>{const[xP,yP]=helioXY(ORB[k],T);return n360(toD(Math.atan2(yP-yE,xP-xE)));};const rahu=rahuLon(jd);return{surya:sunLon(jd),chandra:moonLon(jd),mangal:geo('mars'),budha:geo('mercury'),guru:geo('jupiter'),shukra:geo('venus'),shani:geo('saturn'),rahu,ketu:n360(rahu+180),ay};}
+function calcLagna(jd,lat,lng){const T=(jd-2451545)/36525;const eps=23.439291111-0.013004167*T;const GMST=n360(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);const RAMC=toR(n360(GMST+lng));const e=toR(eps),phi=toR(lat);const tanA=-Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));let A=toD(Math.atan(tanA));if(Math.cos(RAMC)>0)A+=180;return n360(A);}
+
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const RASHI_LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
+const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const PLANETS=[['surya','Sun','Su'],['chandra','Moon','Mo'],['mangal','Mars','Ma'],['budha','Mercury','Me'],['guru','Jupiter','Ju'],['shukra','Venus','Ve'],['shani','Saturn','Sa'],['rahu','Rahu','Ra'],['ketu','Ketu','Ke']];
+
+// Dignity data
+const EXALT={surya:0,chandra:1,mangal:9,budha:5,guru:3,shukra:11,shani:6};
+const DEBIL={surya:6,chandra:7,mangal:3,budha:11,guru:9,shukra:5,shani:0};
+const OWN={surya:[4],chandra:[3],mangal:[0,7],budha:[2,5],guru:[8,11],shukra:[1,6],shani:[9,10]};
+function dignity(k,sign){
+  if(EXALT[k]===sign)return{label:'Exalted',cls:'dignity-exalt'};
+  if(DEBIL[k]===sign)return{label:'Debilitated',cls:'dignity-debil'};
+  if(OWN[k]&&OWN[k].includes(sign))return{label:'Own Sign',cls:'dignity-own'};
+  return{label:'',cls:''};
+}
+
+// House significations
+const HOUSE_SIG=['Self, body, personality','Wealth, family, speech','Courage, siblings, communication','Home, mother, comforts','Children, intellect, creativity','Health, enemies, service','Marriage, partnerships, business','Longevity, transformation, hidden matters','Dharma, luck, higher learning','Career, status, father','Gains, social network, aspirations','Expenses, moksha, foreign travel'];
+
+// Vimshottari Dasha
+const DASHA_ORDER=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
+const DASHA_YRS={Ketu:7,Venus:20,Sun:6,Moon:10,Mars:7,Rahu:18,Jupiter:16,Saturn:19,Mercury:17};
+// nakshatra index → dasha lord (repeating 9-cycle over 27 nakshatras)
+function nakDashaLord(nakIdx){return DASHA_ORDER[nakIdx%9];}
+function fmtDt(ms){const d=new Date(ms);return d.toLocaleDateString('en-IN',{year:'numeric',month:'short'});}
+
+function fmtDMS(lon){const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);return deg+'\xb0'+String(mn).padStart(2,'0')+"'";}
+function nakInfo(sid){const sz=360/27;const idx=Math.floor(sid/sz);const pada=Math.floor((sid%sz)/(sz/4))+1;return{name:NAKS[idx],idx,pada,frac:(sid%sz)/sz};}
+
+// North Indian chart drawing
+function drawNorthChart(signOfHouse,planetsByHouse){
+  const S=280;
+  const f=[[0.5,0.25],[0.25,0.12],[0.12,0.25],[0.25,0.5],[0.12,0.75],[0.25,0.88],[0.5,0.75],[0.75,0.88],[0.88,0.75],[0.75,0.5],[0.88,0.25],[0.75,0.12]];
+  let lines=`<line x1="0" y1="0" x2="${S}" y2="${S}"/><line x1="${S}" y1="0" x2="0" y2="${S}"/><polygon points="${S/2},0 ${S},${S/2} ${S/2},${S} 0,${S/2}" fill="none"/>`;
+  let txt='';
+  for(let h=0;h<12;h++){
+    const cx=f[h][0]*S,cy=f[h][1]*S;
+    txt+=`<text x="${cx}" y="${cy-16}" text-anchor="middle" font-size="9" fill="var(--color-mute)" font-family="var(--font-mono)">${signOfHouse[h]+1}</text>`;
+    const pls=planetsByHouse[h]||[];
+    pls.forEach((p,i)=>{const perRow=3;const col=i%perRow;const row=Math.floor(i/perRow);const px=cx+(col-(Math.min(pls.length,perRow)-1)/2)*20;const py=cy+row*13;txt+=`<text x="${px}" y="${py}" text-anchor="middle" font-size="10" font-weight="600" fill="${p==='As'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
+  }
+  return `<svg viewBox="-2 -2 ${S+4} ${S+4}" width="100%" style="max-width:280px;stroke:var(--color-hairline-strong);stroke-width:1;"><rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-canvas-soft)"/>${lines}${txt}</svg>`;
+}
+
+// Setup
+const sel=document.getElementById('f-city');
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+const today=new Date();
+document.getElementById('f-date').value=today.toISOString().split('T')[0];
+document.getElementById('f-time').value='12:00';
+
+function calculate(){
+  try{
+    const dateStr=document.getElementById('f-date').value;
+    const timeStr=document.getElementById('f-time').value||'12:00';
+    const cityName=document.getElementById('f-city').value;
+    const name=document.getElementById('f-name').value.trim();
+    const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+    const[y,m,d]=dateStr.split('-').map(Number);
+    const[hh,mm]=timeStr.split(':').map(Number);
+    const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
+    const L=allLons(jd),ay=L.ay;
+    const Lp=allLons(jd+1);
+    const sid={};PLANETS.forEach(([k])=>sid[k]=n360(L[k]-ay));
+    const lagnaTrop=calcLagna(jd,loc.lat,loc.lng);
+    const lagna=n360(lagnaTrop-ay);
+    const lagnaSign=Math.floor(lagna/30);
+    const lagnaLord=RASHI_LORD[lagnaSign];
+
+    // House structures
+    const signOfHouse=[],houseOfSign=[];
+    for(let h=0;h<12;h++){signOfHouse[h]=(lagnaSign+h)%12;}
+    for(let h=0;h<12;h++)houseOfSign[signOfHouse[h]]=h;
+    const planetsByHouse={};for(let h=0;h<12;h++)planetsByHouse[h]=[];
+    planetsByHouse[0].push('As');
+    PLANETS.forEach(([k,,abbr])=>{const sign=Math.floor(sid[k]/30);planetsByHouse[((sign-lagnaSign)+12)%12].push(abbr);});
+
+    // ── Chart ──
+    document.getElementById('chart-box').innerHTML=drawNorthChart(signOfHouse,planetsByHouse);
+    document.getElementById('chart-title').textContent=(name?name+"'s ":'')+'Lagna Chart (D-1)';
+    document.getElementById('chart-sub').textContent=RASHI[lagnaSign]+' Lagna \xb7 '+dateStr+' '+timeStr+' \xb7 '+cityName;
+
+    // ── Birth Summary ──
+    const moonSign=Math.floor(sid.chandra/30),sunSign=Math.floor(sid.surya/30);
+    const moonNak=nakInfo(sid.chandra);
+    const sumItems=[
+      ['Lagna (Ascendant)',RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
+      ['Lagna Lord',lagnaLord],
+      ['Lagna Degree',fmtDMS(lagna)],
+      ['Moon Rashi',RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
+      ['Sun Rashi',RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')'],
+      ['Janma Nakshatra',moonNak.name+' pada '+moonNak.pada],
+      ['Paksha',sid.chandra>sid.surya&&sid.chandra-sid.surya<180?'Shukla (Waxing)':'Krishna (Waning)'],
+      ['Ayanamsha',ay.toFixed(3)+'\xb0 Lahiri'],
+    ];
+    document.getElementById('summary-list').innerHTML=sumItems.map(r=>
+      `<div><p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);">${r[0].toUpperCase()}</p><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`
+    ).join('');
+
+    // ── Planetary Positions Table ──
+    let pRows='<tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>House</th><th>Nakshatra</th><th>Pada</th><th>Motion</th><th>Dignity</th></tr>';
+    PLANETS.forEach(([k,full])=>{
+      const s=sid[k],sign=Math.floor(s/30);
+      const house=((sign-lagnaSign)+12)%12;
+      const nk=nakInfo(s);
+      let motion='Margi';
+      if(k==='rahu'||k==='ketu')motion='Vakri (always)';
+      else if(k!=='surya'&&k!=='chandra'){const c=n360(L[k]-ay),nx=n360(Lp[k]-Lp.ay);let df=nx-c;if(df>180)df-=360;if(df<-180)df+=360;motion=df<0?'Vakri':'Margi';}
+      const dig=dignity(k,sign);
+      pRows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${full}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td style="text-align:center;">${house+1}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${motion.startsWith('Vakri')?'#dc2626':'var(--color-body-text)'};">${motion}</td><td class="${dig.cls}">${dig.label}</td></tr>`;
+    });
+    document.getElementById('planet-table').innerHTML=pRows;
+
+    // ── House Lords Table ──
+    let hRows='<tr><th>House</th><th>Rashi</th><th>Lord</th><th>Lord is in</th><th>Significance</th></tr>';
+    for(let h=0;h<12;h++){
+      const sign=signOfHouse[h];
+      const lord=RASHI_LORD[sign];
+      const lordKey={Sun:'surya',Moon:'chandra',Mars:'mangal',Mercury:'budha',Jupiter:'guru',Venus:'shukra',Saturn:'shani'}[lord];
+      const lordSign=lordKey?Math.floor(sid[lordKey]/30):-1;
+      const lordHouse=lordKey?((lordSign-lagnaSign+12)%12):-1;
+      const lordPos=lordKey?'H'+(lordHouse+1)+' ('+RASHI[lordSign]+')':'—';
+      hRows+=`<tr><td style="font-weight:600;color:var(--color-ink);">H${h+1}</td><td>${RASHI[sign]}</td><td>${lord}</td><td>${lordPos}</td><td style="font-size:12px;color:var(--color-mute);">${HOUSE_SIG[h]}</td></tr>`;
+    }
+    document.getElementById('house-table').innerHTML=hRows;
+
+    // ── Yoga Detection ──
+    const yogas=[];
+    // Gajakesari: Jupiter in 1,4,7,10 from Moon
+    const guruSign=Math.floor(sid.guru/30),moonFromMoon=((guruSign-moonSign+12)%12);
+    if([0,3,6,9].includes(moonFromMoon))yogas.push({name:'Gajakesari Yoga',desc:'Jupiter in kendra from Moon — brings wisdom, reputation and prosperity.',badge:'auspicious'});
+    // Budhaditya: Sun + Mercury same sign
+    if(Math.floor(sid.surya/30)===Math.floor(sid.budha/30))yogas.push({name:'Budhaditya Yoga',desc:'Sun and Mercury conjunct — enhances intellect, analytical skill and communication.',badge:'auspicious'});
+    // Chandra-Mangal: Moon and Mars conjunct or 7th from each other
+    const marsSign=Math.floor(sid.mangal/30),marsFromMoon=(marsSign-moonSign+12)%12;
+    if(marsFromMoon===0||marsFromMoon===6)yogas.push({name:'Chandra-Mangal Yoga',desc:'Moon and Mars conjunct or in opposition — drives ambition, financial determination.',badge:'auspicious'});
+    // Pancha Mahapurusha Yogas
+    const PM=[['guru','Hamsa','Jupiter in own (Dhanu/Meena) or exalted (Karka) and in kendra.'],['shukra','Malavya','Venus in own (Vrishabha/Tula) or exalted (Meena) and in kendra.'],['mangal','Ruchaka','Mars in own (Mesha/Vrishchika) or exalted (Makara) and in kendra.'],['budha','Bhadra','Mercury in own (Mithuna/Kanya) or exalted (Kanya) and in kendra.'],['shani','Shasha','Saturn in own (Makara/Kumbha) or exalted (Tula) and in kendra.']];
+    PM.forEach(([k,yname,desc])=>{
+      const sg=Math.floor(sid[k]/30),ho=((sg-lagnaSign+12)%12);
+      if((OWN[k]&&OWN[k].includes(sg)||EXALT[k]===sg)&&[0,3,6,9].includes(ho))yogas.push({name:yname+' Yoga (Mahapurusha)',desc,badge:'auspicious'});
+    });
+    // Raja Yoga: lord of 1 + lord of 5 or 9 conjunct
+    const lordKey2=n=>{const s=signOfHouse[n];const lord=RASHI_LORD[s];return{Sun:'surya',Moon:'chandra',Mars:'mangal',Mercury:'budha',Jupiter:'guru',Venus:'shukra',Saturn:'shani'}[lord];};
+    const l1k=lordKey2(0),l5k=lordKey2(4),l9k=lordKey2(8);
+    if(l1k&&l5k&&l1k!==l5k&&Math.floor(sid[l1k]/30)===Math.floor(sid[l5k]/30))yogas.push({name:'Raja Yoga (1-5 Lords)',desc:'Lords of Lagna and 5th house conjunct — authority, creativity and prosperity.',badge:'auspicious'});
+    if(l1k&&l9k&&l1k!==l9k&&Math.floor(sid[l1k]/30)===Math.floor(sid[l9k]/30))yogas.push({name:'Raja Yoga (1-9 Lords)',desc:'Lords of Lagna and 9th house conjunct — excellent fortune, leadership and dharmic life.',badge:'auspicious'});
+    // Kemadruma: Moon with no planets in adjacent houses
+    const adjH=[(moonSign-lagnaSign+11)%12,(moonSign-lagnaSign+1)%12];
+    const moonHouse=(moonSign-lagnaSign+12)%12;
+    const hasNeighbour=PLANETS.some(([k])=>k!=='chandra'&&k!=='rahu'&&k!=='ketu'&&[adjH[0],adjH[1]].includes(((Math.floor(sid[k]/30)-lagnaSign)+12)%12));
+    if(!hasNeighbour)yogas.push({name:'Kemadruma Yoga',desc:'Moon without planets in adjacent houses — may cause emotional isolation; mitigated if Moon is in kendra.',badge:'caution'});
+
+    if(yogas.length===0)yogas.push({name:'No prominent yogas detected',desc:'The chart has a balanced, ordinary planetary configuration.',badge:''});
+    document.getElementById('yoga-list').innerHTML=yogas.map(y=>
+      `<div style="padding:10px 12px;border-radius:8px;background:${y.badge==='auspicious'?'var(--color-auspicious-soft)':y.badge==='caution'?'var(--color-inauspicious-soft)':'var(--color-canvas-soft)'};">
+        <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">${y.name}</p>
+        <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.5;">${y.desc}</p>
+      </div>`
+    ).join('');
+
+    // ── Vimshottari Dasha ──
+    const moonNakFull=nakInfo(sid.chandra);
+    const nakIdx=moonNakFull.idx;
+    const dashaLord=nakDashaLord(nakIdx);
+    const dashaYrs=DASHA_YRS[dashaLord];
+    const consumed=moonNakFull.frac*dashaYrs;
+    const remaining=dashaYrs-consumed;
+
+    document.getElementById('dasha-balance').innerHTML=
+      `<div style="padding:10px 14px;background:var(--color-canvas-soft);border-radius:8px;">
+        <p style="font-size:11px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);">BIRTH DASHA BALANCE</p>
+        <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">${dashaLord} — ${remaining.toFixed(1)} yrs remaining</p>
+        <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">Janma Nakshatra: ${NAKS[nakIdx]} (${(moonNakFull.frac*100).toFixed(0)}% elapsed in ${dashaLord} dasha)</p>
+      </div>`;
+
+    const msPerYr=365.25*24*3600*1000;
+    const birthMs=new Date(y,m-1,d,hh,mm).getTime()-loc.tz*3600000;
+    const dashaStartMs=birthMs-consumed*msPerYr;
+    const startIdx=DASHA_ORDER.indexOf(dashaLord);
+    const now=Date.now();
+    let t=dashaStartMs;
+    let dRows='<tr><th>Dasha Lord</th><th>Years</th><th>From</th><th>To</th></tr>';
+    for(let i=0;i<9;i++){
+      const lord=DASHA_ORDER[(startIdx+i)%9];
+      const yrs=DASHA_YRS[lord];
+      const st=t,en=t+yrs*msPerYr;
+      const isActive=now>=st&&now<en;
+      const from=i===0?'Birth':fmtDt(st);
+      dRows+=`<tr class="${isActive?'dasha-active':''}"><td style="font-weight:${isActive?700:400};color:${isActive?'var(--color-ink)':'var(--color-body-text)'};">${lord}${isActive?' ◀':''}</td><td>${yrs}</td><td>${from}</td><td>${fmtDt(en)}</td></tr>`;
+      t=en;
+    }
+    document.getElementById('dasha-table').innerHTML=dRows;
+
+    document.getElementById('result').style.display='block';
+    document.getElementById('err').style.display='none';
+  }catch(e){
+    const er=document.getElementById('err');er.style.display='block';er.textContent='Could not generate report: '+e.message;
+    document.getElementById('result').style.display='none';
+  }
+}
+document.getElementById('f-calc').addEventListener('click',calculate);
+calculate();
+</script>

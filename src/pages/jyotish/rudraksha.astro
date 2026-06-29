@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 ---
 
-<Layout title="Rudraksha Calculator — Find Your Mukhi — PanchangPath" description="Find the Rudraksha mukhi best suited to you based on your Vedic birth chart. See all 14 mukhis with their deity, ruling planet, benefits and mantra.">
+<Layout title="Rudraksha Calculator — Find Your Mukhi — PanchangPath" description="Find the Rudraksha mukhi best suited to you based on your Vedic birth chart or Rashi/Lagna. See all 14 mukhis with deity, ruling planet, benefits and mantra.">
 
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
@@ -10,34 +10,60 @@ import Layout from '../../layouts/Layout.astro';
       <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">रुद्राक्ष · RUDRAKSHA CALCULATOR</p>
       <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rudraksha Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Rudraksha beads carry the energy of Lord Shiva. Find the mukhi (face) suited to your chart, based on your Lagna lord and Moon sign.</p>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Rudraksha beads carry the energy of Lord Shiva. Find the mukhi suited to your chart from birth details, or select your Lagna and Moon rashi directly.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
-      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+
+      <!-- Input mode tabs -->
+      <div style="display:flex;gap:0;margin-bottom:24px;border:1px solid var(--color-hairline-strong);border-radius:8px;overflow:hidden;width:fit-content;">
+        <button class="mode-btn active" id="mode-birth">By Birth Details</button>
+        <button class="mode-btn" id="mode-quick">By Rashi / Lagna</button>
+      </div>
+
+      <!-- Birth Details form -->
+      <div id="form-birth" style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
         <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
         <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
         <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
+      <!-- Quick Select form -->
+      <div id="form-quick" style="display:none;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <label class="fld-label">Lagna (Ascendant Sign)</label>
+          <select id="q-lagna" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+        <div>
+          <label class="fld-label">Moon Rashi (Moon Sign)</label>
+          <select id="q-moon" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+        <button id="q-calc" class="btn-primary" style="height:38px;padding:0 20px;">Find Rudraksha</button>
+      </div>
+
       <div id="result" style="display:none;">
         <div class="card" style="padding:20px;margin-bottom:24px;">
           <div id="birth-info" style="display:flex;gap:24px;flex-wrap:wrap;"></div>
         </div>
-        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Recommended Rudraksha</h3>
+        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Primary Recommendation</h3>
+        <p style="font-size:12.5px;color:var(--color-mute);margin:0 0 14px;">The Jeevan Rudraksha for your Lagna lord — generally safe to wear lifelong.</p>
+        <div id="rec-primary" style="margin-bottom:24px;"></div>
+        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Supporting Rudraksha</h3>
         <div id="rec-rudraksha" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:32px;"></div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 14 Mukhis</h3>
-      <div id="all-mukhis" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-bottom:36px;"></div>
+      <!-- All 14 Mukhis reference -->
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 14 Mukhis — Reference Guide</h3>
+      <div id="all-mukhis" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:36px;"></div>
 
       <div class="card" style="padding:28px;">
         <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rudraksha</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Rudraksha (rudra + aksha, "tears of Shiva") are seeds of the Elaeocarpus ganitrus tree, prized for their spiritual and healing properties. Each bead has natural clefts called mukhis, and the number of mukhis links it to a specific deity and planet. Wearing a bead matched to your chart is said to balance the energies of its ruling graha. The 5-mukhi is the most common and universally safe to wear by anyone.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Rudraksha (rudra + aksha, "tears of Shiva") are seeds of the Elaeocarpus ganitrus tree, prized for their spiritual and healing properties. Each bead has natural clefts called mukhis; the number of mukhis links it to a specific deity and ruling planet.</p>
+        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">The 5-mukhi is the most common and universally safe bead. Blue Sapphire energy (7-mukhi / Saturn) and 14-mukhi (Shiva / Saturn-Rahu) should always be worn after consulting a Jyotishi, as Saturn energy amplifies both positive and negative chart patterns.</p>
       </div>
     </div>
   </section>
@@ -45,94 +71,138 @@ import Layout from '../../layouts/Layout.astro';
 
 <style>
   .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  .mode-btn { padding:9px 18px;border:none;background:transparent;color:var(--color-body-text);cursor:pointer;font-size:13px;font-family:var(--font-mono); }
+  .mode-btn.active { background:var(--color-ink);color:var(--color-canvas);font-weight:600; }
+  .mode-btn:not(.active):hover { background:var(--color-canvas-soft); }
 </style>
 
 <script>
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
-const n360=a=>((a%360)+360)%360;
-const toR=d=>d*Math.PI/180;
-const toD=r=>r*180/Math.PI;
+const n360=a=>((a%360)+360)%360;const toR=d=>d*Math.PI/180;const toD=r=>r*180/Math.PI;
 function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
 function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F));return n360(Lm+dL/1000);}
 function calcLagna(jd,lat,lng){const T=(jd-2451545)/36525;const eps=23.439291111-0.013004167*T;const GMST=n360(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T);const RAMC=toR(n360(GMST+lng));const e=toR(eps),phi=toR(lat);const tanA=-Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));let A=toD(Math.atan(tanA));if(Math.cos(RAMC)>0)A+=180;return n360(A);}
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
-const RUDRAKSHA=[
-{m:1,deity:'Shiva',planet:'Sun',b:'Supreme consciousness, leadership, heart health',mantra:'Om Hreem Namah',rashi:'All'},
-{m:2,deity:'Ardhanareeshvara',planet:'Moon',b:'Harmony in relationships, emotional balance',mantra:'Om Namah',rashi:'Karka'},
-{m:3,deity:'Agni / Brahma',planet:'Mars',b:'Confidence, freedom from past karma',mantra:'Om Kleem Namah',rashi:'Mesha/Vrishchika'},
-{m:4,deity:'Brahma',planet:'Mercury',b:'Intellect, creativity, concentration',mantra:'Om Hreem Namah',rashi:'Mithuna/Kanya'},
-{m:5,deity:'Kalagni / Rudra',planet:'Jupiter',b:'General wellbeing, wisdom, peace of mind',mantra:'Om Hreem Namah',rashi:'All'},
-{m:6,deity:'Kartikeya',planet:'Venus',b:'Willpower, attraction, material comforts',mantra:'Om Hreem Hoom Namah',rashi:'Vrishabha/Tula'},
-{m:7,deity:'Mahalakshmi',planet:'Saturn',b:'Financial prosperity, health, removes poverty',mantra:'Om Hoom Namah',rashi:'Makara/Kumbha'},
-{m:8,deity:'Ganesha',planet:'Rahu',b:'Removes obstacles, success in endeavors',mantra:'Om Ganeshaya Namah',rashi:'All'},
-{m:9,deity:'Durga / Bhairava',planet:'Ketu',b:'Fearlessness, spiritual power, liberation',mantra:'Om Hreem Hoom Namah',rashi:'All'},
-{m:10,deity:'Vishnu',planet:'All',b:'Peace, protection from negative energies',mantra:'Om Hreem Namah Namah',rashi:'All'},
-{m:11,deity:'Hanuman / Ekadasha Rudra',planet:'Sun',b:'Meditation, intuition, adventure',mantra:'Om Hreem Hoom Namah',rashi:'All'},
-{m:12,deity:'Aditya / Sun',planet:'Sun',b:'Radiance, leadership, removes obstacles',mantra:'Om Kraum Sraum Raum Namah',rashi:'Simha'},
-{m:13,deity:'Vishwakarma',planet:'Venus/Jupiter',b:'Prosperity, worldly success, creative power',mantra:'Om Hreem Namah',rashi:'All'},
-{m:14,deity:'Shiva (Deva Mani)',planet:'Saturn/Rahu',b:'Highest protection, intuition, ultimate power',mantra:'Om Namah',rashi:'All'}];
-// planet -> first matching mukhi
-function mukhiForPlanet(pl){const found=RUDRAKSHA.find(r=>r.planet.split('/').includes(pl));return found||RUDRAKSHA[4];}
 
+const RUDRAKSHA=[
+  {m:1,deity:'Shiva (Mahadeva)',planet:'Sun',color:'#f59e0b',b:'Supreme consciousness, strong willpower, heart health and leadership. Removes sins of the past and connects the wearer to divine energy.',mantra:'Om Hreem Namah',day:'Sunday',metal:'Gold',wear:'Right hand / neck'},
+  {m:2,deity:'Ardhanareeshvara',planet:'Moon',color:'#6366f1',b:'Emotional balance, harmony in relationships, calms the mind. Strengthens bonds and improves communication between partners.',mantra:'Om Namah',day:'Monday',metal:'Silver',wear:'Left hand / neck'},
+  {m:3,deity:'Agni / Brahma',planet:'Mars',color:'#ef4444',b:'Confidence, freedom from past karma and fear. Boosts courage, vitality and helps overcome enemies. Good for siblings and communication.',mantra:'Om Kleem Namah',day:'Tuesday',metal:'Copper',wear:'Right hand'},
+  {m:4,deity:'Brahma',planet:'Mercury',color:'#10b981',b:'Intellect, creativity and concentration. Removes mental fog and enhances communication, learning and creative power.',mantra:'Om Hreem Namah',day:'Wednesday',metal:'Gold',wear:'Right hand'},
+  {m:5,deity:'Kalagni / Pancha Rudra',planet:'Jupiter',color:'#f59e0b',b:'General wellbeing, wisdom, peace of mind and spiritual growth. The most universally safe and beneficial bead — suitable for all.',mantra:'Om Hreem Namah',day:'Thursday',metal:'Gold',wear:'Any finger / neck'},
+  {m:6,deity:'Kartikeya',planet:'Venus',color:'#a78bfa',b:'Willpower, attraction, material comforts and luxury. Enhances creativity, relationships and removes obstacles from personal life.',mantra:'Om Hreem Hoom Namah',day:'Friday',metal:'Silver',wear:'Right hand'},
+  {m:7,deity:'Mahalakshmi / Saptarishi',planet:'Saturn',color:'#3b82f6',b:'Financial prosperity, removes poverty and illness. Channels Saturn energy positively for career stability and longevity.',mantra:'Om Hoom Namah',day:'Saturday',metal:'Gold/Silver',wear:'Right hand'},
+  {m:8,deity:'Ganesha',planet:'Rahu',color:'#8b5cf6',b:'Removes obstacles and negativity. Brings success in endeavors, protects against black magic and sudden misfortune.',mantra:'Om Ganeshaya Namah',day:'Saturday',metal:'Gold',wear:'Right hand'},
+  {m:9,deity:'Durga / Bhairava',planet:'Ketu',color:'#ec4899',b:'Fearlessness, spiritual power and liberation. Enhances intuition, protects from evil eye and accelerates spiritual growth.',mantra:'Om Hreem Hoom Namah',day:'Tuesday',metal:'Copper',wear:'Right hand'},
+  {m:10,deity:'Vishnu (Dashavatara)',planet:'All Planets',color:'#0ea5e9',b:'Peace, divine protection and harmony. Balances all planetary energies simultaneously. Suitable for anyone facing multiple challenges.',mantra:'Om Hreem Namah Namah',day:'Any',metal:'Gold',wear:'Neck'},
+  {m:11,deity:'Hanuman / Ekadasha Rudra',planet:'Sun',color:'#f97316',b:'Meditation, intuition and the spirit of adventure. Enhances leadership qualities and removes ego. Good for spiritual practitioners.',mantra:'Om Hreem Hoom Namah',day:'Sunday',metal:'Gold',wear:'Neck'},
+  {m:12,deity:'Aditya (Sun God)',planet:'Sun',color:'#eab308',b:'Radiance, leadership and removal of obstacles. Enhances fame, confidence and connection to the solar divine energy.',mantra:'Om Kraum Sraum Raum Namah',day:'Sunday',metal:'Gold',wear:'Right hand / neck'},
+  {m:13,deity:'Vishwakarma / Kartikeya',planet:'Venus / Jupiter',color:'#14b8a6',b:'Prosperity, worldly success and creative power. Bestows all material and spiritual pleasures and heightens sensory perception.',mantra:'Om Hreem Namah',day:'Friday',metal:'Silver',wear:'Right hand'},
+  {m:14,deity:'Shiva (Deva Mani)',planet:'Saturn / Rahu',color:'#1e3a5f',b:'The highest protection and ultimate divine power. Enhances intuition, third-eye awareness and spiritual transformation. Use with guidance.',mantra:'Om Namah',day:'Saturday',metal:'Silver',wear:'Neck (after consultation)'}
+];
+
+function mukhiForPlanet(pl){return RUDRAKSHA.find(r=>r.planet.split(' / ').includes(pl)||r.planet===pl)||RUDRAKSHA[4];}
+
+function rudCard(r,label,big){
+  return `<div class="card" style="padding:18px;border-top:3px solid ${r.color};${big?'border-left:none;':''}">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+      <span style="width:${big?48:38}px;height:${big?48:38}px;border-radius:50%;background:${r.color}22;border:2px solid ${r.color};color:${r.color};font-weight:800;font-size:${big?20:16}px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.m}</span>
+      <div>
+        <h4 style="font-size:${big?17:15}px;font-weight:700;color:var(--color-ink);margin:0;">${r.m}-Mukhi Rudraksha</h4>
+        <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${label} &middot; ${r.planet}</p>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${r.b}</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;font-size:12px;">
+      ${[['Deity',r.deity],['Mantra',r.mantra],['Wear on',r.wear],['Auspicious Day',r.day]].map(x=>`<div><span style="color:var(--color-mute);">${x[0]}: </span><span style="color:var(--color-ink);font-weight:600;">${x[1]}</span></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function showResults(lagnaSign,moonSign){
+  const lagnaLord=LORD[lagnaSign],moonLord=LORD[moonSign];
+  document.getElementById('birth-info').innerHTML=[
+    ['Lagna (Ascendant)',RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
+    ['Lagna Lord',lagnaLord],
+    ['Moon Rashi',RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
+    ['Moon Lord',moonLord],
+  ].map(r=>`<div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">${r[0]}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`).join('');
+
+  document.getElementById('rec-primary').innerHTML=rudCard(mukhiForPlanet(lagnaLord),'Primary — Lagna Lord',true);
+  const seen=new Set([mukhiForPlanet(lagnaLord).m]);
+  const sec=[];
+  const r2=mukhiForPlanet(moonLord);if(!seen.has(r2.m)){sec.push(rudCard(r2,'For Moon Lord',false));seen.add(r2.m);}
+  if(!seen.has(5)){sec.push(rudCard(RUDRAKSHA[4],'Universal (safe for all)',false));seen.add(5);}
+  document.getElementById('rec-rudraksha').innerHTML=sec.join('')||(sec.length===0?'<p style="font-size:13px;color:var(--color-mute);">No additional recommendations (Lagna and Moon lords share the same Rudraksha).</p>':'');
+  document.getElementById('result').style.display='block';
+  document.getElementById('err').style.display='none';
+}
+
+// City dropdown
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
-function rudCard(r,label,big){
-  return `<div class="card" style="padding:18px;${big?'border-top:3px solid var(--color-saffron);':''}">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-      <span style="width:44px;height:44px;border-radius:50%;background:var(--color-saffron-soft);color:var(--color-saffron-deep);font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.m}</span>
-      <div>
-        <h4 style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">${r.m}-Mukhi</h4>
-        <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${label} · ${r.planet}</p>
-      </div>
-    </div>
-    <p style="font-size:12.5px;color:var(--color-body-text);line-height:1.6;margin:0 0 10px;">${r.b}</p>
-    <div style="font-size:12px;display:flex;flex-direction:column;gap:4px;">
-      <div><span style="color:var(--color-mute);">Deity: </span><span style="color:var(--color-ink);font-weight:600;">${r.deity}</span></div>
-      <div><span style="color:var(--color-mute);">Mantra: </span><span style="color:var(--color-ink);font-weight:600;font-family:var(--font-mono);">${r.mantra}</span></div>
-    </div></div>`;
-}
+// Rashi dropdowns for quick mode
+const rashiOptions=RASHI.map((r,i)=>`<option value="${i}">${r} (${RASHI_EN[i]})</option>`).join('');
+document.getElementById('q-lagna').innerHTML=rashiOptions;
+document.getElementById('q-moon').innerHTML=rashiOptions;
+document.getElementById('q-moon').value='3'; // default Moon to Karka
 
+// Mode switching
+document.getElementById('mode-birth').addEventListener('click',()=>{
+  document.getElementById('form-birth').style.display='flex';
+  document.getElementById('form-quick').style.display='none';
+  document.getElementById('mode-birth').classList.add('active');
+  document.getElementById('mode-quick').classList.remove('active');
+});
+document.getElementById('mode-quick').addEventListener('click',()=>{
+  document.getElementById('form-birth').style.display='none';
+  document.getElementById('form-quick').style.display='flex';
+  document.getElementById('mode-birth').classList.remove('active');
+  document.getElementById('mode-quick').classList.add('active');
+});
+
+// Birth details calculation
 function calculate(){
   try{
     const dateStr=document.getElementById('f-date').value;
     const timeStr=document.getElementById('f-time').value||'12:00';
     const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
-    const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const[y,m,d]=dateStr.split('-').map(Number);const[hh,mm]=timeStr.split(':').map(Number);
     const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
     const T=(jd-2451545)/36525;const ay=ayanamsha(T);
     const lagnaSign=Math.floor(n360(calcLagna(jd,loc.lat,loc.lng)-ay)/30);
     const moonSign=Math.floor(n360(moonLon(jd)-ay)/30);
-    const lagnaLord=LORD[lagnaSign];const moonLord=LORD[moonSign];
-
-    document.getElementById('birth-info').innerHTML=[
-      ['Lagna',`${RASHI[lagnaSign]} (Lord ${lagnaLord})`],
-      ['Moon Rashi',`${RASHI[moonSign]} (Lord ${moonLord})`],
-      ['Dominant Planet',lagnaLord],
-    ].map(r=>`<div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">${r[0]}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`).join('');
-
-    const recs=[];const seen=new Set();
-    const r1=mukhiForPlanet(lagnaLord);recs.push(rudCard(r1,'For Lagna Lord',true));seen.add(r1.m);
-    const r2=mukhiForPlanet(moonLord);if(!seen.has(r2.m)){recs.push(rudCard(r2,'For Moon Lord',false));seen.add(r2.m);}
-    if(!seen.has(5)){recs.push(rudCard(RUDRAKSHA[4],'Universal (all-purpose)',false));seen.add(5);}
-    document.getElementById('rec-rudraksha').innerHTML=recs.join('');
-    document.getElementById('result').style.display='block';
-    document.getElementById('err').style.display='none';
+    showResults(lagnaSign,moonSign);
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
 }
-document.getElementById('all-mukhis').innerHTML=RUDRAKSHA.map(r=>
-  `<div class="card" style="padding:12px;">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-      <span style="width:28px;height:28px;border-radius:50%;background:var(--color-saffron-soft);color:var(--color-saffron-deep);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;">${r.m}</span>
-      <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${r.deity}</span>
-    </div>
-    <p style="font-size:11px;color:var(--color-mute);margin:0 0 3px;">Planet: ${r.planet}</p>
-    <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.4;">${r.b}</p>
-  </div>`).join('');
 document.getElementById('f-calc').addEventListener('click',calculate);
+
+// Quick select calculation
+document.getElementById('q-calc').addEventListener('click',()=>{
+  const lagnaSign=parseInt(document.getElementById('q-lagna').value);
+  const moonSign=parseInt(document.getElementById('q-moon').value);
+  showResults(lagnaSign,moonSign);
+});
+
+// All 14 mukhis grid
+document.getElementById('all-mukhis').innerHTML=RUDRAKSHA.map(r=>
+  `<div class="card" style="padding:12px;border-top:2px solid ${r.color};">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <span style="width:28px;height:28px;border-radius:50%;background:${r.color}22;border:1.5px solid ${r.color};color:${r.color};font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">${r.m}</span>
+      <div>
+        <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${r.m}-Mukhi</span>
+        <span style="font-size:10px;color:var(--color-mute);margin-left:6px;">${r.planet}</span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;">${r.deity}</p>
+    <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.4;">${r.b.split('.')[0]}.</p>
+  </div>`).join('');
+
 calculate();
 </script>

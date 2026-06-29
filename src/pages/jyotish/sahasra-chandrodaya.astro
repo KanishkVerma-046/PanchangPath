@@ -67,6 +67,7 @@ const MON=['January','February','March','April','May','June','July','August','Se
 
 document.getElementById('f-date').value='1945-06-15';
 
+function jdToHHMM(jd){const frac=((jd+0.5)%1+1)%1;const tot=Math.round(frac*1440);const h=Math.floor(tot/60)%24;const mn=tot%60;const ap=h<12?'AM':'PM';return (h%12||12)+':'+String(mn).padStart(2,'0')+' '+ap+' UTC';}
 function nextFullMoon(jd){
   // step to find elongation crossing 180
   let cur=jd;
@@ -94,7 +95,7 @@ function calculate(){
     const ageMs=jd1000-jdBirth;const ageYears=ageMs/365.25;
 
     document.getElementById('big-date').textContent=`${dt.getDate()} ${MON[dt.getMonth()]} ${dt.getFullYear()}`;
-    document.getElementById('big-meta').textContent=`Approximately ${Math.floor(ageYears)} years, ${Math.round((ageYears%1)*12)} months after birth`;
+    document.getElementById('big-meta').textContent=`at ${jdToHHMM(jd1000)} \xb7 Approx. ${Math.floor(ageYears)} years, ${Math.round((ageYears%1)*12)} months after birth`;
 
     const todayJD=toJD(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate(),12);
     const moonsSoFar=Math.max(0,Math.min(1000,Math.floor((todayJD-firstFM)/SYN)+1));
