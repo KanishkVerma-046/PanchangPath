@@ -7,6 +7,18 @@
       "skillPath": "skills/just-scrape/SKILL.md",
       "computedHash": "bcf0ee77f3ed7512147e4f18f831f6346c072e2f0ba7d23655c1bfaab96f0c62"
     },
+    "programmatic-seo": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/programmatic-seo/SKILL.md",
+      "computedHash": "a53dc8741b0df338766ef8fc7d704bdfc75b8c8e7e1b1b2a5947d81d8c9508ff"
+    },
+    "seo": {
+      "source": "addyosmani/web-quality-skills",
+      "sourceType": "github",
+      "skillPath": "skills/seo/SKILL.md",
+      "computedHash": "3d72168e266b759454b3e16028e7306ec716f21de6878cac7e98a0a3834ab5db"
+    },
     "tailwind-4-docs": {
       "source": "lombiq/tailwind-agent-skills",
       "sourceType": "github",
