@@ -1,0 +1,32 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { PUJA_VIDHIS } from '../../../lib/devotional/pujavidhi';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return PUJA_VIDHIS.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['puja-vidhi'];
+
+const idx = PUJA_VIDHIS.findIndex(a => a.slug === item.slug);
+const prev = idx > 0 ? PUJA_VIDHIS[idx - 1] : null;
+const next = idx < PUJA_VIDHIS.length - 1 ? PUJA_VIDHIS[idx + 1] : null;
+---
+
+<Layout
+  title={`${item.title} — ${item.titleHi} — PanchangPath`}
+  description={item.meaning ?? `${item.title} — samagri, step-by-step vidhi and mantras.`}
+>
+  <DevotionalDetail
+    item={item} category={category} prev={prev} next={next}
+    lyricsLabel="Samagri (Materials Needed)"
+    meaningLabel="Step-by-Step Vidhi"
+    benefitsLabel="Auspicious Timing & Mantras"
+  />
+</Layout>

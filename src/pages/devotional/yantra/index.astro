@@ -1,0 +1,15 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalIndexGrid from '../../../components/DevotionalIndexGrid.astro';
+import { YANTRAS } from '../../../lib/devotional/yantra';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+const category = CATEGORY_META['yantra'];
+---
+
+<Layout
+  title="Vedic Yantras — Structure, Mantra &amp; Puja Vidhi — PanchangPath"
+  description="Free guide to 12 Vedic yantras with structure, associated mantra, installation and puja instructions — Sri Yantra, Kuber Yantra, Navgraha Yantra and more."
+>
+  <DevotionalIndexGrid category={category} items={YANTRAS} />
+</Layout>

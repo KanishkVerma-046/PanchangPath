@@ -1,0 +1,27 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { STOTRAMS } from '../../../lib/devotional/stotram';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return STOTRAMS.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['stotram'];
+
+const idx = STOTRAMS.findIndex(a => a.slug === item.slug);
+const prev = idx > 0 ? STOTRAMS[idx - 1] : null;
+const next = idx < STOTRAMS.length - 1 ? STOTRAMS[idx + 1] : null;
+---
+
+<Layout
+  title={`${item.title} — ${item.titleHi} — Stotram Lyrics &amp; Meaning — PanchangPath`}
+  description={item.meaning ?? `${item.title} lyrics in Sanskrit with transliteration and meaning.`}
+>
+  <DevotionalDetail item={item} category={category} prev={prev} next={next} />
+</Layout>

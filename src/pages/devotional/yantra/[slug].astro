@@ -1,0 +1,32 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { YANTRAS } from '../../../lib/devotional/yantra';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return YANTRAS.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['yantra'];
+
+const idx = YANTRAS.findIndex(a => a.slug === item.slug);
+const prev = idx > 0 ? YANTRAS[idx - 1] : null;
+const next = idx < YANTRAS.length - 1 ? YANTRAS[idx + 1] : null;
+---
+
+<Layout
+  title={`${item.title} — ${item.titleHi} — Puja Vidhi &amp; Benefits — PanchangPath`}
+  description={item.meaning ?? `${item.title} structure, mantra and puja vidhi.`}
+>
+  <DevotionalDetail
+    item={item} category={category} prev={prev} next={next}
+    lyricsLabel="Associated Mantra"
+    meaningLabel="Structure & Presiding Deity"
+    benefitsLabel="Installation & Puja Vidhi"
+  />
+</Layout>

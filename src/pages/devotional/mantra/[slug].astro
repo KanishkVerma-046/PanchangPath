@@ -1,0 +1,27 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { MANTRAS } from '../../../lib/devotional/mantra';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return MANTRAS.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['mantra'];
+
+const idx = MANTRAS.findIndex(a => a.slug === item.slug);
+const prev = idx > 0 ? MANTRAS[idx - 1] : null;
+const next = idx < MANTRAS.length - 1 ? MANTRAS[idx + 1] : null;
+---
+
+<Layout
+  title={`${item.title} — ${item.titleHi} — Mantra, Meaning &amp; Japa Guide — PanchangPath`}
+  description={item.meaning ?? `${item.title} mantra in Sanskrit with transliteration and meaning.`}
+>
+  <DevotionalDetail item={item} category={category} prev={prev} next={next} />
+</Layout>

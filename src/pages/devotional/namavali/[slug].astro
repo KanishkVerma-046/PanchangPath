@@ -1,0 +1,32 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { NAMAVALIS } from '../../../lib/devotional/namavali';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return NAMAVALIS.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['namavali'];
+
+const idx = NAMAVALIS.findIndex(a => a.slug === item.slug);
+const prev = idx > 0 ? NAMAVALIS[idx - 1] : null;
+const next = idx < NAMAVALIS.length - 1 ? NAMAVALIS[idx + 1] : null;
+---
+
+<Layout
+  title={`${item.title} — ${item.titleHi} — 108 Names — PanchangPath`}
+  description={item.meaning ?? `${item.title} — 108 names for archana and japa.`}
+>
+  <DevotionalDetail
+    item={item} category={category} prev={prev} next={next}
+    lyricsLabel="108 Names (Devanagari)"
+    meaningLabel="About This Namavali"
+    benefitsLabel="Archana & Recitation Guide"
+  />
+</Layout>

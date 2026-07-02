@@ -1,0 +1,15 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalIndexGrid from '../../../components/DevotionalIndexGrid.astro';
+import { VRAT_KATHAS } from '../../../lib/devotional/vratkatha';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+const category = CATEGORY_META['vrat-katha'];
+---
+
+<Layout
+  title="Vrat Katha — Fasting Day Stories — PanchangPath"
+  description="Free collection of 18 traditional Hindu Vrat Katha stories with significance and observance guide — Ekadashi, Karva Chauth, Satyanarayan, Teej, Navratri, Pradosh and more."
+>
+  <DevotionalIndexGrid category={category} items={VRAT_KATHAS} />
+</Layout>

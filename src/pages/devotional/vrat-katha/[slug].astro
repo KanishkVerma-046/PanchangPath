@@ -1,0 +1,32 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { VRAT_KATHAS } from '../../../lib/devotional/vratkatha';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return VRAT_KATHAS.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['vrat-katha'];
+
+const idx = VRAT_KATHAS.findIndex(a => a.slug === item.slug);
+const prev = idx > 0 ? VRAT_KATHAS[idx - 1] : null;
+const next = idx < VRAT_KATHAS.length - 1 ? VRAT_KATHAS[idx + 1] : null;
+---
+
+<Layout
+  title={`${item.title} — ${item.titleHi} — PanchangPath`}
+  description={item.meaning ?? `${item.title} — story, significance and vrat vidhi.`}
+>
+  <DevotionalDetail
+    item={item} category={category} prev={prev} next={next}
+    lyricsLabel="Katha (Story)"
+    meaningLabel="Significance"
+    benefitsLabel="How the Vrat Is Observed"
+  />
+</Layout>

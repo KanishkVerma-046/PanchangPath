@@ -1,0 +1,15 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalIndexGrid from '../../../components/DevotionalIndexGrid.astro';
+import { PUJA_VIDHIS } from '../../../lib/devotional/pujavidhi';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+const category = CATEGORY_META['puja-vidhi'];
+---
+
+<Layout
+  title="Puja Vidhi — Step-by-Step Ritual Guides — PanchangPath"
+  description="Free step-by-step Puja Vidhi guides for 15 major Hindu festivals — Diwali, Ganesh Chaturthi, Navratri, Chhath, Rudrabhishek, Maha Shivratri and more, with samagri list, procedure and mantras."
+>
+  <DevotionalIndexGrid category={category} items={PUJA_VIDHIS} />
+</Layout>

@@ -1,0 +1,27 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { ASHTAKAMS } from '../../../lib/devotional/ashtakam';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return ASHTAKAMS.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['ashtakam'];
+
+const idx = ASHTAKAMS.findIndex(a => a.slug === item.slug);
+const prev = idx > 0 ? ASHTAKAMS[idx - 1] : null;
+const next = idx < ASHTAKAMS.length - 1 ? ASHTAKAMS[idx + 1] : null;
+---
+
+<Layout
+  title={`${item.title} — ${item.titleHi} — Ashtakam Lyrics &amp; Meaning — PanchangPath`}
+  description={item.meaning ?? `${item.title} lyrics in Sanskrit with transliteration and meaning.`}
+>
+  <DevotionalDetail item={item} category={category} prev={prev} next={next} />
+</Layout>

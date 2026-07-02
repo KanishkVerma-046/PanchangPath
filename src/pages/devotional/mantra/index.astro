@@ -1,0 +1,15 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalIndexGrid from '../../../components/DevotionalIndexGrid.astro';
+import { MANTRAS } from '../../../lib/devotional/mantra';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+const category = CATEGORY_META['mantra'];
+---
+
+<Layout
+  title="Vedic Mantras — Sanskrit Text, Meaning &amp; Japa Guide — PanchangPath"
+  description="Free collection of 15 Vedic mantras with Devanagari text, transliteration, meaning and japa instructions — Gayatri Mantra, Mahamrityunjaya Mantra, Navgraha Mantras and more."
+>
+  <DevotionalIndexGrid category={category} items={MANTRAS} />
+</Layout>

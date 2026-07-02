@@ -1,0 +1,15 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalIndexGrid from '../../../components/DevotionalIndexGrid.astro';
+import { STOTRAMS } from '../../../lib/devotional/stotram';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+const category = CATEGORY_META['stotram'];
+---
+
+<Layout
+  title="Stotram Collection — Sanskrit Lyrics &amp; Meaning — PanchangPath"
+  description="Free collection of 15 Sanskrit stotrams with Devanagari lyrics, transliteration and meaning — Aditya Hridayam, Shiva Tandava Stotram, Ram Raksha Stotram, Kanakadhara Stotram and more."
+>
+  <DevotionalIndexGrid category={category} items={STOTRAMS} />
+</Layout>

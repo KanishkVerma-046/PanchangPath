@@ -199,12 +199,19 @@ import LanguagePicker from './LanguagePicker.astro';
           </div>
         </li>
         <li class="nav-item has-dropdown">
-          <a href="/" class="nav-cat">Lyrics <span class="nav-caret">▾</span></a>
+          <a href="/devotional" class="nav-cat">Devotional <span class="nav-caret">▾</span></a>
           <div class="nav-dropdown">
-            <a href="/" class="dd-link">Aarti Sangrah</a>
-            <a href="/" class="dd-link">Chalisa</a>
-            <a href="/" class="dd-link">Stotram</a>
-            <a href="/" class="dd-link">Mantra</a>
+            <a href="/devotional/aarti" class="dd-link">Aarti Sangrah</a>
+            <a href="/devotional/chalisa" class="dd-link">Chalisa</a>
+            <a href="/devotional/stotram" class="dd-link">Stotram</a>
+            <a href="/devotional/ashtakam" class="dd-link">Ashtakam</a>
+            <a href="/devotional/mantra" class="dd-link">Mantra</a>
+            <a href="/devotional/yantra" class="dd-link">Yantra</a>
+            <a href="/devotional/namavali" class="dd-link">Namavali</a>
+            <a href="/devotional/vrat-katha" class="dd-link">Vrat Katha</a>
+            <a href="/devotional/puja-vidhi" class="dd-link">Puja Vidhi</a>
+            <div class="dd-divider"></div>
+            <a href="/devotional" class="dd-link dd-link-accent">📚 Full Devotional Library</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -347,12 +354,19 @@ import LanguagePicker from './LanguagePicker.astro';
       </div>
       <div class="drawer-section">
         <button class="drawer-cat" data-target="m-lyrics">
-          Lyrics <span class="drawer-caret">›</span>
+          Devotional <span class="drawer-caret">›</span>
         </button>
         <div class="drawer-sub" id="m-lyrics">
-          <a href="/" class="drawer-link">Aarti Sangrah</a>
-          <a href="/" class="drawer-link">Chalisa</a>
-          <a href="/" class="drawer-link">Stotram</a>
+          <a href="/devotional" class="drawer-link">Full Devotional Library</a>
+          <a href="/devotional/aarti" class="drawer-link">Aarti Sangrah</a>
+          <a href="/devotional/chalisa" class="drawer-link">Chalisa</a>
+          <a href="/devotional/stotram" class="drawer-link">Stotram</a>
+          <a href="/devotional/ashtakam" class="drawer-link">Ashtakam</a>
+          <a href="/devotional/mantra" class="drawer-link">Mantra</a>
+          <a href="/devotional/yantra" class="drawer-link">Yantra</a>
+          <a href="/devotional/namavali" class="drawer-link">Namavali</a>
+          <a href="/devotional/vrat-katha" class="drawer-link">Vrat Katha</a>
+          <a href="/devotional/puja-vidhi" class="drawer-link">Puja Vidhi</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -1037,6 +1051,145 @@ import LanguagePicker from './LanguagePicker.astro';
     { label: "Shraddha Tithi", url: "/jyotish/shraddha" },
     { label: "Sahasra Chandrodaya", url: "/jyotish/sahasra-chandrodaya" },
     { label: "Pancha Pakshi", url: "/jyotish/pancha-pakshi" },
+    { label: "Devotional Library", url: "/devotional" },
+    { label: "Aarti Collection", url: "/devotional/aarti" },
+    { label: "Om Jai Jagdish Hare", url: "/devotional/aarti/om-jai-jagdish-hare" },
+    { label: "Aarti Kunj Bihari Ki", url: "/devotional/aarti/aarti-kunj-bihari-ki" },
+    { label: "Jai Ganesh Deva Aarti", url: "/devotional/aarti/jai-ganesh-deva" },
+    { label: "Jai Ambe Gauri", url: "/devotional/aarti/jai-ambe-gauri" },
+    { label: "Om Jai Shiv Omkara", url: "/devotional/aarti/om-jai-shiv-omkara" },
+    { label: "Hanuman Aarti", url: "/devotional/aarti/aarti-kije-hanuman-lala-ki" },
+    { label: "Om Jai Lakshmi Mata", url: "/devotional/aarti/om-jai-lakshmi-mata" },
+    { label: "Jai Saraswati Mata", url: "/devotional/aarti/jai-saraswati-mata" },
+    { label: "Jai Santoshi Mata", url: "/devotional/aarti/jai-santoshi-mata" },
+    { label: "Ram Aarti", url: "/devotional/aarti/aarti-shri-ramchandra-ji-ki" },
+    { label: "Surya Aarti", url: "/devotional/aarti/om-jai-surya-bhagwan" },
+    { label: "Kali Aarti", url: "/devotional/aarti/aarti-shri-kali-ji-ki" },
+    { label: "Radha Aarti", url: "/devotional/aarti/aarti-radha-ji-ki" },
+    { label: "Sai Baba Aarti", url: "/devotional/aarti/sai-baba-aarti" },
+    { label: "Khatu Shyam Aarti", url: "/devotional/aarti/khatu-shyam-aarti" },
+    { label: "Vaishno Devi Aarti", url: "/devotional/aarti/vaishno-devi-aarti" },
+    { label: "Ayyappa Swamy Aarti", url: "/devotional/aarti/ayyappa-swamy-aarti" },
+    { label: "Navgraha Aarti", url: "/devotional/aarti/navgraha-aarti" },
+    { label: "Chalisa Collection", url: "/devotional/chalisa" },
+    { label: "Hanuman Chalisa", url: "/devotional/chalisa/hanuman-chalisa" },
+    { label: "Shiv Chalisa", url: "/devotional/chalisa/shiv-chalisa" },
+    { label: "Durga Chalisa", url: "/devotional/chalisa/durga-chalisa" },
+    { label: "Ganesh Chalisa", url: "/devotional/chalisa/ganesh-chalisa" },
+    { label: "Vishnu Chalisa", url: "/devotional/chalisa/vishnu-chalisa" },
+    { label: "Lakshmi Chalisa", url: "/devotional/chalisa/lakshmi-chalisa" },
+    { label: "Saraswati Chalisa", url: "/devotional/chalisa/saraswati-chalisa" },
+    { label: "Krishna Chalisa", url: "/devotional/chalisa/krishna-chalisa" },
+    { label: "Ram Chalisa", url: "/devotional/chalisa/ram-chalisa" },
+    { label: "Shani Chalisa", url: "/devotional/chalisa/shani-chalisa" },
+    { label: "Sai Chalisa", url: "/devotional/chalisa/sai-chalisa" },
+    { label: "Kali Chalisa", url: "/devotional/chalisa/kali-chalisa" },
+    { label: "Surya Chalisa", url: "/devotional/chalisa/surya-chalisa" },
+    { label: "Bhairav Chalisa", url: "/devotional/chalisa/bhairav-chalisa" },
+    { label: "Vaishno Devi Chalisa", url: "/devotional/chalisa/vaishno-devi-chalisa" },
+    { label: "Stotram Collection", url: "/devotional/stotram" },
+    { label: "Vishnu Sahasranama Stotram", url: "/devotional/stotram/vishnu-sahasranama-stotram" },
+    { label: "Lalita Sahasranama Stotram", url: "/devotional/stotram/lalita-sahasranama-stotram" },
+    { label: "Aditya Hridayam Stotram", url: "/devotional/stotram/aditya-hridayam-stotram" },
+    { label: "Shiva Tandava Stotram", url: "/devotional/stotram/shiva-tandava-stotram" },
+    { label: "Kanakadhara Stotram", url: "/devotional/stotram/kanakadhara-stotram" },
+    { label: "Ganesh Stotram", url: "/devotional/stotram/ganesh-stotram" },
+    { label: "Ashta Lakshmi Stotram", url: "/devotional/stotram/ashta-lakshmi-stotram" },
+    { label: "Devi Kavach", url: "/devotional/stotram/durga-stotram-devi-kavach" },
+    { label: "Ram Raksha Stotram", url: "/devotional/stotram/ram-raksha-stotram" },
+    { label: "Kala Bhairav Ashtakam", url: "/devotional/stotram/kala-bhairav-stotram" },
+    { label: "Shani Stotram", url: "/devotional/stotram/shani-stotram" },
+    { label: "Saraswati Stotram", url: "/devotional/stotram/saraswati-stotram" },
+    { label: "Navgraha Stotram", url: "/devotional/stotram/navgraha-stotram" },
+    { label: "Guru Stotram", url: "/devotional/stotram/guru-stotram" },
+    { label: "Shri Suktam", url: "/devotional/stotram/shri-suktam" },
+    { label: "Ashtakam Collection", url: "/devotional/ashtakam" },
+    { label: "Shiva Ashtakam", url: "/devotional/ashtakam/shiva-ashtakam" },
+    { label: "Ganesha Ashtakam", url: "/devotional/ashtakam/ganesha-ashtakam" },
+    { label: "Lakshmi Ashtakam", url: "/devotional/ashtakam/lakshmi-ashtakam" },
+    { label: "Mahishasura Mardini Ashtakam", url: "/devotional/ashtakam/mahishasura-mardini-ashtakam" },
+    { label: "Hanuman Ashtakam", url: "/devotional/ashtakam/hanuman-ashtakam" },
+    { label: "Krishna Ashtakam", url: "/devotional/ashtakam/krishna-ashtakam" },
+    { label: "Guru Ashtakam", url: "/devotional/ashtakam/guru-ashtakam" },
+    { label: "Saraswati Ashtakam", url: "/devotional/ashtakam/saraswati-ashtakam" },
+    { label: "Radha Ashtakam", url: "/devotional/ashtakam/radha-ashtakam" },
+    { label: "Ayyappa Ashtakam", url: "/devotional/ashtakam/ayyappa-ashtakam" },
+    { label: "Venkateswara Ashtakam", url: "/devotional/ashtakam/venkateswara-ashtakam" },
+    { label: "Mantra Collection", url: "/devotional/mantra" },
+    { label: "Gayatri Mantra", url: "/devotional/mantra/gayatri-mantra" },
+    { label: "Mahamrityunjaya Mantra", url: "/devotional/mantra/mahamrityunjaya-mantra" },
+    { label: "Om Namah Shivaya", url: "/devotional/mantra/om-namah-shivaya" },
+    { label: "Om Namo Narayanaya", url: "/devotional/mantra/om-namo-narayanaya" },
+    { label: "Om Namo Bhagavate Vasudevaya", url: "/devotional/mantra/om-namo-bhagavate-vasudevaya" },
+    { label: "Shanti Mantra", url: "/devotional/mantra/shanti-mantra" },
+    { label: "Ganesh Mantra", url: "/devotional/mantra/ganesh-mantra" },
+    { label: "Navgraha Mantras", url: "/devotional/mantra/navgraha-mantras" },
+    { label: "Durga Mantra", url: "/devotional/mantra/durga-devi-mantra" },
+    { label: "Lakshmi Mantra", url: "/devotional/mantra/lakshmi-mantra" },
+    { label: "Saraswati Mantra", url: "/devotional/mantra/saraswati-mantra" },
+    { label: "Hanuman Mantra", url: "/devotional/mantra/hanuman-mantra" },
+    { label: "Guru Mantra", url: "/devotional/mantra/guru-mantra" },
+    { label: "Kuber Mantra", url: "/devotional/mantra/kuber-mantra" },
+    { label: "Om Pranava Mantra", url: "/devotional/mantra/om-pranava-mantra" },
+    { label: "Yantra Collection", url: "/devotional/yantra" },
+    { label: "Sri Yantra", url: "/devotional/yantra/sri-yantra" },
+    { label: "Kuber Yantra", url: "/devotional/yantra/kuber-yantra" },
+    { label: "Ganesh Yantra", url: "/devotional/yantra/ganesh-yantra" },
+    { label: "Lakshmi Yantra", url: "/devotional/yantra/lakshmi-yantra" },
+    { label: "Saraswati Yantra", url: "/devotional/yantra/saraswati-yantra" },
+    { label: "Navgraha Yantra", url: "/devotional/yantra/navgraha-yantra" },
+    { label: "Durga Yantra", url: "/devotional/yantra/durga-yantra" },
+    { label: "Hanuman Yantra", url: "/devotional/yantra/hanuman-yantra" },
+    { label: "Kaal Sarp Dosh Nivaran Yantra", url: "/devotional/yantra/kaal-sarp-dosh-nivaran-yantra" },
+    { label: "Vastu Yantra", url: "/devotional/yantra/vastu-yantra" },
+    { label: "Mahamrityunjaya Yantra", url: "/devotional/yantra/mahamrityunjaya-yantra" },
+    { label: "Shani Yantra", url: "/devotional/yantra/shani-yantra" },
+    { label: "Namavali Collection", url: "/devotional/namavali" },
+    { label: "Shiva Ashtottara Shatanamavali", url: "/devotional/namavali/shiva-ashtottara-shatanamavali" },
+    { label: "Ganesh Ashtottara Shatanamavali", url: "/devotional/namavali/ganesh-ashtottara-shatanamavali" },
+    { label: "Durga Ashtottara Shatanamavali", url: "/devotional/namavali/durga-ashtottara-shatanamavali" },
+    { label: "Lakshmi Ashtottara Shatanamavali", url: "/devotional/namavali/lakshmi-ashtottara-shatanamavali" },
+    { label: "Saraswati Ashtottara Shatanamavali", url: "/devotional/namavali/saraswati-ashtottara-shatanamavali" },
+    { label: "Krishna Ashtottara Shatanamavali", url: "/devotional/namavali/krishna-ashtottara-shatanamavali" },
+    { label: "Rama Ashtottara Shatanamavali", url: "/devotional/namavali/rama-ashtottara-shatanamavali" },
+    { label: "Hanuman Ashtottara Shatanamavali", url: "/devotional/namavali/hanuman-ashtottara-shatanamavali" },
+    { label: "Surya Ashtottara Shatanamavali", url: "/devotional/namavali/surya-ashtottara-shatanamavali" },
+    { label: "Shani Ashtottara Shatanamavali", url: "/devotional/namavali/shani-ashtottara-shatanamavali" },
+    { label: "Vrat Katha Collection", url: "/devotional/vrat-katha" },
+    { label: "Ekadashi Vrat Katha", url: "/devotional/vrat-katha/ekadashi-vrat-katha" },
+    { label: "Karva Chauth Vrat Katha", url: "/devotional/vrat-katha/karva-chauth-vrat-katha" },
+    { label: "Satyanarayan Vrat Katha", url: "/devotional/vrat-katha/satyanarayan-vrat-katha" },
+    { label: "Sankashti Chaturthi Vrat Katha", url: "/devotional/vrat-katha/sankashti-chaturthi-vrat-katha" },
+    { label: "Vat Savitri Vrat Katha", url: "/devotional/vrat-katha/vat-savitri-vrat-katha" },
+    { label: "Teej Vrat Katha", url: "/devotional/vrat-katha/teej-vrat-katha" },
+    { label: "Navratri Vrat Katha", url: "/devotional/vrat-katha/navratri-vrat-katha" },
+    { label: "Somvar Vrat Katha", url: "/devotional/vrat-katha/somvar-vrat-katha" },
+    { label: "Mangalwar Vrat Katha", url: "/devotional/vrat-katha/mangalwar-vrat-katha" },
+    { label: "Budhwar Vrat Katha", url: "/devotional/vrat-katha/budhwar-vrat-katha" },
+    { label: "Shukravar Vrat Katha (Santoshi Maa)", url: "/devotional/vrat-katha/shukravar-vrat-katha" },
+    { label: "Shanivar Vrat Katha", url: "/devotional/vrat-katha/shanivar-vrat-katha" },
+    { label: "Ram Navami Vrat Katha", url: "/devotional/vrat-katha/ram-navami-vrat-katha" },
+    { label: "Janmashtami Vrat Katha", url: "/devotional/vrat-katha/janmashtami-vrat-katha" },
+    { label: "Ganesh Chaturthi Vrat Katha", url: "/devotional/vrat-katha/ganesh-chaturthi-vrat-katha" },
+    { label: "Hartalika Teej Vrat Katha", url: "/devotional/vrat-katha/hartalika-teej-vrat-katha" },
+    { label: "Ahoi Ashtami Vrat Katha", url: "/devotional/vrat-katha/ahoi-ashtami-vrat-katha" },
+    { label: "Pradosh Vrat Katha", url: "/devotional/vrat-katha/pradosh-vrat-katha" },
+    { label: "Puja Vidhi Collection", url: "/devotional/puja-vidhi" },
+    { label: "Diwali Lakshmi Puja Vidhi", url: "/devotional/puja-vidhi/diwali-lakshmi-puja-vidhi" },
+    { label: "Ganesh Chaturthi Puja Vidhi", url: "/devotional/puja-vidhi/ganesh-chaturthi-puja-vidhi" },
+    { label: "Navratri Durga Puja Vidhi", url: "/devotional/puja-vidhi/navratri-durga-puja-vidhi" },
+    { label: "Holi Puja Vidhi", url: "/devotional/puja-vidhi/holi-puja-vidhi" },
+    { label: "Saraswati Puja Vidhi", url: "/devotional/puja-vidhi/saraswati-puja-vidhi" },
+    { label: "Satyanarayan Puja Vidhi", url: "/devotional/puja-vidhi/satyanarayan-puja-vidhi" },
+    { label: "Karva Chauth Puja Vidhi", url: "/devotional/puja-vidhi/karva-chauth-puja-vidhi" },
+    { label: "Chhath Puja Vidhi", url: "/devotional/puja-vidhi/chhath-puja-vidhi" },
+    { label: "Raksha Bandhan Puja Vidhi", url: "/devotional/puja-vidhi/raksha-bandhan-puja-vidhi" },
+    { label: "Janmashtami Puja Vidhi", url: "/devotional/puja-vidhi/janmashtami-puja-vidhi" },
+    { label: "Rudrabhishek Puja Vidhi", url: "/devotional/puja-vidhi/rudrabhishek-puja-vidhi" },
+    { label: "Makar Sankranti Puja Vidhi", url: "/devotional/puja-vidhi/makar-sankranti-puja-vidhi" },
+    { label: "Hariyali Teej Puja Vidhi", url: "/devotional/puja-vidhi/hariyali-teej-puja-vidhi" },
+    { label: "Ram Navami Puja Vidhi", url: "/devotional/puja-vidhi/ram-navami-puja-vidhi" },
+    { label: "Maha Shivratri Puja Vidhi", url: "/devotional/puja-vidhi/maha-shivratri-puja-vidhi" },
   ];
 
   const dropdown = document.getElementById('search-dropdown');

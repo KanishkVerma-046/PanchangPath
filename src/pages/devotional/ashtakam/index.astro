@@ -1,0 +1,27 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalIndexGrid from '../../../components/DevotionalIndexGrid.astro';
+import { ASHTAKAMS } from '../../../lib/devotional/ashtakam';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+const category = CATEGORY_META['ashtakam'];
+---
+
+<Layout
+  title="Ashtakam Collection — Sanskrit Lyrics &amp; Meaning — PanchangPath"
+  description="Free collection of 12 Sanskrit ashtakams with Devanagari lyrics, transliteration and meaning — Shiva Ashtakam, Mahishasura Mardini Ashtakam, Ganesha Ashtakam and more."
+>
+  <DevotionalIndexGrid category={category} items={ASHTAKAMS} />
+
+  <section style="padding:0 0 48px;">
+    <div class="container">
+      <a href="/devotional/stotram/kala-bhairav-stotram" class="card" style="display:flex;align-items:flex-start;gap:12px;padding:18px;text-decoration:none;max-width:340px;">
+        <span style="font-size:26px;line-height:1;flex-shrink:0;">🐕</span>
+        <div>
+          <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Kaal Bhairav Ashtakam</h3>
+          <p style="font-size:12.5px;color:var(--color-mute);margin:0;">काल भैरव अष्टकम् — filed under Stotram Collection →</p>
+        </div>
+      </a>
+    </div>
+  </section>
+</Layout>

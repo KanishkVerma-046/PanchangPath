@@ -1,0 +1,15 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalIndexGrid from '../../../components/DevotionalIndexGrid.astro';
+import { CHALISAS } from '../../../lib/devotional/chalisa';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+const category = CATEGORY_META['chalisa'];
+---
+
+<Layout
+  title="Chalisa Collection — Hindi Lyrics &amp; Meaning — PanchangPath"
+  description="Free collection of 15 traditional Hindu chalisas with Devanagari lyrics, transliteration and meaning — Hanuman Chalisa, Shiv Chalisa, Durga Chalisa, Ganesh Chalisa and more."
+>
+  <DevotionalIndexGrid category={category} items={CHALISAS} />
+</Layout>
