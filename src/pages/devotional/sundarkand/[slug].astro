@@ -1,0 +1,28 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { SUNDARKAND } from '../../../lib/devotional/sundarkand';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return SUNDARKAND.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['sundarkand'];
+---
+
+<Layout
+  title={`${item.title} — Ramcharitmanas, Panchama Sopan — PanchangPath`}
+  description={item.meaning ?? `${item.title} — full Awadhi/Sanskrit text, summary and significance.`}
+>
+  <DevotionalDetail
+    item={item} category={category} prev={null} next={null}
+    lyricsLabel="Full Text (Awadhi / Sanskrit, Devanagari)"
+    meaningLabel="Summary"
+    benefitsLabel="Significance"
+  />
+</Layout>

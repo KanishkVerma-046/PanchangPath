@@ -1,0 +1,32 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalDetail from '../../../components/DevotionalDetail.astro';
+import { DURGA_SAPTASHATI } from '../../../lib/devotional/durgasaptashati';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+export function getStaticPaths() {
+  return DURGA_SAPTASHATI.map(item => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const category = CATEGORY_META['durga-saptashati'];
+
+const idx = DURGA_SAPTASHATI.findIndex(a => a.slug === item.slug);
+const prev = idx > 0 ? DURGA_SAPTASHATI[idx - 1] : null;
+const next = idx < DURGA_SAPTASHATI.length - 1 ? DURGA_SAPTASHATI[idx + 1] : null;
+---
+
+<Layout
+  title={`${item.title} — Durga Saptashati — PanchangPath`}
+  description={item.meaning ?? `${item.title} — full Sanskrit text, summary and significance.`}
+>
+  <DevotionalDetail
+    item={item} category={category} prev={prev} next={next}
+    lyricsLabel="Sanskrit Text (Devanagari)"
+    meaningLabel="Chapter Summary"
+    benefitsLabel="Significance"
+  />
+</Layout>

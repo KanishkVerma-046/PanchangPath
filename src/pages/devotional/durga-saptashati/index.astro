@@ -1,0 +1,15 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import DevotionalIndexGrid from '../../../components/DevotionalIndexGrid.astro';
+import { DURGA_SAPTASHATI } from '../../../lib/devotional/durgasaptashati';
+import { CATEGORY_META } from '../../../lib/devotional/types';
+
+const category = CATEGORY_META['durga-saptashati'];
+---
+
+<Layout
+  title="Durga Saptashati — Devi Mahatmyam, All 13 Chapters — PanchangPath"
+  description="Complete Durga Saptashati (Devi Mahatmyam) in Sanskrit — all 13 chapters with full Devanagari verse text, chapter summary and significance."
+>
+  <DevotionalIndexGrid category={category} items={DURGA_SAPTASHATI} />
+</Layout>

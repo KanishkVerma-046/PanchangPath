@@ -76,13 +76,13 @@ export const CATEGORY_META: Record<DevotionalCategoryId, CategoryMeta> = {
     id: 'durga-saptashati', label: 'Durga Saptashati', labelHi: 'दुर्गा सप्तशती', icon: '⚔️',
     gradient: 'linear-gradient(135deg,#9d174d 0%,#500724 100%)',
     description: 'All 13 chapters of the Devi Mahatmyam — the epic of Goddess Durga\'s victory over the asuras.',
-    url: '/devotional/durga-saptashati', built: false,
+    url: '/devotional/durga-saptashati', built: true,
   },
   'sundarkand': {
     id: 'sundarkand', label: 'Sundarkand', labelHi: 'सुंदरकांड', icon: '🐒',
     gradient: 'linear-gradient(135deg,#c2410c 0%,#7c2d12 100%)',
     description: 'The fifth book of the Ramcharitmanas, recounting Hanuman\'s journey to Lanka — recited for courage and protection.',
-    url: '/devotional/sundarkand', built: false,
+    url: '/devotional/sundarkand', built: true,
   },
   'nama-ramayanam': {
     id: 'nama-ramayanam', label: 'Nama Ramayanam', labelHi: 'नाम रामायणम्', icon: '🏹',
