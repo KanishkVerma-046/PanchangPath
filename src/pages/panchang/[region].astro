@@ -350,8 +350,8 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
 @media (max-width: 540px) { .rp-anga-grid { grid-template-columns: 1fr; } }
 .rp-anga-card { display: flex; gap: 12px; background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevation); padding: 14px 16px; }
 .rp-anga-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
-.rp-anga-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-mute); font-family: var(--font-mono); margin: 0 0 4px; }
-.rp-anga-regional { font-size: 18px; font-weight: 700; color: var(--color-ink); margin: 0 0 3px; font-family: sans-serif; line-height: 1.2; }
+.rp-anga-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-data-label); font-family: var(--font-mono); margin: 0 0 4px; }
+.rp-anga-regional { font-size: 18px; font-weight: 700; color: var(--color-data-value); margin: 0 0 3px; font-family: sans-serif; line-height: 1.2; }
 .rp-anga-en { font-size: 11px; color: var(--color-mute); margin: 0; }
 
 /* ── Timings ── */
@@ -359,14 +359,14 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
 @media (max-width: 640px) { .rp-timing-grid { grid-template-columns: 1fr 1fr; } }
 .rp-timing-card { background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevation); padding: 12px 14px; display: flex; gap: 10px; align-items: center; }
 .rp-timing-icon { font-size: 18px; }
-.rp-timing-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-mute); font-family: var(--font-mono); margin: 0 0 3px; }
-.rp-timing-val { font-size: 14px; font-weight: 700; color: var(--color-ink); margin: 0; font-family: var(--font-mono); }
+.rp-timing-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-data-label); font-family: var(--font-mono); margin: 0 0 3px; }
+.rp-timing-val { font-size: 14px; font-weight: 700; color: var(--color-data-value); margin: 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 
 /* ── Kalam ── */
 .rp-kalam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .rp-kalam-card { background: var(--color-canvas-soft); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevation); padding: 12px 14px; }
-.rp-kalam-name { font-size: 12px; font-weight: 700; color: var(--color-ink); margin: 0 0 4px; }
-.rp-kalam-time { font-size: 13px; font-weight: 600; color: var(--color-body-text); margin: 0; font-family: var(--font-mono); }
+.rp-kalam-name { font-size: 12px; font-weight: 700; color: var(--color-data-label); margin: 0 0 4px; }
+.rp-kalam-time { font-size: 13px; font-weight: 600; color: var(--color-data-value); margin: 0; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 
 /* ── Nakshatra detail ── */
 .rp-naksha-details { margin-top: 32px; border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevation); overflow: hidden; }
@@ -390,8 +390,8 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
 .rp-info-title { font-size: 15px; font-weight: 700; color: var(--color-ink); margin: 0 0 10px; }
 .rp-info-body { font-size: 13px; color: var(--color-body-text); line-height: 1.6; margin: 0 0 14px; }
 .rp-info-row { display: flex; justify-content: space-between; padding: 6px 0; border-top: 1px solid var(--color-hairline); font-size: 13px; }
-.rp-info-key { color: var(--color-mute); font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.rp-info-val { color: var(--color-ink); font-weight: 600; font-family: var(--font-mono); font-size: 12px; }
+.rp-info-key { color: var(--color-data-label); font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.rp-info-val { color: var(--color-data-value); font-weight: 600; font-family: var(--font-mono); font-size: 12px; font-variant-numeric: tabular-nums; }
 
 .rp-note-card { display: flex; gap: 12px; align-items: flex-start; }
 .rp-note-icon { font-size: 18px; flex-shrink: 0; }

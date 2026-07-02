@@ -35,34 +35,41 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
       </div>
     </div>
 
-    <!-- 12-rashi grid -->
+    <!-- 12-rashi grid: 4-col on desktop, horizontal scroll on mobile -->
     <div class="rf-grid" id="rashifal-grid">
       {RASHIS.map((rashi, idx) => {
         const prediction = getDailyPrediction(rashi, today);
-        const short = prediction.length > 130 ? prediction.slice(0, 130).trim() + '…' : prediction;
+        const isTruncated = prediction.length > 130;
+        const short = isTruncated ? prediction.slice(0, 130).trim() + '…' : prediction;
         return (
-          <a href={`/rashifal/${rashi.id}`} class="rf-card animate-in" style={`animation-delay:${idx * 40}ms`}>
-            <!-- Icon strip -->
-            <div class="rf-card-thumb" style={`background:${rashi.gradient}`}>
-              <span class="rf-symbol" aria-hidden="true">{rashi.symbol}</span>
-              <div class="rf-card-overlay"></div>
-            </div>
+          <div class="rf-card animate-in" style={`animation-delay:${idx * 40}ms`}>
+            <!-- Icon strip (links to full rashi page) -->
+            <a href={`/rashifal/${rashi.id}`} class="rf-card-thumb-link" aria-label={`${rashi.name} — full prediction`}>
+              <div class="rf-card-thumb" style={`background:${rashi.gradient}`}>
+                <span class="rf-symbol" aria-hidden="true">{rashi.symbol}</span>
+                <div class="rf-card-overlay"></div>
+              </div>
+            </a>
             <!-- Content -->
             <div class="rf-card-body">
               <div class="rf-card-meta">
-                <div>
+                <a href={`/rashifal/${rashi.id}`} class="rf-rashi-link">
                   <p class="rf-rashi-name en-text">{rashi.name}</p>
                   <p class="rf-rashi-name hi-text" style="display:none;">{rashi.nameHi}</p>
                   <p class="rf-rashi-en">{rashi.english}</p>
-                </div>
+                </a>
                 <span class="rf-lord-badge">{rashi.lord}</span>
               </div>
-              <p class="rf-prediction">{short}</p>
-              <span class="rf-read-more">
-                Full prediction <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </span>
+              <p class="rf-prediction rf-prediction-short">{short}</p>
+              {isTruncated && <p class="rf-prediction rf-prediction-full" hidden>{prediction}</p>}
+              {isTruncated && (
+                <button class="rf-expand-btn" type="button" aria-expanded="false">
+                  <span class="rf-expand-label">Read more</span>
+                  <svg class="rf-expand-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+              )}
             </div>
-          </a>
+          </div>
         );
       })}
     </div>
@@ -130,6 +137,22 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
 </section>
 
 <script>
+// ─── Prediction expand/collapse ─────────────────────────────────────────────
+document.getElementById('rashifal-grid')?.addEventListener('click', (e) => {
+  const btn = (e.target as Element).closest<HTMLElement>('.rf-expand-btn');
+  if (!btn) return;
+  const card = btn.closest('.rf-card');
+  const short = card?.querySelector<HTMLElement>('.rf-prediction-short');
+  const full = card?.querySelector<HTMLElement>('.rf-prediction-full');
+  const wasExpanded = btn.getAttribute('aria-expanded') === 'true';
+  if (short) short.hidden = !wasExpanded;
+  if (full) full.hidden = wasExpanded;
+  btn.setAttribute('aria-expanded', String(!wasExpanded));
+  btn.classList.toggle('expanded', !wasExpanded);
+  const label = btn.querySelector('.rf-expand-label');
+  if (label) label.textContent = wasExpanded ? 'Read more' : 'Read less';
+});
+
 // ─── Name-to-Rashi lookup ─────────────────────────────────────────────────
 const NAME_MAP: Record<string, string> = {
   chu:"Mesha",che:"Mesha",cho:"Mesha",la:"Mesha",li:"Mesha",lu:"Mesha",le:"Mesha",lo:"Mesha",
@@ -296,7 +319,6 @@ document.getElementById('dob-input')?.addEventListener('keydown', (e) => {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  text-decoration: none;
   display: flex;
   flex-direction: column;
   transition: box-shadow 0.15s, transform 0.15s;
@@ -305,6 +327,9 @@ document.getElementById('dob-input')?.addEventListener('keydown', (e) => {
   box-shadow: var(--shadow-card-hover);
   transform: translateY(-2px);
 }
+
+.rf-card-thumb-link { text-decoration: none; display: block; }
+.rf-rashi-link { text-decoration: none; display: block; }
 
 .rf-card-thumb {
   height: 52px;
@@ -369,12 +394,23 @@ document.getElementById('dob-input')?.addEventListener('keydown', (e) => {
   margin: 0 0 10px;
   flex: 1;
 }
-.rf-read-more {
+.rf-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
   font-size: 11.5px;
   font-weight: 600;
   color: var(--color-saffron-deep);
-  margin-top: auto;
+  cursor: pointer;
 }
+.rf-expand-chevron { transition: transform 0.15s; flex-shrink: 0; }
+.rf-expand-btn.expanded .rf-expand-chevron { transform: rotate(180deg); }
 
 /* Tools row */
 .rf-tools-row {
@@ -460,16 +496,29 @@ document.getElementById('dob-input')?.addEventListener('keydown', (e) => {
 
 /* Responsive */
 @media (max-width: 1024px) {
-  .rf-grid { grid-template-columns: repeat(3, 1fr); }
   .rf-tools-row { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
-  .rf-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Horizontally scrollable row instead of a shrinking grid */
+  .rf-grid {
+    display: flex;
+    grid-template-columns: none;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    margin-bottom: 16px;
+  }
+  .rf-grid .rf-card {
+    flex: 0 0 232px;
+    scroll-snap-align: start;
+  }
   .rf-header { flex-direction: column; }
   .rf-header-right { align-items: flex-start; }
   .rf-tools-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 480px) {
   .rf-period-tabs { flex-wrap: wrap; }
+  .rf-grid .rf-card { flex-basis: 208px; }
 }
 </style>

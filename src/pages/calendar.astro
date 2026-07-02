@@ -236,12 +236,12 @@ function showPanel(dateStr: string, feasts: typeof FEST_DATA, p: {tithi:string,n
   panelLink.href = `/?date=${dateStr}`;
   panelContent.innerHTML = `
     <div style="background:var(--color-canvas-soft-2);border-radius:8px;padding:12px;">
-      <p style="font-size:10px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Tithi</p>
-      <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${p.tithi}</p>
+      <p style="font-size:10px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Tithi</p>
+      <p style="font-size:14px;font-weight:600;color:var(--color-data-value);margin:0;">${p.tithi}</p>
     </div>
     <div style="background:var(--color-canvas-soft-2);border-radius:8px;padding:12px;">
-      <p style="font-size:10px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Nakshatra</p>
-      <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${p.nakshatra}</p>
+      <p style="font-size:10px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Nakshatra</p>
+      <p style="font-size:14px;font-weight:600;color:var(--color-data-value);margin:0;">${p.nakshatra}</p>
     </div>
     ${feasts.map(f => `<div style="background:var(--color-saffron-soft);border-radius:8px;padding:12px;grid-column:span 2;">
       <p style="font-size:10px;color:var(--color-saffron-deep);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Festival</p>

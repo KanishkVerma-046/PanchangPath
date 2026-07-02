@@ -117,7 +117,7 @@ const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrish
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const RASHI_LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const PLANETS=[['surya','Sun','Su'],['chandra','Moon','Mo'],['mangal','Mars','Ma'],['budha','Mercury','Me'],['guru','Jupiter','Ju'],['shukra','Venus','Ve'],['shani','Saturn','Sa'],['rahu','Rahu','Ra'],['ketu','Ketu','Ke']];
+const PLANETS=[['surya','Sun','Sy'],['chandra','Moon','Ch'],['mangal','Mars','Ma'],['budha','Mercury','Bu'],['guru','Jupiter','Gu'],['shukra','Venus','Sk'],['shani','Saturn','Sa'],['rahu','Rahu','Ra'],['ketu','Ketu','Ke']];
 function fmtDMS(lon){const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);return deg+'\xb0'+String(mn).padStart(2,'0')+"'";}
 function nakInfo(sid){const idx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;return{name:NAKS[idx],pada};}
 
@@ -131,7 +131,7 @@ function drawNorthChart(signOfHouse,planetsByHouse){
     const cx=f[h][0]*S,cy=f[h][1]*S;
     txt+=`<text x="${cx}" y="${cy-18}" text-anchor="middle" font-size="10" fill="var(--color-mute)" font-family="var(--font-mono)">${signOfHouse[h]+1}</text>`;
     const pls=planetsByHouse[h]||[];
-    pls.forEach((p,i)=>{const perRow=3;const col=i%perRow;const row=Math.floor(i/perRow);const px=cx+(col-(Math.min(pls.length,perRow)-1)/2)*22;const py=cy+row*14;txt+=`<text x="${px}" y="${py}" text-anchor="middle" font-size="11" font-weight="600" fill="${p==='As'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
+    pls.forEach((p,i)=>{const perRow=3;const col=i%perRow;const row=Math.floor(i/perRow);const px=cx+(col-(Math.min(pls.length,perRow)-1)/2)*22;const py=cy+row*14;txt+=`<text x="${px}" y="${py}" text-anchor="middle" font-size="11" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
   }
   return `<svg viewBox="-2 -2 ${S+4} ${S+4}" width="100%" style="max-width:320px;stroke:var(--color-hairline-strong);stroke-width:1;"><rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-canvas-soft)"/>${lines}${txt}</svg>`;
 }
@@ -151,7 +151,7 @@ function drawSouthChart(planetsBySign,lagnaSign){
     svg+=`<text x="${x+4}" y="${y+12}" font-size="9" fill="var(--color-mute)" font-family="var(--font-mono)">${s+1}</text>`;
     if(isL){svg+=`<line x1="${x}" y1="${y}" x2="${x+22}" y2="${y}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/><line x1="${x}" y1="${y}" x2="${x}" y2="${y+22}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/>`;}
     const plts=planetsBySign[s]||[];
-    plts.forEach((p,i)=>{svg+=`<text x="${x+5+(i%3)*24}" y="${y+28+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='As'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
+    plts.forEach((p,i)=>{svg+=`<text x="${x+5+(i%3)*24}" y="${y+28+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
   }}
   svg+='</svg>';return svg;
 }
@@ -170,9 +170,9 @@ function drawEastChart(signOfHouse,planetsByHouse){
     const x=c*C,y=r*C,isLagna=houses.includes(0);
     svg+=`<rect x="${x}" y="${y}" width="${C}" height="${C}" fill="${isLagna?'rgba(220,130,50,0.08)':'var(--color-canvas-soft)'}" stroke="var(--color-hairline-strong)" stroke-width="1.5"/>`;
     svg+=`<text x="${x+4}" y="${y+12}" font-size="9" fill="var(--color-mute)" font-family="var(--font-mono)">${houses.map(h=>h+1).join(',')}</text>`;
-    if(isLagna){svg+=`<text x="${x+C-4}" y="${y+12}" text-anchor="end" font-size="9" fill="var(--color-saffron-deep)">As</text>`;}
+    if(isLagna){svg+=`<text x="${x+C-4}" y="${y+12}" text-anchor="end" font-size="9" fill="var(--color-saffron-deep)">La</text>`;}
     let allP=[];houses.forEach(h=>{allP=allP.concat(planetsByHouse[h]||[]);});
-    allP.forEach((p,i)=>{svg+=`<text x="${x+6+(i%3)*28}" y="${y+32+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='As'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
+    allP.forEach((p,i)=>{svg+=`<text x="${x+6+(i%3)*28}" y="${y+32+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
   }}
   svg+='</svg>';return svg;
 }
@@ -192,7 +192,7 @@ function drawWestChart(planetsBySign,lagnaSign){
     svg+=`<text x="${x+4}" y="${y+12}" font-size="9" fill="var(--color-mute)" font-family="var(--font-mono)">${s+1}</text>`;
     if(isL){svg+=`<line x1="${x}" y1="${y}" x2="${x+22}" y2="${y}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/><line x1="${x}" y1="${y}" x2="${x}" y2="${y+22}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/>`;}
     const plts=planetsBySign[s]||[];
-    plts.forEach((p,i)=>{svg+=`<text x="${x+5+(i%3)*24}" y="${y+28+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='As'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
+    plts.forEach((p,i)=>{svg+=`<text x="${x+5+(i%3)*24}" y="${y+28+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
   }}
   svg+='</svg>';return svg;
 }
@@ -242,8 +242,8 @@ function calculate(){
     const signOfHouse=[];for(let h=0;h<12;h++)signOfHouse[h]=(lagnaSign+h)%12;
     const planetsByHouse={};for(let h=0;h<12;h++)planetsByHouse[h]=[];
     const planetsBySign={};for(let s=0;s<12;s++)planetsBySign[s]=[];
-    planetsByHouse[0].push('As');
-    planetsBySign[lagnaSign].push('As');
+    planetsByHouse[0].push('La');
+    planetsBySign[lagnaSign].push('La');
     PLANETS.forEach(([k,,abbr])=>{
       const sign=Math.floor(sid[k]/30);
       const house=((sign-lagnaSign)+12)%12;

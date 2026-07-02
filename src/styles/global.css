@@ -26,6 +26,8 @@
   --color-gold: #C8922A;
   --color-gold-soft: #FBF0D9;
   --color-gold-deep: #97690F;
+  --color-data-label: #C8922A;
+  --color-data-value: #2B2B2B;
   --color-auspicious: #16803D;
   --color-auspicious-soft: #DCF3E3;
   --color-inauspicious: #C81E1E;
@@ -70,6 +72,8 @@
   --color-gold-deep: #F0B429;
   --color-warning: #D4A017;
   --color-warning-soft: #2E2308;
+  --color-data-label: #D4A017;
+  --color-data-value: #EDEDED;
   --color-auspicious-soft: #052e16;
   --color-inauspicious-soft: #2A0808;
 
@@ -162,6 +166,26 @@ h1, h2, h3, h4, h5, h6 {
 .badge-inauspicious { background: var(--color-inauspicious-soft); color: #b91c1c; border-color: rgba(239,68,68,0.3); }
 
 .divider { height: 1px; background: var(--color-hairline); border: none; margin: 0; }
+
+/* ── Panchang data tables: gold key / charcoal value, 2-column ──────── */
+.data-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 14px;
+  align-items: baseline;
+}
+.data-key {
+  color: var(--color-data-label);
+  font-weight: 600;
+}
+.data-val {
+  color: var(--color-data-value);
+  font-weight: 600;
+}
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-mono);
+}
 
 .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 @media (max-width: 640px) { .container { padding: 0 16px; } }

@@ -117,53 +117,53 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:12px;" class="panchang-grid" id="pancha-grid">
         <!-- Vara -->
         <div class="card animate-in" style="padding:20px;animation-delay:0ms;">
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Vara</p>
-          <p class="en-text" style="font-size:22px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="vara-name">{panchang.vara.name}</p>
-          <p class="hi-text" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="vara-name-hi">{panchang.vara.nameHi}</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Vara</p>
+          <p class="en-text" style="font-size:22px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="vara-name">{panchang.vara.name}</p>
+          <p class="hi-text" style="font-size:18px;font-weight:600;color:var(--color-data-value);margin:0 0 2px;display:none;" id="vara-name-hi">{panchang.vara.nameHi}</p>
           <p style="font-size:12px;color:var(--color-mute);margin:0;" id="vara-lord">Lord: {panchang.vara.lord}</p>
         </div>
 
         <!-- Tithi -->
         <div class="card animate-in" style="padding:20px;animation-delay:60ms;">
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Tithi</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Tithi</p>
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;">
             <div>
-              <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="tithi-name">{panchang.tithi.paksha} {panchang.tithi.name}</p>
-              <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="tithi-name-hi">{panchang.tithi.pakshaNi} {panchang.tithi.nameHi}</p>
+              <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="tithi-name">{panchang.tithi.paksha} {panchang.tithi.name}</p>
+              <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-data-value);margin:0 0 2px;display:none;" id="tithi-name-hi">{panchang.tithi.pakshaNi} {panchang.tithi.nameHi}</p>
             </div>
             <span class="badge" id="tithi-type" style="flex-shrink:0;font-size:10px;">{panchang.tithi.type}</span>
           </div>
-          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);" id="tithi-end">Ends: {panchang.tithi.endTime}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="tithi-end">Ends: {panchang.tithi.endTime}</p>
         </div>
 
         <!-- Nakshatra -->
         <div class="card animate-in" style="padding:20px;animation-delay:120ms;">
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Nakshatra</p>
-          <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="nakshatra-name">{panchang.nakshatra.name}</p>
-          <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="nakshatra-name-hi">{panchang.nakshatra.nameHi}</p>
-          <p style="font-size:11px;color:var(--color-mute);margin:2px 0;font-family:var(--font-mono);" id="nakshatra-meta">Pada {panchang.nakshatra.pada} · {panchang.nakshatra.lord}</p>
-          <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" id="nakshatra-end">Ends: {panchang.nakshatra.endTime}</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Nakshatra</p>
+          <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="nakshatra-name">{panchang.nakshatra.name}</p>
+          <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-data-value);margin:0 0 2px;display:none;" id="nakshatra-name-hi">{panchang.nakshatra.nameHi}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:2px 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="nakshatra-meta">Pada {panchang.nakshatra.pada} · {panchang.nakshatra.lord}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="nakshatra-end">Ends: {panchang.nakshatra.endTime}</p>
         </div>
 
         <!-- Yoga -->
         <div class="card animate-in" style="padding:20px;animation-delay:180ms;">
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Yoga</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Yoga</p>
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;">
             <div>
-              <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="yoga-name">{panchang.yoga.name}</p>
-              <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="yoga-name-hi">{panchang.yoga.nameHi}</p>
+              <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="yoga-name">{panchang.yoga.name}</p>
+              <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-data-value);margin:0 0 2px;display:none;" id="yoga-name-hi">{panchang.yoga.nameHi}</p>
             </div>
             <span class="badge" id="yoga-type" style="flex-shrink:0;font-size:10px;">{panchang.yoga.type}</span>
           </div>
-          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);" id="yoga-end">Ends: {panchang.yoga.endTime}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="yoga-end">Ends: {panchang.yoga.endTime}</p>
         </div>
 
         <!-- Karana -->
         <div class="card animate-in" style="padding:20px;animation-delay:240ms;">
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Karana</p>
-          <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-ink);margin:0 0 2px;" id="karana-name">{panchang.karana.name}</p>
-          <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 2px;display:none;" id="karana-name-hi">{panchang.karana.nameHi}</p>
-          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);" id="karana-end">Ends: {panchang.karana.endTime}</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Karana</p>
+          <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="karana-name">{panchang.karana.name}</p>
+          <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-data-value);margin:0 0 2px;display:none;" id="karana-name-hi">{panchang.karana.nameHi}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="karana-end">Ends: {panchang.karana.endTime}</p>
         </div>
       </div>
 
@@ -171,23 +171,23 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <!-- Sun & Moon times -->
         <div class="card" style="padding:24px;">
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 16px;">Sun & Moon</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 16px;">Sun & Moon</p>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;">
             <div>
-              <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">SUNRISE</p>
-              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-ink);margin:0;" id="sunrise">{panchang.sunrise}</p>
+              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);">SUNRISE</p>
+              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0;" id="sunrise">{panchang.sunrise}</p>
             </div>
             <div>
-              <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">SUNSET</p>
-              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-ink);margin:0;" id="sunset">{panchang.sunset}</p>
+              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);">SUNSET</p>
+              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0;" id="sunset">{panchang.sunset}</p>
             </div>
             <div>
-              <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">MOONRISE</p>
-              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-ink);margin:0;" id="moonrise">{panchang.moonrise}</p>
+              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);">MOONRISE</p>
+              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0;" id="moonrise">{panchang.moonrise}</p>
             </div>
             <div>
-              <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">DAY LENGTH</p>
-              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-ink);margin:0;" id="day-duration">{panchang.durationDay}</p>
+              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);">DAY LENGTH</p>
+              <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0;" id="day-duration">{panchang.durationDay}</p>
             </div>
           </div>
         </div>
@@ -195,10 +195,10 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
         <!-- Abhijit Muhurta -->
         <div class="card" style="padding:24px;background:var(--color-canvas);">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-            <p class="caption-mono" style="color:var(--color-mute);margin:0;">Abhijit Muhurta</p>
+            <p class="caption-mono" style="color:var(--color-data-label);margin:0;">Abhijit Muhurta</p>
             <span class="badge-auspicious badge" style="font-size:10px;">Most Auspicious</span>
           </div>
-          <p class="en-text" style="font-size:26px;font-weight:600;letter-spacing:-0.8px;color:var(--color-ink);margin:0 0 4px;" id="abhijit-time">{panchang.abhijitMuhurta.start} – {panchang.abhijitMuhurta.end}</p>
+          <p class="en-text" style="font-size:26px;font-weight:600;letter-spacing:-0.8px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0 0 4px;" id="abhijit-time">{panchang.abhijitMuhurta.start} – {panchang.abhijitMuhurta.end}</p>
           <p style="font-size:13px;color:var(--color-body-text);margin:0;">Solar noon window — ideal for any important work, travel, or ceremony.</p>
         </div>
       </div>
@@ -206,23 +206,23 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
       <!-- Inauspicious times -->
       <div class="card" style="padding:24px;margin-bottom:12px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
-          <p class="caption-mono" style="color:var(--color-mute);margin:0;">Inauspicious Periods</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0;">Inauspicious Periods</p>
           <span class="badge-inauspicious badge" style="font-size:10px;">Avoid important work</span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
           <div>
-            <p style="font-size:11px;color:var(--color-mute);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Rahu Kalam</p>
-            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 0 2px;" id="rahu-time">{panchang.rahuKalam.start} – {panchang.rahuKalam.end}</p>
+            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Rahu Kalam</p>
+            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0 0 2px;" id="rahu-time">{panchang.rahuKalam.start} – {panchang.rahuKalam.end}</p>
             <p style="font-size:12px;color:var(--color-mute);margin:0;">Shadow of Rahu — most inauspicious</p>
           </div>
           <div>
-            <p style="font-size:11px;color:var(--color-mute);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Gulika Kalam</p>
-            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 0 2px;" id="gulika-time">{panchang.gulikaKalam.start} – {panchang.gulikaKalam.end}</p>
+            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Gulika Kalam</p>
+            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0 0 2px;" id="gulika-time">{panchang.gulikaKalam.start} – {panchang.gulikaKalam.end}</p>
             <p style="font-size:12px;color:var(--color-mute);margin:0;">Son of Saturn — avoid new ventures</p>
           </div>
           <div>
-            <p style="font-size:11px;color:var(--color-mute);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Yamaganda</p>
-            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 0 2px;" id="yama-time">{panchang.yamaganda.start} – {panchang.yamaganda.end}</p>
+            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Yamaganda</p>
+            <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0 0 2px;" id="yama-time">{panchang.yamaganda.start} – {panchang.yamaganda.end}</p>
             <p style="font-size:12px;color:var(--color-mute);margin:0;">Period of Yama — avoid travel</p>
           </div>
         </div>
