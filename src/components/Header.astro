@@ -2,6 +2,7 @@
 // Header.astro — sticky top header with clock, search, lang/region picker, theme switcher, mobile drawer
 import LocationPicker from './LocationPicker.astro';
 import LanguagePicker from './LanguagePicker.astro';
+import DeepamFlame from './motifs/DeepamFlame.astro';
 ---
 
 <!-- HEADER -->
@@ -13,7 +14,10 @@ import LanguagePicker from './LanguagePicker.astro';
       <!-- LEFT: Logo -->
       <a href="/" class="logo-link" aria-label="PanchangPath Home">
         <span class="logo-om">🕉️</span>
-        <span class="logo-text">PanchangPath</span>
+        <span class="logo-text-group">
+          <span class="logo-text">PanchangPath</span>
+          <span class="logo-text-hi">पंचांग पथ</span>
+        </span>
       </a>
 
       <!-- CENTER: Live clock + search -->
@@ -109,6 +113,18 @@ import LanguagePicker from './LanguagePicker.astro';
       </div>
     </div>
   </div>
+
+  <!-- Live status strip: Tithi · Nakshatra · City -->
+  <a href="/" class="status-strip" id="status-strip" title="Today's Panchang">
+    <div class="header-container status-strip-inner">
+      <DeepamFlame size={13} class="status-flame" />
+      <span class="status-item status-item-strong" id="status-tithi">—</span>
+      <span class="status-dot">·</span>
+      <span class="status-item" id="status-nakshatra">—</span>
+      <span class="status-dot">·</span>
+      <span class="status-item" id="status-city">—</span>
+    </div>
+  </a>
 
   <!-- Desktop nav categories -->
   <nav id="desktop-nav" aria-label="Main navigation">
@@ -246,7 +262,10 @@ import LanguagePicker from './LanguagePicker.astro';
   <div class="drawer-header">
     <a href="/" class="logo-link">
       <span class="logo-om">🕉️</span>
-      <span class="logo-text">PanchangPath</span>
+      <span class="logo-text-group">
+        <span class="logo-text">PanchangPath</span>
+        <span class="logo-text-hi">पंचांग पथ</span>
+      </span>
     </a>
     <button id="drawer-close" class="hdr-icon-btn" aria-label="Close menu">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
@@ -413,14 +432,31 @@ import LanguagePicker from './LanguagePicker.astro';
 </aside>
 
 <style>
-  /* ── Header shell ── */
+  /* ── Header shell ──
+     Header keeps its own dark saffron/maroon "chrome" regardless of the
+     site-wide light/dark toggle — same technique as .dark on <html>, just
+     scoped to this subtree so every var(--color-*) used below re-pairs
+     automatically without touching each declaration. */
   #site-header {
+    --color-canvas: #4A1608;
+    --color-canvas-soft: rgba(255,255,255,0.06);
+    --color-canvas-soft-2: rgba(255,255,255,0.11);
+    --color-ink: #FDF6EC;
+    --color-on-primary: #3A1005;
+    --color-body-text: #E3C2A0;
+    --color-mute: #C79B76;
+    --color-hairline: rgba(255,246,236,0.14);
+    --color-hairline-strong: rgba(255,246,236,0.30);
+    --color-saffron: #F2823D;
+    --color-saffron-soft: rgba(242,130,61,0.18);
+    --color-saffron-deep: #FFC08A;
+
     position: sticky;
     top: 0;
     z-index: 100;
     background: var(--color-canvas);
     border-bottom: 1px solid var(--color-hairline);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.18);
   }
 
   .header-container {
@@ -450,12 +486,22 @@ import LanguagePicker from './LanguagePicker.astro';
     flex-shrink: 0;
   }
   .logo-om { font-size: 20px; line-height: 1; }
+  .logo-text-group { display: flex; flex-direction: column; line-height: 1.05; }
   .logo-text {
-    font-size: 15px;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-size: 17px;
+    font-weight: 600;
     color: var(--color-ink);
-    letter-spacing: -0.3px;
+    letter-spacing: -0.2px;
     white-space: nowrap;
+  }
+  .logo-text-hi {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-mute);
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    margin-top: 1px;
   }
 
   /* ── Center: clock + search ── */
@@ -663,6 +709,28 @@ import LanguagePicker from './LanguagePicker.astro';
   /* Hamburger — hidden on desktop */
   .hamburger-btn { display: none; }
 
+  /* ── Live status strip ── */
+  .status-strip {
+    display: block;
+    background: rgba(0,0,0,0.14);
+    border-bottom: 1px solid var(--color-hairline);
+    text-decoration: none;
+  }
+  .status-strip-inner {
+    height: 26px;
+    gap: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .status-strip-inner::-webkit-scrollbar { display: none; }
+  .status-item {
+    font-size: 11px;
+    color: var(--color-body-text);
+    white-space: nowrap;
+  }
+  .status-item-strong { color: var(--color-saffron); font-weight: 600; }
+  .status-dot { color: var(--color-hairline-strong); font-size: 11px; }
+
   /* ── Desktop nav bar (second row) ── */
   #desktop-nav {
     height: 38px;
@@ -866,6 +934,9 @@ import LanguagePicker from './LanguagePicker.astro';
     .search-wrap { max-width: none; }
     .clock-widget { display: none; }
     #header-top { height: 52px; }
+    /* settings-btn is an inert placeholder (no click handler) — drop it
+       first to make room; hamburger + search must never be squeezed off. */
+    #settings-btn { display: none; }
   }
   @media (max-width: 480px) {
     .app-badges { display: none; }
@@ -892,6 +963,107 @@ import LanguagePicker from './LanguagePicker.astro';
   }
   updateClock();
   setInterval(updateClock, 1000);
+
+  // ── Live status strip (Tithi · Nakshatra · City) ──
+  // Duplicated minimal Panchang math (client <script> blocks can't import
+  // TS lib modules) — full Lahiri + full-term Moon longitude, matching
+  // src/lib/panchang.ts.
+  function stripToRad(d: number) { return d * Math.PI / 180; }
+  function stripNorm360(a: number) { return ((a % 360) + 360) % 360; }
+
+  function stripJulianDay(year: number, month: number, day: number, hour = 0): number {
+    if (month <= 2) { year -= 1; month += 12; }
+    const A = Math.floor(year / 100);
+    const B = 2 - A + Math.floor(A / 4);
+    return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + hour / 24 + B - 1524.5;
+  }
+  function stripSunLongitude(jd: number): number {
+    const T = (jd - 2451545.0) / 36525;
+    const L0 = stripNorm360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
+    const M = stripNorm360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
+    const Mr = stripToRad(M);
+    const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mr)
+      + (0.019993 - 0.000101 * T) * Math.sin(2 * Mr)
+      + 0.000289 * Math.sin(3 * Mr);
+    return stripNorm360(L0 + C);
+  }
+  function stripMoonLongitude(jd: number): number {
+    const T = (jd - 2451545.0) / 36525;
+    const L = stripNorm360(218.3164477 + 481267.88123421 * T);
+    const D = stripNorm360(297.8501921 + 445267.1114034 * T);
+    const M = stripNorm360(357.5291092 + 35999.0502909 * T);
+    const Mp = stripNorm360(134.9633964 + 477198.8675055 * T);
+    const F = stripNorm360(93.2720950 + 483202.0175233 * T);
+    const Dr = stripToRad(D), Mr = stripToRad(M), Mpr = stripToRad(Mp), Fr = stripToRad(F);
+    const dL = 6.288774 * Math.sin(Mpr)
+      + 1.274027 * Math.sin(2 * Dr - Mpr)
+      + 0.658314 * Math.sin(2 * Dr)
+      + 0.213618 * Math.sin(2 * Mpr)
+      - 0.185116 * Math.sin(Mr)
+      - 0.114332 * Math.sin(2 * Fr)
+      + 0.058793 * Math.sin(2 * Dr - 2 * Mpr)
+      + 0.057066 * Math.sin(2 * Dr - Mr - Mpr)
+      + 0.053322 * Math.sin(2 * Dr + Mpr)
+      + 0.045758 * Math.sin(2 * Dr - Mr)
+      - 0.040923 * Math.sin(Mr - Mpr)
+      - 0.034720 * Math.sin(Dr)
+      - 0.030383 * Math.sin(Mr + Mpr)
+      + 0.015327 * Math.sin(2 * Dr - 2 * Fr)
+      + 0.010980 * Math.sin(Mpr - 2 * Fr)
+      + 0.010675 * Math.sin(4 * Dr - Mpr)
+      + 0.010034 * Math.sin(3 * Mpr)
+      + 0.008548 * Math.sin(4 * Dr - 2 * Mpr)
+      - 0.007888 * Math.sin(2 * Dr + Mr - Mpr)
+      - 0.006766 * Math.sin(2 * Dr + Mr)
+      - 0.005163 * Math.sin(Dr - Mpr)
+      + 0.004987 * Math.sin(Dr + Mr)
+      + 0.004036 * Math.sin(2 * Dr - Mr + Mpr)
+      + 0.003994 * Math.sin(2 * Dr + 2 * Mpr)
+      + 0.003861 * Math.sin(4 * Dr)
+      + 0.003665 * Math.sin(2 * Dr - 3 * Mpr);
+    return stripNorm360(L + dL / 1000);
+  }
+  function stripLahiriAyanamsha(jd: number): number {
+    const T = (jd - 2451545.0) / 36525;
+    return 23.85 + 1.3612 * T - 0.000136 * T * T;
+  }
+
+  const STRIP_TITHIS = [
+    'Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami',
+    'Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima',
+    'Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami',
+    'Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya',
+  ];
+  const STRIP_NAKSHATRAS = [
+    'Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha',
+    'Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula',
+    'Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati',
+  ];
+
+  function updateStatusStrip() {
+    const loc = (window as any).__initLoc || { lat: 28.6139, lng: 77.2090, tzOffset: 5.5, name: 'New Delhi' };
+    const now = new Date();
+    const hourUTC = now.getHours() + now.getMinutes() / 60 - loc.tzOffset;
+    const jd = stripJulianDay(now.getFullYear(), now.getMonth() + 1, now.getDate(), hourUTC);
+    const sunLon = stripSunLongitude(jd);
+    const moonLon = stripMoonLongitude(jd);
+    const ayanamsha = stripLahiriAyanamsha(jd);
+    const moonSidereal = stripNorm360(moonLon - ayanamsha);
+    const elongation = stripNorm360(moonLon - sunLon);
+    const tithiIdx = Math.floor(elongation / 12) % 30;
+    const paksha = tithiIdx < 15 ? 'Shukla' : 'Krishna';
+    const nakIdx = Math.floor(moonSidereal / (360 / 27)) % 27;
+
+    const tithiEl = document.getElementById('status-tithi');
+    const nakEl = document.getElementById('status-nakshatra');
+    const cityEl = document.getElementById('status-city');
+    if (tithiEl) tithiEl.textContent = `${paksha} ${STRIP_TITHIS[tithiIdx]}`;
+    if (nakEl) nakEl.textContent = `${STRIP_NAKSHATRAS[nakIdx]} Nakshatra`;
+    if (cityEl) cityEl.textContent = loc.name;
+  }
+  updateStatusStrip();
+  setInterval(updateStatusStrip, 60000);
+  window.addEventListener('locationchange', updateStatusStrip);
 
   // ── Dark mode ──
   const html = document.documentElement;

@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
 
 const CALCS = [
   { icon: '🔮', title: 'Kundali Generator', desc: 'Full birth chart — North, South, East & West Indian styles', url: '/jyotish/kundali' },
@@ -27,6 +28,7 @@ const CALCS = [
   <!-- Hero -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+    <MandalaWatermark size={480} opacity={0.06} />
     <div class="container" style="position:relative;">
       <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">ज्योतिष · JYOTISH CALCULATORS</p>
       <h1 style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Jyotish Calculators</h1>

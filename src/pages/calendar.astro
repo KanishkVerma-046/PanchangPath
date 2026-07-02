@@ -45,9 +45,9 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   <!-- Legend -->
   <div style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:10px 0;">
     <div class="container" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#FF9933;display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Major festival</span></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#0070f3;display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Vrat</span></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:#22c55e;display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Regional</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-saffron-deep);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Major festival</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-link);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Vrat</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-auspicious);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Regional</span></div>
       <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--color-ink);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Today</span></div>
     </div>
   </div>
@@ -58,7 +58,7 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       <!-- Weekday headers -->
       <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;" id="cal-header">
         {WEEKDAYS.map((w, i) => (
-          <div style={`text-align:center;padding:8px 4px;font-size:11px;font-weight:500;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:${i===0?'#ef4444':i===6?'#0070f3':'var(--color-mute)'};`}>{w}</div>
+          <div style={`text-align:center;padding:8px 4px;font-size:11px;font-weight:500;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:${i===0?'var(--color-inauspicious)':i===6?'var(--color-link)':'var(--color-mute)'};`}>{w}</div>
         ))}
       </div>
       <!-- Day cells -->
@@ -76,12 +76,12 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
           const isSat = new Date(year, month, d).getDay() === 6;
           return (
             <div class="cal-cell" data-date={dateStr} style={`min-height:100px;border-radius:8px;padding:10px 8px;cursor:pointer;background:${isToday?'var(--color-ink)':'var(--color-canvas)'};box-shadow:var(--shadow-card);transition:box-shadow 0.15s;position:relative;`}>
-              <p style={`font-size:16px;font-weight:${isToday?'700':'600'};margin:0 0 6px;line-height:1;color:${isToday?'var(--color-on-primary)':isSun?'#ef4444':isSat?'#0070f3':'var(--color-ink)'};`}>{d}</p>
+              <p style={`font-size:16px;font-weight:${isToday?'700':'600'};margin:0 0 6px;line-height:1;color:${isToday?'var(--color-on-primary)':isSun?'var(--color-inauspicious)':isSat?'var(--color-link)':'var(--color-ink)'};`}>{d}</p>
               {feasts.slice(0,2).map(f => (
-                <p class={`en-text cal-fest`} style={`font-size:10px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${isToday?'rgba(255,255,255,0.8)':f.type==='major'?'var(--color-saffron-deep)':f.type==='vrat'?'var(--color-link)':'#15803d'};`}>{f.name}</p>
+                <p class={`en-text cal-fest`} style={`font-size:10px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${isToday?'rgba(255,255,255,0.8)':f.type==='major'?'var(--color-saffron-deep)':f.type==='vrat'?'var(--color-link)':'var(--color-auspicious)'};`}>{f.name}</p>
               ))}
               {feasts.slice(0,2).map(f => (
-                <p class={`hi-text cal-fest`} style={`font-size:10px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${isToday?'rgba(255,255,255,0.8)':f.type==='major'?'var(--color-saffron-deep)':f.type==='vrat'?'var(--color-link)':'#15803d'};display:none;`}>{f.nameHi}</p>
+                <p class={`hi-text cal-fest`} style={`font-size:10px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${isToday?'rgba(255,255,255,0.8)':f.type==='major'?'var(--color-saffron-deep)':f.type==='vrat'?'var(--color-link)':'var(--color-auspicious)'};display:none;`}>{f.nameHi}</p>
               ))}
               <!-- Panchang info populated by JS -->
               <p class="cal-tithi" style={`font-size:9px;font-family:var(--font-mono);margin:4px 0 0;color:${isToday?'rgba(255,255,255,0.6)':'var(--color-mute)'};`}></p>
@@ -211,9 +211,9 @@ function renderCalendar(d: Date) {
     cell.className = 'cal-cell';
     cell.setAttribute('data-date', dateStr);
     cell.style.cssText = `min-height:90px;border-radius:8px;padding:10px 8px;cursor:pointer;background:${isToday?'var(--color-ink)':'var(--color-canvas)'};box-shadow:var(--shadow-card);transition:box-shadow 0.15s;position:relative;`;
-    const dayColor = isToday ? 'var(--color-on-primary)' : isSun ? '#ef4444' : isSat ? '#0070f3' : 'var(--color-ink)';
+    const dayColor = isToday ? 'var(--color-on-primary)' : isSun ? 'var(--color-inauspicious)' : isSat ? 'var(--color-link)' : 'var(--color-ink)';
     const muteColor = isToday ? 'rgba(255,255,255,0.5)' : 'var(--color-mute)';
-    const festColor = (type: string) => isToday ? 'rgba(255,255,255,0.85)' : type === 'major' ? 'var(--color-saffron-deep)' : type === 'vrat' ? 'var(--color-link)' : '#15803d';
+    const festColor = (type: string) => isToday ? 'rgba(255,255,255,0.85)' : type === 'major' ? 'var(--color-saffron-deep)' : type === 'vrat' ? 'var(--color-link)' : 'var(--color-auspicious)';
     cell.innerHTML = `
       <p style="font-size:16px;font-weight:${isToday?'700':'600'};margin:0 0 4px;line-height:1;color:${dayColor};">${day}</p>
       ${feasts.slice(0,1).map(f => `<p style="font-size:9px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${festColor(f.type)};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${f.name}</p>`).join('')}

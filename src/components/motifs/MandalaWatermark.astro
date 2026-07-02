@@ -1,0 +1,73 @@
+---
+// MandalaWatermark.astro — low-opacity radial mandala, decorative only.
+// Sits absolutely behind hero content (`pointer-events:none`); use sparingly,
+// one per landing/hub hero, not on every page.
+interface Props {
+  size?: number;
+  opacity?: number;
+  class?: string;
+}
+const { size = 640, opacity = 0.07, class: className = '' } = Astro.props;
+
+const cx = size / 2;
+const cy = size / 2;
+const TAU = Math.PI * 2;
+
+function ring(count: number, radius: number, offset = 0) {
+  return Array.from({ length: count }, (_, i) => {
+    const a = TAU * (i / count) + offset;
+    return { x: cx + radius * Math.cos(a), y: cy + radius * Math.sin(a), deg: (a * 180) / Math.PI + 90 };
+  });
+}
+
+const outerPetals = ring(16, size * 0.36);
+const midDots = ring(32, size * 0.27);
+const innerPetals = ring(8, size * 0.16);
+const coreDots = ring(12, size * 0.07);
+const ringRadii = [0.42, 0.31, 0.205, 0.115, 0.045].map((f) => size * f);
+---
+
+<svg
+  class={`mandala-watermark ${className}`}
+  width={size}
+  height={size}
+  viewBox={`0 0 ${size} ${size}`}
+  fill="none"
+  aria-hidden="true"
+  style={`opacity:${opacity}`}
+>
+  <g stroke="currentColor" stroke-width="1">
+    {ringRadii.map((r) => <circle cx={cx} cy={cy} r={r} />)}
+  </g>
+
+  <g fill="currentColor">
+    {outerPetals.map((p) => (
+      <ellipse cx={p.x} cy={p.y} rx={size * 0.014} ry={size * 0.038} transform={`rotate(${p.deg} ${p.x} ${p.y})`} />
+    ))}
+    {innerPetals.map((p) => (
+      <ellipse cx={p.x} cy={p.y} rx={size * 0.02} ry={size * 0.05} transform={`rotate(${p.deg} ${p.x} ${p.y})`} />
+    ))}
+  </g>
+
+  <g fill="currentColor">
+    {midDots.map((p) => <circle cx={p.x} cy={p.y} r={size * 0.006} />)}
+    {coreDots.map((p) => <circle cx={p.x} cy={p.y} r={size * 0.01} />)}
+  </g>
+
+  <circle cx={cx} cy={cy} r={size * 0.02} fill="currentColor" />
+</svg>
+
+<style>
+  .mandala-watermark {
+    position: absolute;
+    top: 50%;
+    right: -8%;
+    transform: translateY(-50%);
+    color: var(--color-saffron);
+    pointer-events: none;
+    user-select: none;
+  }
+  @media (max-width: 768px) {
+    .mandala-watermark { display: none; }
+  }
+</style>

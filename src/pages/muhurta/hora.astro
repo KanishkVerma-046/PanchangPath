@@ -74,13 +74,13 @@ const HORA_SEQ = ['Sun','Venus','Mercury','Moon','Saturn','Jupiter','Mars'];
 const HORA_START = [0,3,6,2,5,1,4]; // weekday → start index
 
 const HORA_DATA: Record<string,{hi:string;q:string;color:string;suitable:string}> = {
-  Sun:     {hi:'सूर्य',  q:'Neutral', color:'#f59e0b', suitable:'Govt matters · Authoritative decisions · Father-related work'},
-  Venus:   {hi:'शुक्र', q:'Good',    color:'#ec4899', suitable:'Romance · Arts · Luxury goods · Beauty · Partnerships'},
-  Mercury: {hi:'बुध',   q:'Good',    color:'#22c55e', suitable:'Writing · Education · Business · Trade · Communication'},
-  Moon:    {hi:'चंद्र', q:'Best',    color:'#3b82f6', suitable:'All auspicious work · Travel · Agriculture · Emotional matters'},
-  Saturn:  {hi:'शनि',  q:'Avoid',   color:'#374151', suitable:'Avoid auspicious work — OK for manual labour & discipline'},
-  Jupiter: {hi:'गुरु',  q:'Best',    color:'#d97706', suitable:'Spiritual work · Teaching · Marriage · Investments · Prosperity'},
-  Mars:    {hi:'मंगल', q:'Neutral',  color:'#ef4444', suitable:'Physical work · Competition · Surgery · Courage'},
+  Sun:     {hi:'सूर्य',  q:'Neutral', color:'#C8922A', suitable:'Govt matters · Authoritative decisions · Father-related work'},
+  Venus:   {hi:'शुक्र', q:'Good',    color:'#97690F', suitable:'Romance · Arts · Luxury goods · Beauty · Partnerships'},
+  Mercury: {hi:'बुध',   q:'Good',    color:'#16803D', suitable:'Writing · Education · Business · Trade · Communication'},
+  Moon:    {hi:'चंद्र', q:'Best',    color:'#B5390A', suitable:'All auspicious work · Travel · Agriculture · Emotional matters'},
+  Saturn:  {hi:'शनि',  q:'Avoid',   color:'#3A2712', suitable:'Avoid auspicious work — OK for manual labour & discipline'},
+  Jupiter: {hi:'गुरु',  q:'Best',    color:'#7F2700', suitable:'Spiritual work · Teaching · Marriage · Investments · Prosperity'},
+  Mars:    {hi:'मंगल', q:'Neutral',  color:'#C81E1E', suitable:'Physical work · Competition · Surgery · Courage'},
 };
 
 function toJD(y:number,m:number,d:number,h=0){
@@ -119,15 +119,15 @@ function makeHoraRow(planet:string,startMins:number,endMins:number,isCurrent:boo
   const d=HORA_DATA[planet];
   const qColor=d.q==='Best'?'#15803d':d.q==='Good'?'#1d4ed8':d.q==='Avoid'?'#dc2626':'#6b7280';
   return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:${isCurrent?'var(--color-ink)':'var(--color-canvas-soft-2)'};border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
-    <span style="font-size:11px;font-weight:700;color:${isCurrent?'rgba(255,255,255,0.5)':'var(--color-mute)'};width:20px;text-align:center;">${idx+1}</span>
+    <span style="font-size:11px;font-weight:700;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':'var(--color-mute)'};width:20px;text-align:center;">${idx+1}</span>
     <span style="width:8px;height:8px;border-radius:50%;background:${d.color};flex-shrink:0;"></span>
     <div style="flex:1;min-width:0;">
-      <span style="font-size:13px;font-weight:600;color:${isCurrent?'#fff':'var(--color-ink)'};">${planet}</span>
-      <span style="font-size:10px;color:${isCurrent?'rgba(255,255,255,0.5)':'var(--color-mute)'};margin-left:6px;font-family:var(--font-mono);">${d.hi}</span>
+      <span style="font-size:13px;font-weight:600;color:${isCurrent?'var(--color-on-primary)':'var(--color-ink)'};">${planet}</span>
+      <span style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':'var(--color-mute)'};margin-left:6px;font-family:var(--font-mono);">${d.hi}</span>
     </div>
     <div style="text-align:right;">
-      <span style="font-size:11px;color:${isCurrent?'rgba(255,255,255,0.8)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(startMins)}</span>
-      ${isCurrent?'<span style="display:block;font-size:9px;font-weight:700;color:#ffd700;">NOW</span>':`<span style="display:block;font-size:9px;font-weight:600;color:${qColor};">${d.q}</span>`}
+      <span style="font-size:11px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 20%)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(startMins)}</span>
+      ${isCurrent?'<span style="display:block;font-size:9px;font-weight:700;color:var(--color-on-primary);">NOW</span>':`<span style="display:block;font-size:9px;font-weight:600;color:${qColor};">${d.q}</span>`}
     </div>
   </div>`;
 }

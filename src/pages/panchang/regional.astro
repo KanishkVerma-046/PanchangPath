@@ -154,6 +154,7 @@ const TRADITION_COLORS: Record<string, string> = {
   background: var(--color-canvas);
   border: 1px solid var(--color-hairline);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevation);
   overflow: hidden;
   text-decoration: none;
   color: inherit;
@@ -178,7 +179,7 @@ const TRADITION_COLORS: Record<string, string> = {
 .reg-arrow { font-size: 18px; color: var(--color-mute); padding: 12px 20px; border-top: 1px solid var(--color-hairline); text-align: right; transition: color 0.12s; }
 .reg-card:hover .reg-arrow { color: var(--color-saffron); }
 
-.cs-card { background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); padding: 18px 20px; }
+.cs-card { background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevation); padding: 18px 20px; }
 .cs-title { font-size: 15px; font-weight: 700; color: var(--color-ink); margin: 0 0 8px; }
 .cs-body { font-size: 13px; color: var(--color-body-text); line-height: 1.6; margin: 0; }
 

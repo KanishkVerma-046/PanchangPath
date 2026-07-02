@@ -1,0 +1,47 @@
+---
+// DeepamFlame.astro — small flickering oil-lamp flame, used as a "live"
+// accent icon (e.g. in place of a plain status dot). Reverent, not playful:
+// a slow subtle flicker, never a bounce/spin.
+interface Props {
+  size?: number;
+  class?: string;
+}
+const { size = 14, class: className = '' } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 9);
+---
+
+<svg
+  class={`deepam-flame ${className}`}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  aria-hidden="true"
+>
+  <defs>
+    <linearGradient id={`deepam-grad-${uid}`} x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="var(--color-saffron-deep)" />
+      <stop offset="55%" stop-color="var(--color-saffron)" />
+      <stop offset="100%" stop-color="var(--color-gold)" />
+    </linearGradient>
+  </defs>
+  <path
+    class="deepam-flame-path"
+    fill={`url(#deepam-grad-${uid})`}
+    d="M12 2c1.8 3 .6 4.6-.4 6-1 1.4-1.9 2.7-1.9 4.6a3 3 0 0 0 5.9.9c.5.9.8 1.9.8 2.9a4.4 4.4 0 0 1-8.8 0c0-2.6 1.3-4 2.4-5.6C11.2 8.8 12.3 7 12 2Z"
+  />
+</svg>
+
+<style>
+  .deepam-flame { display: inline-block; transform-origin: 50% 90%; }
+  .deepam-flame-path { transform-origin: 50% 90%; animation: deepam-flicker 2.6s ease-in-out infinite; }
+  @keyframes deepam-flicker {
+    0%, 100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+    25%      { transform: scaleY(1.06) scaleX(0.97); opacity: 0.94; }
+    50%      { transform: scaleY(0.96) scaleX(1.03); opacity: 1; }
+    75%      { transform: scaleY(1.03) scaleX(0.99); opacity: 0.96; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .deepam-flame-path { animation: none; }
+  }
+</style>

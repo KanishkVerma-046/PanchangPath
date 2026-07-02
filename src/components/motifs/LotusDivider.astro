@@ -1,0 +1,52 @@
+---
+// LotusDivider.astro — section-break flourish: a small vector lotus flanked
+// by fading gold hairlines. Use once or twice per page, at real section
+// breaks only — not a repeatable rule/hr replacement.
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+
+const size = 44;
+const cx = size / 2;
+const cy = size * 0.62;
+const petalCount = 7;
+const TAU = Math.PI * 2;
+
+const petals = Array.from({ length: petalCount }, (_, i) => {
+  const spread = Math.PI * 0.92; // fan angle
+  const a = -Math.PI / 2 - spread / 2 + (spread * i) / (petalCount - 1);
+  return { deg: (a * 180) / Math.PI + 90 };
+});
+---
+
+<div class={`lotus-divider ${className}`} role="presentation" aria-hidden="true">
+  <span class="lotus-line"></span>
+  <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} fill="none">
+    <g fill="currentColor" opacity="0.9">
+      {petals.map((p) => (
+        <ellipse cx={cx} cy={cy} rx={size * 0.09} ry={size * 0.34} transform={`rotate(${p.deg} ${cx} ${cy})`} />
+      ))}
+    </g>
+    <circle cx={cx} cy={cy} r={size * 0.07} fill="currentColor" />
+  </svg>
+  <span class="lotus-line"></span>
+</div>
+
+<style>
+  .lotus-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    color: var(--color-gold);
+  }
+  .lotus-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-hairline-strong));
+  }
+  .lotus-line:last-child { background: linear-gradient(90deg, var(--color-hairline-strong), transparent); }
+</style>

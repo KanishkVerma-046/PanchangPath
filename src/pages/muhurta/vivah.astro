@@ -217,7 +217,7 @@ document.getElementById('vivah-find')?.addEventListener('click',()=>{
   } else {
     listEl.innerHTML=top.map((r,i)=>{
       const label=r.score>=9?'Excellent':r.score>=7?'Very Good':'Good';
-      const labelColor=r.score>=9?'#15803d':r.score>=7?'#b45309':'#1d4ed8';
+      const labelColor=r.score>=9?'#16803D':r.score>=7?'#97690F':'#B5390A';
       const isTop=i===0;
       const bg=isTop?'var(--color-ink)':'';
       const tc=isTop?'#fff':'var(--color-ink)';

@@ -101,14 +101,14 @@ const GOWRI_NIGHT = [
   ['Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam'],
 ];
 const GOWRI_DATA: Record<string,{q:string;bg:string;fg:string;suitable:string}> = {
-  Amrutham: {q:'Best',    bg:'#dcfce7',fg:'#15803d',suitable:'All auspicious activities'},
-  Sudham:   {q:'Good',    bg:'#fef3c7',fg:'#b45309',suitable:'Religious & spiritual work'},
-  Uthamam:  {q:'Good',    bg:'#dbeafe',fg:'#1d4ed8',suitable:'Education, new ventures'},
-  Labham:   {q:'Good',    bg:'#ede9fe',fg:'#6d28d9',suitable:'Business and financial work'},
-  Dhanam:   {q:'Neutral', bg:'#f0fdf4',fg:'#16a34a',suitable:'Wealth activities — OK'},
-  Charam:   {q:'Neutral', bg:'#f8fafc',fg:'#6b7280',suitable:'Travel and movement'},
-  Rogam:    {q:'Avoid',   bg:'#fee2e2',fg:'#dc2626',suitable:'Avoid all auspicious activities'},
-  Visha:    {q:'Avoid',   bg:'#fee2e2',fg:'#b91c1c',suitable:'Avoid — inauspicious'},
+  Amrutham: {q:'Best',    bg:'#DCF3E3',fg:'#16803D',suitable:'All auspicious activities'},
+  Sudham:   {q:'Good',    bg:'#FBF0D9',fg:'#97690F',suitable:'Religious & spiritual work'},
+  Uthamam:  {q:'Good',    bg:'#FBE4D2',fg:'#B5390A',suitable:'Education, new ventures'},
+  Labham:   {q:'Good',    bg:'#FBE4D2',fg:'#7F2700',suitable:'Business and financial work'},
+  Dhanam:   {q:'Neutral', bg:'#F5E7C8',fg:'#8C7660',suitable:'Wealth activities — OK'},
+  Charam:   {q:'Neutral', bg:'#E8D9BE',fg:'#5A4636',suitable:'Travel and movement'},
+  Rogam:    {q:'Avoid',   bg:'#FBE0DE',fg:'#C81E1E',suitable:'Avoid all auspicious activities'},
+  Visha:    {q:'Avoid',   bg:'#E8D9BE',fg:'#3A2712',suitable:'Avoid — inauspicious'},
 };
 
 function toJD(y:number,m:number,d:number,h=0){
@@ -154,14 +154,14 @@ dateInput.value=new Date().toISOString().split('T')[0];
 function makeGowriSlot(name:string,s:number,e:number,isCurrent:boolean){
   const d=GOWRI_DATA[name]||{q:'—',bg:'#f3f4f6',fg:'#374151',suitable:''};
   const bg=isCurrent?'var(--color-ink)':d.bg;
-  const fg=isCurrent?'#fff':d.fg;
+  const fg=isCurrent?'var(--color-on-primary)':d.fg;
   return `<div style="background:${bg};border-radius:10px;padding:12px 14px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
       <span style="font-size:13px;font-weight:700;color:${fg};">${name}</span>
-      ${isCurrent?'<span style="font-size:9px;font-weight:700;background:rgba(255,255,255,0.2);color:#fff;padding:1px 6px;border-radius:100px;">NOW</span>':''}
+      ${isCurrent?'<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:1px 6px;border-radius:100px;">NOW</span>':''}
     </div>
-    <p style="font-size:10px;color:${isCurrent?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:0;">${fmtMins(s)} – ${fmtMins(e)}</p>
-    <p style="font-size:10px;color:${isCurrent?'rgba(255,255,255,0.5)':d.fg};margin:2px 0 0;">${d.q}</p>
+    <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 40%)':'var(--color-mute)'};margin:0;">${fmtMins(s)} – ${fmtMins(e)}</p>
+    <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':d.fg};margin:2px 0 0;">${d.q}</p>
   </div>`;
 }
 

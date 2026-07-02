@@ -438,11 +438,16 @@ const pakshaHi  = p.tithi.pakshaNi;
     font-weight: 400;
     color: var(--color-mute);
     font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
   }
   .ps-sun {
     display: flex;
     align-items: center;
     gap: 5px;
+  }
+  .ps-sun span, #ps-day-length {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
   }
   .ps-paksha-badge {
     display: inline-flex;

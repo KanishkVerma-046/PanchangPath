@@ -96,13 +96,13 @@ const NIGHT_CHOG = [
 ];
 
 const CHOG_DATA: Record<string,{hi:string;q:string;planet:string;bg:string;fg:string;suitable:string}> = {
-  Amrit: {hi:'अमृत',q:'Best',planet:'Moon',bg:'#dcfce7',fg:'#15803d',suitable:'All activities · Travel · Business · Marriage · Medicine'},
-  Shubh: {hi:'शुभ',q:'Good',planet:'Jupiter',bg:'#fef3c7',fg:'#b45309',suitable:'Marriage · Religious ceremonies · Education · Ventures'},
-  Labh:  {hi:'लाभ',q:'Good',planet:'Mercury',bg:'#dbeafe',fg:'#1d4ed8',suitable:'Business · Trade · Financial dealings · Accounts'},
-  Char:  {hi:'चर',q:'Neutral',planet:'Venus',bg:'#ede9fe',fg:'#6d28d9',suitable:'Travel · Movement · Shopping'},
-  Udveg: {hi:'उद्वेग',q:'Avoid',planet:'Sun',bg:'#fee2e2',fg:'#dc2626',suitable:'Avoid — Government work only'},
-  Kaal:  {hi:'काल',q:'Avoid',planet:'Saturn',bg:'#f3f4f6',fg:'#374151',suitable:'Avoid all auspicious activities'},
-  Rog:   {hi:'रोग',q:'Avoid',planet:'Mars',bg:'#fee2e2',fg:'#b91c1c',suitable:'Avoid — especially surgery & medicine'},
+  Amrit: {hi:'अमृत',q:'Best',planet:'Moon',bg:'#DCF3E3',fg:'#16803D',suitable:'All activities · Travel · Business · Marriage · Medicine'},
+  Shubh: {hi:'शुभ',q:'Good',planet:'Jupiter',bg:'#FBF0D9',fg:'#97690F',suitable:'Marriage · Religious ceremonies · Education · Ventures'},
+  Labh:  {hi:'लाभ',q:'Good',planet:'Mercury',bg:'#FBE4D2',fg:'#B5390A',suitable:'Business · Trade · Financial dealings · Accounts'},
+  Char:  {hi:'चर',q:'Neutral',planet:'Venus',bg:'#F5E7C8',fg:'#8C7660',suitable:'Travel · Movement · Shopping'},
+  Udveg: {hi:'उद्वेग',q:'Avoid',planet:'Sun',bg:'#FBE0DE',fg:'#C81E1E',suitable:'Avoid — Government work only'},
+  Kaal:  {hi:'काल',q:'Avoid',planet:'Saturn',bg:'#E8D9BE',fg:'#3A2712',suitable:'Avoid all auspicious activities'},
+  Rog:   {hi:'रोग',q:'Avoid',planet:'Mars',bg:'#FBE4D2',fg:'#7F2700',suitable:'Avoid — especially surgery & medicine'},
 };
 
 function toJD(y:number,m:number,d:number,h=0){
@@ -142,9 +142,9 @@ dateInput.value=new Date().toISOString().split('T')[0];
 function makeSlot(name:string,startMins:number,endMins:number,isCurrent:boolean){
   const d=CHOG_DATA[name];
   const bg=isCurrent?'var(--color-ink)':d.bg;
-  const fg=isCurrent?'#fff':d.fg;
-  const muted=isCurrent?'rgba(255,255,255,0.6)':'var(--color-mute)';
-  const qColor=isCurrent?'rgba(255,255,255,0.5)':(d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626');
+  const fg=isCurrent?'var(--color-on-primary)':d.fg;
+  const muted=isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 40%)':'var(--color-mute)';
+  const qColor=isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':(d.q==='Best'?'#16803D':d.q==='Good'?'#97690F':d.q==='Neutral'?'#8C7660':'#C81E1E');
   return `<div style="background:${bg};border-radius:10px;padding:14px 16px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
       <span style="font-size:15px;font-weight:700;color:${fg};">${name}</span>

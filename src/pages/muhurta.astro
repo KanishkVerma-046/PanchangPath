@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
 ---
 
 <Layout title="Muhurta Tools — Auspicious Timing — PanchangPath" description="Complete Muhurta toolkit: Choghadiya, Shubha Hora, Rahu Kala, Lagna table, Vivah Muhurat, Griha Pravesh and more.">
@@ -7,6 +8,7 @@ import Layout from '../layouts/Layout.astro';
   <!-- Hero -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+    <MandalaWatermark size={480} opacity={0.06} />
     <div class="container" style="position:relative;">
       <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">मुहूर्त · Shubh Muhurta</p>
       <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Muhurta Tools.</h1>
@@ -128,12 +130,12 @@ const DAY_CHOG = [
   ['Kaal','Shubh','Rog','Udveg','Char','Labh','Amrit','Kaal'],
 ];
 const CHOG_COLOR: Record<string,string> = {
-  Amrit:'#dcfce7',Shubh:'#fef3c7',Labh:'#dbeafe',Char:'#ede9fe',
-  Udveg:'#fee2e2',Kaal:'#f3f4f6',Rog:'#fee2e2',
+  Amrit:'#DCF3E3',Shubh:'#FBF0D9',Labh:'#FBE4D2',Char:'#F5E7C8',
+  Udveg:'#FBE0DE',Kaal:'#E8D9BE',Rog:'#FBE4D2',
 };
 const CHOG_TEXT: Record<string,string> = {
-  Amrit:'#15803d',Shubh:'#b45309',Labh:'#1d4ed8',Char:'#6d28d9',
-  Udveg:'#dc2626',Kaal:'#374151',Rog:'#b91c1c',
+  Amrit:'#16803D',Shubh:'#97690F',Labh:'#B5390A',Char:'#8C7660',
+  Udveg:'#C81E1E',Kaal:'#3A2712',Rog:'#7F2700',
 };
 const CHOG_QUALITY: Record<string,string> = {
   Amrit:'Best',Shubh:'Good',Labh:'Good',Char:'Neutral',
@@ -188,15 +190,15 @@ if(grid) {
     const start=srMins+i*slotDur, end=start+slotDur;
     const isCurrent=nowMins>=start&&nowMins<end;
     const bg=isCurrent?'var(--color-ink)':CHOG_COLOR[name];
-    const fg=isCurrent?'#fff':CHOG_TEXT[name];
-    const muted=isCurrent?'rgba(255,255,255,0.65)':'var(--color-mute)';
+    const fg=isCurrent?'var(--color-on-primary)':CHOG_TEXT[name];
+    const muted=isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 35%)':'var(--color-mute)';
     return `<div style="background:${bg};border-radius:8px;padding:12px 14px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
         <span style="font-size:13px;font-weight:600;color:${fg};">${name}</span>
-        ${isCurrent?'<span style="font-size:9px;font-weight:700;background:rgba(255,255,255,0.2);color:#fff;padding:1px 6px;border-radius:100px;">NOW</span>':''}
+        ${isCurrent?'<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:1px 6px;border-radius:100px;">NOW</span>':''}
       </div>
       <p style="font-size:10px;color:${muted};margin:0;">${fmtMins(start)} – ${fmtMins(end)}</p>
-      <p style="font-size:10px;color:${isCurrent?'rgba(255,255,255,0.5)':CHOG_COLOR[name]==='#f3f4f6'?'#6b7280':'var(--color-mute)'};margin:2px 0 0;">${CHOG_QUALITY[name]}</p>
+      <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':CHOG_COLOR[name]==='#f3f4f6'?'#6b7280':'var(--color-mute)'};margin:2px 0 0;">${CHOG_QUALITY[name]}</p>
     </div>`;
   }).join('');
 }

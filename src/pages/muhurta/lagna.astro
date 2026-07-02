@@ -141,7 +141,7 @@ function calculate(){
 
   const curEl=document.getElementById('lg-current');
   if(curEl&&isToday&&currentRashi>=0){
-    curEl.innerHTML=`<div style="background:var(--color-canvas-soft-2);border:1px solid var(--color-hairline);border-radius:10px;padding:16px 20px;display:flex;align-items:center;gap:16px;">
+    curEl.innerHTML=`<div style="background:var(--color-canvas-soft-2);border:1px solid var(--color-hairline);border-radius:10px;box-shadow:var(--shadow-elevation);padding:16px 20px;display:flex;align-items:center;gap:16px;">
       <div style="font-size:28px;">${['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'][currentRashi]}</div>
       <div>
         <p style="font-size:12px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">Current Lagna</p>
@@ -161,11 +161,11 @@ function calculate(){
       return `<div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:8px;background:${isCurrent?'var(--color-ink)':'var(--color-canvas-soft-2)'};border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
         <span style="font-size:18px;">${SYMBOLS[e.rashi]}</span>
         <div style="flex:1;">
-          <span style="font-size:13px;font-weight:600;color:${isCurrent?'#fff':'var(--color-ink)'};">${RASHI_NAMES[e.rashi]}</span>
-          <span style="font-size:11px;color:${isCurrent?'rgba(255,255,255,0.5)':'var(--color-mute)'};margin-left:6px;">${RASHI_HI[e.rashi]}</span>
+          <span style="font-size:13px;font-weight:600;color:${isCurrent?'var(--color-on-primary)':'var(--color-ink)'};">${RASHI_NAMES[e.rashi]}</span>
+          <span style="font-size:11px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':'var(--color-mute)'};margin-left:6px;">${RASHI_HI[e.rashi]}</span>
         </div>
-        <span style="font-size:12px;color:${isCurrent?'rgba(255,255,255,0.8)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(e.startMins)} – ${fmtMins(endMins)}</span>
-        ${isCurrent?'<span style="font-size:9px;font-weight:700;background:rgba(255,255,255,0.2);color:#fff;padding:2px 8px;border-radius:100px;">NOW</span>':''}
+        <span style="font-size:12px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 20%)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(e.startMins)} – ${fmtMins(endMins)}</span>
+        ${isCurrent?'<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:2px 8px;border-radius:100px;">NOW</span>':''}
       </div>`;
     }).join('');
   }

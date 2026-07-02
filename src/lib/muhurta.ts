@@ -16,37 +16,37 @@ export interface ChoghadiyaInfo {
 export const CHOGHADIYA_INFO: Record<ChoghadiyaType, ChoghadiyaInfo> = {
   Amrit: {
     nameHi: 'अमृत', quality: 'best', planet: 'Moon', planetHi: 'चंद्र',
-    color: '#15803d', bgColor: '#dcfce7',
+    color: '#16803D', bgColor: '#DCF3E3',
     suitable: ['All activities', 'Travel', 'Business', 'Marriage', 'Medicine', 'Education'],
   },
   Shubh: {
     nameHi: 'शुभ', quality: 'good', planet: 'Jupiter', planetHi: 'गुरु',
-    color: '#b45309', bgColor: '#fef3c7',
+    color: '#97690F', bgColor: '#FBF0D9',
     suitable: ['Marriage', 'Religious ceremonies', 'Education', 'New ventures'],
   },
   Labh: {
     nameHi: 'लाभ', quality: 'good', planet: 'Mercury', planetHi: 'बुध',
-    color: '#1d4ed8', bgColor: '#dbeafe',
+    color: '#B5390A', bgColor: '#FBE4D2',
     suitable: ['Business', 'Trade', 'Financial dealings', 'Accounting'],
   },
   Char: {
     nameHi: 'चर', quality: 'neutral', planet: 'Venus', planetHi: 'शुक्र',
-    color: '#6d28d9', bgColor: '#ede9fe',
+    color: '#8C7660', bgColor: '#F5E7C8',
     suitable: ['Travel', 'Movement', 'Shopping'],
   },
   Udveg: {
     nameHi: 'उद्वेग', quality: 'bad', planet: 'Sun', planetHi: 'सूर्य',
-    color: '#dc2626', bgColor: '#fee2e2',
+    color: '#C81E1E', bgColor: '#FBE0DE',
     suitable: ['Government work only'],
   },
   Kaal: {
     nameHi: 'काल', quality: 'bad', planet: 'Saturn', planetHi: 'शनि',
-    color: '#374151', bgColor: '#f3f4f6',
+    color: '#3A2712', bgColor: '#E8D9BE',
     suitable: [],
   },
   Rog: {
     nameHi: 'रोग', quality: 'bad', planet: 'Mars', planetHi: 'मंगल',
-    color: '#b91c1c', bgColor: '#fee2e2',
+    color: '#7F2700', bgColor: '#FBE4D2',
     suitable: [],
   },
 };
@@ -204,14 +204,14 @@ export const MUHURTA_CRITERIA: Record<ActivityType, MuhurtaCriteria> = {
 export type GowriType = 'Amrutham' | 'Sudham' | 'Labham' | 'Uthamam' | 'Rogam' | 'Dhanam' | 'Charam' | 'Visha';
 
 export const GOWRI_INFO: Record<GowriType, { nameHi: string; quality: Quality; color: string }> = {
-  Amrutham: { nameHi: 'अमृतम्', quality: 'best', color: '#15803d' },
-  Sudham:   { nameHi: 'सुधम्',  quality: 'good', color: '#b45309' },
-  Labham:   { nameHi: 'लाभम्',  quality: 'good', color: '#1d4ed8' },
-  Uthamam:  { nameHi: 'उत्तमम्', quality: 'good', color: '#7c3aed' },
-  Rogam:    { nameHi: 'रोगम्',   quality: 'bad',  color: '#dc2626' },
-  Dhanam:   { nameHi: 'धनम्',   quality: 'neutral', color: '#d97706' },
-  Charam:   { nameHi: 'चरम्',   quality: 'neutral', color: '#6b7280' },
-  Visha:    { nameHi: 'विषम्',  quality: 'bad',  color: '#b91c1c' },
+  Amrutham: { nameHi: 'अमृतम्', quality: 'best', color: '#16803D' },
+  Sudham:   { nameHi: 'सुधम्',  quality: 'good', color: '#97690F' },
+  Labham:   { nameHi: 'लाभम्',  quality: 'good', color: '#B5390A' },
+  Uthamam:  { nameHi: 'उत्तमम्', quality: 'good', color: '#7F2700' },
+  Rogam:    { nameHi: 'रोगम्',   quality: 'bad',  color: '#C81E1E' },
+  Dhanam:   { nameHi: 'धनम्',   quality: 'neutral', color: '#8C7660' },
+  Charam:   { nameHi: 'चरम्',   quality: 'neutral', color: '#5A4636' },
+  Visha:    { nameHi: 'विषम्',  quality: 'bad',  color: '#3A2712' },
 };
 
 export const GOWRI_DAY: GowriType[][] = [
