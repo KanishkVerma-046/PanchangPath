@@ -12,6 +12,8 @@ const {
   title = 'PanchangPath — Hindu Almanac for Any Date & Location',
   description = 'Precise Panchang with Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, festivals and muhurtas — clean, fast, and ad-free.',
 } = Astro.props;
+
+const currentYear = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -83,7 +85,7 @@ const {
       </div>
       <div class="divider"></div>
       <div style="display:flex;align-items:center;justify-content:space-between;padding-top:24px;flex-wrap:wrap;gap:12px;">
-        <p style="color:var(--color-mute);font-size:12px;margin:0;">© 2025 PanchangPath. All rights reserved.</p>
+        <p style="color:var(--color-mute);font-size:12px;margin:0;">© {currentYear} PanchangPath. All rights reserved.</p>
         <p style="color:var(--color-mute);font-size:12px;margin:0;">panchangpath.com</p>
       </div>
     </div>

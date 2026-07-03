@@ -58,12 +58,6 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
         <!-- Language / Region picker -->
         <LanguagePicker />
 
-        <!-- Theme switcher: Modern / Classic -->
-        <div class="theme-switcher" id="theme-switcher" title="Switch theme">
-          <button class="theme-opt active" id="theme-modern" data-theme="modern">Modern</button>
-          <button class="theme-opt" id="theme-classic" data-theme="classic">Classic</button>
-        </div>
-
         <!-- Dark mode -->
         <button id="dark-toggle" class="hdr-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode">
           <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
@@ -77,26 +71,6 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
-
-        <!-- Settings -->
-        <button class="hdr-icon-btn" id="settings-btn" title="Settings" aria-label="Settings">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-          </svg>
-        </button>
-
-        <!-- App store badges (desktop only) -->
-        <div class="app-badges">
-          <a href="#" class="app-badge" title="Get on Google Play" aria-label="Android app">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76a2 2 0 0 0 2.17-.22l11.28-6.51-2.54-2.54L3.18 23.76zM20.77 10.6 17.9 9l-3.18 3.18 3.18 3.18 2.9-1.67a1.94 1.94 0 0 0 0-3.09zM1.08.3A1.94 1.94 0 0 0 .5 1.72v20.56a1.94 1.94 0 0 0 .58 1.42l.07.07 11.52-11.52v-.27L1.15.23l-.07.07zM14.62 7.73 3.35 1.22a2 2 0 0 0-2.17-.22l11 10.99 2.44-3.26z"/></svg>
-            <span>Android</span>
-          </a>
-          <a href="#" class="app-badge" title="Get on App Store" aria-label="iOS app">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98l-.09.06c-.22.14-2.19 1.28-2.17 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.77M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-            <span>iOS</span>
-          </a>
-        </div>
 
         <!-- Location picker -->
         <LocationPicker />
@@ -146,8 +120,6 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           <a href="/calendar" class="nav-cat">Calendars <span class="nav-caret">▾</span></a>
           <div class="nav-dropdown">
             <a href="/calendar" class="dd-link">Hindu Calendar</a>
-            <a href="/calendar" class="dd-link">Vikram Samvat</a>
-            <a href="/calendar" class="dd-link">Saka Calendar</a>
             <a href="/panchang/tamil" class="dd-link">Tamil Panchangam</a>
             <a href="/panchang/malayalam" class="dd-link">Malayalam Panchangam</a>
             <a href="/panchang/bengali" class="dd-link">Bengali Panjika</a>
@@ -174,19 +146,19 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
         <li class="nav-item has-dropdown">
           <a href="/festivals" class="nav-cat">Vrat &amp; Upavas <span class="nav-caret">▾</span></a>
           <div class="nav-dropdown">
-            <a href="/festivals" class="dd-link">Vrat Calendar</a>
-            <a href="/festivals" class="dd-link">Ekadashi</a>
-            <a href="/festivals" class="dd-link">Pradosh Vrat</a>
-            <a href="/festivals" class="dd-link">Sankashti Chaturthi</a>
+            <a href="/festivals?filter=vrat" class="dd-link">Vrat Calendar</a>
+            <a href="/devotional/vrat-katha/ekadashi-vrat-katha" class="dd-link">Ekadashi</a>
+            <a href="/devotional/vrat-katha/pradosh-vrat-katha" class="dd-link">Pradosh Vrat</a>
+            <a href="/devotional/vrat-katha/sankashti-chaturthi-vrat-katha" class="dd-link">Sankashti Chaturthi</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
           <a href="/festivals" class="nav-cat">Festivals <span class="nav-caret">▾</span></a>
           <div class="nav-dropdown">
             <a href="/festivals" class="dd-link">All Festivals</a>
-            <a href="/festivals" class="dd-link">Diwali 2025</a>
-            <a href="/festivals" class="dd-link">Navratri 2025</a>
-            <a href="/festivals" class="dd-link">Holi 2026</a>
+            <a href="/festivals/diwali-2025" class="dd-link">Diwali 2025</a>
+            <a href="/festivals/navratri-begins-2025" class="dd-link">Navratri 2025</a>
+            <a href="/festivals/holi-2026" class="dd-link">Holi 2026</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -280,7 +252,8 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--color-mute)">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="search" class="drawer-search-input" placeholder="Search…" aria-label="Search" />
+      <input type="search" id="drawer-search-input" class="drawer-search-input" placeholder="Search…" aria-label="Search" autocomplete="off" />
+      <div id="drawer-search-dropdown" class="drawer-search-dropdown" hidden></div>
     </div>
 
     <!-- Nav tree in accordion -->
@@ -295,6 +268,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           <a href="/" class="drawer-link">Sunrise &amp; Sunset</a>
           <a href="/" class="drawer-link">Moonrise &amp; Moonset</a>
           <a href="/" class="drawer-link">Rahu Kalam</a>
+          <a href="/panchang/regional" class="drawer-link">🌐 Regional Panchang</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -303,8 +277,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
         </button>
         <div class="drawer-sub" id="m-calendars">
           <a href="/calendar" class="drawer-link">Hindu Calendar</a>
-          <a href="/calendar" class="drawer-link">Vikram Samvat</a>
-          <a href="/calendar" class="drawer-link">Saka Calendar</a>
+          <a href="/panchang/tamil" class="drawer-link">Tamil Panchangam</a>
+          <a href="/panchang/malayalam" class="drawer-link">Malayalam Panchangam</a>
+          <a href="/panchang/bengali" class="drawer-link">Bengali Panjika</a>
+          <a href="/panchang/nepali" class="drawer-link">Nepali Patro</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -321,6 +297,8 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           <a href="/muhurta/panchaka" class="drawer-link">Panchaka &amp; Gowri</a>
           <a href="/muhurta/vivah" class="drawer-link">Vivah Muhurat</a>
           <a href="/muhurta/griha-pravesh" class="drawer-link">Griha Pravesh</a>
+          <a href="/muhurta/shubha-dates?activity=vehicle" class="drawer-link">Vehicle Purchase</a>
+          <a href="/muhurta/shubha-dates?activity=property" class="drawer-link">Property Purchase</a>
           <a href="/muhurta/shubha-dates" class="drawer-link">Shubha Dates</a>
         </div>
       </div>
@@ -329,9 +307,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           Vrat &amp; Upavas <span class="drawer-caret">›</span>
         </button>
         <div class="drawer-sub" id="m-vrat">
-          <a href="/festivals" class="drawer-link">Vrat Calendar</a>
-          <a href="/festivals" class="drawer-link">Ekadashi</a>
-          <a href="/festivals" class="drawer-link">Pradosh Vrat</a>
+          <a href="/festivals?filter=vrat" class="drawer-link">Vrat Calendar</a>
+          <a href="/devotional/vrat-katha/ekadashi-vrat-katha" class="drawer-link">Ekadashi</a>
+          <a href="/devotional/vrat-katha/pradosh-vrat-katha" class="drawer-link">Pradosh Vrat</a>
+          <a href="/devotional/vrat-katha/sankashti-chaturthi-vrat-katha" class="drawer-link">Sankashti Chaturthi</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -340,8 +319,9 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
         </button>
         <div class="drawer-sub" id="m-festivals">
           <a href="/festivals" class="drawer-link">All Festivals</a>
-          <a href="/festivals" class="drawer-link">Diwali 2025</a>
-          <a href="/festivals" class="drawer-link">Navratri 2025</a>
+          <a href="/festivals/diwali-2025" class="drawer-link">Diwali 2025</a>
+          <a href="/festivals/navratri-begins-2025" class="drawer-link">Navratri 2025</a>
+          <a href="/festivals/holi-2026" class="drawer-link">Holi 2026</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -371,6 +351,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           <a href="/" class="drawer-link">Planetary Positions</a>
           <a href="/" class="drawer-link">Rahu &amp; Ketu</a>
           <a href="/" class="drawer-link">Shani (Saturn)</a>
+          <a href="/" class="drawer-link">Gochara</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -409,6 +390,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
         <div class="drawer-sub" id="m-others">
           <a href="/" class="drawer-link">Baby Names</a>
           <a href="/" class="drawer-link">Compatibility</a>
+          <a href="/" class="drawer-link">Dream Meaning</a>
           <a href="/" class="drawer-link">About</a>
         </div>
       </div>
@@ -653,59 +635,6 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
   }
   .hdr-icon-btn:hover { background: var(--color-canvas-soft); color: var(--color-ink); }
 
-  /* Theme switcher pill */
-  .theme-switcher {
-    display: flex;
-    align-items: center;
-    background: var(--color-canvas-soft-2);
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-pill);
-    padding: 2px;
-    gap: 2px;
-  }
-  .theme-opt {
-    height: 24px;
-    padding: 0 10px;
-    background: none;
-    border: none;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 500;
-    color: var(--color-mute);
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    white-space: nowrap;
-  }
-  .theme-opt.active {
-    background: var(--color-canvas);
-    color: var(--color-ink);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  }
-
-  /* App badges */
-  .app-badges {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .app-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    height: 28px;
-    padding: 0 9px;
-    background: var(--color-ink);
-    color: var(--color-on-primary);
-    border-radius: var(--radius-sm);
-    font-size: 10px;
-    font-weight: 600;
-    text-decoration: none;
-    letter-spacing: 0.02em;
-    transition: opacity 0.15s;
-  }
-  .app-badge:hover { opacity: 0.8; }
-
   /* Hamburger — hidden on desktop */
   .hamburger-btn { display: none; }
 
@@ -867,6 +796,31 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
   }
   .drawer-search-input:focus { border-color: var(--color-saffron); }
 
+  .drawer-search-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 16px;
+    right: 16px;
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-modal);
+    z-index: 10;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  .drawer-search-dropdown:not([hidden]) { display: block; }
+  .drawer-search-result {
+    display: block;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    color: var(--color-body-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .drawer-search-result:last-child { border-bottom: none; }
+  .drawer-search-result:hover, .drawer-search-result:active { color: var(--color-saffron-deep); background: var(--color-saffron-soft); }
+
   .drawer-nav { flex: 1; }
 
   .drawer-section { border-bottom: 1px solid var(--color-hairline); }
@@ -924,22 +878,14 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
   }
 
   /* ── Responsive ── */
-  @media (max-width: 1024px) {
-    .app-badges { display: none; }
-    .theme-switcher { display: none; }
-  }
   @media (max-width: 768px) {
     #desktop-nav { display: none; }
     .hamburger-btn { display: inline-flex !important; }
     .search-wrap { max-width: none; }
     .clock-widget { display: none; }
     #header-top { height: 52px; }
-    /* settings-btn is an inert placeholder (no click handler) — drop it
-       first to make room; hamburger + search must never be squeezed off. */
-    #settings-btn { display: none; }
   }
   @media (max-width: 480px) {
-    .app-badges { display: none; }
     .header-container { padding: 0 12px; }
   }
 </style>
@@ -1106,20 +1052,6 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
 
   // Language switching is handled by LanguagePicker component
 
-  // ── Theme switcher ──
-  const themeBtns = document.querySelectorAll<HTMLButtonElement>('.theme-opt');
-  const savedTheme = localStorage.getItem('site-theme') || 'modern';
-  themeBtns.forEach(btn => {
-    if (btn.dataset.theme === savedTheme) btn.classList.add('active');
-    else btn.classList.remove('active');
-    btn.addEventListener('click', () => {
-      themeBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      localStorage.setItem('site-theme', btn.dataset.theme || 'modern');
-      html.dataset.siteStyle = btn.dataset.theme || 'modern';
-    });
-  });
-
   // ── Mobile drawer ──
   const hamburger = document.getElementById('hamburger');
   const drawer = document.getElementById('mobile-drawer');
@@ -1143,6 +1075,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     document.body.style.overflow = '';
     if (hamburgerIcon) hamburgerIcon.style.display = 'block';
     if (closeIcon) closeIcon.style.display = 'none';
+    const dsi = document.getElementById('drawer-search-input') as HTMLInputElement | null;
+    const dsd = document.getElementById('drawer-search-dropdown');
+    if (dsi) dsi.value = '';
+    if (dsd) dsd.hidden = true;
   }
 
   hamburger?.addEventListener('click', openDrawer);
@@ -1214,9 +1150,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     { label: "Vehicle Purchase Muhurat", url: "/muhurta/shubha-dates?activity=vehicle" },
     { label: "Property Purchase Muhurat", url: "/muhurta/shubha-dates?activity=property" },
     { label: "Shubha Dates", url: "/muhurta/shubha-dates" },
-    { label: "Diwali 2025", url: "/festivals" },
-    { label: "Navratri 2025", url: "/festivals" },
-    { label: "Ekadashi", url: "/festivals" },
+    { label: "Diwali 2025", url: "/festivals/diwali-2025" },
+    { label: "Navratri 2025", url: "/festivals/navratri-begins-2025" },
+    { label: "Holi 2026", url: "/festivals/holi-2026" },
+    { label: "Ekadashi", url: "/devotional/vrat-katha/ekadashi-vrat-katha" },
     { label: "Sunrise & Sunset", url: "/" },
     { label: "Jyotish Calculators", url: "/jyotish" },
     { label: "Kundali Generator", url: "/jyotish/kundali" },
@@ -1409,6 +1346,27 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
   document.addEventListener('click', (e) => {
     if (!searchInput?.contains(e.target as Node) && !dropdown?.contains(e.target as Node)) {
       if (dropdown) dropdown.hidden = true;
+    }
+  });
+
+  // ── Mobile drawer search (same searchItems, own input + dropdown) ──
+  const drawerSearchInput = document.getElementById('drawer-search-input') as HTMLInputElement | null;
+  const drawerDropdown = document.getElementById('drawer-search-dropdown');
+
+  drawerSearchInput?.addEventListener('input', () => {
+    const q = drawerSearchInput.value.trim().toLowerCase();
+    if (!q || !drawerDropdown) { drawerDropdown && (drawerDropdown.hidden = true); return; }
+    const matches = searchItems.filter(i => i.label.toLowerCase().includes(q));
+    if (!matches.length) { drawerDropdown.hidden = true; return; }
+    drawerDropdown.innerHTML = matches.map(i =>
+      `<a href="${i.url}" class="drawer-search-result">${i.label}</a>`
+    ).join('');
+    drawerDropdown.hidden = false;
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!drawerSearchInput?.contains(e.target as Node) && !drawerDropdown?.contains(e.target as Node)) {
+      if (drawerDropdown) drawerDropdown.hidden = true;
     }
   });
 </script>

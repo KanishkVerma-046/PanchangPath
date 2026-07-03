@@ -147,6 +147,7 @@ document.querySelectorAll('.cal-cell').forEach(cell => {
 // Month navigation
 let displayDate = new Date();
 displayDate.setDate(1);
+let currentLang: 'en' | 'hi' = 'en';
 
 const festivals: Record<string, {name:string,nameHi:string,type:string}[]> = {};
 // Festival data from festivals.ts (subset injected)
@@ -216,7 +217,7 @@ function renderCalendar(d: Date) {
     const festColor = (type: string) => isToday ? 'rgba(255,255,255,0.85)' : type === 'major' ? 'var(--color-saffron-deep)' : type === 'vrat' ? 'var(--color-link)' : 'var(--color-auspicious)';
     cell.innerHTML = `
       <p style="font-size:16px;font-weight:${isToday?'700':'600'};margin:0 0 4px;line-height:1;color:${dayColor};">${day}</p>
-      ${feasts.slice(0,1).map(f => `<p style="font-size:9px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${festColor(f.type)};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${f.name}</p>`).join('')}
+      ${feasts.slice(0,1).map(f => `<p class="en-text" style="font-size:9px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${festColor(f.type)};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:${currentLang==='hi'?'none':'block'};">${f.name}</p><p class="hi-text" style="font-size:9px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${festColor(f.type)};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:${currentLang==='hi'?'block':'none'};">${f.nameHi}</p>`).join('')}
       <p style="font-size:9px;font-family:var(--font-mono);margin:4px 0 0;color:${muteColor};white-space:nowrap;overflow:hidden;">${p.tithi}</p>
       <p style="font-size:9px;font-family:var(--font-mono);margin:1px 0 0;color:${muteColor};white-space:nowrap;overflow:hidden;">${p.nakshatra}</p>
     `;
@@ -273,7 +274,8 @@ renderCalendar(displayDate);
 
 document.addEventListener('langchange', (e: Event) => {
   const evt = e as CustomEvent;
-  const hindi = evt.detail.hindi;
+  const hindi = evt.detail.langCode === 'hi';
+  currentLang = hindi ? 'hi' : 'en';
   document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
   document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
 });

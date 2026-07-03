@@ -138,16 +138,25 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
 // Period toggle
 let activePeriod = 'daily';
 
-document.querySelectorAll<HTMLButtonElement>('.period-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    activePeriod = btn.dataset.period ?? 'daily';
-    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll<HTMLElement>('.rfi-text').forEach(el => {
-      el.hidden = el.dataset.for !== activePeriod;
-    });
+function setPeriod(period: string) {
+  activePeriod = period;
+  document.querySelectorAll<HTMLButtonElement>('.period-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.period === period);
   });
+  document.querySelectorAll<HTMLElement>('.rfi-text').forEach(el => {
+    el.hidden = el.dataset.for !== activePeriod;
+  });
+}
+
+document.querySelectorAll<HTMLButtonElement>('.period-btn').forEach(btn => {
+  btn.addEventListener('click', () => setPeriod(btn.dataset.period ?? 'daily'));
 });
+
+// Honor ?period= from links like the homepage feed's Weekly/Monthly/Yearly tabs
+const periodParam = new URLSearchParams(location.search).get('period');
+if (periodParam && document.querySelector(`.period-btn[data-period="${periodParam}"]`)) {
+  setPeriod(periodParam);
+}
 
 // Rashi finders (same logic as feed component)
 const NAME_MAP: Record<string, string> = {

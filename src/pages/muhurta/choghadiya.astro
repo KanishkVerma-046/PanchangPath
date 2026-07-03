@@ -136,6 +136,24 @@ function fmtMins(m:number){
 const sel=document.getElementById('chog-city') as HTMLSelectElement;
 sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
 
+// Pre-fill from the header's location picker (same "today, my location" scope as the homepage)
+function applyHeaderLoc(loc:any){
+  if(!loc||!loc.name)return;
+  const norm=(s:string)=>s.trim().toLowerCase();
+  let match=LOCS.find(l=>norm(l.name)===norm(loc.name));
+  if(!match){
+    match={name:loc.name,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
+    LOCS.unshift(match);
+    sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+  }
+  sel.value=match.name;
+}
+if((window as any).__initLoc) applyHeaderLoc((window as any).__initLoc);
+window.addEventListener('locationchange',(e:Event)=>{
+  applyHeaderLoc((e as CustomEvent).detail);
+  calculate();
+});
+
 const dateInput=document.getElementById('chog-date') as HTMLInputElement;
 dateInput.value=new Date().toISOString().split('T')[0];
 
