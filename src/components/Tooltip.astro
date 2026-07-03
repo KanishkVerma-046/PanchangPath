@@ -1,0 +1,196 @@
+---
+// Tooltip.astro — global manuscript-style tooltip.
+// Intercepts every native `title` attribute site-wide (including ones set
+// dynamically via JS/innerHTML, via MutationObserver) and renders a floating
+// custom card instead of the plain browser tooltip. Mounted once in Layout.astro.
+---
+
+<div id="gt-tooltip" class="gt-tip" role="tooltip" aria-hidden="true">
+  <span class="gt-arrow" aria-hidden="true"></span>
+  <span class="gt-text"></span>
+</div>
+
+<script>
+  (function () {
+    const tip = document.getElementById('gt-tooltip');
+    if (!tip) return;
+    const textEl = tip.querySelector('.gt-text') as HTMLElement;
+
+    let currentTarget: Element | null = null;
+    let hideTimer: ReturnType<typeof setTimeout> | undefined;
+
+    function migrateTitle(el: Element) {
+      const t = el.getAttribute('title');
+      if (t) {
+        el.setAttribute('data-tooltip', t);
+        el.removeAttribute('title');
+      }
+    }
+    function migrateAll(root: ParentNode) {
+      root.querySelectorAll('[title]').forEach(migrateTitle);
+    }
+    migrateAll(document);
+
+    // Catch title attributes added/changed after load (dynamic panchang
+    // widgets render via innerHTML or setAttribute('title', ...))
+    const mo = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type === 'attributes' && m.attributeName === 'title' && m.target instanceof Element) {
+          migrateTitle(m.target);
+        } else if (m.type === 'childList') {
+          m.addedNodes.forEach((node) => {
+            if (node.nodeType !== 1) return;
+            const el = node as Element;
+            if (el.hasAttribute('title')) migrateTitle(el);
+            migrateAll(el);
+          });
+        }
+      }
+    });
+    mo.observe(document.documentElement, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: ['title'],
+    });
+
+    function positionTip(target: Element) {
+      const rect = target.getBoundingClientRect();
+      const tipRect = tip!.getBoundingClientRect();
+      const margin = 8;
+
+      let top = rect.top - tipRect.height - 10;
+      let below = false;
+      if (top < margin) {
+        top = rect.bottom + 10;
+        below = true;
+      }
+      let left = rect.left + rect.width / 2 - tipRect.width / 2;
+      left = Math.max(margin, Math.min(left, window.innerWidth - tipRect.width - margin));
+
+      tip!.style.top = top + 'px';
+      tip!.style.left = left + 'px';
+      tip!.classList.toggle('gt-pos-below', below);
+      tip!.classList.toggle('gt-pos-above', !below);
+    }
+
+    function showTip(target: Element) {
+      const text = target.getAttribute('data-tooltip');
+      if (!text) return;
+      clearTimeout(hideTimer);
+      currentTarget = target;
+      textEl.textContent = text;
+      tip!.setAttribute('aria-hidden', 'false');
+      tip!.classList.add('gt-visible');
+      requestAnimationFrame(() => { if (currentTarget) positionTip(currentTarget); });
+    }
+
+    function hideTip() {
+      hideTimer = setTimeout(() => {
+        tip!.classList.remove('gt-visible');
+        tip!.setAttribute('aria-hidden', 'true');
+        currentTarget = null;
+      }, 60);
+    }
+
+    document.addEventListener('mouseover', (e) => {
+      const target = (e.target as Element | null)?.closest('[data-tooltip]');
+      if (target) showTip(target);
+    });
+    document.addEventListener('mouseout', (e) => {
+      const target = (e.target as Element | null)?.closest('[data-tooltip]');
+      if (target && target === currentTarget) hideTip();
+    });
+    document.addEventListener('focusin', (e) => {
+      const target = (e.target as Element | null)?.closest('[data-tooltip]');
+      if (target) showTip(target);
+    });
+    document.addEventListener('focusout', (e) => {
+      const target = (e.target as Element | null)?.closest('[data-tooltip]');
+      if (target && target === currentTarget) hideTip();
+    });
+
+    // Touch devices: tap to toggle, auto-hide after 2.5s
+    document.addEventListener('touchstart', (e) => {
+      const target = (e.target as Element | null)?.closest('[data-tooltip]');
+      if (!target) {
+        tip!.classList.remove('gt-visible');
+        currentTarget = null;
+        return;
+      }
+      if (target === currentTarget && tip!.classList.contains('gt-visible')) {
+        tip!.classList.remove('gt-visible');
+        currentTarget = null;
+        return;
+      }
+      showTip(target);
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        tip!.classList.remove('gt-visible');
+        currentTarget = null;
+      }, 2500);
+    }, { passive: true });
+
+    window.addEventListener('scroll', () => {
+      if (currentTarget) positionTip(currentTarget);
+    }, { passive: true, capture: true });
+    window.addEventListener('resize', () => {
+      if (currentTarget) positionTip(currentTarget);
+    });
+  })();
+</script>
+
+<style>
+.gt-tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  max-width: 260px;
+  padding: 8px 12px;
+  background: #FDF6EC;
+  border: 1px solid var(--color-saffron);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(43,22,8,0.20), 0 2px 6px rgba(43,22,8,0.10);
+  font-family: var(--font-heading, 'Cormorant Garamond', Georgia, serif);
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #3A2410;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px) scale(0.98);
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  pointer-events: none;
+}
+.gt-tip.gt-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+.gt-arrow {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #FDF6EC;
+  border: 1px solid var(--color-saffron);
+  transform: rotate(45deg);
+}
+.gt-tip.gt-pos-above .gt-arrow {
+  bottom: -6px;
+  left: 50%;
+  margin-left: -5px;
+  border-top: none;
+  border-left: none;
+}
+.gt-tip.gt-pos-below .gt-arrow {
+  top: -6px;
+  left: 50%;
+  margin-left: -5px;
+  border-bottom: none;
+  border-right: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .gt-tip { transition: opacity 0.1s ease, visibility 0.1s; }
+}
+</style>

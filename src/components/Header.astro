@@ -961,8 +961,16 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
   }
-  updateClock();
-  setInterval(updateClock, 1000);
+  let lastClockSecond = -1;
+  function clockTick() {
+    const nowSecond = Math.floor(Date.now() / 1000);
+    if (nowSecond !== lastClockSecond) {
+      lastClockSecond = nowSecond;
+      updateClock();
+    }
+    requestAnimationFrame(clockTick);
+  }
+  requestAnimationFrame(clockTick);
 
   // ── Live status strip (Tithi · Nakshatra · City) ──
   // Duplicated minimal Panchang math (client <script> blocks can't import

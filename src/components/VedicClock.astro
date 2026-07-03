@@ -37,6 +37,17 @@
         <!-- LEFT: clock face -->
         <div class="vc-face">
 
+          <!-- Rotating Ghati dial -->
+          <div class="vc-dial-wrap">
+            <svg id="vc-dial" viewBox="0 0 200 200" class="vc-dial" aria-hidden="true">
+              <circle class="vc-dial-ring" cx="100" cy="100" r="92"></circle>
+              <g id="vc-dial-ticks"></g>
+              <text class="vc-dial-sun" x="100" y="18" text-anchor="middle">☀️</text>
+              <line id="vc-dial-hand" class="vc-dial-hand" x1="100" y1="100" x2="100" y2="26"></line>
+              <circle class="vc-dial-hub" cx="100" cy="100" r="5"></circle>
+            </svg>
+          </div>
+
           <!-- Big Ghati : Pal : Vipal digits -->
           <div class="vc-digits" aria-live="polite" aria-atomic="true" aria-label="Vedic time">
             <div class="vc-col">
@@ -188,6 +199,30 @@ function calcVedic30(nowSecs: number, srSecs: number, ssSecs: number): VedicResu
   return { ghati, pal, vipal, period, ghatiSecs, palSecs };
 }
 
+// ── Dial tick marks — 60 marks around the circle, longer every 5th ──────────
+function vcBuildDialTicks() {
+  const g = document.getElementById("vc-dial-ticks");
+  if (!g) return;
+  const cx = 100, cy = 100, rOuter = 92;
+  for (let i = 0; i < 60; i++) {
+    const angleRad = (i / 60) * 2 * Math.PI - Math.PI / 2;
+    const major = i % 5 === 0;
+    const rInner = major ? rOuter - 10 : rOuter - 5;
+    const x1 = cx + rInner * Math.cos(angleRad);
+    const y1 = cy + rInner * Math.sin(angleRad);
+    const x2 = cx + rOuter * Math.cos(angleRad);
+    const y2 = cy + rOuter * Math.sin(angleRad);
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", x1.toFixed(2));
+    line.setAttribute("y1", y1.toFixed(2));
+    line.setAttribute("x2", x2.toFixed(2));
+    line.setAttribute("y2", y2.toFixed(2));
+    line.setAttribute("class", major ? "vc-dial-tick vc-dial-tick-major" : "vc-dial-tick");
+    g.appendChild(line);
+  }
+}
+vcBuildDialTicks();
+
 // ── Live tick (runs every 400 ms — smooth enough for Vipal = 0.4 s) ─────────
 function vcTick() {
   const now    = new Date();
@@ -211,6 +246,24 @@ function vcTick() {
   // Gregorian time
   const ap = h < 12 ? "AM" : "PM";
   vcSet("vc-greg", (h % 12 || 12) + ":" + vcPad(m) + ":" + vcPad(s) + " " + ap);
+
+  // Rotating Ghati dial hand — angle in degrees, 0 = sunrise (top of dial)
+  const nowSecsPrecise = nowSecs + now.getMilliseconds() / 1000;
+  let handAngle: number;
+  if (vcMode === 60) {
+    const elapsedFull = ((nowSecsPrecise - srSecs) % 86400 + 86400) % 86400;
+    handAngle = (elapsedFull / 86400) * 360;
+  } else {
+    if (isDay) {
+      handAngle = ((nowSecsPrecise - srSecs) / (ssSecs - srSecs)) * 180;
+    } else {
+      const nightDur = 86400 - (ssSecs - srSecs);
+      const sinceSunset = ((nowSecsPrecise - ssSecs) % 86400 + 86400) % 86400;
+      handAngle = 180 + (sinceSunset / nightDur) * 180;
+    }
+  }
+  const hand = document.getElementById("vc-dial-hand");
+  if (hand) hand.setAttribute("transform", "rotate(" + handAngle.toFixed(2) + " 100 100)");
 
   // Progress bar
   const dayPct = isDay
@@ -410,6 +463,43 @@ setInterval(vcTick, 400);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-elevation);
   padding: 24px 28px;
+}
+
+/* ── Rotating Ghati dial ── */
+.vc-dial-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.vc-dial {
+  width: 128px;
+  height: 128px;
+}
+.vc-dial-ring {
+  fill: var(--color-canvas-soft-2);
+  stroke: var(--color-hairline-strong);
+  stroke-width: 1.5;
+}
+.vc-dial-tick {
+  stroke: var(--color-hairline-strong);
+  stroke-width: 1;
+}
+.vc-dial-tick-major {
+  stroke: var(--color-mute);
+  stroke-width: 2;
+}
+.vc-dial-sun {
+  font-size: 14px;
+}
+.vc-dial-hand {
+  stroke: var(--color-saffron);
+  stroke-width: 3;
+  stroke-linecap: round;
+  transform-origin: 100px 100px;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.vc-dial-hub {
+  fill: var(--color-saffron-deep);
 }
 
 /* ── Digits ── */
