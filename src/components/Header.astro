@@ -1086,9 +1086,11 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     if (isDark) {
       html.classList.remove('light');
       html.classList.add('dark');
+      html.setAttribute('data-theme', 'dark');
     } else {
       html.classList.remove('dark');
       html.classList.add('light');
+      html.removeAttribute('data-theme');
     }
     if (iconSun) iconSun.style.display = isDark ? 'block' : 'none';
     if (iconMoon) iconMoon.style.display = isDark ? 'none' : 'block';
@@ -1114,7 +1116,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
       themeBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       localStorage.setItem('site-theme', btn.dataset.theme || 'modern');
-      html.dataset.theme = btn.dataset.theme || 'modern';
+      html.dataset.siteStyle = btn.dataset.theme || 'modern';
     });
   });
 

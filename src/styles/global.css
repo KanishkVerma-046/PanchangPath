@@ -33,6 +33,17 @@
   --color-inauspicious: #C81E1E;
   --color-inauspicious-soft: #FBE0DE;
 
+  /* Heading text — distinct token from --color-ink so dark mode can turn
+     headings gold without recoloring every block of primary content text. */
+  --color-heading: #2B1608;
+
+  /* Kundali SVG/grid chart — its own palette so the birth chart can read as
+     a distinct "celestial star map" accent in dark mode. */
+  --color-kundali-bg: #FDF6EC;
+  --color-kundali-grid: #C9AE7E;
+  --color-kundali-label: #2B1608;
+  --color-kundali-house: #8C7660;
+
   --font-sans: 'Inter', 'Tiro Devanagari Hindi', system-ui, -apple-system, sans-serif;
   --font-heading: 'Cormorant Garamond', 'Tiro Devanagari Hindi', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -54,9 +65,10 @@
 }
 
 .dark {
-  --color-ink: #F3E6D0;
+  --color-ink: #F5ECD7;
   --color-on-primary: #1A0A00;
-  --color-body-text: #D8C4A8;
+  --color-body-text: #F5ECD7;
+  --color-heading: #D4A017;
   --color-mute: #9C8368;
   --color-hairline: #3A2712;
   --color-hairline-strong: #5C3D1F;
@@ -64,7 +76,7 @@
   --color-canvas-soft: #120800;
   --color-canvas-soft-2: #241206;
   --color-link: #D4A017;
-  --color-saffron: #E8622E;
+  --color-saffron: #B5390A;
   --color-saffron-soft: #2a1500;
   --color-saffron-deep: #FF8C4D;
   --color-gold: #D4A017;
@@ -77,10 +89,23 @@
   --color-auspicious-soft: #052e16;
   --color-inauspicious-soft: #2A0808;
 
+  --color-kundali-bg: #0D0520;
+  --color-kundali-grid: #4B3A7A;
+  --color-kundali-label: #D4A017;
+  --color-kundali-house: #D4A017;
+
   --shadow-card: 0px 1px 2px rgba(0,0,0,0.3), 0px 3px 14px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(212,160,23,0.22);
   --shadow-card-hover: 0px 2px 4px rgba(0,0,0,0.35), 0px 10px 22px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(212,160,23,0.38);
   --shadow-modal: 0px 1px 2px rgba(0,0,0,0.3), 0px 8px 16px rgba(0,0,0,0.3), 0px 24px 32px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(212,160,23,0.22);
   --shadow-elevation: 0px 1px 2px rgba(0,0,0,0.3), 0px 3px 14px rgba(0,0,0,0.25);
+}
+
+/* Many pages set heading color via inline `style="color:var(--color-ink)"`,
+   which beats the plain `h1..h6 { color }` rule below regardless of
+   selector specificity. Force the gold heading token to win in dark mode
+   without touching every page's markup. */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: var(--color-heading) !important;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -98,6 +123,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
+  color: var(--color-heading);
 }
 
 .gradient-mesh {

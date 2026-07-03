@@ -200,14 +200,15 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
   display: grid;
   grid-template-columns: repeat(4, 68px);
   grid-template-rows: repeat(4, 68px);
-  border: 2px solid var(--color-hairline-strong, #ccc);
+  background: var(--color-kundali-bg);
+  border: 2px solid var(--color-kundali-grid);
   border-radius: 4px;
   width: 272px;
   height: 272px;
 }
 
 .kw-cell {
-  border: 1px solid var(--color-hairline);
+  border: 1px solid var(--color-kundali-grid);
   position: relative;
   overflow: hidden;
   padding: 3px;
@@ -216,14 +217,14 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
   box-sizing: border-box;
 }
 .kw-cell.kw-center {
-  background: var(--color-canvas-soft);
-  border-color: var(--color-hairline);
+  background: var(--color-kundali-bg);
+  border-color: var(--color-kundali-grid);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .kw-cell.kw-lagna-cell {
-  background: color-mix(in srgb, var(--color-saffron) 12%, var(--color-canvas));
+  background: color-mix(in srgb, var(--color-saffron) 12%, var(--color-kundali-bg));
 }
 .kw-om {
   font-size: 18px;
@@ -334,12 +335,13 @@ html.dark .kw-badge.asta  { background: #2d1040; color: #ce93d8; }
   font-weight: 700;
   padding: 1px 3px;
   border-radius: 2px;
-  background: var(--color-canvas-soft);
+  background: var(--color-kundali-bg);
+  color: var(--color-kundali-label);
   cursor: pointer;
   transition: background 0.12s;
   user-select: none;
 }
-.kwc-chip:hover { background: color-mix(in srgb, var(--color-saffron) 25%, var(--color-canvas)); }
+.kwc-chip:hover { background: color-mix(in srgb, var(--color-saffron) 25%, var(--color-kundali-bg)); }
 .kwc-chip.vakri { color: #c62828; }
 .kwc-chip.asta  { color: var(--color-mute); }
 text.kwc-chip:hover { fill: var(--color-saffron-deep) !important; }
@@ -350,7 +352,7 @@ text.kwc-chip:hover { fill: var(--color-saffron-deep) !important; }
   top: 2px; left: 0; right: 0;
   text-align: center;
   font-size: 8px;
-  color: var(--color-mute);
+  color: var(--color-kundali-house);
   font-weight: 500;
 }
 .kwc-si-lagna {
@@ -371,9 +373,16 @@ text.kwc-chip:hover { fill: var(--color-saffron-deep) !important; }
 }
 </style>
 
+<!-- `define:vars` forces a script into is:inline mode, which skips TypeScript
+     compilation — fatal for the type-annotated script below. Pass the data
+     as embedded JSON instead, so the script stays a normal (processed) module. -->
+<script type="application/json" id="planet-icons-data" set:html={JSON.stringify(PLANET_ICONS).replace(/</g, '\\u003c')}></script>
+
 <!-- ─── Client script ─── -->
-<script define:vars={{ PLANET_ICONS }}>
-function planetIconSvg(id, size) {
+<script>
+const PLANET_ICONS: Record<string, string> = JSON.parse(document.getElementById('planet-icons-data')!.textContent || '{}');
+
+function planetIconSvg(id: string, size: number) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;">${PLANET_ICONS[id]}</svg>`;
 }
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -613,9 +622,9 @@ function drawNorthDiamond(data: ReturnType<typeof calcKundali_K>): string {
     const cx = NI_HOUSE_XY[h][0] * S, cy = NI_HOUSE_XY[h][1] * S;
     const signIdx = (data.lagna.sign + h) % 12;
     const isLagna = h === 0;
-    txt += `<text class="kw-diamond-house" x="${cx}" y="${cy - 17}" text-anchor="middle" font-size="9" fill="var(--color-mute)">${signIdx + 1}</text>`;
+    txt += `<text class="kw-diamond-house" x="${cx}" y="${cy - 17}" text-anchor="middle" font-size="9" fill="var(--color-kundali-house)" stroke="none">${signIdx + 1}</text>`;
     if (isLagna) {
-      txt += `<text x="${cx + 15}" y="${cy - 17}" text-anchor="middle" font-size="8" font-weight="700" fill="var(--color-saffron-deep)">La</text>`;
+      txt += `<text x="${cx + 15}" y="${cy - 17}" text-anchor="middle" font-size="8" font-weight="700" fill="var(--color-saffron-deep)" stroke="none">La</text>`;
     }
     const pls = planetsByHouse[h];
     const perRow = 3;
@@ -623,13 +632,13 @@ function drawNorthDiamond(data: ReturnType<typeof calcKundali_K>): string {
       const col = i % perRow, row = Math.floor(i / perRow);
       const px = cx + (col - (Math.min(pls.length, perRow) - 1) / 2) * 20;
       const py = cy + row * 13;
-      const fill = p.isRetrograde ? '#c62828' : p.isCombust ? 'var(--color-mute)' : 'var(--color-ink)';
-      txt += `<text class="kwc-chip" data-pid="${p.id}" x="${px}" y="${py}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${fill}" style="cursor:pointer;">${p.abbr}${p.isRetrograde ? 'ᴿ' : ''}</text>`;
+      const fill = p.isRetrograde ? '#c62828' : p.isCombust ? 'var(--color-mute)' : 'var(--color-kundali-label)';
+      txt += `<text class="kwc-chip" data-pid="${p.id}" x="${px}" y="${py}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${fill}" stroke="none" style="cursor:pointer;">${p.abbr}${p.isRetrograde ? 'ᴿ' : ''}</text>`;
     });
   }
 
-  return `<svg viewBox="-2 -2 ${S + 4} ${S + 4}" width="${S}" height="${S}" style="stroke:var(--color-hairline-strong);stroke-width:1;">` +
-    `<rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-canvas-soft)" rx="4"/>${lines}${txt}</svg>`;
+  return `<svg viewBox="-2 -2 ${S + 4} ${S + 4}" width="${S}" height="${S}" style="stroke:var(--color-kundali-grid);stroke-width:1;">` +
+    `<rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-kundali-bg)" rx="4"/>${lines}${txt}</svg>`;
 }
 
 // South Indian: fixed rashi positions, 4×4 cell grid (unchanged layout).

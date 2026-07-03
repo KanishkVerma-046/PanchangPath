@@ -302,9 +302,16 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
   </section>
 </Layout>
 
-<script define:vars={{ clientI18N }}>
+<!-- `define:vars` forces a script into is:inline mode, which skips TypeScript
+     compilation — fatal for the type-annotated script below. Pass the data
+     as embedded JSON instead, so the script stays a normal (processed) module. -->
+<script type="application/json" id="client-i18n-data" set:html={JSON.stringify(clientI18N).replace(/</g, '\\u003c')}></script>
+
+<script>
 // ─── Client-side Panchang engine ─────────────────────────────────────────
 // Mirrors src/lib/panchang.ts + src/lib/panchang.ts#getHinduCalendarInfo
+
+const clientI18N: Record<string, any> = JSON.parse(document.getElementById('client-i18n-data')!.textContent || '{}');
 
 // ── Global display state ──
 let timeFormat: '12h' | '24h' | '24p' = '12h';
@@ -430,7 +437,7 @@ let isHindi = currentLang === 'hi';
 // Return i18n translations for the current lang (null for en/hi)
 function getI18N() {
   if (currentLang === 'en' || currentLang === 'hi') return null;
-  return (clientI18N as Record<string, any>)[currentLang] || null;
+  return clientI18N[currentLang] || null;
 }
 
 // Look up regional tithi name (tithiNumber 1-30)
@@ -614,14 +621,14 @@ function drawTimeline(p: ReturnType<typeof calcPanchang>) {
   const now = new Date();
   const nowMins = now.getHours() * 60 + now.getMinutes();
   const segments = [
-    { start: pct(p.rahuKalam.start), end: pct(p.rahuKalam.end), color: '#ef4444', label: 'Rahu', startM: sr + RAHU[currentDate.getDay()] * (total/8) },
-    { start: pct(p.gulikaKalam.start), end: pct(p.gulikaKalam.end), color: '#f59e0b', label: 'Gulika', startM: sr + GULIKA[currentDate.getDay()] * (total/8) },
-    { start: pct(p.yamaganda.start), end: pct(p.yamaganda.end), color: '#8b5cf6', label: 'Yama', startM: sr + (YAMA[currentDate.getDay()] < 8 ? YAMA[currentDate.getDay()] : 7) * (total/8) },
+    { color: '#ef4444', label: 'Rahu', startM: sr + RAHU[currentDate.getDay()] * (total/8) },
+    { color: '#f59e0b', label: 'Gulika', startM: sr + GULIKA[currentDate.getDay()] * (total/8) },
+    { color: '#8b5cf6', label: 'Yama', startM: sr + (YAMA[currentDate.getDay()] < 8 ? YAMA[currentDate.getDay()] : 7) * (total/8) },
   ];
   const nowPct = pct(nowMins);
   bar.innerHTML = segments.map(s => {
-    const sp = typeof s.start === 'number' ? s.start : pct(s.startM);
-    const ep = typeof s.end === 'number' ? s.end : pct(s.startM + total/8);
+    const sp = pct(s.startM);
+    const ep = pct(s.startM + total/8);
     return `<div style="position:absolute;left:${sp}%;width:${ep-sp}%;height:100%;background:${s.color};opacity:0.25;" title="${s.label} Kalam"></div>`;
   }).join('') + `<div style="position:absolute;left:${nowPct}%;top:0;width:2px;height:100%;background:var(--color-ink);border-radius:1px;" title="Now"></div>`;
 }
@@ -787,7 +794,7 @@ function renderWithLoc(loc: Location, date: Date) {
   setText('date-display', d);
   setText('panchang-date-label', date.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }));
   const locDisplay = document.getElementById('loc-display');
-  if (locDisplay) locDisplay.textContent = isHindi ? loc.nameHi : loc.name;
+  if (locDisplay) locDisplay.textContent = isHindi ? (loc.nameHi || loc.name) : loc.name;
 }
 
 // Date picker

@@ -153,11 +153,11 @@ function drawNorthChart(signOfHouse,planetsByHouse){
   let txt='';
   for(let h=0;h<12;h++){
     const cx=f[h][0]*S,cy=f[h][1]*S;
-    txt+=`<text x="${cx}" y="${cy-16}" text-anchor="middle" font-size="9" fill="var(--color-mute)" font-family="var(--font-mono)">${signOfHouse[h]+1}</text>`;
+    txt+=`<text x="${cx}" y="${cy-16}" text-anchor="middle" font-size="9" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${signOfHouse[h]+1}</text>`;
     const pls=planetsByHouse[h]||[];
-    pls.forEach((p,i)=>{const perRow=3;const col=i%perRow;const row=Math.floor(i/perRow);const px=cx+(col-(Math.min(pls.length,perRow)-1)/2)*20;const py=cy+row*13;txt+=`<text x="${px}" y="${py}" text-anchor="middle" font-size="10" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-ink)'}">${p}</text>`;});
+    pls.forEach((p,i)=>{const perRow=3;const col=i%perRow;const row=Math.floor(i/perRow);const px=cx+(col-(Math.min(pls.length,perRow)-1)/2)*20;const py=cy+row*13;txt+=`<text x="${px}" y="${py}" text-anchor="middle" font-size="10" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-kundali-label)'}" stroke="none">${p}</text>`;});
   }
-  return `<svg viewBox="-2 -2 ${S+4} ${S+4}" width="100%" style="max-width:280px;stroke:var(--color-hairline-strong);stroke-width:1;"><rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-canvas-soft)"/>${lines}${txt}</svg>`;
+  return `<svg viewBox="-2 -2 ${S+4} ${S+4}" width="100%" style="max-width:280px;stroke:var(--color-kundali-grid);stroke-width:1;"><rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-kundali-bg)"/>${lines}${txt}</svg>`;
 }
 
 // Setup
