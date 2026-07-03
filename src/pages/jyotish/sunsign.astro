@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { RASHI_ICONS } from '../../lib/icons/rashi';
 ---
 
 <Layout title="Sun Sign Calculator — Vedic & Western — PanchangPath" description="Find both your Vedic (sidereal) and Western (tropical) Sun signs from birth date, time and location, with element, quality, ruler, compatible signs and personality traits.">
@@ -57,7 +58,8 @@ import Layout from '../../layouts/Layout.astro';
   @media (max-width:640px){ .two-col{ grid-template-columns:1fr !important; } }
 </style>
 
-<script>
+<script define:vars={{ RASHI_ICONS }}>
+function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${RASHI_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;const toR=d=>d*Math.PI/180;
@@ -79,6 +81,7 @@ const W_SIGNS=[
 {name:'Pisces',h:'मीन',sym:'♓',from:[2,19],to:[3,20],el:'Water',ruler:'Jupiter',quality:'Mutable',comp:'Cancer, Scorpio, Capricorn'}];
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
 
 // Solar personality — how the Sun expresses through each Vedic sign
 const SOLAR_TRAITS=[
@@ -108,9 +111,9 @@ function westernSign(m,d){
   return 0;
 }
 function fmtRange(s){const M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];return M[s.from[0]-1]+' '+s.from[1]+' – '+M[s.to[0]-1]+' '+s.to[1];}
-function signCard(s,label,subname,showTraits){
+function signCard(s,id,label,subname,showTraits){
   return `<p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 8px;">${label}</p>
-    <div style="font-size:52px;line-height:1;margin-bottom:6px;">${s.sym}</div>
+    <div style="margin-bottom:6px;display:flex;justify-content:center;">${rashiIconSvg(id,52)}</div>
     <h2 style="font-size:24px;font-weight:700;color:var(--color-ink);margin:0 0 2px;">${s.name}</h2>
     <p style="font-size:13px;color:var(--color-mute);margin:0 0 14px;">${subname}</p>
     <div style="display:flex;flex-direction:column;gap:7px;text-align:left;max-width:240px;margin:0 auto;">
@@ -132,8 +135,8 @@ function calculate(){
     const T=(jd-2451545)/36525;
     const vIdx=Math.floor(n360(sunLon(jd)-ayanamsha(T))/30);
 
-    document.getElementById('card-w').innerHTML=signCard(W_SIGNS[wIdx],'WESTERN (TROPICAL)',W_SIGNS[wIdx].h);
-    document.getElementById('card-v').innerHTML=signCard(W_SIGNS[vIdx],'VEDIC (SIDEREAL)',RASHI[vIdx]+' \xb7 '+W_SIGNS[vIdx].h);
+    document.getElementById('card-w').innerHTML=signCard(W_SIGNS[wIdx],RASHI_ID[wIdx],'WESTERN (TROPICAL)',W_SIGNS[wIdx].h);
+    document.getElementById('card-v').innerHTML=signCard(W_SIGNS[vIdx],RASHI_ID[vIdx],'VEDIC (SIDEREAL)',RASHI[vIdx]+' \xb7 '+W_SIGNS[vIdx].h);
 
     document.getElementById('diff-note').textContent=vIdx===wIdx
       ?'Your Western and Vedic Sun signs are both '+W_SIGNS[wIdx].name+'. This happens when the Sun is far enough into the sign that the ~24\xb0 ayanamsha shift does not push it into the previous sign.'

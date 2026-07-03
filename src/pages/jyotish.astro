@@ -1,6 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
+import PlanetIcon from '../components/icons/PlanetIcon.astro';
+import TithiIcon from '../components/icons/TithiIcon.astro';
 
 const CALCS = [
   { icon: '🔮', title: 'Kundali Generator', desc: 'Full birth chart — North, South, East & West Indian styles', url: '/jyotish/kundali' },
@@ -8,16 +10,16 @@ const CALCS = [
   { icon: '💑', title: 'Horoscope Match', desc: 'Ashta Kuta Guna Milan compatibility (out of 36)', url: '/jyotish/horoscope-match' },
   { icon: '💎', title: 'Gemstone Calculator', desc: 'Find your lucky gemstone by birth chart', url: '/jyotish/gemstone' },
   { icon: '📿', title: 'Rudraksha Calculator', desc: 'Recommended Rudraksha mukhi for you', url: '/jyotish/rudraksha' },
-  { icon: '🌙', title: 'Rashi Calculator', desc: 'Your Moon sign (Vedic rashi) from birth details', url: '/jyotish/rashi' },
-  { icon: '☀️', title: 'Sunsign Calculator', desc: 'Vedic & Western sun signs side by side', url: '/jyotish/sunsign' },
+  { planet: 'chandra', title: 'Rashi Calculator', desc: 'Your Moon sign (Vedic rashi) from birth details', url: '/jyotish/rashi' },
+  { planet: 'surya', title: 'Sunsign Calculator', desc: 'Vedic & Western sun signs side by side', url: '/jyotish/sunsign' },
   { icon: '⭐', title: 'Nakshatra Calculator', desc: 'Your birth star (nakshatra) and pada', url: '/jyotish/nakshatra' },
   { icon: '⬆️', title: 'Janma Lagna', desc: 'Ascendant sign, degree and house wheel', url: '/jyotish/lagna' },
-  { icon: '🔴', title: 'Mangal Dosha', desc: 'Check Manglik status from Lagna, Moon & Venus', url: '/jyotish/mangal-dosha' },
-  { icon: '🐍', title: 'Kalasarpa Yoga', desc: 'Detect Kalasarpa dosha and its type', url: '/jyotish/kalasarpa' },
-  { icon: '🪐', title: 'Shani Sadesati', desc: 'Saturn\'s 7.5-year cycle over your Moon sign', url: '/jyotish/sadesati' },
+  { planet: 'mangal', title: 'Mangal Dosha', desc: 'Check Manglik status from Lagna, Moon & Venus', url: '/jyotish/mangal-dosha' },
+  { dualPlanet: ['rahu', 'ketu'], title: 'Kalasarpa Yoga', desc: 'Detect Kalasarpa dosha and its type', url: '/jyotish/kalasarpa' },
+  { planet: 'shani', title: 'Shani Sadesati', desc: 'Saturn\'s 7.5-year cycle over your Moon sign', url: '/jyotish/sadesati' },
   { icon: '👶', title: 'Baby Names', desc: 'Lucky name syllables from nakshatra & pada', url: '/jyotish/baby-names' },
   { icon: '🙏', title: 'Shraddha Tithi', desc: 'Find the right Pitru Paksha day for Shraddha', url: '/jyotish/shraddha' },
-  { icon: '🌕', title: 'Sahasra Chandrodaya', desc: 'Date of your 1000th full moon (~80 years)', url: '/jyotish/sahasra-chandrodaya' },
+  { tithi: 'shukla-15', title: 'Sahasra Chandrodaya', desc: 'Date of your 1000th full moon (~80 years)', url: '/jyotish/sahasra-chandrodaya' },
   { icon: '🦅', title: 'Pancha Pakshi', desc: 'Your birth bird and today\'s favourable periods', url: '/jyotish/pancha-pakshi' },
   { icon: '🎴', title: 'Prashnavali', desc: 'Ask a question — the sacred oracle answers', url: '/prashnavali' },
 ];
@@ -42,7 +44,15 @@ const CALCS = [
       <div class="calc-grid">
         {CALCS.map((c) => (
           <a href={c.url} class="calc-card card">
-            <span class="calc-icon">{c.icon}</span>
+            {c.planet && <PlanetIcon name={c.planet} size={26} class="calc-icon-svg" />}
+            {c.tithi && <TithiIcon name={c.tithi} size={26} class="calc-icon-svg" />}
+            {c.dualPlanet && (
+              <span class="calc-icon-svg" style="display:flex;gap:2px;">
+                <PlanetIcon name={c.dualPlanet[0]} size={22} />
+                <PlanetIcon name={c.dualPlanet[1]} size={22} />
+              </span>
+            )}
+            {c.icon && <span class="calc-icon">{c.icon}</span>}
             <div>
               <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">{c.title}</h3>
               <p style="font-size:12.5px;color:var(--color-mute);margin:0;line-height:1.5;">{c.desc}</p>
@@ -82,6 +92,10 @@ const CALCS = [
   .calc-icon {
     font-size: 26px;
     line-height: 1;
+    flex-shrink: 0;
+  }
+  .calc-icon-svg {
+    color: var(--color-saffron-deep);
     flex-shrink: 0;
   }
   @media (max-width: 900px) {

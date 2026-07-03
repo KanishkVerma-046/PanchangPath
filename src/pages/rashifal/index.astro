@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction } from '../../lib/rashifal';
+import RashiIcon from '../../components/icons/RashiIcon.astro';
 
 const today = new Date();
 const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -44,7 +45,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             <div class="rfi-card animate-in" style={`animation-delay:${idx * 35}ms`} data-rashi={rashi.id}>
               <!-- Colored header strip -->
               <div class="rfi-strip" style={`background:${rashi.gradient}`}>
-                <span class="rfi-sym">{rashi.symbol}</span>
+                <RashiIcon name={rashi.id} color="#fff" size={24} class="rfi-sym" />
                 <div class="rfi-strip-text">
                   <span class="rfi-name-en en-text">{rashi.name}</span>
                   <span class="rfi-name-hi hi-text" style="display:none;">{rashi.nameHi}</span>
@@ -252,7 +253,7 @@ document.getElementById('dob-input-full')?.addEventListener('keydown', (e) => { 
   gap: 10px;
   padding: 12px 16px;
 }
-.rfi-sym { font-size: 24px; }
+.rfi-sym { flex-shrink: 0; }
 .rfi-strip-text { flex: 1; }
 .rfi-name-en, .rfi-name-hi {
   font-size: 15px;

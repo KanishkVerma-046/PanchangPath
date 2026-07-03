@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import TithiIcon from '../../components/icons/TithiIcon.astro';
 ---
 
 <Layout title="Sahasra Chandrodaya Calculator — 1000th Full Moon — PanchangPath" description="Calculate the date of your Sahasra Chandra Darshan — the 1000th full moon seen in a lifetime, an auspicious milestone celebrated around age 80.">
@@ -23,7 +24,9 @@ import Layout from '../../layouts/Layout.astro';
 
       <div id="result" style="display:none;">
         <div class="card" style="padding:32px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
-          <div style="font-size:48px;line-height:1;margin-bottom:8px;">🌕</div>
+          <div style="display:flex;justify-content:center;margin-bottom:8px;color:var(--color-saffron-deep);">
+            <TithiIcon name="shukla-15" size={48} />
+          </div>
           <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">YOUR 1000TH FULL MOON</p>
           <h2 id="big-date" style="font-size:28px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
           <p id="big-meta" style="font-size:14px;color:var(--color-mute);margin:0;"></p>

@@ -1,0 +1,27 @@
+---
+// Rashi (12 zodiac sign) line icons. 24x24 viewBox, 1.5px stroke, no fill.
+import { RASHI_ICONS } from '../../lib/icons/rashi';
+
+interface Props {
+  name: keyof typeof RASHI_ICONS;
+  color?: string;
+  size?: number | string;
+  class?: string;
+}
+
+const { name, color = 'currentColor', size = 24, class: className = '' } = Astro.props;
+const inner = RASHI_ICONS[name] ?? '';
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke={color}
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  set:html={inner}
+/>

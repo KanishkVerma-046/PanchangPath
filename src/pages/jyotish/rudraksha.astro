@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { PLANET_ICONS } from '../../lib/icons/planets';
 ---
 
 <Layout title="Rudraksha Calculator — Find Your Mukhi — PanchangPath" description="Find the Rudraksha mukhi best suited to you based on your Vedic birth chart or Rashi/Lagna. See all 14 mukhis with deity, ruling planet, benefits and mantra.">
@@ -76,7 +77,13 @@ import Layout from '../../layouts/Layout.astro';
   .mode-btn:not(.active):hover { background:var(--color-canvas-soft); }
 </style>
 
-<script>
+<script define:vars={{ PLANET_ICONS }}>
+const PLANET_ID={Sun:'surya',Moon:'chandra',Mars:'mangal',Mercury:'budha',Jupiter:'guru',Venus:'shukra',Saturn:'shani',Rahu:'rahu',Ketu:'ketu'};
+function planetLabel(planetStr,color){
+  if(!PLANET_ID[planetStr])return planetStr;
+  const svg=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-2px;">${PLANET_ICONS[PLANET_ID[planetStr]]}</svg>`;
+  return `${svg} ${planetStr}`;
+}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;const toR=d=>d*Math.PI/180;const toD=r=>r*180/Math.PI;
@@ -113,7 +120,7 @@ function rudCard(r,label,big){
       <span style="width:${big?48:38}px;height:${big?48:38}px;border-radius:50%;background:${r.color}22;border:2px solid ${r.color};color:${r.color};font-weight:800;font-size:${big?20:16}px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.m}</span>
       <div>
         <h4 style="font-size:${big?17:15}px;font-weight:700;color:var(--color-ink);margin:0;">${r.m}-Mukhi Rudraksha</h4>
-        <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${label} &middot; ${r.planet}</p>
+        <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${label} &middot; ${planetLabel(r.planet,r.color)}</p>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${r.b}</p>
@@ -197,7 +204,7 @@ document.getElementById('all-mukhis').innerHTML=RUDRAKSHA.map(r=>
       <span style="width:28px;height:28px;border-radius:50%;background:${r.color}22;border:1.5px solid ${r.color};color:${r.color};font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">${r.m}</span>
       <div>
         <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${r.m}-Mukhi</span>
-        <span style="font-size:10px;color:var(--color-mute);margin-left:6px;">${r.planet}</span>
+        <span style="font-size:10px;color:var(--color-mute);margin-left:6px;">${planetLabel(r.planet,r.color)}</span>
       </div>
     </div>
     <p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;">${r.deity}</p>

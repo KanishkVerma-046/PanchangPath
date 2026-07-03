@@ -1,5 +1,6 @@
 ---
 import { RASHIS, getDailyPrediction } from '../lib/rashifal';
+import RashiIcon from './icons/RashiIcon.astro';
 
 interface Props { today: Date; }
 const { today } = Astro.props;
@@ -46,7 +47,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             <!-- Icon strip (links to full rashi page) -->
             <a href={`/rashifal/${rashi.id}`} class="rf-card-thumb-link" aria-label={`${rashi.name} — full prediction`}>
               <div class="rf-card-thumb" style={`background:${rashi.gradient}`}>
-                <span class="rf-symbol" aria-hidden="true">{rashi.symbol}</span>
+                <RashiIcon name={rashi.id} color="#fff" size={26} class="rf-symbol" />
                 <div class="rf-card-overlay"></div>
               </div>
             </a>
@@ -340,9 +341,9 @@ document.getElementById('dob-input')?.addEventListener('keydown', (e) => {
   flex-shrink: 0;
 }
 .rf-symbol {
-  font-size: 22px;
   position: relative;
   z-index: 1;
+  flex-shrink: 0;
 }
 .rf-card-overlay {
   position: absolute;

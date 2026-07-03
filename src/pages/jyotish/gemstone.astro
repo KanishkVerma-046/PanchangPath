@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { PLANET_ICONS } from '../../lib/icons/planets';
 ---
 
 <Layout title="Gemstone Calculator — Find Your Lucky Stone — PanchangPath" description="Find your lucky gemstone (ratna) based on your Vedic birth chart. Get the primary stone for your Lagna lord plus wearing instructions — metal, finger, day and substitutes.">
@@ -48,7 +49,8 @@ import Layout from '../../layouts/Layout.astro';
   .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
 </style>
 
-<script>
+<script define:vars={{ PLANET_ICONS }}>
+function planetIconSvg(id,size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -80,7 +82,7 @@ function gemCard(planet,big,roleLabel){
   const g=GEMS[planet];
   return `<div class="card" style="padding:18px;border-top:3px solid ${g.color};">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-      <span style="width:${big?40:32}px;height:${big?40:32}px;border-radius:50%;background:${g.color};flex-shrink:0;box-shadow:0 0 0 4px ${g.color}22;"></span>
+      <span style="width:${big?40:32}px;height:${big?40:32}px;border-radius:50%;background:${g.color};flex-shrink:0;box-shadow:0 0 0 4px ${g.color}22;display:flex;align-items:center;justify-content:center;color:#fff;">${planetIconSvg(g.p.toLowerCase(),big?22:18,'#fff')}</span>
       <div>
         <h4 style="font-size:${big?17:15}px;font-weight:700;color:var(--color-ink);margin:0;">${g.stone} · ${g.h}</h4>
         <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${roleLabel} · ${planet} (${g.p})</p>

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { RASHI_ICONS } from '../../lib/icons/rashi';
 ---
 
 <Layout title="Horoscope Matching — Ashta Kuta Guna Milan — PanchangPath" description="Free Kundli Milan / horoscope matching with the 8-fold Ashta Kuta system. Get your Guna Milan score out of 36 with Varna, Vashya, Tara, Yoni, Graha Maitri, Gana, Bhakoot and Nadi.">
@@ -64,7 +65,9 @@ import Layout from '../../layouts/Layout.astro';
   @media (max-width:640px){ .two-col{ grid-template-columns:1fr !important; } }
 </style>
 
-<script>
+<script define:vars={{ RASHI_ICONS }}>
+const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
+function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;">${RASHI_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -134,7 +137,7 @@ function calculate(){
     document.getElementById('score-banner').innerHTML=
       `<p class="caption-mono" style="color:${color};margin:0 0 6px;">GUNA MILAN SCORE</p>
        <div style="font-size:48px;font-weight:700;color:${color};line-height:1;">${total% 1===0?total:total.toFixed(1)} <span style="font-size:22px;color:var(--color-mute);">/ ${max}</span></div>
-       <p style="font-size:13px;color:var(--color-body-text);margin:10px 0 0;">Boy: ${NAKS[b.nak]} / ${RASHI[b.rashi]} &nbsp;·&nbsp; Girl: ${NAKS[g.nak]} / ${RASHI[g.rashi]}</p>`;
+       <p style="font-size:13px;color:var(--color-body-text);margin:10px 0 0;">Boy: ${NAKS[b.nak]} / ${rashiIconSvg(RASHI_ID[b.rashi],15)} ${RASHI[b.rashi]} &nbsp;·&nbsp; Girl: ${NAKS[g.nak]} / ${rashiIconSvg(RASHI_ID[g.rashi],15)} ${RASHI[g.rashi]}</p>`;
 
     let rows=`<tr><th>Kuta</th><th>Boy</th><th>Girl</th><th>Points</th><th>Significance</th></tr>`;
     kutas.forEach(([name,k,sig])=>{

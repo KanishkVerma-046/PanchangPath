@@ -1,6 +1,8 @@
 ---
 import { calculateKundali, RASHIS, GRAHA_META, jdFull } from '../lib/kundali';
 import { getDefaultLocation } from '../lib/locations';
+import { PLANET_ICONS } from '../lib/icons/planets';
+import PlanetIcon from './icons/PlanetIcon.astro';
 
 const loc  = getDefaultLocation();
 const now  = new Date();
@@ -56,7 +58,7 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
             {init.grahas.map(g => (
               <tr class="kw-row" data-planet={g.id} title={`Click for details — ${g.name}`}>
                 <td>
-                  <span class="kw-sym">{g.symbol}</span>
+                  <PlanetIcon name={g.id} size={14} class="kw-sym" />
                   <span class="en-text">{g.name}</span>
                   <span class="hi-text">{g.nameHi}</span>
                 </td>
@@ -269,9 +271,9 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
 .kw-row { cursor: pointer; }
 .kw-row:hover td { background: var(--color-canvas-soft); }
 .kw-sym {
-  font-size: 14px;
   margin-right: 5px;
   vertical-align: middle;
+  display: inline-block;
 }
 .kw-deg-cell { font-family: var(--font-mono, monospace); font-size: 11.5px; }
 
@@ -370,7 +372,10 @@ text.kwc-chip:hover { fill: var(--color-saffron-deep) !important; }
 </style>
 
 <!-- ─── Client script ─── -->
-<script>
+<script define:vars={{ PLANET_ICONS }}>
+function planetIconSvg(id, size) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;">${PLANET_ICONS[id]}</svg>`;
+}
 // ─── Constants ───────────────────────────────────────────────────────────────
 const RASHIS_K = [
   { name:'Mesha',      nameHi:'मेष',      abbr:'Msh' },
@@ -664,7 +669,7 @@ function renderTable(data: ReturnType<typeof calcKundali_K>, isHindi: boolean) {
   const isHi = isHindi || document.documentElement.dataset.lang === 'hi';
   tbody.innerHTML = data.grahas.map(g => `
     <tr class="kw-row" data-planet="${g.id}" style="cursor:pointer">
-      <td><span class="kw-sym">${g.symbol}</span><span>${isHi ? g.nameHi : g.name}</span></td>
+      <td>${planetIconSvg(g.id, 14)}<span>${isHi ? g.nameHi : g.name}</span></td>
       <td>${isHi ? g.signNameHi : g.signName}</td>
       <td class="kw-deg-cell">${g.deg}°${String(g.min).padStart(2,'0')}'</td>
       <td>
@@ -698,7 +703,7 @@ function showPopup(pid: string, data: ReturnType<typeof calcKundali_K>) {
   const body  = document.getElementById('kw-popup-body')!;
   body.innerHTML = `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-      <span style="font-size:22px">${g.symbol}</span>
+      ${planetIconSvg(g.id, 22)}
       <div>
         <div style="font-weight:700;font-size:14px">${isHi?g.nameHi:g.name}</div>
         <div style="font-size:11px;color:var(--color-mute)">${isHi?g.name:g.nameHi}</div>

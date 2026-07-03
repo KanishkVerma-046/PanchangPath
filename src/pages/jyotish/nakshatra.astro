@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
 ---
 
 <Layout title="Nakshatra Calculator — Find Your Birth Star — PanchangPath" description="Find your Janma Nakshatra (birth star) and pada from birth details. Includes lord, gana, nadi, yoni, deity, symbol and name syllables.">
@@ -25,10 +26,15 @@ import Layout from '../../layouts/Layout.astro';
 
       <div id="result" style="display:none;margin-bottom:36px;">
         <div class="card" style="padding:28px;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 60%,var(--color-saffron-soft));">
-          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 4px;">YOUR BIRTH STAR</p>
-          <h2 id="n-name" style="font-size:28px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
-          <p id="n-meta" style="font-size:14px;color:var(--color-mute);margin:0 0 8px;"></p>
-          <div id="n-badges" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div id="n-icon" style="color:var(--color-saffron-deep);flex-shrink:0;"></div>
+            <div>
+              <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 4px;">YOUR BIRTH STAR</p>
+              <h2 id="n-name" style="font-size:28px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
+              <p id="n-meta" style="font-size:14px;color:var(--color-mute);margin:0 0 8px;"></p>
+              <div id="n-badges" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+            </div>
+          </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="two-col">
           <div class="card" style="padding:20px;">
@@ -69,7 +75,9 @@ import Layout from '../../layouts/Layout.astro';
   @media (max-width:640px){ .two-col{ grid-template-columns:1fr !important; } }
 </style>
 
-<script>
+<script define:vars={{ NAKSHATRA_ICONS }}>
+const NAKS_ID=['ashwini','bharani','krittika','rohini','mrigashira','ardra','punarvasu','pushya','ashlesha','magha','purva-phalguni','uttara-phalguni','hasta','chitra','swati','vishakha','anuradha','jyeshtha','mula','purva-ashadha','uttara-ashadha','shravana','dhanishta','shatabhisha','purva-bhadrapada','uttara-bhadrapada','revati'];
+function nakIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${NAKSHATRA_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -121,6 +129,7 @@ function calculate(){
     const sid=n360(moonLon(jd)-ay);
     const idx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;
     const nk=NAKS[idx];
+    document.getElementById('n-icon').innerHTML=nakIconSvg(NAKS_ID[idx],44);
     document.getElementById('n-name').textContent=nk.n+' \xb7 '+nk.h;
     document.getElementById('n-meta').textContent='Pada '+pada+' \xb7 Ruled by '+nk.lord+' \xb7 Deity: '+nk.deity;
     document.getElementById('trait-title').textContent=nk.n+' — Personality Profile';
@@ -143,8 +152,11 @@ function calculate(){
 }
 document.getElementById('all-naks').innerHTML=NAKS.map((nk,i)=>
   `<div class="card" style="padding:12px;">
-    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:3px;">
-      <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${nk.n}</span>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+      <div style="display:flex;align-items:center;gap:6px;">
+        <span style="color:var(--color-saffron-deep);flex-shrink:0;">${nakIconSvg(NAKS_ID[i],16)}</span>
+        <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${nk.n}</span>
+      </div>
       <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${i+1}</span>
     </div>
     <p style="font-size:11px;color:var(--color-mute);margin:0;">${nk.h} · ${nk.lord}</p>

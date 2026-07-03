@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { PLANET_ICONS } from '../../lib/icons/planets';
 ---
 
 <Layout title="Mangal Dosha Calculator — Manglik Check — PanchangPath" description="Check if you are Manglik (Mangal Dosha) from your birth chart. Analyses Mars from Lagna, Moon and Venus, with severity and classical cancellation rules.">
@@ -68,7 +69,8 @@ import Layout from '../../layouts/Layout.astro';
   #pos-table td { padding:8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
 </style>
 
-<script>
+<script define:vars={{ MANGAL_SVG: PLANET_ICONS.mangal }}>
+function mangalIconSvg(size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${MANGAL_SVG}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -130,8 +132,8 @@ function calculate(){
     const bg=present?(severity==='High'?'var(--color-inauspicious-soft)':'var(--color-warning-soft)'):'var(--color-auspicious-soft)';
     document.getElementById('dosha-banner').style.background=bg;
     document.getElementById('dosha-banner').innerHTML=present
-      ?`<div style="font-size:40px;margin-bottom:6px;">🔴</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">Mangal Dosha Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">Severity: <b style="color:${sevColor};">${severity}</b> · Mars in ${RASHI[marsSign]} · Dosha from ${doshaCount} of 3 references</p>`
-      :`<div style="font-size:40px;margin-bottom:6px;">✅</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Mangal Dosha</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">Mars in ${RASHI[marsSign]} does not fall in a dosha house from your Lagna, Moon or Venus.</p>`;
+      ?`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,sevColor)}</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">Mangal Dosha Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">Severity: <b style="color:${sevColor};">${severity}</b> · Mars in ${RASHI[marsSign]} · Dosha from ${doshaCount} of 3 references</p>`
+      :`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Mangal Dosha</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">Mars in ${RASHI[marsSign]} does not fall in a dosha house from your Lagna, Moon or Venus.</p>`;
 
     let meaning;
     if(!present){meaning=`Your Mars is favourably placed and does not create Mangal Dosha. There are no Manglik-related concerns for marriage from this analysis.`;}

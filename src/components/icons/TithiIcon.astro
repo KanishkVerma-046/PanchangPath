@@ -1,0 +1,29 @@
+---
+// Tithi (30 moon-phase) line icons. 24x24 viewBox, 1.5px stroke, no fill.
+// Names: "shukla-1".."shukla-15" (waxing, Pratipada..Purnima),
+//        "krishna-1".."krishna-15" (waning, Pratipada..Amavasya).
+import { TITHI_ICONS } from '../../lib/icons/tithi';
+
+interface Props {
+  name: keyof typeof TITHI_ICONS;
+  color?: string;
+  size?: number | string;
+  class?: string;
+}
+
+const { name, color = 'currentColor', size = 24, class: className = '' } = Astro.props;
+const inner = TITHI_ICONS[name] ?? '';
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke={color}
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  class={className}
+  set:html={inner}
+/>

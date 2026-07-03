@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { PLANET_ICONS } from '../../lib/icons/planets';
 ---
 
 <Layout title="Kalasarpa Yoga Calculator — Dosha Detector — PanchangPath" description="Detect Kalasarpa Yoga / Dosha in your birth chart — when all seven planets lie between Rahu and Ketu. Identifies the type and explains effects and remedies.">
@@ -51,7 +52,8 @@ import Layout from '../../layouts/Layout.astro';
   #pos-table td { padding:8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
 </style>
 
-<script>
+<script define:vars={{ PLANET_ICONS }}>
+function planetIconSvg(id,size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -106,12 +108,12 @@ function calculate(){
       const dR=Math.min(n360(p-rahu),n360(rahu-p));
       const dK=Math.min(n360(p-ketu),n360(ketu-p));
       if(dR<2||dK<2)conjunct=true;
-      return `<tr><td style="color:var(--color-ink);font-weight:600;">${full}</td><td>${RASHI[Math.floor(p/30)]}</td><td>${(p%30).toFixed(1)}°</td><td>${inArc?'Rahu → Ketu side':'Ketu → Rahu side'}</td></tr>`;
+      return `<tr><td style="color:var(--color-ink);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg(k,15)} ${full}</span></td><td>${RASHI[Math.floor(p/30)]}</td><td>${(p%30).toFixed(1)}°</td><td>${inArc?'Rahu → Ketu side':'Ketu → Rahu side'}</td></tr>`;
     });
     document.getElementById('pos-table').innerHTML=
       `<tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Hemisphere</th></tr>`+rows.join('')+
-      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;">Rahu</td><td>${RASHI[Math.floor(rahu/30)]}</td><td>${(rahu%30).toFixed(1)}°</td><td>—</td></tr>`+
-      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;">Ketu</td><td>${RASHI[Math.floor(ketu/30)]}</td><td>${(ketu%30).toFixed(1)}°</td><td>—</td></tr>`;
+      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('rahu',15,'var(--color-saffron-deep)')} Rahu</span></td><td>${RASHI[Math.floor(rahu/30)]}</td><td>${(rahu%30).toFixed(1)}°</td><td>—</td></tr>`+
+      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('ketu',15,'var(--color-saffron-deep)')} Ketu</span></td><td>${RASHI[Math.floor(ketu/30)]}</td><td>${(ketu%30).toFixed(1)}°</td><td>—</td></tr>`;
 
     const present=(countInArc===7||countInArc===0);
     const isAnuloma=countInArc===7; // planets go Rahu→Ketu (forward)
@@ -121,16 +123,17 @@ function calculate(){
     const eff=KS_EFFECTS[rahuSign];
 
     let bg,html;
+    const nodeIcons=(color)=>'<div style="display:flex;justify-content:center;gap:8px;margin-bottom:6px;">'+planetIconSvg('rahu',36,color)+planetIconSvg('ketu',36,color)+'</div>';
     if(present&&conjunct){
       bg='var(--color-warning-soft)';
-      html='<div style="font-size:40px;margin-bottom:6px;">🐍</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">Partial '+type+' Kalasarpa</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All planets are on one side, but one is very close to Rahu/Ketu — this partially breaks the yoga. Direction: <b>'+direction+'</b>.</p>';
+      html=nodeIcons('#b45309')+'<h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">Partial '+type+' Kalasarpa</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All planets are on one side, but one is very close to Rahu/Ketu — this partially breaks the yoga. Direction: <b>'+direction+'</b>.</p>';
     }else if(present){
       bg='var(--color-inauspicious-soft)';
-      html='<div style="font-size:40px;margin-bottom:6px;">🐍</div><h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">'+type+' Kalasarpa Yoga Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All 7 planets fall between Rahu ('+RASHI[rahuSign]+') and Ketu ('+RASHI[Math.floor(ketu/30)]+'). Direction: <b>'+direction+'</b>.</p>';
+      html=nodeIcons('#dc2626')+'<h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">'+type+' Kalasarpa Yoga Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All 7 planets fall between Rahu ('+RASHI[rahuSign]+') and Ketu ('+RASHI[Math.floor(ketu/30)]+'). Direction: <b>'+direction+'</b>.</p>';
     }else{
       bg='var(--color-auspicious-soft)';
       const outside=Math.min(countInArc,7-countInArc);
-      html='<div style="font-size:40px;margin-bottom:6px;">✅</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Kalasarpa Yoga</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+(outside>0?outside+' planet(s) lie outside the Rahu–Ketu axis, so the yoga does not form.':'Your planets are distributed across both hemispheres of the nodal axis.')+'</p>';
+      html=nodeIcons('#15803d')+'<h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Kalasarpa Yoga</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+(outside>0?outside+' planet(s) lie outside the Rahu–Ketu axis, so the yoga does not form.':'Your planets are distributed across both hemispheres of the nodal axis.')+'</p>';
     }
     document.getElementById('ks-banner').style.background=bg;
     document.getElementById('ks-banner').innerHTML=html;

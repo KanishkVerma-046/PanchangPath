@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { TITHI_ICONS } from '../../lib/icons/tithi';
 ---
 
 <Layout title="Shraddha Tithi Calculator — Pitru Paksha — PanchangPath" description="Find the tithi of a death anniversary and the correct day to perform Shraddha during Pitru Paksha. Includes the full Pitru Paksha tithi schedule.">
@@ -62,6 +63,7 @@ import Layout from '../../layouts/Layout.astro';
 
       <div id="result" style="display:none;">
         <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
+          <div id="t-icon" style="display:flex;justify-content:center;margin-bottom:8px;color:var(--color-saffron-deep);"></div>
           <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">TITHI OF PASSING</p>
           <h2 id="t-name" style="font-size:26px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
           <p id="t-meta" style="font-size:14px;color:var(--color-mute);margin:0;"></p>
@@ -93,7 +95,9 @@ import Layout from '../../layouts/Layout.astro';
   .sh-mode-btn.active { background:var(--color-ink);color:var(--color-canvas);border-color:var(--color-ink); }
 </style>
 
-<script>
+<script define:vars={{ TITHI_ICONS }}>
+function tithiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${TITHI_ICONS[id]}</svg>`;}
+const NAME_TO_NUM={Pratipada:1,Dwitiya:2,Tritiya:3,Chaturthi:4,Panchami:5,Shashthi:6,Saptami:7,Ashtami:8,Navami:9,Dashami:10,Ekadashi:11,Dwadashi:12,Trayodashi:13,Chaturdashi:14,Purnima:15,Amavasya:15};
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 const toR=d=>d*Math.PI/180;
@@ -136,6 +140,7 @@ function calculate(){
     let tName=TITHI_NAMES[inPaksha-1];
     if(inPaksha===15)tName=paksha==='Shukla'?'Purnima':'Amavasya';
 
+    document.getElementById('t-icon').innerHTML=tithiIconSvg(`${paksha.toLowerCase()}-${inPaksha}`,44);
     document.getElementById('t-name').textContent=`${paksha} ${tName}`;
     document.getElementById('t-meta').textContent=`Tithi #${tithiNum} of the lunar month · Moon–Sun angle ${diff.toFixed(1)}°`;
 
@@ -161,6 +166,7 @@ document.getElementById('pp-table').innerHTML=`<tr><th>Date (2026)</th><th>Tithi
 function showShraddhaResult(paksha,tName){
   const shraddhaTithi=(tName==='Purnima'||tName==='Amavasya')?tName:tName;
   let ppDay=PP2026.find(p=>p.tithi===shraddhaTithi)||PP2026[PP2026.length-1];
+  document.getElementById('t-icon').innerHTML=tithiIconSvg(`${paksha.toLowerCase()}-${NAME_TO_NUM[tName]}`,44);
   document.getElementById('t-name').textContent=`${paksha} ${tName}`;
   document.getElementById('t-meta').textContent=`${paksha} Paksha · Tithi entered directly`;
   document.getElementById('shraddha-day').innerHTML=

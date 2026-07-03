@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction, type Rashi } from '../../lib/rashifal';
+import RashiIcon from '../../components/icons/RashiIcon.astro';
 
 export function getStaticPaths() {
   return RASHIS.map(r => ({ params: { rashi: r.id }, props: { rashi: r } }));
@@ -41,8 +42,8 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
   <section style={`background:${rashi.gradient};padding:48px 0 40px;`}>
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
       <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-        <div style="font-size:64px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2));">
-          {rashi.symbol}
+        <div style="filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2));">
+          <RashiIcon name={rashi.id} color="#fff" size={64} />
         </div>
         <div>
           <p style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 6px;font-family:var(--font-mono);">
@@ -56,10 +57,10 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
         </div>
         <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
           <a href={`/rashifal/${prevRashi.id}`} class="rashi-nav-btn" title={`${prevRashi.name} Rashifal`}>
-            ← {prevRashi.symbol} {prevRashi.name}
+            ← <RashiIcon name={prevRashi.id} color="#fff" size={14} /> {prevRashi.name}
           </a>
           <a href={`/rashifal/${nextRashi.id}`} class="rashi-nav-btn" title={`${nextRashi.name} Rashifal`}>
-            {nextRashi.name} {nextRashi.symbol} →
+            {nextRashi.name} <RashiIcon name={nextRashi.id} color="#fff" size={14} /> →
           </a>
         </div>
       </div>
@@ -186,7 +187,9 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               </div>
               <div class="rd-info-item">
                 <span class="rd-info-label">Symbol</span>
-                <span class="rd-info-val">{rashi.symbol} {rashi.english}</span>
+                <span class="rd-info-val" style="display:flex;align-items:center;gap:5px;">
+                  <RashiIcon name={rashi.id} size={14} /> {rashi.english}
+                </span>
               </div>
               <div class="rd-info-item">
                 <span class="rd-info-label">Name Letters</span>
@@ -205,7 +208,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   class={`rd-rashi-link ${r.id === rashi.id ? 'rd-rashi-active' : ''}`}
                   title={r.english}
                 >
-                  <span class="rd-rashi-sym">{r.symbol}</span>
+                  <RashiIcon name={r.id} size={14} class="rd-rashi-sym" />
                   <span class="rd-rashi-nm">{r.name}</span>
                 </a>
               ))}
@@ -292,7 +295,7 @@ document.querySelectorAll<HTMLButtonElement>('.rp-tab').forEach(btn => {
 }
 .rd-rashi-link:hover { background: var(--color-canvas-soft-2); color: var(--color-ink); }
 .rd-rashi-active { background: var(--color-saffron-soft) !important; color: var(--color-saffron-deep) !important; font-weight: 600; }
-.rd-rashi-sym { font-size: 14px; }
+.rd-rashi-sym { flex-shrink: 0; }
 .rd-rashi-nm { font-size: 12px; }
 
 @media (max-width: 900px) {
