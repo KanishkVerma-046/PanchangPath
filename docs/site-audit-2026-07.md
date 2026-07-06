@@ -2,7 +2,12 @@
 
 ## Summary
 
-_filled in Task 6_
+- **Navigation & dead links:** 13 issues found in Part 1 — 6 dead-ends-at-homepage (Planets menu, Gallery menu, Others menu, "Sunrise & Sunset", "Moonrise & Moonset", footer "Cities" links), 1 mislabeled ("Rahu Kalam" nav link still points to `/` instead of `/muhurta/rahu-kala`), and 6 three-location sync gaps (Janma Kundali, the Planetary Events Feed, Rashifal, Prashnavali, and Regional Panchang all missing from one or more of desktop dropdown/mobile drawer/`searchItems`; plus 6 Jyotish calculator pages present in `searchItems` but missing from the dropdown/drawer).
+- **Accuracy vs drikpanchang.com:** 15 issue entries found across Core Panchang (2), Kundali/Jyotish Calculators (2), Muhurta Tools (4), and Regional Panchang & Festivals (7). These 15 entries document 13 distinct root-cause bugs — 2 of them (the Moon-longitude `/1000` scaling bug and the missing Equation-of-Time term in `sunriseUTC()`) each cascade into multiple site features and were therefore written up twice, once per affected subsection, rather than being 2 separate bugs each.
+- **Already-known issues confirmed still present:** 9 — 5 from Part 1 (Header.astro placeholder `href="/"` items for "Sunrise & Sunset"/"Planetary Positions"/Gallery; "Baby Names"/"Compatibility" mislabeled under the Others menu; footer "Cities" `?city=` links dead) and 4 from Part 2 (Yamaganda Kalam wrong slot table; Gowri Panchangam Wednesday=Sunday duplicate; `/panchang/regional`'s `Object.keys` bug affecting the mr/gu/kn/te/or/iskcon traditions; the truncated 6-term Moon-longitude formula — confirmed still present in gemstone.astro/rudraksha.astro, and found to be far more widespread than CLAUDE.md currently documents, now spanning 13 additional Jyotish calculator files).
+- **Already-known issues found fixed:** 0. Commit `19b4c5b`'s dead-link fixes turned out to be only partial — e.g. the "Rahu Kalam" nav link is still mislabeled (see Part 1) — so no previously-logged issue was confirmed fully resolved by this audit.
+- **Known issues out of scope for this audit (not retested):** 2 — the `janma-kundali.astro` Dasha-dates-depend-on-browser-timezone bug and the Devotional Library Namavali-padding issue. Neither Rashifal/Prashnavali nor the Devotional Library were in scope per the plan's Global Constraints, so these were not re-verified either way.
+- **Newly found issues:** 17 — 8 in Part 1 ("Moonrise & Moonset" dead-end; "Rahu Kalam" mislabel; sync gaps for Janma Kundali, the Planetary Events Feed, Rashifal, Prashnavali, Regional Panchang's `searchItems` entry, and 6 Jyotish sub-pages missing from the dropdown/drawer) and 9 in Part 2 (the Moon-longitude `/1000` scaling bug in `panchang.ts`/`kundali.ts`/~25 duplicate files; the missing Equation of Time in `sunriseUTC()` cascading into sunrise/sunset, Rahu Kalam, and every Muhurta timing table; Abhijit Muhurta's fixed 48-minute window instead of day-length/15; Guru Purnima 2026 one lunar month early; Ganesh Chaturthi 2026 about a month early; Diwali 2026 off by one day; Raksha Bandhan 2026 possibly off by one day (lower confidence); the entire Oct–Nov 2026 festival season missing 8 festivals; and no 2027 festival data existing at all).
 
 ## Part 1: Navigation & Dead Links
 
@@ -241,3 +246,9 @@ Apply the same fix to the duplicate in `src/pages/muhurta/panchaka.astro:85`. No
 - **Location:** `src/lib/panchang-i18n.ts` (`REGIONS` array, `solarMonthMap`/`months[]` fields for Tamil, Bengali, Malayalam)
 - **Problem:** N/A — this is a clean-check, not a bug. Spot-checking 3 of the 11 traditions for 2026-07-06, the subagent found Tamil's month (Aani), Bengali's (Ashadh), and Malayalam's (Mithunam) all matched drikpanchang's Tamil Panchangam naming for the same date. The underlying `solarMonthMap`/`months[]` indexing logic in `panchang-i18n.ts` itself is correct — the only regional-month bug found in this audit is the `regional.astro` lookup bug above (which affects the amanta-lunar traditions' preview card, not the `panchang-i18n.ts` data itself).
 - **Fix prompt:** None needed — no action required for this item. (Listed for completeness/audit-trail purposes; the other 8 traditions and the monthly/yearly views on `panchang/[region].astro` itself were not exhaustively re-checked in this pass.)
+
+## Appendix: Sample inputs used
+
+- **Dates:** 2026-07-06, 2026-10-20, 2027-01-14
+- **Cities:** New Delhi (28.6139N, 77.2090E, UTC+5:30), Mumbai (19.0760N, 72.8777E, UTC+5:30), Chennai (13.0827N, 80.2707E, UTC+5:30)
+- **Kundali birth data:** 15 August 1990, 07:30 IST, New Delhi (28.6139N, 77.2090E)
