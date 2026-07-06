@@ -34,7 +34,7 @@ import Layout from '../../layouts/Layout.astro';
       <!-- What is section -->
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;">
         {[
-          { title:'Abhijit Muhurat', icon:'☀️', text:'Named after the Nakshatra Abhijit (Vega), this is the 8th Muhurta of the day — centered on true solar noon, ±24 minutes. It is considered so auspicious that it can override most other restrictions. Works on all days except Wednesday (when Abhijit is weak).' },
+          { title:'Abhijit Muhurat', icon:'☀️', text:'Named after the Nakshatra Abhijit (Vega), this is the 8th Muhurta of the day — centered on true solar noon, spanning half a Muhurta (day length ÷ 30) on each side. It is considered so auspicious that it can override most other restrictions. Works on all days except Wednesday (when Abhijit is weak).' },
           { title:'Do Ghati Muhurat', icon:'⏱️', text:'Two Ghatis (48 minutes) spanning solar noon. 1 Ghati = 24 minutes. This is the core of Abhijit — the most concentrated auspicious window of the day. Ideal for starting important ceremonies that could not find another Muhurta.' },
           { title:'Brahma Muhurta', icon:'🌅', text:'The "Creator\'s Hour" — 1 hour 36 minutes before sunrise (specifically 3 Muhurtas: 96 min before sunrise to 48 min before sunrise). Best for spiritual practice, meditation, study, and early morning rituals. Associated with clarity, memory, and divine connection.' },
         ].map(item => (
@@ -83,7 +83,13 @@ function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
   const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(lat))*Math.sin(dec))/(Math.cos(toRad(lat))*Math.cos(dec));
   if(cosHA<-1||cosHA>1)return NaN;
   const ha=toDeg(Math.acos(cosHA));
-  const noon=12-lng/15;
+  const e=0.016708634-0.000042037*T-0.0000001267*T*T;
+  const eps0=23.4392911-(46.8150*T+0.00059*T*T-0.001813*T*T*T)/3600;
+  const y=Math.pow(Math.tan(toRad(eps0)/2),2);
+  const L0r=toRad(L0),Mr=toRad(M);
+  const E=y*Math.sin(2*L0r)-2*e*Math.sin(Mr)+4*e*y*Math.sin(Mr)*Math.cos(2*L0r)-0.5*y*y*Math.sin(4*L0r)-1.25*e*e*Math.sin(2*Mr);
+  const eot=toDeg(E)*4;
+  const noon=12-lng/15-eot/60;
   return rising?noon-ha/15:noon+ha/15;
 }
 function fmtMins(m:number){
@@ -130,9 +136,10 @@ function calculate(){
   const ssMins=ssUTC*60+loc.tz*60;
   const srPrevMins=srPrevUTC*60+loc.tz*60;
 
-  // Abhijit = solar noon ±24 min
+  // Abhijit = solar noon ± 1/15 of day length (day-length-proportional, not a fixed 24 min)
   const noonMins=(srMins+ssMins)/2;
-  const abhijitStart=noonMins-24, abhijitEnd=noonMins+24;
+  const dayMins=ssMins-srMins;
+  const abhijitStart=noonMins-dayMins/30, abhijitEnd=noonMins+dayMins/30;
 
   // Do Ghati = noon ±12 min (2 ghatis = 48 min, ±24; but "Do Ghati" as core = ±12 min = 1 Ghati either side)
   // Actually: Do Ghati Muhurat = 2 Ghatis = 48 minutes centered on noon = noon-24 to noon+24 (same as Abhijit)

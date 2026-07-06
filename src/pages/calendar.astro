@@ -125,7 +125,7 @@ function quickPanchang(date: Date) {
   const moonD = norm(297.8501921 + 445267.1114034*T);
   const moonMp = norm(134.9633964 + 477198.8675055*T);
   const dL = 6.288774*Math.sin(toRad(moonMp)) + 1.274027*Math.sin(toRad(2*moonD-moonMp)) + 0.658314*Math.sin(toRad(2*moonD)) + 0.213618*Math.sin(toRad(2*moonMp));
-  const moonLon = norm(moonL + dL/1000);
+  const moonLon = norm(moonL + dL);
   const ay = 23.85 + 1.3612*T;
   const moonSid = norm(moonLon - ay);
   const elong = norm(moonLon - sunLon);

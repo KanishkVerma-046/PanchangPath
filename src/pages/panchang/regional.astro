@@ -6,6 +6,11 @@ import { getSolarMonthIndex } from '../../lib/panchang-i18n';
 
 const today = new Date();
 
+const AMANTA_TO_IDX: Record<string, number> = {
+  Chaitra:0,Vaishakha:1,Jyeshtha:2,Ashadha:3,Shravana:4,Bhadrapada:5,
+  Ashwin:6,Kartika:7,Margashirsha:8,Pausha:9,Magha:10,Phalguna:11,
+};
+
 // Quick preview data for each tradition (using default city)
 const regionPreviews = REGIONS.map(r => {
   const p = calculatePanchang(today, r.defaultLat, r.defaultLng, r.defaultTzOffset);
@@ -13,10 +18,7 @@ const regionPreviews = REGIONS.map(r => {
   const solarMonthIdx = getSolarMonthIndex(r, p.sunLongitude);
   const monthName = r.monthSystem === 'solar'
     ? r.months[solarMonthIdx] ?? r.months[0]
-    : r.months[cal.amantaMonth.name === 'Chaitra' ? 0 : (Object.keys({
-        Chaitra:0,Vaishakha:1,Jyeshtha:2,Ashadha:3,Shravana:4,Bhadrapada:5,
-        Ashwin:6,Kartika:7,Margashirsha:8,Pausha:9,Magha:10,Phalguna:11,
-      } as Record<string,number>)[cal.amantaMonth.name] ?? 0)];
+    : r.months[AMANTA_TO_IDX[cal.amantaMonth.name] ?? 0];
   const yearInfo = r.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat);
   const tithiName = p.tithi.paksha === 'Shukla'
     ? r.tithiShukla[(p.tithi.number - 1) % 15]

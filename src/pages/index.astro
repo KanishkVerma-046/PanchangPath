@@ -352,7 +352,7 @@ function moonLon(jd: number): number {
     +0.045758*Math.sin(2*Dr-Mr)-0.040923*Math.sin(Mr-Mpr)-0.034720*Math.sin(Dr)
     -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010980*Math.sin(Mpr-2*Fr)
     +0.010675*Math.sin(4*Dr-Mpr)+0.010034*Math.sin(3*Mpr)+0.008548*Math.sin(4*Dr-2*Mpr);
-  return norm360(L + dL / 1000);
+  return norm360(L + dL);
 }
 
 function ayanamsha(jd: number): number {

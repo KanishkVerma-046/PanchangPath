@@ -215,13 +215,13 @@ export const GOWRI_INFO: Record<GowriType, { nameHi: string; quality: Quality; c
 };
 
 export const GOWRI_DAY: GowriType[][] = [
-  ['Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha'],   // Sun
-  ['Charam','Visha','Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam'],   // Mon
-  ['Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam'],   // Tue
-  ['Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha'],   // Wed
-  ['Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham'],   // Thu
-  ['Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham'],   // Fri
-  ['Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham'],   // Sat
+  ['Uthamam','Amrutham','Rogam','Labham','Dhanam','Sudham','Charam','Visha'],   // Sun
+  ['Amrutham','Visha','Rogam','Labham','Dhanam','Sudham','Charam','Uthamam'],   // Mon
+  ['Rogam','Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham'],   // Tue
+  ['Labham','Dhanam','Sudham','Charam','Visha','Uthamam','Amrutham','Rogam'],   // Wed
+  ['Dhanam','Sudham','Charam','Uthamam','Amrutham','Visha','Rogam','Labham'],   // Thu
+  ['Sudham','Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam'],   // Fri
+  ['Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam','Sudham'],   // Sat
 ];
 
 export const GOWRI_NIGHT: GowriType[][] = [

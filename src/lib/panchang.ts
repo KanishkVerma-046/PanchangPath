@@ -75,7 +75,7 @@ function moonLongitude(jd: number): number {
     + 0.003994 * Math.sin(2 * Dr + 2 * Mpr)
     + 0.003861 * Math.sin(4 * Dr)
     + 0.003665 * Math.sin(2 * Dr - 3 * Mpr);
-  return norm360(L + dL / 1000);
+  return norm360(L + dL);
 }
 
 // Lahiri ayanamsha (degrees)
@@ -84,15 +84,24 @@ function lahiriAyanamsha(jd: number): number {
   return 23.85 + 1.3612 * T - 0.000136 * T * T;
 }
 
+// Equation of Time in minutes (Meeus, Astronomical Algorithms ch. 28)
+function equationOfTimeMinutes(T: number): number {
+  const L0 = norm360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
+  const M = norm360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
+  const e = 0.016708634 - 0.000042037 * T - 0.0000001267 * T * T;
+  const epsilon0 = 23.4392911 - (46.8150 * T + 0.00059 * T * T - 0.001813 * T * T * T) / 3600;
+  const y = Math.pow(Math.tan(toRad(epsilon0) / 2), 2);
+  const L0r = toRad(L0);
+  const Mr = toRad(M);
+  const E = y * Math.sin(2 * L0r) - 2 * e * Math.sin(Mr) + 4 * e * y * Math.sin(Mr) * Math.cos(2 * L0r)
+    - 0.5 * y * y * Math.sin(4 * L0r) - 1.25 * e * e * Math.sin(2 * Mr);
+  return toDeg(E) * 4;
+}
+
 // Solar noon in decimal hours (UTC)
 function solarNoonUTC(jd: number, lng: number): number {
   const T = (jd - 2451545.0) / 36525;
-  const L0 = norm360(280.46646 + 36000.76983 * T);
-  const M = norm360(357.52911 + 35999.05029 * T);
-  const Mr = toRad(M);
-  const eot = 4 * (-(1.914602 - 0.004817 * T) * Math.sin(Mr) - 0.019993 * Math.sin(2 * Mr)
-    + 0.9999 * (280.46646 - L0) * 0 + 0.000075 + 0.001868 * Math.cos(Mr)
-    - 0.032077 * Math.sin(Mr) - 0.014615 * Math.cos(2 * Mr) - 0.04089 * Math.sin(2 * Mr));
+  const eot = equationOfTimeMinutes(T);
   return 12 - lng / 15 - eot / 60;
 }
 
@@ -111,7 +120,8 @@ function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): numb
   const cosHA = (Math.sin(toRad(-0.8333)) - Math.sin(latR) * Math.sin(dec)) / (Math.cos(latR) * Math.cos(dec));
   if (cosHA < -1 || cosHA > 1) return NaN;
   const HA = toDeg(Math.acos(cosHA));
-  const noon = 12 - lng / 15;
+  const eot = equationOfTimeMinutes(T);
+  const noon = 12 - lng / 15 - eot / 60;
   return rising ? noon - HA / 15 : noon + HA / 15;
 }
 
@@ -274,7 +284,7 @@ const VARAS = [
 // Rahu Kalam slots (0-indexed, slot × dayDuration/8 from sunrise)
 const RAHU_SLOTS =      [7, 1, 6, 4, 5, 2, 3]; // Sun=7,Mon=1,Tue=6,Wed=4,Thu=5,Fri=2,Sat=3
 const GULIKA_SLOTS =    [6, 5, 4, 3, 2, 1, 0];
-const YAMAGANDA_SLOTS = [3, 5, 2, 7, 4, 6, 1];
+const YAMAGANDA_SLOTS = [4, 3, 2, 1, 0, 6, 5];
 
 function slotTime(sunriseMins: number, sunsetMins: number, slot: number): { start: string; end: string } {
   const duration = (sunsetMins - sunriseMins) / 8;
@@ -377,10 +387,10 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
   const gulikaKalam = slotTime(srMins, ssMins, GULIKA_SLOTS[weekday]);
   const yamaganda = slotTime(srMins, ssMins, YAMAGANDA_SLOTS[weekday]);
 
-  // Abhijit Muhurta = solar noon ± 24 min
+  // Abhijit Muhurta = solar noon ± 1/15 of day length (1 muhurta = day length / 15, Abhijit spans half a muhurta each side of noon)
   const noonMins = (srMins + ssMins) / 2;
-  const abStart = noonMins - 24;
-  const abEnd = noonMins + 24;
+  const abStart = noonMins - dayMins / 30;
+  const abEnd = noonMins + dayMins / 30;
   const fmtSlot = (m: number) => {
     const h = Math.floor((m / 60) % 24);
     const min = Math.round(m % 60);

@@ -493,7 +493,7 @@ function moonLon_K(jd: number): number {
     +0.058793*Math.sin(2*Dr-2*Mpr)+0.057066*Math.sin(2*Dr-Mr-Mpr)+0.053322*Math.sin(2*Dr+Mpr)
     +0.045758*Math.sin(2*Dr-Mr)-0.040923*Math.sin(Mr-Mpr)-0.034720*Math.sin(Dr)
     -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010034*Math.sin(3*Mpr);
-  return n360(Lm + dL/1000);
+  return n360(Lm + dL);
 }
 
 function rahuLon_K(T: number): number {

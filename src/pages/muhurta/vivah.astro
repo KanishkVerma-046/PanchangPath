@@ -117,7 +117,7 @@ function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number
   const moonMp=n360(134.9633964+477198.8675055*T);
   const moonF=n360(93.2720950+483202.0175233*T);
   const dL=6.288774*Math.sin(toRad(moonMp))+1.274027*Math.sin(toRad(2*moonD-moonMp))+0.658314*Math.sin(toRad(2*moonD))+0.213618*Math.sin(toRad(2*moonMp))-0.185116*Math.sin(toRad(Ms))-0.114332*Math.sin(toRad(2*moonF));
-  const moonLon=n360(moonL+dL/1000);
+  const moonLon=n360(moonL+dL);
   const ay=23.85+1.3612*T;
   const sunSid=n360(sunLon-ay), moonSid=n360(moonLon-ay);
   const elong=n360(moonLon-sunLon);
