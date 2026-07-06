@@ -151,3 +151,41 @@ Two confirmed, systematic bugs were found. Neither is in CLAUDE.md's existing "K
 - **Ayanamsha formula:** all 16 Jyotish calculator pages and `KundaliWidget.astro` correctly use the full 3-term Lahiri formula (`23.85 + 1.3612*T - 0.000136*T²`). The CLAUDE.md-documented truncated 2-term variant is confined to `index.astro`/`calendar.astro`/muhurta pages and does not extend into the Jyotish-calculator scope of this audit.
 - **Orbital elements (`ORB` table) and Kepler solver:** spot-checked in `kundali.astro` and `KundaliWidget.astro` against `kundali.ts` — element values, `helioXY`, and `solveKepler` are consistent, no drift found.
 - **Sun longitude / Rahu mean-node formulas:** consistent across all files checked, no divergence found.
+
+### Muhurta Tools
+
+**Method:** A research subagent wrote a standalone Node script (`--experimental-strip-types`) importing `calculatePanchang()` from `src/lib/panchang.ts` and the timing tables from `src/lib/muhurta.ts`, and ran it across the same 3 dates (2026-07-06, 2026-10-20, 2027-01-14) × 3 cities (New Delhi, Mumbai, Chennai) used elsewhere in this audit, computing Choghadiya, Hora, Rahu Kala, Yamaganda, and Gowri Panchangam for each combination. Results were cross-checked against live drikpanchang.com day-panchang and Gowri Panchangam pages (New Delhi Jul 5–11 2026, Mumbai Oct 20 2026).
+
+#### Yamaganda Kalam uses a wrong slot table
+
+- **Location:** `src/lib/panchang.ts:277` (`YAMAGANDA_SLOTS = [3,5,2,7,4,6,1]`), duplicated at `src/pages/muhurta/rahu-kala.astro:71` (`YAMAG_SLOTS`)
+- **Problem:** Confirmed still present (already logged in CLAUDE.md "Known Issues"). Verified via 7 consecutive real drikpanchang.com pages for New Delhi (Jul 5–11, 2026): the correct 0-indexed (Sun→Sat) slot table is `[4,3,2,1,0,6,5]`. The current code's `[3,5,2,7,4,6,1]` only coincides with the correct table on Tue and Fri — the other 5 weekdays are wrong. Monday is the worst case: the current code gives Yamaganda the same slot (5) as Gulika Kalam, so the tool shows two supposedly-distinct inauspicious periods with identical times (e.g. New Delhi 2026-07-06: both computed as 2:05–3:50 PM).
+- **Fix prompt:** "In `src/lib/panchang.ts`, replace `const YAMAGANDA_SLOTS = [3, 5, 2, 7, 4, 6, 1];` with `const YAMAGANDA_SLOTS = [4, 3, 2, 1, 0, 6, 5];` (index 0=Sunday…6=Saturday, verified against drikpanchang.com day-panchang pages for New Delhi Jul 5–11 2026). Apply the identical fix to the duplicate `YAMAG_SLOTS` array in `src/pages/muhurta/rahu-kala.astro:71`. Note: `RAHU_SLOTS` and `GULIKA_SLOTS` were checked against the same drikpanchang data during this audit and are already correct — do not touch them."
+
+#### Gowri Panchangam: Wednesday duplicated from Sunday
+
+- **Location:** `src/lib/muhurta.ts:217-235` (`GOWRI_DAY`/`GOWRI_NIGHT`), duplicated at `src/pages/muhurta/panchaka.astro:85` and `:94`
+- **Problem:** Confirmed still present (already logged in CLAUDE.md "Known Issues"). `GOWRI_DAY[3]` (Wed) and `GOWRI_NIGHT[3]` are byte-for-byte identical to `GOWRI_DAY[0]`/`GOWRI_NIGHT[0]` (Sun). Verified wrong by pulling real day-time Gowri sequences from drikpanchang.com's Tamil Gowri Panchangam pages for all 7 weekdays (New Delhi, Jul 5–11 2026): Sunday's real sequence differs from Wednesday's.
+- **Fix prompt:** "Replace `GOWRI_DAY` in `src/lib/muhurta.ts` (and the duplicate in `panchaka.astro:85`) with this verified table (index 0=Sun…6=Sat, mapped from drikpanchang's Amirdha/Uthi/Sugam/Laabam/Dhanam/Rogam/Soram/Visham naming to this codebase's existing Amrutham/Uthamam/Sudham/Labham/Dhanam/Rogam/Charam/Visha naming — the quality tags already in `GOWRI_INFO` line up with this mapping):
+```
+Sun: [Uthamam, Amrutham, Rogam, Labham, Dhanam, Sudham, Charam, Visha]
+Mon: [Amrutham, Visha, Rogam, Labham, Dhanam, Sudham, Charam, Uthamam]
+Tue: [Rogam, Labham, Dhanam, Sudham, Charam, Uthamam, Visha, Amrutham]
+Wed: [Labham, Dhanam, Sudham, Charam, Visha, Uthamam, Amrutham, Rogam]
+Thu: [Dhanam, Sudham, Charam, Uthamam, Amrutham, Visha, Rogam, Labham]
+Fri: [Sudham, Charam, Uthamam, Visha, Amrutham, Rogam, Labham, Dhanam]
+Sat: [Charam, Uthamam, Visha, Amrutham, Rogam, Labham, Dhanam, Sudham]
+```
+Apply the same fix to the duplicate in `src/pages/muhurta/panchaka.astro:85`. Note: `GOWRI_NIGHT` has the same Wed=Sun copy-paste bug but its correct values were **not** independently re-derived in this audit (only day-time data was pulled) — a future session must fetch night-time Gowri sequences from drikpanchang for all 7 weekdays before fixing `GOWRI_NIGHT` and `panchaka.astro:94`."
+
+#### Equation-of-Time cascade into all Muhurta timing tables — third manifestation of the already-logged `sunriseUTC()` bug
+
+- **Location:** `src/lib/panchang.ts:100-116` (`sunriseUTC()`), duplicated inline (missing the same Equation-of-Time correction that `solarNoonUTC()` already computes) in `src/pages/muhurta/choghadiya.astro:117`, `hora.astro:94`, `rahu-kala.astro:82`, `abhijit.astro:75`, and `panchaka.astro:131`
+- **Problem:** The cascade is confirmed real. Choghadiya, Hora, Rahu Kalam, Gulika Kalam, Yamaganda, and Gowri Panchangam all divide sunrise→sunset into 8 equal parts, so the missing-EoT bug already logged in the Core Panchang subsection above (missing Equation of Time in `sunriseUTC()`, `src/lib/panchang.ts:100-116`) shifts every slot boundary in every one of these Muhurta tools, not just Rahu Kalam. Measured against drikpanchang: New Delhi 2026-07-06 sunrise computed 5:24 AM vs actual 5:29 AM (5 min early → every Choghadiya/Gowri/Rahu Kalam boundary shifts ~5 min); Mumbai 2026-10-20 sunrise computed 6:49 AM vs actual 6:34 AM (15 min **late** — the direction flips seasonally, as expected for a missing-EoT term rather than a fixed offset). `abhijit.astro`'s solar-noon calc shares the same `noon = 12 - lng/15` formula lacking `eot/60`, so its window is affected too.
+- **Fix prompt:** "This is the same bug already logged above under Core Panchang (missing Equation-of-Time term in `sunriseUTC()`) — do not create a separate fix for it. When applying that fix in `src/lib/panchang.ts`, also propagate it to the 5 duplicate inline `sunriseUTC()`/solar-noon copies found in Muhurta pages: `src/pages/muhurta/choghadiya.astro:117`, `hora.astro:94`, `rahu-kala.astro:82`, `abhijit.astro:75`, `panchaka.astro:131` (grep `noon = 12 - lng / 15` or `noon=12-lng/15` across `src/pages/muhurta/*.astro` to find all copies) — each needs the same `eot` term that `solarNoonUTC()` already computes."
+
+#### Bonus finding: Abhijit Muhurta uses a fixed 48-minute window instead of day-length/15
+
+- **Location:** `src/lib/panchang.ts:380-390` (`abStart = noonMins - 24; abEnd = noonMins + 24`), duplicated in `src/pages/muhurta/abhijit.astro`
+- **Problem:** Methodology mismatch beyond the EoT noise above. Traditional/drikpanchang Abhijit Muhurta is the 8th of 15 equal muhurtas dividing sunrise→sunset (duration = day-length/15), not a flat 48 minutes. New Delhi 2026-07-06: drikpanchang shows 11:58 AM–12:54 PM (56 min, day length ~13h54m) vs the code's constant ~48 min. Near equinox the two methods nearly coincide (Mumbai 2026-10-20: drikpanchang 46 min vs code's 48 min), but the gap grows to ~8 minutes at summer solstice.
+- **Fix prompt:** "In `calculatePanchang()` (`src/lib/panchang.ts:380-390`), replace the fixed `± 24` with `± (dayMins/15)/2` (i.e. `abStart = noonMins - dayMins/30; abEnd = noonMins + dayMins/30`), and apply the identical change to the duplicate calculation in `src/pages/muhurta/abhijit.astro`. Re-verify against drikpanchang.com for New Delhi 2026-07-06 (expect ~56 min window) and Mumbai 2026-10-20 (expect ~46 min window) after the fix."
