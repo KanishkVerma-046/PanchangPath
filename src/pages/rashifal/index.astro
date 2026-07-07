@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { RASHIS, getDailyPrediction } from '../../lib/rashifal';
+import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
 
 const today = new Date();
@@ -41,6 +41,9 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
       <div class="rfi-grid" id="rfi-grid">
         {RASHIS.map((rashi, idx) => {
           const daily = getDailyPrediction(rashi, today);
+          const weekly = getWeeklyPrediction(rashi, today);
+          const monthly = getMonthlyPrediction(rashi, today);
+          const yearly = getYearlyPrediction(rashi, today);
           return (
             <div class="rfi-card animate-in" style={`animation-delay:${idx * 35}ms`} data-rashi={rashi.id}>
               <!-- Colored header strip -->
@@ -57,9 +60,9 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
               <!-- Prediction content area — all periods pre-rendered, toggled by JS -->
               <div class="rfi-body">
                 <p class="rfi-text" data-for="daily">{daily}</p>
-                <p class="rfi-text" data-for="weekly" hidden>{rashi.predictions.weekly}</p>
-                <p class="rfi-text" data-for="monthly" hidden>{rashi.predictions.monthly}</p>
-                <p class="rfi-text" data-for="yearly" hidden>{rashi.predictions.yearly}</p>
+                <p class="rfi-text" data-for="weekly" hidden>{weekly}</p>
+                <p class="rfi-text" data-for="monthly" hidden>{monthly}</p>
+                <p class="rfi-text" data-for="yearly" hidden>{yearly}</p>
 
                 <div class="rfi-footer">
                   <div class="rfi-lucky">

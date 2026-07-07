@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { RASHIS, getDailyPrediction, type Rashi } from '../../lib/rashifal';
+import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction, type Rashi } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
 
 export function getStaticPaths() {
@@ -13,6 +13,9 @@ const { rashi } = Astro.props;
 const today = new Date();
 const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 const daily = getDailyPrediction(rashi, today);
+const weekly = getWeeklyPrediction(rashi, today);
+const monthly = getMonthlyPrediction(rashi, today);
+const yearly = getYearlyPrediction(rashi, today);
 
 const allRashis = RASHIS;
 const currentIdx = allRashis.findIndex(r => r.id === rashi.id);
@@ -107,7 +110,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   <p style="font-size:13px;color:var(--color-body-text);margin:0;">Current week's overview</p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{rashi.predictions.weekly}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{weekly}</p>
             </div>
           </div>
 
@@ -123,7 +126,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   </p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{rashi.predictions.monthly}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{monthly}</p>
             </div>
           </div>
 
@@ -137,7 +140,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   <p style="font-size:13px;color:var(--color-body-text);margin:0;">{today.getFullYear()} Overview</p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{rashi.predictions.yearly}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{yearly}</p>
             </div>
           </div>
 

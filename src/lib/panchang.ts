@@ -9,6 +9,7 @@ export interface PanchangData {
   sunrise: string;
   sunset: string;
   moonrise: string;
+  moonset: string;
   durationDay: string;
   rahuKalam: { start: string; end: string };
   gulikaKalam: { start: string; end: string };
@@ -123,6 +124,55 @@ function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): numb
   const eot = equationOfTimeMinutes(T);
   const noon = 12 - lng / 15 - eot / 60;
   return rising ? noon - HA / 15 : noon + HA / 15;
+}
+
+// Greenwich Mean Sidereal Time in degrees, valid for any jd (Meeus ch. 12)
+function gmstDegrees(jd: number): number {
+  const T = (jd - 2451545.0) / 36525;
+  return norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T);
+}
+
+// Moon's geocentric equatorial position (RA/Dec), ecliptic latitude approximated as 0 —
+// consistent with the rest of this codebase, which does not model the Moon's ~5.1° orbital
+// inclination anywhere else (Nakshatra/Rashi placement use ecliptic longitude only).
+function moonEquatorial(jd: number): { ra: number; dec: number } {
+  const T = (jd - 2451545.0) / 36525;
+  const lambda = moonLongitude(jd);
+  const obliq = 23.4392911 - 0.0130042 * T;
+  const lamR = toRad(lambda);
+  const epsR = toRad(obliq);
+  const dec = Math.asin(Math.sin(epsR) * Math.sin(lamR));
+  const ra = norm360(toDeg(Math.atan2(Math.sin(lamR) * Math.cos(epsR), Math.cos(lamR))));
+  return { ra, dec: toDeg(dec) };
+}
+
+// Moonrise/moonset in decimal UTC hours, in the same "UTC hour relative to this calendar
+// date's 0h UTC" frame that sunriseUTC() returns (so it plugs into decimalHoursToTime() the
+// same way). Unlike the Sun, the Moon moves ~13°/day, so a single daily snapshot isn't
+// accurate — this iterates the altitude-crossing equation, recomputing the Moon's actual
+// position at each refined estimate, seeded from the old day-offset heuristic to stay
+// anchored to the correct calendar-day event.
+// jd0 = Julian Day at 0h UTC of the calendar date being computed for.
+function moonRiseSetUTC(jd0: number, lat: number, lng: number, rising: boolean, seedUTCHour: number): number {
+  const h0 = 0.125; // target altitude: ~mean lunar horizontal parallax (0.7275×0.9508°) minus refraction (34')
+  const latR = toRad(lat);
+  let u = seedUTCHour;
+  for (let i = 0; i < 6; i++) {
+    const jd = jd0 + u / 24;
+    const { ra, dec } = moonEquatorial(jd);
+    const decR = toRad(dec);
+    const cosH0 = (Math.sin(toRad(h0)) - Math.sin(latR) * Math.sin(decR)) / (Math.cos(latR) * Math.cos(decR));
+    if (cosH0 < -1 || cosH0 > 1) return NaN;
+    const H0 = toDeg(Math.acos(cosH0));
+    const lst = norm360(gmstDegrees(jd) + lng);
+    let H = ((lst - ra + 180) % 360 + 360) % 360 - 180;
+    const target = rising ? -H0 : H0;
+    let err = ((H - target + 180) % 360 + 360) % 360 - 180;
+    const du = err / 14.35; // Moon's mean hour-angle progression rate, degrees/hour
+    u -= du;
+    if (Math.abs(du) < 0.0005) break; // converged to ~1.8 seconds
+  }
+  return u;
 }
 
 function decimalHoursToTime(h: number, tzOffset: number): string {
@@ -373,14 +423,16 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
   const dMin = Math.round(dayMins % 60);
   const durationDay = `${dHours}h ${dMin}m`;
 
-  // Moonrise (approximate: moon rises ~50 min later each day; base at full moon = sunset)
+  // Moonrise/moonset: iterative altitude-crossing solve (see moonRiseSetUTC), seeded from the
+  // old day-offset heuristic so the iteration lands on this calendar day's actual event.
+  const jd0 = jd - hour / 24; // JD at 0h UTC of this calendar date
   const moonAge = elongation / 360 * 29.53;
-  const moonriseMins = srMins + moonAge * 48;
-  const mrH = Math.floor((moonriseMins / 60) % 24);
-  const mrM = Math.round(moonriseMins % 60);
-  const mrAp = mrH < 12 ? 'AM' : 'PM';
-  const mrH12 = mrH % 12 || 12;
-  const moonrise = `${mrH12}:${mrM.toString().padStart(2, '0')} ${mrAp}`;
+  const moonriseSeedUTC = srUTC + moonAge * 0.8;
+  const moonsetSeedUTC = moonriseSeedUTC + 12.42;
+  const moonriseUTC = moonRiseSetUTC(jd0, lat, lng, true, moonriseSeedUTC);
+  const moonsetUTC = moonRiseSetUTC(jd0, lat, lng, false, moonsetSeedUTC);
+  const moonrise = decimalHoursToTime(moonriseUTC, tzOffset);
+  const moonset = decimalHoursToTime(moonsetUTC, tzOffset);
 
   // Kalam periods
   const rahuKalam = slotTime(srMins, ssMins, RAHU_SLOTS[weekday]);
@@ -428,6 +480,7 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
     sunrise: sunriseStr,
     sunset: sunsetStr,
     moonrise,
+    moonset,
     durationDay,
     rahuKalam,
     gulikaKalam,
