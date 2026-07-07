@@ -558,7 +558,29 @@ export function getHinduCalendarInfo(
   const sunRashiIdx  = Math.floor(sunSidereal  / 30) % 12;
   const moonRashiIdx = Math.floor(moonSidereal / 30) % 12;
 
-  const amantaIdx = sunRashiIdx;
+  // Amanta month = the rashi the Sun occupies at the UPCOMING Amavasya (the new moon that
+  // ends the current lunar month), not the Sun's current rashi. Using the current rashi (a
+  // Sankranti proxy) made the displayed month name lag the true new-moon crossing by up to
+  // ~2 weeks, since Sankranti usually falls partway through a lunar month, not at its
+  // boundary. Verified against 2026 New Delhi: Navratri (Ashwin Shukla Pratipada, 2026-10-11)
+  // and Diwali (Kartik/Ashwin Amavasya, 2026-11-08) both land correctly with a forward search
+  // to the next Amavasya — a backward search to the *previous* Amavasya gives the wrong
+  // (off-by-one-month) answer, since the traditional naming keys off the month's ENDING
+  // new moon, not its starting one.
+  // Reference time uses noon UTC on the given calendar date — precise-enough for bucketing
+  // into a 30°-wide rashi, so no timezone/location parameters are needed here.
+  const jdRef = julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), 12);
+  const elongationNow = norm360(moonSidereal - sunSidereal);
+  const MOON_SUN_RATE = 12.19; // deg/day the Moon gains on the Sun (mean synodic rate)
+  let jdAmavasya = jdRef + (360 - elongationNow) / MOON_SUN_RATE;
+  for (let i = 0; i < 3; i++) {
+    const elongAtGuess = norm360(moonLongitude(jdAmavasya) - sunTrueLongitude(jdAmavasya));
+    const signedErr = elongAtGuess > 180 ? elongAtGuess - 360 : elongAtGuess;
+    jdAmavasya -= signedErr / MOON_SUN_RATE;
+  }
+  const sunSiderealAtAmavasya = norm360(sunTrueLongitude(jdAmavasya) - lahiriAyanamsha(jdAmavasya));
+  const amantaIdx = Math.floor(sunSiderealAtAmavasya / 30) % 12;
+
   // Purnimanta: same month in Shukla paksha, one ahead in Krishna paksha
   const purnimantaIdx = paksha === 'Shukla' ? amantaIdx : (amantaIdx + 1) % 12;
 

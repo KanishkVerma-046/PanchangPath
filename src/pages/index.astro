@@ -606,7 +606,18 @@ const SAMVATSARA_CL = [
 function getHinduCalInfo(date: Date, sunSidereal: number, moonSidereal: number, paksha: 'Shukla' | 'Krishna') {
   const sunRashiIdx  = Math.floor(sunSidereal  / 30) % 12;
   const moonRashiIdx = Math.floor(moonSidereal / 30) % 12;
-  const amantaIdx    = sunRashiIdx;
+  // Amanta month = Sun's rashi at the UPCOMING Amavasya (see panchang.ts#getHinduCalendarInfo
+  // for the full explanation and Navratri/Diwali verification) — not the Sun's current rashi.
+  const jdRef = julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), 12);
+  const elongationNow = norm360(moonSidereal - sunSidereal);
+  const MOON_SUN_RATE = 12.19;
+  let jdAmavasya = jdRef + (360 - elongationNow) / MOON_SUN_RATE;
+  for (let i = 0; i < 3; i++) {
+    const elongAtGuess = norm360(moonLon(jdAmavasya) - sunTrueLon(jdAmavasya));
+    const signedErr = elongAtGuess > 180 ? elongAtGuess - 360 : elongAtGuess;
+    jdAmavasya -= signedErr / MOON_SUN_RATE;
+  }
+  const amantaIdx = Math.floor(norm360(sunTrueLon(jdAmavasya) - ayanamsha(jdAmavasya)) / 30) % 12;
   const purnimantaIdx = paksha === 'Shukla' ? amantaIdx : (amantaIdx + 1) % 12;
   const year = date.getFullYear();
   const dayOfYear = Math.floor((Date.UTC(year, date.getMonth(), date.getDate()) - Date.UTC(year, 0, 0)) / 86400000);
