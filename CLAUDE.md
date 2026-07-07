@@ -42,7 +42,7 @@ Stack: **Astro v7** (`output: 'static'`), **Tailwind CSS v4** (`@theme` CSS cust
 - `src/pages/devotional/index.astro` — Devotional Library hub; reads `CATEGORY_META` and shows "Coming Soon" for categories with `built: false`
 
 ### Ayanamsha
-Lahiri: `23.85 + 1.3612*T - 0.000136*T²` (T = Julian centuries from J2000). **Known issue**: several pages (`index.astro`, `calendar.astro`, `muhurta/vivah.astro`, `muhurta/shubha-dates.astro`, `muhurta/panchaka.astro`, `muhurta/griha-pravesh.astro`) use a truncated 2-term version missing `-0.000136*T²`. Negligible impact today (~0.00001°) but inconsistent — use the full 3-term formula in any new/edited page.
+Lahiri: `23.85 + 1.3612*T - 0.000136*T²` (T = Julian centuries from J2000). **Known issue**: `index.astro` and `calendar.astro` still use a truncated 2-term version missing `-0.000136*T²` (fixed everywhere else 2026-07, including `muhurta/vivah.astro`, `muhurta/shubha-dates.astro`, `muhurta/panchaka.astro`, `muhurta/griha-pravesh.astro`, which previously had it too). Negligible impact today (~0.00001°) but inconsistent — use the full 3-term formula in any new/edited page.
 
 ### Orbital mechanics
 Keplerian heliocentric XY → geocentric longitude. Planets: Mercury, Venus, Earth, Mars, Jupiter, Saturn in `ORB` constant. Moon and Rahu use dedicated polynomial formulas. All Moon-longitude formulas across the codebase (`panchang.ts`, `kundali.ts`, `KundaliWidget.astro`, all 16 `jyotish/*.astro` pages, `Header.astro`, `calendar.astro`, and the affected `muhurta/*.astro` pages) now use the same full 15-term `dL` correction sum, fixed 2026-07 (previously 15 of 16 `jyotish/*.astro` pages used a truncated 6-term version).

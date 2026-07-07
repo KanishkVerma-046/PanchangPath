@@ -127,7 +127,7 @@ function moonLon(jd:number){
   const D=n360(297.8501921+445267.1114034*T);
   const Mp=n360(134.9633964+477198.8675055*T);
   const dL=6.288774*Math.sin(toRad(Mp))+1.274027*Math.sin(toRad(2*D-Mp))+0.658314*Math.sin(toRad(2*D));
-  const ay=23.85+1.3612*T;
+  const ay=23.85+1.3612*T-0.000136*T*T;
   return n360(L+dL-ay);
 }
 function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
