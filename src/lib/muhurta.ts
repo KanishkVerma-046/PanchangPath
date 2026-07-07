@@ -224,12 +224,18 @@ export const GOWRI_DAY: GowriType[][] = [
   ['Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam','Sudham'],   // Sat
 ];
 
+// Verified 2026-07 against drikpanchang.com's Tamil Gowri Panchangam (New Delhi), cross-checked
+// against a second independent source (prokerala.com) for Tuesday's sequence — both matched
+// exactly. Saturday's real source data has "Charam" (Soram) appearing twice with "Rogam" absent
+// from the night cycle entirely, reproduced identically across two different Saturdays a week
+// apart — not a fetch glitch, but transcribed faithfully rather than "corrected" to a clean
+// permutation, since that would just be reintroducing unverified guessing.
 export const GOWRI_NIGHT: GowriType[][] = [
-  ['Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham'],   // Sun
-  ['Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham'],   // Mon
-  ['Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham'],   // Tue
-  ['Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham'],   // Wed
-  ['Visha','Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam','Charam'],   // Thu
-  ['Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham','Rogam'],   // Fri
-  ['Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam'],   // Sat
+  ['Dhanam','Sudham','Charam','Visha','Uthamam','Amrutham','Rogam','Labham'],   // Sun
+  ['Sudham','Charam','Uthamam','Amrutham','Visha','Rogam','Labham','Dhanam'],   // Mon
+  ['Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam','Sudham'],   // Tue
+  ['Uthamam','Amrutham','Rogam','Labham','Dhanam','Sudham','Charam','Visha'],   // Wed
+  ['Amrutham','Visha','Rogam','Labham','Dhanam','Sudham','Charam','Uthamam'],   // Thu
+  ['Rogam','Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham'],   // Fri
+  ['Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham','Charam'],  // Sat (source anomaly: Rogam missing, Charam repeats)
 ];

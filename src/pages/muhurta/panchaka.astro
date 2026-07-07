@@ -91,14 +91,16 @@ const GOWRI_DAY = [
   ['Sudham','Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam'],
   ['Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam','Sudham'],
 ];
+// Verified 2026-07 against drikpanchang.com (see src/lib/muhurta.ts#GOWRI_NIGHT for sourcing
+// notes and the Saturday source-data anomaly, kept faithfully rather than "corrected").
 const GOWRI_NIGHT = [
-  ['Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham'],
-  ['Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham'],
-  ['Sudham','Uthamam','Labham','Rogam','Dhanam','Charam','Visha','Amrutham'],
-  ['Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham'],
-  ['Visha','Amrutham','Sudham','Uthamam','Labham','Rogam','Dhanam','Charam'],
-  ['Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam','Labham','Rogam'],
-  ['Labham','Rogam','Dhanam','Charam','Visha','Amrutham','Sudham','Uthamam'],
+  ['Dhanam','Sudham','Charam','Visha','Uthamam','Amrutham','Rogam','Labham'],
+  ['Sudham','Charam','Uthamam','Amrutham','Visha','Rogam','Labham','Dhanam'],
+  ['Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam','Sudham'],
+  ['Uthamam','Amrutham','Rogam','Labham','Dhanam','Sudham','Charam','Visha'],
+  ['Amrutham','Visha','Rogam','Labham','Dhanam','Sudham','Charam','Uthamam'],
+  ['Rogam','Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham'],
+  ['Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham','Charam'],
 ];
 const GOWRI_DATA: Record<string,{q:string;bg:string;fg:string;suitable:string}> = {
   Amrutham: {q:'Best',    bg:'#DCF3E3',fg:'#16803D',suitable:'All auspicious activities'},
