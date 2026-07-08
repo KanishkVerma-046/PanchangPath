@@ -351,7 +351,10 @@ function moonLon(jd: number): number {
     +0.058793*Math.sin(2*Dr-2*Mpr)+0.057066*Math.sin(2*Dr-Mr-Mpr)+0.053322*Math.sin(2*Dr+Mpr)
     +0.045758*Math.sin(2*Dr-Mr)-0.040923*Math.sin(Mr-Mpr)-0.034720*Math.sin(Dr)
     -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010980*Math.sin(Mpr-2*Fr)
-    +0.010675*Math.sin(4*Dr-Mpr)+0.010034*Math.sin(3*Mpr)+0.008548*Math.sin(4*Dr-2*Mpr);
+    +0.010675*Math.sin(4*Dr-Mpr)+0.010034*Math.sin(3*Mpr)+0.008548*Math.sin(4*Dr-2*Mpr)
+    -0.007888*Math.sin(2*Dr+Mr-Mpr)-0.006766*Math.sin(2*Dr+Mr)-0.005163*Math.sin(Dr-Mpr)
+    +0.004987*Math.sin(Dr+Mr)+0.004036*Math.sin(2*Dr-Mr+Mpr)+0.003994*Math.sin(2*Dr+2*Mpr)
+    +0.003861*Math.sin(4*Dr)+0.003665*Math.sin(2*Dr-3*Mpr);
   return norm360(L + dL);
 }
 
@@ -556,7 +559,7 @@ function calcPanchang(date: Date, loc: Location) {
   const moonriseUTC = moonRiseSetUTC(jd0, loc.lat, loc.lng, true, moonriseSeedUTC);
   const moonsetUTC = moonRiseSetUTC(jd0, loc.lat, loc.lng, false, moonsetSeedUTC);
   const noonMins = (srMins + ssMins) / 2;
-  const abStart = noonMins - 24, abEnd = noonMins + 24;
+  const abStart = noonMins - dayMins / 30, abEnd = noonMins + dayMins / 30;
   return {
     vara: { name: VARAS[wd], nameHi: VARAS_HI[wd], lord: VARA_LORDS[wd] },
     tithi: { name: TITHIS[tithiIdx], nameHi: TITHIS_HI[tithiIdx], paksha, pakshaNi: paksha==='Shukla'?'शुक्ल':'कृष्ण', type: TITHI_TYPES[tithiIdx], endTime: estimateEnd(elong, 12, jd, loc.tzOffset, 13.17) },
