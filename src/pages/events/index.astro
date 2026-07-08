@@ -96,7 +96,7 @@ function monthLabel(key: string): string {
             const isToday   = ev.daysAway === 0;
             const isSoon    = ev.daysAway <= 7 && !isToday;
             return (
-              <a href={`/events/${ev.id}`} class={`ev-row ${isToday ? 'ev-today' : ''}`}>
+              <a href={`/events/${ev.id}`} class={`ev-row ${isToday ? 'ev-today' : ''}`} data-event-id={ev.id}>
                 <div class="ev-icon-col">
                   <span class="ev-planet-icon" style={`color:${ev.badgeColor}`}>{ev.icon}</span>
                 </div>
@@ -104,8 +104,8 @@ function monthLabel(key: string): string {
                   <div class="ev-meta">
                     <span class={`ev-tag ${typeClass(ev.type)}`}>{typeLabel(ev.type)}</span>
                     <span class={`ev-when ${isToday ? 'ev-when-now' : isSoon ? 'ev-when-soon' : ''}`}>
-                      {isToday && <span class="ev-pulse"></span>}
-                      {countdown}
+                      <span class="ev-pulse" style={isToday ? '' : 'display:none'}></span>
+                      <span class="ev-when-text">{countdown}</span>
                     </span>
                   </div>
                   <p class="ev-name en-text">{ev.title}</p>
@@ -123,6 +123,43 @@ function monthLabel(key: string): string {
   </div>
 
 </Layout>
+
+<script define:vars={{ eventsData: allEvents.map(ev => ({ id: ev.id, dateISO: ev.dateISO, timeUTC: ev.timeUTC })) }}>
+  function formatCountdown(daysAway) {
+    if (daysAway === 0) return 'Today';
+    if (daysAway === 1) return 'Tomorrow';
+    if (daysAway < 0)   return `${Math.abs(daysAway)}d ago`;
+    if (daysAway < 7)   return `${daysAway} Days`;
+    if (daysAway < 30)  return `${Math.floor(daysAway / 7)}w ${daysAway % 7}d`;
+    const months = Math.floor(daysAway / 30);
+    const rem = daysAway % 30;
+    return rem > 0 ? `${months}m ${rem}d` : `${months} Month${months > 1 ? 's' : ''}`;
+  }
+
+  const byId = {};
+  for (const ev of eventsData) byId[ev.id] = ev;
+
+  document.querySelectorAll('.ev-row[data-event-id]').forEach((row) => {
+    const ev = byId[row.dataset.eventId];
+    if (!ev) return;
+    const eventMs = Date.parse(ev.dateISO + 'T00:00:00Z') + ev.timeUTC * 3600 * 1000;
+    const daysAway = Math.round((eventMs - Date.now()) / 86400000);
+    const isToday = daysAway === 0;
+    const isSoon = daysAway > 0 && daysAway <= 7;
+
+    row.classList.toggle('ev-today', isToday);
+
+    const when = row.querySelector('.ev-when');
+    if (when) {
+      when.classList.toggle('ev-when-now', isToday);
+      when.classList.toggle('ev-when-soon', isSoon);
+    }
+    const pulse = row.querySelector('.ev-pulse');
+    if (pulse) pulse.style.display = isToday ? '' : 'none';
+    const text = row.querySelector('.ev-when-text');
+    if (text) text.textContent = formatCountdown(daysAway);
+  });
+</script>
 
 <style>
 /* ── Hero ── */

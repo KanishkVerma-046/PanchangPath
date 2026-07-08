@@ -86,12 +86,10 @@ function heroBg(type: string): string {
           <h1 class="ed-heading hi-text">{ev.titleHi}</h1>
           <div class="ed-hero-meta">
             <span class={`ed-tag ${typeClass(ev.type)}`}>{typeLabel(ev.type)}</span>
-            {!isPast && (
-              <span class={`ed-countdown ${isToday ? 'ed-now' : ''}`}>
-                {isToday && <span class="ed-pulse" aria-hidden="true"></span>}
-                {countdown}
-              </span>
-            )}
+            <span id="ed-hero-countdown" class={`ed-countdown ${isToday ? 'ed-now' : ''}`} style={isPast ? 'display:none' : ''}>
+              <span id="ed-hero-pulse" class="ed-pulse" aria-hidden="true" style={isToday ? '' : 'display:none'}></span>
+              <span id="ed-hero-countdown-text">{countdown}</span>
+            </span>
           </div>
         </div>
       </div>
@@ -121,7 +119,7 @@ function heroBg(type: string): string {
           <div class="ed-sep"></div>
           <div class="ed-date-col">
             <p class="ed-label">Countdown</p>
-            <p class="ed-value" style={isPast ? 'color:var(--color-mute)' : isToday ? 'color:var(--color-saffron-deep)' : ''}>
+            <p id="ed-date-countdown" class="ed-value" style={isPast ? 'color:var(--color-mute)' : isToday ? 'color:var(--color-saffron-deep)' : ''}>
               {isPast ? `${Math.abs(ev.daysAway)}d ago` : countdown}
             </p>
           </div>
@@ -181,12 +179,10 @@ function heroBg(type: string): string {
               <dt>Time (IST)</dt>
               <dd>{datetime.split('·')[1]?.trim() ?? '—'}</dd>
             </div>
-            {!isPast && (
-              <div class="ed-fact-row">
-                <dt>Countdown</dt>
-                <dd style={isToday ? 'color:var(--color-saffron-deep);font-weight:700' : ''}>{countdown}</dd>
-              </div>
-            )}
+            <div id="ed-sidebar-countdown-row" class="ed-fact-row" style={isPast ? 'display:none' : ''}>
+              <dt>Countdown</dt>
+              <dd id="ed-sidebar-countdown-text" style={isToday ? 'color:var(--color-saffron-deep);font-weight:700' : ''}>{countdown}</dd>
+            </div>
           </dl>
         </div>
 
@@ -215,6 +211,50 @@ function heroBg(type: string): string {
 
   </div><!-- .ed-wrapper -->
 </Layout>
+
+<script define:vars={{ dateISO: ev.dateISO, timeUTC: ev.timeUTC }}>
+  function formatCountdown(daysAway) {
+    if (daysAway === 0) return 'Today';
+    if (daysAway === 1) return 'Tomorrow';
+    if (daysAway < 0)   return `${Math.abs(daysAway)}d ago`;
+    if (daysAway < 7)   return `${daysAway} Days`;
+    if (daysAway < 30)  return `${Math.floor(daysAway / 7)}w ${daysAway % 7}d`;
+    const months = Math.floor(daysAway / 30);
+    const rem = daysAway % 30;
+    return rem > 0 ? `${months}m ${rem}d` : `${months} Month${months > 1 ? 's' : ''}`;
+  }
+
+  const eventMs = Date.parse(dateISO + 'T00:00:00Z') + timeUTC * 3600 * 1000;
+  const daysAway = Math.round((eventMs - Date.now()) / 86400000);
+  const isToday = daysAway === 0;
+  const isPast = daysAway < 0;
+  const countdown = formatCountdown(daysAway);
+
+  const heroBadge = document.getElementById('ed-hero-countdown');
+  if (heroBadge) {
+    heroBadge.style.display = isPast ? 'none' : '';
+    heroBadge.classList.toggle('ed-now', isToday);
+  }
+  const heroPulse = document.getElementById('ed-hero-pulse');
+  if (heroPulse) heroPulse.style.display = isToday ? '' : 'none';
+  const heroText = document.getElementById('ed-hero-countdown-text');
+  if (heroText) heroText.textContent = countdown;
+
+  const dateCountdown = document.getElementById('ed-date-countdown');
+  if (dateCountdown) {
+    dateCountdown.textContent = isPast ? `${Math.abs(daysAway)}d ago` : countdown;
+    dateCountdown.style.color = isPast ? 'var(--color-mute)' : isToday ? 'var(--color-saffron-deep)' : '';
+  }
+
+  const sideRow = document.getElementById('ed-sidebar-countdown-row');
+  if (sideRow) sideRow.style.display = isPast ? 'none' : '';
+  const sideText = document.getElementById('ed-sidebar-countdown-text');
+  if (sideText) {
+    sideText.textContent = countdown;
+    sideText.style.color = isToday ? 'var(--color-saffron-deep)' : '';
+    sideText.style.fontWeight = isToday ? '700' : '';
+  }
+</script>
 
 <style>
 /* ── Hero ── */
