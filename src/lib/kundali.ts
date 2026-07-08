@@ -146,7 +146,11 @@ function moonLon(jd: number): number {
     +0.213618*Math.sin(2*Mpr)-0.185116*Math.sin(Mr)-0.114332*Math.sin(2*Fr)
     +0.058793*Math.sin(2*Dr-2*Mpr)+0.057066*Math.sin(2*Dr-Mr-Mpr)+0.053322*Math.sin(2*Dr+Mpr)
     +0.045758*Math.sin(2*Dr-Mr)-0.040923*Math.sin(Mr-Mpr)-0.034720*Math.sin(Dr)
-    -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010034*Math.sin(3*Mpr);
+    -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010980*Math.sin(Mpr-2*Fr)
+    +0.010675*Math.sin(4*Dr-Mpr)+0.010034*Math.sin(3*Mpr)+0.008548*Math.sin(4*Dr-2*Mpr)
+    -0.007888*Math.sin(2*Dr+Mr-Mpr)-0.006766*Math.sin(2*Dr+Mr)-0.005163*Math.sin(Dr-Mpr)
+    +0.004987*Math.sin(Dr+Mr)+0.004036*Math.sin(2*Dr-Mr+Mpr)+0.003994*Math.sin(2*Dr+2*Mpr)
+    +0.003861*Math.sin(4*Dr)+0.003665*Math.sin(2*Dr-3*Mpr);
   return n360(Lm + dL);
 }
 
