@@ -2,6 +2,17 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
+## Progress (updated 2026-07-08)
+
+**Tasks 1-3 complete and task-reviewed clean.** Tasks 4-13 not yet started.
+
+- Executing via superpowers:subagent-driven-development in worktree `C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\worktrees\skipped-audit-fixes` (branch `worktree-skipped-audit-fixes`), not yet merged to `master`.
+- Ledger: `.superpowers/sdd/progress.md` in that worktree (gitignored scratch — if it's ever lost, `git log` on the worktree branch is authoritative: commits `553d3ca`, `dc98893`, `a405848` are Tasks 1, 2, 3 respectively).
+- Resume prompt for Tasks 4-13: `.superpowers/sdd/resume-prompt.md` in that worktree.
+- Pre-flight decision already made: the plan's duplicated Kepler/orbital-math code across Tasks 4-9 is intentional and plan-mandated (matches the codebase's existing client-script-can't-import-TS-modules constraint) — not a reviewer fix target.
+
+---
+
 **Goal:** Clear the last 5 `⏭️ SKIPPED` items from the site's two audit fix-prompt docs (4 new nav pages + 2 festival-data fixes), plus propagate a newly-discovered Moon-longitude formula drift fix to 17 files that still use a stale, less-precise version.
 
 **Architecture:** New pages follow the site's established "static Astro page + inline `<script>` duplicating real astronomical formulas" pattern (client scripts cannot import server TS modules — see CLAUDE.md gotchas). Sunrise/Sunset and Moonrise/Moonset pages are location-dependent and reuse the `LOCS` array + `locationchange` event pattern already used by `muhurta/rahu-kala.astro`. The four Planets pages are **not** location-dependent (geocentric planetary longitude doesn't depend on the observer's lat/lng — only rise/set times and Lagna do), so instead they self-refresh on a timer using the real current instant (`new Date()`).
@@ -29,7 +40,7 @@
 - Consumes: nothing new (pure internal formula fix)
 - Produces: `moonLon(jd: number): number` — now returns the same value as `src/lib/panchang.ts`'s `moonLongitude(jd)` for any `jd`, within floating-point rounding. Tasks 6-9 (new Planets pages) will duplicate this exact 26-term formula inline.
 
-- [ ] **Step 1: Write a verification script comparing old vs. new formula against the canonical `panchang.ts` output**
+- [x] **Step 1: Write a verification script comparing old vs. new formula against the canonical `panchang.ts` output**
 
 Create `C:\Users\kanis\AppData\Local\Temp\claude\C--Users-kanis-Desktop-AI-Side-Hustles-Panchang-Path\c61fb34a-c817-43e4-8599-5778d09ad502\scratchpad\verify-moon-formula.mjs`:
 
@@ -86,12 +97,12 @@ if (Math.abs(canonical - old15) < 1e-9) throw new Error('FAIL: old and new formu
 console.log('PASS: old and new formulas differ as expected, confirming the 11 extra terms have a measurable effect');
 ```
 
-- [ ] **Step 2: Run the verification script to confirm the old and new formulas currently differ**
+- [x] **Step 2: Run the verification script to confirm the old and new formulas currently differ**
 
 Run: `node "C:\Users\kanis\AppData\Local\Temp\claude\C--Users-kanis-Desktop-AI-Side-Hustles-Panchang-Path\c61fb34a-c817-43e4-8599-5778d09ad502\scratchpad\verify-moon-formula.mjs"`
 Expected output ends with: `PASS: old and new formulas differ as expected, confirming the 11 extra terms have a measurable effect`
 
-- [ ] **Step 3: Replace `kundali.ts`'s 15-term `dL` sum with the canonical 26-term version**
+- [x] **Step 3: Replace `kundali.ts`'s 15-term `dL` sum with the canonical 26-term version**
 
 In `src/lib/kundali.ts`, replace this exact block (lines 137-151):
 
@@ -137,12 +148,12 @@ function moonLon(jd: number): number {
 }
 ```
 
-- [ ] **Step 4: Run `npm run build` to confirm no TypeScript/build errors**
+- [x] **Step 4: Run `npm run build` to confirm no TypeScript/build errors**
 
 Run: `npm run build`
 Expected: build completes successfully (same page count as before, ~345+ pages)
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/lib/kundali.ts
@@ -171,7 +182,7 @@ EOF
 - Consumes: nothing new
 - Produces: `moonLon_K(jd: number): number` now matches the canonical formula.
 
-- [ ] **Step 1: Replace the 15-term `dL` sum**
+- [x] **Step 1: Replace the 15-term `dL` sum**
 
 In `src/components/KundaliWidget.astro`, replace this exact block:
 
@@ -217,12 +228,12 @@ function moonLon_K(jd: number): number {
 }
 ```
 
-- [ ] **Step 2: Run `npm run build` to confirm no errors**
+- [x] **Step 2: Run `npm run build` to confirm no errors**
 
 Run: `npm run build`
 Expected: build completes successfully
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add src/components/KundaliWidget.astro
@@ -245,7 +256,7 @@ EOF
 - Consumes: nothing new
 - Produces: each file's `moonLon(jd)` now matches the canonical formula. Verified byte-identical across all 15 files before this fix (confirmed via direct read of `kundali.astro`, `janma-kundali.astro`, `lagna.astro`, `pancha-pakshi.astro`).
 
-- [ ] **Step 1: Apply the identical one-line replacement to each of the 15 files**
+- [x] **Step 1: Apply the identical one-line replacement to each of the 15 files**
 
 Every one of the 15 files contains this exact single-line minified function (confirm with a read of the target line before editing — line numbers noted below from the original audit, but re-locate via search for `function moonLon(jd){const T=` since line numbers can drift):
 
@@ -276,7 +287,7 @@ Apply this exact replacement to each of these 15 files (one Edit operation per f
 14. `src/pages/jyotish/gemstone.astro`
 15. `src/pages/jyotish/rudraksha.astro`
 
-- [ ] **Step 2: Verify every file was updated — grep for the old truncated pattern (should return zero matches) and the new final term (should return 15 matches)**
+- [x] **Step 2: Verify every file was updated — grep for the old truncated pattern (should return zero matches) and the new final term (should return 15 matches)**
 
 Run: `grep -rl "0.010034\*Math.sin(toR(3\*Mp));return n360(Lm+dL);" src/pages/jyotish/`
 Expected: no output (zero matches — confirms no file still ends right after the 15th term)
@@ -284,12 +295,12 @@ Expected: no output (zero matches — confirms no file still ends right after th
 Run: `grep -rl "0.003665\*Math.sin(toR(2\*D-3\*Mp))" src/pages/jyotish/`
 Expected: exactly the 15 file paths listed above
 
-- [ ] **Step 3: Run `npm run build` to confirm no errors**
+- [x] **Step 3: Run `npm run build` to confirm no errors**
 
 Run: `npm run build`
 Expected: build completes successfully
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/jyotish/kundali.astro src/pages/jyotish/janma-kundali.astro src/pages/jyotish/lagna.astro src/pages/jyotish/horoscope-match.astro src/pages/jyotish/rashi.astro src/pages/jyotish/baby-names.astro src/pages/jyotish/shraddha.astro src/pages/jyotish/sahasra-chandrodaya.astro src/pages/jyotish/kalasarpa.astro src/pages/jyotish/sadesati.astro src/pages/jyotish/mangal-dosha.astro src/pages/jyotish/nakshatra.astro src/pages/jyotish/pancha-pakshi.astro src/pages/jyotish/gemstone.astro src/pages/jyotish/rudraksha.astro
