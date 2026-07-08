@@ -73,7 +73,8 @@ import { TITHI_ICONS } from '../../lib/icons/tithi';
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Pitru Paksha 2026 Schedule</h3>
-      <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;">Krishna Paksha of Ashwin · approx 7 – 21 September 2026</p>
+      <p style="font-size:12px;color:var(--color-mute);margin:0 0 4px;">Krishna Paksha of Ashwin · approx 7 – 21 September 2026</p>
+      <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;">This calendar is specific to 2026 — the tithi-to-date mapping shifts every year with the real lunar calendar. Support for other observance years is not yet implemented; the tithi found above is accurate for any date, but the "falls on" date below only applies if you are observing Pitru Paksha in 2026.</p>
       <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:36px;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pp-table"></table>
       </div>
@@ -106,6 +107,8 @@ function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267
 
 const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima/Amavasya'];
 // Pitru Paksha 2026: Krishna paksha Ashwin. Each day maps to a tithi (Purnima Sep7 start -> Pratipada Sep8 ...). Approx dates.
+// Hardcoded to 2026 only — the tithi-to-calendar-date mapping shifts every year with the real lunar calendar and
+// is not recomputed here. See CLAUDE.md Known Issues. Labelled as 2026-only in the UI rather than silently wrong for other years.
 const PP2026=[
   {date:'Sep 7',tithi:'Purnima',note:'Purnima Shraddha (for those who died on a Purnima)'},
   {date:'Sep 8',tithi:'Pratipada',note:'Pratipada Shraddha'},
@@ -153,9 +156,9 @@ function calculate(){
 
     document.getElementById('shraddha-day').innerHTML=
       `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">When to perform the annual Shraddha</h3>
-       <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. In 2026 this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, 2026</b>.</p>
+       <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. If observing in 2026, this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, 2026</b> — for any other year, consult that year's own Pitru Paksha calendar, since the mapping below is 2026-specific only.</p>
        <p style="font-size:13px;color:var(--color-mute);margin:0;">${ppDay.note}</p>
-       <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (Sep 21, 2026).</p>`;
+       <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (Sep 21, 2026 for this year's cycle).</p>`;
 
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
