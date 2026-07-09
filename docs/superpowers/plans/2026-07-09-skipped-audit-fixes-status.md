@@ -18,7 +18,7 @@
 | 4 | Sunrise & Sunset page | ✅ Complete | `d72dfb2..cb6db24` | Clean after 1 fix round (CSS border-color/text-color regression) |
 | 5 | Moonrise & Moonset page | ✅ Complete | `f43c5f0..6f020a7` | Clean |
 | 6 | Planetary Positions page | ✅ Complete | `8afed28..eac3a59` | Clean |
-| 7 | Rahu & Ketu page | ⏳ Not started | — | — |
+| 7 | Rahu & Ketu page | ✅ Complete | `1259732..bd96599` | Clean |
 | 8 | Shani (Saturn) page | ⏳ Not started | — | — |
 | 9 | Gochara (combined transit) page | ⏳ Not started | — | — |
 | 10 | Wire 6 new pages into `Header.astro` | ⏳ Not started | — | — |
@@ -33,6 +33,8 @@ Task 4 (`src/pages/sunrise-sunset.astro`) went through one review/fix round: the
 Task 5 (`src/pages/moonrise-moonset.astro`) was clean on the first pass — reviewer confirmed a byte-for-byte `diff` match against the brief's code block (233/233 lines), and independently verified the transcribed `moonLon()`/`moonRiseSetUTC()`/`moonEquatorial()`/`gmstDegrees()` functions and the `computeForDate()` seeding heuristic term-for-term against `src/lib/panchang.ts`'s canonical implementations. Build passes at 347 pages.
 
 Task 6 (`src/pages/planets/planetary-positions.astro`, first of the 4 Planets pages) hit one lost-implementer retry (the harness process exited mid-dispatch with no work landed — re-dispatched cleanly from scratch, no git/file trace of the first attempt) but was otherwise clean on the first review pass — byte-for-byte match to the brief's code, full 3-term ayanamsha and canonical 26-term Moon formula both verified, no location selector/listener present (correct per the location-independence decision below). Build passes at 348 pages.
+
+Task 7 (`src/pages/planets/rahu-ketu.astro`, second Planets page) was clean on the first pass — byte-for-byte match, Ayanamsha/180°-node-relationship/Gochara-bijection all independently verified by hand-tracing the arithmetic, self-contained diff. **Note for future tasks:** both Task 6's and Task 7's implementer self-reported page counts contained arithmetic errors (Task 6 reported 347→348, Task 7 reported "350, +1 from Task 6's 348" — internally inconsistent, 348→350 is +2). The reviewer resolved it with an independent `npm run build`: true count after Task 7 is confirmed 350 pages via direct build, and the actual page-added delta across Tasks 6-7 was +1 each as expected — only the self-reported numbers were unreliable. Going forward, don't trust an implementer's self-reported before/after page count without spot-checking; prefer an independent build when the numbers matter.
 
 ## Resume prompt (paste this to resume in a fresh session, zero prior context needed)
 
