@@ -22,7 +22,7 @@
 | 8 | Shani (Saturn) page | ✅ Complete | `d6c7677..3a87d89` | Clean |
 | 9 | Gochara (combined transit) page | ✅ Complete | `6b4b73e..87ada8e` | Clean |
 | 10 | Wire 6 new pages into `Header.astro` | ✅ Complete | `421dd92..e210d2a` | Clean |
-| 11 | Raksha Bandhan 2026 date fix | ⏳ Not started | — | — |
+| 11 | Raksha Bandhan 2026 date fix | ✅ Complete | `5d27fc6..860be62` | Clean |
 | 12 | 2027 festival data | ⏳ Not started | — | — |
 | 13 | Final full-site verification | ⏳ Not started | — | — |
 
@@ -41,6 +41,8 @@ Task 8 (`src/pages/planets/shani.astro`, third Planets page) was clean on the fi
 Task 9 (`src/pages/planets/gochara.astro`, fourth and final Planets page) was clean on the first pass — byte-for-byte diff match; `classifyShani` confirmed byte-identical to Task 8's version (reused, not re-typed and drifted); Jupiter/Mars/Rahu/Ketu/Saturn favorable-house counts across the 12-row grid all independently verified via the same bijection argument used in Tasks 7-8's reviews. Build reached 352 pages, clean working tree, no stray artifacts. **This closes out all 4 new Planets pages (Tasks 6-9).**
 
 Task 10 (`src/components/Header.astro`) was clean on the first pass — all 6 pages (Sunrise & Sunset, Moonrise & Moonset, and the 4 Planets pages) wired into all 3 required sync locations (desktop dropdown, mobile drawer, `searchItems`), replacing the placeholder `href="/"` entries. Reviewer confirmed the `Planets` category trigger link itself was also fixed (not just its 4 dropdown children), verified against the established `Calendars` → `/calendar` pattern, and confirmed no unrelated nav items were touched (19 insertions/14 deletions, surgical diff). Build holds at 354 pages (unchanged, as expected — no new routes added by this task). One Minor note: manual dev-server click-through wasn't observed (no browser tooling in the subagent), but the change is a pure string substitution verified 1:1 against the brief. **This closes out all header nav-sync work.**
+
+Task 11 (`src/lib/festivals.ts:59`) was clean on the first pass. The brief seeded a hypothesized answer (Aug 28) from an earlier planning-session WebSearch, but the implementer was explicitly instructed to treat that as unconfirmed and re-verify independently before touching code — it ran two fresh WebSearch queries plus a direct WebFetch of drikpanchang.com, confirming Shravana Purnima Tithi runs Aug 27 9:08 AM to Aug 28 9:48 AM with Bhadra Kaal ending before sunrise on the 28th (so the full morning is auspicious, no evening/date shift needed), corroborated by ~10+ independent sources. Applied the exact one-line date change + explanatory comment, confirmed array stays date-ascending, `npm run build` succeeds (354 pages, unchanged), and `dist/festivals/raksha-bandhan-2026/index.html` reflects "28 August". Reviewer flagged one follow-up (not a task-11 defect): CLAUDE.md's Known Issues line about this item is now stale ("possibly off by a day... unfixed") and should be updated — deferred to Task 13 (final verification pass), which already covers CLAUDE.md updates per the Model Selection notes below.
 
 ## Resume prompt (paste this to resume in a fresh session, zero prior context needed)
 
