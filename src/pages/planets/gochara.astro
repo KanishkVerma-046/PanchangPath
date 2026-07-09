@@ -1,0 +1,130 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Gochara — Planetary Transit Table Today — PanchangPath" description="Live Gochara (transit) grid for Mars, Jupiter, Saturn, Rahu, and Ketu across all 12 Moon-sign rashis, using the classical Vedic house-from-Moon transit framework.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">गोचर · GOCHARA</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Gochara — Transit Table</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:560px;">Classical Vedic Gochara (planetary transit) theory concerns itself with the five "slow movers" — Mars, Jupiter, Saturn, Rahu, and Ketu — and whether they currently sit in a favorable or challenging house counted from your natal Moon sign. Find your Moon sign's row below.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container">
+      <p id="gc-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;"></p>
+      <div class="card" style="padding:20px;overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:640px;" id="gc-table">
+          <thead><tr>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Your Moon Sign</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Mars</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Jupiter</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Saturn</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rahu</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu</th>
+          </tr></thead>
+          <tbody id="gc-body"></tbody>
+        </table>
+      </div>
+      <p style="font-size:11px;color:var(--color-mute);margin:16px 0 0;max-width:600px;">Mars/Rahu/Ketu/Saturn: favorable in houses 3, 6, 11 from Moon sign ("Upachaya"). Jupiter: favorable in houses 2, 5, 7, 9, 11. Saturn additionally shows Sade Sati (12, 1, 2) and Ashtam Shani (8) as challenging.</p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+const n360=(a:number)=>((a%360)+360)%360;
+const toR=(d:number)=>d*Math.PI/180;
+const toD=(r:number)=>r*180/Math.PI;
+function ayanamsha(T:number){return 23.85+1.3612*T-0.000136*T*T;}
+function rahuLon(T:number){return n360(125.04452-1934.136261*T+0.0020708*T*T);}
+function solveKepler(M:number,e:number){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
+const ORB:any={
+  earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},
+  mars:{L:355.432818,Ld:19140.2993313,wp:336.040768,wpd:0.4439016,Om:49.558093,Omd:-0.295025,i:1.849726,id:-0.008148,e:0.09341233,ed:0.00011902,a:1.52371243},
+  jupiter:{L:34.351484,Ld:3034.9056746,wp:14.331309,wpd:0.2155402,Om:100.464441,Omd:0.1350208,i:1.30327,id:-0.001987,e:0.04839266,ed:-0.0001288,a:5.20248019},
+  saturn:{L:50.077444,Ld:1222.1137943,wp:93.056787,wpd:0.5691095,Om:113.665524,Omd:-0.2566722,i:2.488878,id:0.002552,e:0.0541506,ed:-0.00036762,a:9.54149883},
+};
+function helioXY(el:any,T:number):[number,number]{
+  const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);
+  const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);
+  const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);
+  const E=solveKepler(M,e);
+  const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));
+  const r=el.a*(1-e*Math.cos(E));const arg=nu+w;
+  const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));
+  const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));
+  return [x,y];
+}
+function geoLon(key:string,T:number){
+  const [xE,yE]=helioXY(ORB.earth,T);
+  const [xP,yP]=helioXY(ORB[key],T);
+  return n360(toD(Math.atan2(yP-yE,xP-xE)));
+}
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+
+// Classical Gochara ruleset — cross-verified during planning (see plan Global Constraints). Do not modify without re-verifying.
+function houseFromMoon(moonSignIdx:number,planetSignIdx:number){
+  return ((planetSignIdx-moonSignIdx+12)%12)+1;
+}
+function classifyGeneric(house:number,favorable:number[]){
+  return favorable.includes(house) ? {label:'Favorable',cls:'favorable'} : {label:'Challenging',cls:'challenging'};
+}
+function classifyShani(house:number){
+  if([12,1,2].includes(house))return {label:'Sade Sati',cls:'challenging'};
+  if(house===8)return {label:'Ashtam Shani',cls:'challenging'};
+  if([3,6,11].includes(house))return {label:'Favorable',cls:'favorable'};
+  return {label:'Neutral',cls:'neutral'};
+}
+function cellHtml(c:{label:string,cls:string}){
+  const color=c.cls==='favorable'?'#15803d':c.cls==='challenging'?'#dc2626':'var(--color-body-text)';
+  return `<td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${color};font-weight:600;font-size:12px;">${c.label}</td>`;
+}
+
+function render(){
+  const now=new Date();
+  const jd=toJD(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
+  const T=(jd-2451545)/36525;
+  const ay=ayanamsha(T);
+
+  const mangalSign=Math.floor(n360(geoLon('mars',T)-ay)/30);
+  const guruSign=Math.floor(n360(geoLon('jupiter',T)-ay)/30);
+  const shaniSign=Math.floor(n360(geoLon('saturn',T)-ay)/30);
+  const rahuTrop=rahuLon(T);
+  const rahuSign=Math.floor(n360(rahuTrop-ay)/30);
+  const ketuSign=Math.floor(n360(n360(rahuTrop+180)-ay)/30);
+
+  const updatedEl=document.getElementById('gc-updated');
+  if(updatedEl)updatedEl.textContent='Last updated: '+now.toLocaleTimeString()+' (auto-refreshes every 60s)';
+
+  let rows='';
+  for(let moonSign=0;moonSign<12;moonSign++){
+    const hMangal=houseFromMoon(moonSign,mangalSign);
+    const hGuru=houseFromMoon(moonSign,guruSign);
+    const hShani=houseFromMoon(moonSign,shaniSign);
+    const hRahu=houseFromMoon(moonSign,rahuSign);
+    const hKetu=houseFromMoon(moonSign,ketuSign);
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${RASHI[moonSign]} (${RASHI_EN[moonSign]})</td>`
+      +cellHtml(classifyGeneric(hMangal,[3,6,11]))
+      +cellHtml(classifyGeneric(hGuru,[2,5,7,9,11]))
+      +cellHtml(classifyShani(hShani))
+      +cellHtml(classifyGeneric(hRahu,[3,6,11]))
+      +cellHtml(classifyGeneric(hKetu,[3,6,11]))
+      +'</tr>';
+  }
+  const body=document.getElementById('gc-body');
+  if(body)body.innerHTML=rows;
+}
+
+render();
+setInterval(render,60000);
+</script>
