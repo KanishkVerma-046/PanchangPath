@@ -109,8 +109,8 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           <div class="nav-dropdown">
             <a href="/" class="dd-link">Today's Panchang</a>
             <a href="/calendar" class="dd-link">Monthly Calendar</a>
-            <a href="/" class="dd-link">Sunrise &amp; Sunset</a>
-            <a href="/" class="dd-link">Moonrise &amp; Moonset</a>
+            <a href="/sunrise-sunset" class="dd-link">Sunrise &amp; Sunset</a>
+            <a href="/moonrise-moonset" class="dd-link">Moonrise &amp; Moonset</a>
             <a href="/muhurta/rahu-kala" class="dd-link">Rahu Kalam</a>
             <a href="/events" class="dd-link">Planetary Events</a>
             <div class="dd-divider"></div>
@@ -188,12 +188,12 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           </div>
         </li>
         <li class="nav-item has-dropdown">
-          <a href="/" class="nav-cat">Planets <span class="nav-caret">▾</span></a>
+          <a href="/planets/planetary-positions" class="nav-cat">Planets <span class="nav-caret">▾</span></a>
           <div class="nav-dropdown">
-            <a href="/" class="dd-link">Planetary Positions</a>
-            <a href="/" class="dd-link">Rahu &amp; Ketu</a>
-            <a href="/" class="dd-link">Shani (Saturn)</a>
-            <a href="/" class="dd-link">Gochara</a>
+            <a href="/planets/planetary-positions" class="dd-link">Planetary Positions</a>
+            <a href="/planets/rahu-ketu" class="dd-link">Rahu &amp; Ketu</a>
+            <a href="/planets/shani" class="dd-link">Shani (Saturn)</a>
+            <a href="/planets/gochara" class="dd-link">Gochara</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -265,8 +265,8 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
         <div class="drawer-sub" id="m-panchang">
           <a href="/" class="drawer-link">Today's Panchang</a>
           <a href="/calendar" class="drawer-link">Monthly Calendar</a>
-          <a href="/" class="drawer-link">Sunrise &amp; Sunset</a>
-          <a href="/" class="drawer-link">Moonrise &amp; Moonset</a>
+          <a href="/sunrise-sunset" class="drawer-link">Sunrise &amp; Sunset</a>
+          <a href="/moonrise-moonset" class="drawer-link">Moonrise &amp; Moonset</a>
           <a href="/muhurta/rahu-kala" class="drawer-link">Rahu Kalam</a>
           <a href="/events" class="drawer-link">Planetary Events</a>
           <a href="/panchang/regional" class="drawer-link">🌐 Regional Panchang</a>
@@ -356,10 +356,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           Planets <span class="drawer-caret">›</span>
         </button>
         <div class="drawer-sub" id="m-planets">
-          <a href="/" class="drawer-link">Planetary Positions</a>
-          <a href="/" class="drawer-link">Rahu &amp; Ketu</a>
-          <a href="/" class="drawer-link">Shani (Saturn)</a>
-          <a href="/" class="drawer-link">Gochara</a>
+          <a href="/planets/planetary-positions" class="drawer-link">Planetary Positions</a>
+          <a href="/planets/rahu-ketu" class="drawer-link">Rahu &amp; Ketu</a>
+          <a href="/planets/shani" class="drawer-link">Shani (Saturn)</a>
+          <a href="/planets/gochara" class="drawer-link">Gochara</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -1150,7 +1150,12 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     { label: "Navratri 2025", url: "/festivals/navratri-begins-2025" },
     { label: "Holi 2026", url: "/festivals/holi-2026" },
     { label: "Ekadashi", url: "/devotional/vrat-katha/ekadashi-vrat-katha" },
-    { label: "Sunrise & Sunset", url: "/" },
+    { label: "Sunrise & Sunset", url: "/sunrise-sunset" },
+    { label: "Moonrise & Moonset", url: "/moonrise-moonset" },
+    { label: "Planetary Positions", url: "/planets/planetary-positions" },
+    { label: "Rahu & Ketu", url: "/planets/rahu-ketu" },
+    { label: "Shani (Saturn) Transit", url: "/planets/shani" },
+    { label: "Gochara", url: "/planets/gochara" },
     { label: "Planetary Events", url: "/events" },
     { label: "Regional Panchang", url: "/panchang/regional" },
     { label: "Jyotish Calculators", url: "/jyotish" },
