@@ -327,7 +327,7 @@ EOF
 - Consumes: nothing (self-contained, follows `muhurta/rahu-kala.astro`'s LOCS + locationchange pattern)
 - Produces: a page at `/sunrise-sunset` that Task 10 (Header wiring) will link to.
 
-- [ ] **Step 1: Create the page**
+- [x] **Step 1: Create the page**
 
 Create `src/pages/sunrise-sunset.astro`:
 
@@ -495,17 +495,17 @@ calculate();
 </script>
 ```
 
-- [ ] **Step 2: Run `npm run build` to confirm the new page builds**
+- [x] **Step 2: Run `npm run build` to confirm the new page builds**
 
 Run: `npm run build`
 Expected: build succeeds, page count increases by 1 (`/sunrise-sunset`)
 
-- [ ] **Step 3: Start the dev server and manually verify live behavior**
+- [x] **Step 3: Start the dev server and manually verify live behavior**
 
 Run: `astro dev --background`, then open `http://localhost:4321/sunrise-sunset` in a browser.
 Expected: sunrise/sunset times for New Delhi shown for today's actual date; changing the location dropdown recomputes both today's panel and the 7-day table; values are plausible for the season (e.g. in July, New Delhi sunrise ~05:2x AM, sunset ~07:2x PM).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/sunrise-sunset.astro
@@ -532,7 +532,7 @@ EOF
 - Consumes: nothing (self-contained)
 - Produces: a page at `/moonrise-moonset` that Task 10 will link to.
 
-- [ ] **Step 1: Create the page**
+- [x] **Step 1: Create the page**
 
 Create `src/pages/moonrise-moonset.astro`:
 
@@ -772,17 +772,17 @@ calculate();
 </script>
 ```
 
-- [ ] **Step 2: Run `npm run build` to confirm the new page builds**
+- [x] **Step 2: Run `npm run build` to confirm the new page builds**
 
 Run: `npm run build`
 Expected: build succeeds, page count increases by 1 (`/moonrise-moonset`)
 
-- [ ] **Step 3: Manually verify in dev server**
+- [x] **Step 3: Manually verify in dev server**
 
 Run: `astro dev --background`, open `http://localhost:4321/moonrise-moonset`.
 Expected: moonrise/moonset times shown for today; phase name and illumination % are internally consistent with the current real moon phase (spot-check against a known almanac or phone weather app's moon-phase widget); changing location recomputes.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/moonrise-moonset.astro
@@ -811,7 +811,7 @@ EOF
 - Produces: a page at `/planets/planetary-positions`. Establishes the shared Kepler/graha computation block (`LOCS`-free — location-independent) that Tasks 7-9 duplicate.
 - Also produces: the confirmed classical Gochara ruleset (already cross-verified via WebSearch against independent sources during planning — see Global Constraints) for Tasks 7-9 to hardcode identically.
 
-- [ ] **Step 1: Create the page**
+- [x] **Step 1: Create the page**
 
 Create `src/pages/planets/planetary-positions.astro`:
 
@@ -984,17 +984,17 @@ setInterval(render,60000);
 </script>
 ```
 
-- [ ] **Step 2: Run `npm run build` to confirm the new page builds**
+- [x] **Step 2: Run `npm run build` to confirm the new page builds**
 
 Run: `npm run build`
 Expected: build succeeds, page count increases by 1 (`/planets/planetary-positions`)
 
-- [ ] **Step 3: Manually verify in dev server**
+- [x] **Step 3: Manually verify in dev server**
 
 Run: `astro dev --background`, open `http://localhost:4321/planets/planetary-positions`.
 Expected: all 9 grahas shown with plausible current sign/nakshatra; cross-check Moon's sign against `/jyotish/rashi` or the homepage's Today's Panchang panel for the same instant — they should agree (all now share the same canonical 26-term Moon formula post Tasks 1-3).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/planets/planetary-positions.astro
@@ -1024,7 +1024,7 @@ EOF
 - Consumes: the same Kepler block as Task 6 (duplicated inline, per the client-script constraint)
 - Produces: a page at `/planets/rahu-ketu`
 
-- [ ] **Step 1: Create the page**
+- [x] **Step 1: Create the page**
 
 Create `src/pages/planets/rahu-ketu.astro`:
 
@@ -1136,17 +1136,17 @@ setInterval(render,60000);
 </script>
 ```
 
-- [ ] **Step 2: Run `npm run build`**
+- [x] **Step 2: Run `npm run build`**
 
 Run: `npm run build`
 Expected: build succeeds, page count increases by 1
 
-- [ ] **Step 3: Manually verify**
+- [x] **Step 3: Manually verify**
 
 Open `http://localhost:4321/planets/rahu-ketu` in the dev server.
 Expected: Rahu and Ketu shown exactly 6 signs (180°) apart; the 12-row table shows exactly 3 "Favorable" rows for Rahu and 3 for Ketu (houses 3, 6, 11 each), with the rest "Challenging".
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/planets/rahu-ketu.astro
@@ -1173,7 +1173,7 @@ EOF
 - Consumes: same Kepler block pattern as Tasks 6-7
 - Produces: a page at `/planets/shani`, links out to `/jyotish/sadesati`
 
-- [ ] **Step 1: Create the page**
+- [x] **Step 1: Create the page**
 
 Create `src/pages/planets/shani.astro`:
 
@@ -1297,17 +1297,17 @@ setInterval(render,60000);
 </script>
 ```
 
-- [ ] **Step 2: Run `npm run build`**
+- [x] **Step 2: Run `npm run build`**
 
 Run: `npm run build`
 Expected: build succeeds, page count increases by 1
 
-- [ ] **Step 3: Manually verify**
+- [x] **Step 3: Manually verify**
 
 Open `http://localhost:4321/planets/shani`.
 Expected: exactly 3 rows labeled "Sade Sati" (the sign Saturn is in, and the two adjacent signs), exactly 1 row "Ashtam Shani", exactly 3 rows "Favorable", remaining 5 rows "Neutral".
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/planets/shani.astro
@@ -1335,7 +1335,7 @@ EOF
 - Consumes: same Kepler block pattern as Tasks 6-8, combining Mars/Jupiter/Saturn/Rahu/Ketu
 - Produces: a page at `/planets/gochara`
 
-- [ ] **Step 1: Create the page**
+- [x] **Step 1: Create the page**
 
 Create `src/pages/planets/gochara.astro`:
 
@@ -1472,17 +1472,17 @@ setInterval(render,60000);
 </script>
 ```
 
-- [ ] **Step 2: Run `npm run build`**
+- [x] **Step 2: Run `npm run build`**
 
 Run: `npm run build`
 Expected: build succeeds, page count increases by 1
 
-- [ ] **Step 3: Manually verify**
+- [x] **Step 3: Manually verify**
 
 Open `http://localhost:4321/planets/gochara`.
 Expected: 12-row grid renders; Jupiter column shows exactly 5 "Favorable" rows, Mars/Rahu/Ketu columns each show exactly 3 "Favorable" rows, Saturn column shows the same distribution as the Shani page (3 Sade Sati, 1 Ashtam Shani, 3 Favorable, 5 Neutral).
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/pages/planets/gochara.astro
@@ -1510,7 +1510,7 @@ EOF
 - Consumes: the 6 new routes from Tasks 4-9: `/sunrise-sunset`, `/moonrise-moonset`, `/planets/planetary-positions`, `/planets/rahu-ketu`, `/planets/shani`, `/planets/gochara`
 - Produces: no new interfaces (terminal task for nav wiring)
 
-- [ ] **Step 1: Fix the desktop dropdown — Panchang menu (Sunrise/Moonrise)**
+- [x] **Step 1: Fix the desktop dropdown — Panchang menu (Sunrise/Moonrise)**
 
 In `src/components/Header.astro`, replace:
 
@@ -1526,7 +1526,7 @@ In `src/components/Header.astro`, replace:
             <a href="/moonrise-moonset" class="dd-link">Moonrise &amp; Moonset</a>
 ```
 
-- [ ] **Step 2: Fix the desktop dropdown — Planets menu**
+- [x] **Step 2: Fix the desktop dropdown — Planets menu**
 
 Replace:
 
@@ -1556,7 +1556,7 @@ with:
         </li>
 ```
 
-- [ ] **Step 3: Fix the mobile drawer — Panchang section (Sunrise/Moonrise)**
+- [x] **Step 3: Fix the mobile drawer — Panchang section (Sunrise/Moonrise)**
 
 Replace:
 
@@ -1572,7 +1572,7 @@ with:
           <a href="/moonrise-moonset" class="drawer-link">Moonrise &amp; Moonset</a>
 ```
 
-- [ ] **Step 4: Fix the mobile drawer — Planets section**
+- [x] **Step 4: Fix the mobile drawer — Planets section**
 
 Replace:
 
@@ -1596,7 +1596,7 @@ with:
         </div>
 ```
 
-- [ ] **Step 5: Fix `searchItems` — update the existing Sunrise & Sunset entry and add the other 5**
+- [x] **Step 5: Fix `searchItems` — update the existing Sunrise & Sunset entry and add the other 5**
 
 Replace:
 
@@ -1615,21 +1615,21 @@ with:
     { label: "Gochara", url: "/planets/gochara" },
 ```
 
-- [ ] **Step 6: Verify no stray `href="/"` placeholders remain for these labels**
+- [x] **Step 6: Verify no stray `href="/"` placeholders remain for these labels**
 
 Run: `grep -n 'class="dd-link">Sunrise\|class="dd-link">Moonrise\|class="dd-link">Planetary Positions\|class="dd-link">Rahu\|class="dd-link">Shani\|class="dd-link">Gochara\|class="drawer-link">Sunrise\|class="drawer-link">Moonrise\|class="drawer-link">Planetary Positions\|class="drawer-link">Rahu\|class="drawer-link">Shani\|class="drawer-link">Gochara' src/components/Header.astro`
 Expected: every matched line has a real `href` (not `href="/"`) — visually confirm each line in the output
 
-- [ ] **Step 7: Run `npm run build`**
+- [x] **Step 7: Run `npm run build`**
 
 Run: `npm run build`
 Expected: build completes successfully
 
-- [ ] **Step 8: Manually verify nav in dev server**
+- [x] **Step 8: Manually verify nav in dev server**
 
 Open `http://localhost:4321/`, check the desktop "Panchang" and "Planets" dropdown menus, open the mobile drawer (resize window or use device toolbar), and use the header search box typing "gochara" / "moonrise" / "shani" — each should navigate to the correct new page.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add src/components/Header.astro
@@ -1656,7 +1656,7 @@ EOF
 - Consumes: nothing
 - Produces: corrected `Festival` entry
 
-- [ ] **Step 1: Apply the verified date correction**
+- [x] **Step 1: Apply the verified date correction**
 
 Verified via `WebSearch` during planning (drikpanchang.com): Raksha Bandhan 2026 falls on **Friday, August 28** — Bhadra Kaal ends before sunrise that day, so the entire morning (5:57 AM–9:48 AM) is clear and auspicious, confirming the date isn't pushed to evening by Bhadra timing rules.
 
@@ -1673,17 +1673,17 @@ with:
   { date: '2026-08-28', name: 'Raksha Bandhan',           nameHi: 'रक्षा बंधन',            type: 'major',    description: 'Sisters tie rakhi on brothers\' wrists, brothers vow to protect them.' },
 ```
 
-- [ ] **Step 2: Confirm array ordering is still date-sorted**
+- [x] **Step 2: Confirm array ordering is still date-sorted**
 
 Run: `grep -n "date: '2026-0[7-9]" src/lib/festivals.ts`
 Expected: dates appear in ascending order (`2026-07-29` Guru Purnima, `2026-08-28` Raksha Bandhan, `2026-09-04` Krishna Janmashtami, `2026-09-14` Ganesh Chaturthi) — no reordering needed since 08-28 still falls between 07-29 and 09-04
 
-- [ ] **Step 3: Run `npm run build`**
+- [x] **Step 3: Run `npm run build`**
 
 Run: `npm run build`
 Expected: build completes successfully; `/festivals/raksha-bandhan-2026` still generates (slug derived from name+year, unaffected by the date change)
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```bash
 git add src/lib/festivals.ts
@@ -1711,7 +1711,7 @@ EOF
 - Consumes: nothing
 - Produces: `FESTIVALS_2025_2027` (renamed from `FESTIVALS_2025_2026`) — same `Festival[]` shape, now extended through end of 2027
 
-- [ ] **Step 1: Rename the exported constant**
+- [x] **Step 1: Rename the exported constant**
 
 In `src/lib/festivals.ts`, replace:
 
@@ -1725,7 +1725,7 @@ with:
 export const FESTIVALS_2025_2027: Festival[] = [
 ```
 
-- [ ] **Step 2: Update the 2 internal usages in the same file**
+- [x] **Step 2: Update the 2 internal usages in the same file**
 
 In `src/lib/festivals.ts`, replace:
 
@@ -1761,7 +1761,7 @@ export function getTodayFestivals(date: Date): Festival[] {
 }
 ```
 
-- [ ] **Step 3: Update the 3 external import sites**
+- [x] **Step 3: Update the 3 external import sites**
 
 In `src/pages/festivals.astro`, replace:
 ```typescript
@@ -1793,12 +1793,12 @@ with:
 ```
 and replace the 2 remaining uses (`return FESTIVALS_2025_2026.map(...)` and `[...FESTIVALS_2025_2026].sort(...)`) with `FESTIVALS_2025_2027`.
 
-- [ ] **Step 4: Verify no references to the old name remain**
+- [x] **Step 4: Verify no references to the old name remain**
 
 Run: `grep -rn "FESTIVALS_2025_2026" src/`
 Expected: no output
 
-- [ ] **Step 5: Append the 2027 festival block**
+- [x] **Step 5: Append the 2027 festival block**
 
 Dates verified via `WebFetch` against `drikpanchang.com`'s 2027 Hindu Calendar (New Delhi) during planning, 2026-07-08. Lohri is derived as the day before Makar Sankranti (same relationship as the existing 2025 data); Christmas is a fixed Gregorian date needing no lookup. Sanity check: Diwali 2026-11-08 → Diwali 2027-10-29 is 355 days apart, consistent with the normal ~11-day lunar-calendar drift per year (not a leap-month year), and Makar Sankranti 2027-01-15 matches the original 2026-07 audit's independently-verified date.
 
@@ -1846,21 +1846,21 @@ with:
 ];
 ```
 
-- [ ] **Step 6: Verify the array is fully date-sorted and every festival name has an icon/gradient (all 2027 names reuse existing keys, so no new `FESTIVAL_ICON`/`FESTIVAL_GRADIENT` entries are needed)**
+- [x] **Step 6: Verify the array is fully date-sorted and every festival name has an icon/gradient (all 2027 names reuse existing keys, so no new `FESTIVAL_ICON`/`FESTIVAL_GRADIENT` entries are needed)**
 
 Run: `node -e "const fs=require('fs');const src=fs.readFileSync('src/lib/festivals.ts','utf8');const dates=[...src.matchAll(/date: '(\d{4}-\d{2}-\d{2})'/g)].map(m=>m[1]);let sorted=true;for(let i=1;i<dates.length;i++){if(dates[i]<dates[i-1]){sorted=false;console.log('OUT OF ORDER at',i,dates[i-1],'->',dates[i]);}}console.log(sorted?'PASS: all '+dates.length+' dates are in ascending order':'FAIL');"`
 Expected: `PASS: all 76 dates are in ascending order` (approximate count — confirm it prints PASS, not FAIL)
 
-- [ ] **Step 7: Run `npm run build`**
+- [x] **Step 7: Run `npm run build`**
 
 Run: `npm run build`
 Expected: build completes successfully; `/calendar` and `/festivals` pages now include 2027 entries; new `/festivals/[slug]-2027` detail pages generate (e.g. `/festivals/diwali-2027`); page count increases by ~28
 
-- [ ] **Step 8: Manually verify in dev server**
+- [x] **Step 8: Manually verify in dev server**
 
 Open `http://localhost:4321/festivals` and confirm 2027 festivals appear in the "past"/"upcoming" split correctly relative to today's date (2026-07-08); open `http://localhost:4321/calendar`, navigate forward to January 2027, and confirm Makar Sankranti/Lohri/Pongal show on the calendar grid.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add src/lib/festivals.ts src/pages/festivals.astro src/pages/calendar.astro "src/pages/festivals/[slug].astro"
@@ -1887,22 +1887,22 @@ EOF
 
 **Interfaces:** none
 
-- [ ] **Step 1: Full production build**
+- [x] **Step 1: Full production build**
 
 Run: `npm run build`
 Expected: build completes with no errors; final page count is the pre-project count + ~34 (6 new standalone pages + ~28 new festival detail pages)
 
-- [ ] **Step 2: Grep-sweep confirms no remaining stale Moon formula**
+- [x] **Step 2: Grep-sweep confirms no remaining stale Moon formula**
 
 Run: `grep -rl "0.010034\*Math.sin(3\*Mpr);" src/lib/kundali.ts src/components/KundaliWidget.astro src/pages/jyotish/*.astro`
 Expected: no output (zero matches — confirms no file still terminates at the old 15th term)
 
-- [ ] **Step 3: Grep-sweep confirms no remaining `href="/"` placeholders for the 6 fixed nav labels**
+- [x] **Step 3: Grep-sweep confirms no remaining `href="/"` placeholders for the 6 fixed nav labels**
 
 Run: `grep -n 'Sunrise\|Moonrise\|Planetary Positions\|Rahu &amp; Ketu\|Shani (Saturn)\|Gochara' src/components/Header.astro | grep 'href="/"'`
 Expected: no output
 
-- [ ] **Step 4: Dev server smoke test across all 6 new pages**
+- [x] **Step 4: Dev server smoke test across all 6 new pages**
 
 Run: `astro dev --background` (if not already running), then visit each of:
 - `http://localhost:4321/sunrise-sunset`
@@ -1914,7 +1914,7 @@ Run: `astro dev --background` (if not already running), then visit each of:
 
 Expected: each loads without console errors, shows live-computed data for the current real date/time, dark mode toggle (header) doesn't break layout on any of them.
 
-- [ ] **Step 5: Update CLAUDE.md's Known Issues section**
+- [x] **Step 5: Update CLAUDE.md's Known Issues section**
 
 In `CLAUDE.md`, find the bullet:
 
@@ -1947,7 +1947,7 @@ becomes:
 - ~~No 2027 festival data at all~~ — fixed 2026-07: added a full 2027 block to `src/lib/festivals.ts` (renamed `FESTIVALS_2025_2026` → `FESTIVALS_2025_2027`), sourced from drikpanchang.com's 2027 Hindu Calendar.
 ```
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add CLAUDE.md

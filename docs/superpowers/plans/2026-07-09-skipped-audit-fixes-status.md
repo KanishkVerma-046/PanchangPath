@@ -53,9 +53,12 @@ Task 13 (final verification + `CLAUDE.md` update) was clean on the first pass �
 ## Resume prompt (paste this to resume in a fresh session, zero prior context needed)
 
 ```
-Resume executing the implementation plan at
-`docs/superpowers/plans/2026-07-08-skipped-audit-fixes.md` (13 tasks) using
-the superpowers:subagent-driven-development skill.
+The 13-task implementation plan at
+`docs/superpowers/plans/2026-07-08-skipped-audit-fixes.md` is FULLY COMPLETE
+— all 13 tasks implemented, reviewed clean, and committed (see the task
+table and per-task notes in the status doc below for the full review
+history). Nothing in that plan needs re-doing. What remains is the final
+whole-branch review and the merge/PR decision.
 
 Work in the existing worktree — do not create a new one:
 `C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\worktrees\skipped-audit-fixes`
@@ -64,36 +67,43 @@ Work in the existing worktree — do not create a new one:
 
 Before doing anything else, read the durable status doc:
 `docs/superpowers/plans/2026-07-09-skipped-audit-fixes-status.md` (in that
-worktree, committed to git) — it has the authoritative task table,
-pre-flight decisions, and current progress. Cross-check against
-`.superpowers/sdd/progress.md` in the worktree and `git log` on the
-worktree branch; trust git history over the doc if they ever disagree,
-and correct the status doc if it's stale.
+worktree, committed to git) — it has the full task-by-task review history,
+pre-flight decisions, and the "Known duplicate" note about a redundant plan
+file on `master`. Cross-check against `.superpowers/sdd/progress.md` in the
+worktree (gitignored scratch — may be gone if the worktree was cleaned) and
+`git log` on the worktree branch; trust git history over any doc if they
+ever disagree, and correct the status doc if it's stale.
 
 **Execution mode — this overrides the skill's own default, follow it
-exactly:**
+exactly:** treat each of the two remaining steps below as gated on my
+explicit go-ahead. Ask before starting each one, name it, wait for my
+reply, then run it to completion autonomously (including any fix/re-review
+loop) before stopping to ask about the next one. Do not chain them
+automatically.
 
-Execute ONE task at a time. For each remaining task:
-1. Ask me explicitly for go-ahead before dispatching that task's
-   implementer subagent — name the task number and a one-line description,
-   then wait for my reply. Do not start the task until I say go.
-2. Once I say go, run that task to completion autonomously: implementer
-   dispatch, build/manual verification, commit, review-package generation,
-   task-reviewer dispatch, and any fix/re-review loop needed — without
-   asking me for permission on those routine sub-steps within the task.
-3. When the task is fully reviewed clean, update
-   `.superpowers/sdd/progress.md` and this status doc's task table, then
-   STOP and ask me again before starting the next task.
+1. **Final whole-branch review** — use `superpowers:requesting-code-review`'s
+   template on the full branch diff vs. `master` (`git merge-base master
+   HEAD` to `HEAD`), dispatched on the most capable available model per
+   that skill's guidance. If it returns findings, dispatch ONE fix subagent
+   with the complete findings list (not one fixer per finding), then
+   re-review.
+2. **Merge/PR decision** — use `superpowers:finishing-a-development-branch`
+   to decide how to integrate this branch. As part of that step, ask me how
+   to reconcile the "Known duplicate" plan file sitting on `master`
+   (`docs/superpowers/plans/2026-07-09-skipped-audit-fixes.md`, added in
+   commit `10c75ee` — a redundant plan written by a separate pass of the
+   same session before this worktree was discovered; see the "Known
+   duplicate" section below for detail). The design doc `84b1c9c` on
+   `master` is NOT a duplicate and should stay untouched.
 
-Do not chain multiple tasks together automatically — the skill's own
-"Continuous execution" section (which assumes no stopping between tasks)
-is overridden for this project. See the `feedback_autonomous_execution`
-memory if available for the standing reason.
-
-After the last task is done, ask before starting the final whole-branch
-review (`superpowers:requesting-code-review`) and the merge/PR decision
-(`superpowers:finishing-a-development-branch`) too — treat those as tasks
-subject to the same one-at-a-time gate.
+Two follow-up items were logged during this work but are explicitly NOT
+part of this plan and NOT blockers — don't act on either unless I ask:
+- A possible wrong 2025 Narak Chaturdashi date in `src/lib/festivals.ts`
+  (Narak Chaturdashi listed as `2025-10-21`, after Diwali's `2025-10-20`,
+  which may be backwards since it should fall the day before Diwali) —
+  logged as a new CLAUDE.md Known Issues bullet in Task 13, deliberately
+  left unfixed pending independent verification.
+- The `master`-branch plan-file duplicate mentioned above.
 ```
 
 ## Pre-flight decisions already made (do not re-litigate)
@@ -102,12 +112,11 @@ subject to the same one-at-a-time gate.
 - The 4 Planets pages (Tasks 6-9) are date-live but **not** location-live: graha ecliptic longitude is geocentric and doesn't depend on observer lat/lng anywhere else in this codebase (only Lagna does, and none of these pages show a Lagna). They recompute from `new Date()` on load but do not wire a `locationchange` listener. This was confirmed with the user during planning (2026-07-09) as an intentional, correct deviation from an earlier looser reading of the design doc.
 - The classical Gochara ruleset (Tasks 7-9) is fixed and already cross-verified — do not invent or adjust it: **Mars/Rahu/Ketu favorable = houses 3, 6, 11 from Moon sign (all other houses challenging); Jupiter favorable = houses 2, 5, 7, 9, 11; Saturn: houses 12/1/2 = Sade Sati, house 4 or 8 = Kantaka Shani, houses 3/6/11 = favorable, else challenging.**
 
-## Execution notes for the remaining tasks
+## Execution notes (historical — all 13 tasks are done, kept for record)
 
-- Continue task-by-task in plan order (4, 5, 6, ... 13). Each task's full spec (including complete, ready-to-paste code) is in the plan file — use `scripts/task-brief` to extract each one before dispatching its implementer, per the `subagent-driven-development` skill.
-- Model selection: Tasks 4-9 (new pages with complete code already written out in the plan) are transcription + testing — use a cheap model for the implementer. Task 10 (`Header.astro`, multi-location sync) and Tasks 11-12 (`festivals.ts`, multi-file rename, live `WebFetch` verification) warrant a standard-tier model. Task 13 (final verification + `CLAUDE.md` update) is standard-tier too.
-- Execute continuously without pausing to ask "should I continue?" between tasks or review cycles, per the skill's continuous-execution guidance and this project's standing preference for autonomous plan execution ([[feedback_autonomous_execution]] in memory).
-- After Task 13, dispatch the final whole-branch code reviewer (`superpowers:requesting-code-review`'s template) on the full branch diff against `master`, then use `superpowers:finishing-a-development-branch` to decide how to merge/PR the work back.
+- Model selection actually used: Tasks 4-9 (new pages with complete code already written out in the plan) used a cheap model for the implementer — transcription + testing. Task 10 (`Header.astro`, multi-location sync) and Tasks 11-12 (`festivals.ts`, multi-file rename, live `WebFetch` verification) used a standard-tier model. Task 13 (final verification + `CLAUDE.md` update) used standard-tier too.
+- Despite the plan's own text below (written before the resume-cadence override took effect), this session actually ran Tasks 10-13 one at a time with an explicit go-ahead gate before each — see the top-level "Resume prompt" section above and the `feedback_autonomous_execution` memory for why. Any future resumption should follow the current Resume prompt above, not this historical note.
+- Remaining next steps (final whole-branch review, then merge/PR decision) are tracked in the Resume prompt section above, not here.
 
 ## Known duplicate (informational, not actionable yet)
 
