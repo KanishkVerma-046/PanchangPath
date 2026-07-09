@@ -1,0 +1,161 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Sunrise & Sunset Times — PanchangPath" description="Today's sunrise and sunset time for your location, plus a 7-day outlook, computed from real Meeus solar-position astronomy — not a static table.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Today's Panchang</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">सूर्योदय · सूर्यास्त · SUNRISE &amp; SUNSET</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Sunrise &amp; Sunset</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Today's sunrise and sunset time for your location, computed live from the same Meeus solar-position formula used across the site — plus a 7-day outlook.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
+        <div>
+          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <select id="ss-city" class="input" style="height:38px;min-width:160px;"></select>
+        </div>
+      </div>
+
+      <div id="ss-today" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:40px;"></div>
+
+      <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Next 7 Days</h3>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;max-width:640px;" id="ss-week">
+          <thead><tr>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Date</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Sunrise</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Sunset</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Day Length</th>
+          </tr></thead>
+          <tbody id="ss-week-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+const LOCS = [
+  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+];
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+
+// Meeus equation-of-time-corrected sunrise/sunset — same formula as src/lib/panchang.ts's sunriseUTC()
+function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
+  const T=(jd-2451545)/36525;
+  const M=n360(357.52911+35999.05029*T);
+  const L0=n360(280.46646+36000.76983*T);
+  const C=(1.914602-0.004817*T)*Math.sin(toRad(M))+0.019993*Math.sin(2*toRad(M));
+  const sunL=L0+C;
+  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunL));
+  const dec=Math.asin(sinDec);
+  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(lat))*Math.sin(dec))/(Math.cos(toRad(lat))*Math.cos(dec));
+  if(cosHA<-1||cosHA>1)return NaN;
+  const ha=toDeg(Math.acos(cosHA));
+  const e=0.016708634-0.000042037*T-0.0000001267*T*T;
+  const eps0=23.4392911-(46.8150*T+0.00059*T*T-0.001813*T*T*T)/3600;
+  const y=Math.pow(Math.tan(toRad(eps0)/2),2);
+  const L0r=toRad(L0),Mr=toRad(M);
+  const E=y*Math.sin(2*L0r)-2*e*Math.sin(Mr)+4*e*y*Math.sin(Mr)*Math.cos(2*L0r)-0.5*y*y*Math.sin(4*L0r)-1.25*e*e*Math.sin(2*Mr);
+  const eot=toDeg(E)*4;
+  const noon=12-lng/15-eot/60;
+  return rising?noon-ha/15:noon+ha/15;
+}
+
+function decHoursToTime(h:number,tz:number){
+  const local=h+tz;
+  const hh=Math.floor(((local%24)+24)%24);
+  const mm=Math.round((local-Math.floor(local))*60);
+  const ap=hh<12?'AM':'PM';
+  const h12=hh%12||12;
+  return `${h12}:${String(mm).padStart(2,'0')} ${ap}`;
+}
+function fmtDuration(hoursDecimal:number){
+  const h=Math.floor(hoursDecimal);
+  const m=Math.round((hoursDecimal-h)*60);
+  return `${h}h ${m}m`;
+}
+
+const sel=document.getElementById('ss-city') as HTMLSelectElement;
+sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+
+function applyHeaderLoc(loc:any){
+  if(!loc||!loc.name)return;
+  const norm=(s:string)=>s.trim().toLowerCase();
+  let match=LOCS.find(l=>norm(l.name)===norm(loc.name));
+  if(!match){
+    match={name:loc.name,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
+    LOCS.unshift(match);
+    sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+  }
+  sel.value=match.name;
+}
+if((window as any).__initLoc) applyHeaderLoc((window as any).__initLoc);
+window.addEventListener('locationchange',(e:Event)=>{
+  applyHeaderLoc((e as CustomEvent).detail);
+  calculate();
+});
+
+function calculate(){
+  const cityName=sel.value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const now=new Date();
+  const y=now.getFullYear(),m=now.getMonth()+1,d=now.getDate();
+
+  const jd=toJD(y,m,d,6-loc.tz);
+  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
+  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
+  const dayLenHours=ssUTC-srUTC;
+
+  const todayEl=document.getElementById('ss-today');
+  if(todayEl){
+    todayEl.innerHTML=[
+      {label:'Sunrise',value:decHoursToTime(srUTC,loc.tz),color:'#d97706'},
+      {label:'Sunset',value:decHoursToTime(ssUTC,loc.tz),color:'#dc2626'},
+      {label:'Day Length',value:fmtDuration(dayLenHours),color:'var(--color-ink)'},
+    ].map(c=>`<div class="card" style="padding:20px;text-align:center;"><p style="font-size:11px;color:var(--color-mute);text-transform:uppercase;letter-spacing:0.06em;font-family:var(--font-mono);margin:0 0 8px;">${c.label}</p><p style="font-size:24px;font-weight:700;color:${c.color};margin:0;font-family:var(--font-mono);">${c.value}</p></div>`).join('');
+  }
+
+  const weekBody=document.getElementById('ss-week-body');
+  if(weekBody){
+    let rows='';
+    for(let i=0;i<7;i++){
+      const dt=new Date(y,m-1,d+i);
+      const jdI=toJD(dt.getFullYear(),dt.getMonth()+1,dt.getDate(),6-loc.tz);
+      const sr=sunriseUTC(jdI,loc.lat,loc.lng,true);
+      const ss=sunriseUTC(jdI,loc.lat,loc.lng,false);
+      const dayName=dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
+      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${i===0?' (Today)':''}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(sr,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(ss,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${fmtDuration(ss-sr)}</td></tr>`;
+    }
+    weekBody.innerHTML=rows;
+  }
+}
+
+sel.addEventListener('change',calculate);
+calculate();
+</script>

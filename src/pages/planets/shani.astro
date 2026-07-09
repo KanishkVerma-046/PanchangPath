@@ -1,0 +1,117 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Shani (Saturn) Transit Today — Sade Sati Table — PanchangPath" description="Live sidereal position of Saturn plus the classical Sade Sati / Ashtam Shani / favorable transit table for all 12 Moon-sign rashis.">
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शनि · SHANI (SATURN)</p>
+      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shani (Saturn) Transit</h1>
+      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Live sidereal position of Saturn, plus the classical Sade Sati and Ashtam Shani transit table by Moon sign. For a personalized Sade Sati phase check against your own birth chart, use the <a href="/jyotish/sadesati" style="color:var(--color-saffron-deep,#d97706);">Shani Sadesati Calculator</a>.</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container">
+      <p id="sh-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;"></p>
+      <div class="card" style="padding:20px;max-width:320px;margin-bottom:36px;" id="sh-current"></div>
+
+      <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Saturn Gochara (Transit) Effect by Moon Sign</h3>
+      <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;max-width:600px;">Sade Sati (houses 12, 1, 2 from your Moon sign) is the well-known 7.5-year Saturn transit cycle. Ashtam Shani (house 8) is also considered particularly challenging. Houses 3, 6, and 11 are favorable ("Upachaya"); the rest are neutral.</p>
+      <div class="card" style="padding:20px;overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;" id="sh-table">
+          <thead><tr>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Your Moon Sign</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Saturn's House</th>
+            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Effect</th>
+          </tr></thead>
+          <tbody id="sh-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+const n360=(a:number)=>((a%360)+360)%360;
+const toR=(d:number)=>d*Math.PI/180;
+const toD=(r:number)=>r*180/Math.PI;
+function ayanamsha(T:number){return 23.85+1.3612*T-0.000136*T*T;}
+function solveKepler(M:number,e:number){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
+const ORB:any={
+  earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},
+  saturn:{L:50.077444,Ld:1222.1137943,wp:93.056787,wpd:0.5691095,Om:113.665524,Omd:-0.2566722,i:2.488878,id:0.002552,e:0.0541506,ed:-0.00036762,a:9.54149883},
+};
+function helioXY(el:any,T:number):[number,number]{
+  const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);
+  const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);
+  const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);
+  const E=solveKepler(M,e);
+  const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));
+  const r=el.a*(1-e*Math.cos(E));const arg=nu+w;
+  const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));
+  const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));
+  return [x,y];
+}
+function saturnGeoLon(T:number){
+  const [xE,yE]=helioXY(ORB.earth,T);
+  const [xP,yP]=helioXY(ORB.saturn,T);
+  return n360(toD(Math.atan2(yP-yE,xP-xE)));
+}
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+function fmtDMS(lon:number){const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);return deg+'°'+String(mn).padStart(2,'0')+"'";}
+function nakInfo(sid:number){const idx=Math.floor(sid/(360/27))%27;const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;return {name:NAKS[idx],pada};}
+
+// Classical Gochara ruleset — cross-verified during planning (see plan Global Constraints). Do not modify without re-verifying.
+function houseFromMoon(moonSignIdx:number,planetSignIdx:number){
+  return ((planetSignIdx-moonSignIdx+12)%12)+1;
+}
+function classifyShani(house:number){
+  if([12,1,2].includes(house))return {label:'Sade Sati',cls:'challenging'};
+  if(house===8)return {label:'Ashtam Shani',cls:'challenging'};
+  if([3,6,11].includes(house))return {label:'Favorable',cls:'favorable'};
+  return {label:'Neutral',cls:'neutral'};
+}
+
+function render(){
+  const now=new Date();
+  const jd=toJD(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
+  const T=(jd-2451545)/36525;
+  const ay=ayanamsha(T);
+  const saturnTrop=saturnGeoLon(T);
+  const saturnSid=n360(saturnTrop-ay);
+  const saturnSign=Math.floor(saturnSid/30);
+  const nak=nakInfo(saturnSid);
+
+  const updatedEl=document.getElementById('sh-updated');
+  if(updatedEl)updatedEl.textContent='Last updated: '+now.toLocaleTimeString()+' (auto-refreshes every 60s)';
+
+  const curEl=document.getElementById('sh-current');
+  if(curEl){
+    curEl.innerHTML=`<p style="font-size:14px;font-weight:700;color:#374151;margin:0 0 6px;">Shani (Saturn)</p><p style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${RASHI[saturnSign]} (${RASHI_EN[saturnSign]})</p><p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${fmtDMS(saturnSid)} · ${nak.name} Pada ${nak.pada}</p>`;
+  }
+
+  let rows='';
+  for(let moonSign=0;moonSign<12;moonSign++){
+    const house=houseFromMoon(moonSign,saturnSign);
+    const c=classifyShani(house);
+    const color=c.cls==='favorable'?'#15803d':c.cls==='challenging'?'#dc2626':'var(--color-body-text)';
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${RASHI[moonSign]} (${RASHI_EN[moonSign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${house}${house===1?'st':house===2?'nd':house===3?'rd':'th'} house</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${color};font-weight:600;">${c.label}</td></tr>`;
+  }
+  const body=document.getElementById('sh-body');
+  if(body)body.innerHTML=rows;
+}
+
+render();
+setInterval(render,60000);
+</script>

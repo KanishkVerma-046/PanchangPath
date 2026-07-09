@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { FESTIVALS_2025_2026 } from '../lib/festivals';
+import { FESTIVALS_2025_2027 } from '../lib/festivals';
 
 const today = new Date();
 const year = today.getFullYear();
@@ -12,8 +12,8 @@ const daysInMonth = new Date(year, month + 1, 0).getDate();
 const monthName = today.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
 
 // Festival lookup map
-const festMap: Record<string, typeof FESTIVALS_2025_2026[0][]> = {};
-for (const f of FESTIVALS_2025_2026) {
+const festMap: Record<string, typeof FESTIVALS_2025_2027[0][]> = {};
+for (const f of FESTIVALS_2025_2027) {
   if (!festMap[f.date]) festMap[f.date] = [];
   festMap[f.date].push(f);
 }
