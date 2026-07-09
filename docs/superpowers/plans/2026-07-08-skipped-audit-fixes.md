@@ -2,14 +2,13 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-## Progress (updated 2026-07-08)
+## Progress (updated 2026-07-09)
 
 **Tasks 1-3 complete and task-reviewed clean.** Tasks 4-13 not yet started.
 
-- Executing via superpowers:subagent-driven-development in worktree `C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\worktrees\skipped-audit-fixes` (branch `worktree-skipped-audit-fixes`), not yet merged to `master`.
-- Ledger: `.superpowers/sdd/progress.md` in that worktree (gitignored scratch — if it's ever lost, `git log` on the worktree branch is authoritative: commits `553d3ca`, `dc98893`, `a405848` are Tasks 1, 2, 3 respectively).
-- Resume prompt for Tasks 4-13: `.superpowers/sdd/resume-prompt.md` in that worktree.
-- Pre-flight decision already made: the plan's duplicated Kepler/orbital-math code across Tasks 4-9 is intentional and plan-mandated (matches the codebase's existing client-script-can't-import-TS-modules constraint) — not a reviewer fix target.
+**See `docs/superpowers/plans/2026-07-09-skipped-audit-fixes-status.md` (same directory) for the full, git-committed task status table, the resume prompt, and pre-flight decisions.** That file is the durable source of truth — this section is a pointer to it, kept brief so it doesn't drift out of sync.
+
+Quick facts: executing via superpowers:subagent-driven-development in worktree `C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\worktrees\skipped-audit-fixes` (branch `worktree-skipped-audit-fixes`), not yet merged to `master`. Commits `553d3ca`, `dc98893`, `a405848` are Tasks 1, 2, 3 respectively (`git log` is authoritative if the ledger is ever lost).
 
 ---
 
