@@ -16,7 +16,7 @@
 | 2 | Moon formula → `KundaliWidget.astro` | ✅ Complete | `553d3ca..dc98893` | Clean |
 | 3 | Moon formula → 15 `jyotish/*.astro` pages | ✅ Complete | `dc98893..a405848` | Clean |
 | 4 | Sunrise & Sunset page | ✅ Complete | `d72dfb2..cb6db24` | Clean after 1 fix round (CSS border-color/text-color regression) |
-| 5 | Moonrise & Moonset page | ⏳ Not started | — | — |
+| 5 | Moonrise & Moonset page | ✅ Complete | `f43c5f0..6f020a7` | Clean |
 | 6 | Planetary Positions page | ⏳ Not started | — | — |
 | 7 | Rahu & Ketu page | ⏳ Not started | — | — |
 | 8 | Shani (Saturn) page | ⏳ Not started | — | — |
@@ -29,6 +29,8 @@
 Tasks 1-3 verified independently on 2026-07-09 (not just trusted from the ledger): numeric cross-check of `kundali.ts`'s `moonLon` against `panchang.ts`'s canonical formula returned a diff of exactly `0`, and `grep` confirmed all 15 `jyotish/*.astro` pages and `KundaliWidget.astro` carry the full 26-term formula. `npm run build` passes cleanly (346 pages) at this point in history.
 
 Task 4 (`src/pages/sunrise-sunset.astro`) went through one review/fix round: the implementer's first pass dropped `color:var(--color-body-text)` and substituted `--color-hairline` with `--color-body-text` in the 7-day forecast table's border-bottom CSS (a real, if cosmetic, rendering regression). A fix subagent restored the brief's exact CSS; the re-review did a full programmatic line-diff against the brief's code block and confirmed byte-for-byte match, approved clean. Build passes at 346 pages (net +1 from the 345 baseline after Tasks 1-3, since those were formula-only edits with no new pages).
+
+Task 5 (`src/pages/moonrise-moonset.astro`) was clean on the first pass — reviewer confirmed a byte-for-byte `diff` match against the brief's code block (233/233 lines), and independently verified the transcribed `moonLon()`/`moonRiseSetUTC()`/`moonEquatorial()`/`gmstDegrees()` functions and the `computeForDate()` seeding heuristic term-for-term against `src/lib/panchang.ts`'s canonical implementations. Build passes at 347 pages.
 
 ## Resume prompt (paste this to resume in a fresh session, zero prior context needed)
 
