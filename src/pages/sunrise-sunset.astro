@@ -150,7 +150,7 @@ function calculate(){
       const sr=sunriseUTC(jdI,loc.lat,loc.lng,true);
       const ss=sunriseUTC(jdI,loc.lat,loc.lng,false);
       const dayName=dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${i===0?' (Today)':''}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(sr,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(ss,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-body-text);font-family:var(--font-mono);">${fmtDuration(ss-sr)}</td></tr>`;
+      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${i===0?' (Today)':''}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(sr,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(ss,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${fmtDuration(ss-sr)}</td></tr>`;
     }
     weekBody.innerHTML=rows;
   }
