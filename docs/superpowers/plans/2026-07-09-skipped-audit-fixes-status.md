@@ -20,7 +20,7 @@
 | 6 | Planetary Positions page | ✅ Complete | `8afed28..eac3a59` | Clean |
 | 7 | Rahu & Ketu page | ✅ Complete | `1259732..bd96599` | Clean |
 | 8 | Shani (Saturn) page | ✅ Complete | `d6c7677..3a87d89` | Clean |
-| 9 | Gochara (combined transit) page | ⏳ Not started | — | — |
+| 9 | Gochara (combined transit) page | ✅ Complete | `6b4b73e..87ada8e` | Clean |
 | 10 | Wire 6 new pages into `Header.astro` | ⏳ Not started | — | — |
 | 11 | Raksha Bandhan 2026 date fix | ⏳ Not started | — | — |
 | 12 | 2027 festival data | ⏳ Not started | — | — |
@@ -37,6 +37,8 @@ Task 6 (`src/pages/planets/planetary-positions.astro`, first of the 4 Planets pa
 Task 7 (`src/pages/planets/rahu-ketu.astro`, second Planets page) was clean on the first pass — byte-for-byte match, Ayanamsha/180°-node-relationship/Gochara-bijection all independently verified by hand-tracing the arithmetic, self-contained diff. **Note for future tasks:** both Task 6's and Task 7's implementer self-reported page counts contained arithmetic errors (Task 6 reported 347→348, Task 7 reported "350, +1 from Task 6's 348" — internally inconsistent, 348→350 is +2). The reviewer resolved it with an independent `npm run build`: true count after Task 7 is confirmed 350 pages via direct build, and the actual page-added delta across Tasks 6-7 was +1 each as expected — only the self-reported numbers were unreliable. Going forward, don't trust an implementer's self-reported before/after page count without spot-checking; prefer an independent build when the numbers matter.
 
 Task 8 (`src/pages/planets/shani.astro`, third Planets page) was clean on the first pass — byte-for-byte diff match, ayanamsha and the Sade Sati (12/1/2)/Ashtam Shani (8)/Favorable (3/6/11)/Neutral ruleset all present unmodified, 3/1/3/5 row-count split independently proven via the same bijection argument as Task 7's Gochara table. Build reached 351 pages (+1 from Task 7's 350, as expected — no page-count anomaly this time). A stray `build.log` file left in the worktree by the implementer's build command was deleted before generating the review package (untracked, harmless, not part of any commit).
+
+Task 9 (`src/pages/planets/gochara.astro`, fourth and final Planets page) was clean on the first pass — byte-for-byte diff match; `classifyShani` confirmed byte-identical to Task 8's version (reused, not re-typed and drifted); Jupiter/Mars/Rahu/Ketu/Saturn favorable-house counts across the 12-row grid all independently verified via the same bijection argument used in Tasks 7-8's reviews. Build reached 352 pages, clean working tree, no stray artifacts. **This closes out all 4 new Planets pages (Tasks 6-9).**
 
 ## Resume prompt (paste this to resume in a fresh session, zero prior context needed)
 
