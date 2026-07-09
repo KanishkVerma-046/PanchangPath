@@ -15,7 +15,7 @@
 | 1 | Moon formula → `kundali.ts` | ✅ Complete | `4fe5dee..553d3ca` | Clean |
 | 2 | Moon formula → `KundaliWidget.astro` | ✅ Complete | `553d3ca..dc98893` | Clean |
 | 3 | Moon formula → 15 `jyotish/*.astro` pages | ✅ Complete | `dc98893..a405848` | Clean |
-| 4 | Sunrise & Sunset page | ⏳ Not started | — | — |
+| 4 | Sunrise & Sunset page | ✅ Complete | `d72dfb2..cb6db24` | Clean after 1 fix round (CSS border-color/text-color regression) |
 | 5 | Moonrise & Moonset page | ⏳ Not started | — | — |
 | 6 | Planetary Positions page | ⏳ Not started | — | — |
 | 7 | Rahu & Ketu page | ⏳ Not started | — | — |
@@ -28,12 +28,14 @@
 
 Tasks 1-3 verified independently on 2026-07-09 (not just trusted from the ledger): numeric cross-check of `kundali.ts`'s `moonLon` against `panchang.ts`'s canonical formula returned a diff of exactly `0`, and `grep` confirmed all 15 `jyotish/*.astro` pages and `KundaliWidget.astro` carry the full 26-term formula. `npm run build` passes cleanly (346 pages) at this point in history.
 
+Task 4 (`src/pages/sunrise-sunset.astro`) went through one review/fix round: the implementer's first pass dropped `color:var(--color-body-text)` and substituted `--color-hairline` with `--color-body-text` in the 7-day forecast table's border-bottom CSS (a real, if cosmetic, rendering regression). A fix subagent restored the brief's exact CSS; the re-review did a full programmatic line-diff against the brief's code block and confirmed byte-for-byte match, approved clean. Build passes at 346 pages (net +1 from the 345 baseline after Tasks 1-3, since those were formula-only edits with no new pages).
+
 ## Resume prompt (paste this to resume in a fresh session)
 
 ```
 Resume executing the implementation plan at
 `docs/superpowers/plans/2026-07-08-skipped-audit-fixes.md` using the
-superpowers:subagent-driven-development skill, continuing from Task 4.
+superpowers:subagent-driven-development skill, continuing from Task 5.
 
 Work in the existing worktree — do not create a new one:
 `C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\worktrees\skipped-audit-fixes`
@@ -46,7 +48,7 @@ worktree) — it has the authoritative task table. Cross-check against
 `.superpowers/sdd/progress.md` in the worktree and `git log` on the
 worktree branch; trust git history over any assumption if they disagree.
 
-Remaining: Tasks 4 through 13 (build 6 new pages, wire Header.astro,
+Remaining: Tasks 5 through 13 (5 more new pages, wire Header.astro,
 2 festival-data fixes, final verification).
 ```
 

@@ -4,11 +4,11 @@
 
 ## Progress (updated 2026-07-09)
 
-**Tasks 1-3 complete and task-reviewed clean.** Tasks 4-13 not yet started.
+**Tasks 1-4 complete and task-reviewed clean.** Tasks 5-13 not yet started.
 
 **See `docs/superpowers/plans/2026-07-09-skipped-audit-fixes-status.md` (same directory) for the full, git-committed task status table, the resume prompt, and pre-flight decisions.** That file is the durable source of truth — this section is a pointer to it, kept brief so it doesn't drift out of sync.
 
-Quick facts: executing via superpowers:subagent-driven-development in worktree `C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\worktrees\skipped-audit-fixes` (branch `worktree-skipped-audit-fixes`), not yet merged to `master`. Commits `553d3ca`, `dc98893`, `a405848` are Tasks 1, 2, 3 respectively (`git log` is authoritative if the ledger is ever lost).
+Quick facts: executing via superpowers:subagent-driven-development in worktree `C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\worktrees\skipped-audit-fixes` (branch `worktree-skipped-audit-fixes`), not yet merged to `master`. Commits `553d3ca`, `dc98893`, `a405848`, `cb6db24` are Tasks 1, 2, 3, 4 respectively (`git log` is authoritative if the ledger is ever lost).
 
 ---
 
