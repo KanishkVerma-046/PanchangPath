@@ -30,26 +30,50 @@ Tasks 1-3 verified independently on 2026-07-09 (not just trusted from the ledger
 
 Task 4 (`src/pages/sunrise-sunset.astro`) went through one review/fix round: the implementer's first pass dropped `color:var(--color-body-text)` and substituted `--color-hairline` with `--color-body-text` in the 7-day forecast table's border-bottom CSS (a real, if cosmetic, rendering regression). A fix subagent restored the brief's exact CSS; the re-review did a full programmatic line-diff against the brief's code block and confirmed byte-for-byte match, approved clean. Build passes at 346 pages (net +1 from the 345 baseline after Tasks 1-3, since those were formula-only edits with no new pages).
 
-## Resume prompt (paste this to resume in a fresh session)
+## Resume prompt (paste this to resume in a fresh session, zero prior context needed)
 
 ```
 Resume executing the implementation plan at
-`docs/superpowers/plans/2026-07-08-skipped-audit-fixes.md` using the
-superpowers:subagent-driven-development skill, continuing from Task 5.
+`docs/superpowers/plans/2026-07-08-skipped-audit-fixes.md` (13 tasks) using
+the superpowers:subagent-driven-development skill.
 
 Work in the existing worktree — do not create a new one:
 `C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\worktrees\skipped-audit-fixes`
 (branch `worktree-skipped-audit-fixes`). If not already there, use
 `EnterWorktree` with `path` set to that directory to switch into it.
 
-Before doing anything else, read this status doc:
+Before doing anything else, read the durable status doc:
 `docs/superpowers/plans/2026-07-09-skipped-audit-fixes-status.md` (in that
-worktree) — it has the authoritative task table. Cross-check against
+worktree, committed to git) — it has the authoritative task table,
+pre-flight decisions, and current progress. Cross-check against
 `.superpowers/sdd/progress.md` in the worktree and `git log` on the
-worktree branch; trust git history over any assumption if they disagree.
+worktree branch; trust git history over the doc if they ever disagree,
+and correct the status doc if it's stale.
 
-Remaining: Tasks 5 through 13 (5 more new pages, wire Header.astro,
-2 festival-data fixes, final verification).
+**Execution mode — this overrides the skill's own default, follow it
+exactly:**
+
+Execute ONE task at a time. For each remaining task:
+1. Ask me explicitly for go-ahead before dispatching that task's
+   implementer subagent — name the task number and a one-line description,
+   then wait for my reply. Do not start the task until I say go.
+2. Once I say go, run that task to completion autonomously: implementer
+   dispatch, build/manual verification, commit, review-package generation,
+   task-reviewer dispatch, and any fix/re-review loop needed — without
+   asking me for permission on those routine sub-steps within the task.
+3. When the task is fully reviewed clean, update
+   `.superpowers/sdd/progress.md` and this status doc's task table, then
+   STOP and ask me again before starting the next task.
+
+Do not chain multiple tasks together automatically — the skill's own
+"Continuous execution" section (which assumes no stopping between tasks)
+is overridden for this project. See the `feedback_autonomous_execution`
+memory if available for the standing reason.
+
+After the last task is done, ask before starting the final whole-branch
+review (`superpowers:requesting-code-review`) and the merge/PR decision
+(`superpowers:finishing-a-development-branch`) too — treat those as tasks
+subject to the same one-at-a-time gate.
 ```
 
 ## Pre-flight decisions already made (do not re-litigate)
