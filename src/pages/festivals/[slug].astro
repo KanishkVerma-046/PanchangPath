@@ -1,7 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import {
-  FESTIVALS_2025_2026,
+  FESTIVALS_2025_2027,
   getFestivalSlug,
   getFestivalIcon,
   getFestivalGradient,
@@ -10,7 +10,7 @@ import {
 } from '../../lib/festivals';
 
 export function getStaticPaths() {
-  return FESTIVALS_2025_2026.map(f => ({
+  return FESTIVALS_2025_2027.map(f => ({
     params: { slug: getFestivalSlug(f) },
     props:  { festival: f },
   }));
@@ -29,7 +29,7 @@ const isPast    = days < 0;
 
 // Build sorted list for prev/next navigation
 const thisSlug  = getFestivalSlug(f);
-const allSorted = [...FESTIVALS_2025_2026].sort((a, b) => a.date.localeCompare(b.date));
+const allSorted = [...FESTIVALS_2025_2027].sort((a, b) => a.date.localeCompare(b.date));
 const idx       = allSorted.findIndex(x => getFestivalSlug(x) === thisSlug);
 const prev      = idx > 0            ? allSorted[idx - 1] : null;
 const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
