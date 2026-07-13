@@ -20,12 +20,12 @@
 | 4 | Internal link map generator script | ✅ Complete | `a695972..f52964b` | Clean |
 | 5 | Tone-of-voice reference doc | ✅ Complete | `f52964b..a08fe2c` | Clean after 1 fix round (removed literal "ad-free"/"drikpanchang.com" mentions) |
 | — | Plan-doc correction (Task 7 content had the same defect as Task 5, caught pre-emptively) | ✅ Complete | `a08fe2c..3ab9518` | N/A (docs-only plan correction, not a plan task) |
-| 6 | Keyword-targets reference doc | ⏳ **Not started — resume here** | — | — |
-| 7 | SEO checklist reference doc | ⬜ Pending | — | — |
-| 8 | `SKILL.md` — the skill itself | ⬜ Pending | — | — |
-| 9 | Final whole-branch review + `finishing-a-development-branch` | ⬜ Pending | — | — |
+| 6 | Keyword-targets reference doc | ✅ Complete | `c473890..769676d` | Clean |
+| 7 | SEO checklist reference doc | ✅ Complete | `769676d..69bcc00` | Clean (plan's own Step 2 verification count was stale — 17 checkboxes vs. brief's stated "13" — a plan-authoring miscount, not an implementer/spec defect; see per-task notes) |
+| 8 | `SKILL.md` — the skill itself | ✅ Complete | `69bcc00..6f16407` | Clean |
+| 9 | Final whole-branch review + `finishing-a-development-branch` | ✅ Review complete, Yes to merge — awaiting merge/PR decision | `e0c2ad2..6f16407` (full branch) | Ready to merge: Yes, no Critical/Important findings, 4 Minor (logged, non-blocking) |
 
-Current worktree HEAD: `3ab9518`. `npm run build` last confirmed clean at Task 3 (382 pages) and independently re-run clean by the Task 4 reviewer; no build-affecting change has landed since (Tasks 4-5 and the plan-doc fix only touch `scripts/`, `.claude/skills/...references/`, and `docs/...plans/...md` — none of which participate in `npm run build`).
+**ALL 9 TASKS COMPLETE.** Current worktree HEAD: `6f16407`. `npm run build` reconfirmed clean after Task 8 (380 pages) as part of the plan's own post-Task-8 "Final verification" section. Only remaining step is the `finishing-a-development-branch` merge/PR decision.
 
 ---
 
@@ -45,9 +45,23 @@ Because this was a **plan-authoring defect**, not an implementer mistake, the sa
 
 **Stray-file note (controller housekeeping, not a task defect):** Task 5's original implementer subagent left a duplicate, pre-fix copy of `tone-of-voice.md` as an *untracked* file in the **main repo** (`C:\Users\kanis\Desktop\AI Side Hustles\Panchang Path\.claude\skills\seo-content-writer\references\tone-of-voice.md`, NOT inside the worktree) — likely a subagent resolving a relative path against the wrong cwd. Deleted; confirmed no other `src/`, `scripts/`, or `docs/` files leaked into the main repo from any task's subagents (checked via a scoped `git status` after the fact). **Worth a periodic `git status` check on the main repo (not just the worktree) during future long subagent-driven sessions**, since a leaked untracked file is silent and easy to miss.
 
+**Task 6** (`keyword-targets.md`) — clean on the first pass (cheap model, pure transcription). Reviewer independently re-verified the diff was byte-for-byte identical to the brief's Step 1 content, the 6-cluster heading count, and re-confirmed no "ad-free"/"drikpanchang" strings and no Devanagari text. One process-only gap: the implementer didn't write `task-6-report.md` despite instructions; didn't affect the deliverable, not worth a fix round.
+
+**Task 7** (`seo-checklist.md`) — clean on the first pass, but surfaced a second **plan-authoring defect** distinct from Task 5's: the brief's own Step 2 verification command says "Expected: 13" but the brief's Step 1 content (already corrected for the ad-free/competitor issue in commit `3ab9518`) actually produces **17** checkboxes. The implementer correctly followed Step 1 verbatim rather than trimming content to force a match to the wrong Step 2 number, flagged the discrepancy honestly in its report, and the reviewer independently re-counted and confirmed 17 is correct and the plan's own expected-count text is simply stale — same class of issue as Task 3's stale `dist/`-grep checks earlier in this same plan. Not a defect in the deliverable.
+
+**Task 8** (`SKILL.md`) — clean on the first pass (standard-tier model, since this file uniquely requires *not* over-applying Task 5's "scrub ad-free/competitor mentions" fix — it's the one file in the skill that's supposed to name both directly). Reviewer confirmed byte-for-byte match to the brief, confirmed both exempted strings are present exactly where required, and confirmed all of `SKILL.md`'s cross-references (4 reference files, `scripts/generate-link-map.mjs`, `src/lib/blog.ts`'s `BLOG_POSTS`) resolve to real, already-committed artifacts from earlier tasks. This closes out all 8 content tasks.
+
+**Post-Task-8 final verification** (the plan's own top-level section, not one of the 8 numbered tasks): `npm run build` reconfirmed clean at 380 pages; `references/` directory has all 4 expected files; `dist/blog/index.html` renders the "PanchangPath Blog" heading and "No posts yet — check back soon." empty state; `dist/index.html` has exactly 2 `href="/blog"` occurrences (desktop dropdown + mobile drawer), consistent with Task 3's earlier nav-sync verification.
+
+**Task 9** (final whole-branch review) — dispatched on `opus` per the skill's Model Selection guidance for architecture-level review, diff `e0c2ad2..6f16407` (12 commits — this is the branch's true merge-base with `master`; the design doc commit `85a8a70` sits ahead of that on `master` alone and is a benign divergence, not touched by this branch). **Verdict: Ready to merge: Yes.** All 6 cross-task integration checks the reviewer specifically probed came back clean: forbidden-string scoping between `SKILL.md` and the 4 reference docs, `SKILL.md`'s file/interface references all resolving, `BlogPost` interface consistency across its two consumer components, no TypeScript apostrophe-escaping violations, Header nav wiring adding only the `/blog` hub (no per-post entries), and an independent re-run of `generate-link-map.mjs` producing byte-identical output to the committed `internal-links.md`. No Critical/Important findings. 4 Minor findings logged (none merge-blocking): (1) `SKILL.md`'s Step 5 publish snippet doesn't remind the skill to escape apostrophes in `title`/`description` — this repo's #1 documented gotcha, worth a future one-line addition; (2) `internal-links.md` inherits a few pre-existing stray `\'` artifacts from source-page bugs, out of scope for this branch; (3) detail-page prev/next uses raw array order vs. the index grid's `sortedByNewest` — matches the plan's Task 2 code verbatim, acceptable; (4) the `keywords` field on `BlogPost` is stored but never surfaced into a meta tag or JSON-LD — not required by the plan.
+
 ---
 
-## Resume prompt (paste this to resume in a fresh session, zero prior context needed)
+## Current status: all 9 tasks complete, awaiting merge/PR decision
+
+Every task in `docs/superpowers/plans/2026-07-13-seo-content-writer-skill.md` (Tasks 1-8) plus the final whole-branch review (Task 9) are done and reviewed clean. Worktree HEAD: `6f16407`. Nothing left to implement. The only remaining step is `superpowers:finishing-a-development-branch` to decide how this branch integrates with `master` — that skill has its own confirmation gates and should be run interactively with the user, not resumed autonomously from a status doc.
+
+## Resume prompt (paste this to resume in a fresh session, zero prior context needed — kept for historical reference / in case the merge decision itself gets interrupted)
 
 ```
 Resume the SEO content writer skill + /blog section implementation using
