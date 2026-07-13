@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://panchangpath.com/sitemap-index.xml
