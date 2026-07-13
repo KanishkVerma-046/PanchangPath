@@ -28,8 +28,8 @@ Write so both groups feel served: define terms briefly on first use, but never o
 
 ## Avoid
 
-- Claiming or implying the site is ad-free, in any content (this is a positioning fact for marketing elsewhere, not blog copy).
-- Naming or comparing against drikpanchang.com or any other competing site, ever.
+- Positioning claims about the site's business model or advertising — those live in `SKILL.md`'s baked-in variables, not blog copy.
+- Naming or comparing against any competing panchang/astrology site — see `SKILL.md`'s baked-in variables for the specific name to never use.
 - Medical or legal-advice-style astrology claims ("this gemstone will cure your illness," "this muhurta guarantees a positive court verdict").
 - Empty buzzwords: "game-changer," "revolutionary," "unlock your destiny," "ancient secret."
 - Manufactured urgency: "Only X days left," "Don't miss this rare alignment."
