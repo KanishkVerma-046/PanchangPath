@@ -628,8 +628,8 @@ Write so both groups feel served: define terms briefly on first use, but never o
 
 ## Avoid
 
-- Claiming or implying the site is ad-free, in any content (this is a positioning fact for marketing elsewhere, not blog copy).
-- Naming or comparing against drikpanchang.com or any other competing site, ever.
+- Positioning claims about the site's business model or advertising — those live in `SKILL.md`'s baked-in variables, not blog copy.
+- Naming or comparing against any competing panchang/astrology site — see `SKILL.md`'s baked-in variables for the specific name to never use.
 - Medical or legal-advice-style astrology claims ("this gemstone will cure your illness," "this muhurta guarantees a positive court verdict").
 - Empty buzzwords: "game-changer," "revolutionary," "unlock your destiny," "ancient secret."
 - Manufactured urgency: "Only X days left," "Don't miss this rare alignment."
@@ -790,13 +790,13 @@ Run every finished post against this list before presenting it as done. Adapted 
 - [ ] Word count within ~10% of the target agreed in Step 1.
 - [ ] Every heading is followed by substantive content (no empty/decorative headings).
 - [ ] No negative keywords or phrases from Step 1 appear anywhere in the post.
-- [ ] Tone matches `tone-of-voice.md` — no ad-free claims, no mystical-vague language, no manufactured urgency.
+- [ ] Tone matches `tone-of-voice.md` and `SKILL.md`'s baked-in variables — no site-positioning/business-model claims, no mystical-vague language, no manufactured urgency.
 
 ## Sources & links
 - [ ] All research is paraphrased — nothing quoted verbatim from a source (copyright hygiene).
 - [ ] Every external source is embedded as a contextual hyperlink with descriptive anchor text — never "click here," never a naked URL.
 - [ ] 3-5 internal links woven naturally into the body, each pointing to a real page from `internal-links.md`.
-- [ ] No mention of drikpanchang.com or any other competitor, anywhere.
+- [ ] No competitor mentions — see `SKILL.md`'s baked-in variables for the specific name to never use.
 
 ## Structure
 - [ ] Intro: 150-200 words — hook, problem, promise.
