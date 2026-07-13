@@ -6,6 +6,7 @@ import Tooltip from '../components/Tooltip.astro';
 interface Props {
   title?: string;
   description?: string;
+  keywords?: string;
   image?: string;
   imageAlt?: string;
   canonical?: string;
@@ -14,6 +15,7 @@ interface Props {
 const {
   title = 'PanchangPath — Hindu Almanac for Any Date & Location',
   description = 'Precise Panchang with Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, festivals and muhurtas — clean, fast, and ad-free.',
+  keywords = "Panchang, Today's Panchang, Hindu Panchang, Panchang Calculator, Tithi Today, Nakshatra Today, Rahu Kalam, Choghadiya, Hindu Calendar, Kundali, Rashifal, Muhurat",
   image = '/og-image.png',
   imageAlt = 'PanchangPath — free online Hindu Panchang, Tithi, Nakshatra and Muhurat calculator',
   canonical,
@@ -32,7 +34,7 @@ const currentYear = new Date().getFullYear();
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
-  <meta name="keywords" content="Panchang, Today's Panchang, Hindu Panchang, Panchang Calculator, Tithi Today, Nakshatra Today, Rahu Kalam, Choghadiya, Hindu Calendar, Kundali, Rashifal, Muhurat" />
+  <meta name="keywords" content={keywords} />
   <meta name="robots" content="index, follow" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="/favicon.ico" />
