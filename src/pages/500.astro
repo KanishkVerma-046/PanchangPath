@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ErrorState from '../components/ErrorState.astro';
+---
+
+<Layout title="Something Went Wrong — PanchangPath" description="Something went wrong on our end. Head back to the PanchangPath homepage and try again.">
+  <ErrorState code="500" heading="Something Went Wrong" message="An unexpected error occurred on our end. Please try again, or head back to the homepage." />
+</Layout>
