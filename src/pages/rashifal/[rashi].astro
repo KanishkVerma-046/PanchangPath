@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction, type Rashi } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
+import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 
 export function getStaticPaths() {
   return RASHIS.map(r => ({ params: { rashi: r.id }, props: { rashi: r } }));
@@ -27,6 +28,11 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
   title={`${rashi.name} (${rashi.english}) Rashifal — Daily Horoscope | PanchangPath`}
   description={`Read today's ${rashi.name} Rashifal. Daily, weekly, monthly and yearly horoscope for ${rashi.english} (${rashi.name}) based on Vedic Jyotish.`}
 >
+  <BreadcrumbSchema items={[
+    { name: 'Home', url: '/' },
+    { name: 'Rashifal', url: '/rashifal' },
+    { name: rashi.name, url: `/rashifal/${rashi.id}` },
+  ]} />
 
   <!-- Breadcrumb -->
   <div style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:10px 0;">

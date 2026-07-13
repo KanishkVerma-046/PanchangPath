@@ -5,6 +5,7 @@ import {
   getRegionalTithiName, getRegionalNakshatraName, getRegionalVaraName,
 } from '../../lib/panchang-i18n';
 import { calculatePanchang, getHinduCalendarInfo } from '../../lib/panchang';
+import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 
 export function getStaticPaths() {
   return REGIONS.map(r => ({ params: { region: r.slug } }));
@@ -53,6 +54,11 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
   title={`${regionDef.calendarName} — Today's Panchang in ${regionDef.name} | PanchangPath`}
   description={`Today's Panchang in ${regionDef.name} (${regionDef.nativeName}) — ${monthName} ${yearInfo.displayLabel}. Tithi, Nakshatra, Yoga, Muhurtas for ${regionDef.defaultCity}.`}
 >
+  <BreadcrumbSchema items={[
+    { name: 'Home', url: '/' },
+    { name: 'Regional Panchang', url: '/panchang/regional' },
+    { name: regionDef.name, url: `/panchang/${slug}` },
+  ]} />
   <!-- ── Hero ────────────────────────────────────────────────────────── -->
   <section style={`background:var(--color-canvas);border-bottom:4px solid ${accent};padding:48px 0 40px;`}>
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">

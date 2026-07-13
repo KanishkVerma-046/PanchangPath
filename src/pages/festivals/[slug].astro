@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 import {
   FESTIVALS_2025_2027,
   getFestivalSlug,
@@ -39,6 +40,11 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
   title={`${f.name} ${f.date.slice(0,4)} — PanchangPath`}
   description={f.description}
 >
+  <BreadcrumbSchema items={[
+    { name: 'Home', url: '/' },
+    { name: 'Festivals', url: '/festivals' },
+    { name: f.name, url: `/festivals/${thisSlug}` },
+  ]} />
   <!-- ── Hero ── -->
   <section class="fd-hero" style={`background:${gradient}`}>
     <div class="fd-hero-inner">

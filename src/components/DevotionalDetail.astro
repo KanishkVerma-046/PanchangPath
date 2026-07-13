@@ -1,5 +1,6 @@
 ---
 import type { DevotionalItem, CategoryMeta } from '../lib/devotional/types';
+import BreadcrumbSchema from './seo/BreadcrumbSchema.astro';
 
 interface Props {
   item: DevotionalItem;
@@ -18,6 +19,13 @@ const {
   benefitsLabel = 'When & Why It Is Recited',
 } = Astro.props;
 ---
+
+<BreadcrumbSchema items={[
+  { name: 'Home', url: '/' },
+  { name: 'Devotional', url: '/devotional' },
+  { name: category.label, url: category.url },
+  { name: item.title, url: `${category.url}/${item.slug}` },
+]} />
 
 <!-- ── Hero ── -->
 <section class="dv-hero" style={`background:${category.gradient}`}>
