@@ -1,0 +1,56 @@
+---
+import type { BlogPost } from '../lib/blog';
+import { sortedByNewest, estimateReadingTime } from '../lib/blog';
+
+interface Props {
+  posts: BlogPost[];
+}
+
+const { posts } = Astro.props;
+const sorted = sortedByNewest(posts);
+---
+
+<!-- Hero -->
+<section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
+  <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+  <div class="container" style="position:relative;">
+    <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">BLOG</p>
+    <h1 style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">PanchangPath Blog</h1>
+    <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">Guides on Panchang, festivals, muhurta timing, Jyotish and devotional practice.</p>
+  </div>
+</section>
+
+<!-- Grid -->
+<section style="padding:36px 0 48px;">
+  <div class="container">
+    {sorted.length === 0 ? (
+      <p class="bl-empty">No posts yet — check back soon.</p>
+    ) : (
+      <div class="bl-idx-grid">
+        {sorted.map((post) => (
+          <a href={`/blog/${post.slug}`} class="bl-idx-card card">
+            <div>
+              <h3 class="bl-idx-title">{post.title}</h3>
+              <p class="bl-idx-desc">{post.description}</p>
+              <p class="bl-idx-meta">
+                {new Date(post.publishDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+                {' · '}{estimateReadingTime(post.contentHtml)} min read
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .bl-empty { color: var(--color-mute); font-size: 14px; padding: 40px 0; text-align: center; }
+  .bl-idx-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .bl-idx-card { display: block; padding: 20px; text-decoration: none; }
+  .bl-idx-title { font-size: 16px; font-weight: 600; color: var(--color-ink); margin: 0 0 8px; }
+  .bl-idx-desc { font-size: 13px; color: var(--color-body-text); margin: 0 0 12px; line-height: 1.6; }
+  .bl-idx-meta { font-size: 11.5px; color: var(--color-mute); margin: 0; }
+  @media (max-width: 900px) { .bl-idx-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px) { .bl-idx-grid { grid-template-columns: 1fr; } }
+</style>
