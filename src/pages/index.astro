@@ -42,7 +42,10 @@ const planetaryEvents = computeUpcomingEvents(today, 180);
 const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
-<Layout title="PanchangPath — Today's Hindu Panchang">
+<Layout
+  title="Today's Panchang — Tithi, Nakshatra, Hindu Calendar | PanchangPath"
+  description="Free Hindu Panchang for any date and location — Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, festivals and muhurtas. Drik calculations, Lahiri Ayanamsha."
+>
   <!-- HERO -->
   <section style="position:relative;overflow:hidden;background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);">
     <div class="gradient-mesh" style="position:absolute;inset:0;pointer-events:none;opacity:0.7;"></div>
