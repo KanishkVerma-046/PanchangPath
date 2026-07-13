@@ -1,0 +1,22 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogDetail from '../../components/BlogDetail.astro';
+import { BLOG_POSTS } from '../../lib/blog';
+
+export function getStaticPaths() {
+  return BLOG_POSTS.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+
+const idx = BLOG_POSTS.findIndex(p => p.slug === post.slug);
+const prev = idx > 0 ? BLOG_POSTS[idx - 1] : null;
+const next = idx < BLOG_POSTS.length - 1 ? BLOG_POSTS[idx + 1] : null;
+---
+
+<Layout title={`${post.title} — PanchangPath Blog`} description={post.description}>
+  <BlogDetail post={post} prev={prev} next={next} />
+</Layout>
