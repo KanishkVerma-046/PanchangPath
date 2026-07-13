@@ -6,12 +6,20 @@ import Tooltip from '../components/Tooltip.astro';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  canonical?: string;
 }
 
 const {
   title = 'PanchangPath — Hindu Almanac for Any Date & Location',
   description = 'Precise Panchang with Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, festivals and muhurtas — clean, fast, and ad-free.',
+  image = '/og-image.png',
+  canonical,
 } = Astro.props;
+
+const siteUrl = 'https://panchangpath.com';
+const canonicalUrl = canonical ?? `${siteUrl}${Astro.url.pathname}`;
+const imageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
 const currentYear = new Date().getFullYear();
 ---
@@ -26,10 +34,21 @@ const currentYear = new Date().getFullYear();
   <link rel="icon" href="/favicon.ico" />
   <meta name="generator" content={Astro.generator} />
   <title>{title}</title>
+  <link rel="canonical" href={canonicalUrl} />
   <!-- Open Graph -->
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:site_name" content="PanchangPath" />
+  <meta property="og:image" content={imageUrl} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={imageUrl} />
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
