@@ -43,8 +43,9 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
 ---
 
 <Layout
-  title="Today's Panchang — Tithi, Nakshatra, Hindu Calendar | PanchangPath"
-  description="Free Hindu Panchang for any date and location — Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, festivals and muhurtas. Drik calculations, Lahiri Ayanamsha."
+  title="Today's Panchang Online — Tithi, Nakshatra & Rahu Kalam | PanchangPath"
+  description="Free online Panchang for today — accurate Tithi, Nakshatra, Yoga, Karana, Rahu Kalam and Choghadiya for any Indian city. Drik calculations, Lahiri Ayanamsha, zero ads."
+  imageAlt="PanchangPath — today's Hindu Panchang with Tithi, Nakshatra, Rahu Kalam and Muhurat timings"
 >
   <!-- HERO -->
   <section style="position:relative;overflow:hidden;background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);">
@@ -284,6 +285,28 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
             <p style="font-size:13px;color:var(--color-body-text);margin:0;line-height:1.6;">{f.desc}</p>
           </div>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO CONTENT: About the Panchang tool -->
+  <section style="padding:0 0 56px;">
+    <div class="container" style="max-width:840px;margin:0 auto;padding:0 24px;">
+      <h2 style="font-size:26px;font-weight:600;letter-spacing:-0.8px;color:var(--color-ink);margin:0 0 20px;">What Is a Panchang, and How Does PanchangPath Calculate It?</h2>
+      <div style="font-size:15px;line-height:1.8;color:var(--color-body-text);">
+        <p style="margin:0 0 16px;">A Panchang (पंचांग) is the traditional Hindu almanac used across India to plan everything from a morning puja to a wedding date. The word literally means "five limbs" — <strong>Tithi</strong> (lunar day), <strong>Vara</strong> (weekday), <strong>Nakshatra</strong> (lunar mansion), <strong>Yoga</strong> (Sun-Moon angular combination), and <strong>Karana</strong> (half-Tithi). Together these five elements tell you whether a given day is auspicious for a particular activity, when key inauspicious windows like <strong>Rahu Kalam</strong>, Gulika Kalam and Yamaganda fall, and what the sunrise, sunset, moonrise and moonset times are for your exact location. PanchangPath computes all five elements fresh for every visitor, in real time, based on your device's location — not a single fixed table for the whole country.</p>
+
+        <p style="margin:0 0 16px;">Most Panchang websites you'll find today are cluttered with banner ads, pop-ups, and outdated Swiss Ephemeris shortcuts. PanchangPath was built as a cleaner, faster alternative to sites like drikpanchang.com — same rigor, none of the noise. Every Tithi, Nakshatra, Yoga and Karana on this page is derived using the <strong>Drik (astronomical) method</strong> with <strong>Lahiri Ayanamsha</strong>, the sidereal correction officially used by the Indian government's Rashtriya Panchang. That means the positions of the Sun and Moon are calculated from real orbital mechanics rather than approximated, so the Tithi end-time, Nakshatra Pada, and Yoga you see here line up with what a traditional pandit's almanac would show for your city.</p>
+
+        <h3 style="font-size:19px;font-weight:600;color:var(--color-ink);margin:24px 0 10px;">Today's Panchang, Muhurat Timings, and More</h3>
+        <p style="margin:0 0 16px;">Beyond the core five limbs, the homepage surfaces the day's <strong>Abhijit Muhurta</strong> — the most universally auspicious window, centered on solar noon — alongside Rahu Kalam, Gulika Kalam and Yamaganda so you know exactly which hours to avoid for travel or new beginnings. If you're planning something more specific, the dedicated <a href="/muhurta" style="color:var(--color-saffron-deep);">Muhurta Finder</a> extends this into full Choghadiya tables, Shubha Hora, Panchaka/Gowri Nalla Neram, and auspicious date-finders for weddings (Vivah Muhurat) and housewarmings (Griha Pravesh).</p>
+
+        <p style="margin:0 0 16px;">The <strong>Lagna Kundali widget</strong> on this page draws a live birth chart for the current moment, plotting all nine Grahas (planets) in either North Indian or South Indian chart style, complete with retrograde (Vakri) and combustion (Asta) status — useful for a quick check before diving into a full <a href="/jyotish" style="color:var(--color-saffron-deep);">Jyotish calculator</a> for Kundali matching, Mangal Dosha, or Shani Sadesati. Scroll further and you'll find the <strong>Rashifal</strong> section with daily, weekly, monthly and yearly horoscope predictions for all twelve rashis, a Prashnavali oracle for quick yes/no guidance, and an upcoming <strong>Festivals & Vrats</strong> calendar covering every major Hindu festival, Ekadashi and Vrat Katha through 2027.</p>
+
+        <h3 style="font-size:19px;font-weight:600;color:var(--color-ink);margin:24px 0 10px;">Built for Every Region and Every Reader</h3>
+        <p style="margin:0 0 16px;">Hindu calendar conventions differ by region — Amanta vs Purnimanta month reckoning, different New Year dates, and regional month/nakshatra names. PanchangPath's <a href="/panchang/regional" style="color:var(--color-saffron-deep);">Regional Panchang</a> pages adapt the calendar for Bengali, Assamese, Tamil, Malayalam, Marathi, Gujarati, Kannada, Telugu, Odia, Nepali and ISKCON traditions, and every panchang element on this homepage can be toggled instantly between Hindi and English. There are no sign-ups, no paywalls, and — unlike almost every other Panchang site — no advertising anywhere on the page. It's just a fast, accurate Panchang calculator that works the same way every single day.</p>
+
+        <p style="margin:0;">Whether you land here searching for "today's Panchang," "aaj ka Panchang," or a specific Rahu Kalam or Choghadiya timing for your city, the goal is the same: give you the correct answer in under a second, sourced transparently from real astronomical calculations rather than a cached table. Bookmark this page and it becomes a daily habit — the date, Tithi and Muhurat update automatically every time you open it, with no ads, no clutter, and no waiting.</p>
       </div>
     </div>
   </section>
