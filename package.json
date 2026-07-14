@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "astro build && npx wrangler pages deploy dist --project-name=panchangpath --branch=main",
-    "test:audit": "node --test scripts/audit/test/routes.test.mjs"
+    "test:audit": "node --test scripts/audit/test/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
