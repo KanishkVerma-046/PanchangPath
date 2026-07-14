@@ -1,6 +1,9 @@
 # build output
 dist/
 
+# audit tool output
+scripts/audit/output/
+
 # generated types
 .astro/
 
