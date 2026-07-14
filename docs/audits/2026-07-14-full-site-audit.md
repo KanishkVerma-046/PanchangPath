@@ -52,8 +52,8 @@ as such rather than repeated here.
 
 ### UI/Responsive
 
-- **Subtle horizontal overflow at 375px on 5 routes with no visually obvious break.** `/devotional/ashtakam/`, `/devotional/mantra/`, `/devotional/namavali/`, `/devotional/stotram/`, and `/panchang/malayalam/` all flag `overflow: true` at mobile only, with rendered content ~9-22px wider than the 375px viewport. No single cut-off/broken element is visible in any of the 5 screenshots, so this is likely a small margin/padding overshoot on a card or grid item (e.g. missing `min-width: 0` on a flex/grid child) rather than a dramatic layout failure — worth a source-level check but low urgency.
-  - Evidence: `scripts/audit/output/screenshots/devotional_ashtakam/mobile.png`, `devotional_mantra/mobile.png`, `devotional_namavali/mobile.png`, `devotional_stotram/mobile.png`, `panchang_malayalam/mobile.png`; crawl JSON `overflow: true` (mobile only) for all 5 routes.
+- **Subtle horizontal overflow at 375px on 6 routes with no visually obvious break.** `/` (homepage), `/devotional/ashtakam/`, `/devotional/mantra/`, `/devotional/namavali/`, `/devotional/stotram/`, and `/panchang/malayalam/` all flag `overflow: true` at mobile only (tablet/desktop clean), with rendered content only slightly wider than the 375px viewport. No single cut-off/broken element is visible in any of the 6 screenshots, so this is likely a small margin/padding overshoot on a card or grid item (e.g. missing `min-width: 0` on a flex/grid child) rather than a dramatic layout failure — worth a source-level check but low urgency. (The homepage's overflow flag is unrelated to its Critical broken-link finding above — different underlying cause, same low-confidence "no obvious visual break" pattern as the other 5 routes.)
+  - Evidence: `scripts/audit/output/screenshots/root/mobile.png`, `devotional_ashtakam/mobile.png`, `devotional_mantra/mobile.png`, `devotional_namavali/mobile.png`, `devotional_stotram/mobile.png`, `panchang_malayalam/mobile.png`; crawl JSON `overflow: true` (mobile only) for all 6 routes.
 
 ### Content Quality/SEO
 
