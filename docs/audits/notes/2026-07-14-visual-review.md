@@ -77,14 +77,16 @@ Method: reviewed one representative screenshot per unique template across the fu
 - **Severity guess:** High
 
 ### / (homepage) — all breakpoints
-- **Issue:** Crawler flagged a broken link containing a literal unresolved template-literal fragment in its `href` (e.g. `/rashifal/${n[r]`), sourced from the Rashifal feed's per-card links on the homepage. This does not visually manifest on the rendered page (it's in an `href` attribute, not visible text/layout), but clicking the affected card link(s) would 404 or fail to navigate. Recorded here for completeness since it's a real defect, even though it's not a visual/layout bug per se — see `crawl-results.json` for the exact broken-link value and affected element. Mobile breakpoint additionally shows `overflow: true`; tablet/desktop do not, so any overflow is mobile-only and did not present as an obvious visual break in the screenshot.
+- **Issue:** Crawler flagged a broken link containing a literal unresolved template-literal fragment in its `href` (e.g. `/rashifal/${n[r]`), sourced from the Rashifal feed's per-card links on the homepage. This does not visually manifest on the rendered page (it's in an `href` attribute, not visible text/layout). Mobile breakpoint additionally shows `overflow: true`; tablet/desktop do not, so any overflow is mobile-only and did not present as an obvious visual break in the screenshot.
+- **Superseded:** Task 9's report traced this against the built HTML and found the fragment lives inside a minified inline `<script>` block's `innerHTML` template literal (the "Find Rashi by Name" client tool), not a real `<a href>` — every actual anchor on this page resolves to a correct slug. This is a crawler methodology artifact (the link checker regex-scans raw HTML including script text), not a real broken link. See `docs/audits/2026-07-14-full-site-audit.md`'s Appendix for the full explanation. Not treated as a functional defect in the final report.
 - **Screenshot:** scripts/audit/output/screenshots/root/mobile.png
-- **Severity guess:** Medium (broken link is functional, not visual — flagged for awareness; may be more relevant to a functional/link-integrity audit task than this visual one)
+- **Severity guess:** ~~Medium~~ — downgraded to non-issue, see Superseded note above
 
 ### /rashifal/ — broken link (all breakpoints)
-- **Issue:** Same class of unresolved template-literal fragment in an `href` (e.g. `/rashifal/${n}`) as seen on the homepage, on this page's own rashi card links. Not a visual defect (invisible in the rendered screenshot), but a real broken-link bug — noted for cross-reference with functional-audit tasks.
+- **Issue:** Same class of unresolved template-literal fragment in an `href` (e.g. `/rashifal/${n}`) as seen on the homepage, on this page's own rashi card links. Not a visual defect (invisible in the rendered screenshot).
+- **Superseded:** Same crawler methodology artifact as the homepage finding above — not a real broken link. See `docs/audits/2026-07-14-full-site-audit.md`'s Appendix.
 - **Screenshot:** scripts/audit/output/screenshots/rashifal/desktop.png
-- **Severity guess:** Medium (functional, not visual)
+- **Severity guess:** ~~Medium~~ — downgraded to non-issue, see Superseded note above
 
 ---
 
