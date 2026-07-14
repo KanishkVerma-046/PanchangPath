@@ -10,8 +10,9 @@ test('analyzePage detects overflow, missing alt text, duplicate ids, and dead li
     await page.setContent(`
       <html><body>
         <div style="width:2000px">wide content forces horizontal overflow</div>
-        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="has alt">
-        <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=" alt="has alt">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=">
+        <img src="does-not-exist.png" alt="broken image">
         <div id="dup"></div>
         <span id="dup"></span>
         <a href="#">dead link</a>
@@ -23,6 +24,7 @@ test('analyzePage detects overflow, missing alt text, duplicate ids, and dead li
 
     assert.equal(result.overflow, true);
     assert.equal(result.missingAlt.length, 1);
+    assert.equal(result.brokenImages.length, 1);
     assert.deepEqual(result.duplicateIds, ['dup']);
     assert.equal(result.deadLinks.length, 1);
   } finally {
