@@ -71,6 +71,11 @@ Method: reviewed one representative screenshot per unique template across the fu
 - **Screenshot:** scripts/audit/output/screenshots/panchang_malayalam/mobile.png
 - **Severity guess:** Low
 
+### /calendar/ (mobile)
+- **Issue:** The entire page (header, month calendar grid, and footer) renders confined to a narrow column occupying roughly the left half of the 375px viewport, leaving a large blank whitespace void down the full right side of the page from top to bottom (~45% of the screen width is dead space). This is not a minor overflow — the whole layout fails to fill/adapt to the mobile viewport. Corrected from an earlier "false positive" judgment call in a prior review pass; independently re-confirmed by opening the screenshot directly.
+- **Screenshot:** scripts/audit/output/screenshots/calendar/mobile.png
+- **Severity guess:** High
+
 ### / (homepage) — all breakpoints
 - **Issue:** Crawler flagged a broken link containing a literal unresolved template-literal fragment in its `href` (e.g. `/rashifal/${n[r]`), sourced from the Rashifal feed's per-card links on the homepage. This does not visually manifest on the rendered page (it's in an `href` attribute, not visible text/layout), but clicking the affected card link(s) would 404 or fail to navigate. Recorded here for completeness since it's a real defect, even though it's not a visual/layout bug per se — see `crawl-results.json` for the exact broken-link value and affected element. Mobile breakpoint additionally shows `overflow: true`; tablet/desktop do not, so any overflow is mobile-only and did not present as an obvious visual break in the screenshot.
 - **Screenshot:** scripts/audit/output/screenshots/root/mobile.png
