@@ -56,13 +56,13 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   <section style="padding:32px 0;">
     <div class="container">
       <!-- Weekday headers -->
-      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;" id="cal-header">
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-bottom:4px;" id="cal-header">
         {WEEKDAYS.map((w, i) => (
           <div style={`text-align:center;padding:8px 4px;font-size:11px;font-weight:500;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:${i===0?'var(--color-inauspicious)':i===6?'var(--color-link)':'var(--color-mute)'};`}>{w}</div>
         ))}
       </div>
       <!-- Day cells -->
-      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;" id="cal-grid">
+      <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;" id="cal-grid">
         <!-- Filled by JS + static fallback below -->
         {Array.from({ length: firstDay }, (_, i) => (
           <div key={`e-${i}`} style="min-height:100px;border-radius:8px;"></div>
