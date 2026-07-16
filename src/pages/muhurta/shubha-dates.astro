@@ -33,7 +33,7 @@ import Layout from '../../layouts/Layout.astro';
           ))}
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div class="finder-form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
           <div>
             <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
             <input type="date" id="sd-from" class="input" style="height:38px;" />
@@ -60,6 +60,12 @@ import Layout from '../../layouts/Layout.astro';
     </div>
   </section>
 </Layout>
+
+<style>
+  @media (max-width: 640px) {
+    .finder-form-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
 
 <script>
 const LOCS = [

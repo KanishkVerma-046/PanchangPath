@@ -18,7 +18,7 @@ import Layout from '../../layouts/Layout.astro';
     <div class="container" style="max-width:900px;margin:0 auto;">
       <div class="card" style="padding:28px;margin-bottom:32px;">
         <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 20px;">Search Griha Pravesh Dates</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div class="finder-form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
           <div>
             <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
             <input type="date" id="gp-from" class="input" style="height:38px;" />
@@ -73,6 +73,12 @@ import Layout from '../../layouts/Layout.astro';
     </div>
   </section>
 </Layout>
+
+<style>
+  @media (max-width: 640px) {
+    .finder-form-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
 
 <script>
 const LOCS = [
