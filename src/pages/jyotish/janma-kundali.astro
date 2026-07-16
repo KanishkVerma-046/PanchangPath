@@ -293,7 +293,7 @@ function calculate(){
       </div>`;
 
     const msPerYr=365.25*24*3600*1000;
-    const birthMs=new Date(y,m-1,d,hh,mm).getTime()-loc.tz*3600000;
+    const birthMs=Date.UTC(y,m-1,d,hh,mm)-loc.tz*3600000;
     const dashaStartMs=birthMs-consumed*msPerYr;
     const startIdx=DASHA_ORDER.indexOf(dashaLord);
     const now=Date.now();
