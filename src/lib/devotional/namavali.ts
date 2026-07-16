@@ -43,7 +43,7 @@ export const NAMAVALIS: DevotionalItem[] = [
 १०१. उमापुत्रः १०२. स्कन्दाग्रजः १०३. इभवक्त्रः १०४. ब्रह्मचारी १०५. कुमारगुरुः १०६. जिष्णुः १०७. गणाधीशः १०८. कल्याणगुरुः`,
     transliteration: `1. Gajananah 2. Ganadhyakshah 3. Vighnarajah 4. Vinayakah 5. Dvaimaturah 6. Dvimukhah 7. Pramukhah 8. Sumukhah 9. Kritih 10. Supradipah
 ... (continuing through all 108 names of Ganesha) ...
-101. Umaputrah 102. Skandagrajah 103. Ibhavaktrah 104. Mushakavahanah 105. Kumaraguruh 106. Sarvatma 107. Sarveshwarah 108. Siddhivinayakah.`,
+101. Umaputrah 102. Skandagrajah 103. Ibhavaktrah 104. Brahmachari 105. Kumaraguruh 106. Jishnuh 107. Ganadhishah 108. Kalyanaguruh.`,
     meaning: 'This is a list of 108 names of Lord Ganesha, describing his elephant face, mouse vehicle, role as remover of obstacles (Vighnaraja), and his identity as Siddhivinayaka — the giver of success and spiritual accomplishment.',
     benefits: 'Recited or used for Archana with durva grass or red flowers before beginning any new undertaking, and throughout Ganesh Chaturthi, believed to remove obstacles and bring auspicious outcomes.',
   },
@@ -66,7 +66,7 @@ export const NAMAVALIS: DevotionalItem[] = [
 १०१. धूमावती १०२. छिन्नमस्ता १०३. स्वाहा १०४. तारा १०५. काली १०६. सर्वशक्तिस्वरूपिणी १०७. महेश्वरी १०८. जगदम्बा`,
     transliteration: `1. Durga 2. Shiva 3. Mahalakshmi 4. Mahagauri 5. Chandi 6. Chandika 7. Chamunda 8. Vaishnavi 9. Varahi 10. Lakshmi
 ... (continuing through all 108 names of Durga, including her nine forms — Navadurga — and ten Mahavidyas) ...
-101. Dhumavati 102. Chhinnamasta 103. Kamala 104. Tara 105. Kali 106. Sarvashaktiswarupini 107. Jagadgauri 108. Jagadamba.`,
+101. Dhumavati 102. Chhinnamasta 103. Swaha 104. Tara 105. Kali 106. Sarvashaktiswarupini 107. Maheshwari 108. Jagadamba.`,
     meaning: 'This is a list of 108 names of Goddess Durga, encompassing her many forms — Chandika, Kali, Kaushiki, Kaatyayani, the Navadurgas and Mahavidyas — describing her power to destroy evil and protect the universe.',
     benefits: 'Recited or used for Archana with red hibiscus (japa) flowers during Navratri, Durga Puja and Fridays, invoking the Divine Mother\'s protection and grace.',
   },
@@ -112,7 +112,7 @@ export const NAMAVALIS: DevotionalItem[] = [
 १०१. वेदमाता १०२. वेदविद्या १०३. सर्वदा १०४. सर्वदैवता १०५. वाग्देवता १०६. वागीश्वरी १०७. चतुर्वर्गफलप्रदा १०८. सर्वेश्वरी`,
     transliteration: `1. Saraswati 2. Mahabhadra 3. Mahamaya 4. Varaprada 5. Shriprada 6. Padmanilaya 7. Padmakshi 8. Padmavaktraga 9. Shivanuja 10. Pustakadhrik
 ... (continuing through all 108 names of Saraswati) ...
-101. Vedamata 102. Vedavidya 103. Sarvada 104. Sarvadaivata 105. Vagdevata 106. Vagishwari 107. Sarvajna 108. Sarveshwari.`,
+101. Vedamata 102. Vedavidya 103. Sarvada 104. Sarvadaivata 105. Vagdevata 106. Vagishwari 107. Chaturvargaphalaprada 108. Sarveshwari.`,
     meaning: 'This is a list of 108 names of Goddess Saraswati, describing her as the mother of the Vedas (Vedamata), giver of speech (Vagdevi), and embodiment of knowledge, music and the arts in her many forms.',
     benefits: 'Recited or used for Archana with white flowers during Basant Panchami and Navratri, and by students seeking clarity of intellect and academic success.',
   },
@@ -227,7 +227,7 @@ export const NAMAVALIS: DevotionalItem[] = [
 १०१. महारौद्रः १०२. सर्वसन्तापहारकः १०३. निष्ठुरः १०४. न्यायकारकः १०५. प्रजापालकः १०६. सर्वजनप्रियः १०७. सौराष्ट्रनाथः १०८. नीलच्छत्रः`,
     transliteration: `1. Shanaishcharah 2. Shantah 3. Sarvabheeshtapradayakah 4. Sharanyah 5. Varenyah 6. Sarveshah 7. Saumyah 8. Suravanditah 9. Mandah 10. Suryaputrah
 ... (continuing through all 108 names of Shani) ...
-101. Maharaudrah 102. Sarvasantapaharakah 103. Nishthurah 104. Nyayakarakah 105. Prajapalakah 106. Sarvajanapriyah 107. Saurashtranathah 108. Shanaishcharah.`,
+101. Maharaudrah 102. Sarvasantapaharakah 103. Nishthurah 104. Nyayakarakah 105. Prajapalakah 106. Sarvajanapriyah 107. Saurashtranathah 108. Neelachchhatrah.`,
     meaning: 'This is a list of 108 names of Shani (Saturn), describing him as the impartial judge of karma (Nyayadhish), son of Surya, associated with discipline, delay, and justice, and as the one who tests and ultimately rewards perseverance.',
     benefits: 'Recited or used for Archana with black sesame or blue flowers on Saturdays, during Shani Jayanti and Sadhesati, invoking relief from hardship and karmic justice.',
   },
