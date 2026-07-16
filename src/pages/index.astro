@@ -172,9 +172,9 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
       </div>
 
       <!-- Sun times + Muhurtas row -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+      <div id="sun-abhijit-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <!-- Sun & Moon times -->
-        <div class="card" style="padding:24px;">
+        <div class="card" style="padding:24px;min-width:0;">
           <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 16px;">Sun & Moon</p>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;">
             <div>
@@ -197,7 +197,7 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
         </div>
 
         <!-- Abhijit Muhurta -->
-        <div class="card" style="padding:24px;background:var(--color-canvas);">
+        <div class="card" style="padding:24px;background:var(--color-canvas);min-width:0;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
             <p class="caption-mono" style="color:var(--color-data-label);margin:0;">Abhijit Muhurta</p>
             <span class="badge-auspicious badge" style="font-size:10px;">Most Auspicious</span>
@@ -952,6 +952,7 @@ setInterval(() => { const p = calcPanchang(currentDate, currentLoc); drawTimelin
     #festivals-grid { grid-template-columns: 1fr !important; }
     #features-grid { grid-template-columns: 1fr !important; }
     #sun-moon-grid { grid-template-columns: 1fr 1fr !important; }
+    #sun-abhijit-grid { grid-template-columns: 1fr !important; }
   }
 </style>
 </Layout>
