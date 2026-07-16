@@ -64,10 +64,15 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
 
 <style>
   .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
+  @media (max-width:820px){ .lg-layout{ grid-template-columns:1fr !important; } }
+</style>
+
+<style is:global>
+  /* #detail-list content is injected client-side via innerHTML, so it never receives
+     Astro's scoped-style data-astro-cid attribute — these rules must stay global. */
   #detail-list .dl-row { display:flex;justify-content:space-between;gap:10px;font-size:13px; }
   #detail-list .dl-row span:first-child { color:var(--color-mute); }
   #detail-list .dl-row span:last-child { color:var(--color-ink);font-weight:600;text-align:right; }
-  @media (max-width:820px){ .lg-layout{ grid-template-columns:1fr !important; } }
 </style>
 
 <script define:vars={{ RASHI_ICONS }}>
