@@ -9,6 +9,40 @@ this file follows.
 Entries are ordered newest-reported-first. When a bug is fixed, its
 `Status` line is updated in place — entries are never deleted.
 
+## Reporting a new bug
+
+Paste this into a fresh session (fill in the bracketed part):
+
+> I found a bug/problem on PanchangPath (panchangpath.com). Investigate it
+> and log it in `docs/bugs/backlog.md` following that file's existing entry
+> format (see the entries already there for reference, and
+> `docs/superpowers/specs/2026-07-17-bug-backlog-design.md` for the full
+> spec).
+>
+> **What I observed:** [describe the bug — page/URL, what you saw, what you
+> expected instead, steps to reproduce if relevant]
+>
+> Do this:
+> 1. Investigate the codebase to confirm the root cause — don't just record
+>    my description as-is. Identify the exact file(s)/function(s)
+>    responsible, and check whether the same logic is duplicated elsewhere
+>    in the codebase (this project has a lot of copy-pasted math across
+>    `jyotish/*.astro` and `muhurta/*.astro` pages — see CLAUDE.md's
+>    Gotchas).
+> 2. Add a new entry to `docs/bugs/backlog.md`, inserted at the top
+>    (newest-first, both in the index table and the sections below it),
+>    with all required fields: Status (Open), Reported (today's date),
+>    Severity, Affected files, Description, Root cause, and a
+>    self-contained "Claude Code Fix Prompt" — written so a future session
+>    with zero context could paste it in and fix the bug without
+>    re-investigating.
+> 3. Do **not** fix the bug in this pass — this is a logging-only task. No
+>    `src/` changes.
+> 4. Commit the change to `docs/bugs/backlog.md` with a clear commit
+>    message.
+
+---
+
 | Title | Status | Reported |
 |---|---|---|
 | [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Open | 2026-07-16 |
