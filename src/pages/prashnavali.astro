@@ -26,28 +26,28 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
           <span class="hi-text" style="display:none;">प्रश्नावली</span>
         </h1>
         <p style="font-size:18px;color:var(--color-mute);margin:0 0 24px;font-family:var(--font-mono);">प्रश्नावली</p>
-        <p style="font-size:16px;color:var(--color-body-text);max-width:480px;margin:0 auto;line-height:1.7;">
+        <p data-hi="अपनी आंखें बंद करें। गहरी सांस लें। अपने प्रश्न को अपने मन और हृदय में स्पष्ट रूप से रखें। जब आप तैयार हों, तो दैवज्ञ को स्पर्श करें।" style="font-size:16px;color:var(--color-body-text);max-width:480px;margin:0 auto;line-height:1.7;">
           Close your eyes. Breathe deeply. Hold your question clearly in your mind and heart. When you are ready, touch the oracle.
         </p>
       </div>
 
       <!-- Mode toggle -->
       <div style="display:flex;gap:8px;justify-content:center;margin-bottom:32px;">
-        <button class="pv-mode-btn active" id="pv-mode-random">🪷 Touch the Oracle</button>
-        <button class="pv-mode-btn" id="pv-mode-number">🔢 Choose Your Number</button>
+        <button class="pv-mode-btn active" id="pv-mode-random" data-hi="🪷 दैवज्ञ को स्पर्श करें">🪷 Touch the Oracle</button>
+        <button class="pv-mode-btn" id="pv-mode-number" data-hi="🔢 अपना अंक चुनें">🔢 Choose Your Number</button>
       </div>
 
       <!-- Oracle button -->
       <div id="pv-oracle-wrap" style="text-align:center;margin-bottom:40px;">
         <button id="oracle-btn" class="pv-oracle-btn" aria-label="Receive divine answer">
           <span class="pv-lotus" id="btn-icon">🪷</span>
-          <span id="btn-text">Touch to receive</span>
+          <span id="btn-text" data-hi="प्राप्त करने हेतु स्पर्श करें">Touch to receive</span>
         </button>
       </div>
 
       <!-- Number picker grid -->
       <div id="pv-number-section" style="display:none;margin-bottom:40px;">
-        <p style="text-align:center;font-size:13px;color:var(--color-mute);margin:0 0 16px;">Think of your question, then choose any number from 1 to 108.</p>
+        <p data-hi="अपना प्रश्न सोचें, फिर 1 से 108 तक कोई भी अंक चुनें।" style="text-align:center;font-size:13px;color:var(--color-mute);margin:0 0 16px;">Think of your question, then choose any number from 1 to 108.</p>
         <div id="pv-num-grid" class="pv-num-grid"></div>
       </div>
 
@@ -56,13 +56,13 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
         <div class="pv-answer-inner">
           <div class="pv-answer-header">
             <span style="font-size:20px;">✨</span>
-            <span class="caption-mono" style="color:var(--color-saffron-deep);">THE ORACLE SPEAKS</span>
+            <span class="caption-mono" data-hi="दैवज्ञ बोलता है" style="color:var(--color-saffron-deep);">THE ORACLE SPEAKS</span>
             <span style="font-size:20px;">✨</span>
           </div>
           <blockquote id="oracle-answer" class="pv-answer-text"></blockquote>
           <div id="pv-indicator" style="text-align:center;margin-top:16px;"></div>
           <div style="text-align:center;margin-top:20px;">
-            <button id="ask-again-btn" class="pv-again-btn">Ask another question</button>
+            <button id="ask-again-btn" class="pv-again-btn" data-hi="एक और प्रश्न पूछें">Ask another question</button>
           </div>
         </div>
       </div>
@@ -71,24 +71,24 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
       <div id="instructions" class="pv-instructions">
         <div class="pv-step">
           <span class="pv-step-num">1</span>
-          <p>Sit quietly, close your eyes, and settle your mind.</p>
+          <p data-hi="शांति से बैठें, अपनी आंखें बंद करें, और अपने मन को स्थिर करें।">Sit quietly, close your eyes, and settle your mind.</p>
         </div>
         <div class="pv-step">
           <span class="pv-step-num">2</span>
-          <p>Formulate your sincere question clearly in your heart.</p>
+          <p data-hi="अपने हृदय में अपने सच्चे प्रश्न को स्पष्ट रूप से तैयार करें।">Formulate your sincere question clearly in your heart.</p>
         </div>
         <div class="pv-step">
           <span class="pv-step-num">3</span>
-          <p>With devotion, touch the lotus to receive the divine answer.</p>
+          <p data-hi="भक्ति भाव से, दिव्य उत्तर प्राप्त करने के लिए कमल को स्पर्श करें।">With devotion, touch the lotus to receive the divine answer.</p>
         </div>
         <div class="pv-step">
           <span class="pv-step-num">4</span>
-          <p>Receive with an open heart. Trust what the cosmos offers you.</p>
+          <p data-hi="खुले हृदय से स्वीकार करें। ब्रह्मांड जो प्रदान करे उस पर विश्वास करें।">Receive with an open heart. Trust what the cosmos offers you.</p>
         </div>
       </div>
 
       <!-- Info note -->
-      <p style="text-align:center;font-size:12px;color:var(--color-mute);margin-top:40px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;">
+      <p data-hi={`प्रश्नावली में वैदिक ज्ञान से लिए गए ${answerCount} लौकिक उत्तर हैं। दैवज्ञ समकालिकता की भाषा में बोलता है।`} style="text-align:center;font-size:12px;color:var(--color-mute);margin-top:40px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6;">
         Prashnavali contains {answerCount} cosmic answers drawn from Vedic wisdom. The oracle speaks through the language of synchronicity.
       </p>
     </div>
@@ -99,6 +99,7 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
 <script define:vars={{ answers: PRASHNAVALI_ANSWERS }}>
 let revealed = false;
 let numberMode = false;
+let isHindi = false;
 
 const oracleBtn = document.getElementById('oracle-btn');
 const oracleWrap = document.getElementById('pv-oracle-wrap');
@@ -113,9 +114,11 @@ function getIndicatorHtml(text, n) {
   const pos = /success|victory|bless|favou?r|auspici|will come|achieve|joy|good fortune|prosperi|health|grant|fulfill|yes|favorable|granted|accomplish/i.test(text);
   const neg = /fail|delay|obstacle|caution|avoid|difficult|loss|trouble|refrain|postpone|beware|danger|unfavour|not advised|abandon|inauspici/i.test(text);
   const aus = pos || (!neg && n % 3 !== 0);
+  const ausLabel = isHindi ? 'शुभ संकेत' : 'Auspicious Omen';
+  const cautionLabel = isHindi ? 'सावधानी से आगे बढ़ें' : 'Proceed with Caution';
   return aus
-    ? '<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 16px;background:#dcfce7;border-radius:20px;font-size:12px;font-weight:600;color:#15803d;letter-spacing:0.04em;">&#10003; Auspicious Omen</span>'
-    : '<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 16px;background:#fff7ed;border-radius:20px;font-size:12px;font-weight:600;color:#c2410c;letter-spacing:0.04em;">&#9650; Proceed with Caution</span>';
+    ? `<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 16px;background:#dcfce7;border-radius:20px;font-size:12px;font-weight:600;color:#15803d;letter-spacing:0.04em;">&#10003; ${ausLabel}</span>`
+    : `<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 16px;background:#fff7ed;border-radius:20px;font-size:12px;font-weight:600;color:#c2410c;letter-spacing:0.04em;">&#9650; ${cautionLabel}</span>`;
 }
 
 function showAnswer(text, n) {
@@ -185,6 +188,22 @@ document.getElementById('pv-mode-number').addEventListener('click', function() {
 
 oracleBtn?.addEventListener('click', revealAnswer);
 askAgainBtn?.addEventListener('click', resetOracle);
+
+// ── Hindi UI coverage ──
+// LanguagePicker.astro dispatches 'langchange' on document with { langCode }.
+function applyPageLang(hindi) {
+  isHindi = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  document.querySelectorAll('.en-text').forEach(el => { el.style.display = hindi ? 'none' : ''; });
+  document.querySelectorAll('.hi-text').forEach(el => { el.style.display = hindi ? '' : 'none'; });
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
 
 <style>

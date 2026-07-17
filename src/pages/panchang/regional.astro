@@ -31,6 +31,8 @@ const TRADITION_COLORS: Record<string, string> = {
   mr: '#7c3aed', gu: '#b45309', kn: '#1d4ed8', te: '#be185d',
   or: '#dc2626', ne: '#4f46e5', iskcon: '#92400e',
 };
+
+const curYear = today.getFullYear();
 ---
 
 <Layout
@@ -41,14 +43,14 @@ const TRADITION_COLORS: Record<string, string> = {
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:52px 0 44px;">
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
-        <a href="/" style="font-size:13px;color:var(--color-mute);text-decoration:none;">Home</a>
+        <a href="/" data-hi="होम" style="font-size:13px;color:var(--color-mute);text-decoration:none;">Home</a>
         <span style="color:var(--color-hairline);">/</span>
-        <span style="font-size:13px;color:var(--color-mute);">Regional Panchang</span>
+        <span data-hi="क्षेत्रीय पंचांग" style="font-size:13px;color:var(--color-mute);">Regional Panchang</span>
       </div>
-      <h1 style="font-size:38px;font-weight:700;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 14px;line-height:1.1;">
+      <h1 data-hi="आपकी भाषा में पंचांग" style="font-size:38px;font-weight:700;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 14px;line-height:1.1;">
         Panchang in Your Language
       </h1>
-      <p style="font-size:16px;color:var(--color-body-text);max-width:580px;margin:0 0 28px;line-height:1.65;">
+      <p data-hi="प्रामाणिक महीनों के नाम, क्षेत्रीय वर्ष प्रणालियों और लिपियों के साथ 11 भारतीय क्षेत्रीय परंपराओं में आज का पंचांग देखें।" style="font-size:16px;color:var(--color-body-text);max-width:580px;margin:0 0 28px;line-height:1.65;">
         Explore today's Panchang across 11 Indian regional traditions — each with authentic month names, regional year systems, and scripts.
       </p>
       <!-- Language script showcase -->
@@ -93,7 +95,7 @@ const TRADITION_COLORS: Record<string, string> = {
 
               <!-- Tithi preview -->
               <div class="reg-tithi">
-                <span class="reg-tithi-label">Tithi</span>
+                <span class="reg-tithi-label" data-hi="तिथि">Tithi</span>
                 <span class="reg-tithi-val">{tithiName} · {paksha}</span>
               </div>
 
@@ -112,38 +114,57 @@ const TRADITION_COLORS: Record<string, string> = {
   <!-- ── Calendar systems explainer ────────────────────────────────────── -->
   <section style="background:var(--color-canvas-soft);border-top:1px solid var(--color-hairline);border-bottom:1px solid var(--color-hairline);padding:48px 0;">
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
-      <h2 style="font-size:22px;font-weight:700;color:var(--color-ink);margin:0 0 28px;letter-spacing:-0.5px;">
+      <h2 data-hi="कैलेंडर प्रणालियाँ एक नज़र में" style="font-size:22px;font-weight:700;color:var(--color-ink);margin:0 0 28px;letter-spacing:-0.5px;">
         Calendar Systems at a Glance
       </h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;">
         <div class="cs-card">
-          <h3 class="cs-title">☀️ Solar Calendar</h3>
-          <p class="cs-body">Month changes when the Sun transits from one Rashi to the next. Used by Tamil, Bengali, Assamese, Malayalam, and Nepali traditions.</p>
+          <h3 class="cs-title" data-hi="☀️ सौर कैलेंडर">☀️ Solar Calendar</h3>
+          <p class="cs-body" data-hi="जब सूर्य एक राशि से दूसरी राशि में गोचर करता है तब महीना बदलता है। तमिल, बंगाली, असमिया, मलयालम और नेपाली परंपराओं में उपयोग होता है।">Month changes when the Sun transits from one Rashi to the next. Used by Tamil, Bengali, Assamese, Malayalam, and Nepali traditions.</p>
         </div>
         <div class="cs-card">
-          <h3 class="cs-title">🌙 Lunar Calendar</h3>
-          <p class="cs-body">Month determined by the Moon's position in the lunar cycle. Used by Marathi, Gujarati, Kannada, Telugu, Odia, and ISKCON traditions.</p>
+          <h3 class="cs-title" data-hi="🌙 चंद्र कैलेंडर">🌙 Lunar Calendar</h3>
+          <p class="cs-body" data-hi="महीना चंद्रमा की चंद्र चक्र में स्थिति से निर्धारित होता है। मराठी, गुजराती, कन्नड़, तेलुगु, ओडिया और इस्कॉन परंपराओं में उपयोग होता है।">Month determined by the Moon's position in the lunar cycle. Used by Marathi, Gujarati, Kannada, Telugu, Odia, and ISKCON traditions.</p>
         </div>
         <div class="cs-card">
-          <h3 class="cs-title">📅 Vikram Samvat</h3>
-          <p class="cs-body">Most widely used Hindu era. Currently VS {new Date().getFullYear() + 57}. New year falls on Chaitra Shukla Pratipada (Ugadi/Gudi Padwa).</p>
+          <h3 class="cs-title" data-hi="📅 विक्रम संवत">📅 Vikram Samvat</h3>
+          <p class="cs-body" data-hi={`सबसे व्यापक रूप से उपयोग होने वाला हिंदू युग। वर्तमान में VS ${curYear + 57}। नववर्ष चैत्र शुक्ल प्रतिपदा (उगादी/गुड़ी पड़वा) को पड़ता है।`}>Most widely used Hindu era. Currently VS {curYear + 57}. New year falls on Chaitra Shukla Pratipada (Ugadi/Gudi Padwa).</p>
         </div>
         <div class="cs-card">
-          <h3 class="cs-title">📅 Shalivahana Saka</h3>
-          <p class="cs-body">Used in Karnataka and Andhra Pradesh. Saka = VS − 135. Government of India's national calendar is based on the Saka era.</p>
+          <h3 class="cs-title" data-hi="📅 शालिवाहन शक">📅 Shalivahana Saka</h3>
+          <p class="cs-body" data-hi="कर्नाटक और आंध्र प्रदेश में उपयोग होता है। शक = VS − 135। भारत सरकार का राष्ट्रीय कैलेंडर शक युग पर आधारित है।">Used in Karnataka and Andhra Pradesh. Saka = VS − 135. Government of India's national calendar is based on the Saka era.</p>
         </div>
         <div class="cs-card">
-          <h3 class="cs-title">📅 Bangabda</h3>
-          <p class="cs-body">Bengali solar year = Gregorian − 593 (after Poila Boishakh in April). Currently {new Date().getFullYear() - 593} Bangabda.</p>
+          <h3 class="cs-title" data-hi="📅 बंगाब्द">📅 Bangabda</h3>
+          <p class="cs-body" data-hi={`बंगाली सौर वर्ष = ग्रेगोरियन − 593 (अप्रैल में पोइला बोइशाख के बाद)। वर्तमान में ${curYear - 593} बंगाब्द।`}>Bengali solar year = Gregorian − 593 (after Poila Boishakh in April). Currently {curYear - 593} Bangabda.</p>
         </div>
         <div class="cs-card">
-          <h3 class="cs-title">📅 Kolla Varsham</h3>
-          <p class="cs-body">Malayalam solar year starting when Sun enters Simha (Chingam 1 ≈ August 17). Currently {new Date().getFullYear() - 825} KV.</p>
+          <h3 class="cs-title" data-hi="📅 कोल्ल वर्षम्">📅 Kolla Varsham</h3>
+          <p class="cs-body" data-hi={`मलयालम सौर वर्ष जब सूर्य सिंह राशि में प्रवेश करता है तब शुरू होता है (चिंगम 1 ≈ 17 अगस्त)। वर्तमान में ${curYear - 825} KV।`}>Malayalam solar year starting when Sun enters Simha (Chingam 1 ≈ August 17). Currently {curYear - 825} KV.</p>
         </div>
       </div>
     </div>
   </section>
 </Layout>
+
+<script>
+// ── Hindi UI coverage ──
+// LanguagePicker.astro dispatches 'langchange' on document with { langCode }.
+// This page's own static chrome (breadcrumb, hero, explainer section) responds;
+// the regional tradition names/month/tithi data are a separate, intentional axis
+// (see CLAUDE.md) and are left untouched here.
+function applyPageLang(hindi: boolean) {
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+}
+document.addEventListener('langchange', (e: Event) => {
+  const evt = e as CustomEvent;
+  applyPageLang(evt.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>
 
 <style>
 .reg-grid {

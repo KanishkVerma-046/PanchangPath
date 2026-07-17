@@ -15,21 +15,21 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
   <!-- Hero -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 36px;">
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
-      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Jyotish · Vedic Astrology</p>
+      <p class="caption-mono" data-hi="ज्योतिष · वैदिक ज्योतिष शास्त्र" style="color:var(--color-mute);margin:0 0 10px;">Jyotish · Vedic Astrology</p>
       <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 12px;">
         <span class="en-text">Today's Rashifal</span>
         <span class="hi-text" style="display:none;">आज का राशिफल</span>
       </h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0 0 24px;max-width:560px;line-height:1.6;">
+      <p data-hi="ग्रहों की स्थिति और ज्योतिष सिद्धांतों पर आधारित सभी 12 वैदिक राशियों का दैनिक राशिफल।" style="font-size:15px;color:var(--color-body-text);margin:0 0 24px;max-width:560px;line-height:1.6;">
         Daily horoscope for all 12 Vedic rashis based on planetary positions and Jyotish principles.
       </p>
 
       <!-- Period tabs -->
       <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-        <button class="period-btn active" data-period="daily">Daily</button>
-        <button class="period-btn" data-period="weekly">Weekly</button>
-        <button class="period-btn" data-period="monthly">Monthly</button>
-        <button class="period-btn" data-period="yearly">Yearly</button>
+        <button class="period-btn active" data-period="daily" data-hi="दैनिक">Daily</button>
+        <button class="period-btn" data-period="weekly" data-hi="साप्ताहिक">Weekly</button>
+        <button class="period-btn" data-period="monthly" data-hi="मासिक">Monthly</button>
+        <button class="period-btn" data-period="yearly" data-hi="वार्षिक">Yearly</button>
         <span style="font-size:12px;color:var(--color-mute);margin-left:8px;font-family:var(--font-mono);">{dateLabel}</span>
       </div>
     </div>
@@ -54,7 +54,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
                   <span class="rfi-name-hi hi-text" style="display:none;">{rashi.nameHi}</span>
                   <span class="rfi-eng"> — {rashi.english}</span>
                 </div>
-                <span class="rfi-lord-pill">{rashi.lord}</span>
+                <span class="rfi-lord-pill" data-hi={rashi.lordHi}>{rashi.lord}</span>
               </div>
 
               <!-- Prediction content area — all periods pre-rendered, toggled by JS -->
@@ -73,7 +73,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
                     <span class="rfi-lucky-item">🔢 {rashi.luckyNumbers.join(', ')}</span>
                     <span class="rfi-lucky-item">📅 {rashi.luckyDay}</span>
                   </div>
-                  <a href={`/rashifal/${rashi.id}`} class="rfi-detail-link">
+                  <a href={`/rashifal/${rashi.id}`} class="rfi-detail-link" data-hi="पूर्ण भविष्यवाणी →">
                     Full prediction →
                   </a>
                 </div>
@@ -93,9 +93,9 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
         <!-- Prashnavali -->
         <a href="/prashnavali" class="tool-card prashnavali-card">
           <div style="font-size:40px;margin-bottom:12px;">🔮</div>
-          <p style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">Prashnavali</p>
-          <p style="font-size:13px;color:var(--color-body-text);margin:0 0 16px;line-height:1.6;">Think of a question, focus your mind, and receive a divine answer from the cosmic oracle.</p>
-          <span style="font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open Oracle →</span>
+          <p data-hi="प्रश्नावली" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">Prashnavali</p>
+          <p data-hi="एक प्रश्न सोचें, अपना मन केंद्रित करें, और लौकिक दैवज्ञ से दिव्य उत्तर प्राप्त करें।" style="font-size:13px;color:var(--color-body-text);margin:0 0 16px;line-height:1.6;">Think of a question, focus your mind, and receive a divine answer from the cosmic oracle.</p>
+          <span data-hi="दैवज्ञ खोलें →" style="font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open Oracle →</span>
         </a>
 
         <!-- Find by Name -->
@@ -105,12 +105,12 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             <span class="en-text">Find Rashi by Name</span>
             <span class="hi-text" style="display:none;">नाम से राशि</span>
           </p>
-          <p style="font-size:13px;color:var(--color-body-text);margin:0 0 12px;line-height:1.6;">
+          <p data-hi="वैदिक परंपरा में, आपकी जन्म राशि आपके जन्म नाम के पहले अक्षर से जुड़ी होती है।" style="font-size:13px;color:var(--color-body-text);margin:0 0 12px;line-height:1.6;">
             In Vedic tradition, your Janma Rashi is linked to the first syllable of your birth name.
           </p>
           <div style="display:flex;gap:6px;">
             <input type="text" id="name-input-full" class="tool-input" placeholder="First name…" maxlength="40" />
-            <button class="tool-btn" id="name-btn-full">Find</button>
+            <button class="tool-btn" id="name-btn-full" data-hi="खोजें">Find</button>
           </div>
           <p id="name-res-full" class="tool-result" hidden></p>
         </div>
@@ -122,12 +122,12 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             <span class="en-text">Find Rashi by Birth Date</span>
             <span class="hi-text" style="display:none;">जन्म तिथि से राशि</span>
           </p>
-          <p style="font-size:13px;color:var(--color-body-text);margin:0 0 12px;line-height:1.6;">
+          <p data-hi="जन्म तिथि का उपयोग करते हुए वैदिक सायन गणनाओं के आधार पर अपनी सूर्य राशि जानें।" style="font-size:13px;color:var(--color-body-text);margin:0 0 12px;line-height:1.6;">
             Discover your Surya (Sun) Rashi based on Vedic sidereal calculations using your date of birth.
           </p>
           <div style="display:flex;gap:6px;">
             <input type="date" id="dob-input-full" class="tool-input" />
-            <button class="tool-btn" id="dob-btn-full">Find</button>
+            <button class="tool-btn" id="dob-btn-full" data-hi="खोजें">Find</button>
           </div>
           <p id="dob-res-full" class="tool-result" hidden></p>
         </div>
@@ -140,6 +140,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
 <script>
 // Period toggle
 let activePeriod = 'daily';
+let isHindi = false;
 
 function setPeriod(period: string) {
   activePeriod = period;
@@ -208,7 +209,9 @@ function findByDate(ds: string): string {
 }
 function showRes(el: HTMLElement, rashi: string) {
   const slug = RASHI_SLUG[rashi] ?? rashi.toLowerCase();
-  el.innerHTML = `Your Rashi: <strong>${rashi} (${RASHI_HI[rashi] ?? ''})</strong> — <a href="/rashifal/${slug}" style="color:var(--color-saffron-deep);font-weight:600;">View prediction →</a>`;
+  const label = isHindi ? 'आपकी राशि: ' : 'Your Rashi: ';
+  const linkText = isHindi ? 'भविष्यवाणी देखें →' : 'View prediction →';
+  el.innerHTML = `${label}<strong>${rashi} (${RASHI_HI[rashi] ?? ''})</strong> — <a href="/rashifal/${slug}" style="color:var(--color-saffron-deep);font-weight:600;">${linkText}</a>`;
   el.hidden = false;
 }
 
@@ -216,16 +219,44 @@ document.getElementById('name-btn-full')?.addEventListener('click', () => {
   const val = (document.getElementById('name-input-full') as HTMLInputElement)?.value ?? '';
   const res = document.getElementById('name-res-full') as HTMLElement;
   const r = findByName(val);
-  if (r) showRes(res, r); else { res.textContent = 'Could not determine Rashi. Try the birth date tool.'; res.hidden = false; }
+  if (r) showRes(res, r); else {
+    res.textContent = isHindi ? 'राशि निर्धारित नहीं हो सकी। जन्म तिथि टूल आज़माएं।' : 'Could not determine Rashi. Try the birth date tool.';
+    res.hidden = false;
+  }
 });
 document.getElementById('dob-btn-full')?.addEventListener('click', () => {
   const val = (document.getElementById('dob-input-full') as HTMLInputElement)?.value ?? '';
   const res = document.getElementById('dob-res-full') as HTMLElement;
-  if (!val) { res.textContent = 'Please select a date.'; res.hidden = false; return; }
+  if (!val) {
+    res.textContent = isHindi ? 'कृपया एक तिथि चुनें।' : 'Please select a date.';
+    res.hidden = false;
+    return;
+  }
   showRes(res, findByDate(val));
 });
 document.getElementById('name-input-full')?.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') document.getElementById('name-btn-full')?.click(); });
 document.getElementById('dob-input-full')?.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') document.getElementById('dob-btn-full')?.click(); });
+
+// ── Hindi UI coverage ──
+// LanguagePicker.astro dispatches 'langchange' on document with { langCode }.
+// Toggles every [data-hi] element's text and every .en-text/.hi-text pair
+// (rashi card names, tool card headings) already present in this page's markup.
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  document.querySelectorAll<HTMLElement>('.en-text').forEach(el => { el.style.display = hindi ? 'none' : ''; });
+  document.querySelectorAll<HTMLElement>('.hi-text').forEach(el => { el.style.display = hindi ? '' : 'none'; });
+  const nameInput = document.getElementById('name-input-full') as HTMLInputElement | null;
+  if (nameInput) nameInput.placeholder = hindi ? 'पहला नाम…' : 'First name…';
+}
+document.addEventListener('langchange', (e: Event) => {
+  const evt = e as CustomEvent;
+  applyPageLang(evt.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
 
 <style>

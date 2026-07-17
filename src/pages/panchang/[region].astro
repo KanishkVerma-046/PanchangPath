@@ -64,9 +64,9 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
       <!-- Breadcrumb -->
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:13px;">
-        <a href="/" style="color:var(--color-mute);text-decoration:none;">Home</a>
+        <a href="/" data-hi="होम" style="color:var(--color-mute);text-decoration:none;">Home</a>
         <span style="color:var(--color-hairline);">/</span>
-        <a href="/panchang/regional" style="color:var(--color-mute);text-decoration:none;">Regional Panchang</a>
+        <a href="/panchang/regional" data-hi="क्षेत्रीय पंचांग" style="color:var(--color-mute);text-decoration:none;">Regional Panchang</a>
         <span style="color:var(--color-hairline);">/</span>
         <span style="color:var(--color-body-text);">{regionDef.calendarName}</span>
       </div>
@@ -93,19 +93,19 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
         <!-- Right: quick stats pill row -->
         <div class="rp-pills">
           <div class="rp-pill">
-            <span class="rp-pill-label">Tithi</span>
+            <span class="rp-pill-label" data-hi="तिथि">Tithi</span>
             <span class="rp-pill-val" style={`color:${accent};`}>{tithiName}</span>
           </div>
           <div class="rp-pill">
-            <span class="rp-pill-label">Paksha</span>
+            <span class="rp-pill-label" data-hi="पक्ष">Paksha</span>
             <span class="rp-pill-val">{pakshaName}</span>
           </div>
           <div class="rp-pill">
-            <span class="rp-pill-label">Nakshatra</span>
+            <span class="rp-pill-label" data-hi="नक्षत्र">Nakshatra</span>
             <span class="rp-pill-val">{nakName}</span>
           </div>
           <div class="rp-pill">
-            <span class="rp-pill-label">Vara</span>
+            <span class="rp-pill-label" data-hi="वार">Vara</span>
             <span class="rp-pill-val">{varName}</span>
           </div>
         </div>
@@ -188,59 +188,59 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
           </div>
 
           <!-- ── Sun / Moon timings ─────────────────────────────────── -->
-          <h2 class="section-head" style={`border-left:3px solid ${accent};margin-top:32px;`}>
+          <h2 class="section-head" data-hi="सूर्य और चंद्र समय" style={`border-left:3px solid ${accent};margin-top:32px;`}>
             Sun & Moon Timings
           </h2>
           <div class="rp-timing-grid">
             <div class="rp-timing-card">
               <span class="rp-timing-icon">🌅</span>
               <div>
-                <p class="rp-timing-label">Sunrise</p>
+                <p class="rp-timing-label" data-hi="सूर्योदय">Sunrise</p>
                 <p class="rp-timing-val">{p.sunrise}</p>
               </div>
             </div>
             <div class="rp-timing-card">
               <span class="rp-timing-icon">🌇</span>
               <div>
-                <p class="rp-timing-label">Sunset</p>
+                <p class="rp-timing-label" data-hi="सूर्यास्त">Sunset</p>
                 <p class="rp-timing-val">{p.sunset}</p>
               </div>
             </div>
             <div class="rp-timing-card">
               <span class="rp-timing-icon">🌕</span>
               <div>
-                <p class="rp-timing-label">Moonrise</p>
+                <p class="rp-timing-label" data-hi="चंद्रोदय">Moonrise</p>
                 <p class="rp-timing-val">{p.moonrise}</p>
               </div>
             </div>
             <div class="rp-timing-card">
               <span class="rp-timing-icon">⏱️</span>
               <div>
-                <p class="rp-timing-label">Day Duration</p>
+                <p class="rp-timing-label" data-hi="दिन की अवधि">Day Duration</p>
                 <p class="rp-timing-val">{p.durationDay}</p>
               </div>
             </div>
           </div>
 
           <!-- ── Inauspicious periods ───────────────────────────────── -->
-          <h2 class="section-head" style={`border-left:3px solid ${accent};margin-top:32px;`}>
+          <h2 class="section-head" data-hi="अशुभ काल" style={`border-left:3px solid ${accent};margin-top:32px;`}>
             Inauspicious Periods
           </h2>
           <div class="rp-kalam-grid">
             <div class="rp-kalam-card">
-              <p class="rp-kalam-name">🚫 Rahu Kalam</p>
+              <p class="rp-kalam-name" data-hi="🚫 राहु काल">🚫 Rahu Kalam</p>
               <p class="rp-kalam-time">{p.rahuKalam.start} – {p.rahuKalam.end}</p>
             </div>
             <div class="rp-kalam-card">
-              <p class="rp-kalam-name">⚠️ Gulika Kalam</p>
+              <p class="rp-kalam-name" data-hi="⚠️ गुलिक काल">⚠️ Gulika Kalam</p>
               <p class="rp-kalam-time">{p.gulikaKalam.start} – {p.gulikaKalam.end}</p>
             </div>
             <div class="rp-kalam-card">
-              <p class="rp-kalam-name">⚠️ Yamaganda</p>
+              <p class="rp-kalam-name" data-hi="⚠️ यमगण्ड">⚠️ Yamaganda</p>
               <p class="rp-kalam-time">{p.yamaganda.start} – {p.yamaganda.end}</p>
             </div>
             <div class="rp-kalam-card" style="border-color:var(--color-saffron);">
-              <p class="rp-kalam-name">✨ Abhijit Muhurta</p>
+              <p class="rp-kalam-name" data-hi="✨ अभिजीत मुहूर्त">✨ Abhijit Muhurta</p>
               <p class="rp-kalam-time">{p.abhijitMuhurta.start} – {p.abhijitMuhurta.end}</p>
             </div>
           </div>
@@ -270,19 +270,19 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
             <h3 class="rp-info-title">{regionDef.calendarName}</h3>
             <p class="rp-info-body">{regionDef.description}</p>
             <div class="rp-info-row">
-              <span class="rp-info-key">Script</span>
+              <span class="rp-info-key" data-hi="लिपि">Script</span>
               <span class="rp-info-val">{regionDef.script}</span>
             </div>
             <div class="rp-info-row">
-              <span class="rp-info-key">Calendar</span>
-              <span class="rp-info-val">{regionDef.monthSystem === 'solar' ? 'Solar (Sauramana)' : 'Lunar (Chandramana)'}</span>
+              <span class="rp-info-key" data-hi="कैलेंडर">Calendar</span>
+              <span class="rp-info-val" data-hi={regionDef.monthSystem === 'solar' ? 'सौर (सौरमान)' : 'चंद्र (चांद्रमान)'}>{regionDef.monthSystem === 'solar' ? 'Solar (Sauramana)' : 'Lunar (Chandramana)'}</span>
             </div>
             <div class="rp-info-row">
-              <span class="rp-info-key">Year era</span>
+              <span class="rp-info-key" data-hi="युग">Year era</span>
               <span class="rp-info-val">{yearInfo.era}</span>
             </div>
             <div class="rp-info-row">
-              <span class="rp-info-key">Current year</span>
+              <span class="rp-info-key" data-hi="वर्तमान वर्ष">Current year</span>
               <span class="rp-info-val" style={`color:${accent};font-weight:700;`}>{yearInfo.num}</span>
             </div>
           </div>
@@ -295,14 +295,14 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
 
           <!-- Month names list -->
           <div class="rp-months-card">
-            <h3 class="rp-months-title">12 Months in {regionDef.name}</h3>
+            <h3 class="rp-months-title" data-hi={`${regionDef.name} में 12 महीने`}>12 Months in {regionDef.name}</h3>
             <div class="rp-months-list">
               {regionDef.months.map((m, i) => (
                 <div class={`rp-month-item ${m === monthName ? 'rp-month-current' : ''}`}
                   style={m === monthName ? `border-color:${accent};background:var(--color-saffron-soft);` : ''}>
                   <span class="rp-month-num">{i + 1}</span>
                   <span class="rp-month-name">{m}</span>
-                  {m === monthName && <span class="rp-month-badge" style={`background:${accent};`}>Now</span>}
+                  {m === monthName && <span class="rp-month-badge" data-hi="अभी" style={`background:${accent};`}>Now</span>}
                 </div>
               ))}
             </div>
@@ -310,10 +310,10 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
 
           <!-- Link back + other traditions -->
           <div class="rp-other-card">
-            <a href="/panchang/regional" class="rp-back-link">
+            <a href="/panchang/regional" class="rp-back-link" data-hi="← सभी क्षेत्रीय पंचांग">
               ← All Regional Panchangs
             </a>
-            <p class="rp-other-head">Other traditions</p>
+            <p class="rp-other-head" data-hi="अन्य परंपराएँ">Other traditions</p>
             <div class="rp-other-list">
               {REGIONS.filter(r => r.slug !== slug).slice(0, 5).map(r => (
                 <a href={`/panchang/${r.slug}`} class="rp-other-link">
@@ -328,6 +328,25 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
     </div>
   </section>
 </Layout>
+
+<script>
+// ── Hindi UI coverage ──
+// LanguagePicker.astro dispatches 'langchange' on document with { langCode }.
+// This page's own static chrome (breadcrumb, section headings, pill/sidebar labels)
+// responds; the regional tradition's own name/month/tithi/nakshatra data is a
+// separate, intentional axis (see CLAUDE.md) and is left untouched here.
+function applyPageLang(hindi: boolean) {
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+}
+document.addEventListener('langchange', (e: Event) => {
+  const evt = e as CustomEvent;
+  applyPageLang(evt.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>
 
 <style>
 /* ── Hero ── */

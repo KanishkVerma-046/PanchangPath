@@ -13,6 +13,11 @@ const { rashi } = Astro.props;
 
 const today = new Date();
 const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const dateLabelHi = today.toLocaleDateString('hi-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const monthYearLabel = today.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+const monthYearLabelHi = today.toLocaleDateString('hi-IN', { month: 'long', year: 'numeric' });
+const ELEMENT_HI: Record<string, string> = { Fire: 'अग्नि', Earth: 'पृथ्वी', Air: 'वायु', Water: 'जल' };
+const QUALITY_HI: Record<string, string> = { Cardinal: 'चर', Fixed: 'स्थिर', Mutable: 'द्विस्वभाव' };
 const daily = getDailyPrediction(rashi, today);
 const weekly = getWeeklyPrediction(rashi, today);
 const monthly = getMonthlyPrediction(rashi, today);
@@ -38,9 +43,9 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
   <div style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:10px 0;">
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
       <nav style="font-size:12.5px;color:var(--color-mute);">
-        <a href="/" style="color:var(--color-mute);text-decoration:none;">Home</a>
+        <a href="/" data-hi="होम" style="color:var(--color-mute);text-decoration:none;">Home</a>
         <span style="margin:0 6px;">›</span>
-        <a href="/rashifal" style="color:var(--color-mute);text-decoration:none;">Rashifal</a>
+        <a href="/rashifal" data-hi="राशिफल" style="color:var(--color-mute);text-decoration:none;">Rashifal</a>
         <span style="margin:0 6px;">›</span>
         <span style="color:var(--color-ink);">{rashi.name}</span>
       </nav>
@@ -55,7 +60,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
           <RashiIcon name={rashi.id} color="#fff" size={64} />
         </div>
         <div>
-          <p style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 6px;font-family:var(--font-mono);">
+          <p data-hi={`${ELEMENT_HI[rashi.element] ?? rashi.element} · ${QUALITY_HI[rashi.quality] ?? rashi.quality}`} style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.1em;margin:0 0 6px;font-family:var(--font-mono);">
             {rashi.element} · {rashi.quality}
           </p>
           <h1 style="font-size:40px;font-weight:700;letter-spacing:-1.5px;color:#fff;margin:0 0 4px;">
@@ -86,10 +91,10 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
 
           <!-- Period tabs -->
           <div style="display:flex;gap:4px;margin-bottom:24px;flex-wrap:wrap;">
-            <button class="rp-tab active" data-period="daily">📅 Daily</button>
-            <button class="rp-tab" data-period="weekly">🗓️ Weekly</button>
-            <button class="rp-tab" data-period="monthly">📆 Monthly</button>
-            <button class="rp-tab" data-period="yearly">🌟 Yearly</button>
+            <button class="rp-tab active" data-period="daily" data-hi="📅 दैनिक">📅 Daily</button>
+            <button class="rp-tab" data-period="weekly" data-hi="🗓️ साप्ताहिक">🗓️ Weekly</button>
+            <button class="rp-tab" data-period="monthly" data-hi="📆 मासिक">📆 Monthly</button>
+            <button class="rp-tab" data-period="yearly" data-hi="🌟 वार्षिक">🌟 Yearly</button>
           </div>
 
           <!-- Daily prediction -->
@@ -98,8 +103,8 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">☀️</span>
                 <div>
-                  <p class="caption-mono" style="color:var(--color-mute);margin:0;">Daily Rashifal</p>
-                  <p style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
+                  <p class="caption-mono" data-hi="दैनिक राशिफल" style="color:var(--color-mute);margin:0;">Daily Rashifal</p>
+                  <p data-hi={dateLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
                 </div>
               </div>
               <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{daily}</p>
@@ -112,8 +117,8 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">🗓️</span>
                 <div>
-                  <p class="caption-mono" style="color:var(--color-mute);margin:0;">Weekly Rashifal</p>
-                  <p style="font-size:13px;color:var(--color-body-text);margin:0;">Current week's overview</p>
+                  <p class="caption-mono" data-hi="साप्ताहिक राशिफल" style="color:var(--color-mute);margin:0;">Weekly Rashifal</p>
+                  <p data-hi="वर्तमान सप्ताह का अवलोकन" style="font-size:13px;color:var(--color-body-text);margin:0;">Current week's overview</p>
                 </div>
               </div>
               <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{weekly}</p>
@@ -126,9 +131,9 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">📆</span>
                 <div>
-                  <p class="caption-mono" style="color:var(--color-mute);margin:0;">Monthly Rashifal</p>
-                  <p style="font-size:13px;color:var(--color-body-text);margin:0;">
-                    {today.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}
+                  <p class="caption-mono" data-hi="मासिक राशिफल" style="color:var(--color-mute);margin:0;">Monthly Rashifal</p>
+                  <p data-hi={monthYearLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">
+                    {monthYearLabel}
                   </p>
                 </div>
               </div>
@@ -142,8 +147,8 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">🌟</span>
                 <div>
-                  <p class="caption-mono" style="color:var(--color-mute);margin:0;">Yearly Rashifal</p>
-                  <p style="font-size:13px;color:var(--color-body-text);margin:0;">{today.getFullYear()} Overview</p>
+                  <p class="caption-mono" data-hi="वार्षिक राशिफल" style="color:var(--color-mute);margin:0;">Yearly Rashifal</p>
+                  <p data-hi={`${today.getFullYear()} अवलोकन`} style="font-size:13px;color:var(--color-body-text);margin:0;">{today.getFullYear()} Overview</p>
                 </div>
               </div>
               <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{yearly}</p>
@@ -154,10 +159,10 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
           <a href="/prashnavali" class="card" style="display:flex;align-items:center;gap:16px;padding:20px 24px;margin-top:12px;text-decoration:none;background:linear-gradient(135deg,var(--color-saffron-soft) 0%,var(--color-canvas) 100%);border:1px solid rgba(255,153,51,0.2);">
             <span style="font-size:32px;">🔮</span>
             <div>
-              <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">Ask the Prashnavali Oracle</p>
-              <p style="font-size:12.5px;color:var(--color-body-text);margin:0;">Focus on your deepest question and receive a divine cosmic answer</p>
+              <p data-hi="प्रश्नावली दैवज्ञ से पूछें" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">Ask the Prashnavali Oracle</p>
+              <p data-hi="अपने गहनतम प्रश्न पर ध्यान केंद्रित करें और एक दिव्य लौकिक उत्तर प्राप्त करें" style="font-size:12.5px;color:var(--color-body-text);margin:0;">Focus on your deepest question and receive a divine cosmic answer</p>
             </div>
-            <span style="margin-left:auto;font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open →</span>
+            <span data-hi="खोलें →" style="margin-left:auto;font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open →</span>
           </a>
         </div>
 
@@ -165,43 +170,43 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
         <aside class="rd-sidebar">
           <!-- Rashi details -->
           <div class="card" style="padding:20px;margin-bottom:12px;">
-            <p class="caption-mono" style="color:var(--color-mute);margin:0 0 16px;">{rashi.name} · Overview</p>
+            <p class="caption-mono" data-hi={`${rashi.name} · अवलोकन`} style="color:var(--color-mute);margin:0 0 16px;">{rashi.name} · Overview</p>
             <div class="rd-info-grid">
               <div class="rd-info-item">
-                <span class="rd-info-label">Ruling Planet</span>
+                <span class="rd-info-label" data-hi="स्वामी ग्रह">Ruling Planet</span>
                 <span class="rd-info-val">{rashi.lord} ({rashi.lordHi})</span>
               </div>
               <div class="rd-info-item">
-                <span class="rd-info-label">Element</span>
-                <span class="rd-info-val">{rashi.element}</span>
+                <span class="rd-info-label" data-hi="तत्व">Element</span>
+                <span class="rd-info-val" data-hi={ELEMENT_HI[rashi.element] ?? rashi.element}>{rashi.element}</span>
               </div>
               <div class="rd-info-item">
-                <span class="rd-info-label">Quality</span>
-                <span class="rd-info-val">{rashi.quality}</span>
+                <span class="rd-info-label" data-hi="गुण">Quality</span>
+                <span class="rd-info-val" data-hi={QUALITY_HI[rashi.quality] ?? rashi.quality}>{rashi.quality}</span>
               </div>
               <div class="rd-info-item">
-                <span class="rd-info-label">Lucky Color</span>
+                <span class="rd-info-label" data-hi="भाग्यशाली रंग">Lucky Color</span>
                 <span class="rd-info-val" style="display:flex;align-items:center;gap:6px;">
                   <span style={`width:12px;height:12px;border-radius:50%;background:${rashi.luckyColorHex};flex-shrink:0;`}></span>
                   {rashi.luckyColor}
                 </span>
               </div>
               <div class="rd-info-item">
-                <span class="rd-info-label">Lucky Numbers</span>
+                <span class="rd-info-label" data-hi="भाग्यशाली अंक">Lucky Numbers</span>
                 <span class="rd-info-val">{rashi.luckyNumbers.join(', ')}</span>
               </div>
               <div class="rd-info-item">
-                <span class="rd-info-label">Lucky Day</span>
+                <span class="rd-info-label" data-hi="भाग्यशाली दिन">Lucky Day</span>
                 <span class="rd-info-val">{rashi.luckyDay}</span>
               </div>
               <div class="rd-info-item">
-                <span class="rd-info-label">Symbol</span>
+                <span class="rd-info-label" data-hi="प्रतीक">Symbol</span>
                 <span class="rd-info-val" style="display:flex;align-items:center;gap:5px;">
                   <RashiIcon name={rashi.id} size={14} /> {rashi.english}
                 </span>
               </div>
               <div class="rd-info-item">
-                <span class="rd-info-label">Name Letters</span>
+                <span class="rd-info-label" data-hi="नाम अक्षर">Name Letters</span>
                 <span class="rd-info-val" style="font-size:11.5px;">{rashi.nameLetters.join(', ')}</span>
               </div>
             </div>
@@ -209,7 +214,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
 
           <!-- All 12 rashis quick nav -->
           <div class="card" style="padding:20px;">
-            <p class="caption-mono" style="color:var(--color-mute);margin:0 0 14px;">All Rashis</p>
+            <p class="caption-mono" data-hi="सभी राशियाँ" style="color:var(--color-mute);margin:0 0 14px;">All Rashis</p>
             <div class="rd-rashi-nav">
               {allRashis.map(r => (
                 <a
@@ -218,7 +223,8 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   title={r.english}
                 >
                   <RashiIcon name={r.id} size={14} class="rd-rashi-sym" />
-                  <span class="rd-rashi-nm">{r.name}</span>
+                  <span class="rd-rashi-nm en-text">{r.name}</span>
+                  <span class="rd-rashi-nm hi-text" style="display:none;">{r.nameHi}</span>
                 </a>
               ))}
             </div>
@@ -241,6 +247,22 @@ document.querySelectorAll<HTMLButtonElement>('.rp-tab').forEach(btn => {
     });
   });
 });
+
+// ── Hindi UI coverage ──
+// LanguagePicker.astro dispatches 'langchange' on document with { langCode }.
+function applyPageLang(hindi: boolean) {
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  document.querySelectorAll<HTMLElement>('.en-text').forEach(el => { el.style.display = hindi ? 'none' : ''; });
+  document.querySelectorAll<HTMLElement>('.hi-text').forEach(el => { el.style.display = hindi ? '' : 'none'; });
+}
+document.addEventListener('langchange', (e: Event) => {
+  const evt = e as CustomEvent;
+  applyPageLang(evt.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
 
 <style>
