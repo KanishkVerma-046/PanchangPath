@@ -8,10 +8,10 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">चौघड़िया · Choghadiya</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Choghadiya</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:480px;">8 equal time slots each for day and night. Plan activities in Amrit, Shubh or Labh choghadiya; avoid Rog, Kaal and Udveg.</p>
+      <h1 data-hi="चौघड़िया" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Choghadiya</h1>
+      <p data-hi="दिन और रात के लिए 8-8 बराबर समय अवधि। अमृत, शुभ या लाभ चौघड़िया में कार्य करें; रोग, काल और उद्वेग से बचें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:480px;">8 equal time slots each for day and night. Plan activities in Amrit, Shubh or Labh choghadiya; avoid Rog, Kaal and Udveg.</p>
     </div>
   </section>
 
@@ -20,20 +20,20 @@ import Layout from '../../layouts/Layout.astro';
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <label data-hi="दिनांक" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
           <input type="date" id="chog-date" class="input" style="height:38px;" />
         </div>
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
           <select id="chog-city" class="input" style="height:38px;min-width:160px;"></select>
         </div>
-        <button id="chog-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <button id="chog-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <!-- Day choghadiya -->
       <div style="margin-bottom:36px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Day Choghadiya</h2>
+          <h2 data-hi="दिन चौघड़िया" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Day Choghadiya</h2>
           <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="sr-label">Sunrise → Sunset</span>
         </div>
         <div id="day-chog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;"></div>
@@ -42,7 +42,7 @@ import Layout from '../../layouts/Layout.astro';
       <!-- Night choghadiya -->
       <div style="margin-bottom:48px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Night Choghadiya</h2>
+          <h2 data-hi="रात्रि चौघड़िया" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Night Choghadiya</h2>
           <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="ss-label">Sunset → Next Sunrise</span>
         </div>
         <div id="night-chog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;"></div>
@@ -50,7 +50,7 @@ import Layout from '../../layouts/Layout.astro';
 
       <!-- Legend + info -->
       <div style="margin-bottom:48px;">
-        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Choghadiya Guide</h3>
+        <h3 data-hi="चौघड़िया गाइड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Choghadiya Guide</h3>
         <div id="chog-legend" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;"></div>
       </div>
     </div>
@@ -95,6 +95,9 @@ const NIGHT_CHOG = [
   ['Labh','Udveg','Shubh','Amrit','Char','Rog','Kaal','Labh'],
 ];
 
+let isHindi = false;
+const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
+const trQ = (q:string) => isHindi ? QUALITY_HI[q] : q;
 const CHOG_DATA: Record<string,{hi:string;q:string;planet:string;bg:string;fg:string;suitable:string}> = {
   Amrit: {hi:'अमृत',q:'Best',planet:'Moon',bg:'#DCF3E3',fg:'#16803D',suitable:'All activities · Travel · Business · Marriage · Medicine'},
   Shubh: {hi:'शुभ',q:'Good',planet:'Jupiter',bg:'#FBF0D9',fg:'#97690F',suitable:'Marriage · Religious ceremonies · Education · Ventures'},
@@ -172,7 +175,7 @@ function makeSlot(name:string,startMins:number,endMins:number,isCurrent:boolean)
   return `<div style="background:${bg};border-radius:10px;padding:14px 16px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
       <span style="font-size:15px;font-weight:700;color:${fg};">${name}</span>
-      <span style="font-size:10px;font-weight:600;color:${qColor};${isCurrent?'':'background:'+d.bg+';padding:1px 6px;border-radius:100px;border:1px solid '+d.fg+'33;'}">${d.q}${isCurrent?' · NOW':''}</span>
+      <span style="font-size:10px;font-weight:600;color:${qColor};${isCurrent?'':'background:'+d.bg+';padding:1px 6px;border-radius:100px;border:1px solid '+d.fg+'33;'}">${trQ(d.q)}${isCurrent?(isHindi?' · अभी':' · NOW'):''}</span>
     </div>
     <p style="font-size:11px;color:${fg};margin:0 0 2px;font-family:var(--font-mono);">${fmtMins(startMins)} – ${fmtMins(endMins)}</p>
     <p style="font-size:10px;color:${muted};margin:2px 0 0;">${d.hi} · ${d.planet}</p>
@@ -206,8 +209,8 @@ function calculate(){
 
   const srEl=document.getElementById('sr-label');
   const ssEl=document.getElementById('ss-label');
-  if(srEl) srEl.textContent=`Sunrise ${fmtMins(srMins)} → Sunset ${fmtMins(ssMins)}`;
-  if(ssEl) ssEl.textContent=`Sunset ${fmtMins(ssMins)} → Next Sunrise`;
+  if(srEl) srEl.textContent=isHindi?`सूर्योदय ${fmtMins(srMins)} → सूर्यास्त ${fmtMins(ssMins)}`:`Sunrise ${fmtMins(srMins)} → Sunset ${fmtMins(ssMins)}`;
+  if(ssEl) ssEl.textContent=isHindi?`सूर्यास्त ${fmtMins(ssMins)} → अगला सूर्योदय`:`Sunset ${fmtMins(ssMins)} → Next Sunrise`;
 
   const dayGrid=document.getElementById('day-chog-grid');
   if(dayGrid){
@@ -226,22 +229,38 @@ function calculate(){
   }
 }
 
-const legend=document.getElementById('chog-legend');
-if(legend){
+function renderLegend(){
+  const legend=document.getElementById('chog-legend');
+  if(!legend) return;
   legend.innerHTML=Object.entries(CHOG_DATA).map(([name,d])=>`
     <div class="card" style="padding:14px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <span style="width:10px;height:10px;border-radius:50%;background:${d.fg};flex-shrink:0;"></span>
         <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${name}</span>
         <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${d.hi}</span>
-        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626'};">${d.q}</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626'};">${trQ(d.q)}</span>
       </div>
-      <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">Planet: ${d.planet}</p>
+      <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">${isHindi?'ग्रह':'Planet'}: ${d.planet}</p>
       <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${d.suitable}</p>
     </div>
   `).join('');
 }
+renderLegend();
 
 document.getElementById('chog-calc')?.addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  calculate();
+  renderLegend();
+}
+document.addEventListener('langchange', (e: Event) => {
+  applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

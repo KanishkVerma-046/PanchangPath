@@ -8,10 +8,10 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">जन्म कुंडली · NATAL CHART REPORT</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Janma Kundali</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">A complete natal chart report — Lagna, sidereal planetary positions, house lords, dignity, key yogas and your Vimshottari Dasha balance at birth.</p>
+      <h1 data-hi="जन्म कुंडली" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Janma Kundali</h1>
+      <p data-hi="एक संपूर्ण जन्म कुंडली रिपोर्ट — लग्न, नाक्षत्र ग्रह स्थिति, भाव स्वामी, ग्रह बल, प्रमुख योग और जन्म के समय आपकी विंशोत्तरी दशा शेष।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">A complete natal chart report — Lagna, sidereal planetary positions, house lords, dignity, key yogas and your Vimshottari Dasha balance at birth.</p>
     </div>
   </section>
 
@@ -20,11 +20,11 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
       <!-- Form -->
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:28px;">
-        <div><label class="fld-label">Name (optional)</label><input type="text" id="f-name" class="input" placeholder="Your name" style="height:38px;min-width:150px;" /></div>
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place of Birth</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Generate Report</button>
+        <div><label class="fld-label" data-hi="नाम (वैकल्पिक)">Name (optional)</label><input type="text" id="f-name" class="input" placeholder="Your name" style="height:38px;min-width:150px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म स्थान">Place of Birth</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="रिपोर्ट बनाएं" style="height:38px;padding:0 20px;">Generate Report</button>
       </div>
 
       <div id="result" style="display:none;">
@@ -38,7 +38,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
           </div>
           <div>
             <div class="card" style="padding:20px;height:100%;box-sizing:border-box;">
-              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Birth Summary</h3>
+              <h3 data-hi="जन्म सारांश" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Birth Summary</h3>
               <div id="summary-list" style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;"></div>
             </div>
           </div>
@@ -46,25 +46,25 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
         <!-- Row 2: Planetary Positions (full) -->
         <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:24px;">
-          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Graha Sphuta — Planetary Positions</h3>
+          <h3 data-hi="ग्रह स्फुट — ग्रह स्थिति" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Graha Sphuta — Planetary Positions</h3>
           <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:640px;" id="planet-table"></table>
         </div>
 
         <!-- Row 3: House Lords -->
         <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:24px;">
-          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Bhava Lords — House Analysis</h3>
+          <h3 data-hi="भाव स्वामी — भाव विश्लेषण" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Bhava Lords — House Analysis</h3>
           <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:560px;" id="house-table"></table>
         </div>
 
         <!-- Row 4: Yogas + Dasha side by side -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;" class="r4">
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Yoga Vichar — Key Planetary Yogas</h3>
+            <h3 data-hi="योग विचार — प्रमुख ग्रह योग" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Yoga Vichar — Key Planetary Yogas</h3>
             <div id="yoga-list" style="display:flex;flex-direction:column;gap:10px;"></div>
           </div>
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Vimshottari Dasha</h3>
-            <p style="font-size:12px;color:var(--color-mute);margin:0 0 12px;">120-year planetary period cycle from birth</p>
+            <h3 data-hi="विंशोत्तरी दशा" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Vimshottari Dasha</h3>
+            <p data-hi="जन्म से शुरू होने वाला 120-वर्षीय ग्रह अवधि चक्र" style="font-size:12px;color:var(--color-mute);margin:0 0 12px;">120-year planetary period cycle from birth</p>
             <div id="dasha-balance" style="margin-bottom:12px;"></div>
             <table style="width:100%;border-collapse:collapse;font-size:12.5px;" id="dasha-table"></table>
           </div>
@@ -76,11 +76,11 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
       <!-- About -->
       <div class="card" style="padding:28px;margin-top:36px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Understanding Your Janma Kundali</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">The Janma Kundali is the complete map of the sky at your birth moment. Every planet's sidereal longitude (after applying the Lahiri ayanamsha) places it in one of 12 rashis (signs) and 12 bhavas (houses), revealing your karmic blueprint.</p>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><b>House Lords:</b> Each house is owned by the sign lord of the rashi that falls there. The lord's own placement determines whether the house's themes flourish or face challenges.</p>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><b>Planetary Dignity:</b> A planet in its own sign or exaltation functions at full strength; in debilitation it may need conscious cultivation. Neecha Bhanga (cancellation of debilitation) can restore its energy.</p>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"><b>Vimshottari Dasha:</b> The 120-year planetary period system activated by the Moon's nakshatra at birth. The remaining years of the birth dasha, then the full sequence, are shown. Consult a qualified Jyotishi for a personalised reading.</p>
+        <h2 data-hi="अपनी जन्म कुंडली को समझना" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Understanding Your Janma Kundali</h2>
+        <p data-hi="जन्म कुंडली आपके जन्म के क्षण आकाश का पूर्ण मानचित्र है। हर ग्रह का नाक्षत्र देशांतर (लाहिड़ी अयनांश लगाने के बाद) उसे 12 राशियों में से एक और 12 भावों में से एक में रखता है, जो आपका कर्म-खाका प्रकट करता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">The Janma Kundali is the complete map of the sky at your birth moment. Every planet's sidereal longitude (after applying the Lahiri ayanamsha) places it in one of 12 rashis (signs) and 12 bhavas (houses), revealing your karmic blueprint.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><b data-hi="भाव स्वामी:">House Lords:</b> <span data-hi="प्रत्येक भाव का स्वामी उस राशि का स्वामी होता है जो वहां पड़ती है। स्वामी की अपनी स्थिति यह तय करती है कि उस भाव के विषय फलें-फूलें या चुनौतियों का सामना करें।">Each house is owned by the sign lord of the rashi that falls there. The lord's own placement determines whether the house's themes flourish or face challenges.</span></p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><b data-hi="ग्रह बल:">Planetary Dignity:</b> <span data-hi="अपनी राशि या उच्च राशि में स्थित ग्रह पूर्ण बल से कार्य करता है; नीच राशि में उसे सचेत प्रयास की आवश्यकता हो सकती है। नीच भंग (नीचता का निवारण) उसकी ऊर्जा को पुनः स्थापित कर सकता है।">A planet in its own sign or exaltation functions at full strength; in debilitation it may need conscious cultivation. Neecha Bhanga (cancellation of debilitation) can restore its energy.</span></p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"><b data-hi="विंशोत्तरी दशा:">Vimshottari Dasha:</b> <span data-hi="जन्म के समय चंद्र नक्षत्र से सक्रिय होने वाली 120-वर्षीय ग्रह अवधि प्रणाली। जन्म दशा के शेष वर्ष, फिर पूरा क्रम, यहां दिखाया गया है। व्यक्तिगत विश्लेषण हेतु किसी योग्य ज्योतिषी से परामर्श लें।">The 120-year planetary period system activated by the Moon's nakshatra at birth. The remaining years of the birth dasha, then the full sequence, are shown. Consult a qualified Jyotishi for a personalised reading.</span></p>
       </div>
 
     </div>
@@ -100,6 +100,8 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
 <script define:vars={{ PLANET_ICONS }}>
 function planetIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:4px;">${PLANET_ICONS[id]}</svg>`;}
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -126,14 +128,15 @@ const EXALT={surya:0,chandra:1,mangal:9,budha:5,guru:3,shukra:11,shani:6};
 const DEBIL={surya:6,chandra:7,mangal:3,budha:11,guru:9,shukra:5,shani:0};
 const OWN={surya:[4],chandra:[3],mangal:[0,7],budha:[2,5],guru:[8,11],shukra:[1,6],shani:[9,10]};
 function dignity(k,sign){
-  if(EXALT[k]===sign)return{label:'Exalted',cls:'dignity-exalt'};
-  if(DEBIL[k]===sign)return{label:'Debilitated',cls:'dignity-debil'};
-  if(OWN[k]&&OWN[k].includes(sign))return{label:'Own Sign',cls:'dignity-own'};
+  if(EXALT[k]===sign)return{label:tr('Exalted','उच्च'),cls:'dignity-exalt'};
+  if(DEBIL[k]===sign)return{label:tr('Debilitated','नीच'),cls:'dignity-debil'};
+  if(OWN[k]&&OWN[k].includes(sign))return{label:tr('Own Sign','स्वराशि'),cls:'dignity-own'};
   return{label:'',cls:''};
 }
 
 // House significations
 const HOUSE_SIG=['Self, body, personality','Wealth, family, speech','Courage, siblings, communication','Home, mother, comforts','Children, intellect, creativity','Health, enemies, service','Marriage, partnerships, business','Longevity, transformation, hidden matters','Dharma, luck, higher learning','Career, status, father','Gains, social network, aspirations','Expenses, moksha, foreign travel'];
+const HOUSE_SIG_HI=['स्वयं, शरीर, व्यक्तित्व','धन, परिवार, वाणी','साहस, भाई-बहन, संचार','घर, माता, सुख-सुविधा','संतान, बुद्धि, रचनात्मकता','स्वास्थ्य, शत्रु, सेवा','विवाह, साझेदारी, व्यापार','आयु, रूपांतरण, गुप्त विषय','धर्म, भाग्य, उच्च शिक्षा','करियर, प्रतिष्ठा, पिता','लाभ, सामाजिक जुड़ाव, आकांक्षाएं','व्यय, मोक्ष, विदेश यात्रा'];
 
 // Vimshottari Dasha
 const DASHA_ORDER=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
@@ -195,42 +198,42 @@ function calculate(){
 
     // ── Chart ──
     document.getElementById('chart-box').innerHTML=drawNorthChart(signOfHouse,planetsByHouse);
-    document.getElementById('chart-title').textContent=(name?name+"'s ":'')+'Lagna Chart (D-1)';
+    document.getElementById('chart-title').textContent=(name?name+"'s ":'')+tr('Lagna Chart (D-1)','लग्न चार्ट (डी-1)');
     document.getElementById('chart-sub').textContent=RASHI[lagnaSign]+' Lagna \xb7 '+dateStr+' '+timeStr+' \xb7 '+cityName;
 
     // ── Birth Summary ──
     const moonSign=Math.floor(sid.chandra/30),sunSign=Math.floor(sid.surya/30);
     const moonNak=nakInfo(sid.chandra);
     const sumItems=[
-      ['Lagna (Ascendant)',RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
-      ['Lagna Lord',lagnaLord],
-      ['Lagna Degree',fmtDMS(lagna)],
-      ['Moon Rashi',RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
-      ['Sun Rashi',RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')'],
-      ['Janma Nakshatra',moonNak.name+' pada '+moonNak.pada],
-      ['Paksha',sid.chandra>sid.surya&&sid.chandra-sid.surya<180?'Shukla (Waxing)':'Krishna (Waning)'],
-      ['Ayanamsha',ay.toFixed(3)+'\xb0 Lahiri'],
+      [tr('Lagna (Ascendant)','लग्न (उदय राशि)'),RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
+      [tr('Lagna Lord','लग्न स्वामी'),lagnaLord],
+      [tr('Lagna Degree','लग्न अंश'),fmtDMS(lagna)],
+      [tr('Moon Rashi','चंद्र राशि'),RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
+      [tr('Sun Rashi','सूर्य राशि'),RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')'],
+      [tr('Janma Nakshatra','जन्म नक्षत्र'),moonNak.name+' '+tr('pada','पद')+' '+moonNak.pada],
+      [tr('Paksha','पक्ष'),sid.chandra>sid.surya&&sid.chandra-sid.surya<180?tr('Shukla (Waxing)','शुक्ल (बढ़ता चंद्रमा)'):tr('Krishna (Waning)','कृष्ण (घटता चंद्रमा)')],
+      [tr('Ayanamsha','अयनांश'),ay.toFixed(3)+'\xb0 Lahiri'],
     ];
     document.getElementById('summary-list').innerHTML=sumItems.map(r=>
       `<div><p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);">${r[0].toUpperCase()}</p><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`
     ).join('');
 
     // ── Planetary Positions Table ──
-    let pRows='<tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>House</th><th>Nakshatra</th><th>Pada</th><th>Motion</th><th>Dignity</th></tr>';
+    let pRows=`<tr><th>${tr('Graha','ग्रह')}</th><th>${tr('Rashi','राशि')}</th><th>${tr('Degree','अंश')}</th><th>${tr('House','भाव')}</th><th>${tr('Nakshatra','नक्षत्र')}</th><th>${tr('Pada','पद')}</th><th>${tr('Motion','गति')}</th><th>${tr('Dignity','बल')}</th></tr>`;
     PLANETS.forEach(([k,full])=>{
       const s=sid[k],sign=Math.floor(s/30);
       const house=((sign-lagnaSign)+12)%12;
       const nk=nakInfo(s);
-      let motion='Margi';
-      if(k==='rahu'||k==='ketu')motion='Vakri (always)';
-      else if(k!=='surya'&&k!=='chandra'){const c=n360(L[k]-ay),nx=n360(Lp[k]-Lp.ay);let df=nx-c;if(df>180)df-=360;if(df<-180)df+=360;motion=df<0?'Vakri':'Margi';}
+      let motion=tr('Margi','मार्गी');
+      if(k==='rahu'||k==='ketu')motion=tr('Vakri (always)','वक्री (सदैव)');
+      else if(k!=='surya'&&k!=='chandra'){const c=n360(L[k]-ay),nx=n360(Lp[k]-Lp.ay);let df=nx-c;if(df>180)df-=360;if(df<-180)df+=360;motion=df<0?tr('Vakri','वक्री'):tr('Margi','मार्गी');}
       const dig=dignity(k,sign);
-      pRows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${full}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td style="text-align:center;">${house+1}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${motion.startsWith('Vakri')?'#dc2626':'var(--color-body-text)'};">${motion}</td><td class="${dig.cls}">${dig.label}</td></tr>`;
+      pRows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${full}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td style="text-align:center;">${house+1}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${(motion.startsWith('Vakri')||motion.startsWith('वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td><td class="${dig.cls}">${dig.label}</td></tr>`;
     });
     document.getElementById('planet-table').innerHTML=pRows;
 
     // ── House Lords Table ──
-    let hRows='<tr><th>House</th><th>Rashi</th><th>Lord</th><th>Lord is in</th><th>Significance</th></tr>';
+    let hRows=`<tr><th>${tr('House','भाव')}</th><th>${tr('Rashi','राशि')}</th><th>${tr('Lord','स्वामी')}</th><th>${tr('Lord is in','स्वामी की स्थिति')}</th><th>${tr('Significance','महत्व')}</th></tr>`;
     for(let h=0;h<12;h++){
       const sign=signOfHouse[h];
       const lord=RASHI_LORD[sign];
@@ -238,7 +241,7 @@ function calculate(){
       const lordSign=lordKey?Math.floor(sid[lordKey]/30):-1;
       const lordHouse=lordKey?((lordSign-lagnaSign+12)%12):-1;
       const lordPos=lordKey?'H'+(lordHouse+1)+' ('+RASHI[lordSign]+')':'—';
-      hRows+=`<tr><td style="font-weight:600;color:var(--color-ink);">H${h+1}</td><td>${RASHI[sign]}</td><td>${lord}</td><td>${lordPos}</td><td style="font-size:12px;color:var(--color-mute);">${HOUSE_SIG[h]}</td></tr>`;
+      hRows+=`<tr><td style="font-weight:600;color:var(--color-ink);">H${h+1}</td><td>${RASHI[sign]}</td><td>${lord}</td><td>${lordPos}</td><td style="font-size:12px;color:var(--color-mute);">${tr(HOUSE_SIG[h],HOUSE_SIG_HI[h])}</td></tr>`;
     }
     document.getElementById('house-table').innerHTML=hRows;
 
@@ -246,30 +249,30 @@ function calculate(){
     const yogas=[];
     // Gajakesari: Jupiter in 1,4,7,10 from Moon
     const guruSign=Math.floor(sid.guru/30),moonFromMoon=((guruSign-moonSign+12)%12);
-    if([0,3,6,9].includes(moonFromMoon))yogas.push({name:'Gajakesari Yoga',desc:'Jupiter in kendra from Moon — brings wisdom, reputation and prosperity.',badge:'auspicious'});
+    if([0,3,6,9].includes(moonFromMoon))yogas.push({name:tr('Gajakesari Yoga','गजकेसरी योग'),desc:tr('Jupiter in kendra from Moon — brings wisdom, reputation and prosperity.','चंद्रमा से केंद्र में गुरु — बुद्धि, प्रतिष्ठा और समृद्धि लाता है।'),badge:'auspicious'});
     // Budhaditya: Sun + Mercury same sign
-    if(Math.floor(sid.surya/30)===Math.floor(sid.budha/30))yogas.push({name:'Budhaditya Yoga',desc:'Sun and Mercury conjunct — enhances intellect, analytical skill and communication.',badge:'auspicious'});
+    if(Math.floor(sid.surya/30)===Math.floor(sid.budha/30))yogas.push({name:tr('Budhaditya Yoga','बुधादित्य योग'),desc:tr('Sun and Mercury conjunct — enhances intellect, analytical skill and communication.','सूर्य और बुध की युति — बुद्धि, विश्लेषण क्षमता और संवाद कौशल बढ़ाती है।'),badge:'auspicious'});
     // Chandra-Mangal: Moon and Mars conjunct or 7th from each other
     const marsSign=Math.floor(sid.mangal/30),marsFromMoon=(marsSign-moonSign+12)%12;
-    if(marsFromMoon===0||marsFromMoon===6)yogas.push({name:'Chandra-Mangal Yoga',desc:'Moon and Mars conjunct or in opposition — drives ambition, financial determination.',badge:'auspicious'});
+    if(marsFromMoon===0||marsFromMoon===6)yogas.push({name:tr('Chandra-Mangal Yoga','चंद्र-मंगल योग'),desc:tr('Moon and Mars conjunct or in opposition — drives ambition, financial determination.','चंद्रमा और मंगल की युति या प्रतियुति — महत्वाकांक्षा और आर्थिक दृढ़ता को बढ़ाती है।'),badge:'auspicious'});
     // Pancha Mahapurusha Yogas
-    const PM=[['guru','Hamsa','Jupiter in own (Dhanu/Meena) or exalted (Karka) and in kendra.'],['shukra','Malavya','Venus in own (Vrishabha/Tula) or exalted (Meena) and in kendra.'],['mangal','Ruchaka','Mars in own (Mesha/Vrishchika) or exalted (Makara) and in kendra.'],['budha','Bhadra','Mercury in own (Mithuna/Kanya) or exalted (Kanya) and in kendra.'],['shani','Shasha','Saturn in own (Makara/Kumbha) or exalted (Tula) and in kendra.']];
-    PM.forEach(([k,yname,desc])=>{
+    const PM=[['guru','Hamsa','हंस','Jupiter in own (Dhanu/Meena) or exalted (Karka) and in kendra.','गुरु स्वराशि (धनु/मीन) या उच्च राशि (कर्क) में और केंद्र में हो।'],['shukra','Malavya','मालव्य','Venus in own (Vrishabha/Tula) or exalted (Meena) and in kendra.','शुक्र स्वराशि (वृषभ/तुला) या उच्च राशि (मीन) में और केंद्र में हो।'],['mangal','Ruchaka','रुचक','Mars in own (Mesha/Vrishchika) or exalted (Makara) and in kendra.','मंगल स्वराशि (मेष/वृश्चिक) या उच्च राशि (मकर) में और केंद्र में हो।'],['budha','Bhadra','भद्र','Mercury in own (Mithuna/Kanya) or exalted (Kanya) and in kendra.','बुध स्वराशि (मिथुन/कन्या) या उच्च राशि (कन्या) में और केंद्र में हो।'],['shani','Shasha','शश','Saturn in own (Makara/Kumbha) or exalted (Tula) and in kendra.','शनि स्वराशि (मकर/कुंभ) या उच्च राशि (तुला) में और केंद्र में हो।']];
+    PM.forEach(([k,yname,ynameHi,desc,descHi])=>{
       const sg=Math.floor(sid[k]/30),ho=((sg-lagnaSign+12)%12);
-      if((OWN[k]&&OWN[k].includes(sg)||EXALT[k]===sg)&&[0,3,6,9].includes(ho))yogas.push({name:yname+' Yoga (Mahapurusha)',desc,badge:'auspicious'});
+      if((OWN[k]&&OWN[k].includes(sg)||EXALT[k]===sg)&&[0,3,6,9].includes(ho))yogas.push({name:tr(yname+' Yoga (Mahapurusha)',ynameHi+' योग (महापुरुष)'),desc:tr(desc,descHi),badge:'auspicious'});
     });
     // Raja Yoga: lord of 1 + lord of 5 or 9 conjunct
     const lordKey2=n=>{const s=signOfHouse[n];const lord=RASHI_LORD[s];return{Sun:'surya',Moon:'chandra',Mars:'mangal',Mercury:'budha',Jupiter:'guru',Venus:'shukra',Saturn:'shani'}[lord];};
     const l1k=lordKey2(0),l5k=lordKey2(4),l9k=lordKey2(8);
-    if(l1k&&l5k&&l1k!==l5k&&Math.floor(sid[l1k]/30)===Math.floor(sid[l5k]/30))yogas.push({name:'Raja Yoga (1-5 Lords)',desc:'Lords of Lagna and 5th house conjunct — authority, creativity and prosperity.',badge:'auspicious'});
-    if(l1k&&l9k&&l1k!==l9k&&Math.floor(sid[l1k]/30)===Math.floor(sid[l9k]/30))yogas.push({name:'Raja Yoga (1-9 Lords)',desc:'Lords of Lagna and 9th house conjunct — excellent fortune, leadership and dharmic life.',badge:'auspicious'});
+    if(l1k&&l5k&&l1k!==l5k&&Math.floor(sid[l1k]/30)===Math.floor(sid[l5k]/30))yogas.push({name:tr('Raja Yoga (1-5 Lords)','राज योग (1-5 भाव स्वामी)'),desc:tr('Lords of Lagna and 5th house conjunct — authority, creativity and prosperity.','लग्न और पंचम भाव के स्वामियों की युति — अधिकार, रचनात्मकता और समृद्धि।'),badge:'auspicious'});
+    if(l1k&&l9k&&l1k!==l9k&&Math.floor(sid[l1k]/30)===Math.floor(sid[l9k]/30))yogas.push({name:tr('Raja Yoga (1-9 Lords)','राज योग (1-9 भाव स्वामी)'),desc:tr('Lords of Lagna and 9th house conjunct — excellent fortune, leadership and dharmic life.','लग्न और नवम भाव के स्वामियों की युति — उत्कृष्ट भाग्य, नेतृत्व और धर्ममय जीवन।'),badge:'auspicious'});
     // Kemadruma: Moon with no planets in adjacent houses
     const adjH=[(moonSign-lagnaSign+11)%12,(moonSign-lagnaSign+1)%12];
     const moonHouse=(moonSign-lagnaSign+12)%12;
     const hasNeighbour=PLANETS.some(([k])=>k!=='chandra'&&k!=='rahu'&&k!=='ketu'&&[adjH[0],adjH[1]].includes(((Math.floor(sid[k]/30)-lagnaSign)+12)%12));
-    if(!hasNeighbour)yogas.push({name:'Kemadruma Yoga',desc:'Moon without planets in adjacent houses — may cause emotional isolation; mitigated if Moon is in kendra.',badge:'caution'});
+    if(!hasNeighbour)yogas.push({name:tr('Kemadruma Yoga','केमद्रुम योग'),desc:tr('Moon without planets in adjacent houses — may cause emotional isolation; mitigated if Moon is in kendra.','आसन्न भावों में कोई ग्रह न होने से चंद्रमा अकेला — भावनात्मक अलगाव हो सकता है; चंद्रमा केंद्र में हो तो प्रभाव कम होता है।'),badge:'caution'});
 
-    if(yogas.length===0)yogas.push({name:'No prominent yogas detected',desc:'The chart has a balanced, ordinary planetary configuration.',badge:''});
+    if(yogas.length===0)yogas.push({name:tr('No prominent yogas detected','कोई प्रमुख योग नहीं मिला'),desc:tr('The chart has a balanced, ordinary planetary configuration.','कुंडली में संतुलित, सामान्य ग्रह संरचना है।'),badge:''});
     document.getElementById('yoga-list').innerHTML=yogas.map(y=>
       `<div style="padding:10px 12px;border-radius:8px;background:${y.badge==='auspicious'?'var(--color-auspicious-soft)':y.badge==='caution'?'var(--color-inauspicious-soft)':'var(--color-canvas-soft)'};">
         <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">${y.name}</p>
@@ -287,9 +290,9 @@ function calculate(){
 
     document.getElementById('dasha-balance').innerHTML=
       `<div style="padding:10px 14px;background:var(--color-canvas-soft);border-radius:8px;">
-        <p style="font-size:11px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);">BIRTH DASHA BALANCE</p>
-        <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">${dashaLord} — ${remaining.toFixed(1)} yrs remaining</p>
-        <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">Janma Nakshatra: ${NAKS[nakIdx]} (${(moonNakFull.frac*100).toFixed(0)}% elapsed in ${dashaLord} dasha)</p>
+        <p style="font-size:11px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);">${tr('BIRTH DASHA BALANCE','जन्म दशा शेष')}</p>
+        <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">${dashaLord} — ${remaining.toFixed(1)} ${tr('yrs remaining','वर्ष शेष')}</p>
+        <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">${tr('Janma Nakshatra','जन्म नक्षत्र')}: ${NAKS[nakIdx]} (${(moonNakFull.frac*100).toFixed(0)}% ${tr('elapsed in','व्यतीत,')} ${dashaLord} ${tr('dasha','दशा')})</p>
       </div>`;
 
     const msPerYr=365.25*24*3600*1000;
@@ -298,13 +301,13 @@ function calculate(){
     const startIdx=DASHA_ORDER.indexOf(dashaLord);
     const now=Date.now();
     let t=dashaStartMs;
-    let dRows='<tr><th>Dasha Lord</th><th>Years</th><th>From</th><th>To</th></tr>';
+    let dRows=`<tr><th>${tr('Dasha Lord','दशा स्वामी')}</th><th>${tr('Years','वर्ष')}</th><th>${tr('From','से')}</th><th>${tr('To','तक')}</th></tr>`;
     for(let i=0;i<9;i++){
       const lord=DASHA_ORDER[(startIdx+i)%9];
       const yrs=DASHA_YRS[lord];
       const st=t,en=t+yrs*msPerYr;
       const isActive=now>=st&&now<en;
-      const from=i===0?'Birth':fmtDt(st);
+      const from=i===0?tr('Birth','जन्म'):fmtDt(st);
       dRows+=`<tr class="${isActive?'dasha-active':''}"><td style="font-weight:${isActive?700:400};color:${isActive?'var(--color-ink)':'var(--color-body-text)'};">${lord}${isActive?' ◀':''}</td><td>${yrs}</td><td>${from}</td><td>${fmtDt(en)}</td></tr>`;
       t=en;
     }
@@ -319,4 +322,17 @@ function calculate(){
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

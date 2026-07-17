@@ -7,10 +7,10 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">राहु · केतु · RAHU &amp; KETU</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rahu &amp; Ketu Transit</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Rahu and Ketu are the lunar nodes — shadow points where the Moon's orbit crosses the ecliptic, always exactly 180° apart. Live sidereal position below, plus the classical Gochara (transit) favorable/challenging table by Moon sign.</p>
+      <h1 data-hi="राहु और केतु गोचर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rahu &amp; Ketu Transit</h1>
+      <p data-hi="राहु और केतु चंद्र-पात हैं — वे छाया बिंदु जहां चंद्रमा की कक्षा क्रांतिवृत्त को काटती है, हमेशा ठीक 180° दूरी पर। नीचे लाइव सायन स्थिति, साथ ही चंद्र राशि के अनुसार शास्त्रीय गोचर अनुकूल/प्रतिकूल तालिका।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Rahu and Ketu are the lunar nodes — shadow points where the Moon's orbit crosses the ecliptic, always exactly 180° apart. Live sidereal position below, plus the classical Gochara (transit) favorable/challenging table by Moon sign.</p>
     </div>
   </section>
 
@@ -19,16 +19,16 @@ import Layout from '../../layouts/Layout.astro';
       <p id="rk-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;"></p>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:36px;" id="rk-current"></div>
 
-      <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Gochara (Transit) Effect by Moon Sign</h3>
-      <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;max-width:600px;">Classical Vedic transit theory: Rahu and Ketu give favorable results when transiting the 3rd, 6th, or 11th house counted from your natal Moon sign (the "Upachaya" houses). All other positions are considered more challenging.</p>
+      <h3 data-hi="चंद्र राशि के अनुसार गोचर प्रभाव" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Gochara (Transit) Effect by Moon Sign</h3>
+      <p data-hi="शास्त्रीय वैदिक गोचर सिद्धांत: राहु और केतु आपकी जन्म चंद्र राशि से गिनकर तीसरे, छठे, या ग्यारहवें भाव ('उपचय' भाव) से गोचर करते समय अनुकूल परिणाम देते हैं। अन्य सभी स्थितियां अधिक चुनौतीपूर्ण मानी जाती हैं।" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;max-width:600px;">Classical Vedic transit theory: Rahu and Ketu give favorable results when transiting the 3rd, 6th, or 11th house counted from your natal Moon sign (the "Upachaya" houses). All other positions are considered more challenging.</p>
       <div class="card" style="padding:20px;overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;" id="rk-table">
           <thead><tr>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Your Moon Sign</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rahu's House</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rahu Effect</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu's House</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu Effect</th>
+            <th data-hi="आपकी चंद्र राशि" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Your Moon Sign</th>
+            <th data-hi="राहु का भाव" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rahu's House</th>
+            <th data-hi="राहु प्रभाव" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rahu Effect</th>
+            <th data-hi="केतु का भाव" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu's House</th>
+            <th data-hi="केतु प्रभाव" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu Effect</th>
           </tr></thead>
           <tbody id="rk-body"></tbody>
         </table>
@@ -62,6 +62,14 @@ function houseFromMoon(moonSignIdx:number,planetSignIdx:number){
 function classify(house:number){
   return FAVORABLE_HOUSES.includes(house) ? {label:'Favorable',cls:'favorable'} : {label:'Challenging',cls:'challenging'};
 }
+const HOUSE_ORDINAL_HI=['पहला','दूसरा','तीसरा','चौथा','पांचवां','छठा','सातवां','आठवां','नौवां','दसवां','ग्यारहवां','बारहवां'];
+function houseLabel(house:number,hindi:boolean){
+  if(hindi) return HOUSE_ORDINAL_HI[house-1]+' भाव';
+  const suffix=house===1?'st':house===2?'nd':house===3?'rd':'th';
+  return house+suffix+' house';
+}
+
+let hindiActive=false;
 
 function render(){
   const now=new Date();
@@ -78,13 +86,13 @@ function render(){
   const ketuNak=nakInfo(ketuSid);
 
   const updatedEl=document.getElementById('rk-updated');
-  if(updatedEl)updatedEl.textContent='Last updated: '+now.toLocaleTimeString()+' (auto-refreshes every 60s)';
+  if(updatedEl)updatedEl.textContent=(hindiActive?'अंतिम अद्यतन: ':'Last updated: ')+now.toLocaleTimeString()+(hindiActive?' (हर 60 सेकंड में स्वतः अपडेट)':' (auto-refreshes every 60s)');
 
   const curEl=document.getElementById('rk-current');
   if(curEl){
     curEl.innerHTML=[
-      {label:'Rahu',sign:rahuSign,deg:rahuSid,nak:rahuNak,color:'#7c3aed'},
-      {label:'Ketu',sign:ketuSign,deg:ketuSid,nak:ketuNak,color:'#4338ca'},
+      {label:hindiActive?'राहु':'Rahu',sign:rahuSign,deg:rahuSid,nak:rahuNak,color:'#7c3aed'},
+      {label:hindiActive?'केतु':'Ketu',sign:ketuSign,deg:ketuSid,nak:ketuNak,color:'#4338ca'},
     ].map(p=>`<div class="card" style="padding:20px;"><p style="font-size:14px;font-weight:700;color:${p.color};margin:0 0 6px;">${p.label}</p><p style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${RASHI[p.sign]} (${RASHI_EN[p.sign]})</p><p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${fmtDMS(p.deg)} · ${p.nak.name} Pada ${p.nak.pada}</p></div>`).join('');
   }
 
@@ -94,7 +102,9 @@ function render(){
     const ketuHouse=houseFromMoon(moonSign,ketuSign);
     const rahuCls=classify(rahuHouse);
     const ketuCls=classify(ketuHouse);
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${RASHI[moonSign]} (${RASHI_EN[moonSign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${rahuHouse}${rahuHouse===1?'st':rahuHouse===2?'nd':rahuHouse===3?'rd':'th'} house</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${rahuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;">${rahuCls.label}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${ketuHouse}${ketuHouse===1?'st':ketuHouse===2?'nd':ketuHouse===3?'rd':'th'} house</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${ketuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;">${ketuCls.label}</td></tr>`;
+    const rahuLabel=hindiActive?(rahuCls.cls==='favorable'?'अनुकूल':'प्रतिकूल'):rahuCls.label;
+    const ketuLabel=hindiActive?(ketuCls.cls==='favorable'?'अनुकूल':'प्रतिकूल'):ketuCls.label;
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${RASHI[moonSign]} (${RASHI_EN[moonSign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${houseLabel(rahuHouse,hindiActive)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${rahuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;">${rahuLabel}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${houseLabel(ketuHouse,hindiActive)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${ketuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;">${ketuLabel}</td></tr>`;
   }
   const body=document.getElementById('rk-body');
   if(body)body.innerHTML=rows;
@@ -102,4 +112,17 @@ function render(){
 
 render();
 setInterval(render,60000);
+
+function applyPageLang(hindi:boolean){
+  hindiActive=hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el=>{
+    if(!el.dataset.en) el.dataset.en=el.textContent||'';
+    el.textContent=hindi?(el.dataset.hi as string):(el.dataset.en as string);
+  });
+  render();
+}
+document.addEventListener('langchange',(e:Event)=>{
+  applyPageLang((e as CustomEvent).detail.langCode==='hi');
+});
+if(localStorage.getItem('pp-lang')==='hi') applyPageLang(true);
 </script>

@@ -7,10 +7,10 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">पंचक · गौरी पंचांग</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Panchaka &amp; Gowri Panchangam</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Panchaka is active when Moon transits the last 5 Nakshatras (Aquarius and Pisces signs). Gowri Panchangam is a South Indian 8-slot daily muhurta system.</p>
+      <h1 data-hi="पंचक और गौरी पंचांगम" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Panchaka &amp; Gowri Panchangam</h1>
+      <p data-hi="पंचक तब सक्रिय होता है जब चंद्रमा अंतिम 5 नक्षत्रों (कुंभ और मीन राशियों) से गुजरता है। गौरी पंचांगम दक्षिण भारत की 8-स्लॉट दैनिक मुहूर्त प्रणाली है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Panchaka is active when Moon transits the last 5 Nakshatras (Aquarius and Pisces signs). Gowri Panchangam is a South Indian 8-slot daily muhurta system.</p>
     </div>
   </section>
 
@@ -18,14 +18,14 @@ import Layout from '../../layouts/Layout.astro';
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <label data-hi="दिनांक" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
           <input type="date" id="pk-date" class="input" style="height:38px;" />
         </div>
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
           <select id="pk-city" class="input" style="height:38px;min-width:160px;"></select>
         </div>
-        <button id="pk-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <button id="pk-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <!-- Panchaka status -->
@@ -34,13 +34,13 @@ import Layout from '../../layouts/Layout.astro';
       <!-- Gowri Panchangam -->
       <div style="margin-bottom:36px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Gowri Panchangam</h2>
-          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">Day slots (sunrise to sunset)</span>
+          <h2 data-hi="गौरी पंचांगम" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Gowri Panchangam</h2>
+          <span data-hi="दिन स्लॉट (सूर्योदय से सूर्यास्त तक)" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">Day slots (sunrise to sunset)</span>
         </div>
         <div id="gowri-day" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:24px;"></div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">Night Gowri</h2>
-          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">Sunset to next sunrise</span>
+          <h2 data-hi="रात्रि गौरी" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">Night Gowri</h2>
+          <span data-hi="सूर्यास्त से अगले सूर्योदय तक" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">Sunset to next sunrise</span>
         </div>
         <div id="gowri-night" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:36px;"></div>
       </div>
@@ -49,7 +49,7 @@ import Layout from '../../layouts/Layout.astro';
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;" id="pk-info-grid"></div>
 
       <!-- Gowri legend -->
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Gowri Panchangam Guide</h3>
+      <h3 data-hi="गौरी पंचांगम गाइड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Gowri Panchangam Guide</h3>
       <div id="gowri-legend" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
     </div>
   </section>
@@ -102,6 +102,9 @@ const GOWRI_NIGHT = [
   ['Rogam','Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham'],
   ['Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham','Charam'],
 ];
+let isHindi = false;
+const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
+const trQ = (q:string) => isHindi ? (QUALITY_HI[q]||q) : q;
 const GOWRI_DATA: Record<string,{q:string;bg:string;fg:string;suitable:string}> = {
   Amrutham: {q:'Best',    bg:'#DCF3E3',fg:'#16803D',suitable:'All auspicious activities'},
   Sudham:   {q:'Good',    bg:'#FBF0D9',fg:'#97690F',suitable:'Religious & spiritual work'},
@@ -185,10 +188,10 @@ function makeGowriSlot(name:string,s:number,e:number,isCurrent:boolean){
   return `<div style="background:${bg};border-radius:10px;padding:12px 14px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
       <span style="font-size:13px;font-weight:700;color:${fg};">${name}</span>
-      ${isCurrent?'<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:1px 6px;border-radius:100px;">NOW</span>':''}
+      ${isCurrent?`<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:1px 6px;border-radius:100px;">${isHindi?'अभी':'NOW'}</span>`:''}
     </div>
     <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 40%)':'var(--color-mute)'};margin:0;">${fmtMins(s)} – ${fmtMins(e)}</p>
-    <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':d.fg};margin:2px 0 0;">${d.q}</p>
+    <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':d.fg};margin:2px 0 0;">${trQ(d.q)}</p>
   </div>`;
 }
 
@@ -220,15 +223,18 @@ function calculate(){
   if(pkEl){
     if(isPanchaka){
       const pkType=PANCHAKA_TYPES[nakIdx]||'Panchaka';
+      const line2=isHindi?`चंद्रमा <strong>${NAK_NAMES[nakIdx]}</strong> नक्षत्र (नक्षत्र ${nakIdx+1}) में है। पंचक सक्रिय है।`:`Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> nakshatra (Nakshatra ${nakIdx+1}). Panchaka is active.`;
+      const line3=isHindi?'बचें: अंतिम संस्कार, छत निर्माण, दक्षिण दिशा यात्रा, पलंग/खाट खरीदना, और लकड़ी संग्रहण। प्रभाव कम करने के लिए पंचक शांति पूजा की जा सकती है।':'Avoid: funeral rites, roof construction, travel south, buying cots/beds, and storing firewood. Panchaka Shanti puja can be performed to mitigate effects.';
       pkEl.innerHTML=`<div style="background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:16px 20px;">
-        <p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 4px;">⚠️ ${pkType} Active Today</p>
-        <p style="font-size:13px;color:#991b1b;margin:0 0 6px;">Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> nakshatra (Nakshatra ${nakIdx+1}). Panchaka is active.</p>
-        <p style="font-size:12px;color:#7f1d1d;margin:0;">Avoid: funeral rites, roof construction, travel south, buying cots/beds, and storing firewood. Panchaka Shanti puja can be performed to mitigate effects.</p>
+        <p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 4px;">⚠️ ${pkType} ${isHindi?'आज सक्रिय':'Active Today'}</p>
+        <p style="font-size:13px;color:#991b1b;margin:0 0 6px;">${line2}</p>
+        <p style="font-size:12px;color:#7f1d1d;margin:0;">${line3}</p>
       </div>`;
     } else {
+      const line2=isHindi?`चंद्रमा <strong>${NAK_NAMES[nakIdx]}</strong> में है — पंचक क्षेत्र (नक्षत्र 23–27) से बाहर।`:`Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> — outside the Panchaka zone (Nakshatras 23–27).`;
       pkEl.innerHTML=`<div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;">
-        <p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 4px;">✓ No Panchaka Today</p>
-        <p style="font-size:13px;color:#166534;margin:0;">Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> — outside the Panchaka zone (Nakshatras 23–27).</p>
+        <p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 4px;">✓ ${isHindi?'आज कोई पंचक नहीं':'No Panchaka Today'}</p>
+        <p style="font-size:13px;color:#166534;margin:0;">${line2}</p>
       </div>`;
     }
   }
@@ -252,28 +258,47 @@ function calculate(){
   }
 }
 
-const infoGrid=document.getElementById('pk-info-grid');
-if(infoGrid){
+function renderInfoGrid(){
+  const infoGrid=document.getElementById('pk-info-grid');
+  if(!infoGrid) return;
   infoGrid.innerHTML=[
-    {title:'What is Panchaka?',text:'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.'},
-    {title:'What to avoid in Panchaka?',text:'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.'},
-  ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${i.title}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${i.text}</p></div>`).join('');
+    {title:'What is Panchaka?',titleHi:'पंचक क्या है?',text:'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.'},
+    {title:'What to avoid in Panchaka?',titleHi:'पंचक में क्या टालें?',text:'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.'},
+  ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?i.titleHi:i.title}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${i.text}</p></div>`).join('');
 }
+renderInfoGrid();
 
-const gowriLegend=document.getElementById('gowri-legend');
-if(gowriLegend){
+function renderGowriLegend(){
+  const gowriLegend=document.getElementById('gowri-legend');
+  if(!gowriLegend) return;
   gowriLegend.innerHTML=Object.entries(GOWRI_DATA).map(([name,d])=>`
     <div class="card" style="padding:12px 14px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
         <span style="width:8px;height:8px;border-radius:50%;background:${d.fg};flex-shrink:0;"></span>
         <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${name}</span>
-        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'||d.q==='Good'?d.fg:'#dc2626'};">${d.q}</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'||d.q==='Good'?d.fg:'#dc2626'};">${trQ(d.q)}</span>
       </div>
       <p style="font-size:11px;color:var(--color-body-text);margin:0;">${d.suitable}</p>
     </div>
   `).join('');
 }
+renderGowriLegend();
 
 document.getElementById('pk-calc')?.addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  calculate();
+  renderInfoGrid();
+  renderGowriLegend();
+}
+document.addEventListener('langchange', (e: Event) => {
+  applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

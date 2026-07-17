@@ -8,10 +8,10 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">रुद्राक्ष · RUDRAKSHA CALCULATOR</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rudraksha Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Rudraksha beads carry the energy of Lord Shiva. Find the mukhi suited to your chart from birth details, or select your Lagna and Moon rashi directly.</p>
+      <h1 data-hi="रुद्राक्ष कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rudraksha Calculator</h1>
+      <p data-hi="रुद्राक्ष के दानों में भगवान शिव की ऊर्जा समाहित है। जन्म विवरण से अपनी कुंडली के अनुकूल मुखी जानें, या सीधे अपनी लग्न और चंद्र राशि चुनें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Rudraksha beads carry the energy of Lord Shiva. Find the mukhi suited to your chart from birth details, or select your Lagna and Moon rashi directly.</p>
     </div>
   </section>
 
@@ -20,51 +20,51 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
       <!-- Input mode tabs -->
       <div style="display:flex;gap:0;margin-bottom:24px;border:1px solid var(--color-hairline-strong);border-radius:8px;overflow:hidden;width:fit-content;">
-        <button class="mode-btn active" id="mode-birth">By Birth Details</button>
-        <button class="mode-btn" id="mode-quick">By Rashi / Lagna</button>
+        <button class="mode-btn active" id="mode-birth" data-hi="जन्म विवरण से">By Birth Details</button>
+        <button class="mode-btn" id="mode-quick" data-hi="राशि / लग्न से">By Rashi / Lagna</button>
       </div>
 
       <!-- Birth Details form -->
       <div id="form-birth" style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <!-- Quick Select form -->
       <div id="form-quick" style="display:none;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label class="fld-label">Lagna (Ascendant Sign)</label>
+          <label class="fld-label" data-hi="लग्न (उदय राशि)">Lagna (Ascendant Sign)</label>
           <select id="q-lagna" class="input" style="height:38px;min-width:160px;"></select>
         </div>
         <div>
-          <label class="fld-label">Moon Rashi (Moon Sign)</label>
+          <label class="fld-label" data-hi="चंद्र राशि">Moon Rashi (Moon Sign)</label>
           <select id="q-moon" class="input" style="height:38px;min-width:160px;"></select>
         </div>
-        <button id="q-calc" class="btn-primary" style="height:38px;padding:0 20px;">Find Rudraksha</button>
+        <button id="q-calc" class="btn-primary" data-hi="रुद्राक्ष जानें" style="height:38px;padding:0 20px;">Find Rudraksha</button>
       </div>
 
       <div id="result" style="display:none;">
         <div class="card" style="padding:20px;margin-bottom:24px;">
           <div id="birth-info" style="display:flex;gap:24px;flex-wrap:wrap;"></div>
         </div>
-        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Primary Recommendation</h3>
-        <p style="font-size:12.5px;color:var(--color-mute);margin:0 0 14px;">The Jeevan Rudraksha for your Lagna lord — generally safe to wear lifelong.</p>
+        <h3 data-hi="मुख्य अनुशंसा" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Primary Recommendation</h3>
+        <p data-hi="आपके लग्न स्वामी हेतु जीवन रुद्राक्ष — आमतौर पर आजीवन पहनने के लिए सुरक्षित।" style="font-size:12.5px;color:var(--color-mute);margin:0 0 14px;">The Jeevan Rudraksha for your Lagna lord — generally safe to wear lifelong.</p>
         <div id="rec-primary" style="margin-bottom:24px;"></div>
-        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Supporting Rudraksha</h3>
+        <h3 data-hi="सहायक रुद्राक्ष" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Supporting Rudraksha</h3>
         <div id="rec-rudraksha" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:32px;"></div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <!-- All 14 Mukhis reference -->
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 14 Mukhis — Reference Guide</h3>
+      <h3 data-hi="सभी 14 मुखी — संदर्भ गाइड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 14 Mukhis — Reference Guide</h3>
       <div id="all-mukhis" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:36px;"></div>
 
       <div class="card" style="padding:28px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rudraksha</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Rudraksha (rudra + aksha, "tears of Shiva") are seeds of the Elaeocarpus ganitrus tree, prized for their spiritual and healing properties. Each bead has natural clefts called mukhis; the number of mukhis links it to a specific deity and ruling planet.</p>
-        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">The 5-mukhi is the most common and universally safe bead. Blue Sapphire energy (7-mukhi / Saturn) and 14-mukhi (Shiva / Saturn-Rahu) should always be worn after consulting a Jyotishi, as Saturn energy amplifies both positive and negative chart patterns.</p>
+        <h2 data-hi="रुद्राक्ष के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rudraksha</h2>
+        <p data-hi="रुद्राक्ष (रुद्र + अक्ष, 'शिव के आंसू') एलियोकार्पस गणित्रस वृक्ष के बीज हैं, जो अपने आध्यात्मिक और उपचारात्मक गुणों के लिए प्रसिद्ध हैं। हर दाने में प्राकृतिक धारियां होती हैं जिन्हें मुखी कहा जाता है; मुखियों की संख्या इसे किसी विशेष देवता और शासक ग्रह से जोड़ती है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Rudraksha (rudra + aksha, "tears of Shiva") are seeds of the Elaeocarpus ganitrus tree, prized for their spiritual and healing properties. Each bead has natural clefts called mukhis; the number of mukhis links it to a specific deity and ruling planet.</p>
+        <p data-hi="5-मुखी सबसे सामान्य और सर्वमान्य रूप से सुरक्षित दाना है। नीलम ऊर्जा (7-मुखी / शनि) और 14-मुखी (शिव / शनि-राहु) हमेशा किसी ज्योतिषी से परामर्श के बाद ही पहनना चाहिए, क्योंकि शनि ऊर्जा कुंडली के सकारात्मक और नकारात्मक दोनों पैटर्न को बढ़ाती है।" style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">The 5-mukhi is the most common and universally safe bead. Blue Sapphire energy (7-mukhi / Saturn) and 14-mukhi (Shiva / Saturn-Rahu) should always be worn after consulting a Jyotishi, as Saturn energy amplifies both positive and negative chart patterns.</p>
       </div>
     </div>
   </section>
@@ -78,6 +78,12 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 </style>
 
 <script define:vars={{ PLANET_ICONS }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
+const DAY_HI={Sunday:'रविवार',Monday:'सोमवार',Tuesday:'मंगलवार',Wednesday:'बुधवार',Thursday:'गुरुवार',Friday:'शुक्रवार',Saturday:'शनिवार',Any:'कोई भी'};
+const METAL_HI={Gold:'सोना',Silver:'चांदी',Copper:'तांबा','Gold/Silver':'सोना/चांदी'};
+const WEAR_HI={'Right hand / neck':'दायां हाथ / गले में','Left hand / neck':'बायां हाथ / गले में','Right hand':'दायां हाथ','Any finger / neck':'कोई भी उंगली / गले में','Neck':'गले में','Neck (after consultation)':'गले में (परामर्श के बाद)'};
+const DEITY_HI={'Shiva (Mahadeva)':'शिव (महादेव)','Ardhanareeshvara':'अर्धनारीश्वर','Agni / Brahma':'अग्नि / ब्रह्मा','Brahma':'ब्रह्मा','Kalagni / Pancha Rudra':'कालाग्नि / पंच रुद्र','Kartikeya':'कार्तिकेय','Mahalakshmi / Saptarishi':'महालक्ष्मी / सप्तर्षि','Ganesha':'गणेश','Durga / Bhairava':'दुर्गा / भैरव','Vishnu (Dashavatara)':'विष्णु (दशावतार)','Hanuman / Ekadasha Rudra':'हनुमान / एकादश रुद्र','Aditya (Sun God)':'आदित्य (सूर्य देव)','Vishwakarma / Kartikeya':'विश्वकर्मा / कार्तिकेय','Shiva (Deva Mani)':'शिव (देव मणि)'};
 const PLANET_ID={Sun:'surya',Moon:'chandra',Mars:'mangal',Mercury:'budha',Jupiter:'guru',Venus:'shukra',Saturn:'shani',Rahu:'rahu',Ketu:'ketu'};
 function planetLabel(planetStr,color){
   if(!PLANET_ID[planetStr])return planetStr;

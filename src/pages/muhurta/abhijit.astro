@@ -7,10 +7,10 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">अभिजित मुहूर्त</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Abhijit Muhurat</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The most universally auspicious time window — centered on solar noon. Also shows Do Ghati (2-Ghati) Muhurat and Brahma Muhurta.</p>
+      <h1 data-hi="अभिजित मुहूर्त" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Abhijit Muhurat</h1>
+      <p data-hi="सबसे सार्वभौमिक शुभ समय अवधि — सौर मध्याह्न पर केंद्रित। साथ ही दो घटी मुहूर्त और ब्रह्म मुहूर्त भी दिखाए गए हैं।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The most universally auspicious time window — centered on solar noon. Also shows Do Ghati (2-Ghati) Muhurat and Brahma Muhurta.</p>
     </div>
   </section>
 
@@ -18,14 +18,14 @@ import Layout from '../../layouts/Layout.astro';
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <label data-hi="दिनांक" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
           <input type="date" id="ab-date" class="input" style="height:38px;" />
         </div>
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
           <select id="ab-city" class="input" style="height:38px;min-width:160px;"></select>
         </div>
-        <button id="ab-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <button id="ab-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <!-- Three special muhurta cards -->
@@ -34,13 +34,13 @@ import Layout from '../../layouts/Layout.astro';
       <!-- What is section -->
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;">
         {[
-          { title:'Abhijit Muhurat', icon:'☀️', text:'Named after the Nakshatra Abhijit (Vega), this is the 8th Muhurta of the day — centered on true solar noon, spanning half a Muhurta (day length ÷ 30) on each side. It is considered so auspicious that it can override most other restrictions. Works on all days except Wednesday (when Abhijit is weak).' },
-          { title:'Do Ghati Muhurat', icon:'⏱️', text:'Two Ghatis (48 minutes) spanning solar noon. 1 Ghati = 24 minutes. This is the core of Abhijit — the most concentrated auspicious window of the day. Ideal for starting important ceremonies that could not find another Muhurta.' },
-          { title:'Brahma Muhurta', icon:'🌅', text:'The "Creator\'s Hour" — 1 hour 36 minutes before sunrise (specifically 3 Muhurtas: 96 min before sunrise to 48 min before sunrise). Best for spiritual practice, meditation, study, and early morning rituals. Associated with clarity, memory, and divine connection.' },
+          { title:'Abhijit Muhurat', titleHi:'अभिजित मुहूर्त', icon:'☀️', text:'Named after the Nakshatra Abhijit (Vega), this is the 8th Muhurta of the day — centered on true solar noon, spanning half a Muhurta (day length ÷ 30) on each side. It is considered so auspicious that it can override most other restrictions. Works on all days except Wednesday (when Abhijit is weak).' },
+          { title:'Do Ghati Muhurat', titleHi:'दो घटी मुहूर्त', icon:'⏱️', text:'Two Ghatis (48 minutes) spanning solar noon. 1 Ghati = 24 minutes. This is the core of Abhijit — the most concentrated auspicious window of the day. Ideal for starting important ceremonies that could not find another Muhurta.' },
+          { title:'Brahma Muhurta', titleHi:'ब्रह्म मुहूर्त', icon:'🌅', text:'The "Creator\'s Hour" — 1 hour 36 minutes before sunrise (specifically 3 Muhurtas: 96 min before sunrise to 48 min before sunrise). Best for spiritual practice, meditation, study, and early morning rituals. Associated with clarity, memory, and divine connection.' },
         ].map(item => (
           <div class="card" style="padding:20px;">
             <div style="font-size:24px;margin-bottom:10px;">{item.icon}</div>
-            <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">{item.title}</p>
+            <p data-hi={item.titleHi} style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">{item.title}</p>
             <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.7;">{item.text}</p>
           </div>
         ))}
@@ -64,6 +64,7 @@ const LOCS = [
   {name:'London',lat:51.5074,lng:-0.1278,tz:1},
 ];
 
+let isHindi = false;
 function toJD(y:number,m:number,d:number,h=0){
   if(m<=2){y--;m+=12;}
   const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
@@ -163,6 +164,7 @@ function calculate(){
         start:abhijitStart,end:abhijitEnd,
         icon:'☀️',color:'#b45309',bg:'#fef3c7',
         note:isWednesday?'⚠️ Wednesday — Abhijit is weaker today':'Universally auspicious — overrides most doshas',
+        noteHi:isWednesday?'⚠️ बुधवार — आज अभिजित कमजोर है':'सार्वभौमिक रूप से शुभ — अधिकांश दोषों को निष्प्रभावी करता है',
         disabled:isWednesday,
       },
       {
@@ -170,6 +172,7 @@ function calculate(){
         start:doGhatiStart,end:doGhatiEnd,
         icon:'⏱️',color:'#b45309',bg:'#fef9eb',
         note:'Inner 24-minute core around solar noon (1 Ghati each side)',
+        noteHi:'सौर मध्याह्न के चारों ओर 24 मिनट का मुख्य भाग (प्रत्येक ओर 1 घटी)',
         disabled:false,
       },
       {
@@ -177,6 +180,7 @@ function calculate(){
         start:brahmaStart,end:brahmaEnd,
         icon:'🌅',color:'#16803D',bg:'#DCF3E3',
         note:'Best for meditation, spiritual practice & study',
+        noteHi:'ध्यान, आध्यात्मिक साधना और अध्ययन के लिए सर्वोत्तम',
         disabled:false,
       },
     ];
@@ -192,13 +196,13 @@ function calculate(){
               <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${item.nameHi}</p>
             </div>
           </div>
-          ${active?`<span style="background:${item.color};color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;">ACTIVE</span>`:''}
+          ${active?`<span style="background:${item.color};color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;">${isHindi?'सक्रिय':'ACTIVE'}</span>`:''}
         </div>
         <div style="background:${item.bg};border-radius:10px;padding:14px 16px;margin-bottom:12px;">
           <p style="font-size:22px;font-weight:700;color:${item.color};margin:0;font-family:var(--font-mono);">${fmtMins(item.start)} – ${fmtMins(item.end)}</p>
-          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;">Duration: ${item.end-item.start} minutes</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;">${isHindi?'अवधि':'Duration'}: ${item.end-item.start} ${isHindi?'मिनट':'minutes'}</p>
         </div>
-        <p style="font-size:12px;color:${item.disabled?'#dc2626':'var(--color-body-text)'};margin:0;line-height:1.5;">${item.note}</p>
+        <p style="font-size:12px;color:${item.disabled?'#dc2626':'var(--color-body-text)'};margin:0;line-height:1.5;">${isHindi?item.noteHi:item.note}</p>
       </div>`;
     }).join('');
   }
@@ -206,4 +210,17 @@ function calculate(){
 
 document.getElementById('ab-calc')?.addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e: Event) => {
+  applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

@@ -7,10 +7,10 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">ग्रह स्फुट · PLANETARY POSITIONS</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Planetary Positions Today</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Live sidereal (Lahiri ayanamsha) positions of all 9 grahas, recomputed from real Keplerian orbital mechanics — the same engine behind this site's Kundali generator. Updates automatically as the planets move.</p>
+      <h1 data-hi="आज की ग्रह स्थिति" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Planetary Positions Today</h1>
+      <p data-hi="सभी 9 ग्रहों की लाइव सायन (लाहिड़ी अयनांश) स्थिति, वास्तविक केप्लेरियन कक्षीय यांत्रिकी से पुनर्गणित — इस साइट के कुंडली जनरेटर के पीछे वही इंजन। ग्रहों की गति के साथ स्वतः अपडेट होता है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Live sidereal (Lahiri ayanamsha) positions of all 9 grahas, recomputed from real Keplerian orbital mechanics — the same engine behind this site's Kundali generator. Updates automatically as the planets move.</p>
     </div>
   </section>
 
@@ -20,18 +20,18 @@ import Layout from '../../layouts/Layout.astro';
       <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:32px;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pp-table">
           <thead><tr>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Graha</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rashi</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Degree</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Nakshatra</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Pada</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Motion</th>
+            <th data-hi="ग्रह" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Graha</th>
+            <th data-hi="राशि" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rashi</th>
+            <th data-hi="अंश" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Degree</th>
+            <th data-hi="नक्षत्र" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Nakshatra</th>
+            <th data-hi="पद" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Pada</th>
+            <th data-hi="गति" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Motion</th>
           </tr></thead>
           <tbody id="pp-body"></tbody>
         </table>
       </div>
 
-      <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">What Each Graha Signifies</h3>
+      <h3 data-hi="प्रत्येक ग्रह का अर्थ" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">What Each Graha Signifies</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;" id="pp-significations"></div>
     </div>
   </section>
@@ -116,6 +116,17 @@ const PLANETS=[
   ['rahu','Rahu','Worldly desire, obsession, foreign connections, sudden change, and illusion.'],
   ['ketu','Ketu','Detachment, spirituality, past-life karma, and liberation.'],
 ];
+const PLANETS_HI:any={
+  surya:['सूर्य','आत्मा, जीवन शक्ति, आत्मविश्वास, अधिकार, पिता, सरकारी सेवा, और समग्र स्वास्थ्य।'],
+  chandra:['चंद्रमा','मन, भावनाएं, अंतर्ज्ञान, माता, और दैनिक राशिफल व मुहूर्त निर्णयों में प्रयुक्त भावनात्मक केंद्र।'],
+  mangal:['मंगल','ऊर्जा, साहस, भाई-बहन, भूमि व संपत्ति, संघर्ष, और कार्य करने की प्रेरणा।'],
+  budha:['बुध','बुद्धि, संचार, व्यावसायिक कुशलता, शिक्षा, और विश्लेषणात्मक क्षमता।'],
+  guru:['गुरु','ज्ञान, धन, संतान, आध्यात्मिकता, गुरुजन, और विस्तार या विकास।'],
+  shukra:['शुक्र','प्रेम, विवाह, सौंदर्य, विलासिता, कला, और रिश्ते।'],
+  shani:['शनि','अनुशासन, दीर्घायु, कठोर परिश्रम, करियर, विलंब, और कर्म संबंधी सीख।'],
+  rahu:['राहु','सांसारिक इच्छा, जुनून, विदेशी संबंध, अचानक परिवर्तन, और भ्रम।'],
+  ketu:['केतु','वैराग्य, आध्यात्मिकता, पूर्वजन्म का कर्म, और मोक्ष।'],
+};
 function fmtDMS(lon:number){
   const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);
   return deg+'°'+String(mn).padStart(2,'0')+"'";
@@ -126,6 +137,8 @@ function nakInfo(sid:number){
   return {name:NAKS[idx],pada};
 }
 
+let hindiActive=false;
+
 function render(){
   const now=new Date();
   const jd=toJD(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
@@ -134,10 +147,11 @@ function render(){
   const ay=L.ay;
 
   const updatedEl=document.getElementById('pp-updated');
-  if(updatedEl)updatedEl.textContent='Last updated: '+now.toLocaleTimeString()+' (auto-refreshes every 60s)';
+  if(updatedEl)updatedEl.textContent=(hindiActive?'अंतिम अद्यतन: ':'Last updated: ')+now.toLocaleTimeString()+(hindiActive?' (हर 60 सेकंड में स्वतः अपडेट)':' (auto-refreshes every 60s)');
 
   let rows='';
   PLANETS.forEach(([k,full])=>{
+    const displayName=hindiActive?PLANETS_HI[k][0]:full;
     const sid=n360((L as any)[k]-ay);
     const sign=Math.floor(sid/30);
     const nk=nakInfo(sid);
@@ -149,18 +163,35 @@ function render(){
       let diff=nxt-cur;if(diff>180)diff-=360;if(diff<-180)diff+=360;
       motion=diff<0?'Retrograde':'Direct';
     }
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${full}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${RASHI[sign]} (${RASHI_EN[sign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">${fmtDMS(sid)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.name}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.pada}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${motion==='Retrograde'?'#dc2626':'var(--color-body-text)'};">${motion}</td></tr>`;
+    const motionLabel=hindiActive?(motion==='Retrograde'?'वक्री':'मार्गी'):motion;
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${displayName}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${RASHI[sign]} (${RASHI_EN[sign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">${fmtDMS(sid)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.name}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.pada}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${motion==='Retrograde'?'#dc2626':'var(--color-body-text)'};">${motionLabel}</td></tr>`;
   });
   const body=document.getElementById('pp-body');
   if(body)body.innerHTML=rows;
 
   const sigEl=document.getElementById('pp-significations');
-  if(sigEl&&!sigEl.dataset.rendered){
-    sigEl.dataset.rendered='1';
-    sigEl.innerHTML=PLANETS.map(([,full,desc])=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${full}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${desc}</p></div>`).join('');
+  if(sigEl){
+    sigEl.innerHTML=PLANETS.map(([k,full,desc])=>{
+      const name=hindiActive?PLANETS_HI[k][0]:full;
+      const text=hindiActive?PLANETS_HI[k][1]:desc;
+      return `<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${name}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${text}</p></div>`;
+    }).join('');
   }
 }
 
 render();
 setInterval(render,60000);
+
+function applyPageLang(hindi:boolean){
+  hindiActive=hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el=>{
+    if(!el.dataset.en) el.dataset.en=el.textContent||'';
+    el.textContent=hindi?(el.dataset.hi as string):(el.dataset.en as string);
+  });
+  render();
+}
+document.addEventListener('langchange',(e:Event)=>{
+  applyPageLang((e as CustomEvent).detail.langCode==='hi');
+});
+if(localStorage.getItem('pp-lang')==='hi') applyPageLang(true);
 </script>

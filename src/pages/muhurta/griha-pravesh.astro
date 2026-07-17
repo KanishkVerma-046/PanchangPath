@@ -7,43 +7,47 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">गृह प्रवेश मुहूर्त</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Griha Pravesh Muhurat</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find the most auspicious dates to enter a new home or conduct a housewarming ceremony, based on Vedic Panchang rules.</p>
+      <h1 data-hi="गृह प्रवेश मुहूर्त" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Griha Pravesh Muhurat</h1>
+      <p data-hi="वैदिक पंचांग नियमों के आधार पर नए घर में प्रवेश या गृहप्रवेश समारोह के लिए सबसे शुभ तिथियां खोजें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find the most auspicious dates to enter a new home or conduct a housewarming ceremony, based on Vedic Panchang rules.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 48px;">
     <div class="container" style="max-width:900px;margin:0 auto;">
       <div class="card" style="padding:28px;margin-bottom:32px;">
-        <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 20px;">Search Griha Pravesh Dates</h2>
+        <h2 data-hi="गृह प्रवेश तिथियां खोजें" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 20px;">Search Griha Pravesh Dates</h2>
         <div class="finder-form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
           <div>
-            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
+            <label data-hi="प्रारंभ तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
             <input type="date" id="gp-from" class="input" style="height:38px;" />
           </div>
           <div>
-            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
+            <label data-hi="अंतिम तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
             <input type="date" id="gp-to" class="input" style="height:38px;" />
           </div>
           <div>
-            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+            <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
             <select id="gp-city" class="input" style="height:38px;"></select>
           </div>
         </div>
         <div style="margin-bottom:20px;">
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:8px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Griha Pravesh Type</label>
+          <label data-hi="गृह प्रवेश प्रकार" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:8px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Griha Pravesh Type</label>
           <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            {['Apoorva (new house)','Sapoorva (returning)','Dwandwah (after repairs)'].map((t,i) => (
+            {[
+              {en:'Apoorva (new house)',hi:'अपूर्व (नया घर)'},
+              {en:'Sapoorva (returning)',hi:'सपूर्व (वापसी)'},
+              {en:'Dwandwah (after repairs)',hi:'द्वन्द्वः (मरम्मत के बाद)'},
+            ].map((t,i) => (
               <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--color-body-text);cursor:pointer;">
                 <input type="radio" name="gp-type" value={i} checked={i===0} style="accent-color:var(--color-saffron);" />
-                {t}
+                <span data-hi={t.hi}>{t.en}</span>
               </label>
             ))}
           </div>
         </div>
-        <button id="gp-find" class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:15px;">Find Griha Pravesh Dates →</button>
+        <button id="gp-find" data-hi="गृह प्रवेश तिथियां खोजें →" class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:15px;">Find Griha Pravesh Dates →</button>
       </div>
 
       <div id="gp-results" style="display:none;">
@@ -53,19 +57,19 @@ import Layout from '../../layouts/Layout.astro';
 
       <!-- Muhurta timing form -->
       <div class="card" style="padding:20px;margin-bottom:24px;border-left:3px solid var(--color-saffron);">
-        <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">💡 Tip: Muhurta Timing</p>
-        <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">Once you identify an auspicious date, plan to enter the house during Amrit or Shubh Choghadiya, during Jupiter or Moon Hora, and when a benefic Lagna is rising. Avoid Rahu Kala timing for the actual entry.</p>
+        <p data-hi="💡 सुझाव: मुहूर्त समय" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">💡 Tip: Muhurta Timing</p>
+        <p data-hi="शुभ तिथि तय करने के बाद, अमृत या शुभ चौघड़िया में, गुरु या चंद्र होरा में, और जब कोई शुभ लग्न उदय हो रहा हो तब घर में प्रवेश की योजना बनाएं। वास्तविक प्रवेश के लिए राहु काल से बचें।" style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">Once you identify an auspicious date, plan to enter the house during Amrit or Shubh Choghadiya, during Jupiter or Moon Hora, and when a benefic Lagna is rising. Avoid Rahu Kala timing for the actual entry.</p>
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">
         {[
-          {label:'Good Nakshatras',desc:'Rohini, Mrigashira, Punarvasu, Pushya, Uttara Phalguni, Hasta, Chitra, Swati, Anuradha, Uttara Ashadha, Shravana, Dhanishtha, Revati'},
-          {label:'Good Tithis',desc:'Dwitiya, Tritiya, Panchami, Saptami, Dashami, Ekadashi, Dwadashi, Trayodashi. Avoid Rikta tithis (4th, 9th, 14th) and Amavasya.'},
-          {label:'Good Weekdays',desc:'Monday, Wednesday, Thursday, Friday. Avoid Sunday (Ravi Vara) for most auspicious activities.'},
-          {label:'Months to Avoid',desc:'Kharmas (Sun in Sagittarius or Pisces), Adhika Masa, Shraadh Paksha (Krishna Paksha of Ashwin). These periods weaken any Muhurta.'},
+          {label:'Good Nakshatras',labelHi:'शुभ नक्षत्र',desc:'Rohini, Mrigashira, Punarvasu, Pushya, Uttara Phalguni, Hasta, Chitra, Swati, Anuradha, Uttara Ashadha, Shravana, Dhanishtha, Revati'},
+          {label:'Good Tithis',labelHi:'शुभ तिथियां',desc:'Dwitiya, Tritiya, Panchami, Saptami, Dashami, Ekadashi, Dwadashi, Trayodashi. Avoid Rikta tithis (4th, 9th, 14th) and Amavasya.'},
+          {label:'Good Weekdays',labelHi:'शुभ वार',desc:'Monday, Wednesday, Thursday, Friday. Avoid Sunday (Ravi Vara) for most auspicious activities.'},
+          {label:'Months to Avoid',labelHi:'त्याज्य महीने',desc:'Kharmas (Sun in Sagittarius or Pisces), Adhika Masa, Shraadh Paksha (Krishna Paksha of Ashwin). These periods weaken any Muhurta.'},
         ].map(c => (
           <div class="card" style="padding:14px;">
-            <p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">{c.label}</p>
+            <p data-hi={c.labelHi} style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">{c.label}</p>
             <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">{c.desc}</p>
           </div>
         ))}
@@ -95,6 +99,7 @@ const LOCS = [
   {name:'London',lat:51.5074,lng:-0.1278,tz:1},
 ];
 
+let isHindi = false;
 const GP_GOOD_NAKS = [3,4,6,7,11,12,13,14,16,20,21,22,26];
 const GP_GOOD_TITHIS = [1,2,4,6,9,10,11,12];
 const GP_AVOID_TITHIS = [3,8,13,29];
@@ -200,7 +205,7 @@ document.getElementById('gp-find')?.addEventListener('click',()=>{
   const [ty,tm,td]=toStr.split('-').map(Number);
   const fromD=new Date(fy,fm-1,fd), toD=new Date(ty,tm-1,td);
   if(toD<=fromD||((toD.getTime()-fromD.getTime())>365*24*3600*1000)){
-    alert('Please select a range up to 1 year.');return;
+    alert(isHindi?'कृपया 1 वर्ष तक की सीमा चुनें।':'Please select a range up to 1 year.');return;
   }
 
   const results:any[]=[];
@@ -219,12 +224,12 @@ document.getElementById('gp-find')?.addEventListener('click',()=>{
   const titleEl=document.getElementById('gp-results-title');
   const secEl=document.getElementById('gp-results');
   if(!listEl||!titleEl||!secEl)return;
-  titleEl.textContent=`${top.length} auspicious Griha Pravesh dates found`;
+  titleEl.textContent=isHindi?`${top.length} शुभ गृह प्रवेश तिथियां मिलीं`:`${top.length} auspicious Griha Pravesh dates found`;
   if(!top.length){
-    listEl.innerHTML=`<div class="card" style="padding:20px;text-align:center;"><p style="color:var(--color-mute);">No strong dates found. Try extending the range.</p></div>`;
+    listEl.innerHTML=`<div class="card" style="padding:20px;text-align:center;"><p style="color:var(--color-mute);">${isHindi?'कोई मजबूत तिथि नहीं मिली। सीमा बढ़ाकर देखें।':'No strong dates found. Try extending the range.'}</p></div>`;
   } else {
     listEl.innerHTML=top.map((r,i)=>{
-      const label=r.score>=9?'Excellent':r.score>=7?'Very Good':'Good';
+      const label=isHindi?(r.score>=9?'उत्कृष्ट':r.score>=7?'बहुत अच्छा':'अच्छा'):(r.score>=9?'Excellent':r.score>=7?'Very Good':'Good');
       const lc=r.score>=9?'#16803D':r.score>=7?'#97690F':'#B5390A';
       const isTop=i===0;
       const tc=isTop?'var(--color-on-primary)':'var(--color-ink)';

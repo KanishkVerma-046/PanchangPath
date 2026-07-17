@@ -7,10 +7,10 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">गोचर · GOCHARA</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Gochara — Transit Table</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:560px;">Classical Vedic Gochara (planetary transit) theory concerns itself with the five "slow movers" — Mars, Jupiter, Saturn, Rahu, and Ketu — and whether they currently sit in a favorable or challenging house counted from your natal Moon sign. Find your Moon sign's row below.</p>
+      <h1 data-hi="गोचर — पारगमन तालिका" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Gochara — Transit Table</h1>
+      <p data-hi="शास्त्रीय वैदिक गोचर (ग्रह पारगमन) सिद्धांत पांच 'धीमी गति वाले' ग्रहों — मंगल, गुरु, शनि, राहु, और केतु — से संबंधित है, और क्या वे वर्तमान में आपकी जन्म चंद्र राशि से गिनकर अनुकूल या प्रतिकूल भाव में स्थित हैं। नीचे अपनी चंद्र राशि की पंक्ति खोजें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:560px;">Classical Vedic Gochara (planetary transit) theory concerns itself with the five "slow movers" — Mars, Jupiter, Saturn, Rahu, and Ketu — and whether they currently sit in a favorable or challenging house counted from your natal Moon sign. Find your Moon sign's row below.</p>
     </div>
   </section>
 
@@ -20,17 +20,17 @@ import Layout from '../../layouts/Layout.astro';
       <div class="card" style="padding:20px;overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:640px;" id="gc-table">
           <thead><tr>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Your Moon Sign</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Mars</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Jupiter</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Saturn</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rahu</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu</th>
+            <th data-hi="आपकी चंद्र राशि" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Your Moon Sign</th>
+            <th data-hi="मंगल" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Mars</th>
+            <th data-hi="गुरु" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Jupiter</th>
+            <th data-hi="शनि" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Saturn</th>
+            <th data-hi="राहु" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rahu</th>
+            <th data-hi="केतु" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu</th>
           </tr></thead>
           <tbody id="gc-body"></tbody>
         </table>
       </div>
-      <p style="font-size:11px;color:var(--color-mute);margin:16px 0 0;max-width:600px;">Mars/Rahu/Ketu/Saturn: favorable in houses 3, 6, 11 from Moon sign ("Upachaya"). Jupiter: favorable in houses 2, 5, 7, 9, 11. Saturn additionally shows Sade Sati (12, 1, 2) and Ashtam Shani (8) as challenging.</p>
+      <p data-hi="मंगल/राहु/केतु/शनि: चंद्र राशि से भाव 3, 6, 11 में अनुकूल ('उपचय')। गुरु: भाव 2, 5, 7, 9, 11 में अनुकूल। शनि अतिरिक्त रूप से साढ़े साती (12, 1, 2) और अष्टम शनि (8) को प्रतिकूल दर्शाता है।" style="font-size:11px;color:var(--color-mute);margin:16px 0 0;max-width:600px;">Mars/Rahu/Ketu/Saturn: favorable in houses 3, 6, 11 from Moon sign ("Upachaya"). Jupiter: favorable in houses 2, 5, 7, 9, 11. Saturn additionally shows Sade Sati (12, 1, 2) and Ashtam Shani (8) as challenging.</p>
     </div>
   </section>
 </Layout>
@@ -85,10 +85,14 @@ function classifyShani(house:number){
   if([3,6,11].includes(house))return {label:'Favorable',cls:'favorable'};
   return {label:'Neutral',cls:'neutral'};
 }
+const LABEL_HI:any={'Favorable':'अनुकूल','Challenging':'प्रतिकूल','Sade Sati':'साढ़े साती','Ashtam Shani':'अष्टम शनि','Neutral':'तटस्थ'};
 function cellHtml(c:{label:string,cls:string}){
   const color=c.cls==='favorable'?'#15803d':c.cls==='challenging'?'#dc2626':'var(--color-body-text)';
-  return `<td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${color};font-weight:600;font-size:12px;">${c.label}</td>`;
+  const label=hindiActive?LABEL_HI[c.label]:c.label;
+  return `<td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${color};font-weight:600;font-size:12px;">${label}</td>`;
 }
+
+let hindiActive=false;
 
 function render(){
   const now=new Date();
@@ -104,7 +108,7 @@ function render(){
   const ketuSign=Math.floor(n360(n360(rahuTrop+180)-ay)/30);
 
   const updatedEl=document.getElementById('gc-updated');
-  if(updatedEl)updatedEl.textContent='Last updated: '+now.toLocaleTimeString()+' (auto-refreshes every 60s)';
+  if(updatedEl)updatedEl.textContent=(hindiActive?'अंतिम अद्यतन: ':'Last updated: ')+now.toLocaleTimeString()+(hindiActive?' (हर 60 सेकंड में स्वतः अपडेट)':' (auto-refreshes every 60s)');
 
   let rows='';
   for(let moonSign=0;moonSign<12;moonSign++){
@@ -127,4 +131,17 @@ function render(){
 
 render();
 setInterval(render,60000);
+
+function applyPageLang(hindi:boolean){
+  hindiActive=hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el=>{
+    if(!el.dataset.en) el.dataset.en=el.textContent||'';
+    el.textContent=hindi?(el.dataset.hi as string):(el.dataset.en as string);
+  });
+  render();
+}
+document.addEventListener('langchange',(e:Event)=>{
+  applyPageLang((e as CustomEvent).detail.langCode==='hi');
+});
+if(localStorage.getItem('pp-lang')==='hi') applyPageLang(true);
 </script>

@@ -7,10 +7,10 @@ import Layout from '../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Today's Panchang</a>
+      <a href="/" data-hi="← आज का पंचांग" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Today's Panchang</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">सूर्योदय · सूर्यास्त · SUNRISE &amp; SUNSET</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Sunrise &amp; Sunset</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Today's sunrise and sunset time for your location, computed live from the same Meeus solar-position formula used across the site — plus a 7-day outlook.</p>
+      <h1 data-hi="सूर्योदय और सूर्यास्त" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Sunrise &amp; Sunset</h1>
+      <p data-hi="आपके स्थान के लिए आज का सूर्योदय और सूर्यास्त समय, साइट पर उपयोग किए जाने वाले उसी मीयस सौर-स्थिति सूत्र से लाइव गणना — साथ ही 7-दिन का पूर्वानुमान।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Today's sunrise and sunset time for your location, computed live from the same Meeus solar-position formula used across the site — plus a 7-day outlook.</p>
     </div>
   </section>
 
@@ -18,21 +18,21 @@ import Layout from '../layouts/Layout.astro';
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
           <select id="ss-city" class="input" style="height:38px;min-width:160px;"></select>
         </div>
       </div>
 
       <div id="ss-today" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:40px;"></div>
 
-      <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Next 7 Days</h3>
+      <h3 data-hi="अगले 7 दिन" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Next 7 Days</h3>
       <div style="overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;max-width:640px;" id="ss-week">
           <thead><tr>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Date</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Sunrise</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Sunset</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Day Length</th>
+            <th data-hi="दिनांक" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Date</th>
+            <th data-hi="सूर्योदय" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Sunrise</th>
+            <th data-hi="सूर्यास्त" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Sunset</th>
+            <th data-hi="दिन की अवधि" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Day Length</th>
           </tr></thead>
           <tbody id="ss-week-body"></tbody>
         </table>
@@ -121,6 +121,8 @@ window.addEventListener('locationchange',(e:Event)=>{
   calculate();
 });
 
+let hindiActive=false;
+
 function calculate(){
   const cityName=sel.value;
   const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
@@ -135,9 +137,9 @@ function calculate(){
   const todayEl=document.getElementById('ss-today');
   if(todayEl){
     todayEl.innerHTML=[
-      {label:'Sunrise',value:decHoursToTime(srUTC,loc.tz),color:'#d97706'},
-      {label:'Sunset',value:decHoursToTime(ssUTC,loc.tz),color:'#dc2626'},
-      {label:'Day Length',value:fmtDuration(dayLenHours),color:'var(--color-ink)'},
+      {label:hindiActive?'सूर्योदय':'Sunrise',value:decHoursToTime(srUTC,loc.tz),color:'#d97706'},
+      {label:hindiActive?'सूर्यास्त':'Sunset',value:decHoursToTime(ssUTC,loc.tz),color:'#dc2626'},
+      {label:hindiActive?'दिन की अवधि':'Day Length',value:fmtDuration(dayLenHours),color:'var(--color-ink)'},
     ].map(c=>`<div class="card" style="padding:20px;text-align:center;"><p style="font-size:11px;color:var(--color-mute);text-transform:uppercase;letter-spacing:0.06em;font-family:var(--font-mono);margin:0 0 8px;">${c.label}</p><p style="font-size:24px;font-weight:700;color:${c.color};margin:0;font-family:var(--font-mono);">${c.value}</p></div>`).join('');
   }
 
@@ -150,7 +152,8 @@ function calculate(){
       const sr=sunriseUTC(jdI,loc.lat,loc.lng,true);
       const ss=sunriseUTC(jdI,loc.lat,loc.lng,false);
       const dayName=dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${i===0?' (Today)':''}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(sr,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(ss,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${fmtDuration(ss-sr)}</td></tr>`;
+      const todayTag=i===0?(hindiActive?' (आज)':' (Today)'):'';
+      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${todayTag}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(sr,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${decHoursToTime(ss,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${fmtDuration(ss-sr)}</td></tr>`;
     }
     weekBody.innerHTML=rows;
   }
@@ -158,4 +161,17 @@ function calculate(){
 
 sel.addEventListener('change',calculate);
 calculate();
+
+function applyPageLang(hindi:boolean){
+  hindiActive=hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el=>{
+    if(!el.dataset.en) el.dataset.en=el.textContent||'';
+    el.textContent=hindi?(el.dataset.hi as string):(el.dataset.en as string);
+  });
+  calculate();
+}
+document.addEventListener('langchange',(e:Event)=>{
+  applyPageLang((e as CustomEvent).detail.langCode==='hi');
+});
+if(localStorage.getItem('pp-lang')==='hi') applyPageLang(true);
 </script>

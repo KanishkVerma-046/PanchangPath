@@ -11,8 +11,8 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
     <MandalaWatermark size={480} opacity={0.06} />
     <div class="container" style="position:relative;">
       <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">मुहूर्त · Shubh Muhurta</p>
-      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Muhurta Tools.</h1>
-      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:540px;">Complete auspicious timing toolkit — daily Choghadiya, planetary hours, Lagna table, and life-event date finders. All calculations use Drik astronomical method with Lahiri ayanamsha.</p>
+      <h1 data-hi="मुहूर्त उपकरण" style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Muhurta Tools.</h1>
+      <p data-hi="संपूर्ण शुभ मुहूर्त टूलकिट — दैनिक चौघड़िया, ग्रह होरा, लग्न तालिका, और जीवन की महत्वपूर्ण घटनाओं के लिए तिथि खोजक। सभी गणनाएं द्रिक खगोलीय पद्धति और लाहिड़ी अयनांश पर आधारित हैं।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:540px;">Complete auspicious timing toolkit — daily Choghadiya, planetary hours, Lagna table, and life-event date finders. All calculations use Drik astronomical method with Lahiri ayanamsha.</p>
     </div>
   </section>
 
@@ -21,10 +21,10 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
     <div class="container">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
         <div>
-          <h2 style="font-size:18px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 4px 0 0;display:inline;">Today's Choghadiya</h2>
+          <h2 data-hi="आज की चौघड़िया" style="font-size:18px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 4px 0 0;display:inline;">Today's Choghadiya</h2>
           <span style="font-size:13px;color:var(--color-mute);margin-left:8px;" id="quick-date-label"></span>
         </div>
-        <a href="/muhurta/choghadiya" class="btn-outline" style="font-size:13px;height:34px;padding:0 16px;">Full Choghadiya →</a>
+        <a href="/muhurta/choghadiya" data-hi="पूर्ण चौघड़िया →" class="btn-outline" style="font-size:13px;height:34px;padding:0 16px;">Full Choghadiya →</a>
       </div>
       <div id="quick-chog" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:40px;">
         <div style="height:60px;background:var(--color-canvas-soft-2);border-radius:8px;animation:pulse 1.5s infinite;"></div>
@@ -38,42 +38,42 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
   <!-- Daily Tools grid -->
   <section style="padding:0 0 48px;">
     <div class="container">
-      <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 16px;letter-spacing:-0.2px;">Daily Muhurta Tools</h2>
+      <h2 data-hi="दैनिक मुहूर्त उपकरण" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 16px;letter-spacing:-0.2px;">Daily Muhurta Tools</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:48px;">
         {[
-          { href:'/muhurta/choghadiya', icon:'🕰️', title:'Choghadiya', titleHi:'चौघड़िया', desc:'8 daily auspicious & inauspicious time slots from sunrise to sunset.' },
-          { href:'/muhurta/hora', icon:'🪐', title:'Shubha Hora', titleHi:'शुभ होरा', desc:'Planetary hours ruled by Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn.' },
-          { href:'/muhurta/rahu-kala', icon:'🐍', title:'Rahu Kala', titleHi:'राहु काल', desc:'Inauspicious Rahu period — avoid starting new work during this time.' },
-          { href:'/muhurta/lagna', icon:'⚖️', title:'Lagna Table', titleHi:'लग्न तालिका', desc:'Rising sign (Lagna) changes every ~2 hours; shows today\'s full table.' },
-          { href:'/muhurta/abhijit', icon:'☀️', title:'Abhijit Muhurat', titleHi:'अभिजित मुहूर्त', desc:'The most auspicious midday window. Also Do Ghati & Brahma Muhurta.' },
-          { href:'/muhurta/panchaka', icon:'🌙', title:'Panchaka & Gowri', titleHi:'पंचक · गौरी पंचांग', desc:'Panchaka inauspicious periods and Gowri Panchangam for South India.' },
+          { href:'/muhurta/choghadiya', icon:'🕰️', title:'Choghadiya', titleHi:'चौघड़िया', desc:'8 daily auspicious & inauspicious time slots from sunrise to sunset.', descHi:'सूर्योदय से सूर्यास्त तक 8 दैनिक शुभ व अशुभ समय अवधि।' },
+          { href:'/muhurta/hora', icon:'🪐', title:'Shubha Hora', titleHi:'शुभ होरा', desc:'Planetary hours ruled by Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn.', descHi:'सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र और शनि द्वारा शासित ग्रह होरा।' },
+          { href:'/muhurta/rahu-kala', icon:'🐍', title:'Rahu Kala', titleHi:'राहु काल', desc:'Inauspicious Rahu period — avoid starting new work during this time.', descHi:'अशुभ राहु अवधि — इस समय नया कार्य शुरू करने से बचें।' },
+          { href:'/muhurta/lagna', icon:'⚖️', title:'Lagna Table', titleHi:'लग्न तालिका', desc:'Rising sign (Lagna) changes every ~2 hours; shows today\'s full table.', descHi:'उदय लग्न हर ~2 घंटे में बदलता है; आज की पूर्ण तालिका देखें।' },
+          { href:'/muhurta/abhijit', icon:'☀️', title:'Abhijit Muhurat', titleHi:'अभिजित मुहूर्त', desc:'The most auspicious midday window. Also Do Ghati & Brahma Muhurta.', descHi:'दिन का सबसे शुभ समय। साथ ही दो घटी व ब्रह्म मुहूर्त भी।' },
+          { href:'/muhurta/panchaka', icon:'🌙', title:'Panchaka & Gowri', titleHi:'पंचक · गौरी पंचांग', desc:'Panchaka inauspicious periods and Gowri Panchangam for South India.', descHi:'पंचक अशुभ अवधि और दक्षिण भारत के लिए गौरी पंचांगम।' },
         ].map(t => (
           <a href={t.href} class="card" style="padding:20px;text-decoration:none;display:block;transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
             <div style="font-size:24px;margin-bottom:10px;">{t.icon}</div>
             <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;">{t.title}</p>
             <p style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 8px;">{t.titleHi}</p>
-            <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">{t.desc}</p>
+            <p data-hi={t.descHi} style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">{t.desc}</p>
           </a>
         ))}
       </div>
 
       <!-- Life Events -->
-      <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 16px;letter-spacing:-0.2px;">Life Event Muhurta Finders</h2>
+      <h2 data-hi="जीवन घटना मुहूर्त खोजक" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 16px;letter-spacing:-0.2px;">Life Event Muhurta Finders</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">
         {[
-          { href:'/muhurta/vivah', icon:'💍', title:'Vivah Muhurat', titleHi:'विवाह मुहूर्त', desc:'Find the best auspicious dates for marriage with strict Vedic criteria.', badge:'Most Popular' },
-          { href:'/muhurta/griha-pravesh', icon:'🏠', title:'Griha Pravesh', titleHi:'गृह प्रवेश', desc:'Auspicious dates for moving into a new home or housewarming.', badge:'' },
-          { href:'/muhurta/shubha-dates?activity=property', icon:'🏗️', title:'Property Purchase', titleHi:'संपत्ति खरीद', desc:'Best dates to purchase, register, or take possession of property.', badge:'' },
-          { href:'/muhurta/shubha-dates?activity=vehicle', icon:'🚗', title:'Vehicle Purchase', titleHi:'वाहन खरीद', desc:'Auspicious dates for buying a new vehicle or two-wheeler.', badge:'' },
-          { href:'/muhurta/shubha-dates?activity=business', icon:'💼', title:'Business Start', titleHi:'व्यापार मुहूर्त', desc:'Lucky dates to start a new business, shop, or venture.', badge:'' },
-          { href:'/muhurta/shubha-dates', icon:'📅', title:'Shubha Dates', titleHi:'शुभ दिन', desc:'General auspicious date finder for any important activity.', badge:'' },
+          { href:'/muhurta/vivah', icon:'💍', title:'Vivah Muhurat', titleHi:'विवाह मुहूर्त', desc:'Find the best auspicious dates for marriage with strict Vedic criteria.', descHi:'कठोर वैदिक मानदंडों के साथ विवाह के लिए सर्वोत्तम शुभ तिथियां खोजें।', badge:'Most Popular', badgeHi:'सबसे लोकप्रिय' },
+          { href:'/muhurta/griha-pravesh', icon:'🏠', title:'Griha Pravesh', titleHi:'गृह प्रवेश', desc:'Auspicious dates for moving into a new home or housewarming.', descHi:'नए घर में प्रवेश या गृहप्रवेश के लिए शुभ तिथियां।', badge:'', badgeHi:'' },
+          { href:'/muhurta/shubha-dates?activity=property', icon:'🏗️', title:'Property Purchase', titleHi:'संपत्ति खरीद', desc:'Best dates to purchase, register, or take possession of property.', descHi:'संपत्ति खरीदने, पंजीकरण या कब्जा लेने के लिए सर्वोत्तम तिथियां।', badge:'', badgeHi:'' },
+          { href:'/muhurta/shubha-dates?activity=vehicle', icon:'🚗', title:'Vehicle Purchase', titleHi:'वाहन खरीद', desc:'Auspicious dates for buying a new vehicle or two-wheeler.', descHi:'नया वाहन या दुपहिया खरीदने के लिए शुभ तिथियां।', badge:'', badgeHi:'' },
+          { href:'/muhurta/shubha-dates?activity=business', icon:'💼', title:'Business Start', titleHi:'व्यापार मुहूर्त', desc:'Lucky dates to start a new business, shop, or venture.', descHi:'नया व्यापार, दुकान या उद्यम शुरू करने के लिए शुभ तिथियां।', badge:'', badgeHi:'' },
+          { href:'/muhurta/shubha-dates', icon:'📅', title:'Shubha Dates', titleHi:'शुभ दिन', desc:'General auspicious date finder for any important activity.', descHi:'किसी भी महत्वपूर्ण कार्य के लिए सामान्य शुभ तिथि खोजक।', badge:'', badgeHi:'' },
         ].map(t => (
           <a href={t.href} class="card" style="padding:20px;text-decoration:none;display:block;position:relative;transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-            {t.badge && <span style="position:absolute;top:12px;right:12px;font-size:9px;font-weight:700;padding:2px 8px;background:var(--color-saffron-soft);color:var(--color-saffron-deep);border-radius:100px;border:1px solid rgba(255,153,51,0.3);">{t.badge}</span>}
+            {t.badge && <span data-hi={t.badgeHi} style="position:absolute;top:12px;right:12px;font-size:9px;font-weight:700;padding:2px 8px;background:var(--color-saffron-soft);color:var(--color-saffron-deep);border-radius:100px;border:1px solid rgba(255,153,51,0.3);">{t.badge}</span>}
             <div style="font-size:24px;margin-bottom:10px;">{t.icon}</div>
             <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;">{t.title}</p>
             <p style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 8px;">{t.titleHi}</p>
-            <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">{t.desc}</p>
+            <p data-hi={t.descHi} style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">{t.desc}</p>
           </a>
         ))}
       </div>
@@ -83,20 +83,20 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
   <!-- How Muhurta works explainer -->
   <section style="padding:48px 0;background:var(--color-canvas-soft);">
     <div class="container" style="max-width:860px;margin:0 auto;">
-      <h2 style="font-size:18px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 0 8px;">How Muhurta is calculated</h2>
-      <p style="font-size:14px;color:var(--color-body-text);margin:0 0 24px;">Muhurta selects an auspicious time window based on five Panchang elements. A strong Muhurta aligns all five favourably.</p>
+      <h2 data-hi="मुहूर्त की गणना कैसे होती है" style="font-size:18px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 0 8px;">How Muhurta is calculated</h2>
+      <p data-hi="मुहूर्त पांच पंचांग तत्वों के आधार पर एक शुभ समय अवधि चुनता है। एक मजबूत मुहूर्त इन सभी पांचों को अनुकूल रूप से संरेखित करता है।" style="font-size:14px;color:var(--color-body-text);margin:0 0 24px;">Muhurta selects an auspicious time window based on five Panchang elements. A strong Muhurta aligns all five favourably.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
         {[
-          { label:'Tithi', icon:'🌕', desc:'Lunar day — Dwitiya, Panchami, Dashami and Trayodashi in Shukla Paksha are broadly auspicious.' },
-          { label:'Nakshatra', icon:'⭐', desc:'Moon\'s asterism — Rohini, Hasta, Pushya, Swati, Anuradha and Revati are best for most activities.' },
-          { label:'Yoga', icon:'🔮', desc:'Sun + Moon combination — Siddha, Amrita, Shubha and Brahma yogas boost any Muhurta.' },
-          { label:'Vara', icon:'📆', desc:'Weekday — Monday, Wednesday, Thursday and Friday are most broadly auspicious.' },
-          { label:'Karana', icon:'🌗', desc:'Half-tithi — Bava, Balava, Kaulava and Taitila are good; Vishti (Bhadra) is avoided.' },
+          { label:'Tithi', labelHi:'तिथि', icon:'🌕', desc:'Lunar day — Dwitiya, Panchami, Dashami and Trayodashi in Shukla Paksha are broadly auspicious.', descHi:'चंद्र दिवस — शुक्ल पक्ष की द्वितीया, पंचमी, दशमी और त्रयोदशी सामान्यतः शुभ मानी जाती हैं।' },
+          { label:'Nakshatra', labelHi:'नक्षत्र', icon:'⭐', desc:'Moon\'s asterism — Rohini, Hasta, Pushya, Swati, Anuradha and Revati are best for most activities.', descHi:'चंद्रमा का नक्षत्र — रोहिणी, हस्त, पुष्य, स्वाति, अनुराधा और रेवती अधिकांश कार्यों के लिए सर्वोत्तम हैं।' },
+          { label:'Yoga', labelHi:'योग', icon:'🔮', desc:'Sun + Moon combination — Siddha, Amrita, Shubha and Brahma yogas boost any Muhurta.', descHi:'सूर्य व चंद्र का संयोग — सिद्ध, अमृत, शुभ और ब्रह्म योग किसी भी मुहूर्त को बल देते हैं।' },
+          { label:'Vara', labelHi:'वार', icon:'📆', desc:'Weekday — Monday, Wednesday, Thursday and Friday are most broadly auspicious.', descHi:'सप्ताह का दिन — सोमवार, बुधवार, गुरुवार और शुक्रवार सबसे अधिक शुभ माने जाते हैं।' },
+          { label:'Karana', labelHi:'करण', icon:'🌗', desc:'Half-tithi — Bava, Balava, Kaulava and Taitila are good; Vishti (Bhadra) is avoided.', descHi:'अर्ध-तिथि — बव, बालव, कौलव और तैतिल शुभ हैं; विष्टि (भद्रा) से बचें।' },
         ].map(f => (
           <div class="card" style="padding:16px;">
             <div style="font-size:20px;margin-bottom:8px;">{f.icon}</div>
-            <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">{f.label}</p>
-            <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">{f.desc}</p>
+            <p data-hi={f.labelHi} style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">{f.label}</p>
+            <p data-hi={f.descHi} style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">{f.desc}</p>
           </div>
         ))}
       </div>
@@ -141,6 +141,8 @@ const CHOG_QUALITY: Record<string,string> = {
   Amrit:'Best',Shubh:'Good',Labh:'Good',Char:'Neutral',
   Udveg:'Avoid',Kaal:'Avoid',Rog:'Avoid',
 };
+const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
+let isHindi = false;
 
 function toJD(y:number,m:number,d:number,h=0) {
   if(m<=2){y--;m+=12;}
@@ -190,22 +192,38 @@ const nowMins=now.getHours()*60+now.getMinutes();
 const label=document.getElementById('quick-date-label');
 if(label) label.textContent=now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'});
 
-const grid=document.getElementById('quick-chog');
-if(grid) {
+function renderQuickChog(){
+  const grid=document.getElementById('quick-chog');
+  if(!grid) return;
   grid.innerHTML=daySeq.map((name,i)=>{
     const start=srMins+i*slotDur, end=start+slotDur;
     const isCurrent=nowMins>=start&&nowMins<end;
     const bg=isCurrent?'var(--color-ink)':CHOG_COLOR[name];
     const fg=isCurrent?'var(--color-on-primary)':CHOG_TEXT[name];
     const muted=isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 35%)':'var(--color-mute)';
+    const q=isHindi?QUALITY_HI[CHOG_QUALITY[name]]:CHOG_QUALITY[name];
     return `<div style="background:${bg};border-radius:8px;padding:12px 14px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
         <span style="font-size:13px;font-weight:600;color:${fg};">${name}</span>
-        ${isCurrent?'<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:1px 6px;border-radius:100px;">NOW</span>':''}
+        ${isCurrent?`<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:1px 6px;border-radius:100px;">${isHindi?'अभी':'NOW'}</span>`:''}
       </div>
       <p style="font-size:10px;color:${muted};margin:0;">${fmtMins(start)} – ${fmtMins(end)}</p>
-      <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':CHOG_COLOR[name]==='#f3f4f6'?'#6b7280':'var(--color-mute)'};margin:2px 0 0;">${CHOG_QUALITY[name]}</p>
+      <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':CHOG_COLOR[name]==='#f3f4f6'?'#6b7280':'var(--color-mute)'};margin:2px 0 0;">${q}</p>
     </div>`;
   }).join('');
 }
+renderQuickChog();
+
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  renderQuickChog();
+}
+document.addEventListener('langchange', (e: Event) => {
+  applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

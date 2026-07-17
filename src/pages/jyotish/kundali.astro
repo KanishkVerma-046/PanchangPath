@@ -8,10 +8,10 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">जन्म कुंडली · KUNDALI GENERATOR</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Kundali Generator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Enter your birth details to generate a full Vedic birth chart with planetary positions, Lagna, nakshatras and key interpretations.</p>
+      <h1 data-hi="कुंडली जनरेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Kundali Generator</h1>
+      <p data-hi="ग्रह स्थिति, लग्न, नक्षत्र और मुख्य व्याख्याओं सहित पूर्ण जन्म कुंडली बनाने के लिए अपना जन्म विवरण दर्ज करें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Enter your birth details to generate a full Vedic birth chart with planetary positions, Lagna, nakshatras and key interpretations.</p>
     </div>
   </section>
 
@@ -20,31 +20,31 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
       <!-- Form -->
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
         <div>
-          <label class="fld-label">Name (optional)</label>
+          <label class="fld-label" data-hi="नाम (वैकल्पिक)">Name (optional)</label>
           <input type="text" id="f-name" class="input" placeholder="Your name" style="height:38px;min-width:150px;" />
         </div>
         <div>
-          <label class="fld-label">Date of Birth</label>
+          <label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label>
           <input type="date" id="f-date" class="input" style="height:38px;" />
         </div>
         <div>
-          <label class="fld-label">Time of Birth</label>
+          <label class="fld-label" data-hi="जन्म समय">Time of Birth</label>
           <input type="time" id="f-time" class="input" style="height:38px;" />
         </div>
         <div>
-          <label class="fld-label">Place of Birth</label>
+          <label class="fld-label" data-hi="जन्म स्थान">Place of Birth</label>
           <select id="f-city" class="input" style="height:38px;min-width:150px;"></select>
         </div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Generate Kundali</button>
+        <button id="f-calc" class="btn-primary" data-hi="कुंडली बनाएं" style="height:38px;padding:0 20px;">Generate Kundali</button>
       </div>
 
       <!-- Chart style selector -->
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:28px;">
-        <span class="fld-label" style="margin:0;">Chart Style:</span>
-        <button class="style-btn active" data-style="north">North Indian</button>
-        <button class="style-btn" data-style="south">South Indian</button>
-        <button class="style-btn" data-style="east">East Indian</button>
-        <button class="style-btn" data-style="west">West Indian</button>
+        <span class="fld-label" data-hi="चार्ट शैली:" style="margin:0;">Chart Style:</span>
+        <button class="style-btn active" data-style="north" data-hi="उत्तर भारतीय">North Indian</button>
+        <button class="style-btn" data-style="south" data-hi="दक्षिण भारतीय">South Indian</button>
+        <button class="style-btn" data-style="east" data-hi="पूर्व भारतीय">East Indian</button>
+        <button class="style-btn" data-style="west" data-hi="पश्चिम भारतीय">West Indian</button>
       </div>
 
       <div id="result" style="display:none;">
@@ -57,7 +57,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
               <div id="chart-box"></div>
             </div>
             <div class="card" style="padding:18px;margin-top:16px;">
-              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">Birth Summary</h3>
+              <h3 data-hi="जन्म सारांश" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">Birth Summary</h3>
               <div id="summary-list" style="display:flex;flex-direction:column;gap:8px;"></div>
             </div>
           </div>
@@ -65,11 +65,11 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
           <!-- Tables + interpretation -->
           <div>
             <div class="card" style="padding:20px;overflow-x:auto;">
-              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Planetary Positions (Graha Sphuta)</h3>
+              <h3 data-hi="ग्रह स्थिति (ग्रह स्फुट)" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Planetary Positions (Graha Sphuta)</h3>
               <table style="width:100%;border-collapse:collapse;font-size:13px;" id="planet-table"></table>
             </div>
             <div class="card" style="padding:20px;margin-top:16px;">
-              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Key Interpretations</h3>
+              <h3 data-hi="मुख्य व्याख्याएं" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Key Interpretations</h3>
               <div id="interp" style="display:flex;flex-direction:column;gap:12px;"></div>
             </div>
           </div>
@@ -80,9 +80,9 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
       <!-- About -->
       <div class="card" style="padding:28px;margin-top:36px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About the Janma Kundali</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">The Janma Kundali (birth chart) is a map of the heavens at the exact moment and place of your birth. The 12 houses (bhavas), the rashi rising on the eastern horizon (Lagna), and the placement of the nine grahas together describe your life's potential, strengths and karmic patterns.</p>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Choose from four regional chart styles: <b>North Indian</b> (Hindustani diamond/kite), <b>South Indian</b> (fixed-sign 4&times;4 grid used in Tamil Nadu and Karnataka), <b>East Indian</b> (Bengali 3&times;3 square), or <b>West Indian</b> (Gujarati/Marathi fixed-sign grid). All styles show the same astronomical data.</p>
+        <h2 data-hi="जन्म कुंडली के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About the Janma Kundali</h2>
+        <p data-hi="जन्म कुंडली आपके जन्म के ठीक क्षण और स्थान पर आकाश का नक्शा है। 12 भाव, पूर्वी क्षितिज पर उदित होने वाली राशि (लग्न), और नौ ग्रहों की स्थिति मिलकर आपके जीवन की संभावनाओं, शक्तियों और कर्म-पैटर्न को दर्शाते हैं।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">The Janma Kundali (birth chart) is a map of the heavens at the exact moment and place of your birth. The 12 houses (bhavas), the rashi rising on the eastern horizon (Lagna), and the placement of the nine grahas together describe your life's potential, strengths and karmic patterns.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"><span data-hi="चार क्षेत्रीय चार्ट शैलियों में से चुनें: ">Choose from four regional chart styles: </span><b data-hi="उत्तर भारतीय">North Indian</b><span data-hi=" (हिंदुस्तानी हीरा/पतंग शैली), "> (Hindustani diamond/kite), </span><b data-hi="दक्षिण भारतीय">South Indian</b><span data-hi=" (तमिलनाडु और कर्नाटक में प्रयुक्त स्थिर-राशि 4×4 ग्रिड), "> (fixed-sign 4&times;4 grid used in Tamil Nadu and Karnataka), </span><b data-hi="पूर्व भारतीय">East Indian</b><span data-hi=" (बंगाली 3×3 वर्ग), या "> (Bengali 3&times;3 square), or </span><b data-hi="पश्चिम भारतीय">West Indian</b><span data-hi=" (गुजराती/मराठी स्थिर-राशि ग्रिड)। सभी शैलियां समान खगोलीय आंकड़े दर्शाती हैं।"> (Gujarati/Marathi fixed-sign grid). All styles show the same astronomical data.</span></p>
       </div>
     </div>
   </section>
@@ -100,6 +100,8 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 <script define:vars={{ PLANET_ICONS }}>
 function planetIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:4px;">${PLANET_ICONS[id]}</svg>`;}
 let currentStyle = 'north';
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function t(en, hi) { return LANG_HI ? hi : en; }
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -256,39 +258,39 @@ function calculate(){
     window._lastCalc={signOfHouse,planetsByHouse,planetsBySign,lagnaSign};
     redrawChart();
 
-    document.getElementById('chart-title').textContent=(name?name+"'s ":'')+'Lagna Chart (D-1)';
+    document.getElementById('chart-title').textContent=(name?name+"'s ":'')+t('Lagna Chart (D-1)','लग्न चार्ट (डी-1)');
     document.getElementById('chart-sub').textContent=RASHI[lagnaSign]+' Lagna \xb7 '+dateStr+' '+timeStr+' \xb7 '+cityName;
 
     const moonSign=Math.floor(sid.chandra/30);
     const sunSign=Math.floor(sid.surya/30);
     const moonNak=nakInfo(sid.chandra);
     document.getElementById('summary-list').innerHTML=[
-      ['Lagna (Asc)',RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
-      ['Lagna Lord',RASHI_LORD[lagnaSign]],
-      ['Moon Rashi',RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
-      ['Sun Rashi',RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')'],
-      ['Nakshatra',moonNak.name+' (Pada '+moonNak.pada+')'],
-      ['Ayanamsha',ay.toFixed(3)+'\xb0 Lahiri'],
+      [t('Lagna (Asc)','लग्न'),RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
+      [t('Lagna Lord','लग्न स्वामी'),RASHI_LORD[lagnaSign]],
+      [t('Moon Rashi','चंद्र राशि'),RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
+      [t('Sun Rashi','सूर्य राशि'),RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')'],
+      [t('Nakshatra','नक्षत्र'),moonNak.name+' ('+t('Pada','पद')+' '+moonNak.pada+')'],
+      [t('Ayanamsha','अयनांश'),ay.toFixed(3)+'\xb0 Lahiri'],
     ].map(r=>`<div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;"><span style="color:var(--color-mute);">${r[0]}</span><span style="color:var(--color-ink);font-weight:600;text-align:right;">${r[1]}</span></div>`).join('');
 
-    let rows='<tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>Nakshatra</th><th>Pada</th><th>Motion</th></tr>';
+    let rows=`<tr><th>${t('Graha','ग्रह')}</th><th>${t('Rashi','राशि')}</th><th>${t('Degree','अंश')}</th><th>${t('Nakshatra','नक्षत्र')}</th><th>${t('Pada','पद')}</th><th>${t('Motion','गति')}</th></tr>`;
     let akName='',akDeg=-1;
     PLANETS.forEach(([k,full])=>{
       const s=sid[k];const sign=Math.floor(s/30);const nk=nakInfo(s);
-      let motion='Margi';
-      if(k==='rahu'||k==='ketu')motion='Vakri';
-      else if(k!=='surya'&&k!=='chandra'){const cur=n360(L[k]-ay);const nxt=n360(Lp[k]-Lp.ay);let diff=nxt-cur;if(diff>180)diff-=360;if(diff<-180)diff+=360;motion=diff<0?'Vakri':'Margi';}
+      let motion=t('Margi','मार्गी');
+      if(k==='rahu'||k==='ketu')motion=t('Vakri','वक्री');
+      else if(k!=='surya'&&k!=='chandra'){const cur=n360(L[k]-ay);const nxt=n360(Lp[k]-Lp.ay);let diff=nxt-cur;if(diff>180)diff-=360;if(diff<-180)diff+=360;motion=diff<0?t('Vakri','वक्री'):t('Margi','मार्गी');}
       let degInSign=s%30;if(k==='rahu')degInSign=30-(s%30);
       if(k!=='ketu'&&degInSign>akDeg){akDeg=degInSign;akName=full;}
-      rows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${full}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${motion==='Vakri'?'#dc2626':'var(--color-body-text)'};">${motion}</td></tr>`;
+      rows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${full}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${(motion===t('Vakri','वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td></tr>`;
     });
     document.getElementById('planet-table').innerHTML=rows;
 
     document.getElementById('interp').innerHTML=[
-      ['Lagna (Ascendant)','Your rising sign is <b>'+RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')</b>, ruled by '+RASHI_LORD[lagnaSign]+'. The Lagna shapes your physical body, temperament and how others first perceive you.'],
-      ['Moon Sign (Rashi)','Your Moon is in <b>'+RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')</b> in '+moonNak.name+' nakshatra. This is your emotional core and the rashi used for daily Rashifal and most muhurta decisions.'],
-      ['Sun Sign','Your Sun is in <b>'+RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')</b>, representing your soul, vitality, ego and your relationship with authority and the father.'],
-      ['Atmakaraka','<b>'+akName+'</b> holds the highest degree in its sign and is your Atmakaraka — the soul planet of the Jaimini system, signifying your deepest desires and the main lesson of this lifetime.'],
+      [t('Lagna (Ascendant)','लग्न (उदय राशि)'),t('Your rising sign is <b>'+RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')</b>, ruled by '+RASHI_LORD[lagnaSign]+'. The Lagna shapes your physical body, temperament and how others first perceive you.','आपकी उदय राशि <b>'+RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')</b> है, जिसका स्वामी '+RASHI_LORD[lagnaSign]+' है। लग्न आपके शारीरिक स्वरूप, स्वभाव और दूसरों की आप पर पहली धारणा को आकार देता है।')],
+      [t('Moon Sign (Rashi)','चंद्र राशि'),t('Your Moon is in <b>'+RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')</b> in '+moonNak.name+' nakshatra. This is your emotional core and the rashi used for daily Rashifal and most muhurta decisions.','आपका चंद्रमा <b>'+RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')</b> राशि में '+moonNak.name+' नक्षत्र में है। यही आपका भावनात्मक केंद्र है और दैनिक राशिफल व अधिकांश मुहूर्त निर्णयों में इसी राशि का उपयोग होता है।')],
+      [t('Sun Sign','सूर्य राशि'),t('Your Sun is in <b>'+RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')</b>, representing your soul, vitality, ego and your relationship with authority and the father.','आपका सूर्य <b>'+RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')</b> राशि में है, जो आपकी आत्मा, जीवनशक्ति, अहं तथा अधिकार व पिता के साथ आपके संबंध को दर्शाता है।')],
+      [t('Atmakaraka','आत्मकारक'),t('<b>'+akName+'</b> holds the highest degree in its sign and is your Atmakaraka — the soul planet of the Jaimini system, signifying your deepest desires and the main lesson of this lifetime.','<b>'+akName+'</b> अपनी राशि में सबसे अधिक अंश पर है और आपका आत्मकारक है — जैमिनी पद्धति का आत्मा-ग्रह, जो आपकी गहनतम इच्छाओं और इस जीवन के मुख्य पाठ को दर्शाता है।')],
     ].map(i=>`<div><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">${i[0]}</p><p style="font-size:13px;color:var(--color-body-text);line-height:1.6;margin:0;">${i[1]}</p></div>`).join('');
 
     document.getElementById('result').style.display='block';
@@ -300,4 +302,17 @@ function calculate(){
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  if (window._lastCalc) calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

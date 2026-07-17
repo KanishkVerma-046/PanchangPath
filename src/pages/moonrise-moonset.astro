@@ -7,10 +7,10 @@ import Layout from '../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Today's Panchang</a>
+      <a href="/" data-hi="← आज का पंचांग" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Today's Panchang</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">चंद्रोदय · चंद्रास्त · MOONRISE &amp; MOONSET</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Moonrise &amp; Moonset</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Today's moonrise and moonset time for your location, computed with a real iterative topocentric altitude-crossing solver (the Moon moves too fast for a single daily snapshot), plus the current moon phase.</p>
+      <h1 data-hi="चंद्रोदय और चंद्रास्त" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Moonrise &amp; Moonset</h1>
+      <p data-hi="आपके स्थान के लिए आज का चंद्रोदय और चंद्रास्त समय, एक वास्तविक पुनरावृत्तीय टोपोसेंट्रिक ऊँचाई-क्रॉसिंग सॉल्वर से गणना (चंद्रमा एक दैनिक स्नैपशॉट के लिए बहुत तेज़ चलता है), साथ ही वर्तमान चंद्र कला।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Today's moonrise and moonset time for your location, computed with a real iterative topocentric altitude-crossing solver (the Moon moves too fast for a single daily snapshot), plus the current moon phase.</p>
     </div>
   </section>
 
@@ -18,21 +18,21 @@ import Layout from '../layouts/Layout.astro';
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
           <select id="ms-city" class="input" style="height:38px;min-width:160px;"></select>
         </div>
       </div>
 
       <div id="ms-today" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:40px;"></div>
 
-      <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Next 7 Days</h3>
+      <h3 data-hi="अगले 7 दिन" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Next 7 Days</h3>
       <div style="overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;max-width:680px;" id="ms-week">
           <thead><tr>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Date</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Moonrise</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Moonset</th>
-            <th style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Phase</th>
+            <th data-hi="दिनांक" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Date</th>
+            <th data-hi="चंद्रोदय" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Moonrise</th>
+            <th data-hi="चंद्रास्त" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Moonset</th>
+            <th data-hi="कला" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Phase</th>
           </tr></thead>
           <tbody id="ms-week-body"></tbody>
         </table>
@@ -197,6 +197,8 @@ function computeForDate(y:number,m:number,d:number,loc:any){
   return {moonriseUTC,moonsetUTC,phase};
 }
 
+let hindiActive=false;
+
 function calculate(){
   const cityName=sel.value;
   const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
@@ -207,12 +209,13 @@ function calculate(){
 
   const todayEl=document.getElementById('ms-today');
   if(todayEl){
+    const moonPhaseLabel=hindiActive?'चंद्र कला':'Moon Phase';
     todayEl.innerHTML=[
-      {label:'Moonrise',value:isNaN(moonriseUTC)?'—':decHoursToTime(moonriseUTC,loc.tz),color:'#6366f1'},
-      {label:'Moonset',value:isNaN(moonsetUTC)?'—':decHoursToTime(moonsetUTC,loc.tz),color:'#4338ca'},
-      {label:'Moon Phase',value:phase.name,color:'var(--color-ink)'},
-      {label:'Illumination',value:phase.illumPct+'%',color:'var(--color-ink)'},
-    ].map(c=>`<div class="card" style="padding:20px;text-align:center;"><p style="font-size:11px;color:var(--color-mute);text-transform:uppercase;letter-spacing:0.06em;font-family:var(--font-mono);margin:0 0 8px;">${c.label}</p><p style="font-size:${c.label==='Moon Phase'?'16':'24'}px;font-weight:700;color:${c.color};margin:0;font-family:var(--font-mono);">${c.value}</p></div>`).join('');
+      {label:hindiActive?'चंद्रोदय':'Moonrise',value:isNaN(moonriseUTC)?'—':decHoursToTime(moonriseUTC,loc.tz),color:'#6366f1'},
+      {label:hindiActive?'चंद्रास्त':'Moonset',value:isNaN(moonsetUTC)?'—':decHoursToTime(moonsetUTC,loc.tz),color:'#4338ca'},
+      {label:moonPhaseLabel,value:phase.name,color:'var(--color-ink)'},
+      {label:hindiActive?'रोशनी':'Illumination',value:phase.illumPct+'%',color:'var(--color-ink)'},
+    ].map(c=>`<div class="card" style="padding:20px;text-align:center;"><p style="font-size:11px;color:var(--color-mute);text-transform:uppercase;letter-spacing:0.06em;font-family:var(--font-mono);margin:0 0 8px;">${c.label}</p><p style="font-size:${c.label===moonPhaseLabel?'16':'24'}px;font-weight:700;color:${c.color};margin:0;font-family:var(--font-mono);">${c.value}</p></div>`).join('');
   }
 
   const weekBody=document.getElementById('ms-week-body');
@@ -222,7 +225,8 @@ function calculate(){
       const dt=new Date(y,m-1,d+i);
       const r=computeForDate(dt.getFullYear(),dt.getMonth()+1,dt.getDate(),loc);
       const dayName=dt.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'});
-      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${i===0?' (Today)':''}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${isNaN(r.moonriseUTC)?'—':decHoursToTime(r.moonriseUTC,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${isNaN(r.moonsetUTC)?'—':decHoursToTime(r.moonsetUTC,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);">${r.phase.name} (${r.phase.illumPct}%)</td></tr>`;
+      const todayTag=i===0?(hindiActive?' (आज)':' (Today)'):'';
+      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${todayTag}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${isNaN(r.moonriseUTC)?'—':decHoursToTime(r.moonriseUTC,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${isNaN(r.moonsetUTC)?'—':decHoursToTime(r.moonsetUTC,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);">${r.phase.name} (${r.phase.illumPct}%)</td></tr>`;
     }
     weekBody.innerHTML=rows;
   }
@@ -230,4 +234,17 @@ function calculate(){
 
 sel.addEventListener('change',calculate);
 calculate();
+
+function applyPageLang(hindi:boolean){
+  hindiActive=hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el=>{
+    if(!el.dataset.en) el.dataset.en=el.textContent||'';
+    el.textContent=hindi?(el.dataset.hi as string):(el.dataset.en as string);
+  });
+  calculate();
+}
+document.addEventListener('langchange',(e:Event)=>{
+  applyPageLang((e as CustomEvent).detail.langCode==='hi');
+});
+if(localStorage.getItem('pp-lang')==='hi') applyPageLang(true);
 </script>

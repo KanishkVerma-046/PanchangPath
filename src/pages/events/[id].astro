@@ -47,6 +47,20 @@ function typeClass(type: string): string {
   }
 }
 
+function typeLabelHi(type: string): string {
+  switch (type) {
+    case 'sign_transit':     return 'राशि परिवर्तन';
+    case 'retrograde_start': return 'वक्री स्थिति';
+    case 'direct_start':     return 'मार्गी स्थिति';
+    case 'conjunction':      return 'युति';
+    case 'opposition':       return 'प्रतियुति';
+    case 'solar_eclipse':    return 'सूर्य ग्रहण';
+    case 'lunar_eclipse':    return 'चंद्र ग्रहण';
+    case 'solstice_equinox': return 'संक्रांति / विषुव';
+    default:                 return 'ग्रह घटना';
+  }
+}
+
 function heroBg(type: string): string {
   switch (type) {
     case 'sign_transit':     return 'linear-gradient(135deg,#431407 0%,#c2410c 100%)';
@@ -76,11 +90,11 @@ function heroBg(type: string): string {
   <section class="ed-hero" style={`background:${heroBg(ev.type)}`}>
     <div class="ed-hero-inner">
       <nav class="ed-breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a>
+        <a href="/" data-hi="होम">Home</a>
         <span aria-hidden="true">›</span>
-        <a href="/events">Planetary Events</a>
+        <a href="/events" data-hi="ग्रह घटनाएं">Planetary Events</a>
         <span aria-hidden="true">›</span>
-        <span>Event</span>
+        <span data-hi="घटना">Event</span>
       </nav>
 
       <div class="ed-hero-body">
@@ -91,7 +105,7 @@ function heroBg(type: string): string {
           <h1 class="ed-heading en-text">{ev.title}</h1>
           <h1 class="ed-heading hi-text">{ev.titleHi}</h1>
           <div class="ed-hero-meta">
-            <span class={`ed-tag ${typeClass(ev.type)}`}>{typeLabel(ev.type)}</span>
+            <span class={`ed-tag ${typeClass(ev.type)}`} data-hi={typeLabelHi(ev.type)}>{typeLabel(ev.type)}</span>
             <span id="ed-hero-countdown" class={`ed-countdown ${isToday ? 'ed-now' : ''}`} style={isPast ? 'display:none' : ''}>
               <span id="ed-hero-pulse" class="ed-pulse" aria-hidden="true" style={isToday ? '' : 'display:none'}></span>
               <span id="ed-hero-countdown-text">{countdown}</span>
@@ -112,19 +126,19 @@ function heroBg(type: string): string {
         <!-- Date / time card -->
         <div class="ed-date-card">
           <div class="ed-date-col">
-            <p class="ed-label">Date</p>
+            <p class="ed-label" data-hi="दिनांक">Date</p>
             <p class="ed-value">
               {new Date(ev.dateISO + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
             </p>
           </div>
           <div class="ed-sep"></div>
           <div class="ed-date-col">
-            <p class="ed-label">Time (IST)</p>
+            <p class="ed-label" data-hi="समय (IST)">Time (IST)</p>
             <p class="ed-value">{datetime.split('·')[1]?.trim() ?? '—'}</p>
           </div>
           <div class="ed-sep"></div>
           <div class="ed-date-col">
-            <p class="ed-label">Countdown</p>
+            <p class="ed-label" data-hi="उलटी गिनती">Countdown</p>
             <p id="ed-date-countdown" class="ed-value" style={isPast ? 'color:var(--color-mute)' : isToday ? 'color:var(--color-saffron-deep)' : ''}>
               {isPast ? `${Math.abs(ev.daysAway)}d ago` : countdown}
             </p>
@@ -133,23 +147,33 @@ function heroBg(type: string): string {
 
         <!-- Description -->
         <div class="ed-section">
-          <h2 class="ed-section-title">About this Event</h2>
+          <h2 class="ed-section-title" data-hi="इस घटना के बारे में">About this Event</h2>
           <p class="ed-body">{ev.description}</p>
         </div>
 
         <!-- Jyotish significance -->
         <div class="ed-section">
-          <h2 class="ed-section-title">Jyotish Significance</h2>
+          <h2 class="ed-section-title" data-hi="ज्योतिष महत्व">Jyotish Significance</h2>
           <p class="ed-body">{ev.significance}</p>
         </div>
 
         <!-- Planets involved -->
         {ev.planets.length > 0 && (
           <div class="ed-section">
-            <h2 class="ed-section-title">Planets Involved</h2>
+            <h2 class="ed-section-title" data-hi="शामिल ग्रह">Planets Involved</h2>
             <div class="ed-planets">
               {ev.planets.map(p => (
-                <span class="ed-planet-chip">
+                <span class="ed-planet-chip" data-hi={
+                  p === 'surya'   ? '☉ सूर्य'          :
+                  p === 'chandra' ? '☽ चंद्रमा'        :
+                  p === 'mangal'  ? '♂ मंगल'           :
+                  p === 'budha'   ? '☿ बुध'            :
+                  p === 'guru'    ? '♃ गुरु'           :
+                  p === 'shukra'  ? '♀ शुक्र'          :
+                  p === 'shani'   ? '♄ शनि'            :
+                  p === 'rahu'    ? '☊ राहु (उत्तर नोड)' :
+                  p === 'ketu'    ? '☋ केतु (दक्षिण नोड)' : p
+                }>
                   {p === 'surya'   ? '☉ Surya (Sun)'         :
                    p === 'chandra' ? '☽ Chandra (Moon)'       :
                    p === 'mangal'  ? '♂ Mangal (Mars)'        :
@@ -171,37 +195,37 @@ function heroBg(type: string): string {
       <aside class="ed-sidebar">
 
         <div class="ed-side-card">
-          <h3 class="ed-side-title">Quick Info</h3>
+          <h3 class="ed-side-title" data-hi="त्वरित जानकारी">Quick Info</h3>
           <dl class="ed-facts">
             <div class="ed-fact-row">
-              <dt>Type</dt>
-              <dd>{typeLabel(ev.type)}</dd>
+              <dt data-hi="प्रकार">Type</dt>
+              <dd data-hi={typeLabelHi(ev.type)}>{typeLabel(ev.type)}</dd>
             </div>
             <div class="ed-fact-row">
-              <dt>Date</dt>
+              <dt data-hi="दिनांक">Date</dt>
               <dd>{new Date(ev.dateISO + 'T00:00:00Z').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</dd>
             </div>
             <div class="ed-fact-row">
-              <dt>Time (IST)</dt>
+              <dt data-hi="समय (IST)">Time (IST)</dt>
               <dd>{datetime.split('·')[1]?.trim() ?? '—'}</dd>
             </div>
             <div id="ed-sidebar-countdown-row" class="ed-fact-row" style={isPast ? 'display:none' : ''}>
-              <dt>Countdown</dt>
+              <dt data-hi="उलटी गिनती">Countdown</dt>
               <dd id="ed-sidebar-countdown-text" style={isToday ? 'color:var(--color-saffron-deep);font-weight:700' : ''}>{countdown}</dd>
             </div>
           </dl>
         </div>
 
         <div class="ed-side-card">
-          <h3 class="ed-side-title">More Events</h3>
-          <p class="ed-side-body">Browse all upcoming transits, retrogrades, eclipses, and seasonal crossings.</p>
-          <a href="/events" class="ed-side-btn">All Planetary Events →</a>
+          <h3 class="ed-side-title" data-hi="और घटनाएं">More Events</h3>
+          <p class="ed-side-body" data-hi="सभी आगामी राशि परिवर्तन, वक्री, ग्रहण, और ऋतु परिवर्तन देखें।">Browse all upcoming transits, retrogrades, eclipses, and seasonal crossings.</p>
+          <a href="/events" class="ed-side-btn" data-hi="सभी ग्रह घटनाएं →">All Planetary Events →</a>
         </div>
 
         <div class="ed-side-card">
-          <h3 class="ed-side-title">Today's Panchang</h3>
-          <p class="ed-side-body">View the full Panchang — Tithi, Nakshatra, Yoga, Karana, and Muhurtas.</p>
-          <a href="/" class="ed-side-btn">View Panchang →</a>
+          <h3 class="ed-side-title" data-hi="आज का पंचांग">Today's Panchang</h3>
+          <p class="ed-side-body" data-hi="पूरा पंचांग देखें — तिथि, नक्षत्र, योग, करण, और मुहूर्त।">View the full Panchang — Tithi, Nakshatra, Yoga, Karana, and Muhurtas.</p>
+          <a href="/" class="ed-side-btn" data-hi="पंचांग देखें →">View Panchang →</a>
         </div>
 
       </aside>
@@ -210,7 +234,7 @@ function heroBg(type: string): string {
 
     <!-- Back link -->
     <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--color-hairline);">
-      <a href="/events" style="font-size:13px;font-weight:500;color:var(--color-saffron-deep);text-decoration:none;">
+      <a href="/events" data-hi="← ग्रह घटनाओं पर वापस जाएं" style="font-size:13px;font-weight:500;color:var(--color-saffron-deep);text-decoration:none;">
         ← Back to Planetary Events
       </a>
     </div>
@@ -219,47 +243,75 @@ function heroBg(type: string): string {
 </Layout>
 
 <script define:vars={{ dateISO: ev.dateISO, timeUTC: ev.timeUTC }}>
-  function formatCountdown(daysAway) {
-    if (daysAway === 0) return 'Today';
-    if (daysAway === 1) return 'Tomorrow';
-    if (daysAway < 0)   return `${Math.abs(daysAway)}d ago`;
-    if (daysAway < 7)   return `${daysAway} Days`;
-    if (daysAway < 30)  return `${Math.floor(daysAway / 7)}w ${daysAway % 7}d`;
+  function formatCountdown(daysAway, hindi) {
+    if (!hindi) {
+      if (daysAway === 0) return 'Today';
+      if (daysAway === 1) return 'Tomorrow';
+      if (daysAway < 0)   return `${Math.abs(daysAway)}d ago`;
+      if (daysAway < 7)   return `${daysAway} Days`;
+      if (daysAway < 30)  return `${Math.floor(daysAway / 7)}w ${daysAway % 7}d`;
+      const months = Math.floor(daysAway / 30);
+      const rem = daysAway % 30;
+      return rem > 0 ? `${months}m ${rem}d` : `${months} Month${months > 1 ? 's' : ''}`;
+    }
+    if (daysAway === 0) return 'आज';
+    if (daysAway === 1) return 'कल';
+    if (daysAway < 0)   return `${Math.abs(daysAway)} दिन पहले`;
+    if (daysAway < 7)   return `${daysAway} दिन`;
+    if (daysAway < 30)  return `${Math.floor(daysAway / 7)} सप्ताह ${daysAway % 7} दिन`;
     const months = Math.floor(daysAway / 30);
     const rem = daysAway % 30;
-    return rem > 0 ? `${months}m ${rem}d` : `${months} Month${months > 1 ? 's' : ''}`;
+    return rem > 0 ? `${months} माह ${rem} दिन` : `${months} माह`;
   }
 
   const eventMs = Date.parse(dateISO + 'T00:00:00Z') + timeUTC * 3600 * 1000;
   const daysAway = Math.round((eventMs - Date.now()) / 86400000);
   const isToday = daysAway === 0;
   const isPast = daysAway < 0;
-  const countdown = formatCountdown(daysAway);
 
-  const heroBadge = document.getElementById('ed-hero-countdown');
-  if (heroBadge) {
-    heroBadge.style.display = isPast ? 'none' : '';
-    heroBadge.classList.toggle('ed-now', isToday);
-  }
-  const heroPulse = document.getElementById('ed-hero-pulse');
-  if (heroPulse) heroPulse.style.display = isToday ? '' : 'none';
-  const heroText = document.getElementById('ed-hero-countdown-text');
-  if (heroText) heroText.textContent = countdown;
+  function updateCountdowns(hindi) {
+    const countdown = formatCountdown(daysAway, hindi);
 
-  const dateCountdown = document.getElementById('ed-date-countdown');
-  if (dateCountdown) {
-    dateCountdown.textContent = isPast ? `${Math.abs(daysAway)}d ago` : countdown;
-    dateCountdown.style.color = isPast ? 'var(--color-mute)' : isToday ? 'var(--color-saffron-deep)' : '';
-  }
+    const heroBadge = document.getElementById('ed-hero-countdown');
+    if (heroBadge) {
+      heroBadge.style.display = isPast ? 'none' : '';
+      heroBadge.classList.toggle('ed-now', isToday);
+    }
+    const heroPulse = document.getElementById('ed-hero-pulse');
+    if (heroPulse) heroPulse.style.display = isToday ? '' : 'none';
+    const heroText = document.getElementById('ed-hero-countdown-text');
+    if (heroText) heroText.textContent = countdown;
 
-  const sideRow = document.getElementById('ed-sidebar-countdown-row');
-  if (sideRow) sideRow.style.display = isPast ? 'none' : '';
-  const sideText = document.getElementById('ed-sidebar-countdown-text');
-  if (sideText) {
-    sideText.textContent = countdown;
-    sideText.style.color = isToday ? 'var(--color-saffron-deep)' : '';
-    sideText.style.fontWeight = isToday ? '700' : '';
+    const dateCountdown = document.getElementById('ed-date-countdown');
+    if (dateCountdown) {
+      dateCountdown.textContent = isPast ? (hindi ? `${Math.abs(daysAway)} दिन पहले` : `${Math.abs(daysAway)}d ago`) : countdown;
+      dateCountdown.style.color = isPast ? 'var(--color-mute)' : isToday ? 'var(--color-saffron-deep)' : '';
+    }
+
+    const sideRow = document.getElementById('ed-sidebar-countdown-row');
+    if (sideRow) sideRow.style.display = isPast ? 'none' : '';
+    const sideText = document.getElementById('ed-sidebar-countdown-text');
+    if (sideText) {
+      sideText.textContent = countdown;
+      sideText.style.color = isToday ? 'var(--color-saffron-deep)' : '';
+      sideText.style.fontWeight = isToday ? '700' : '';
+    }
   }
+  updateCountdowns(false);
+
+  function applyPageLang(hindi) {
+    document.querySelectorAll('.en-text').forEach(el => (el).style.display = hindi ? 'none' : 'block');
+    document.querySelectorAll('.hi-text').forEach(el => (el).style.display = hindi ? 'block' : 'none');
+    document.querySelectorAll('[data-hi]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+    });
+    updateCountdowns(hindi);
+  }
+  document.addEventListener('langchange', (e) => {
+    applyPageLang((e).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
 
 <style>

@@ -28,6 +28,20 @@ function typeLabel(type: string): string {
   }
 }
 
+function typeLabelHi(type: string): string {
+  switch (type) {
+    case 'sign_transit':     return 'राशि परिवर्तन';
+    case 'retrograde_start': return 'वक्री';
+    case 'direct_start':     return 'मार्गी';
+    case 'conjunction':      return 'युति';
+    case 'opposition':       return 'प्रतियुति';
+    case 'solar_eclipse':    return 'सूर्य ग्रहण';
+    case 'lunar_eclipse':    return 'चंद्र ग्रहण';
+    case 'solstice_equinox': return 'संक्रांति / विषुव';
+    default:                 return 'घटना';
+  }
+}
+
 function typeClass(type: string): string {
   switch (type) {
     case 'sign_transit':      return 'ev-tag-transit';
@@ -57,9 +71,9 @@ function monthLabel(key: string): string {
   <section class="ev-hero">
     <div class="ev-hero-inner">
       <nav class="ev-breadcrumb" aria-label="Breadcrumb">
-        <a href="/">Home</a>
+        <a href="/" data-hi="होम">Home</a>
         <span aria-hidden="true">›</span>
-        <span>Planetary Events</span>
+        <span data-hi="ग्रह घटनाएं">Planetary Events</span>
       </nav>
       <h1 class="ev-heading">
         <span class="en-text">Planetary Events</span>
@@ -74,12 +88,12 @@ function monthLabel(key: string): string {
 
       <!-- Type legend -->
       <div class="ev-legend" aria-label="Event types">
-        <span class="ev-tag ev-tag-transit">Transit</span>
-        <span class="ev-tag ev-tag-retro">Retrograde</span>
-        <span class="ev-tag ev-tag-direct">Direct</span>
-        <span class="ev-tag ev-tag-aspect">Conjunction / Opposition</span>
-        <span class="ev-tag ev-tag-eclipse">Eclipse</span>
-        <span class="ev-tag ev-tag-season">Solstice / Equinox</span>
+        <span class="ev-tag ev-tag-transit" data-hi="राशि परिवर्तन">Transit</span>
+        <span class="ev-tag ev-tag-retro" data-hi="वक्री">Retrograde</span>
+        <span class="ev-tag ev-tag-direct" data-hi="मार्गी">Direct</span>
+        <span class="ev-tag ev-tag-aspect" data-hi="युति / प्रतियुति">Conjunction / Opposition</span>
+        <span class="ev-tag ev-tag-eclipse" data-hi="ग्रहण">Eclipse</span>
+        <span class="ev-tag ev-tag-season" data-hi="संक्रांति / विषुव">Solstice / Equinox</span>
       </div>
     </div>
   </section>
@@ -102,7 +116,7 @@ function monthLabel(key: string): string {
                 </div>
                 <div class="ev-body-col">
                   <div class="ev-meta">
-                    <span class={`ev-tag ${typeClass(ev.type)}`}>{typeLabel(ev.type)}</span>
+                    <span class={`ev-tag ${typeClass(ev.type)}`} data-hi={typeLabelHi(ev.type)}>{typeLabel(ev.type)}</span>
                     <span class={`ev-when ${isToday ? 'ev-when-now' : isSoon ? 'ev-when-soon' : ''}`}>
                       <span class="ev-pulse" style={isToday ? '' : 'display:none'}></span>
                       <span class="ev-when-text">{countdown}</span>
@@ -125,40 +139,70 @@ function monthLabel(key: string): string {
 </Layout>
 
 <script define:vars={{ eventsData: allEvents.map(ev => ({ id: ev.id, dateISO: ev.dateISO, timeUTC: ev.timeUTC })) }}>
-  function formatCountdown(daysAway) {
-    if (daysAway === 0) return 'Today';
-    if (daysAway === 1) return 'Tomorrow';
-    if (daysAway < 0)   return `${Math.abs(daysAway)}d ago`;
-    if (daysAway < 7)   return `${daysAway} Days`;
-    if (daysAway < 30)  return `${Math.floor(daysAway / 7)}w ${daysAway % 7}d`;
+  function formatCountdown(daysAway, hindi) {
+    if (!hindi) {
+      if (daysAway === 0) return 'Today';
+      if (daysAway === 1) return 'Tomorrow';
+      if (daysAway < 0)   return `${Math.abs(daysAway)}d ago`;
+      if (daysAway < 7)   return `${daysAway} Days`;
+      if (daysAway < 30)  return `${Math.floor(daysAway / 7)}w ${daysAway % 7}d`;
+      const months = Math.floor(daysAway / 30);
+      const rem = daysAway % 30;
+      return rem > 0 ? `${months}m ${rem}d` : `${months} Month${months > 1 ? 's' : ''}`;
+    }
+    if (daysAway === 0) return 'आज';
+    if (daysAway === 1) return 'कल';
+    if (daysAway < 0)   return `${Math.abs(daysAway)} दिन पहले`;
+    if (daysAway < 7)   return `${daysAway} दिन`;
+    if (daysAway < 30)  return `${Math.floor(daysAway / 7)} सप्ताह ${daysAway % 7} दिन`;
     const months = Math.floor(daysAway / 30);
     const rem = daysAway % 30;
-    return rem > 0 ? `${months}m ${rem}d` : `${months} Month${months > 1 ? 's' : ''}`;
+    return rem > 0 ? `${months} माह ${rem} दिन` : `${months} माह`;
   }
 
   const byId = {};
   for (const ev of eventsData) byId[ev.id] = ev;
 
-  document.querySelectorAll('.ev-row[data-event-id]').forEach((row) => {
-    const ev = byId[row.dataset.eventId];
-    if (!ev) return;
-    const eventMs = Date.parse(ev.dateISO + 'T00:00:00Z') + ev.timeUTC * 3600 * 1000;
-    const daysAway = Math.round((eventMs - Date.now()) / 86400000);
-    const isToday = daysAway === 0;
-    const isSoon = daysAway > 0 && daysAway <= 7;
+  let hindiActive = false;
 
-    row.classList.toggle('ev-today', isToday);
+  function updateRows() {
+    document.querySelectorAll('.ev-row[data-event-id]').forEach((row) => {
+      const ev = byId[row.dataset.eventId];
+      if (!ev) return;
+      const eventMs = Date.parse(ev.dateISO + 'T00:00:00Z') + ev.timeUTC * 3600 * 1000;
+      const daysAway = Math.round((eventMs - Date.now()) / 86400000);
+      const isToday = daysAway === 0;
+      const isSoon = daysAway > 0 && daysAway <= 7;
 
-    const when = row.querySelector('.ev-when');
-    if (when) {
-      when.classList.toggle('ev-when-now', isToday);
-      when.classList.toggle('ev-when-soon', isSoon);
-    }
-    const pulse = row.querySelector('.ev-pulse');
-    if (pulse) pulse.style.display = isToday ? '' : 'none';
-    const text = row.querySelector('.ev-when-text');
-    if (text) text.textContent = formatCountdown(daysAway);
+      row.classList.toggle('ev-today', isToday);
+
+      const when = row.querySelector('.ev-when');
+      if (when) {
+        when.classList.toggle('ev-when-now', isToday);
+        when.classList.toggle('ev-when-soon', isSoon);
+      }
+      const pulse = row.querySelector('.ev-pulse');
+      if (pulse) pulse.style.display = isToday ? '' : 'none';
+      const text = row.querySelector('.ev-when-text');
+      if (text) text.textContent = formatCountdown(daysAway, hindiActive);
+    });
+  }
+  updateRows();
+
+  function applyPageLang(hindi) {
+    hindiActive = hindi;
+    document.querySelectorAll('.en-text').forEach(el => (el).style.display = hindi ? 'none' : 'block');
+    document.querySelectorAll('.hi-text').forEach(el => (el).style.display = hindi ? 'block' : 'none');
+    document.querySelectorAll('[data-hi]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+    });
+    updateRows();
+  }
+  document.addEventListener('langchange', (e) => {
+    applyPageLang((e).detail.langCode === 'hi');
   });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
 
 <style>

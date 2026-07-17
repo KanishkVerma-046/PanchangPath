@@ -7,10 +7,10 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शुभ होरा · Shubha Hora</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shubha Hora</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Each day is divided into 24 planetary hours (Horas). The first hour of the day belongs to the day's lord, then cycles through the Chaldean sequence.</p>
+      <h1 data-hi="शुभ होरा" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shubha Hora</h1>
+      <p data-hi="प्रत्येक दिन 24 ग्रह होराओं में विभाजित होता है। दिन का पहला होरा उस दिन के स्वामी का होता है, फिर कैल्डियन क्रम में आगे बढ़ता है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Each day is divided into 24 planetary hours (Horas). The first hour of the day belongs to the day's lord, then cycles through the Chaldean sequence.</p>
     </div>
   </section>
 
@@ -19,14 +19,14 @@ import Layout from '../../layouts/Layout.astro';
       <!-- Controls -->
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <label data-hi="दिनांक" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
           <input type="date" id="hora-date" class="input" style="height:38px;" />
         </div>
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
           <select id="hora-city" class="input" style="height:38px;min-width:160px;"></select>
         </div>
-        <button id="hora-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <button id="hora-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;" id="hora-cols">
@@ -41,7 +41,7 @@ import Layout from '../../layouts/Layout.astro';
       </div>
 
       <!-- Planet guide -->
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Planetary Hora Guide</h3>
+      <h3 data-hi="ग्रह होरा गाइड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Planetary Hora Guide</h3>
       <div id="hora-guide" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
     </div>
   </section>
@@ -73,6 +73,9 @@ const LOCS = [
 const HORA_SEQ = ['Sun','Venus','Mercury','Moon','Saturn','Jupiter','Mars'];
 const HORA_START = [0,3,6,2,5,1,4]; // weekday → start index
 
+let isHindi = false;
+const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
+const trQ = (q:string) => isHindi ? QUALITY_HI[q] : q;
 const HORA_DATA: Record<string,{hi:string;q:string;color:string;suitable:string}> = {
   Sun:     {hi:'सूर्य',  q:'Neutral', color:'#C8922A', suitable:'Govt matters · Authoritative decisions · Father-related work'},
   Venus:   {hi:'शुक्र', q:'Good',    color:'#97690F', suitable:'Romance · Arts · Luxury goods · Beauty · Partnerships'},
@@ -151,7 +154,7 @@ function makeHoraRow(planet:string,startMins:number,endMins:number,isCurrent:boo
     </div>
     <div style="text-align:right;">
       <span style="font-size:11px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 20%)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(startMins)}</span>
-      ${isCurrent?'<span style="display:block;font-size:9px;font-weight:700;color:var(--color-on-primary);">NOW</span>':`<span style="display:block;font-size:9px;font-weight:600;color:${qColor};">${d.q}</span>`}
+      ${isCurrent?`<span style="display:block;font-size:9px;font-weight:700;color:var(--color-on-primary);">${isHindi?'अभी':'NOW'}</span>`:`<span style="display:block;font-size:9px;font-weight:600;color:${qColor};">${trQ(d.q)}</span>`}
     </div>
   </div>`;
 }
@@ -178,8 +181,8 @@ function calculate(){
   const now=new Date();
   const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
 
-  document.getElementById('day-hora-title')!.textContent=`Day Horas (${HORA_SEQ[startIdx]} hour first)`;
-  document.getElementById('night-hora-title')!.textContent='Night Horas';
+  document.getElementById('day-hora-title')!.textContent=isHindi?`दिन होरा (${HORA_SEQ[startIdx]} होरा पहले)`:`Day Horas (${HORA_SEQ[startIdx]} hour first)`;
+  document.getElementById('night-hora-title')!.textContent=isHindi?'रात्रि होरा':'Night Horas';
 
   const dayList=document.getElementById('day-hora-list');
   if(dayList){
@@ -200,21 +203,37 @@ function calculate(){
   }
 }
 
-const guide=document.getElementById('hora-guide');
-if(guide){
+function renderGuide(){
+  const guide=document.getElementById('hora-guide');
+  if(!guide) return;
   guide.innerHTML=Object.entries(HORA_DATA).map(([planet,d])=>`
     <div class="card" style="padding:14px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <span style="width:10px;height:10px;border-radius:50%;background:${d.color};flex-shrink:0;"></span>
         <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${planet}</span>
         <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${d.hi}</span>
-        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#1d4ed8':d.q==='Avoid'?'#dc2626':'#6b7280'};">${d.q}</span>
+        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#1d4ed8':d.q==='Avoid'?'#dc2626':'#6b7280'};">${trQ(d.q)}</span>
       </div>
       <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${d.suitable}</p>
     </div>
   `).join('');
 }
+renderGuide();
 
 document.getElementById('hora-calc')?.addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  calculate();
+  renderGuide();
+}
+document.addEventListener('langchange', (e: Event) => {
+  applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

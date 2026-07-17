@@ -5,22 +5,22 @@ import PlanetIcon from '../components/icons/PlanetIcon.astro';
 import TithiIcon from '../components/icons/TithiIcon.astro';
 
 const CALCS = [
-  { icon: '🔮', title: 'Kundali Generator', desc: 'Full birth chart — North, South, East & West Indian styles', url: '/jyotish/kundali' },
-  { icon: '📜', title: 'Janma Kundali', desc: 'Detailed natal report: house lords, yogas & Vimshottari Dasha', url: '/jyotish/janma-kundali' },
-  { icon: '💑', title: 'Horoscope Match', desc: 'Ashta Kuta Guna Milan compatibility (out of 36)', url: '/jyotish/horoscope-match' },
-  { icon: '💎', title: 'Gemstone Calculator', desc: 'Find your lucky gemstone by birth chart', url: '/jyotish/gemstone' },
-  { icon: '📿', title: 'Rudraksha Calculator', desc: 'Recommended Rudraksha mukhi for you', url: '/jyotish/rudraksha' },
-  { planet: 'chandra', title: 'Rashi Calculator', desc: 'Your Moon sign (Vedic rashi) from birth details', url: '/jyotish/rashi' },
-  { planet: 'surya', title: 'Sunsign Calculator', desc: 'Vedic & Western sun signs side by side', url: '/jyotish/sunsign' },
-  { icon: '⭐', title: 'Nakshatra Calculator', desc: 'Your birth star (nakshatra) and pada', url: '/jyotish/nakshatra' },
-  { icon: '⬆️', title: 'Janma Lagna', desc: 'Ascendant sign, degree and house wheel', url: '/jyotish/lagna' },
-  { planet: 'mangal', title: 'Mangal Dosha', desc: 'Check Manglik status from Lagna, Moon & Venus', url: '/jyotish/mangal-dosha' },
-  { dualPlanet: ['rahu', 'ketu'], title: 'Kalasarpa Yoga', desc: 'Detect Kalasarpa dosha and its type', url: '/jyotish/kalasarpa' },
-  { planet: 'shani', title: 'Shani Sadesati', desc: 'Saturn\'s 7.5-year cycle over your Moon sign', url: '/jyotish/sadesati' },
-  { icon: '🙏', title: 'Shraddha Tithi', desc: 'Find the right Pitru Paksha day for Shraddha', url: '/jyotish/shraddha' },
-  { tithi: 'shukla-15', title: 'Sahasra Chandrodaya', desc: 'Date of your 1000th full moon (~80 years)', url: '/jyotish/sahasra-chandrodaya' },
-  { icon: '🦅', title: 'Pancha Pakshi', desc: 'Your birth bird and today\'s favourable periods', url: '/jyotish/pancha-pakshi' },
-  { icon: '🎴', title: 'Prashnavali', desc: 'Ask a question — the sacred oracle answers', url: '/prashnavali' },
+  { icon: '🔮', title: 'Kundali Generator', titleHi: 'कुंडली जनरेटर', desc: 'Full birth chart — North, South, East & West Indian styles', descHi: 'पूर्ण जन्म कुंडली — उत्तर, दक्षिण, पूर्व और पश्चिम भारतीय शैलियों में', url: '/jyotish/kundali' },
+  { icon: '📜', title: 'Janma Kundali', titleHi: 'जन्म कुंडली', desc: 'Detailed natal report: house lords, yogas & Vimshottari Dasha', descHi: 'विस्तृत जन्म रिपोर्ट: भाव स्वामी, योग और विंशोत्तरी दशा', url: '/jyotish/janma-kundali' },
+  { icon: '💑', title: 'Horoscope Match', titleHi: 'कुंडली मिलान', desc: 'Ashta Kuta Guna Milan compatibility (out of 36)', descHi: 'अष्ट कूट गुण मिलान अनुकूलता (36 में से)', url: '/jyotish/horoscope-match' },
+  { icon: '💎', title: 'Gemstone Calculator', titleHi: 'रत्न कैलकुलेटर', desc: 'Find your lucky gemstone by birth chart', descHi: 'अपनी जन्म कुंडली से भाग्यशाली रत्न जानें', url: '/jyotish/gemstone' },
+  { icon: '📿', title: 'Rudraksha Calculator', titleHi: 'रुद्राक्ष कैलकुलेटर', desc: 'Recommended Rudraksha mukhi for you', descHi: 'आपके लिए अनुशंसित रुद्राक्ष मुखी', url: '/jyotish/rudraksha' },
+  { planet: 'chandra', title: 'Rashi Calculator', titleHi: 'राशि कैलकुलेटर', desc: 'Your Moon sign (Vedic rashi) from birth details', descHi: 'जन्म विवरण से आपकी चंद्र राशि (वैदिक राशि)', url: '/jyotish/rashi' },
+  { planet: 'surya', title: 'Sunsign Calculator', titleHi: 'सूर्य राशि कैलकुलेटर', desc: 'Vedic & Western sun signs side by side', descHi: 'वैदिक और पाश्चात्य सूर्य राशि एक साथ', url: '/jyotish/sunsign' },
+  { icon: '⭐', title: 'Nakshatra Calculator', titleHi: 'नक्षत्र कैलकुलेटर', desc: 'Your birth star (nakshatra) and pada', descHi: 'आपका जन्म नक्षत्र और पद', url: '/jyotish/nakshatra' },
+  { icon: '⬆️', title: 'Janma Lagna', titleHi: 'जन्म लग्न', desc: 'Ascendant sign, degree and house wheel', descHi: 'लग्न राशि, अंश और भाव चक्र', url: '/jyotish/lagna' },
+  { planet: 'mangal', title: 'Mangal Dosha', titleHi: 'मंगल दोष', desc: 'Check Manglik status from Lagna, Moon & Venus', descHi: 'लग्न, चंद्र और शुक्र से मांगलिक स्थिति जांचें', url: '/jyotish/mangal-dosha' },
+  { dualPlanet: ['rahu', 'ketu'], title: 'Kalasarpa Yoga', titleHi: 'कालसर्प योग', desc: 'Detect Kalasarpa dosha and its type', descHi: 'कालसर्प दोष और उसका प्रकार पहचानें', url: '/jyotish/kalasarpa' },
+  { planet: 'shani', title: 'Shani Sadesati', titleHi: 'शनि साढ़े साती', desc: 'Saturn\'s 7.5-year cycle over your Moon sign', descHi: 'आपकी चंद्र राशि पर शनि का साढ़े सात वर्षीय चक्र', url: '/jyotish/sadesati' },
+  { icon: '🙏', title: 'Shraddha Tithi', titleHi: 'श्राद्ध तिथि', desc: 'Find the right Pitru Paksha day for Shraddha', descHi: 'श्राद्ध हेतु सही पितृ पक्ष तिथि जानें', url: '/jyotish/shraddha' },
+  { tithi: 'shukla-15', title: 'Sahasra Chandrodaya', titleHi: 'सहस्र चंद्रोदय', desc: 'Date of your 1000th full moon (~80 years)', descHi: 'आपकी 1000वीं पूर्णिमा की तिथि (लगभग 80 वर्ष)', url: '/jyotish/sahasra-chandrodaya' },
+  { icon: '🦅', title: 'Pancha Pakshi', titleHi: 'पंच पक्षी', desc: 'Your birth bird and today\'s favourable periods', descHi: 'आपका जन्म पक्षी और आज के शुभ काल', url: '/jyotish/pancha-pakshi' },
+  { icon: '🎴', title: 'Prashnavali', titleHi: 'प्रश्नावली', desc: 'Ask a question — the sacred oracle answers', descHi: 'एक प्रश्न पूछें — पवित्र दैवज्ञ उत्तर देगा', url: '/prashnavali' },
 ];
 ---
 
@@ -32,8 +32,8 @@ const CALCS = [
     <MandalaWatermark size={480} opacity={0.06} />
     <div class="container" style="position:relative;">
       <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">ज्योतिष · JYOTISH CALCULATORS</p>
-      <h1 style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Jyotish Calculators</h1>
-      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:600px;line-height:1.6;">A complete suite of free Vedic astrology tools. Generate your birth chart, match horoscopes, find lucky gemstones, check doshas and explore your nakshatra — all computed with precise Drik astronomy and the Lahiri ayanamsha.</p>
+      <h1 data-hi="ज्योतिष कैलकुलेटर" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Jyotish Calculators</h1>
+      <p data-hi="वैदिक ज्योतिष के निःशुल्क उपकरणों का संपूर्ण संग्रह। अपनी जन्म कुंडली बनाएं, कुंडली मिलाएं, भाग्यशाली रत्न खोजें, दोष जांचें और अपना नक्षत्र जानें — सभी की गणना सटीक ड्रिक खगोलशास्त्र और लाहिड़ी अयनांश से की गई है।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:600px;line-height:1.6;">A complete suite of free Vedic astrology tools. Generate your birth chart, match horoscopes, find lucky gemstones, check doshas and explore your nakshatra — all computed with precise Drik astronomy and the Lahiri ayanamsha.</p>
     </div>
   </section>
 
@@ -53,8 +53,8 @@ const CALCS = [
             )}
             {c.icon && <span class="calc-icon">{c.icon}</span>}
             <div>
-              <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">{c.title}</h3>
-              <p style="font-size:12.5px;color:var(--color-mute);margin:0;line-height:1.5;">{c.desc}</p>
+              <h3 data-hi={c.titleHi} style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">{c.title}</h3>
+              <p data-hi={c.descHi} style="font-size:12.5px;color:var(--color-mute);margin:0;line-height:1.5;">{c.desc}</p>
             </div>
           </a>
         ))}
@@ -66,10 +66,10 @@ const CALCS = [
   <section style="padding:0 0 56px;">
     <div class="container">
       <div class="card" style="padding:32px;">
-        <h2 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">What is Jyotish?</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Jyotish (ज्योतिष), often called Vedic Astrology, is the ancient Indian science of light — the study of how the positions of the Sun, Moon, planets and stars at the moment of birth influence life on Earth. Considered one of the six Vedangas (limbs of the Vedas), it has been practised for thousands of years to understand personality, timing of events, compatibility and remedies.</p>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Unlike Western astrology, which uses the tropical zodiac, Jyotish uses the <strong style="color:var(--color-ink);">sidereal zodiac</strong> — measured against the fixed stars. The difference between the two systems is corrected by the <strong style="color:var(--color-ink);">ayanamsha</strong>. PanchangPath uses the Lahiri (Chitrapaksha) ayanamsha, the standard adopted by the Government of India.</p>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">The core building blocks are the 12 <strong style="color:var(--color-ink);">rashis</strong> (signs), 27 <strong style="color:var(--color-ink);">nakshatras</strong> (lunar mansions), 9 <strong style="color:var(--color-ink);">grahas</strong> (planets including Rahu &amp; Ketu) and 12 <strong style="color:var(--color-ink);">bhavas</strong> (houses). The calculators above let you explore each of these for your own birth details.</p>
+        <h2 data-hi="ज्योतिष क्या है?" style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">What is Jyotish?</h2>
+        <p data-hi="ज्योतिष, जिसे अक्सर वैदिक ज्योतिष कहा जाता है, प्रकाश का प्राचीन भारतीय विज्ञान है — यह अध्ययन करता है कि जन्म के समय सूर्य, चंद्रमा, ग्रहों और नक्षत्रों की स्थिति पृथ्वी पर जीवन को कैसे प्रभावित करती है। छह वेदांगों (वेद के अंगों) में से एक माना जाने वाला यह शास्त्र हजारों वर्षों से व्यक्तित्व, घटनाओं के समय, अनुकूलता और उपायों को समझने के लिए प्रयोग किया जाता रहा है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Jyotish (ज्योतिष), often called Vedic Astrology, is the ancient Indian science of light — the study of how the positions of the Sun, Moon, planets and stars at the moment of birth influence life on Earth. Considered one of the six Vedangas (limbs of the Vedas), it has been practised for thousands of years to understand personality, timing of events, compatibility and remedies.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;"><span data-hi="पाश्चात्य ज्योतिष के विपरीत, जो उष्णकटिबंधीय (ट्रॉपिकल) राशिचक्र का उपयोग करता है, ज्योतिष ">Unlike Western astrology, which uses the tropical zodiac, Jyotish uses the </span><strong style="color:var(--color-ink);" data-hi="सिडेरियल (नाक्षत्र) राशिचक्र">sidereal zodiac</strong><span data-hi=" का उपयोग करता है — जो स्थिर तारों के सापेक्ष मापा जाता है। दोनों प्रणालियों के अंतर को ठीक किया जाता है "> — measured against the fixed stars. The difference between the two systems is corrected by the </span><strong style="color:var(--color-ink);" data-hi="अयनांश">ayanamsha</strong><span data-hi=" से। पंचांगपथ लाहिड़ी (चित्रपक्ष) अयनांश का उपयोग करता है, जो भारत सरकार द्वारा अपनाया गया मानक है।">. PanchangPath uses the Lahiri (Chitrapaksha) ayanamsha, the standard adopted by the Government of India.</span></p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"><span data-hi="मूल निर्माण खंड हैं 12 ">The core building blocks are the 12 </span><strong style="color:var(--color-ink);" data-hi="राशियां">rashis</strong><span data-hi=" (राशियां), 27 "> (signs), 27 </span><strong style="color:var(--color-ink);" data-hi="नक्षत्र">nakshatras</strong><span data-hi=" (नक्षत्र), 9 "> (lunar mansions), 9 </span><strong style="color:var(--color-ink);" data-hi="ग्रह">grahas</strong><span data-hi=" (राहु और केतु सहित ग्रह) और 12 "> (planets including Rahu &amp; Ketu) and 12 </span><strong style="color:var(--color-ink);" data-hi="भाव">bhavas</strong><span data-hi=" (भाव)। ऊपर दिए कैलकुलेटर से आप अपने जन्म विवरण के लिए इन सभी का पता लगा सकते हैं।"> (houses). The calculators above let you explore each of these for your own birth details.</span></p>
       </div>
     </div>
   </section>
@@ -104,3 +104,16 @@ const CALCS = [
     .calc-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
+
+<script>
+  function applyPageLang(hindi: boolean) {
+    document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+    });
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>

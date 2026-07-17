@@ -7,10 +7,10 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">लग्न तालिका · Lagna Table</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Lagna Table</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The rising sign (Lagna / Ascendant) changes every ~2 hours as Earth rotates. Certain Lagnas are auspicious for specific activities.</p>
+      <h1 data-hi="लग्न तालिका" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Lagna Table</h1>
+      <p data-hi="उदय लग्न (लग्न / एसेंडेंट) पृथ्वी के घूर्णन के साथ हर ~2 घंटे में बदलता है। कुछ लग्न विशेष कार्यों के लिए शुभ माने जाते हैं।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The rising sign (Lagna / Ascendant) changes every ~2 hours as Earth rotates. Certain Lagnas are auspicious for specific activities.</p>
     </div>
   </section>
 
@@ -18,14 +18,14 @@ import Layout from '../../layouts/Layout.astro';
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <label data-hi="दिनांक" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
           <input type="date" id="lg-date" class="input" style="height:38px;" />
         </div>
         <div>
-          <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
           <select id="lg-city" class="input" style="height:38px;min-width:160px;"></select>
         </div>
-        <button id="lg-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <button id="lg-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <!-- Current lagna banner -->
@@ -35,7 +35,7 @@ import Layout from '../../layouts/Layout.astro';
       <div id="lg-table" style="display:flex;flex-direction:column;gap:6px;max-width:680px;margin-bottom:48px;"></div>
 
       <!-- Auspicious lagna guide -->
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Auspicious Lagnas for Common Activities</h3>
+      <h3 data-hi="सामान्य कार्यों के लिए शुभ लग्न" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Auspicious Lagnas for Common Activities</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;" id="lg-guide"></div>
     </div>
   </section>
@@ -57,6 +57,7 @@ const LOCS = [
   {name:'Singapore',lat:1.3521,lng:103.8198,tz:8},
 ];
 
+let isHindi = false;
 const RASHI_NAMES = ['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const RASHI_HI = ['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const RASHI_EN = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
@@ -162,9 +163,9 @@ function calculate(){
     curEl.innerHTML=`<div style="background:var(--color-canvas-soft-2);border:1px solid var(--color-hairline);border-radius:10px;box-shadow:var(--shadow-elevation);padding:16px 20px;display:flex;align-items:center;gap:16px;">
       <div style="font-size:28px;">${['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'][currentRashi]}</div>
       <div>
-        <p style="font-size:12px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">Current Lagna</p>
+        <p style="font-size:12px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">${isHindi?'वर्तमान लग्न':'Current Lagna'}</p>
         <p style="font-size:18px;font-weight:700;color:var(--color-ink);margin:0;">${RASHI_NAMES[currentRashi]} <span style="font-weight:400;font-size:14px;color:var(--color-mute);">${RASHI_EN[currentRashi]}</span></p>
-        <p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">Lord: ${RASHI_LORDS[currentRashi]}</p>
+        <p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">${isHindi?'स्वामी':'Lord'}: ${RASHI_LORDS[currentRashi]}</p>
       </div>
     </div>`;
   } else if(curEl){ curEl.innerHTML=''; }
@@ -183,24 +184,40 @@ function calculate(){
           <span style="font-size:11px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':'var(--color-mute)'};margin-left:6px;">${RASHI_HI[e.rashi]}</span>
         </div>
         <span style="font-size:12px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 20%)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(e.startMins)} – ${fmtMins(endMins)}</span>
-        ${isCurrent?'<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:2px 8px;border-radius:100px;">NOW</span>':''}
+        ${isCurrent?`<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:2px 8px;border-radius:100px;">${isHindi?'अभी':'NOW'}</span>`:''}
       </div>`;
     }).join('');
   }
 }
 
-const guide=document.getElementById('lg-guide');
-if(guide){
+function renderGuide(){
+  const guide=document.getElementById('lg-guide');
+  if(!guide) return;
   guide.innerHTML=[
-    {activity:'Marriage (Vivah)',lagnas:'Taurus, Gemini, Cancer, Virgo, Libra, Sagittarius'},
-    {activity:'Griha Pravesh',lagnas:'Taurus, Gemini, Leo, Virgo, Libra, Sagittarius'},
-    {activity:'Business Start',lagnas:'Gemini, Virgo, Libra, Aquarius, Sagittarius'},
-    {activity:'Travel / Yatra',lagnas:'Aries, Gemini, Libra, Sagittarius, Aquarius'},
-    {activity:'Vehicle Purchase',lagnas:'Taurus, Gemini, Libra, Sagittarius'},
-    {activity:'Surgery / Medical',lagnas:'Aries, Scorpio — avoid Cancer, Capricorn'},
-  ].map(g=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${g.activity}</p><p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${g.lagnas}</p></div>`).join('');
+    {activity:'Marriage (Vivah)',activityHi:'विवाह',lagnas:'Taurus, Gemini, Cancer, Virgo, Libra, Sagittarius'},
+    {activity:'Griha Pravesh',activityHi:'गृह प्रवेश',lagnas:'Taurus, Gemini, Leo, Virgo, Libra, Sagittarius'},
+    {activity:'Business Start',activityHi:'व्यापार शुरुआत',lagnas:'Gemini, Virgo, Libra, Aquarius, Sagittarius'},
+    {activity:'Travel / Yatra',activityHi:'यात्रा',lagnas:'Aries, Gemini, Libra, Sagittarius, Aquarius'},
+    {activity:'Vehicle Purchase',activityHi:'वाहन खरीद',lagnas:'Taurus, Gemini, Libra, Sagittarius'},
+    {activity:'Surgery / Medical',activityHi:'शल्य चिकित्सा',lagnas:'Aries, Scorpio — avoid Cancer, Capricorn'},
+  ].map(g=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${isHindi?g.activityHi:g.activity}</p><p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${g.lagnas}</p></div>`).join('');
 }
+renderGuide();
 
 document.getElementById('lg-calc')?.addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  calculate();
+  renderGuide();
+}
+document.addEventListener('langchange', (e: Event) => {
+  applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

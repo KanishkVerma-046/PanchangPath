@@ -51,16 +51,16 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
       <span class="fd-icon" aria-hidden="true">{icon}</span>
       <div class="fd-hero-text">
         <div class="fd-breadcrumb">
-          <a href="/">Home</a>
+          <a href="/" data-hi="होम">Home</a>
           <span aria-hidden="true">›</span>
-          <a href="/festivals">Festivals</a>
+          <a href="/festivals" data-hi="त्योहार">Festivals</a>
           <span aria-hidden="true">›</span>
           <span>{f.name}</span>
         </div>
         <h1 class="fd-heading en-text">{f.name}</h1>
         <h1 class="fd-heading hi-text">{f.nameHi}</h1>
         <div class="fd-hero-badges">
-          <span class={`fd-type-badge fd-type-${f.type}`}>
+          <span class={`fd-type-badge fd-type-${f.type}`} data-hi={f.type === 'major' ? '✦ प्रमुख त्योहार' : f.type === 'vrat' ? '🙏 व्रत' : '🌏 क्षेत्रीय त्योहार'}>
             {f.type === 'major' ? '✦ Major Festival' : f.type === 'vrat' ? '🙏 Vrat / Fast' : '🌏 Regional Festival'}
           </span>
           {!isPast && (
@@ -84,7 +84,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
         <!-- Date card -->
         <div class="fd-date-card">
           <div class="fd-date-col">
-            <p class="fd-label">Date</p>
+            <p class="fd-label" data-hi="दिनांक">Date</p>
             <p class="fd-value en-text">{dateLabel}</p>
             <p class="fd-value hi-text">
               {fd.toLocaleDateString('hi-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}
@@ -92,21 +92,21 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           </div>
           <div class="fd-date-sep"></div>
           <div class="fd-date-col">
-            <p class="fd-label">Countdown</p>
-            <p class="fd-value" style={isToday ? 'color:var(--color-saffron-deep)' : isPast ? 'color:var(--color-mute)' : ''}>
+            <p class="fd-label" data-hi="उलटी गिनती">Countdown</p>
+            <p class="fd-value" style={isToday ? 'color:var(--color-saffron-deep)' : isPast ? 'color:var(--color-mute)' : ''} data-hi={isPast ? `${Math.abs(days)} दिन पहले` : countdown}>
               {isPast ? `${Math.abs(days)} days ago` : countdown}
             </p>
           </div>
           <div class="fd-date-sep"></div>
           <div class="fd-date-col">
-            <p class="fd-label">Year</p>
+            <p class="fd-label" data-hi="वर्ष">Year</p>
             <p class="fd-value">{f.date.slice(0, 4)}</p>
           </div>
         </div>
 
         <!-- Description -->
         <div class="fd-section">
-          <h2 class="fd-section-title">About this Festival</h2>
+          <h2 class="fd-section-title" data-hi="इस त्योहार के बारे में">About this Festival</h2>
           <p class="fd-body">
             {f.longDesc ?? f.description}
           </p>
@@ -114,25 +114,25 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 
         <!-- Quick facts -->
         <div class="fd-section">
-          <h2 class="fd-section-title">Quick Facts</h2>
+          <h2 class="fd-section-title" data-hi="मुख्य तथ्य">Quick Facts</h2>
           <dl class="fd-facts">
             <div class="fd-fact-row">
-              <dt>Type</dt>
-              <dd>
+              <dt data-hi="प्रकार">Type</dt>
+              <dd data-hi={f.type === 'major' ? 'प्रमुख हिंदू त्योहार' : f.type === 'vrat' ? 'व्रत / उपवास दिवस' : 'क्षेत्रीय त्योहार'}>
                 {f.type === 'major' ? 'Major Hindu Festival' : f.type === 'vrat' ? 'Vrat / Fasting Day' : 'Regional Festival'}
               </dd>
             </div>
             <div class="fd-fact-row">
-              <dt>Sanskrit Name</dt>
+              <dt data-hi="संस्कृत नाम">Sanskrit Name</dt>
               <dd class="hi-text">{f.nameHi}</dd>
             </div>
             <div class="fd-fact-row">
-              <dt>Date ({f.date.slice(0,4)})</dt>
+              <dt data-hi={`दिनांक (${f.date.slice(0,4)})`}>Date ({f.date.slice(0,4)})</dt>
               <dd>{dateLabel}</dd>
             </div>
             <div class="fd-fact-row">
-              <dt>Observed in</dt>
-              <dd>
+              <dt data-hi="मनाया जाता है">Observed in</dt>
+              <dd data-hi={f.type === 'major' ? 'संपूर्ण भारत' : f.type === 'vrat' ? 'भारत भर के हिंदू परिवारों में' : 'क्षेत्रीय समुदायों में'}>
                 {f.type === 'major' ? 'Pan-India' : f.type === 'vrat' ? 'Hindu households across India' : 'Regional communities'}
               </dd>
             </div>
@@ -146,19 +146,20 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 
         <!-- Add to calendar (decorative for now) -->
         <div class="fd-side-card">
-          <h3 class="fd-side-title">Add to Calendar</h3>
+          <h3 class="fd-side-title" data-hi="कैलेंडर में जोड़ें">Add to Calendar</h3>
           <p class="fd-side-body">{dateLabel}</p>
           <a
             href={`/festivals`}
             class="fd-side-btn"
+            data-hi="← कैलेंडर पर वापस जाएं"
           >← Back to Calendar</a>
         </div>
 
         <!-- Related panchang -->
         <div class="fd-side-card">
-          <h3 class="fd-side-title">Panchang</h3>
-          <p class="fd-side-body">See the full Panchang for this day — Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, and Muhurtas.</p>
-          <a href="/" class="fd-side-btn">View Today's Panchang →</a>
+          <h3 class="fd-side-title" data-hi="पंचांग">Panchang</h3>
+          <p class="fd-side-body" data-hi="इस दिन का पूरा पंचांग देखें — तिथि, नक्षत्र, योग, करण, राहु कालम, और मुहूर्त।">See the full Panchang for this day — Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, and Muhurtas.</p>
+          <a href="/" class="fd-side-btn" data-hi="आज का पंचांग देखें →">View Today's Panchang →</a>
         </div>
 
       </aside>
@@ -171,7 +172,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
         <a href={`/festivals/${getFestivalSlug(prev)}`} class="fd-nav-btn fd-nav-prev">
           <span class="fd-nav-arrow">←</span>
           <div class="fd-nav-meta">
-            <span class="fd-nav-label">Previous</span>
+            <span class="fd-nav-label" data-hi="पिछला">Previous</span>
             <span class="fd-nav-name en-text">{prev.name}</span>
             <span class="fd-nav-name hi-text">{prev.nameHi}</span>
           </div>
@@ -181,7 +182,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
       {next && (
         <a href={`/festivals/${getFestivalSlug(next)}`} class="fd-nav-btn fd-nav-next">
           <div class="fd-nav-meta">
-            <span class="fd-nav-label">Next</span>
+            <span class="fd-nav-label" data-hi="अगला">Next</span>
             <span class="fd-nav-name en-text">{next.name}</span>
             <span class="fd-nav-name hi-text">{next.nameHi}</span>
           </div>
@@ -192,6 +193,21 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 
   </div><!-- .fd-wrapper -->
 </Layout>
+
+<script>
+  function applyPageLang(hindi: boolean) {
+    document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
+    document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
+    document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+    });
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>
 
 <style>
 /* ── Hero ── */

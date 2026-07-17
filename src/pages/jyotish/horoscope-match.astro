@@ -8,10 +8,10 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">गुण मिलान · HOROSCOPE MATCH</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Horoscope Matching (Ashta Kuta)</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Compare two birth charts using the traditional 8-fold Guna Milan system. Enter both birth details to get a compatibility score out of 36.</p>
+      <h1 data-hi="कुंडली मिलान (अष्ट कूट)" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Horoscope Matching (Ashta Kuta)</h1>
+      <p data-hi="पारंपरिक 8-कूट गुण मिलान प्रणाली का उपयोग करके दो जन्म कुंडलियों की तुलना करें। अनुकूलता स्कोर (36 में से) पाने के लिए दोनों का जन्म विवरण दर्ज करें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Compare two birth charts using the traditional 8-fold Guna Milan system. Enter both birth details to get a compatibility score out of 36.</p>
     </div>
   </section>
 
@@ -19,30 +19,30 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
     <div class="container">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;" class="two-col">
         <div class="card" style="padding:20px;">
-          <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">👦 Boy / Groom</h3>
+          <h3 data-hi="👦 वर / लड़का" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">👦 Boy / Groom</h3>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <div><label class="fld-label">Date of Birth</label><input type="date" id="b-date" class="input" style="height:38px;" /></div>
-            <div><label class="fld-label">Time of Birth</label><input type="time" id="b-time" class="input" style="height:38px;" /></div>
-            <div><label class="fld-label">Place</label><select id="b-city" class="input" style="height:38px;"></select></div>
+            <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="b-date" class="input" style="height:38px;" /></div>
+            <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="b-time" class="input" style="height:38px;" /></div>
+            <div><label class="fld-label" data-hi="स्थान">Place</label><select id="b-city" class="input" style="height:38px;"></select></div>
           </div>
         </div>
         <div class="card" style="padding:20px;">
-          <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">👧 Girl / Bride</h3>
+          <h3 data-hi="👧 वधू / लड़की" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">👧 Girl / Bride</h3>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <div><label class="fld-label">Date of Birth</label><input type="date" id="g-date" class="input" style="height:38px;" /></div>
-            <div><label class="fld-label">Time of Birth</label><input type="time" id="g-time" class="input" style="height:38px;" /></div>
-            <div><label class="fld-label">Place</label><select id="g-city" class="input" style="height:38px;"></select></div>
+            <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="g-date" class="input" style="height:38px;" /></div>
+            <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="g-time" class="input" style="height:38px;" /></div>
+            <div><label class="fld-label" data-hi="स्थान">Place</label><select id="g-city" class="input" style="height:38px;"></select></div>
           </div>
         </div>
       </div>
       <div style="text-align:center;margin-bottom:32px;">
-        <button id="f-calc" class="btn-primary" style="height:42px;padding:0 32px;font-size:15px;">Match Horoscopes</button>
+        <button id="f-calc" class="btn-primary" data-hi="कुंडली मिलाएं" style="height:42px;padding:0 32px;font-size:15px;">Match Horoscopes</button>
       </div>
 
       <div id="result" style="display:none;">
         <div class="card" id="score-banner" style="padding:28px;text-align:center;margin-bottom:24px;"></div>
         <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:24px;">
-          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Ashta Kuta Breakdown</h3>
+          <h3 data-hi="अष्ट कूट विवरण" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Ashta Kuta Breakdown</h3>
           <table style="width:100%;border-collapse:collapse;font-size:13px;" id="kuta-table"></table>
         </div>
         <div class="card" id="verdict-box" style="padding:24px;"></div>
@@ -50,9 +50,9 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <div class="card" style="padding:28px;margin-top:36px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Guna Milan</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Ashta Kuta Guna Milan compares the Moon\'s nakshatra and rashi of two people across 8 factors (kutas), each carrying a different weight, totalling 36 points. A score of 18 or above is traditionally considered acceptable for marriage; 24+ is very good.</p>
-        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">The Nadi (8 points) and Bhakoot (7 points) kutas are the most important — a Nadi dosha (same nadi) or Bhakoot dosha can override a high score, though many such doshas have classical cancellations. Always consult an astrologer for a full reading.</p>
+        <h2 data-hi="गुण मिलान के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Guna Milan</h2>
+        <p data-hi="अष्ट कूट गुण मिलान दो व्यक्तियों के चंद्र नक्षत्र और राशि की तुलना 8 कारकों (कूट) में करता है, प्रत्येक का भार अलग होता है, कुल 36 अंक। पारंपरिक रूप से 18 या उससे अधिक अंक विवाह के लिए स्वीकार्य माने जाते हैं; 24+ बहुत अच्छा माना जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Ashta Kuta Guna Milan compares the Moon's nakshatra and rashi of two people across 8 factors (kutas), each carrying a different weight, totalling 36 points. A score of 18 or above is traditionally considered acceptable for marriage; 24+ is very good.</p>
+        <p data-hi="नाड़ी (8 अंक) और भकूट (7 अंक) कूट सबसे महत्वपूर्ण हैं — एक नाड़ी दोष (समान नाड़ी) या भकूट दोष उच्च स्कोर को भी प्रभावित कर सकता है, हालांकि कई ऐसे दोषों के शास्त्रीय निवारण भी होते हैं। पूर्ण विश्लेषण के लिए हमेशा किसी ज्योतिषी से परामर्श लें।" style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">The Nadi (8 points) and Bhakoot (7 points) kutas are the most important — a Nadi dosha (same nadi) or Bhakoot dosha can override a high score, though many such doshas have classical cancellations. Always consult an astrologer for a full reading.</p>
       </div>
     </div>
   </section>
@@ -66,6 +66,8 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
 </style>
 
 <script define:vars={{ RASHI_ICONS }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
 function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;">${RASHI_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
@@ -120,14 +122,14 @@ function calculate(){
     const g=moonNakRashi(document.getElementById('g-date').value,document.getElementById('g-time').value,gLoc);
 
     const kutas=[
-      ['Varna',kVarna(b,g),'Spiritual / ego compatibility'],
-      ['Vashya',kVashya(b,g),'Mutual attraction & control'],
-      ['Tara',kTara(b,g),'Health & wellbeing / destiny'],
-      ['Yoni',kYoni(b,g),'Physical & sexual compatibility'],
-      ['Graha Maitri',kMaitri(b,g),'Mental & intellectual bond'],
-      ['Gana',kGana(b,g),'Temperament compatibility'],
-      ['Bhakoot',kBhakoot(b,g),'Love, finances & family'],
-      ['Nadi',kNadi(b,g),'Health & progeny (constitution)'],
+      [tr('Varna','वर्ण'),kVarna(b,g),tr('Spiritual / ego compatibility','आध्यात्मिक / अहं अनुकूलता')],
+      [tr('Vashya','वश्य'),kVashya(b,g),tr('Mutual attraction & control','पारस्परिक आकर्षण और नियंत्रण')],
+      [tr('Tara','तारा'),kTara(b,g),tr('Health & wellbeing / destiny','स्वास्थ्य, कल्याण और भाग्य')],
+      [tr('Yoni','योनि'),kYoni(b,g),tr('Physical & sexual compatibility','शारीरिक अनुकूलता')],
+      [tr('Graha Maitri','ग्रह मैत्री'),kMaitri(b,g),tr('Mental & intellectual bond','मानसिक और बौद्धिक जुड़ाव')],
+      [tr('Gana','गण'),kGana(b,g),tr('Temperament compatibility','स्वभाव अनुकूलता')],
+      [tr('Bhakoot','भकूट'),kBhakoot(b,g),tr('Love, finances & family','प्रेम, धन और परिवार')],
+      [tr('Nadi','नाड़ी'),kNadi(b,g),tr('Health & progeny (constitution)','स्वास्थ्य और संतान')],
     ];
     let total=0,max=0;kutas.forEach(k=>{total+=k[1].pt;max+=k[1].max;});
 
@@ -135,11 +137,11 @@ function calculate(){
     const bg=total>=18?'var(--color-auspicious-soft)':total>=14?'var(--color-warning-soft)':'var(--color-inauspicious-soft)';
     document.getElementById('score-banner').style.background=bg;
     document.getElementById('score-banner').innerHTML=
-      `<p class="caption-mono" style="color:${color};margin:0 0 6px;">GUNA MILAN SCORE</p>
+      `<p class="caption-mono" style="color:${color};margin:0 0 6px;">${tr('GUNA MILAN SCORE','गुण मिलान स्कोर')}</p>
        <div style="font-size:48px;font-weight:700;color:${color};line-height:1;">${total% 1===0?total:total.toFixed(1)} <span style="font-size:22px;color:var(--color-mute);">/ ${max}</span></div>
-       <p style="font-size:13px;color:var(--color-body-text);margin:10px 0 0;">Boy: ${NAKS[b.nak]} / ${rashiIconSvg(RASHI_ID[b.rashi],15)} ${RASHI[b.rashi]} &nbsp;·&nbsp; Girl: ${NAKS[g.nak]} / ${rashiIconSvg(RASHI_ID[g.rashi],15)} ${RASHI[g.rashi]}</p>`;
+       <p style="font-size:13px;color:var(--color-body-text);margin:10px 0 0;">${tr('Boy','वर')}: ${NAKS[b.nak]} / ${rashiIconSvg(RASHI_ID[b.rashi],15)} ${RASHI[b.rashi]} &nbsp;·&nbsp; ${tr('Girl','वधू')}: ${NAKS[g.nak]} / ${rashiIconSvg(RASHI_ID[g.rashi],15)} ${RASHI[g.rashi]}</p>`;
 
-    let rows=`<tr><th>Kuta</th><th>Boy</th><th>Girl</th><th>Points</th><th>Significance</th></tr>`;
+    let rows=`<tr><th>${tr('Kuta','कूट')}</th><th>${tr('Boy','वर')}</th><th>${tr('Girl','वधू')}</th><th>${tr('Points','अंक')}</th><th>${tr('Significance','महत्व')}</th></tr>`;
     kutas.forEach(([name,k,sig])=>{
       const pc=k.pt===0?'#dc2626':k.pt>=k.max*0.5?'#15803d':'#b45309';
       rows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${name}</td><td>${k.bd}</td><td>${k.gd}</td><td style="font-weight:700;color:${pc};">${k.pt%1===0?k.pt:k.pt.toFixed(1)} / ${k.max}</td><td style="font-size:12px;color:var(--color-mute);">${sig}</td></tr>`;
@@ -148,13 +150,13 @@ function calculate(){
 
     const nadiDosha=kutas[7][1].pt===0;const bhakootDosha=kutas[6][1].pt===0;
     let verdict,vColor,rec;
-    if(total>=28){verdict='Excellent Match';vColor='#15803d';rec='An outstanding compatibility score. This is a highly auspicious union with strong harmony across mind, body and values.';}
-    else if(total>=18){verdict='Good Match';vColor='#15803d';rec='A favourable match that meets the traditional threshold for marriage. Minor differences can be worked through with understanding.';}
-    else if(total>=14){verdict='Average Match';vColor='#b45309';rec='A borderline match. Marriage is possible but careful consideration of the weaker kutas and any doshas is advised.';}
-    else{verdict='Poor Match';vColor='#dc2626';rec='The score falls below the traditional threshold. Consult an experienced astrologer to examine doshas and possible remedies before proceeding.';}
+    if(total>=28){verdict=tr('Excellent Match','उत्कृष्ट मिलान');vColor='#15803d';rec=tr('An outstanding compatibility score. This is a highly auspicious union with strong harmony across mind, body and values.','एक शानदार अनुकूलता स्कोर। यह मन, शरीर और मूल्यों में गहरे सामंजस्य के साथ एक अत्यंत शुभ मिलन है।');}
+    else if(total>=18){verdict=tr('Good Match','अच्छा मिलान');vColor='#15803d';rec=tr('A favourable match that meets the traditional threshold for marriage. Minor differences can be worked through with understanding.','एक अनुकूल मिलान जो विवाह के पारंपरिक मानदंड को पूरा करता है। छोटे मतभेद समझ के साथ सुलझाए जा सकते हैं।');}
+    else if(total>=14){verdict=tr('Average Match','औसत मिलान');vColor='#b45309';rec=tr('A borderline match. Marriage is possible but careful consideration of the weaker kutas and any doshas is advised.','एक सीमारेखा मिलान। विवाह संभव है लेकिन कमजोर कूटों और किसी भी दोष पर सावधानीपूर्वक विचार करने की सलाह दी जाती है।');}
+    else{verdict=tr('Poor Match','कमजोर मिलान');vColor='#dc2626';rec=tr('The score falls below the traditional threshold. Consult an experienced astrologer to examine doshas and possible remedies before proceeding.','यह स्कोर पारंपरिक मानदंड से कम है। आगे बढ़ने से पहले दोषों और संभावित उपायों की जांच हेतु किसी अनुभवी ज्योतिषी से परामर्श लें।');}
     let doshaNote='';
-    if(nadiDosha)doshaNote+='<p style="font-size:13px;color:#b91c1c;margin:8px 0 0;">⚠ Nadi Dosha present (same Nadi) — classically a concern for health & progeny. Check for cancellations (same rashi different nakshatra, etc.).</p>';
-    if(bhakootDosha)doshaNote+='<p style="font-size:13px;color:#b91c1c;margin:8px 0 0;">⚠ Bhakoot Dosha present — may affect finances and family harmony. Often cancelled if Graha Maitri is strong.</p>';
+    if(nadiDosha)doshaNote+=`<p style="font-size:13px;color:#b91c1c;margin:8px 0 0;">${tr('⚠ Nadi Dosha present (same Nadi) — classically a concern for health & progeny. Check for cancellations (same rashi different nakshatra, etc.).','⚠ नाड़ी दोष मौजूद है (समान नाड़ी) — शास्त्रीय रूप से स्वास्थ्य और संतान के लिए चिंता का विषय। निवारण की जांच करें (समान राशि परंतु भिन्न नक्षत्र, आदि)।')}</p>`;
+    if(bhakootDosha)doshaNote+=`<p style="font-size:13px;color:#b91c1c;margin:8px 0 0;">${tr('⚠ Bhakoot Dosha present — may affect finances and family harmony. Often cancelled if Graha Maitri is strong.','⚠ भकूट दोष मौजूद है — धन और पारिवारिक सामंजस्य को प्रभावित कर सकता है। ग्रह मैत्री मजबूत होने पर अक्सर निवारण हो जाता है।')}</p>`;
     document.getElementById('verdict-box').innerHTML=
       `<h3 style="font-size:18px;font-weight:700;color:${vColor};margin:0 0 8px;">${verdict}</h3>
        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">${rec}</p>${doshaNote}`;
@@ -165,4 +167,17 @@ function calculate(){
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
