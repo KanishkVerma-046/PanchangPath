@@ -373,6 +373,23 @@ function ayanamsha(jd: number): number {
   return 23.85 + 1.3612 * T;
 }
 
+// Equation of Time in minutes (Meeus, Astronomical Algorithms ch. 28) — copied verbatim from
+// src/lib/panchang.ts's equationOfTimeMinutes() so the client-side sunrise/sunset matches the
+// server-rendered value (client scripts in static Astro can't import from src/lib — see
+// CLAUDE.md's Gotchas).
+function equationOfTimeMinutes(T: number): number {
+  const L0 = norm360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
+  const M = norm360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
+  const e = 0.016708634 - 0.000042037 * T - 0.0000001267 * T * T;
+  const epsilon0 = 23.4392911 - (46.8150 * T + 0.00059 * T * T - 0.001813 * T * T * T) / 3600;
+  const y = Math.pow(Math.tan(toRad(epsilon0) / 2), 2);
+  const L0r = toRad(L0);
+  const Mr = toRad(M);
+  const E = y * Math.sin(2 * L0r) - 2 * e * Math.sin(Mr) + 4 * e * y * Math.sin(Mr) * Math.cos(2 * L0r)
+    - 0.5 * y * y * Math.sin(4 * L0r) - 1.25 * e * e * Math.sin(2 * Mr);
+  return toDeg(E) * 4;
+}
+
 function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): number {
   const T = (jd - 2451545.0) / 36525;
   const M = norm360(357.52911 + 35999.05029 * T);
@@ -386,7 +403,8 @@ function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): numb
   const cosHA = (Math.sin(toRad(-0.8333)) - Math.sin(latR) * Math.sin(dec)) / (Math.cos(latR) * Math.cos(dec));
   if (cosHA < -1 || cosHA > 1) return NaN;
   const HA = toDeg(Math.acos(cosHA));
-  const noon = 12 - lng / 15;
+  const eot = equationOfTimeMinutes(T);
+  const noon = 12 - lng / 15 - eot / 60;
   return rising ? noon - HA / 15 : noon + HA / 15;
 }
 
@@ -455,11 +473,37 @@ function fmtTime(h: number, tz: number): string {
   return minsToFmt(local * 60);
 }
 
-function estimateEnd(lon: number, step: number, jd: number, tz: number, rate: number): string {
-  const remaining = step - (lon % step);
-  const hoursToEnd = (remaining / rate) * 24;
-  const hourUTC = (jd - (Math.floor(jd - 0.5) + 0.5)) * 24;
-  return fmtTime(hourUTC + hoursToEnd, tz);
+// Iterative boundary-crossing solve — mirrors src/lib/panchang.ts's findAngleCrossing()/
+// estimateEndTime(). Recomputes the actual instantaneous rate of change of the angle at each
+// step (via finite difference) rather than assuming a fixed rate, which is what made the old
+// single-linear-rate version run 45min-2.5h early vs. independent third-party sources (see
+// docs/bugs/backlog.md).
+function findAngleCrossing(jdStart: number, targetLon: number, lonFn: (jd: number) => number): number {
+  let jd = jdStart;
+  const dt = 1 / 1440; // 1 minute
+  for (let i = 0; i < 8; i++) {
+    const lonNow = lonFn(jd);
+    let diff = targetLon - lonNow;
+    diff = ((diff % 360) + 540) % 360 - 180;
+    const lonNext = lonFn(jd + dt);
+    let dLon = lonNext - lonNow;
+    dLon = ((dLon % 360) + 540) % 360 - 180;
+    const rate = dLon / dt;
+    if (Math.abs(rate) < 1e-6) break;
+    const dJd = diff / rate;
+    jd += dJd;
+    if (Math.abs(dJd) < 1 / 86400) break; // converged to ~1 second
+  }
+  return jd;
+}
+
+function estimateEnd(jd: number, step: number, tz: number, lonFn: (jd: number) => number): string {
+  const lonNow = lonFn(jd);
+  const boundary = (Math.floor(lonNow / step) + 1) * step;
+  const targetLon = boundary % 360;
+  const jdEnd = findAngleCrossing(jd, targetLon, lonFn);
+  const hourUTC = (jdEnd - (Math.floor(jd - 0.5) + 0.5)) * 24;
+  return fmtTime(hourUTC, tz);
 }
 
 const TITHIS = ['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
@@ -572,10 +616,10 @@ function calcPanchang(date: Date, loc: Location) {
   const abStart = noonMins - dayMins / 30, abEnd = noonMins + dayMins / 30;
   return {
     vara: { name: VARAS[wd], nameHi: VARAS_HI[wd], lord: VARA_LORDS[wd] },
-    tithi: { name: TITHIS[tithiIdx], nameHi: TITHIS_HI[tithiIdx], paksha, pakshaNi: paksha==='Shukla'?'शुक्ल':'कृष्ण', type: TITHI_TYPES[tithiIdx], endTime: estimateEnd(elong, 12, jd, loc.tzOffset, 13.17) },
-    nakshatra: { name: NAKSHATRAS[nIdx], nameHi: NAKSHATRAS_HI[nIdx], lord: NAKSHATRA_LORDS[nIdx], pada, endTime: estimateEnd(mSid, 360/27, jd, loc.tzOffset, 13.17) },
-    yoga: { name: YOGAS[yIdx], nameHi: YOGAS_HI[yIdx], type: YOGA_TYPES[yIdx], endTime: estimateEnd(yLon, 360/27, jd, loc.tzOffset, 14.17) },
-    karana: { name: KARANAS[kIdx]||'Bava', nameHi: KARANAS_HI[kIdx]||'बव', endTime: estimateEnd(elong, 6, jd, loc.tzOffset, 13.17) },
+    tithi: { name: TITHIS[tithiIdx], nameHi: TITHIS_HI[tithiIdx], paksha, pakshaNi: paksha==='Shukla'?'शुक्ल':'कृष्ण', type: TITHI_TYPES[tithiIdx], endTime: estimateEnd(jd, 12, loc.tzOffset, j => norm360(moonLon(j) - sunTrueLon(j))) },
+    nakshatra: { name: NAKSHATRAS[nIdx], nameHi: NAKSHATRAS_HI[nIdx], lord: NAKSHATRA_LORDS[nIdx], pada, endTime: estimateEnd(jd, 360/27, loc.tzOffset, j => norm360(moonLon(j) - ayanamsha(j))) },
+    yoga: { name: YOGAS[yIdx], nameHi: YOGAS_HI[yIdx], type: YOGA_TYPES[yIdx], endTime: estimateEnd(jd, 360/27, loc.tzOffset, j => norm360(norm360(sunTrueLon(j) - ayanamsha(j)) + norm360(moonLon(j) - ayanamsha(j)))) },
+    karana: { name: KARANAS[kIdx]||'Bava', nameHi: KARANAS_HI[kIdx]||'बव', endTime: estimateEnd(jd, 6, loc.tzOffset, j => norm360(moonLon(j) - sunTrueLon(j))) },
     sunrise: fmtTime(srUTC, loc.tzOffset),
     sunset: fmtTime(ssUTC, loc.tzOffset),
     moonrise: fmtTime(moonriseUTC, loc.tzOffset),
@@ -887,6 +931,25 @@ document.addEventListener('langchange', (e: Event) => {
   // LanguagePicker dispatches { langCode }; old toggle dispatched { hindi }
   const langCode: string = evt.detail.langCode ?? (evt.detail.hindi ? 'hi' : 'en');
   applyLang(langCode);
+});
+
+// Re-derive "now" and re-render when the page comes back from the browser's back/forward
+// cache (bfcache) or when a long-lived tab becomes visible again on a new calendar day —
+// otherwise currentDate/the displayed Panchang stay frozen at whatever they were when the
+// script last ran, since renderWithLoc() below only ever runs once per navigation.
+function refreshForNow() {
+  currentDate = new Date();
+  renderWithLoc(currentLoc, currentDate);
+}
+
+window.addEventListener('pageshow', (e: PageTransitionEvent) => {
+  if (e.persisted) refreshForNow();
+});
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && currentDate.toDateString() !== new Date().toDateString()) {
+    refreshForNow();
+  }
 });
 
 // ── Toolbar: time format ──

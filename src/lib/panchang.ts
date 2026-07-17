@@ -350,14 +350,38 @@ function slotTime(sunriseMins: number, sunsetMins: number, slot: number): { star
   return { start: fmt(start), end: fmt(end) };
 }
 
-function estimateEndTime(lon: number, degPerUnit: number, jd: number, tzOffset: number): string {
-  // Moon moves ~13.17°/day, calculate when it crosses the next unit boundary
-  const moonRate = 13.17; // degrees per day
-  const remaining = degPerUnit - (lon % degPerUnit);
-  const hoursToEnd = (remaining / moonRate) * 24;
+// Iteratively finds the JD at which `longitudeFn(jd)` (a 0-360° wrapped angle) next crosses
+// `targetLon`, using the actual instantaneous rate of change of that specific angle at each
+// step rather than an assumed fixed rate — the same iterative-refinement pattern as
+// moonRiseSetUTC() above. This is why boundary-crossing times ("ends at") land within ~1
+// minute of independent third-party sources instead of the 45min-2.5h drift the old
+// single-linear-rate extrapolation produced (see docs/bugs/backlog.md).
+function findAngleCrossing(jdStart: number, targetLon: number, longitudeFn: (jd: number) => number): number {
+  let jd = jdStart;
+  const dt = 1 / 1440; // 1 minute, for the finite-difference instantaneous-rate estimate
+  for (let i = 0; i < 8; i++) {
+    const lonNow = longitudeFn(jd);
+    let diff = targetLon - lonNow;
+    diff = ((diff % 360) + 540) % 360 - 180; // shortest signed distance to target, (-180, 180]
+    const lonNext = longitudeFn(jd + dt);
+    let dLon = lonNext - lonNow;
+    dLon = ((dLon % 360) + 540) % 360 - 180;
+    const rate = dLon / dt; // actual degrees/day rate right now, not an assumed constant
+    if (Math.abs(rate) < 1e-6) break;
+    const dJd = diff / rate;
+    jd += dJd;
+    if (Math.abs(dJd) < 1 / 86400) break; // converged to ~1 second
+  }
+  return jd;
+}
+
+function estimateEndTime(jd: number, degPerUnit: number, tzOffset: number, longitudeFn: (jd: number) => number): string {
+  const lonNow = longitudeFn(jd);
+  const boundary = (Math.floor(lonNow / degPerUnit) + 1) * degPerUnit;
+  const targetLon = boundary % 360;
+  const jdEnd = findAngleCrossing(jd, targetLon, longitudeFn);
   const jdAtMidnight = Math.floor(jd - 0.5) + 0.5;
-  const currentHourUTC = (jd - jdAtMidnight) * 24;
-  const endHourUTC = currentHourUTC + hoursToEnd;
+  const endHourUTC = (jdEnd - jdAtMidnight) * 24;
   return decimalHoursToTime(endHourUTC, tzOffset);
 }
 
@@ -389,23 +413,26 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
   const elongation = norm360(moonLon - sunLon);
   const tithiIdx = Math.floor(elongation / 12) % 30;
   const paksha = tithiIdx < 15 ? 'Shukla' : 'Krishna';
-  const tithiEndTime = estimateEndTime(elongation, 12, jd, tzOffset);
+  const elongationFn = (j: number) => norm360(moonLongitude(j) - sunTrueLongitude(j));
+  const tithiEndTime = estimateEndTime(jd, 12, tzOffset, elongationFn);
 
   // Nakshatra
   const nakshatraIdx = Math.floor(moonSidereal / (360 / 27)) % 27;
   const moonInNakshatra = moonSidereal % (360 / 27);
   const pada = Math.floor(moonInNakshatra / (360 / 27 / 4)) + 1;
-  const nakshatraEndTime = estimateEndTime(moonSidereal, 360 / 27, jd, tzOffset);
+  const moonSiderealFn = (j: number) => norm360(moonLongitude(j) - lahiriAyanamsha(j));
+  const nakshatraEndTime = estimateEndTime(jd, 360 / 27, tzOffset, moonSiderealFn);
 
-  // Yoga
+  // Yoga (combined Sun+Moon sidereal angle — moves at ~14.17°/day, not the Moon's ~13.17°/day)
   const yogaLon = norm360(sunSidereal + moonSidereal);
   const yogaIdx = Math.floor(yogaLon / (360 / 27)) % 27;
-  const yogaEndTime = estimateEndTime(yogaLon, 360 / 27, jd, tzOffset);
+  const yogaLonFn = (j: number) => norm360(norm360(sunTrueLongitude(j) - lahiriAyanamsha(j)) + norm360(moonLongitude(j) - lahiriAyanamsha(j)));
+  const yogaEndTime = estimateEndTime(jd, 360 / 27, tzOffset, yogaLonFn);
 
   // Karana (half-tithi index out of 60 per month)
   const elongationFull = norm360(moonLon - sunLon);
   const halfTithiIdx = Math.floor(elongationFull / 6) % 60;
-  const karanaEndTime = estimateEndTime(elongationFull, 6, jd, tzOffset);
+  const karanaEndTime = estimateEndTime(jd, 6, tzOffset, elongationFn);
 
   // Vara (weekday)
   const weekday = date.getDay();
