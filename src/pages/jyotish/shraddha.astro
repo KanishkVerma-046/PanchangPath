@@ -8,36 +8,36 @@ import { TITHI_ICONS } from '../../lib/icons/tithi';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">श्राद्ध तिथि · SHRADDHA TITHI</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shraddha Tithi Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Enter the date of passing to find its lunar tithi. Shraddha is then performed on the corresponding tithi during Pitru Paksha.</p>
+      <h1 data-hi="श्राद्ध तिथि कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shraddha Tithi Calculator</h1>
+      <p data-hi="मृत्यु की तिथि दर्ज करें और उसकी चंद्र तिथि जानें। फिर पितृ पक्ष के दौरान संबंधित तिथि पर श्राद्ध किया जाता है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Enter the date of passing to find its lunar tithi. Shraddha is then performed on the corresponding tithi during Pitru Paksha.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;gap:8px;margin-bottom:20px;">
-        <button class="sh-mode-btn active" id="mode-date" data-mode="date">By Death Date</button>
-        <button class="sh-mode-btn" id="mode-tithi" data-mode="tithi">By Tithi Directly</button>
+        <button class="sh-mode-btn active" id="mode-date" data-mode="date" data-hi="मृत्यु तिथि से">By Death Date</button>
+        <button class="sh-mode-btn" id="mode-tithi" data-mode="tithi" data-hi="सीधे तिथि से">By Tithi Directly</button>
       </div>
 
       <div id="form-date" style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Passing</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time (approx)</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Find Tithi</button>
+        <div><label class="fld-label" data-hi="मृत्यु तिथि">Date of Passing</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="समय (अनुमानित)">Time (approx)</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <button id="f-calc" class="btn-primary" data-hi="तिथि जानें" style="height:38px;padding:0 20px;">Find Tithi</button>
       </div>
 
       <div id="form-tithi" style="display:none;margin-bottom:32px;">
-        <p style="font-size:13px;color:var(--color-mute);margin:0 0 14px;">If you already know the Tithi of the death anniversary, select it directly below.</p>
+        <p data-hi="यदि आप मृत्यु तिथि की तिथि पहले से जानते हैं, तो नीचे सीधे चुनें।" style="font-size:13px;color:var(--color-mute);margin:0 0 14px;">If you already know the Tithi of the death anniversary, select it directly below.</p>
         <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;">
-          <div><label class="fld-label">Paksha</label>
+          <div><label class="fld-label" data-hi="पक्ष">Paksha</label>
             <select id="t-paksha" class="input" style="height:38px;min-width:140px;">
-              <option value="Shukla">Shukla (Waxing)</option>
-              <option value="Krishna">Krishna (Waning)</option>
+              <option value="Shukla" data-hi="शुक्ल (बढ़ता चंद्रमा)">Shukla (Waxing)</option>
+              <option value="Krishna" data-hi="कृष्ण (घटता चंद्रमा)">Krishna (Waning)</option>
             </select>
           </div>
-          <div><label class="fld-label">Tithi</label>
+          <div><label class="fld-label" data-hi="तिथि">Tithi</label>
             <select id="t-tithi" class="input" style="height:38px;min-width:200px;">
               <option value="Pratipada">1 - Pratipada</option>
               <option value="Dwitiya">2 - Dwitiya</option>
@@ -57,14 +57,14 @@ import { TITHI_ICONS } from '../../lib/icons/tithi';
               <option value="Amavasya">30 - Amavasya (Krishna)</option>
             </select>
           </div>
-          <button id="f-calc2" class="btn-primary" style="height:38px;padding:0 20px;">Find Shraddha Day</button>
+          <button id="f-calc2" class="btn-primary" data-hi="श्राद्ध दिन जानें" style="height:38px;padding:0 20px;">Find Shraddha Day</button>
         </div>
       </div>
 
       <div id="result" style="display:none;">
         <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
           <div id="t-icon" style="display:flex;justify-content:center;margin-bottom:8px;color:var(--color-saffron-deep);"></div>
-          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">TITHI OF PASSING</p>
+          <p class="caption-mono" data-hi="मृत्यु की तिथि" style="color:var(--color-saffron-deep);margin:0 0 6px;">TITHI OF PASSING</p>
           <h2 id="t-name" style="font-size:26px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
           <p id="t-meta" style="font-size:14px;color:var(--color-mute);margin:0;"></p>
         </div>
@@ -74,15 +74,15 @@ import { TITHI_ICONS } from '../../lib/icons/tithi';
 
       <h3 id="pp-heading" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Pitru Paksha Schedule</h3>
       <p id="pp-subheading" style="font-size:12px;color:var(--color-mute);margin:0 0 4px;"></p>
-      <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;">Computed live for the current year from this site's own lunar calendar (Kanya-Sankranti + Moon-Sun elongation search), cross-checked against drikpanchang.com during development.</p>
+      <p data-hi="चालू वर्ष के लिए इस साइट के अपने चंद्र पंचांग (कन्या-संक्रांति + चंद्र-सूर्य कोणांतर खोज) से लाइव गणना की गई, विकास के दौरान drikpanchang.com से मिलान किया गया।" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;">Computed live for the current year from this site's own lunar calendar (Kanya-Sankranti + Moon-Sun elongation search), cross-checked against drikpanchang.com during development.</p>
       <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:36px;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pp-table"></table>
       </div>
 
       <div class="card" style="padding:28px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shraddha</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Shraddha is the ritual offering made to honour departed ancestors (pitrs). The annual Shraddha is performed on the tithi corresponding to the date of death, during Pitru Paksha — a 16-day fortnight in the Krishna Paksha of the month of Ashwin (September–October).</p>
-        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">Special cases: those who passed on any Amavasya, or whose tithi is unknown, are honoured on <b>Sarva Pitru Amavasya</b> (the final day). Those who died unnaturally are remembered on Chaturdashi. Sanyasis are honoured on Dwadashi.</p>
+        <h2 data-hi="श्राद्ध के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shraddha</h2>
+        <p data-hi="श्राद्ध पूर्वजों (पितरों) के सम्मान में किया जाने वाला अनुष्ठानिक अर्पण है। वार्षिक श्राद्ध मृत्यु की तिथि के अनुरूप तिथि पर, पितृ पक्ष के दौरान किया जाता है — अश्विन माह (सितंबर-अक्टूबर) के कृष्ण पक्ष का 16-दिवसीय पखवाड़ा।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Shraddha is the ritual offering made to honour departed ancestors (pitrs). The annual Shraddha is performed on the tithi corresponding to the date of death, during Pitru Paksha — a 16-day fortnight in the Krishna Paksha of the month of Ashwin (September–October).</p>
+        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;"><span data-hi="विशेष स्थितियां: जो किसी भी अमावस्या को गुजरे, या जिनकी तिथि अज्ञात है, उन्हें ">Special cases: those who passed on any Amavasya, or whose tithi is unknown, are honoured on </span><b><span data-hi="सर्व पितृ अमावस्या">Sarva Pitru Amavasya</span></b><span data-hi=" (अंतिम दिन) पर सम्मानित किया जाता है। जिनकी मृत्यु अप्राकृतिक रूप से हुई उन्हें चतुर्दशी पर स्मरण किया जाता है। संन्यासियों को द्वादशी पर सम्मानित किया जाता है।"> (the final day). Those who died unnaturally are remembered on Chaturdashi. Sanyasis are honoured on Dwadashi.</span></p>
       </div>
     </div>
   </section>
@@ -97,6 +97,8 @@ import { TITHI_ICONS } from '../../lib/icons/tithi';
 </style>
 
 <script define:vars={{ TITHI_ICONS }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 function tithiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${TITHI_ICONS[id]}</svg>`;}
 const NAME_TO_NUM={Pratipada:1,Dwitiya:2,Tritiya:3,Chaturthi:4,Panchami:5,Shashthi:6,Saptami:7,Ashtami:8,Navami:9,Dashami:10,Ekadashi:11,Dwadashi:12,Trayodashi:13,Chaturdashi:14,Purnima:15,Amavasya:15};
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
@@ -141,6 +143,13 @@ const PP_TITHI_NOTE={
   27:'Dwadashi Shraddha (for sanyasis)',28:'Trayodashi Shraddha',29:'Chaturdashi Shraddha (for those who died unnaturally)',
   30:'Sarva Pitru Amavasya (all ancestors, unknown tithi)',
 };
+const PP_TITHI_NOTE_HI={
+  15:'पूर्णिमा श्राद्ध (जो पूर्णिमा को मृत्यु को प्राप्त हुए)',16:'प्रतिपदा श्राद्ध',17:'द्वितीया श्राद्ध',18:'तृतीया श्राद्ध',
+  19:'चतुर्थी श्राद्ध',20:'पंचमी श्राद्ध (अविवाहितों हेतु भरणी)',21:'षष्ठी श्राद्ध',22:'सप्तमी श्राद्ध',
+  23:'अष्टमी श्राद्ध',24:'नवमी / मातृ नवमी (माताओं हेतु)',25:'दशमी श्राद्ध',26:'एकादशी श्राद्ध',
+  27:'द्वादशी श्राद्ध (संन्यासियों हेतु)',28:'त्रयोदशी श्राद्ध',29:'चतुर्दशी श्राद्ध (अप्राकृतिक मृत्यु वालों हेतु)',
+  30:'सर्व पितृ अमावस्या (सभी पूर्वज, अज्ञात तिथि)',
+};
 // Computes Pitru Paksha (Purnima start -> Sarva Pitru Amavasya end) for New Delhi/IST for any year.
 // Verified against drikpanchang.com for 2025/2026/2027 during planning: exact match for 2025 and
 // 2026; 2027 lands one calendar day later than drikpanchang's listing (a boundary-precision edge
@@ -172,12 +181,16 @@ function computePitruPaksha(year){
     date:`${MONTHS[s.m-1]} ${s.d}`,
     tithi:PP_TITHI_NAME[s.t],
     note:PP_TITHI_NOTE[s.t],
+    t:s.t,
   }));
 }
 const ppYear=new Date().getFullYear();
 const PP_SCHEDULE=computePitruPaksha(ppYear);
-document.getElementById('pp-heading').textContent=`Pitru Paksha ${ppYear} Schedule`;
-document.getElementById('pp-subheading').textContent=`Krishna Paksha of Ashwin · ${PP_SCHEDULE[0].date} – ${PP_SCHEDULE[PP_SCHEDULE.length-1].date} ${ppYear}`;
+function renderPPHeadings(){
+  document.getElementById('pp-heading').textContent=tr(`Pitru Paksha ${ppYear} Schedule`,`पितृ पक्ष ${ppYear} अनुसूची`);
+  document.getElementById('pp-subheading').textContent=tr(`Krishna Paksha of Ashwin \xb7 ${PP_SCHEDULE[0].date} – ${PP_SCHEDULE[PP_SCHEDULE.length-1].date} ${ppYear}`,`अश्विन कृष्ण पक्ष \xb7 ${PP_SCHEDULE[0].date} – ${PP_SCHEDULE[PP_SCHEDULE.length-1].date} ${ppYear}`);
+}
+renderPPHeadings();
 
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
@@ -197,7 +210,7 @@ function calculate(){
 
     document.getElementById('t-icon').innerHTML=tithiIconSvg(`${paksha.toLowerCase()}-${inPaksha}`,44);
     document.getElementById('t-name').textContent=`${paksha} ${tName}`;
-    document.getElementById('t-meta').textContent=`Tithi #${tithiNum} of the lunar month · Moon–Sun angle ${diff.toFixed(1)}°`;
+    document.getElementById('t-meta').textContent=tr(`Tithi #${tithiNum} of the lunar month · Moon–Sun angle ${diff.toFixed(1)}°`,`चंद्र मास की तिथि #${tithiNum} \xb7 चंद्र–सूर्य कोण ${diff.toFixed(1)}°`);
 
     // Map to Pitru Paksha day (Krishna paksha)
     let shraddhaTithi=tName;
@@ -207,28 +220,31 @@ function calculate(){
     if(!ppDay)ppDay=PP_SCHEDULE.find(p=>p.tithi===tName)||PP_SCHEDULE[PP_SCHEDULE.length-1];
 
     document.getElementById('shraddha-day').innerHTML=
-      `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">When to perform the annual Shraddha</h3>
-       <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. This year, this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b>.</p>
-       <p style="font-size:13px;color:var(--color-mute);margin:0;">${ppDay.note}</p>
-       <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}).</p>`;
+      `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">${tr('When to perform the annual Shraddha','वार्षिक श्राद्ध कब करें')}</h3>
+       <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">${tr(`Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. This year, this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b>.`,`पितृ पक्ष के दौरान <b>${shraddhaTithi}</b> तिथि पर श्राद्ध करें। इस वर्ष यह लगभग <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b> को पड़ता है।`)}</p>
+       <p style="font-size:13px;color:var(--color-mute);margin:0;">${tr(ppDay.note,PP_TITHI_NOTE_HI[ppDay.t])}</p>
+       <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">${tr(`If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}).`,`यदि मृत्यु की सटीक तिथि अज्ञात है, तो सर्व पितृ अमावस्या (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}) पर करें।`)}</p>`;
 
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
 }
-document.getElementById('pp-table').innerHTML=`<tr><th>Date (${ppYear})</th><th>Tithi</th><th>Who is honoured</th></tr>`+
-  PP_SCHEDULE.map(p=>`<tr><td style="font-weight:600;color:var(--color-ink);">${p.date}</td><td>${p.tithi}</td><td style="font-size:12px;color:var(--color-mute);">${p.note}</td></tr>`).join('');
+function renderPPTable(){
+  document.getElementById('pp-table').innerHTML=`<tr><th>${tr('Date','दिनांक')} (${ppYear})</th><th>${tr('Tithi','तिथि')}</th><th>${tr('Who is honoured','किसका सम्मान')}</th></tr>`+
+    PP_SCHEDULE.map(p=>`<tr><td style="font-weight:600;color:var(--color-ink);">${p.date}</td><td>${p.tithi}</td><td style="font-size:12px;color:var(--color-mute);">${tr(p.note,PP_TITHI_NOTE_HI[p.t])}</td></tr>`).join('');
+}
+renderPPTable();
 function showShraddhaResult(paksha,tName){
   const shraddhaTithi=(tName==='Purnima'||tName==='Amavasya')?tName:tName;
   let ppDay=PP_SCHEDULE.find(p=>p.tithi===shraddhaTithi)||PP_SCHEDULE[PP_SCHEDULE.length-1];
   document.getElementById('t-icon').innerHTML=tithiIconSvg(`${paksha.toLowerCase()}-${NAME_TO_NUM[tName]}`,44);
   document.getElementById('t-name').textContent=`${paksha} ${tName}`;
-  document.getElementById('t-meta').textContent=`${paksha} Paksha · Tithi entered directly`;
+  document.getElementById('t-meta').textContent=tr(`${paksha} Paksha · Tithi entered directly`,`${paksha} पक्ष \xb7 तिथि सीधे दर्ज की गई`);
   document.getElementById('shraddha-day').innerHTML=
-    `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">When to perform the annual Shraddha</h3>
-     <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. This year this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b>.</p>
-     <p style="font-size:13px;color:var(--color-mute);margin:0;">${ppDay.note}</p>
-     <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}).</p>`;
+    `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">${tr('When to perform the annual Shraddha','वार्षिक श्राद्ध कब करें')}</h3>
+     <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">${tr(`Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. This year this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b>.`,`पितृ पक्ष के दौरान <b>${shraddhaTithi}</b> तिथि पर श्राद्ध करें। इस वर्ष यह लगभग <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b> को पड़ता है।`)}</p>
+     <p style="font-size:13px;color:var(--color-mute);margin:0;">${tr(ppDay.note,PP_TITHI_NOTE_HI[ppDay.t])}</p>
+     <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">${tr(`If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}).`,`यदि मृत्यु की सटीक तिथि अज्ञात है, तो सर्व पितृ अमावस्या (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}) पर करें।`)}</p>`;
   document.getElementById('result').style.display='block';
   document.getElementById('err').style.display='none';
 }
@@ -248,4 +264,19 @@ document.querySelectorAll('.sh-mode-btn').forEach(btn=>btn.addEventListener('cli
   document.getElementById('result').style.display='none';
 }));
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  renderPPHeadings();
+  renderPPTable();
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

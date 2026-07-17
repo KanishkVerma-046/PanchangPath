@@ -8,20 +8,20 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">राशि · RASHI CALCULATOR</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rashi (Moon Sign) Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Your Rashi is the zodiac sign occupied by the Moon at your birth. It is the most important sign in Vedic astrology — used for daily Rashifal and muhurta.</p>
+      <h1 data-hi="राशि (चंद्र राशि) कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rashi (Moon Sign) Calculator</h1>
+      <p data-hi="आपकी राशि वह राशिचक्र चिह्न है जिसमें आपके जन्म के समय चंद्रमा स्थित था। यह वैदिक ज्योतिष की सबसे महत्वपूर्ण राशि है — दैनिक राशिफल और मुहूर्त के लिए उपयोग की जाती है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Your Rashi is the zodiac sign occupied by the Moon at your birth. It is the most important sign in Vedic astrology — used for daily Rashifal and muhurta.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <div id="result" style="display:none;">
@@ -33,25 +33,25 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="two-col">
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Rashi Details</h3>
+            <h3 data-hi="राशि विवरण" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Rashi Details</h3>
             <div id="detail-list" style="display:flex;flex-direction:column;gap:9px;"></div>
           </div>
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Characteristics</h3>
+            <h3 data-hi="विशेषताएं" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Characteristics</h3>
             <p id="r-desc" style="font-size:13.5px;color:var(--color-body-text);line-height:1.7;margin:0;"></p>
           </div>
         </div>
         <!-- Lucky Attributes -->
         <div class="card" style="padding:20px;">
-          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Lucky Attributes</h3>
+          <h3 data-hi="शुभ विशेषताएं" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Lucky Attributes</h3>
           <div id="lucky-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;"></div>
         </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <div class="card" style="padding:28px;margin-top:36px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rashi</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">In Vedic astrology, your Rashi (Moon sign) reflects your mind, emotions and instinctive nature. Because the Moon moves quickly — roughly 2.25 days per sign — accurate birth time gives the most reliable result. This is the sign you should read for daily horoscopes (Rashifal) and use when choosing auspicious timings.</p>
+        <h2 data-hi="राशि के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rashi</h2>
+        <p data-hi="वैदिक ज्योतिष में, आपकी राशि (चंद्र राशि) आपके मन, भावनाओं और सहज स्वभाव को दर्शाती है। चूंकि चंद्रमा तेजी से चलता है — प्रति राशि लगभग 2.25 दिन — सटीक जन्म समय सबसे विश्वसनीय परिणाम देता है। यह वही राशि है जिसे आपको दैनिक राशिफल के लिए पढ़ना चाहिए और शुभ समय चुनते समय उपयोग करना चाहिए।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">In Vedic astrology, your Rashi (Moon sign) reflects your mind, emotions and instinctive nature. Because the Moon moves quickly — roughly 2.25 days per sign — accurate birth time gives the most reliable result. This is the sign you should read for daily horoscopes (Rashifal) and use when choosing auspicious timings.</p>
       </div>
     </div>
   </section>
@@ -71,6 +71,8 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
 </style>
 
 <script define:vars={{ RASHI_ICONS }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -105,6 +107,24 @@ const DESC=[
 'Ambitious, disciplined and responsible. Makara is hardworking and practical, climbing steadily toward goals.',
 'Innovative, humanitarian and independent. Kumbha is original and forward-thinking, valuing ideals and community.',
 'Compassionate, imaginative and spiritual. Meena is sensitive and artistic, with deep empathy and intuition.'];
+const DESC_HI=[
+'ऊर्जावान, अग्रणी और साहसी। मेष निवासी स्वाभाविक नेता होते हैं — साहसी, प्रतिस्पर्धी और तुरंत कार्य करने वाले, हालांकि कभी-कभी अधीर।',
+'स्थिर, धैर्यवान और कामुक। वृषभ आराम, सौंदर्य और सुरक्षा को महत्व देता है, प्रबल दृढ़ता और वफादारी के साथ।',
+'जिज्ञासु, चतुर और संचारशील। मिथुन बहुमुखी और बौद्धिक है, विविधता, सीखने और बातचीत में फलता-फूलता है।',
+'पालन-पोषण करने वाला, भावुक और सहज-ज्ञानी। कर्क परिवार के प्रति गहराई से देखभाल करने वाला और सुरक्षात्मक है, प्रबल आंतरिक जगत के साथ।',
+'आत्मविश्वासी, उदार और करिश्माई। सिंह पहचान पसंद करता है और गर्मजोशी, गर्व व रचनात्मकता के साथ नेतृत्व करता है।',
+'विश्लेषणात्मक, व्यावहारिक और सूक्ष्म। कन्या सेवा-प्रधान, विस्तार-उन्मुख है और पूर्णता की खोज करती है।',
+'सामंजस्यपूर्ण, कूटनीतिक और आकर्षक। तुला संतुलन, साझेदारी और सौंदर्य चाहता है, प्रबल निष्पक्षता की भावना के साथ।',
+'तीव्र, जुनूनी और गोपनीय। वृश्चिक दृढ़ और परिवर्तनकारी है, गहरी भावनात्मक शक्ति के साथ।',
+'आशावादी, दार्शनिक और साहसिक। धनु स्वतंत्रता, यात्रा और सत्य व ज्ञान की खोज पसंद करता है।',
+'महत्वाकांक्षी, अनुशासित और जिम्मेदार। मकर परिश्रमी और व्यावहारिक है, लक्ष्यों की ओर स्थिर रूप से बढ़ता है।',
+'नवोन्मेषी, मानवतावादी और स्वतंत्र। कुम्भ मौलिक और अग्रगामी सोच वाला है, आदर्शों और समुदाय को महत्व देता है।',
+'दयालु, कल्पनाशील और आध्यात्मिक। मीन संवेदनशील और कलात्मक है, गहरी सहानुभूति और अंतर्ज्ञान के साथ।'];
+const EL_HI={Fire:'अग्नि',Earth:'पृथ्वी',Air:'वायु',Water:'जल'};
+const QUAL_HI={Movable:'चर',Fixed:'स्थिर',Dual:'द्विस्वभाव'};
+const DAY_HI={Sunday:'रविवार',Monday:'सोमवार',Tuesday:'मंगलवार',Wednesday:'बुधवार',Thursday:'गुरुवार',Friday:'शुक्रवार',Saturday:'शनिवार'};
+const COLOR_HI=['लाल, नारंगी','सफेद, क्रीम','हरा, पीला','चांदी, मोती','सोना, नारंगी','ग्रे, गहरा हरा','सफेद, हल्का नीला','लाल, मैरून','पीला, नारंगी','काला, गहरा नीला','आसमानी नीला, बैंगनी','समुद्री हरा, लैवेंडर'];
+const GEM_HI=['लाल मूंगा','हीरा / मोती','पन्ना','मोती','माणिक्य','पन्ना','हीरा','लाल मूंगा','पुखराज','नीलम','नीलम','पुखराज'];
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
@@ -127,25 +147,25 @@ function calculate(){
     document.getElementById('r-name').textContent=`${RASHI[idx]} · ${RASHI_HI[idx]}`;
     document.getElementById('r-en').textContent=RASHI_EN[idx];
     document.getElementById('r-badges').innerHTML=
-      `<span class="badge badge-saffron">${ELEM[idx]}</span><span class="badge">${QUAL[idx]}</span><span class="badge">Lord: ${LORD[idx]}</span>`;
+      `<span class="badge badge-saffron">${tr(ELEM[idx],EL_HI[ELEM[idx]])}</span><span class="badge">${tr(QUAL[idx],QUAL_HI[QUAL[idx]])}</span><span class="badge">${tr('Lord','स्वामी')}: ${LORD[idx]}</span>`;
     document.getElementById('detail-list').innerHTML=[
-      ['Rashi',`${RASHI[idx]} (${RASHI_EN[idx]})`],
-      ['Ruling Planet',LORD[idx]],
-      ['Element',ELEM[idx]],
-      ['Quality',QUAL[idx]],
-      ['Moon Degree',`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
-      ['Nakshatra',NAKS[nakIdx]],
-      ['Pada',String(pada)],
-      ['Ayanamsha',`${ay.toFixed(3)}° Lahiri`],
+      [tr('Rashi','राशि'),`${RASHI[idx]} (${RASHI_EN[idx]})`],
+      [tr('Ruling Planet','स्वामी ग्रह'),LORD[idx]],
+      [tr('Element','तत्व'),tr(ELEM[idx],EL_HI[ELEM[idx]])],
+      [tr('Quality','गुण'),tr(QUAL[idx],QUAL_HI[QUAL[idx]])],
+      [tr('Moon Degree','चंद्र अंश'),`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
+      [tr('Nakshatra','नक्षत्र'),NAKS[nakIdx]],
+      [tr('Pada','पद'),String(pada)],
+      [tr('Ayanamsha','अयनांश'),`${ay.toFixed(3)}° ${tr('Lahiri','लाहिड़ी')}`],
     ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
-    document.getElementById('r-desc').textContent=DESC[idx];
+    document.getElementById('r-desc').textContent=tr(DESC[idx],DESC_HI[idx]);
     document.getElementById('lucky-list').innerHTML=[
-      ['Lucky Color',COLOR[idx],'🎨'],
-      ['Lucky Day',DAY[idx],'📅'],
-      ['Lucky Gemstone',GEM[idx],'💎'],
-      ['Lucky Number',NUM[idx],'🔢'],
-      ['Compatible Rashis',COMPAT[idx],'❤️'],
-      ['Ruling Planet',LORD[idx],'🪐'],
+      [tr('Lucky Color','शुभ रंग'),tr(COLOR[idx],COLOR_HI[idx]),'🎨'],
+      [tr('Lucky Day','शुभ दिन'),tr(DAY[idx],DAY_HI[DAY[idx]]),'📅'],
+      [tr('Lucky Gemstone','शुभ रत्न'),tr(GEM[idx],GEM_HI[idx]),'💎'],
+      [tr('Lucky Number','शुभ अंक'),NUM[idx],'🔢'],
+      [tr('Compatible Rashis','अनुकूल राशियां'),COMPAT[idx],'❤️'],
+      [tr('Ruling Planet','स्वामी ग्रह'),LORD[idx],'🪐'],
     ].map(r=>`<div style="padding:12px 14px;background:var(--color-canvas-soft);border-radius:8px;"><p style="font-size:10px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">${r[0]}</p><p style="font-size:13.5px;font-weight:600;color:var(--color-ink);margin:0;">${r[2]} ${r[1]}</p></div>`).join('');
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
@@ -153,4 +173,17 @@ function calculate(){
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

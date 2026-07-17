@@ -8,20 +8,20 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">जन्म लग्न · JANMA LAGNA</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Janma Lagna (Ascendant) Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The Lagna is the rashi rising on the eastern horizon at your birth. It anchors all 12 houses and strongly shapes your body, personality and life path.</p>
+      <h1 data-hi="जन्म लग्न कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Janma Lagna (Ascendant) Calculator</h1>
+      <p data-hi="लग्न वह राशि है जो आपके जन्म के समय पूर्वी क्षितिज पर उदय होती है। यह सभी 12 भावों का आधार है और आपके शरीर, व्यक्तित्व व जीवन-पथ को गहराई से आकार देती है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The Lagna is the rashi rising on the eastern horizon at your birth. It anchors all 12 houses and strongly shapes your body, personality and life path.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <div id="result" style="display:none;">
@@ -32,22 +32,22 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
         </div>
         <div style="display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start;" class="lg-layout">
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Lagna Chart</h3>
+            <h3 data-hi="लग्न चार्ट" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Lagna Chart</h3>
             <div id="chart-box"></div>
           </div>
           <div>
             <div class="card" style="padding:20px;margin-bottom:16px;">
-              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Lagna Details</h3>
+              <h3 data-hi="लग्न विवरण" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Lagna Details</h3>
               <div id="detail-list" style="display:flex;flex-direction:column;gap:9px;"></div>
             </div>
             <div class="card" style="padding:20px;">
-              <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">The 12 Houses (Bhavas)</h3>
+              <h3 data-hi="12 भाव (Bhavas)" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">The 12 Houses (Bhavas)</h3>
               <div id="house-list" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"></div>
             </div>
           </div>
         </div>
         <div class="card" style="padding:24px;margin-top:16px;">
-          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 4px;">LAGNA NATURE &amp; PERSONALITY</p>
+          <p class="caption-mono" data-hi="लग्न स्वभाव और व्यक्तित्व" style="color:var(--color-saffron-deep);margin:0 0 4px;">LAGNA NATURE &amp; PERSONALITY</p>
           <h3 id="trait-title" style="font-size:17px;font-weight:700;color:var(--color-ink);margin:0 0 10px;"></h3>
           <p id="trait-text" style="font-size:14px;color:var(--color-body-text);line-height:1.75;margin:0;"></p>
         </div>
@@ -55,8 +55,8 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <div class="card" style="padding:28px;margin-top:36px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About the Lagna</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Because the Earth rotates once a day, the Lagna changes roughly every two hours, making an accurate birth time essential. The Lagna lord — the planet ruling your rising sign — and the house it occupies are among the most important factors in chart analysis, indicating where your life energy is most directed.</p>
+        <h2 data-hi="लग्न के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About the Lagna</h2>
+        <p data-hi="चूंकि पृथ्वी दिन में एक बार घूमती है, लग्न लगभग हर दो घंटे में बदलता है, जिससे सटीक जन्म समय अत्यंत आवश्यक हो जाता है। लग्नेश — आपकी उदय राशि का स्वामी ग्रह — और वह जिस भाव में स्थित है, कुंडली विश्लेषण के सबसे महत्वपूर्ण कारकों में से हैं, जो दर्शाते हैं कि आपकी जीवन ऊर्जा किस दिशा में सबसे अधिक केंद्रित है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Because the Earth rotates once a day, the Lagna changes roughly every two hours, making an accurate birth time essential. The Lagna lord — the planet ruling your rising sign — and the house it occupies are among the most important factors in chart analysis, indicating where your life energy is most directed.</p>
       </div>
     </div>
   </section>
@@ -76,6 +76,8 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
 </style>
 
 <script define:vars={{ RASHI_ICONS }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
 function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${RASHI_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
@@ -106,6 +108,19 @@ const LAGNA_TRAITS=[
 'Disciplined, ambitious and quietly determined, Makara Lagna is ruled by Saturn and bestows a patient, structured approach to life. You appear reserved but are driven by long-term goals. Success builds slowly and surely — and the older you grow, the lighter life tends to feel.',
 'Independent, idealistic and ahead of your time, Kumbha Lagna is co-ruled by Saturn and Rahu, giving a humanitarian, unconventional outlook. You value community and progress over personal ego, and often feel called to causes larger than yourself. Originality is your hallmark.',
 'Empathetic, imaginative and spiritually attuned, Meena Lagna is ruled by Jupiter and gives a gentle, boundaryless quality to the personality. Compassion flows naturally. Art, faith and service are your most natural expressions, and the spiritual world feels more real than the material.'];
+const LAGNA_TRAITS_HI=[
+'साहसी, ऊर्जावान और क्रिया-प्रधान, मेष लग्न वाले लोग शारीरिक जीवंतता बिखेरते हैं। आप साहस और अधीरता के साथ नेतृत्व करते हैं, जहां दूसरे झिझकते हैं वहां आगे बढ़ते हैं। शरीर प्रायः एथलेटिक और स्वभाव अग्निमय होता है। मंगल आपके लग्न का स्वामी होकर तीव्र महत्वाकांक्षा और अग्रणी भावना देता है।',
+'शांत, कामुक और दृढ़, वृषभ लग्न सुगठित शरीर और सौंदर्य, आराम व सांसारिक सुखों के प्रति गहरा प्रेम देता है। शुक्र आपके लग्न का स्वामी है, जो आकर्षण और सौंदर्य-बोध प्रदान करता है। आप वफादार, धैर्यवान और सोच-समझकर कार्य करने वाले हैं — शायद ही जल्दबाजी करते हैं, लेकिन एक बार गति पकड़ने पर रोकना कठिन है।',
+'तीव्र बुद्धि, संचारशील और बौद्धिक रूप से फुर्तीले, मिथुन लग्न वाले लोग भाषा और विचारों में निपुण होते हैं। बुध युवा, जिज्ञासु ऊर्जा देता है। आप तेजी से अनुकूलित होते हैं और विविध परिवेशों में फलते-फूलते हैं। मन आपका सबसे बड़ा उपकरण है; बेचैनी आपकी सबसे बड़ी चुनौती।',
+'पालन-पोषण करने वाला, सहज-ज्ञानी और घर व परिवार से गहराई से जुड़ा, कर्क लग्न चंद्रमा द्वारा शासित है, जो आपके व्यक्तित्व को तरल और भावनात्मक रूप से संवेदनशील बनाता है। एक स्वाभाविक देखभालकर्ता जिसमें प्रबल सहज-बोध है, आप आसपास के लोगों के मूड को आत्मसात कर लेते हैं। आपका आंतरिक जगत समृद्ध, परिवर्तनशील और गहराई से अनुभूत करने वाला है।',
+'आत्मविश्वासी, उदार और स्वाभाविक रूप से आधिकारिक, सिंह लग्न वाले लोग गर्मजोशी बिखेरते हैं और ध्यान आकर्षित करते हैं। सूर्य द्वारा शासित, आप गरिमा, गर्व और रचनात्मक निखार प्रदर्शित करते हैं। नेतृत्व स्वाभाविक रूप से आता है, लेकिन साथ ही अपने प्रियजनों से पहचान और सराहना की आवश्यकता भी।',
+'सटीक, विश्लेषणात्मक और गहराई से सेवा-उन्मुख, कन्या लग्न बुध द्वारा शासित है और एक तीक्ष्ण, विवेकपूर्ण बुद्धि प्रदान करता है। आप वह देखते हैं जो दूसरे चूक जाते हैं, समस्या-समाधान में उत्कृष्ट हैं और सुधारने-परिष्कृत करने की इच्छा से प्रेरित हैं। स्वास्थ्य और दैनिक दिनचर्या आपकी भलाई के केंद्र में हैं।',
+'आकर्षक, कूटनीतिक और सौंदर्य व संतुलन की ओर आकर्षित, तुला लग्न शुक्र द्वारा शासित है और एक सुरुचिपूर्ण, सौंदर्यबोधी संवेदनशीलता देता है। आप स्वाभाविक रूप से संबंध-प्रधान हैं, साझेदारी में सबसे प्रसन्न रहते हैं, और निष्पक्षता की प्रबल भावना रखते हैं। रिश्ते आपके सबसे बड़े शिक्षक और सबसे संतोषजनक क्षेत्र हैं।',
+'तीव्र, चुंबकीय और मनोवैज्ञानिक रूप से भेदक, वृश्चिक लग्न मंगल द्वारा शासित है और गहरे परिवर्तन की ऊर्जा वहन करता है। आप एक शांत, बलशाली शक्ति बिखेरते हैं। गोपनीयता सर्वोपरि है; विश्वास अर्जित करना पड़ता है। जो संकट दूसरों को तोड़ देते हैं वे प्रायः आपके सबसे बड़े प्रक्षेपण-मंच बन जाते हैं।',
+'दार्शनिक, विस्तृत और स्वतंत्रता-प्रिय, धनु लग्न गुरु द्वारा शासित है और एक आशावादी, व्यापक दृष्टिकोण देता है। आप अर्थ, सत्य और साहसिक कार्य चाहते हैं, और सहज उदारता बिखेरते हैं। नैतिकता आपके लिए गहराई से मायने रखती है; आप बंधन से जूझते हैं और सिखाने या अन्वेषण करने पर फलते-फूलते हैं।',
+'अनुशासित, महत्वाकांक्षी और शांतिपूर्वक दृढ़, मकर लग्न शनि द्वारा शासित है और जीवन के प्रति एक धैर्यवान, संरचित दृष्टिकोण प्रदान करता है। आप आरक्षित दिखते हैं लेकिन दीर्घकालिक लक्ष्यों से प्रेरित होते हैं। सफलता धीरे-धीरे और मजबूती से निर्मित होती है — और जितना बड़े होते हैं, जीवन उतना ही हल्का महसूस होता जाता है।',
+'स्वतंत्र, आदर्शवादी और अपने समय से आगे, कुम्भ लग्न शनि और राहु द्वारा सह-शासित है, जो एक मानवतावादी, अपरंपरागत दृष्टिकोण देता है। आप व्यक्तिगत अहंकार से अधिक समुदाय और प्रगति को महत्व देते हैं, और अक्सर स्वयं से बड़े उद्देश्यों की ओर आकर्षित महसूस करते हैं। मौलिकता आपकी पहचान है।',
+'सहानुभूतिपूर्ण, कल्पनाशील और आध्यात्मिक रूप से जुड़ा, मीन लग्न गुरु द्वारा शासित है और व्यक्तित्व को एक कोमल, सीमाहीन गुण देता है। करुणा स्वाभाविक रूप से प्रवाहित होती है। कला, आस्था और सेवा आपकी सबसे स्वाभाविक अभिव्यक्तियां हैं, और आध्यात्मिक जगत भौतिक जगत से अधिक वास्तविक प्रतीत होता है।'];
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const SYM=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
@@ -113,6 +128,7 @@ const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupi
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const PLANETS=[['surya','Su'],['chandra','Mo'],['mangal','Ma'],['budha','Me'],['guru','Ju'],['shukra','Ve'],['shani','Sa'],['rahu','Ra'],['ketu','Ke']];
 const HOUSES=['Self, body, personality','Wealth, family, speech','Courage, siblings, effort','Home, mother, happiness','Children, intellect, romance','Enemies, health, debts','Marriage, partnership','Longevity, transformation','Fortune, dharma, father','Career, status, karma','Gains, friends, desires','Loss, expenses, moksha'];
+const HOUSES_HI=['स्वयं, शरीर, व्यक्तित्व','धन, परिवार, वाणी','साहस, भाई-बहन, प्रयास','घर, मां, सुख','संतान, बुद्धि, प्रेम','शत्रु, स्वास्थ्य, ऋण','विवाह, साझेदारी','आयु, परिवर्तन','भाग्य, धर्म, पिता','करियर, प्रतिष्ठा, कर्म','लाभ, मित्र, इच्छाएं','हानि, व्यय, मोक्ष'];
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
@@ -156,27 +172,40 @@ function calculate(){
     document.getElementById('l-meta').textContent=`${Math.floor(deg)}°${String(Math.floor((deg%1)*60)).padStart(2,'0')}' · ${NAKS[nakIdx]} Pada ${pada}`;
     document.getElementById('chart-box').innerHTML=drawChart(signOfHouse,pbh);
     document.getElementById('detail-list').innerHTML=[
-      ['Ascendant',`${RASHI[lagnaSign]} (${RASHI_EN[lagnaSign]})`],
-      ['Lagna Degree',`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
-      ['Lagna Nakshatra',`${NAKS[nakIdx]} (Pada ${pada})`],
-      ['Lagna Lord',lordPlanet],
-      ['Lord placed in',`House ${lordHouse} (${RASHI[lordSign]})`],
-      ['Ayanamsha',`${ay.toFixed(3)}° Lahiri`],
+      [tr('Ascendant','लग्न'),`${RASHI[lagnaSign]} (${RASHI_EN[lagnaSign]})`],
+      [tr('Lagna Degree','लग्न अंश'),`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
+      [tr('Lagna Nakshatra','लग्न नक्षत्र'),`${NAKS[nakIdx]} (${tr('Pada','पद')} ${pada})`],
+      [tr('Lagna Lord','लग्नेश'),lordPlanet],
+      [tr('Lord placed in','स्वामी स्थित है'),`${tr('House','भाव')} ${lordHouse} (${RASHI[lordSign]})`],
+      [tr('Ayanamsha','अयनांश'),`${ay.toFixed(3)}° ${tr('Lahiri','लाहिड़ी')}`],
     ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
     document.getElementById('house-list').innerHTML=signOfHouse.map((sg,h)=>
       `<div style="padding:8px 10px;border-radius:7px;background:var(--color-canvas-soft-2);">
         <div style="display:flex;justify-content:space-between;align-items:baseline;">
-          <span style="font-size:12px;font-weight:600;color:var(--color-ink);">House ${h+1}</span>
+          <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${tr('House','भाव')} ${h+1}</span>
           <span style="font-size:10px;color:var(--color-saffron-deep);font-weight:600;">${RASHI[sg]}</span>
         </div>
-        <p style="font-size:10.5px;color:var(--color-mute);margin:2px 0 0;line-height:1.4;">${HOUSES[h]}</p>
+        <p style="font-size:10.5px;color:var(--color-mute);margin:2px 0 0;line-height:1.4;">${tr(HOUSES[h],HOUSES_HI[h])}</p>
       </div>`).join('');
-    document.getElementById('trait-title').textContent=RASHI[lagnaSign]+' Lagna \xb7 Rising Sign';
-    document.getElementById('trait-text').textContent=LAGNA_TRAITS[lagnaSign];
+    document.getElementById('trait-title').textContent=RASHI[lagnaSign]+' '+tr('Lagna \xb7 Rising Sign','लग्न · उदय राशि');
+    document.getElementById('trait-text').textContent=tr(LAGNA_TRAITS[lagnaSign],LAGNA_TRAITS_HI[lagnaSign]);
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;document.getElementById('result').style.display='none';}
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

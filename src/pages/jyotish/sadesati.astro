@@ -8,36 +8,36 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शनि साढ़ेसाती · SHANI SADESATI</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shani Sadesati Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Sadesati is the 7.5-year period when Saturn transits the sign before, over, and after your Moon sign. Find your status and full timeline.</p>
+      <h1 data-hi="शनि साढ़े साती कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shani Sadesati Calculator</h1>
+      <p data-hi="साढ़े साती वह 7.5 वर्ष की अवधि है जब शनि आपकी चंद्र राशि से पहले, ऊपर और बाद की राशि में गोचर करता है। अपनी स्थिति और पूर्ण समयरेखा जानें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Sadesati is the 7.5-year period when Saturn transits the sign before, over, and after your Moon sign. Find your status and full timeline.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <div id="result" style="display:none;">
         <div class="card" id="ss-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
-        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Lifetime Sadesati Timeline</h3>
+        <h3 data-hi="आजीवन साढ़े साती समयरेखा" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Lifetime Sadesati Timeline</h3>
         <div id="timeline" style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;"></div>
         <div class="card" style="padding:24px;">
-          <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">The Three Phases</h3>
+          <h3 data-hi="तीन चरण" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">The Three Phases</h3>
           <div id="phases" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;" class="phase-grid"></div>
         </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <div class="card" style="padding:28px;margin-top:36px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shani Sadesati</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Saturn (Shani) takes about 29.5 years to circle the zodiac, spending roughly 2.5 years in each sign. Sadesati ("seven and a half") is the period when Saturn passes through the 12th, 1st and 2nd signs from your natal Moon — about 7.5 years in total. It recurs roughly every 30 years, so most people experience it two to three times in a lifetime. Though known for tests and hard lessons, Sadesati is ultimately a period of maturity, discipline and lasting growth. Dates here are approximate (computed from Saturn\'s sidereal sign ingress).</p>
+        <h2 data-hi="शनि साढ़े साती के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shani Sadesati</h2>
+        <p data-hi="शनि (शनिदेव) को राशिचक्र का चक्कर पूरा करने में लगभग 29.5 वर्ष लगते हैं, यानी हर राशि में लगभग 2.5 वर्ष। साढ़े साती ('सात साढ़े') वह अवधि है जब शनि आपकी जन्म चंद्र राशि से बारहवीं, पहली और दूसरी राशि से गुजरता है — कुल मिलाकर लगभग 7.5 वर्ष। यह लगभग हर 30 वर्ष में दोहराई जाती है, इसलिए अधिकांश लोग इसे जीवन में दो से तीन बार अनुभव करते हैं। कठिन परीक्षाओं और सबकों के लिए जानी जाने वाली साढ़े साती अंततः परिपक्वता, अनुशासन और स्थायी विकास की अवधि है। यहां दी गई तिथियां अनुमानित हैं (शनि के निरयण राशि प्रवेश से गणना की गई)।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Saturn (Shani) takes about 29.5 years to circle the zodiac, spending roughly 2.5 years in each sign. Sadesati ("seven and a half") is the period when Saturn passes through the 12th, 1st and 2nd signs from your natal Moon — about 7.5 years in total. It recurs roughly every 30 years, so most people experience it two to three times in a lifetime. Though known for tests and hard lessons, Sadesati is ultimately a period of maturity, discipline and lasting growth. Dates here are approximate (computed from Saturn's sidereal sign ingress).</p>
       </div>
     </div>
   </section>
@@ -49,6 +49,8 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 </style>
 
 <script define:vars={{ SHANI_SVG: PLANET_ICONS.shani }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 function shaniIconSvg(size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${SHANI_SVG}</svg>`;}
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
@@ -113,18 +115,18 @@ function calculate(){
     if(active){
       const ssNow=saturnSign(todayJD);
       const phaseIdx=setSigns.indexOf(ssNow);
-      const phaseName=['Rising (First Dhaiya)','Peak (Janma Shani)','Setting (Final Dhaiya)'][phaseIdx];
+      const phaseName=[tr('Rising (First Dhaiya)','उदय (प्रथम ढैया)'),tr('Peak (Janma Shani)','शिखर (जन्म शनि)'),tr('Setting (Final Dhaiya)','अस्त (अंतिम ढैया)')][phaseIdx];
       const e=jdToYMD(active.end);
       bg='var(--color-warning-soft)';
-      html=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${shaniIconSvg(40,'#b45309')}</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">In Sadesati</h2>
-        <p style="font-size:14px;color:var(--color-body-text);margin:0;">Currently in the <b>${phaseName}</b> phase. Saturn is in ${RASHI[ssNow]}, your Moon is in ${RASHI[moonSign]}.<br>This Sadesati ends around <b>${MON[e.m-1]} ${e.y}</b>.</p>`;
+      html=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${shaniIconSvg(40,'#b45309')}</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">${tr('In Sadesati','साढ़े साती में')}</h2>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr(`Currently in the <b>${phaseName}</b> phase. Saturn is in ${RASHI[ssNow]}, your Moon is in ${RASHI[moonSign]}.`,`वर्तमान में <b>${phaseName}</b> चरण में। शनि ${RASHI[ssNow]} में है, आपका चंद्रमा ${RASHI[moonSign]} में है।`)}<br>${tr(`This Sadesati ends around <b>${MON[e.m-1]} ${e.y}</b>.`,`यह साढ़े साती लगभग <b>${MON[e.m-1]} ${e.y}</b> में समाप्त होती है।`)}</p>`;
     }else{
       // find next
       let next=periods.find(p=>p.start>todayJD);
       bg='var(--color-auspicious-soft)';
       const ns=next?jdToYMD(next.start):null;
-      html=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${shaniIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">Not in Sadesati</h2>
-        <p style="font-size:14px;color:var(--color-body-text);margin:0;">Your Moon sign is ${RASHI[moonSign]}. ${ns?`Your next Sadesati begins around <b>${MON[ns.m-1]} ${ns.y}</b>.`:'No upcoming Sadesati within the scanned range.'}</p>`;
+      html=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${shaniIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">${tr('Not in Sadesati','साढ़े साती में नहीं')}</h2>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Your Moon sign is '+RASHI[moonSign]+'.','आपकी चंद्र राशि '+RASHI[moonSign]+' है।')} ${ns?tr(`Your next Sadesati begins around <b>${MON[ns.m-1]} ${ns.y}</b>.`,`आपकी अगली साढ़े साती लगभग <b>${MON[ns.m-1]} ${ns.y}</b> में शुरू होगी।`):tr('No upcoming Sadesati within the scanned range.','जांचे गए समय में कोई आगामी साढ़े साती नहीं है।')}</p>`;
     }
     document.getElementById('ss-banner').style.background=bg;
     document.getElementById('ss-banner').innerHTML=html;
@@ -137,19 +139,19 @@ function calculate(){
         <span style="font-size:22px;">${isActive?'🔸':isPast?'✓':'○'}</span>
         <div style="flex:1;">
           <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${MON[s.m-1]} ${s.y} – ${MON[e.m-1]} ${e.y}</p>
-          <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">Age ${ageS}–${ageE} · ${isActive?'Currently active':isPast?'Completed':'Upcoming'}</p>
+          <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">${tr('Age','आयु')} ${ageS}–${ageE} · ${isActive?tr('Currently active','वर्तमान में सक्रिय'):isPast?tr('Completed','पूर्ण'):tr('Upcoming','आगामी')}</p>
         </div>
-        <span class="badge ${isActive?'badge-saffron':''}">Cycle ${i+1}</span>
+        <span class="badge ${isActive?'badge-saffron':''}">${tr('Cycle','चक्र')} ${i+1}</span>
       </div>`;
-    }).join('')||'<p style="font-size:13px;color:var(--color-mute);">No Sadesati periods found in range.</p>';
+    }).join('')||`<p style="font-size:13px;color:var(--color-mute);">${tr('No Sadesati periods found in range.','जांचे गए समय में कोई साढ़े साती अवधि नहीं मिली।')}</p>`;
 
     // Sub-phase dates for the reference Sadesati period (active, or next, or last)
     const refPeriod=active||periods.find(p=>p.start>todayJD)||(periods.length?periods[periods.length-1]:null);
     const subBds=refPeriod?findSubPhases(refPeriod.start,refPeriod.end,setSigns):null;
     const phaseData=[
-      ['Rising','12th House ('+RASHI[setSigns[0]]+')','Saturn enters the sign before your Moon. Mental restlessness, unexpected expenses, confusion and health concerns arise. A time to let go of the old and prepare inwardly for transformation.'],
-      ['Peak','1st House — Janma Shani ('+RASHI[setSigns[1]]+')','The most intense 2.5-year phase. Core life pillars are tested: career, health, relationships and self-image. Humility and discipline are the keys to endurance and growth.'],
-      ['Setting','2nd House ('+RASHI[setSigns[2]]+')','Saturn moves past your Moon. Pressure eases gradually. Focus shifts to family, finances and speech. The hard lessons of the first two phases crystallise into lasting wisdom.'],
+      [tr('Rising','उदय'),tr('12th House','बारहवां भाव')+' ('+RASHI[setSigns[0]]+')',tr('Saturn enters the sign before your Moon. Mental restlessness, unexpected expenses, confusion and health concerns arise. A time to let go of the old and prepare inwardly for transformation.','शनि आपके चंद्रमा से पहले की राशि में प्रवेश करता है। मानसिक बेचैनी, अप्रत्याशित खर्च, भ्रम और स्वास्थ्य संबंधी चिंताएं उत्पन्न होती हैं। यह पुराने को छोड़ने और परिवर्तन के लिए आंतरिक रूप से तैयार होने का समय है।')],
+      [tr('Peak','शिखर'),tr('1st House — Janma Shani','पहला भाव — जन्म शनि')+' ('+RASHI[setSigns[1]]+')',tr('The most intense 2.5-year phase. Core life pillars are tested: career, health, relationships and self-image. Humility and discipline are the keys to endurance and growth.','सबसे तीव्र 2.5 वर्ष का चरण। जीवन के मूल स्तंभ परखे जाते हैं: करियर, स्वास्थ्य, रिश्ते और आत्म-छवि। विनम्रता और अनुशासन ही सहनशक्ति और विकास की कुंजी हैं।')],
+      [tr('Setting','अस्त'),tr('2nd House','दूसरा भाव')+' ('+RASHI[setSigns[2]]+')',tr('Saturn moves past your Moon. Pressure eases gradually. Focus shifts to family, finances and speech. The hard lessons of the first two phases crystallise into lasting wisdom.','शनि आपके चंद्रमा को पार कर जाता है। दबाव धीरे-धीरे कम होता है। ध्यान परिवार, वित्त और वाणी पर केंद्रित हो जाता है। पहले दो चरणों के कठिन सबक स्थायी ज्ञान में परिणत होते हैं।')],
     ];
     document.getElementById('phases').innerHTML=phaseData.map((p,i)=>{
       let dateStr='';
@@ -158,7 +160,7 @@ function calculate(){
         dateStr='<p style="font-size:11px;color:var(--color-saffron-deep);font-family:var(--font-mono);margin:2px 0 5px;font-weight:600;">'+MON[s.m-1]+' '+s.y+' – '+MON[e.m-1]+' '+e.y+'</p>';
       }
       const isCurrentPhase=active&&saturnSign(todayJD)===setSigns[i];
-      return '<div style="padding:14px;border-radius:8px;background:var(--color-canvas-soft-2);'+(isCurrentPhase?'border:2px solid var(--color-warning);':'')+'"><p style="font-size:12px;font-weight:700;color:var(--color-saffron-deep);margin:0 0 1px;">'+p[0]+(isCurrentPhase?' • CURRENT':'')+' </p>'+dateStr+'<p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">'+p[1]+'</p><p style="font-size:12px;color:var(--color-body-text);line-height:1.5;margin:0;">'+p[2]+'</p></div>';
+      return '<div style="padding:14px;border-radius:8px;background:var(--color-canvas-soft-2);'+(isCurrentPhase?'border:2px solid var(--color-warning);':'')+'"><p style="font-size:12px;font-weight:700;color:var(--color-saffron-deep);margin:0 0 1px;">'+p[0]+(isCurrentPhase?' • '+tr('CURRENT','वर्तमान'):'')+' </p>'+dateStr+'<p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">'+p[1]+'</p><p style="font-size:12px;color:var(--color-body-text);line-height:1.5;margin:0;">'+p[2]+'</p></div>';
     }).join('');
 
     document.getElementById('result').style.display='block';
@@ -167,4 +169,17 @@ function calculate(){
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

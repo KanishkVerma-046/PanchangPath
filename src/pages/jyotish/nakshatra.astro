@@ -8,20 +8,20 @@ import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">नक्षत्र · NAKSHATRA CALCULATOR</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Nakshatra (Birth Star) Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The 27 nakshatras are the lunar mansions of Vedic astrology. Your Janma Nakshatra is where the Moon sat at birth — central to your personality, naming and muhurta.</p>
+      <h1 data-hi="नक्षत्र (जन्म तारा) कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Nakshatra (Birth Star) Calculator</h1>
+      <p data-hi="27 नक्षत्र वैदिक ज्योतिष के चंद्र भवन हैं। आपका जन्म नक्षत्र वह स्थान है जहां जन्म के समय चंद्रमा स्थित था — यह आपके व्यक्तित्व, नामकरण और मुहूर्त के लिए केंद्रीय महत्व रखता है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">The 27 nakshatras are the lunar mansions of Vedic astrology. Your Janma Nakshatra is where the Moon sat at birth — central to your personality, naming and muhurta.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <div id="result" style="display:none;margin-bottom:36px;">
@@ -29,7 +29,7 @@ import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
           <div style="display:flex;align-items:center;gap:16px;">
             <div id="n-icon" style="color:var(--color-saffron-deep);flex-shrink:0;"></div>
             <div>
-              <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 4px;">YOUR BIRTH STAR</p>
+              <p class="caption-mono" data-hi="आपका जन्म तारा" style="color:var(--color-saffron-deep);margin:0 0 4px;">YOUR BIRTH STAR</p>
               <h2 id="n-name" style="font-size:28px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
               <p id="n-meta" style="font-size:14px;color:var(--color-mute);margin:0 0 8px;"></p>
               <div id="n-badges" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
@@ -38,30 +38,30 @@ import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;" class="two-col">
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Attributes</h3>
+            <h3 data-hi="विशेषताएं" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Attributes</h3>
             <div id="attr-list" style="display:flex;flex-direction:column;gap:9px;"></div>
           </div>
           <div class="card" style="padding:20px;">
-            <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">The Four Padas</h3>
+            <h3 data-hi="चार पद" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">The Four Padas</h3>
             <div id="pada-list" style="display:flex;flex-direction:column;gap:8px;"></div>
-            <p style="font-size:11.5px;color:var(--color-mute);margin:12px 0 0;line-height:1.5;">Traditionally, a baby\'s name begins with the syllable of the pada in which the Moon falls.</p>
+            <p data-hi="परंपरागत रूप से, शिशु का नाम उस पद के अक्षर से शुरू होता है जिसमें चंद्रमा स्थित होता है।" style="font-size:11.5px;color:var(--color-mute);margin:12px 0 0;line-height:1.5;">Traditionally, a baby's name begins with the syllable of the pada in which the Moon falls.</p>
           </div>
         </div>
         <!-- Personality traits panel -->
         <div class="card" style="padding:24px;">
-          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 4px;">NAKSHATRA PERSONALITY TRAITS</p>
+          <p class="caption-mono" data-hi="नक्षत्र व्यक्तित्व विशेषताएं" style="color:var(--color-saffron-deep);margin:0 0 4px;">NAKSHATRA PERSONALITY TRAITS</p>
           <h3 id="trait-title" style="font-size:17px;font-weight:700;color:var(--color-ink);margin:0 0 10px;"></h3>
           <p id="trait-text" style="font-size:14px;color:var(--color-body-text);line-height:1.75;margin:0;"></p>
         </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;margin-bottom:24px;"></div>
 
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 27 Nakshatras</h3>
+      <h3 data-hi="सभी 27 नक्षत्र" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 27 Nakshatras</h3>
       <div id="all-naks" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:36px;"></div>
 
       <div class="card" style="padding:28px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Nakshatras</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">The ecliptic is divided into 27 nakshatras of 13°20\' each, every one further split into 4 padas of 3°20\'. Each nakshatra has a ruling planet (used for Vimshottari Dasha), a deity, an animal (yoni), a gana (temperament), and a nadi (constitution) — all of which inform compatibility matching, naming and electional astrology.</p>
+        <h2 data-hi="नक्षत्रों के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Nakshatras</h2>
+        <p data-hi="क्रांतिवृत्त को 27 नक्षत्रों में विभाजित किया गया है, प्रत्येक 13°20' का, और प्रत्येक को आगे 4 पदों में विभाजित किया गया है, प्रत्येक 3°20' का। हर नक्षत्र का एक शासक ग्रह (विंशोत्तरी दशा हेतु उपयोग), एक देवता, एक पशु (योनि), एक गण (स्वभाव), और एक नाड़ी (संरचना) होती है — ये सभी संगतता मिलान, नामकरण और मुहूर्त ज्योतिष को निर्धारित करते हैं।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">The ecliptic is divided into 27 nakshatras of 13°20' each, every one further split into 4 padas of 3°20'. Each nakshatra has a ruling planet (used for Vimshottari Dasha), a deity, an animal (yoni), a gana (temperament), and a nadi (constitution) — all of which inform compatibility matching, naming and electional astrology.</p>
       </div>
     </div>
   </section>
@@ -81,6 +81,9 @@ import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
 </style>
 
 <script define:vars={{ NAKSHATRA_ICONS }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
+const YONI_HI={Horse:'घोड़ा',Elephant:'हाथी',Sheep:'भेड़',Serpent:'सर्प',Dog:'कुत्ता',Cat:'बिल्ली',Rat:'चूहा',Cow:'गाय',Buffalo:'भैंस',Tiger:'बाघ',Monkey:'बंदर',Mongoose:'नेवला',Lion:'सिंह',Deer:'हिरण'};
 const NAKS_ID=['ashwini','bharani','krittika','rohini','mrigashira','ardra','punarvasu','pushya','ashlesha','magha','purva-phalguni','uttara-phalguni','hasta','chitra','swati','vishakha','anuradha','jyeshtha','mula','purva-ashadha','uttara-ashadha','shravana','dhanishta','shatabhisha','purva-bhadrapada','uttara-bhadrapada','revati'];
 function nakIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${NAKSHATRA_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
@@ -118,6 +121,33 @@ const NAKS=[
 {n:'Purva Bhadrapada',h:'पूर्वभाद्रपदा',lord:'Jupiter',yoni:'Lion',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Aja Ekapada',sym:'Funeral cot front',p:['Se','So','Da','Di'],traits:'Intense, passionate and deeply idealistic, you are willing to sacrifice comfort and convention for your beliefs. Spiritually powerful and courageous, you can be extreme or impulsive — yet your visionary fire ignites real transformation.'},
 {n:'Uttara Bhadrapada',h:'उत्तरभाद्रपदा',lord:'Saturn',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Ahir Budhnya',sym:'Funeral cot back',p:['Du','Tha','Jha','Nya'],traits:'Wise, patient and profoundly compassionate, you are a deep thinker with extraordinary inner strength and spiritual endurance. A quiet warrior who serves selflessly, your power grows beneath the surface and impacts lives in ways rarely visible.'},
 {n:'Revati',h:'रेवती',lord:'Mercury',yoni:'Elephant',gana:'Deva',nadi:'Antya',varna:'Brahmin',deity:'Pushan',sym:'Fish/Drum',p:['De','Do','Cha','Chi'],traits:'Compassionate, nurturing and deeply spiritual, you carry a universal love and the gift of empathy. Artistic, imaginative and gentle, you are a bridge-builder who completes cycles and guides souls gently across transitions and thresholds.'}];
+const NAKS_TRAITS_HI=[
+'तीव्र बुद्धि और ऊर्जावान रूप से अग्रणी, आप उत्साह के साथ कार्य आरंभ करते हैं और स्वाभाविक उपचार क्षमता रखते हैं। अधीरता निरंतरता को कमजोर कर सकती है, लेकिन आपका साहस और सहजता आपको एक स्वाभाविक अग्रदूत और नेता बनाती है।',
+'तीव्र, रचनात्मक और गहराई से जिम्मेदार, आप बड़े बोझ को शक्ति और उद्देश्य के साथ उठाते हैं। जुनूनी और दृढ़, आप जीवन की चरम सीमाओं — सौंदर्य, कला और गहरे परिवर्तन — की ओर आकर्षित होते हैं। सत्य आपके लिए सबसे अधिक मायने रखता है।',
+'तीक्ष्ण बुद्धि, महत्वाकांक्षी और अत्यंत आलोचनात्मक, आप अशुद्धि को जला देते हैं और स्वयं व दूसरों से उत्कृष्टता की मांग करते हैं। आपकी अग्निमय स्पष्टता कठोर हो सकती है, लेकिन यह आपकी सबसे बड़ी शक्ति भी है — भ्रम को काटकर सत्य तक पहुंचना।',
+'आकर्षक, कलात्मक और गहराई से कामुक, आपमें स्वाभाविक चुंबकत्व और सौंदर्य, उर्वरता व आराम के प्रति प्रेम है। अत्यंत रचनात्मक और सुख-प्रिय, आप जो प्रिय है उसके प्रति स्वामित्व की भावना रख सकते हैं। स्थिरता और सौंदर्यात्मक समृद्धि आपके जीवन के पुरस्कार हैं।',
+'सदैव जिज्ञासु और कोमलता से खोजते हुए, आप प्रेम, ज्ञान और सौंदर्य में आदर्श के खोजी हैं। संवेदनशील, संचारशील और बेचैन, आप जहां भी जाते हैं ताजा दृष्टिकोण और रचनात्मक अंतर्दृष्टि लाते हैं।',
+'तीव्र और परिवर्तनकारी, आपमें एक तीक्ष्ण और भेदक बुद्धि है जो परिवर्तन के तूफानों से गुजरने में सक्षम है। आपके जीवन में नाटकीय व्यवधान आ सकते हैं, लेकिन हर एक आपकी अंतर्दृष्टि को गहरा करता है। कच्चे, ईमानदार और अंधकार से निर्भय।',
+'आशावादी, दार्शनिक और नवीनीकरण के उपहार से संपन्न, आप कठिनाइयों से प्रेरणादायक लचीलेपन के साथ उबरते हैं। उदार, विस्तृत और स्वतंत्रता-प्रिय, आप सीखने, बढ़ने और दूसरों के साथ ज्ञान बांटने में सबसे प्रसन्न रहते हैं।',
+'पालन-पोषण करने वाला, समर्पित और गहराई से पारंपरिक, आप एक स्वाभाविक देखभालकर्ता हैं जो आसपास के लोगों को स्थिरता, समृद्धि और आध्यात्मिक गर्मजोशी प्रदान करते हैं। धैर्यवान और सिद्धांतवादी, आपकी आंतरिक शक्ति समय के साथ स्थिर रूप से बढ़ती है।',
+'चतुर, अंतर्दृष्टिपूर्ण और भावनात्मक रूप से जटिल, आपमें महान रणनीतिक बुद्धि और लोगों को पढ़ने की शक्तिशाली क्षमता है। मनाने में कुशल और लचीले, आप गोपनीय हो सकते हैं, लेकिन आपकी दृढ़ता और मनोवैज्ञानिक गहराई असाधारण उपहार हैं।',
+'गर्वित, राजसी और पैतृक परंपरा में निहित, आप एक स्वाभाविक नेता हैं जिसमें वंश और गरिमा की प्रबल भावना है। उदार और आदेशात्मक, आप अधिकार के पदों पर फलते-फूलते हैं और महानता की नींव के रूप में अतीत का सम्मान करते हैं।',
+'रचनात्मक, रोमांटिक और सुख-प्रिय, आप स्वाभाविक करिश्मा और विलासिता, सौंदर्य व संवेदी अनुभव के प्रति प्रेम बिखेरते हैं। प्रेम और मित्रता में उदार, आप एक समर्पित साथी और प्रतिभाशाली कलाकार हैं जो विश्राम व उत्सव में फलते-फूलते हैं।',
+'विश्वसनीय, सहायक और नैतिक रूप से अनुशासित, आप वह स्थिर, भरोसेमंद स्तंभ हैं जिस पर दूसरे निर्भर करते हैं। रचनात्मकता को सेवा के साथ संतुलित करते हुए, आप पारस्परिक सम्मान और साझा मूल्यों पर निर्मित दीर्घकालिक रिश्ते और प्रतिबद्धताएं चाहते हैं।',
+'चतुर, साधनसंपन्न और अपने हाथों से असाधारण रूप से कुशल, आप शिल्प, हास्य और व्यावहारिक बुद्धि के स्वामी हैं। तीक्ष्ण-बुद्धि और अनुकूलनशील, आप अपने इरादों को तेजी से साकार करते हैं और उपचार व सेवा का उपहार रखते हैं।',
+'कलात्मक, चमकदार और तकनीकी रूप से प्रतिभाशाली, आपमें असाधारण सौंदर्य-बोध और पूर्णता के लिए अथक प्रयास है। नवोन्मेषी, दृश्य रूप से प्रतिभाशाली और विस्तार-उन्मुख, आप सटीकता और जुनून के साथ सुंदर चीजें बनाते हैं।',
+'हवा की तरह स्वतंत्र, कूटनीतिक और निष्पक्ष, आप बिना टूटे झुकते हैं और वाणिज्य, नेटवर्किंग व मध्यस्थता में उत्कृष्ट हैं। स्व-प्रेरित और सामाजिक रूप से कुशल, आप व्यक्तिगत स्वतंत्रता को महत्व देते हैं और जहां भी जाते हैं संतुलन लाते हैं।',
+'समर्पित, संगठित और लचीले, आप स्थायी मित्रता बनाने और संगठनों को बनाए रखने में उत्कृष्ट हैं। आध्यात्मिक रूप से इच्छुक और अनुकूलनशील, आप विपरीत परिस्थितियों से फलते-फूलते हैं और आपकी शांत निष्ठा सभी रिश्तों में गहरे विश्वास के बंधन को प्रेरित करती है।',
+'वरिष्ठ, सुरक्षात्मक और अत्यंत जिम्मेदार, आप अपनी देखभाल में रहने वालों के प्रति कर्तव्य की गहरी भावना रखते हैं। गर्वित और साहसी, प्रबल निष्ठा के साथ जो सम्मान की मांग करती है। ईर्ष्या और नियंत्रण वे छायाएं हैं जिन्हें आपको साधना है।',
+'दार्शनिक, अन्वेषक और पुराने को उखाड़ने से न डरने वाले, आप हर चीज की जड़ तक जाते हैं। एक सत्य-खोजी जो नींवों पर प्रश्न उठाता है और विनाश के माध्यम से रूपांतरित होता है। स्वतंत्रता, जिज्ञासा और आध्यात्मिक मुक्ति आपकी गहरी प्रेरणाएं हैं।',
+'आशावादी, गर्वित और शक्तिशाली रूप से प्रेरक, आपमें चुंबकीय ऊर्जा और अपने मार्ग में अटूट विश्वास है। विरोध के सामने लचीले और स्वाभाविक नेतृत्व से संपन्न, आप अपनी दृष्टि और उत्साही दृढ़ संकल्प से दूसरों को प्रेरित करते हैं।',
+'नैतिक, दृढ़ और सार्वभौमिक रूप से सिद्धांतवादी, आप धीरे लेकिन निश्चित रूप से उच्च, स्थायी लक्ष्यों की ओर बढ़ते हैं। व्यापक दृष्टिकोण और गहरी सत्यनिष्ठा वाले स्थायी नेता — आपकी जीतें, एक बार प्राप्त होने पर, आसानी से पलटती नहीं हैं।',
+'एक असाधारण श्रोता और आजीवन शिक्षार्थी, आपमें एक व्यवस्थित मन, व्यापक ज्ञान और बोले गए व पवित्र शब्द से गहरा जुड़ाव है। सामाजिक, सहानुभूतिपूर्ण और संचार में कुशल, आप पीढ़ियों में ज्ञान को संरक्षित और प्रसारित करते हैं।',
+'संगीतमय, साहसी और शक्तिशाली रूप से महत्वाकांक्षी, आपमें स्वाभाविक लय, समूह नेतृत्व और धन संचय करने की प्रेरणा है। स्वभाव से उदार लेकिन करियर-केंद्रित, आप कभी-कभी घनिष्ठ रिश्तों से अधिक उपलब्धि को प्राथमिकता दे सकते हैं।',
+'स्वतंत्र, वैज्ञानिक और गहराई से दार्शनिक, आप उपचार, छिपे ज्ञान और ब्रह्मांड के रहस्यों की ओर आकर्षित होते हैं। आत्मनिरीक्षक और गोपनीय, आप प्रबल मानवतावादी आदर्श रखते हैं और पूर्ण रचनात्मक स्वतंत्रता मिलने पर सबसे अच्छा काम करते हैं।',
+'तीव्र, जुनूनी और गहराई से आदर्शवादी, आप अपने विश्वासों के लिए आराम और परंपरा त्यागने को तैयार हैं। आध्यात्मिक रूप से शक्तिशाली और साहसी, आप चरम या आवेगी हो सकते हैं — फिर भी आपकी दूरदर्शी अग्नि वास्तविक परिवर्तन प्रज्ज्वलित करती है।',
+'विवेकपूर्ण, धैर्यवान और गहराई से करुणामय, आप असाधारण आंतरिक शक्ति और आध्यात्मिक सहनशक्ति वाले गहन विचारक हैं। एक शांत योद्धा जो निःस्वार्थ भाव से सेवा करता है, आपकी शक्ति सतह के नीचे बढ़ती है और जीवन को उन तरीकों से प्रभावित करती है जो शायद ही दिखाई देते हैं।',
+'दयालु, पालन-पोषण करने वाले और गहराई से आध्यात्मिक, आप एक सार्वभौमिक प्रेम और सहानुभूति का उपहार वहन करते हैं। कलात्मक, कल्पनाशील और कोमल, आप एक सेतु-निर्माता हैं जो चक्रों को पूर्ण करता है और आत्माओं को कोमलता से संक्रमणों व दहलीजों के पार मार्गदर्शन करता है।'];
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
@@ -136,37 +166,54 @@ function calculate(){
     const nk=NAKS[idx];
     document.getElementById('n-icon').innerHTML=nakIconSvg(NAKS_ID[idx],44);
     document.getElementById('n-name').textContent=nk.n+' \xb7 '+nk.h;
-    document.getElementById('n-meta').textContent='Pada '+pada+' \xb7 Ruled by '+nk.lord+' \xb7 Deity: '+nk.deity;
-    document.getElementById('trait-title').textContent=nk.n+' — Personality Profile';
-    document.getElementById('trait-text').textContent=nk.traits;
+    document.getElementById('n-meta').textContent=tr('Pada','पद')+' '+pada+' \xb7 '+tr('Ruled by','स्वामी')+' '+nk.lord+' \xb7 '+tr('Deity','देवता')+': '+nk.deity;
+    document.getElementById('trait-title').textContent=nk.n+' — '+tr('Personality Profile','व्यक्तित्व प्रोफाइल');
+    document.getElementById('trait-text').textContent=tr(nk.traits,NAKS_TRAITS_HI[idx]);
     document.getElementById('n-badges').innerHTML=
-      `<span class="badge badge-saffron">${nk.gana} Gana</span><span class="badge">${nk.nadi} Nadi</span><span class="badge">${nk.yoni} Yoni</span><span class="badge">Syllable: ${nk.p[pada-1]}</span>`;
+      `<span class="badge badge-saffron">${nk.gana} ${tr('Gana','गण')}</span><span class="badge">${nk.nadi} ${tr('Nadi','नाड़ी')}</span><span class="badge">${tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)} ${tr('Yoni','योनि')}</span><span class="badge">${tr('Syllable','अक्षर')}: ${nk.p[pada-1]}</span>`;
     document.getElementById('attr-list').innerHTML=[
-      ['Nakshatra',`${nk.n} (#${idx+1})`],['Pada',String(pada)],['Lord',nk.lord],['Deity',nk.deity],
-      ['Symbol',nk.sym],['Yoni (Animal)',nk.yoni],['Gana',nk.gana],['Nadi',nk.nadi],['Varna',nk.varna],['Ayanamsha',`${ay.toFixed(3)}° Lahiri`]
+      [tr('Nakshatra','नक्षत्र'),`${nk.n} (#${idx+1})`],[tr('Pada','पद'),String(pada)],[tr('Lord','स्वामी'),nk.lord],[tr('Deity','देवता'),nk.deity],
+      [tr('Symbol','प्रतीक'),nk.sym],[tr('Yoni (Animal)','योनि (पशु)'),tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)],[tr('Gana','गण'),nk.gana],[tr('Nadi','नाड़ी'),nk.nadi],[tr('Varna','वर्ण'),nk.varna],[tr('Ayanamsha','अयनांश'),`${ay.toFixed(3)}° ${tr('Lahiri','लाहिड़ी')}`]
     ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
     document.getElementById('pada-list').innerHTML=nk.p.map((s,i)=>
       `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;background:${i===pada-1?'var(--color-saffron-soft)':'var(--color-canvas-soft-2)'};">
-        <span style="font-size:11px;font-weight:600;color:var(--color-mute);font-family:var(--font-mono);">Pada ${i+1}</span>
+        <span style="font-size:11px;font-weight:600;color:var(--color-mute);font-family:var(--font-mono);">${tr('Pada','पद')} ${i+1}</span>
         <span style="font-size:15px;font-weight:700;color:${i===pada-1?'var(--color-saffron-deep)':'var(--color-ink)'};">${s}</span>
-        ${i===pada-1?'<span class="badge badge-saffron" style="margin-left:auto;">Your pada</span>':''}
+        ${i===pada-1?'<span class="badge badge-saffron" style="margin-left:auto;">'+tr('Your pada','आपका पद')+'</span>':''}
       </div>`).join('');
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}
 }
-document.getElementById('all-naks').innerHTML=NAKS.map((nk,i)=>
-  `<div class="card" style="padding:12px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
-      <div style="display:flex;align-items:center;gap:6px;">
-        <span style="color:var(--color-saffron-deep);flex-shrink:0;">${nakIconSvg(NAKS_ID[i],16)}</span>
-        <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${nk.n}</span>
+function renderAllNaks(){
+  document.getElementById('all-naks').innerHTML=NAKS.map((nk,i)=>
+    `<div class="card" style="padding:12px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="color:var(--color-saffron-deep);flex-shrink:0;">${nakIconSvg(NAKS_ID[i],16)}</span>
+          <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${nk.n}</span>
+        </div>
+        <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${i+1}</span>
       </div>
-      <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${i+1}</span>
-    </div>
-    <p style="font-size:11px;color:var(--color-mute);margin:0;">${nk.h} · ${nk.lord}</p>
-    <p style="font-size:10.5px;color:var(--color-body-text);margin:4px 0 0;">${nk.gana} · ${nk.yoni}</p>
-  </div>`).join('');
+      <p style="font-size:11px;color:var(--color-mute);margin:0;">${nk.h} · ${nk.lord}</p>
+      <p style="font-size:10.5px;color:var(--color-body-text);margin:4px 0 0;">${nk.gana} · ${tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)}</p>
+    </div>`).join('');
+}
+renderAllNaks();
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+  renderAllNaks();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

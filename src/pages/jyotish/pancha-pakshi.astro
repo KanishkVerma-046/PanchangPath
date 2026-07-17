@@ -7,47 +7,47 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">पंच पक्षी · PANCHA PAKSHI</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Pancha Pakshi Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Pancha Pakshi is a South Indian system assigning each person one of five birds. Find your birth bird and today\'s favourable periods.</p>
+      <h1 data-hi="पंच पक्षी कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Pancha Pakshi Calculator</h1>
+      <p data-hi="पंच पक्षी एक दक्षिण भारतीय प्रणाली है जो हर व्यक्ति को पांच पक्षियों में से एक सौंपती है। अपना जन्म पक्षी और आज के शुभ समय जानें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Pancha Pakshi is a South Indian system assigning each person one of five birds. Find your birth bird and today's favourable periods.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <div style="border-top:1px solid var(--color-hairline);padding-top:22px;margin-bottom:32px;">
-        <p style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Quick Lookup — Know Your Nakshatra</p>
+        <p data-hi="त्वरित खोज — अपना नक्षत्र जानें" style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Quick Lookup — Know Your Nakshatra</p>
         <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;">
-          <div><label class="fld-label">Birth Nakshatra</label><select id="f-nak" class="input" style="height:38px;min-width:220px;"></select></div>
-          <div><label class="fld-label">Place (for sunrise)</label><select id="f-city2" class="input" style="height:38px;min-width:150px;"></select></div>
-          <button id="f-calc-nak" class="btn-primary" style="height:38px;padding:0 20px;">Find My Bird</button>
+          <div><label class="fld-label" data-hi="जन्म नक्षत्र">Birth Nakshatra</label><select id="f-nak" class="input" style="height:38px;min-width:220px;"></select></div>
+          <div><label class="fld-label" data-hi="स्थान (सूर्योदय हेतु)">Place (for sunrise)</label><select id="f-city2" class="input" style="height:38px;min-width:150px;"></select></div>
+          <button id="f-calc-nak" class="btn-primary" data-hi="मेरा पक्षी जानें" style="height:38px;padding:0 20px;">Find My Bird</button>
         </div>
       </div>
 
       <div id="result" style="display:none;">
         <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
           <div id="bird-emoji" style="font-size:48px;line-height:1;margin-bottom:8px;"></div>
-          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">YOUR BIRTH BIRD</p>
+          <p class="caption-mono" data-hi="आपका जन्म पक्षी" style="color:var(--color-saffron-deep);margin:0 0 6px;">YOUR BIRTH BIRD</p>
           <h2 id="bird-name" style="font-size:26px;font-weight:700;color:var(--color-ink);margin:0 0 6px;"></h2>
           <p id="bird-desc" style="font-size:14px;color:var(--color-body-text);margin:0 auto;max-width:460px;line-height:1.6;"></p>
         </div>
-        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Today\'s Activity Periods</h3>
+        <h3 data-hi="आज के सक्रियता काल" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Today's Activity Periods</h3>
         <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;" id="period-sub"></p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" class="period-cols">
           <div>
-            <p style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">☀ DAY (Sunrise → Sunset)</p>
+            <p data-hi="☀ दिन (सूर्योदय → सूर्यास्त)" style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">☀ DAY (Sunrise → Sunset)</p>
             <div id="day-periods" style="display:flex;flex-direction:column;gap:8px;"></div>
           </div>
           <div>
-            <p style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">🌙 NIGHT (Sunset → Sunrise)</p>
+            <p data-hi="🌙 रात्रि (सूर्यास्त → सूर्योदय)" style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">🌙 NIGHT (Sunset → Sunrise)</p>
             <div id="night-periods" style="display:flex;flex-direction:column;gap:8px;"></div>
           </div>
         </div>
@@ -55,9 +55,9 @@ import Layout from '../../layouts/Layout.astro';
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <div class="card" style="padding:28px;margin-top:36px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Pancha Pakshi</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Pancha Pakshi Shastra ("five birds") is a South Indian system of electional astrology. Each person is governed by one of five birds — Vulture, Owl, Crow, Cock or Peacock — determined by their birth nakshatra. Each bird cycles through five activities (Ruling, Eating, Walking, Sleeping, Dying) across the day and night. Acting when your bird is Ruling or Eating is considered most auspicious, while Sleeping and Dying periods are best avoided for important tasks.</p>
-        <p style="font-size:12px;color:var(--color-mute);line-height:1.6;margin:0;">Note: this calculator uses a simplified version of the traditional rules — it divides day and night into five equal periods and does not distinguish bird assignment by gender, both of which the full classical Pancha Pakshi Shastra does differently. Treat results here as an approximate, stylized guide rather than a traditional practitioner's calculation.</p>
+        <h2 data-hi="पंच पक्षी के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Pancha Pakshi</h2>
+        <p data-hi="पंच पक्षी शास्त्र ('पांच पक्षी') मुहूर्त ज्योतिष की एक दक्षिण भारतीय प्रणाली है। हर व्यक्ति पांच पक्षियों में से एक द्वारा शासित होता है — गिद्ध, उल्लू, कौआ, मुर्गा या मोर — जो उनके जन्म नक्षत्र से निर्धारित होता है। हर पक्षी दिन और रात में पांच गतिविधियों (शासन, भोजन, चलना, सोना, मरना) के चक्र से गुजरता है। जब आपका पक्षी शासन या भोजन में हो तब कार्य करना सबसे शुभ माना जाता है, जबकि सोने और मरने की अवधि महत्वपूर्ण कार्यों के लिए टालना बेहतर है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Pancha Pakshi Shastra ("five birds") is a South Indian system of electional astrology. Each person is governed by one of five birds — Vulture, Owl, Crow, Cock or Peacock — determined by their birth nakshatra. Each bird cycles through five activities (Ruling, Eating, Walking, Sleeping, Dying) across the day and night. Acting when your bird is Ruling or Eating is considered most auspicious, while Sleeping and Dying periods are best avoided for important tasks.</p>
+        <p data-hi="टिप्पणी: यह कैलकुलेटर पारंपरिक नियमों का एक सरलीकृत संस्करण उपयोग करता है — यह दिन और रात को पांच समान अवधियों में बांटता है और पक्षी निर्धारण में लिंग-भेद नहीं करता, जबकि पूर्ण शास्त्रीय पंच पक्षी शास्त्र इन दोनों को अलग तरीके से संभालता है। यहां के परिणामों को एक अनुमानित, सरलीकृत मार्गदर्शिका के रूप में लें, न कि किसी पारंपरिक विद्वान की गणना के रूप में।" style="font-size:12px;color:var(--color-mute);line-height:1.6;margin:0;">Note: this calculator uses a simplified version of the traditional rules — it divides day and night into five equal periods and does not distinguish bird assignment by gender, both of which the full classical Pancha Pakshi Shastra does differently. Treat results here as an approximate, stylized guide rather than a traditional practitioner's calculation.</p>
       </div>
     </div>
   </section>
@@ -69,6 +69,8 @@ import Layout from '../../layouts/Layout.astro';
 </style>
 
 <script>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -87,8 +89,16 @@ const BIRD_DESC=[
 'Clever, social and adaptable. Crow-born are resourceful communicators, quick learners and skilled at networking.',
 'Energetic, disciplined and alert. Cock-born are punctual, courageous and thrive on routine, leadership and protection of others.',
 'Charming, creative and graceful. Peacock-born are artistic, attractive and expressive, drawing admiration wherever they go.'];
+const BIRD_DESC_HI=[
+'शक्तिशाली, दूरदर्शी और प्रभावशाली। गिद्ध-जनित लोग तीक्ष्ण दृष्टि, महत्वाकांक्षा और बाधाओं से ऊपर उठने की क्षमता वाले स्वाभाविक नेता होते हैं।',
+'बुद्धिमान, आत्मनिरीक्षक और धैर्यवान। उल्लू-जनित लोगों में गहरा अंतर्ज्ञान होता है, वे रात में अच्छा काम करते हैं और शोध व चिंतन में उत्कृष्ट होते हैं।',
+'चतुर, मिलनसार और अनुकूलनशील। कौआ-जनित लोग साधनसंपन्न संचारक, तीव्र सीखने वाले और नेटवर्किंग में कुशल होते हैं।',
+'ऊर्जावान, अनुशासित और सतर्क। मुर्गा-जनित लोग समयनिष्ठ, साहसी होते हैं और दिनचर्या, नेतृत्व व दूसरों की रक्षा में फलते-फूलते हैं।',
+'आकर्षक, रचनात्मक और सुंदर। मोर-जनित लोग कलात्मक, आकर्षक और अभिव्यंजक होते हैं, जहां भी जाते हैं प्रशंसा बटोरते हैं।'];
 const ACTIVITIES=['Ruling','Eating','Walking','Sleeping','Dying'];
+const ACTIVITIES_HI=['शासन','भोजन','चलना','सोना','मरना'];
 const ACT_Q=['Best','Good','Neutral','Unfavorable','Worst'];
+const ACT_Q_HI=['सर्वश्रेष्ठ','अच्छा','सामान्य','प्रतिकूल','सबसे खराब'];
 const ACT_COLOR=['#15803d','#65a30d','#b45309','#ea580c','#dc2626'];
 // Day ruling bird by weekday (Sun..Sat)
 const DAY_BIRD=[0,1,2,3,4,0,1];
@@ -111,7 +121,7 @@ function calculate(){
 
     document.getElementById('bird-emoji').textContent=BIRD_EMOJI[birthBird];
     document.getElementById('bird-name').textContent=`${BIRDS[birthBird]} · ${BIRDS_HI[birthBird]}`;
-    document.getElementById('bird-desc').textContent=BIRD_DESC[birthBird];
+    document.getElementById('bird-desc').textContent=tr(BIRD_DESC[birthBird],BIRD_DESC_HI[birthBird]);
 
     // Today's periods
     const now=new Date();
@@ -125,7 +135,7 @@ function calculate(){
     const wd=now.getDay();const dayBird=DAY_BIRD[wd];
     const nowMins=now.getHours()*60+now.getMinutes();
     const isToday=dateStr===new Date().toISOString().split('T')[0];
-    document.getElementById('period-sub').textContent=`${now.toDateString()} · Day ruling bird: ${BIRDS[dayBird]} · Sunrise ${fmtMins(srMins)}, Sunset ${fmtMins(ssMins)}`;
+    document.getElementById('period-sub').textContent=`${now.toDateString()} · ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${BIRDS[dayBird]} · ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
 
     function makePeriods(startMins,dur,nightOffset){
       let html='';
@@ -138,7 +148,7 @@ function calculate(){
         html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:${cur?'var(--color-ink)':'var(--color-canvas-soft-2)'};">
           <span style="width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[offset]};flex-shrink:0;"></span>
           <div style="flex:1;">
-            <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${ACTIVITIES[offset]} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[offset]};">· ${ACT_Q[offset]}${cur?' · NOW':''}</span></p>
+            <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${tr(ACTIVITIES[offset],ACTIVITIES_HI[offset])} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[offset]};">· ${tr(ACT_Q[offset],ACT_Q_HI[offset])}${cur?' · '+tr('NOW','अभी'):''}</span></p>
             <p style="font-size:11px;color:${cur?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:1px 0 0;font-family:var(--font-mono);">${fmtMins(s)} – ${fmtMins(e)}</p>
           </div>
         </div>`;
@@ -162,7 +172,7 @@ function calculateByNak(){
     const birthBird=nakIdx%5;
     document.getElementById('bird-emoji').textContent=BIRD_EMOJI[birthBird];
     document.getElementById('bird-name').textContent=`${BIRDS[birthBird]} \xb7 ${BIRDS_HI[birthBird]}`;
-    document.getElementById('bird-desc').textContent=BIRD_DESC[birthBird];
+    document.getElementById('bird-desc').textContent=tr(BIRD_DESC[birthBird],BIRD_DESC_HI[birthBird]);
     const now=new Date();
     const ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
     const jdT=toJD(ty,tm,td,6-loc.tz);
@@ -173,7 +183,7 @@ function calculateByNak(){
     const dayDur=(ssMins-srMins)/5;const nightDur=(srNextMins-ssMins)/5;
     const wd=now.getDay();const dayBird=DAY_BIRD[wd];
     const nowMins=now.getHours()*60+now.getMinutes();
-    document.getElementById('period-sub').textContent=`${now.toDateString()} \xb7 Day ruling bird: ${BIRDS[dayBird]} \xb7 Sunrise ${fmtMins(srMins)}, Sunset ${fmtMins(ssMins)}`;
+    document.getElementById('period-sub').textContent=`${now.toDateString()} \xb7 ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${BIRDS[dayBird]} \xb7 ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
     function makePeriods2(startMins,dur,nightOffset){
       let html='';
       for(let i=0;i<5;i++){
@@ -184,7 +194,7 @@ function calculateByNak(){
         html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:${cur?'var(--color-ink)':'var(--color-canvas-soft-2)'};">
           <span style="width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[offset]};flex-shrink:0;"></span>
           <div style="flex:1;">
-            <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${ACTIVITIES[offset]} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[offset]};">\xb7 ${ACT_Q[offset]}${cur?' \xb7 NOW':''}</span></p>
+            <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${tr(ACTIVITIES[offset],ACTIVITIES_HI[offset])} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[offset]};">\xb7 ${tr(ACT_Q[offset],ACT_Q_HI[offset])}${cur?' \xb7 '+tr('NOW','अभी'):''}</span></p>
             <p style="font-size:11px;color:${cur?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:1px 0 0;font-family:var(--font-mono);">${fmtMins(s)} – ${fmtMins(e)}</p>
           </div>
         </div>`;
@@ -200,4 +210,17 @@ function calculateByNak(){
 document.getElementById('f-calc-nak').addEventListener('click',calculateByNak);
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

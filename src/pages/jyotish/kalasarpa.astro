@@ -8,26 +8,26 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">कालसर्प योग · KALASARPA YOGA</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Kalasarpa Yoga Detector</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Kalasarpa Yoga forms when all seven planets are hemmed between Rahu and Ketu. Enter your birth details to check your chart.</p>
+      <h1 data-hi="कालसर्प योग डिटेक्टर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Kalasarpa Yoga Detector</h1>
+      <p data-hi="कालसर्प योग तब बनता है जब सभी सात ग्रह राहु और केतु के बीच घिरे होते हैं। अपनी कुंडली जांचने के लिए जन्म विवरण दर्ज करें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Kalasarpa Yoga forms when all seven planets are hemmed between Rahu and Ketu. Enter your birth details to check your chart.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Detect</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="जांचें">Detect</button>
       </div>
 
       <div id="result" style="display:none;">
         <div class="card" id="ks-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
         <div class="card" style="padding:20px;margin-bottom:24px;overflow-x:auto;">
-          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Planet Positions vs Rahu–Ketu Axis</h3>
+          <h3 data-hi="राहु–केतु अक्ष बनाम ग्रह स्थिति" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Planet Positions vs Rahu–Ketu Axis</h3>
           <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pos-table"></table>
         </div>
         <div class="card" style="padding:24px;">
@@ -39,8 +39,8 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <div class="card" style="padding:28px;margin-top:36px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Kalasarpa Yoga</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Kalasarpa Yoga (the "serpent of time") occurs when all seven classical planets — Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn — are confined to one side of the Rahu–Ketu axis. There are 12 named types depending on the sign occupied by Rahu. It is said to bring delays, struggles and sudden ups and downs, but also intense focus and the potential for remarkable achievement once the karma is worked through. If even one planet falls outside the axis, the yoga is considered partial or absent.</p>
+        <h2 data-hi="कालसर्प योग के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Kalasarpa Yoga</h2>
+        <p data-hi="कालसर्प योग ('समय का सर्प') तब बनता है जब सभी सात शास्त्रीय ग्रह — सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र और शनि — राहु-केतु अक्ष के एक ओर सीमित हो जाते हैं। राहु जिस राशि में स्थित है उसके आधार पर 12 नामित प्रकार हैं। कहा जाता है कि यह देरी, संघर्ष और अचानक उतार-चढ़ाव लाता है, लेकिन साथ ही तीव्र एकाग्रता और कर्म पूर्ण होने पर उल्लेखनीय उपलब्धि की संभावना भी। यदि एक भी ग्रह अक्ष से बाहर हो, तो योग आंशिक या अनुपस्थित माना जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Kalasarpa Yoga (the "serpent of time") occurs when all seven classical planets — Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn — are confined to one side of the Rahu–Ketu axis. There are 12 named types depending on the sign occupied by Rahu. It is said to bring delays, struggles and sudden ups and downs, but also intense focus and the potential for remarkable achievement once the karma is worked through. If even one planet falls outside the axis, the yoga is considered partial or absent.</p>
       </div>
     </div>
   </section>
@@ -53,6 +53,8 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 </style>
 
 <script define:vars={{ PLANET_ICONS }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 function planetIconSvg(id,size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
@@ -83,7 +85,21 @@ const KS_EFFECTS=[
 {a:'Obstacles in career, public life and dealings with authority make Ghatak one of the most visible and testing types. The native works with exceptional diligence, often with long-delayed recognition. Worldly success eventually arrives, built on character.',v:'Conflict with institutions and authority figures recurs. Service in a genuinely humble capacity, rather than the pursuit of power, opens the door to lasting achievement.'},
 {a:'Social isolation and gains through unconventional or hidden means characterise Vishadhar. The native is ahead of their time — a visionary humanitarian often misunderstood by contemporaries. Technology and service to the marginalised are natural callings.',v:'Eccentric tendencies intensify and the longing to belong while remaining apart creates a painful paradox. Community service and innovative humanitarian work resolve this tension.'},
 {a:'Losses, expenses and a deep pull toward spiritual renunciation mark the most karmically loaded Kalasarpa type. The material world offers little lasting satisfaction, but the path to moksha and inner liberation becomes directly accessible.',v:'The confusion between spiritual seeking and self-undoing must be consciously navigated. Surrender to a living spiritual tradition and devotional art are the liberating paths.'}];
+const KS_EFFECTS_HI=[
+{a:'प्रारंभिक जीवन में करियर और वित्तीय संघर्ष निरंतर बने रहते हैं जिनके लिए असाधारण प्रयास की आवश्यकता होती है। देरी धैर्य की गहरी परीक्षा लेती है, फिर भी जो टिके रहते हैं वे उल्लेखनीय सफलता प्राप्त करते हैं। कई महान सार्वजनिक हस्तियां यह योग रखती हैं।',v:'नेतृत्व की तीव्र महत्वाकांक्षा और लालसा उत्पन्न होती है, लेकिन रिश्ते और स्वास्थ्य प्रभावित हो सकते हैं। सच्चा परिवर्तन निःस्वार्थ सेवा और विनम्रता के अभ्यास से आता है।'},
+{a:'धन और पारिवारिक जीवन में अस्थिरता — अक्सर अचानक हानि के रूप में — इस प्रकार की पहचान है। भौतिक सुरक्षा की इच्छा बार-बार परखी जाती है। उपचार कला और सेवा-आधारित व्यवसाय सबसे संतोषजनक मार्ग प्रदान करते हैं।',v:'मातृ वंश के माध्यम से और सुख-सुविधाओं व वस्तुओं के प्रति गहरे लगाव के माध्यम से चुनौतियां आती हैं। संचित मोह को छोड़ना केंद्रीय आध्यात्मिक अभ्यास बन जाता है।'},
+{a:'भाई-बहनों, संचार और व्यावसायिक साझेदारियों में देरी और भ्रम बना रहता है। बुद्धि प्रखर परंतु बिखरी हुई होती है। शोध, लेखन और एकांत बौद्धिक कार्य व्यक्तिगत संबंधों की निराशा की भरपाई करते हैं।',v:'मानसिक बेचैनी और ज्ञान की अथक भूख भौतिक स्थिरता की कीमत पर आ सकती है। अनुकूलनशीलता ही सबसे बड़ा उपहार और सबसे बड़ी चुनौती दोनों है।'},
+{a:'घर, मां और आंतरिक जीवन में भावनात्मक उथल-पुथल और व्यवधान प्रारंभिक मार्ग को परिभाषित करते हैं। गहरी संवेदनशीलता के कारण सामूहिक पीड़ा को आत्मसात करना पड़ सकता है। जल अनुष्ठान और भक्ति अभ्यास गहरी राहत लाते हैं।',v:'तीव्र मानसिक संवेदनशीलता और अस्थिर घरेलू जीवन व्यक्ति को समर्पण की ओर धकेलते हैं। शांति बाहरी सुरक्षा के बजाय भक्ति और समर्पित आध्यात्मिक अभ्यास से मिलती है।'},
+{a:'सबसे शक्तिशाली प्रकारों में से एक — असाधारण अंतिम उपलब्धि से जुड़ा हुआ। संतान, रचनात्मक अभिव्यक्ति और अधिकार में बाधाएं प्रारंभिक वर्षों की विशेषता हैं। आध्यात्मिक अनुशासन और दृढ़ता उल्लेखनीय आंतरिक क्षमता को खोलते हैं।',v:'अहंकार संघर्ष और पहचान के लिए लड़ाइयां बार-बार होने वाली परीक्षाएं हैं। विनम्रता और बिना श्रेय के सेवा करने की इच्छा ही इस योग की गुप्त महानता को खोलने वाली कुंजियां हैं।'},
+{a:'स्वास्थ्य, सेवा और विश्लेषणात्मक कार्य में कर्मिक देरी मार्ग को आकार देती है। व्यवस्थित मन पूर्णतावाद और आत्म-आलोचना से जूझता है। सेवा, उपचार और अहंकार-समर्पण इस योग को निपुणता में बदल देते हैं।',v:'विवेक क्षमता अति-विकसित हो जाती है, जिससे तीव्र आत्म-संदेह उत्पन्न होता है। स्वीकृति और आत्म-करुणा पर जोर देने वाला आध्यात्मिक अभ्यास आवश्यक उपाय है।'},
+{a:'विवाह और घनिष्ठ साझेदारियों में व्यवधान और अचानक अलगाव बार-बार होते हैं। कानूनी परेशानियां संभव हैं। असाधारण कलात्मक प्रतिभा क्षतिपूर्ति करने वाली कृपा है — रचनात्मकता को दिशा देना अधिकांश कर्म का समाधान करता है।',v:'साझेदारियों में बेचैनी और अचानक अलगाव की प्रवृत्ति उत्पन्न होती है। गहरा आंतरिक कार्य और समर्पित रचनात्मक अभ्यास वह संतुलन लाते हैं जो बाहरी रिश्तों में नहीं मिलता।'},
+{a:'भाग्य में अचानक उलटफेर, तीव्र परिवर्तन और चुंबकीय व्यक्तित्व करकोटक की विशेषताएं हैं। विश्वासघात और पुनर्जनन बार-बार आने वाले विषय हैं। गुप्त ज्ञान और गहरा मनोविज्ञान शक्ति और समाधान का मार्ग प्रदान करते हैं।',v:'गोपनीय स्वभाव तीव्र हो जाता है और अतियों की ओर खिंचाव बलवान होता जाता है। सचेत विकास के लिए छाया-कार्य और मनो-आध्यात्मिक अभ्यास आवश्यक हैं।'},
+{a:'दर्शन संबंधी संकट और धर्म, उच्च शिक्षा तथा यात्रा में चुनौतियां मार्ग को चिह्नित करती हैं। आस्था बार-बार परखी जाती है। जो आध्यात्मिक सूखे के दौर से गुजरते हैं वे दूसरी ओर गहन और स्थायी ज्ञान पाते हैं।',v:'व्यक्तिगत विश्वास और बाहरी वास्तविकता के बीच संघर्ष बार-बार पीड़ा उत्पन्न करता है। तीर्थयात्रा, शास्त्र अध्ययन और जो सीखा जा रहा है उसे सिखाने का अभ्यास गहरी राहत लाता है।'},
+{a:'करियर, सार्वजनिक जीवन और अधिकारियों के साथ व्यवहार में बाधाएं घातक को सबसे दृश्यमान और परीक्षा लेने वाले प्रकारों में से एक बनाती हैं। व्यक्ति असाधारण परिश्रम से काम करता है, अक्सर देर से पहचान मिलती है। सांसारिक सफलता अंततः चरित्र पर निर्मित होकर आती है।',v:'संस्थाओं और अधिकारियों के साथ संघर्ष बार-बार होता है। शक्ति की खोज के बजाय वास्तव में विनम्र क्षमता में सेवा करना स्थायी उपलब्धि का द्वार खोलता है।'},
+{a:'सामाजिक अलगाव और अपरंपरागत या छिपे साधनों से लाभ विषधर की विशेषताएं हैं। व्यक्ति अपने समय से आगे है — एक दूरदर्शी मानवतावादी जिसे अक्सर समकालीन लोग गलत समझते हैं। प्रौद्योगिकी और वंचितों की सेवा स्वाभाविक बुलावे हैं।',v:'सनकी प्रवृत्तियां तीव्र होती हैं और अलग रहते हुए भी संबंधित होने की चाहत एक पीड़ादायक विरोधाभास पैदा करती है। सामुदायिक सेवा और नवोन्मेषी मानवतावादी कार्य इस तनाव का समाधान करते हैं।'},
+{a:'हानि, खर्च और आध्यात्मिक त्याग की गहरी लालसा सबसे अधिक कर्मिक भार वाले कालसर्प प्रकार को चिह्नित करते हैं। भौतिक संसार बहुत कम स्थायी संतुष्टि प्रदान करता है, लेकिन मोक्ष और आंतरिक मुक्ति का मार्ग सीधे सुलभ हो जाता है।',v:'आध्यात्मिक खोज और आत्म-विनाश के बीच का भ्रम सचेत रूप से पार करना होगा। किसी जीवंत आध्यात्मिक परंपरा और भक्ति कला के प्रति समर्पण मुक्तिदायक मार्ग हैं।'}];
 const PLANETS=[['surya','Sun'],['chandra','Moon'],['mangal','Mars'],['budha','Mercury'],['guru','Jupiter'],['shukra','Venus'],['shani','Saturn']];
+const PLANET_HI={Sun:'सूर्य',Moon:'चंद्र',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
@@ -108,16 +124,16 @@ function calculate(){
       const dR=Math.min(n360(p-rahu),n360(rahu-p));
       const dK=Math.min(n360(p-ketu),n360(ketu-p));
       if(dR<2||dK<2)conjunct=true;
-      return `<tr><td style="color:var(--color-ink);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg(k,15)} ${full}</span></td><td>${RASHI[Math.floor(p/30)]}</td><td>${(p%30).toFixed(1)}°</td><td>${inArc?'Rahu → Ketu side':'Ketu → Rahu side'}</td></tr>`;
+      return `<tr><td style="color:var(--color-ink);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg(k,15)} ${tr(full,PLANET_HI[full])}</span></td><td>${RASHI[Math.floor(p/30)]}</td><td>${(p%30).toFixed(1)}°</td><td>${inArc?tr('Rahu → Ketu side','राहु → केतु ओर'):tr('Ketu → Rahu side','केतु → राहु ओर')}</td></tr>`;
     });
     document.getElementById('pos-table').innerHTML=
-      `<tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Hemisphere</th></tr>`+rows.join('')+
-      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('rahu',15,'var(--color-saffron-deep)')} Rahu</span></td><td>${RASHI[Math.floor(rahu/30)]}</td><td>${(rahu%30).toFixed(1)}°</td><td>—</td></tr>`+
-      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('ketu',15,'var(--color-saffron-deep)')} Ketu</span></td><td>${RASHI[Math.floor(ketu/30)]}</td><td>${(ketu%30).toFixed(1)}°</td><td>—</td></tr>`;
+      `<tr><th>${tr('Planet','ग्रह')}</th><th>${tr('Sign','राशि')}</th><th>${tr('Degree','अंश')}</th><th>${tr('Hemisphere','दिशा')}</th></tr>`+rows.join('')+
+      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('rahu',15,'var(--color-saffron-deep)')} ${tr('Rahu','राहु')}</span></td><td>${RASHI[Math.floor(rahu/30)]}</td><td>${(rahu%30).toFixed(1)}°</td><td>—</td></tr>`+
+      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('ketu',15,'var(--color-saffron-deep)')} ${tr('Ketu','केतु')}</span></td><td>${RASHI[Math.floor(ketu/30)]}</td><td>${(ketu%30).toFixed(1)}°</td><td>—</td></tr>`;
 
     const present=(countInArc===7||countInArc===0);
     const isAnuloma=countInArc===7; // planets go Rahu→Ketu (forward)
-    const direction=isAnuloma?'Anuloma (Direct)':'Viloma (Inverse)';
+    const direction=isAnuloma?tr('Anuloma (Direct)','अनुलोम (सीधा)'):tr('Viloma (Inverse)','विलोम (उल्टा)');
     const rahuSign=Math.floor(rahu/30);
     const type=KALASARPA_TYPES[rahuSign];
     const eff=KS_EFFECTS[rahuSign];
@@ -126,26 +142,26 @@ function calculate(){
     const nodeIcons=(color)=>'<div style="display:flex;justify-content:center;gap:8px;margin-bottom:6px;">'+planetIconSvg('rahu',36,color)+planetIconSvg('ketu',36,color)+'</div>';
     if(present&&conjunct){
       bg='var(--color-warning-soft)';
-      html=nodeIcons('#b45309')+'<h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">Partial '+type+' Kalasarpa</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All planets are on one side, but one is very close to Rahu/Ketu — this partially breaks the yoga. Direction: <b>'+direction+'</b>.</p>';
+      html=nodeIcons('#b45309')+'<h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">'+tr('Partial '+type+' Kalasarpa','आंशिक '+type+' कालसर्प')+'</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+tr('All planets are on one side, but one is very close to Rahu/Ketu — this partially breaks the yoga. Direction: ','सभी ग्रह एक ओर हैं, लेकिन एक राहु/केतु के बहुत निकट है — इससे योग आंशिक रूप से टूटता है। दिशा: ')+'<b>'+direction+'</b>.</p>';
     }else if(present){
       bg='var(--color-inauspicious-soft)';
-      html=nodeIcons('#dc2626')+'<h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">'+type+' Kalasarpa Yoga Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">All 7 planets fall between Rahu ('+RASHI[rahuSign]+') and Ketu ('+RASHI[Math.floor(ketu/30)]+'). Direction: <b>'+direction+'</b>.</p>';
+      html=nodeIcons('#dc2626')+'<h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">'+tr(type+' Kalasarpa Yoga Present',type+' कालसर्प योग उपस्थित')+'</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+tr('All 7 planets fall between Rahu ('+RASHI[rahuSign]+') and Ketu ('+RASHI[Math.floor(ketu/30)]+'). Direction: ','सभी 7 ग्रह राहु ('+RASHI[rahuSign]+') और केतु ('+RASHI[Math.floor(ketu/30)]+') के बीच स्थित हैं। दिशा: ')+'<b>'+direction+'</b>.</p>';
     }else{
       bg='var(--color-auspicious-soft)';
       const outside=Math.min(countInArc,7-countInArc);
-      html=nodeIcons('#15803d')+'<h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Kalasarpa Yoga</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+(outside>0?outside+' planet(s) lie outside the Rahu–Ketu axis, so the yoga does not form.':'Your planets are distributed across both hemispheres of the nodal axis.')+'</p>';
+      html=nodeIcons('#15803d')+'<h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">'+tr('No Kalasarpa Yoga','कालसर्प योग नहीं है')+'</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+(outside>0?tr(outside+' planet(s) lie outside the Rahu–Ketu axis, so the yoga does not form.',outside+' ग्रह राहु–केतु अक्ष से बाहर हैं, इसलिए योग नहीं बनता।'):tr('Your planets are distributed across both hemispheres of the nodal axis.','आपके ग्रह नोडल अक्ष के दोनों ओर वितरित हैं।'))+'</p>';
     }
     document.getElementById('ks-banner').style.background=bg;
     document.getElementById('ks-banner').innerHTML=html;
 
     if(present){
-      const effectText=isAnuloma?eff.a:eff.v;
-      document.getElementById('effect-title').textContent=type+' Kalasarpa ('+direction+') — Effects & Remedies';
+      const effectText=tr(isAnuloma?eff.a:eff.v,isAnuloma?KS_EFFECTS_HI[rahuSign].a:KS_EFFECTS_HI[rahuSign].v);
+      document.getElementById('effect-title').textContent=tr(type+' Kalasarpa ('+direction+') — Effects & Remedies',type+' कालसर्प ('+direction+') — प्रभाव और उपाय');
       document.getElementById('effect').textContent=effectText;
-      document.getElementById('remedies').innerHTML='<p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">Classical Remedies</p><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;"><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Worship Lord Shiva and recite the Maha Mrityunjaya Mantra daily.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Perform Kalasarpa Dosha Nivaran Puja — traditionally at Trimbakeshwar (Nashik) or Sri Kalahasteeswara temple.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Chant Rahu Beej Mantra ("Om Bhram Bhreem Bhraum Sah Rahave Namah") on Saturdays and Ketu Beej Mantra on Tuesdays.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Donate to Naga temples and offer milk, flowers and turmeric on Naga Panchami.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Keeping a Kalasarpa Yantra in the puja room and meditating on it regularly is also beneficial.</li></ul>';
+      document.getElementById('remedies').innerHTML='<p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">'+tr('Classical Remedies','शास्त्रीय उपाय')+'</p><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;"><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Worship Lord Shiva and recite the Maha Mrityunjaya Mantra daily.','भगवान शिव की पूजा करें और प्रतिदिन महामृत्युंजय मंत्र का जाप करें।')+'</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Perform Kalasarpa Dosha Nivaran Puja — traditionally at Trimbakeshwar (Nashik) or Sri Kalahasteeswara temple.','कालसर्प दोष निवारण पूजा करें — पारंपरिक रूप से त्र्यंबकेश्वर (नासिक) या श्री कालहस्तीश्वर मंदिर में।')+'</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Chant Rahu Beej Mantra ("Om Bhram Bhreem Bhraum Sah Rahave Namah") on Saturdays and Ketu Beej Mantra on Tuesdays.','शनिवार को राहु बीज मंत्र ("ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः") और मंगलवार को केतु बीज मंत्र का जाप करें।')+'</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Donate to Naga temples and offer milk, flowers and turmeric on Naga Panchami.','नाग मंदिरों में दान करें और नाग पंचमी पर दूध, फूल व हल्दी अर्पित करें।')+'</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Keeping a Kalasarpa Yantra in the puja room and meditating on it regularly is also beneficial.','पूजा कक्ष में कालसर्प यंत्र रखना और नियमित रूप से उस पर ध्यान करना भी लाभकारी है।')+'</li></ul>';
     }else{
-      document.getElementById('effect-title').textContent='No Kalasarpa Remedies Needed';
-      document.getElementById('effect').textContent='Kalasarpa Yoga does not form in your chart — planets are spread across both hemispheres of the Rahu–Ketu axis. No specific Kalasarpa remedies are required.';
+      document.getElementById('effect-title').textContent=tr('No Kalasarpa Remedies Needed','कालसर्प उपायों की आवश्यकता नहीं');
+      document.getElementById('effect').textContent=tr('Kalasarpa Yoga does not form in your chart — planets are spread across both hemispheres of the Rahu–Ketu axis. No specific Kalasarpa remedies are required.','आपकी कुंडली में कालसर्प योग नहीं बनता — ग्रह राहु–केतु अक्ष के दोनों ओर फैले हुए हैं। किसी विशेष कालसर्प उपाय की आवश्यकता नहीं है।');
       document.getElementById('remedies').innerHTML='';
     }
     document.getElementById('result').style.display='block';
@@ -154,4 +170,17 @@ function calculate(){
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

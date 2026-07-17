@@ -8,34 +8,34 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">मंगल दोष · MANGAL DOSHA</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Mangal Dosha (Manglik) Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find out whether Mars creates Mangal Dosha in your chart. The check is run from the Lagna, the Moon and Venus.</p>
+      <h1 data-hi="मंगल दोष (मांगलिक) कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Mangal Dosha (Manglik) Calculator</h1>
+      <p data-hi="जानें कि क्या आपकी कुंडली में मंगल दोष बनता है। यह जांच लग्न, चंद्रमा और शुक्र से की जाती है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find out whether Mars creates Mangal Dosha in your chart. The check is run from the Lagna, the Moon and Venus.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Check Dosha</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <button id="f-calc" class="btn-primary" data-hi="दोष जांचें" style="height:38px;padding:0 20px;">Check Dosha</button>
       </div>
 
       <div id="result" style="display:none;">
         <div class="card" id="dosha-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
         <div class="card" style="padding:20px;margin-bottom:24px;overflow-x:auto;">
-          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Mars Position Analysis</h3>
+          <h3 data-hi="मंगल स्थिति विश्लेषण" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Mars Position Analysis</h3>
           <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pos-table"></table>
         </div>
         <div class="card" style="padding:24px;">
-          <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">What this means</h3>
+          <h3 data-hi="इसका क्या अर्थ है" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">What this means</h3>
           <p id="meaning" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"></p>
         </div>
         <div class="card" style="padding:20px;overflow-x:auto;">
-          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Cancellation Analysis (Mangal Dosha Bhanga)</h3>
+          <h3 data-hi="निवारण विश्लेषण (मंगल दोष भंग)" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Cancellation Analysis (Mangal Dosha Bhanga)</h3>
           <table id="cancel-table" style="width:100%;border-collapse:collapse;font-size:13px;"></table>
         </div>
         <div id="remedy-panel" class="card" style="padding:20px;display:none;"></div>
@@ -43,21 +43,21 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <div class="card" style="padding:24px;margin-top:24px;">
-        <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Cancellation Rules (Mangal Dosha Bhanga)</h3>
+        <h3 data-hi="निवारण नियम (मंगल दोष भंग)" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Cancellation Rules (Mangal Dosha Bhanga)</h3>
         <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;">
-          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars in its own sign (Mesha, Vrishchika) or exalted (Makara) loses much of its malefic effect.</li>
-          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars in Karka, Simha, Kumbha or Meena is considered weak and the dosha is reduced.</li>
-          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">When both partners are Manglik, the dosha is mutually cancelled.</li>
-          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars aspected by or conjunct Jupiter or the Moon is greatly pacified.</li>
-          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">For people born with Karka or Simha Lagna, Mars is a yogakaraka/benefic and the dosha does not apply.</li>
-          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">A strong, well-placed Jupiter in a kendra or trikona reduces the impact.</li>
-          <li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">The dosha is said to weaken naturally after the age of 28.</li>
+          <li data-hi="स्वराशि (मेष, वृश्चिक) में या उच्च राशि (मकर) में मंगल अपने अशुभ प्रभाव का अधिकांश भाग खो देता है।" style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars in its own sign (Mesha, Vrishchika) or exalted (Makara) loses much of its malefic effect.</li>
+          <li data-hi="कर्क, सिंह, कुम्भ या मीन में मंगल कमजोर माना जाता है और दोष कम हो जाता है।" style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars in Karka, Simha, Kumbha or Meena is considered weak and the dosha is reduced.</li>
+          <li data-hi="जब दोनों साथी मांगलिक हों, तो दोष परस्पर निष्प्रभावी हो जाता है।" style="font-size:13px;color:var(--color-body-text);line-height:1.6;">When both partners are Manglik, the dosha is mutually cancelled.</li>
+          <li data-hi="गुरु या चंद्रमा की दृष्टि या युति में मंगल काफी शांत हो जाता है।" style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Mars aspected by or conjunct Jupiter or the Moon is greatly pacified.</li>
+          <li data-hi="कर्क या सिंह लग्न में जन्मे लोगों के लिए मंगल योगकारक/शुभ ग्रह है और दोष लागू नहीं होता।" style="font-size:13px;color:var(--color-body-text);line-height:1.6;">For people born with Karka or Simha Lagna, Mars is a yogakaraka/benefic and the dosha does not apply.</li>
+          <li data-hi="केंद्र या त्रिकोण में एक मजबूत, अच्छी स्थिति वाला गुरु प्रभाव को कम करता है।" style="font-size:13px;color:var(--color-body-text);line-height:1.6;">A strong, well-placed Jupiter in a kendra or trikona reduces the impact.</li>
+          <li data-hi="कहा जाता है कि 28 वर्ष की आयु के बाद दोष स्वाभाविक रूप से कमजोर हो जाता है।" style="font-size:13px;color:var(--color-body-text);line-height:1.6;">The dosha is said to weaken naturally after the age of 28.</li>
         </ul>
       </div>
 
       <div class="card" style="padding:28px;margin-top:24px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Mangal Dosha</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Mangal Dosha (also called Kuja Dosha or being "Manglik") occurs when Mars sits in the 1st, 2nd, 4th, 7th, 8th or 12th house. Because Mars is fiery and aggressive, these placements are believed to create friction in marriage. In matchmaking, a Manglik is traditionally paired with another Manglik so the doshas neutralise. Modern practice weighs many cancellation factors, so a Manglik result alone is rarely a deal-breaker.</p>
+        <h2 data-hi="मंगल दोष के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Mangal Dosha</h2>
+        <p data-hi="मंगल दोष (जिसे कुज दोष या 'मांगलिक' होना भी कहा जाता है) तब होता है जब मंगल पहले, दूसरे, चौथे, सातवें, आठवें या बारहवें भाव में स्थित हो। चूंकि मंगल उग्र और आक्रामक है, माना जाता है कि ये स्थितियां विवाह में घर्षण पैदा करती हैं। विवाह मिलान में, परंपरागत रूप से एक मांगलिक की जोड़ी दूसरे मांगलिक से बनाई जाती है ताकि दोष निष्प्रभावी हो जाएं। आधुनिक अभ्यास कई निवारण कारकों पर विचार करता है, इसलिए केवल मांगलिक परिणाम शायद ही कभी निर्णायक बाधा बनता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Mangal Dosha (also called Kuja Dosha or being "Manglik") occurs when Mars sits in the 1st, 2nd, 4th, 7th, 8th or 12th house. Because Mars is fiery and aggressive, these placements are believed to create friction in marriage. In matchmaking, a Manglik is traditionally paired with another Manglik so the doshas neutralise. Modern practice weighs many cancellation factors, so a Manglik result alone is rarely a deal-breaker.</p>
       </div>
     </div>
   </section>
@@ -70,6 +70,8 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 </style>
 
 <script define:vars={{ MANGAL_SVG: PLANET_ICONS.mangal }}>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 function mangalIconSvg(size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${MANGAL_SVG}</svg>`;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
@@ -112,13 +114,13 @@ function calculate(){
     const dGuruMars=angDiff(sid_guru,sid_mangal);
     const dMoonMars=angDiff(sid_moon,sid_mangal);
 
-    const refs=[['Lagna (Ascendant)',lagnaSign],['Moon',moonSign],['Venus',venusSign]];
+    const refs=[[tr('Lagna (Ascendant)','लग्न (उदय राशि)'),lagnaSign],[tr('Moon','चंद्रमा'),moonSign],[tr('Venus','शुक्र'),venusSign]];
     let doshaCount=0;
     const rows=refs.map(([label,sign])=>{
       const h=getHouse(marsSign,sign);const isDosha=DOSHA_HOUSES.includes(h);if(isDosha)doshaCount++;
-      return `<tr><td style="color:var(--color-ink);font-weight:600;">From ${label}</td><td>${RASHI[sign]}</td><td>House ${h}</td><td><span style="color:${isDosha?'#dc2626':'#15803d'};font-weight:600;">${isDosha?'Dosha':'Clear'}</span></td></tr>`;
+      return `<tr><td style="color:var(--color-ink);font-weight:600;">${tr('From '+label,label+' से')}</td><td>${RASHI[sign]}</td><td>${tr('House','भाव')} ${h}</td><td><span style="color:${isDosha?'#dc2626':'#15803d'};font-weight:600;">${isDosha?tr('Dosha','दोष'):tr('Clear','शुद्ध')}</span></td></tr>`;
     });
-    document.getElementById('pos-table').innerHTML=`<tr><th>Reference</th><th>Sign</th><th>Mars House</th><th>Status</th></tr>`+rows.join('');
+    document.getElementById('pos-table').innerHTML=`<tr><th>${tr('Reference','संदर्भ')}</th><th>${tr('Sign','राशि')}</th><th>${tr('Mars House','मंगल भाव')}</th><th>${tr('Status','स्थिति')}</th></tr>`+rows.join('');
 
     const present=doshaCount>0;
     // severity & weakening
@@ -132,36 +134,36 @@ function calculate(){
     const bg=present?(severity==='High'?'var(--color-inauspicious-soft)':'var(--color-warning-soft)'):'var(--color-auspicious-soft)';
     document.getElementById('dosha-banner').style.background=bg;
     document.getElementById('dosha-banner').innerHTML=present
-      ?`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,sevColor)}</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">Mangal Dosha Present</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">Severity: <b style="color:${sevColor};">${severity}</b> · Mars in ${RASHI[marsSign]} · Dosha from ${doshaCount} of 3 references</p>`
-      :`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Mangal Dosha</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">Mars in ${RASHI[marsSign]} does not fall in a dosha house from your Lagna, Moon or Venus.</p>`;
+      ?`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,sevColor)}</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">${tr('Mangal Dosha Present','मंगल दोष उपस्थित')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Severity','तीव्रता')}: <b style="color:${sevColor};">${severity}</b> · ${tr('Mars in','मंगल')} ${RASHI[marsSign]} · ${tr('Dosha from '+doshaCount+' of 3 references',doshaCount+' में से 3 संदर्भों से दोष')}</p>`
+      :`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">${tr('No Mangal Dosha','मंगल दोष नहीं है')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Mars in '+RASHI[marsSign]+' does not fall in a dosha house from your Lagna, Moon or Venus.','आपके लग्न, चंद्रमा या शुक्र से '+RASHI[marsSign]+' में मंगल किसी दोष भाव में नहीं आता।')}</p>`;
 
     let meaning;
-    if(!present){meaning=`Your Mars is favourably placed and does not create Mangal Dosha. There are no Manglik-related concerns for marriage from this analysis.`;}
-    else{meaning=`Mars falls in a dosha-causing house from ${doshaCount} reference point${doshaCount>1?'s':''}. `;
-      if(ownExalt)meaning+=`However, Mars is in ${RASHI[marsSign]} (own/exalted sign), which significantly reduces the dosha. `;
-      else if(weakSigns)meaning+=`However, Mars in ${RASHI[marsSign]} is considered weak, lessening the effect. `;
-      meaning+=`Traditionally this calls for matching with a partner who is also Manglik, or applying the cancellation rules below. Mangal Dosha is one factor among many — a full chart reading gives the complete picture.`;}
+    if(!present){meaning=tr(`Your Mars is favourably placed and does not create Mangal Dosha. There are no Manglik-related concerns for marriage from this analysis.`,`आपका मंगल अनुकूल स्थिति में है और मंगल दोष उत्पन्न नहीं करता। इस विश्लेषण के अनुसार विवाह हेतु कोई मांगलिक संबंधी चिंता नहीं है।`);}
+    else{meaning=tr(`Mars falls in a dosha-causing house from ${doshaCount} reference point${doshaCount>1?'s':''}. `,`मंगल ${doshaCount} संदर्भ बिंदु${doshaCount>1?'ओं':''} से दोष उत्पन्न करने वाले भाव में स्थित है। `);
+      if(ownExalt)meaning+=tr(`However, Mars is in ${RASHI[marsSign]} (own/exalted sign), which significantly reduces the dosha. `,`हालांकि, मंगल ${RASHI[marsSign]} (स्वराशि/उच्च राशि) में है, जो दोष को काफी कम कर देता है। `);
+      else if(weakSigns)meaning+=tr(`However, Mars in ${RASHI[marsSign]} is considered weak, lessening the effect. `,`हालांकि, ${RASHI[marsSign]} में मंगल कमजोर माना जाता है, जिससे प्रभाव कम हो जाता है। `);
+      meaning+=tr(`Traditionally this calls for matching with a partner who is also Manglik, or applying the cancellation rules below. Mangal Dosha is one factor among many — a full chart reading gives the complete picture.`,`परंपरागत रूप से इसके लिए ऐसे साथी से मिलान आवश्यक है जो स्वयं भी मांगलिक हो, या नीचे दिए निवारण नियमों को लागू करना चाहिए। मंगल दोष कई कारकों में से एक है — पूर्ण कुंडली विश्लेषण से संपूर्ण चित्र मिलता है।`);}
     document.getElementById('meaning').textContent=meaning;
 
     // Dynamic cancellation analysis
     const cancels=[
-      {rule:'Mars in own sign (Mesha or Vrishchika)',applies:[0,7].includes(marsSign),strength:'Strong',note:[0,7].includes(marsSign)?'Mars in '+RASHI[marsSign]+' — natural dignity greatly reduces the dosha':'Mars in '+RASHI[marsSign]+' — not in own sign'},
-      {rule:'Mars exalted (Makara)',applies:marsSign===9,strength:'Full',note:marsSign===9?'Mars is exalted in Makara — dosha is effectively cancelled':'Mars is not exalted (exaltation: Makara)'},
-      {rule:'Cancer or Leo Lagna (Yogakaraka)',applies:[3,4].includes(lagnaSign),strength:'Full',note:[3,4].includes(lagnaSign)?'For '+RASHI[lagnaSign]+' Lagna, Mars is a benefic yogakaraka — dosha does not apply':'Lagna is '+RASHI[lagnaSign]+' — Mars is not yogakaraka'},
-      {rule:'Mars in weakening sign (Karka, Simha, Kumbha, Meena)',applies:[3,4,10,11].includes(marsSign),strength:'Partial',note:[3,4,10,11].includes(marsSign)?'Mars in '+RASHI[marsSign]+' is considered weak — dosha impact is reduced':'Mars in '+RASHI[marsSign]+' is not in a weakening sign'},
-      {rule:'Jupiter conjunct Mars (within 10\xb0)',applies:dGuruMars<10,strength:'Strong',note:'Jupiter is '+dGuruMars.toFixed(1)+'\xb0 from Mars — '+(dGuruMars<10?'Guru’s proximity greatly pacifies the fiery Mars energy':'not in close conjunction')},
-      {rule:'Moon conjunct Mars (within 10\xb0)',applies:dMoonMars<10,strength:'Moderate',note:'Moon is '+dMoonMars.toFixed(1)+'\xb0 from Mars — '+(dMoonMars<10?'Moon’s nurturing energy softens Mars':'not in close conjunction')},
+      {rule:tr('Mars in own sign (Mesha or Vrishchika)','मंगल स्वराशि में (मेष या वृश्चिक)'),applies:[0,7].includes(marsSign),strength:tr('Strong','प्रबल'),note:[0,7].includes(marsSign)?tr('Mars in '+RASHI[marsSign]+' — natural dignity greatly reduces the dosha','मंगल '+RASHI[marsSign]+' में — स्वाभाविक गरिमा दोष को काफी कम करती है'):tr('Mars in '+RASHI[marsSign]+' — not in own sign','मंगल '+RASHI[marsSign]+' में — स्वराशि में नहीं')},
+      {rule:tr('Mars exalted (Makara)','मंगल उच्च राशि में (मकर)'),applies:marsSign===9,strength:tr('Full','पूर्ण'),note:marsSign===9?tr('Mars is exalted in Makara — dosha is effectively cancelled','मंगल मकर में उच्च का है — दोष प्रभावी रूप से निष्प्रभावी हो जाता है'):tr('Mars is not exalted (exaltation: Makara)','मंगल उच्च का नहीं है (उच्च राशि: मकर)')},
+      {rule:tr('Cancer or Leo Lagna (Yogakaraka)','कर्क या सिंह लग्न (योगकारक)'),applies:[3,4].includes(lagnaSign),strength:tr('Full','पूर्ण'),note:[3,4].includes(lagnaSign)?tr('For '+RASHI[lagnaSign]+' Lagna, Mars is a benefic yogakaraka — dosha does not apply',RASHI[lagnaSign]+' लग्न के लिए, मंगल एक शुभ योगकारक है — दोष लागू नहीं होता'):tr('Lagna is '+RASHI[lagnaSign]+' — Mars is not yogakaraka','लग्न '+RASHI[lagnaSign]+' है — मंगल योगकारक नहीं है')},
+      {rule:tr('Mars in weakening sign (Karka, Simha, Kumbha, Meena)','मंगल कमजोर राशि में (कर्क, सिंह, कुम्भ, मीन)'),applies:[3,4,10,11].includes(marsSign),strength:tr('Partial','आंशिक'),note:[3,4,10,11].includes(marsSign)?tr('Mars in '+RASHI[marsSign]+' is considered weak — dosha impact is reduced','मंगल '+RASHI[marsSign]+' में कमजोर माना जाता है — दोष प्रभाव कम हो जाता है'):tr('Mars in '+RASHI[marsSign]+' is not in a weakening sign','मंगल '+RASHI[marsSign]+' में कमजोर राशि में नहीं है')},
+      {rule:tr('Jupiter conjunct Mars (within 10\xb0)','गुरु मंगल की युति में (10° के भीतर)'),applies:dGuruMars<10,strength:tr('Strong','प्रबल'),note:tr('Jupiter is '+dGuruMars.toFixed(1)+'\xb0 from Mars — '+(dGuruMars<10?'Guru’s proximity greatly pacifies the fiery Mars energy':'not in close conjunction'),'गुरु मंगल से '+dGuruMars.toFixed(1)+'° दूर है — '+(dGuruMars<10?'गुरु की निकटता उग्र मंगल ऊर्जा को काफी शांत करती है':'निकट युति में नहीं'))},
+      {rule:tr('Moon conjunct Mars (within 10\xb0)','चंद्रमा मंगल की युति में (10° के भीतर)'),applies:dMoonMars<10,strength:tr('Moderate','मध्यम'),note:tr('Moon is '+dMoonMars.toFixed(1)+'\xb0 from Mars — '+(dMoonMars<10?'Moon’s nurturing energy softens Mars':'not in close conjunction'),'चंद्रमा मंगल से '+dMoonMars.toFixed(1)+'° दूर है — '+(dMoonMars<10?'चंद्रमा की पोषक ऊर्जा मंगल को नरम करती है':'निकट युति में नहीं'))},
     ];
     const thSt='text-align:left;padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-size:11px;text-transform:uppercase;letter-spacing:0.04em;font-weight:600;';
     const tdSt='padding:8px 8px;border-bottom:1px solid var(--color-hairline);';
-    document.getElementById('cancel-table').innerHTML='<tr><th style="'+thSt+'">Rule</th><th style="'+thSt+'">Strength</th><th style="'+thSt+'">Status</th><th style="'+thSt+'">Note</th></tr>'+
-      cancels.map(c=>'<tr><td style="'+tdSt+'color:var(--color-ink);font-weight:600;">'+c.rule+'</td><td style="'+tdSt+'">'+c.strength+'</td><td style="'+tdSt+'"><span style="color:'+(c.applies?'#15803d':'#9ca3af')+';font-weight:600;">'+(c.applies?'✓ Applies':'× Not applicable')+'</span></td><td style="'+tdSt+'color:var(--color-body-text);">'+c.note+'</td></tr>').join('');
+    document.getElementById('cancel-table').innerHTML='<tr><th style="'+thSt+'">'+tr('Rule','नियम')+'</th><th style="'+thSt+'">'+tr('Strength','तीव्रता')+'</th><th style="'+thSt+'">'+tr('Status','स्थिति')+'</th><th style="'+thSt+'">'+tr('Note','टिप्पणी')+'</th></tr>'+
+      cancels.map(c=>'<tr><td style="'+tdSt+'color:var(--color-ink);font-weight:600;">'+c.rule+'</td><td style="'+tdSt+'">'+c.strength+'</td><td style="'+tdSt+'"><span style="color:'+(c.applies?'#15803d':'#9ca3af')+';font-weight:600;">'+(c.applies?tr('✓ Applies','✓ लागू होता है'):tr('× Not applicable','× लागू नहीं'))+'</span></td><td style="'+tdSt+'color:var(--color-body-text);">'+c.note+'</td></tr>').join('');
     const anyCancel=cancels.some(c=>c.applies);
     const remedyPanel=document.getElementById('remedy-panel');
     if(present){
       remedyPanel.style.display='block';
-      remedyPanel.innerHTML='<h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">Recommended Remedies</h3>'+(anyCancel?'<p style="font-size:13px;color:var(--color-body-text);margin:0 0 10px;line-height:1.6;">Cancellation factors are present in your chart, which reduce the dosha’s potency. The remedies below can be adopted for further pacification.</p>':'')+
-      '<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;"><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Recite the Mangal Mantra — “Om Angarakaya Namah” — 108 times every Tuesday.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Worship Lord Hanuman or Lord Kartikeya (Murugan) on Tuesdays.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Observe a Tuesday fast and donate red lentils (masoor dal), red cloth or red flowers.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">Consider Red Coral (Moonga) in gold on the ring finger — consult a qualified Jyotishi before wearing.</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">A Mangal Shanti Puja performed by a trained priest provides deeper karmic relief.</li></ul>';
+      remedyPanel.innerHTML='<h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">'+tr('Recommended Remedies','अनुशंसित उपाय')+'</h3>'+(anyCancel?'<p style="font-size:13px;color:var(--color-body-text);margin:0 0 10px;line-height:1.6;">'+tr('Cancellation factors are present in your chart, which reduce the dosha’s potency. The remedies below can be adopted for further pacification.','आपकी कुंडली में निवारण कारक मौजूद हैं, जो दोष की तीव्रता को कम करते हैं। और शांति के लिए नीचे दिए उपाय अपनाए जा सकते हैं।')+'</p>':'')+
+      '<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;"><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Recite the Mangal Mantra — "Om Angarakaya Namah" — 108 times every Tuesday.','हर मंगलवार 108 बार मंगल मंत्र — "ॐ अंगारकाय नमः" — का जाप करें।')+'</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Worship Lord Hanuman or Lord Kartikeya (Murugan) on Tuesdays.','मंगलवार को भगवान हनुमान या भगवान कार्तिकेय (मुरुगन) की पूजा करें।')+'</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Observe a Tuesday fast and donate red lentils (masoor dal), red cloth or red flowers.','मंगलवार का व्रत रखें और मसूर दाल, लाल कपड़ा या लाल फूल दान करें।')+'</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('Consider Red Coral (Moonga) in gold on the ring finger — consult a qualified Jyotishi before wearing.','सोने में जड़ित लाल मूंगा अनामिका उंगली में धारण करने पर विचार करें — पहनने से पहले किसी योग्य ज्योतिषी से परामर्श लें।')+'</li><li style="font-size:13px;color:var(--color-body-text);line-height:1.6;">'+tr('A Mangal Shanti Puja performed by a trained priest provides deeper karmic relief.','प्रशिक्षित पुरोहित द्वारा की गई मंगल शांति पूजा गहरी कर्मिक राहत प्रदान करती है।')+'</li></ul>';
     }else{
       remedyPanel.style.display='none';
     }
@@ -171,4 +173,17 @@ function calculate(){
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

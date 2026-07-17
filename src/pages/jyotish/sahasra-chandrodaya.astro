@@ -8,18 +8,18 @@ import TithiIcon from '../../components/icons/TithiIcon.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
+      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">सहस्र चंद्रोदय · SAHASRA CHANDRODAYA</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Sahasra Chandrodaya Calculator</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Sahasra Chandra Darshan marks the viewing of one\'s 1000th full moon — a revered milestone celebrated at around 80 years and 8 months of age.</p>
+      <h1 data-hi="सहस्र चंद्रोदय कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Sahasra Chandrodaya Calculator</h1>
+      <p data-hi="सहस्र चंद्र दर्शन किसी व्यक्ति के 1000वें पूर्णिमा चंद्रमा को देखने का प्रतीक है — लगभग 80 वर्ष 8 माह की आयु में मनाया जाने वाला एक पूजनीय पड़ाव।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Sahasra Chandra Darshan marks the viewing of one's 1000th full moon — a revered milestone celebrated at around 80 years and 8 months of age.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <button id="f-calc" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
+        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <div id="result" style="display:none;">
@@ -27,26 +27,26 @@ import TithiIcon from '../../components/icons/TithiIcon.astro';
           <div style="display:flex;justify-content:center;margin-bottom:8px;color:var(--color-saffron-deep);">
             <TithiIcon name="shukla-15" size={48} />
           </div>
-          <p class="caption-mono" style="color:var(--color-saffron-deep);margin:0 0 6px;">YOUR 1000TH FULL MOON</p>
+          <p class="caption-mono" data-hi="आपका 1000वां पूर्ण चंद्रमा" style="color:var(--color-saffron-deep);margin:0 0 6px;">YOUR 1000TH FULL MOON</p>
           <h2 id="big-date" style="font-size:28px;font-weight:700;color:var(--color-ink);margin:0 0 4px;"></h2>
           <p id="big-meta" style="font-size:14px;color:var(--color-mute);margin:0;"></p>
         </div>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;" class="stat-grid">
-          <div class="card" style="padding:20px;text-align:center;"><div id="s-moons" style="font-size:28px;font-weight:700;color:var(--color-ink);"></div><p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">Full moons so far</p></div>
-          <div class="card" style="padding:20px;text-align:center;"><div id="s-age" style="font-size:28px;font-weight:700;color:var(--color-ink);"></div><p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">Age at milestone</p></div>
+          <div class="card" style="padding:20px;text-align:center;"><div id="s-moons" style="font-size:28px;font-weight:700;color:var(--color-ink);"></div><p data-hi="अब तक पूर्णिमाएं" style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">Full moons so far</p></div>
+          <div class="card" style="padding:20px;text-align:center;"><div id="s-age" style="font-size:28px;font-weight:700;color:var(--color-ink);"></div><p data-hi="पड़ाव पर आयु" style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">Age at milestone</p></div>
           <div class="card" style="padding:20px;text-align:center;"><div id="s-remain" style="font-size:28px;font-weight:700;color:var(--color-ink);"></div><p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;" id="s-remain-label">Years remaining</p></div>
         </div>
         <div class="card" style="padding:20px;margin-bottom:24px;">
-          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-mute);margin-bottom:6px;"><span>Birth</span><span id="prog-pct"></span><span>1000th Full Moon</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--color-mute);margin-bottom:6px;"><span data-hi="जन्म">Birth</span><span id="prog-pct"></span><span data-hi="1000वां पूर्ण चंद्रमा">1000th Full Moon</span></div>
           <div style="height:14px;background:var(--color-canvas-soft-2);border-radius:100px;overflow:hidden;"><div id="prog-bar" style="height:100%;background:linear-gradient(90deg,var(--color-saffron),var(--color-saffron-deep));border-radius:100px;transition:width 0.5s;"></div></div>
         </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
       <div class="card" style="padding:28px;">
-        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Sahasra Chandra Darshan</h2>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">In Hindu tradition, witnessing one thousand full moons is a sacred achievement signifying a long, blessed life. Since a lunar (synodic) month is about 29.53 days, 1000 full moons span roughly 80 years and 8 months. The occasion, sometimes called <i>Sahasra Chandra Darshana Shanti</i>, is marked with a special puja and family celebration.</p>
-        <p style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">This calculator estimates the date by adding 999 synodic months to the first full moon after birth. Actual full-moon dates vary slightly due to the Moon\'s elliptical orbit.</p>
+        <h2 data-hi="सहस्र चंद्र दर्शन के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Sahasra Chandra Darshan</h2>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><span data-hi="हिंदू परंपरा में, एक हजार पूर्णिमाओं को देखना एक दीर्घ, धन्य जीवन को दर्शाने वाली पवित्र उपलब्धि मानी जाती है। चूंकि एक चांद्र (सिनोडिक) माह लगभग 29.53 दिन का होता है, 1000 पूर्णिमाएं लगभग 80 वर्ष 8 माह तक फैली होती हैं। इस अवसर को, जिसे कभी-कभी ">In Hindu tradition, witnessing one thousand full moons is a sacred achievement signifying a long, blessed life. Since a lunar (synodic) month is about 29.53 days, 1000 full moons span roughly 80 years and 8 months. The occasion, sometimes called </span><i><span data-hi="सहस्र चंद्र दर्शन शांति">Sahasra Chandra Darshana Shanti</span></i><span data-hi=" कहा जाता है, विशेष पूजा और पारिवारिक उत्सव के साथ मनाया जाता है।">, is marked with a special puja and family celebration.</span></p>
+        <p data-hi="यह कैलकुलेटर जन्म के बाद पहली पूर्णिमा में 999 सिनोडिक माह जोड़कर तिथि का अनुमान लगाता है। चंद्रमा की दीर्घवृत्तीय कक्षा के कारण वास्तविक पूर्णिमा तिथियों में थोड़ा अंतर हो सकता है।" style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">This calculator estimates the date by adding 999 synodic months to the first full moon after birth. Actual full-moon dates vary slightly due to the Moon's elliptical orbit.</p>
       </div>
     </div>
   </section>
@@ -58,6 +58,8 @@ import TithiIcon from '../../components/icons/TithiIcon.astro';
 </style>
 
 <script>
+let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
+function tr(en, hi) { return LANG_HI ? hi : en; }
 const SYN=29.530589; // synodic month in days
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -98,25 +100,25 @@ function calculate(){
     const ageMs=jd1000-jdBirth;const ageYears=ageMs/365.25;
 
     document.getElementById('big-date').textContent=`${dt.getDate()} ${MON[dt.getMonth()]} ${dt.getFullYear()}`;
-    document.getElementById('big-meta').textContent=`at ${jdToHHMM(jd1000)} \xb7 Approx. ${Math.floor(ageYears)} years, ${Math.round((ageYears%1)*12)} months after birth`;
+    document.getElementById('big-meta').textContent=tr(`at ${jdToHHMM(jd1000)} \xb7 Approx. ${Math.floor(ageYears)} years, ${Math.round((ageYears%1)*12)} months after birth`,`${jdToHHMM(jd1000)} बजे \xb7 जन्म के लगभग ${Math.floor(ageYears)} वर्ष, ${Math.round((ageYears%1)*12)} माह बाद`);
 
     const todayJD=toJD(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate(),12);
     const moonsSoFar=Math.max(0,Math.min(1000,Math.floor((todayJD-firstFM)/SYN)+1));
     document.getElementById('s-moons').textContent=`${moonsSoFar}`;
-    document.getElementById('s-age').textContent=`${Math.floor(ageYears)}y`;
+    document.getElementById('s-age').textContent=tr(`${Math.floor(ageYears)}y`,`${Math.floor(ageYears)} वर्ष`);
 
     const remDays=jd1000-todayJD;
     if(remDays>0){
       document.getElementById('s-remain').textContent=`${(remDays/365.25).toFixed(1)}`;
-      document.getElementById('s-remain-label').textContent='Years remaining';
+      document.getElementById('s-remain-label').textContent=tr('Years remaining','शेष वर्ष');
     }else{
       document.getElementById('s-remain').textContent=`${Math.abs(remDays/365.25).toFixed(1)}`;
-      document.getElementById('s-remain-label').textContent='Years since (passed)';
+      document.getElementById('s-remain-label').textContent=tr('Years since (passed)','बीत चुके वर्ष');
     }
 
     const pct=Math.max(0,Math.min(100,(moonsSoFar/1000)*100));
     document.getElementById('prog-bar').style.width=pct+'%';
-    document.getElementById('prog-pct').textContent=`${pct.toFixed(1)}% (${moonsSoFar} moons)`;
+    document.getElementById('prog-pct').textContent=tr(`${pct.toFixed(1)}% (${moonsSoFar} moons)`,`${pct.toFixed(1)}% (${moonsSoFar} चंद्र)`);
 
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
@@ -124,4 +126,17 @@ function calculate(){
 }
 document.getElementById('f-calc').addEventListener('click',calculate);
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  calculate();
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>

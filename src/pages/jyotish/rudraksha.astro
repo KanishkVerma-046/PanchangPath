@@ -125,32 +125,34 @@ function rudCard(r,label,big){
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
       <span style="width:${big?48:38}px;height:${big?48:38}px;border-radius:50%;background:${r.color}22;border:2px solid ${r.color};color:${r.color};font-weight:800;font-size:${big?20:16}px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.m}</span>
       <div>
-        <h4 style="font-size:${big?17:15}px;font-weight:700;color:var(--color-ink);margin:0;">${r.m}-Mukhi Rudraksha</h4>
+        <h4 style="font-size:${big?17:15}px;font-weight:700;color:var(--color-ink);margin:0;">${r.m}-${tr('Mukhi Rudraksha','मुखी रुद्राक्ष')}</h4>
         <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${label} &middot; ${planetLabel(r.planet,r.color)}</p>
       </div>
     </div>
     <p style="font-size:12.5px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${r.b}</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;font-size:12px;">
-      ${[['Deity',r.deity],['Mantra',r.mantra],['Wear on',r.wear],['Auspicious Day',r.day]].map(x=>`<div><span style="color:var(--color-mute);">${x[0]}: </span><span style="color:var(--color-ink);font-weight:600;">${x[1]}</span></div>`).join('')}
+      ${[[tr('Deity','देवता'),tr(r.deity,DEITY_HI[r.deity]||r.deity)],[tr('Mantra','मंत्र'),r.mantra],[tr('Metal','धातु'),tr(r.metal,METAL_HI[r.metal]||r.metal)],[tr('Wear on','पहनें'),tr(r.wear,WEAR_HI[r.wear]||r.wear)],[tr('Auspicious Day','शुभ दिन'),tr(r.day,DAY_HI[r.day]||r.day)]].map(x=>`<div><span style="color:var(--color-mute);">${x[0]}: </span><span style="color:var(--color-ink);font-weight:600;">${x[1]}</span></div>`).join('')}
     </div>
   </div>`;
 }
 
+let lastLagnaSign=null,lastMoonSign=null;
 function showResults(lagnaSign,moonSign){
+  lastLagnaSign=lagnaSign;lastMoonSign=moonSign;
   const lagnaLord=LORD[lagnaSign],moonLord=LORD[moonSign];
   document.getElementById('birth-info').innerHTML=[
-    ['Lagna (Ascendant)',RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
-    ['Lagna Lord',lagnaLord],
-    ['Moon Rashi',RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
-    ['Moon Lord',moonLord],
+    [tr('Lagna (Ascendant)','लग्न (उदय राशि)'),RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
+    [tr('Lagna Lord','लग्नेश'),lagnaLord],
+    [tr('Moon Rashi','चंद्र राशि'),RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
+    [tr('Moon Lord','चंद्रेश'),moonLord],
   ].map(r=>`<div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">${r[0]}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`).join('');
 
-  document.getElementById('rec-primary').innerHTML=rudCard(mukhiForPlanet(lagnaLord),'Primary — Lagna Lord',true);
+  document.getElementById('rec-primary').innerHTML=rudCard(mukhiForPlanet(lagnaLord),tr('Primary — Lagna Lord','मुख्य — लग्नेश'),true);
   const seen=new Set([mukhiForPlanet(lagnaLord).m]);
   const sec=[];
-  const r2=mukhiForPlanet(moonLord);if(!seen.has(r2.m)){sec.push(rudCard(r2,'For Moon Lord',false));seen.add(r2.m);}
-  if(!seen.has(5)){sec.push(rudCard(RUDRAKSHA[4],'Universal (safe for all)',false));seen.add(5);}
-  document.getElementById('rec-rudraksha').innerHTML=sec.join('')||(sec.length===0?'<p style="font-size:13px;color:var(--color-mute);">No additional recommendations (Lagna and Moon lords share the same Rudraksha).</p>':'');
+  const r2=mukhiForPlanet(moonLord);if(!seen.has(r2.m)){sec.push(rudCard(r2,tr('For Moon Lord','चंद्रेश हेतु'),false));seen.add(r2.m);}
+  if(!seen.has(5)){sec.push(rudCard(RUDRAKSHA[4],tr('Universal (safe for all)','सार्वभौमिक (सभी हेतु सुरक्षित)'),false));seen.add(5);}
+  document.getElementById('rec-rudraksha').innerHTML=sec.join('')||(sec.length===0?'<p style="font-size:13px;color:var(--color-mute);">'+tr('No additional recommendations (Lagna and Moon lords share the same Rudraksha).','कोई अतिरिक्त अनुशंसा नहीं (लग्नेश और चंद्रेश एक ही रुद्राक्ष साझा करते हैं)।')+'</p>':'');
   document.getElementById('result').style.display='block';
   document.getElementById('err').style.display='none';
 }
@@ -204,18 +206,35 @@ document.getElementById('q-calc').addEventListener('click',()=>{
 });
 
 // All 14 mukhis grid
-document.getElementById('all-mukhis').innerHTML=RUDRAKSHA.map(r=>
-  `<div class="card" style="padding:12px;border-top:2px solid ${r.color};">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-      <span style="width:28px;height:28px;border-radius:50%;background:${r.color}22;border:1.5px solid ${r.color};color:${r.color};font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">${r.m}</span>
-      <div>
-        <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${r.m}-Mukhi</span>
-        <span style="font-size:10px;color:var(--color-mute);margin-left:6px;">${planetLabel(r.planet,r.color)}</span>
+function renderAllMukhis(){
+  document.getElementById('all-mukhis').innerHTML=RUDRAKSHA.map(r=>
+    `<div class="card" style="padding:12px;border-top:2px solid ${r.color};">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="width:28px;height:28px;border-radius:50%;background:${r.color}22;border:1.5px solid ${r.color};color:${r.color};font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">${r.m}</span>
+        <div>
+          <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${r.m}-Mukhi</span>
+          <span style="font-size:10px;color:var(--color-mute);margin-left:6px;">${planetLabel(r.planet,r.color)}</span>
+        </div>
       </div>
-    </div>
-    <p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;">${r.deity}</p>
-    <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.4;">${r.b.split('.')[0]}.</p>
-  </div>`).join('');
+      <p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;">${tr(r.deity,DEITY_HI[r.deity]||r.deity)}</p>
+      <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.4;">${r.b.split('.')[0]}.</p>
+    </div>`).join('');
+}
+renderAllMukhis();
 
 calculate();
+
+function applyPageLang(hindi) {
+  LANG_HI = hindi;
+  document.querySelectorAll('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+  });
+  renderAllMukhis();
+  if (lastLagnaSign !== null) showResults(lastLagnaSign, lastMoonSign);
+}
+document.addEventListener('langchange', (e) => {
+  applyPageLang(e.detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
