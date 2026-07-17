@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import { FESTIVALS_2025_2027, daysUntil } from '../lib/festivals';
 
 const today = new Date();
+const festivalYears = FESTIVALS_2025_2027.map(f => +f.date.slice(0, 4));
+const yearRange = `${Math.min(...festivalYears)}-${Math.max(...festivalYears)}`;
 const upcoming = FESTIVALS_2025_2027.filter(f => f.date >= today.toISOString().split('T')[0])
   .sort((a, b) => a.date.localeCompare(b.date));
 const past = FESTIVALS_2025_2027.filter(f => f.date < today.toISOString().split('T')[0])
@@ -23,14 +25,14 @@ function monthLabel(key: string) {
 }
 ---
 
-<Layout title="Hindu Festival Calendar 2025-2026 — PanchangPath" description="Complete Hindu festival and vrat calendar for 2025 and 2026. All major festivals with dates, descriptions, and countdowns.">
+<Layout title={`Hindu Festival Calendar ${yearRange} — PanchangPath`} description={`Complete Hindu festival and vrat calendar for ${yearRange.replace('-', ' to ')}. All major festivals with dates, descriptions, and countdowns.`}>
   <!-- Hero -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
       <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Complete Calendar</p>
       <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Hindu Festivals & Vrats.</h1>
-      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;">All major Hindu festivals, vrats, and auspicious days for 2025–2026 with detailed information.</p>
+      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;">All major Hindu festivals, vrats, and auspicious days for {yearRange.replace('-', '–')} with detailed information.</p>
     </div>
   </section>
 
