@@ -42,14 +42,8 @@ const defaultCity = getDefaultLocation();
       </div>
     </div>
 
-    <!-- ── Detect + Search row ───────────────────────────────────────────── -->
+    <!-- ── Search row ───────────────────────────────────────────────────── -->
     <div class="lp-actions">
-      <button class="lp-geo-btn" id="lp-geo">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-        <span id="lp-geo-txt">Detect My Location</span>
-      </button>
       <div class="lp-search-wrap">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lp-search-icon">
           <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -251,49 +245,6 @@ function filterCities(query) {
   ).slice(0, 30);
 }
 
-// ── Geolocation ──────────────────────────────────────────────────────────────
-function detectLocation() {
-  if (!navigator.geolocation) {
-    alert('Geolocation is not supported by this browser.');
-    return;
-  }
-  const btn = document.getElementById('lp-geo');
-  const txt = document.getElementById('lp-geo-txt');
-  if (txt) txt.textContent = 'Detecting…';
-  if (btn) btn.disabled = true;
-
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      if (txt) txt.textContent = 'Detect My Location';
-      if (btn) btn.disabled = false;
-
-      const { latitude: lat, longitude: lng, altitude } = pos.coords;
-      const browserTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      const tzInfo = getTzInfo(browserTz);
-
-      const myLoc = {
-        name: 'My Location',
-        nameHi: 'मेरा स्थान',
-        lat: Math.round(lat * 10000) / 10000,
-        lng: Math.round(lng * 10000) / 10000,
-        tzOffset: tzInfo.offset || 0,
-        tz: browserTz,
-        elevation: altitude != null ? Math.round(altitude) : 0,
-        country: 'Custom',
-        state: '',
-      };
-
-      selectLocation(myLoc);
-    },
-    err => {
-      if (txt) txt.textContent = 'Detect My Location';
-      if (btn) btn.disabled = false;
-      if (err.code !== 1) alert('Could not detect location. Please select a city.');
-    },
-    { timeout: 10000 }
-  );
-}
-
 // ── Popover open / close ─────────────────────────────────────────────────────
 function openPopover() {
   const pop = document.getElementById('lp-popover');
@@ -371,8 +322,6 @@ document.getElementById('lp-backdrop')?.addEventListener('click', closePopover);
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && isOpen()) closePopover();
 });
-
-document.getElementById('lp-geo')?.addEventListener('click', detectLocation);
 
 const searchEl = document.getElementById('lp-search');
 searchEl?.addEventListener('input', () => {
@@ -530,26 +479,6 @@ init();
   gap: 8px;
   align-items: center;
 }
-.lp-geo-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  height: 32px;
-  padding: 0 12px;
-  background: var(--color-canvas-soft-2);
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-sans);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-body-text);
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: background 0.12s, border-color 0.12s, color 0.12s;
-}
-.lp-geo-btn:hover { background: var(--color-saffron-soft); border-color: var(--color-saffron); color: var(--color-saffron-deep); }
-.lp-geo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .lp-search-wrap {
   position: relative;
   flex: 1;
