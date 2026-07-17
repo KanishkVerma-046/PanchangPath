@@ -1,6 +1,4 @@
 ---
-import { REGIONS } from '../lib/panchang-i18n';
-
 interface LangOption {
   code: string;
   nativeName: string;
@@ -11,12 +9,6 @@ interface LangOption {
 const LANGS: LangOption[] = [
   { code: 'en', nativeName: 'English', label: 'EN',  name: 'English' },
   { code: 'hi', nativeName: 'हिन्दी',  label: 'हिं', name: 'Hindi' },
-  ...REGIONS.map(r => ({
-    code: r.code,
-    nativeName: r.nativeName,
-    label: r.nativeName,
-    name: r.name,
-  })),
 ];
 ---
 
@@ -37,21 +29,7 @@ const LANGS: LangOption[] = [
   <div class="lng-dropdown" id="lng-dropdown" role="listbox" aria-label="Select language" hidden>
     <!-- Interface section -->
     <p class="lng-section-head">Interface</p>
-    {LANGS.slice(0, 2).map(l => (
-      <button class="lng-opt" data-code={l.code} role="option">
-        <span class="lng-opt-native">{l.nativeName}</span>
-        <span class="lng-opt-name">{l.name}</span>
-        <svg class="lng-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-      </button>
-    ))}
-
-    <div class="lng-divider"></div>
-
-    <!-- Regional section -->
-    <p class="lng-section-head">Regional Panchang</p>
-    {LANGS.slice(2).map(l => (
+    {LANGS.map(l => (
       <button class="lng-opt" data-code={l.code} role="option">
         <span class="lng-opt-native">{l.nativeName}</span>
         <span class="lng-opt-name">{l.name}</span>
@@ -212,8 +190,6 @@ if (currentLang !== 'en') {
   top: 0;
   background: var(--color-canvas);
 }
-
-.lng-divider { height: 1px; background: var(--color-hairline); margin: 4px 0; }
 
 /* ── Options ── */
 .lng-opt {
