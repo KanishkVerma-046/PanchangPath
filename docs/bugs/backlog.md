@@ -119,8 +119,9 @@ The live homepage displays sunrise/sunset times ~6 minutes off from the
 site's own already-correct server-computed value. Confirmed 2026-07-16 via
 a standalone Node reproduction of both the server (`src/lib/panchang.ts`)
 and client (`src/pages/index.astro`) sunrise formulas for New Delhi,
-2026-07-14: server value 5:33 AM / 7:21 PM (matches both drikpanchang.com
-and mypanchang.com exactly); live client-rendered value 5:27 AM / 7:16 PM.
+2026-07-14: server value 5:33 AM / 7:21 PM (matches drikpanchang.com
+exactly and mypanchang.com to within a minute — 5:33:50 AM / 7:20:05 PM);
+live client-rendered value 5:27 AM / 7:16 PM.
 Full method and numbers: `docs/audits/notes/2026-07-16-boundary-drift-followup.md`.
 
 ### Root cause
