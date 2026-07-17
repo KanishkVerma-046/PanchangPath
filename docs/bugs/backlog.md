@@ -45,20 +45,20 @@ Paste this into a fresh session (fill in the bracketed part):
 
 | Title | Status | Reported |
 |---|---|---|
-| [Homepage date and Panchang data freeze after reopening the site (no bfcache/visibility refresh)](#homepage-date-and-panchang-data-freeze-after-reopening-the-site-no-bfcachevisibility-refresh) | Open | 2026-07-17 |
+| [Homepage date and Panchang data freeze after reopening the site (no bfcache/visibility refresh)](#homepage-date-and-panchang-data-freeze-after-reopening-the-site-no-bfcachevisibility-refresh) | Fixed (2026-07-17) | 2026-07-17 |
 | [Change Language picker: Hindi barely translates anything + Regional Panchang duplicated in the dropdown](#change-language-picker-hindi-barely-translates-anything-regional-panchang-duplicated-in-the-dropdown) | Open | 2026-07-17 |
 | [Devotional Library lyrics contain memory-sourced inaccuracies, not verified against sources](#devotional-library-lyrics-contain-memory-sourced-inaccuracies-not-verified-against-sources) | Open | 2026-07-17 |
 | [Devotional transliteration fields truncated with placeholder text in Ashtakam, Chalisa, Namavali, Stotram](#devotional-transliteration-fields-truncated-with-placeholder-text-in-ashtakam-chalisa-namavali-stotram) | Open | 2026-07-17 |
 | [Detect My Location geolocation feature is ineffective and should be removed](#detect-my-location-geolocation-feature-is-ineffective-and-should-be-removed) | Open | 2026-07-17 |
 | [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Open | 2026-07-17 |
-| [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Open | 2026-07-16 |
-| [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Open | 2026-07-16 |
+| [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Fixed (2026-07-17) | 2026-07-16 |
+| [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Fixed (2026-07-17) | 2026-07-16 |
 
 ---
 
 ## Homepage date and Panchang data freeze after reopening the site (no bfcache/visibility refresh)
 
-- **Status:** Open
+- **Status:** Fixed (2026-07-17, commit `55704d0`)
 - **Reported:** 2026-07-17
 - **Severity:** High
 - **Affected files:** `src/pages/index.astro` (build-time `const today = new Date()` at line 33; client-side `let currentDate = new Date()` at line 487; `renderWithLoc()` at line 835)
@@ -589,7 +589,19 @@ bug's Status line in docs/bugs/backlog.md to "Fixed (<date>, commit
 
 ## Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early
 
-- **Status:** Open
+- **Status:** Fixed (2026-07-17, commit `55704d0`) — `estimateEndTime()` (`src/lib/panchang.ts`)
+  and `estimateEnd()` (`src/pages/index.astro`) now use an iterative boundary-crossing search
+  (same refinement pattern as `moonRiseSetUTC()`), recomputing the actual instantaneous rate of
+  the relevant angle each step instead of assuming a fixed rate; both files now agree on one
+  model per element (Moon-Sun elongation for Tithi/Karana, Moon sidereal for Nakshatra,
+  combined Sun+Moon for Yoga). Verified via a standalone Node reproduction against
+  drikpanchang.com for New Delhi 2026-07-14 and 2026-07-15: Yoga/Nakshatra now land within
+  ~1-2 minutes; Tithi/Karana land within ~4-5 minutes (down from 45min-2.5h, but not fully to
+  the ~1-2min target) — the residual gap traces to this codebase's abbreviated Sun-longitude
+  series (elongation is the slowest-moving of the four quantities, so a small fixed longitude
+  error there shows up as more time error), not the boundary-search method itself, which
+  converges to sub-second precision against whatever the underlying model computes. Worth a
+  future follow-up if full drikpanchang-level agreement on Tithi/Karana is desired.
 - **Reported:** 2026-07-16
 - **Severity:** Medium
 - **Affected files:** `src/lib/panchang.ts` (`estimateEndTime()`), `src/pages/index.astro` (duplicate inline `estimateEnd()`)
@@ -680,7 +692,13 @@ bug's Status line in docs/bugs/backlog.md to "Fixed (<date>, commit
 
 ## `index.astro` inline sunrise/sunset missing Equation-of-Time term
 
-- **Status:** Open
+- **Status:** Fixed (2026-07-17, commit `55704d0`) — added an inline `equationOfTimeMinutes()`
+  (copied from `src/lib/panchang.ts`) to `index.astro`'s client script and wired it into the
+  inline `sunriseUTC()`. Also grepped the rest of the codebase per this bug's fix prompt and
+  found two more inline `sunriseUTC()` copies with the same gap: `src/pages/muhurta.astro` and
+  `src/pages/jyotish/pancha-pakshi.astro` — both fixed the same way. Verified via a standalone
+  Node reproduction for New Delhi 2026-07-14/2026-07-15: sunrise/sunset now match
+  drikpanchang.com exactly (5:33 AM / 7:21 PM both dates).
 - **Reported:** 2026-07-16
 - **Severity:** Medium
 - **Affected files:** `src/pages/index.astro` (inline `sunriseUTC()`, around line 389)
