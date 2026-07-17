@@ -46,11 +46,11 @@ Paste this into a fresh session (fill in the bracketed part):
 | Title | Status | Reported |
 |---|---|---|
 | [Homepage date and Panchang data freeze after reopening the site (no bfcache/visibility refresh)](#homepage-date-and-panchang-data-freeze-after-reopening-the-site-no-bfcachevisibility-refresh) | Fixed (2026-07-17) | 2026-07-17 |
-| [Change Language picker: Hindi barely translates anything + Regional Panchang duplicated in the dropdown](#change-language-picker-hindi-barely-translates-anything-regional-panchang-duplicated-in-the-dropdown) | Open | 2026-07-17 |
+| [Change Language picker: Hindi barely translates anything + Regional Panchang duplicated in the dropdown](#change-language-picker-hindi-barely-translates-anything-regional-panchang-duplicated-in-the-dropdown) | Partially Fixed (2026-07-17) | 2026-07-17 |
 | [Devotional Library lyrics contain memory-sourced inaccuracies, not verified against sources](#devotional-library-lyrics-contain-memory-sourced-inaccuracies-not-verified-against-sources) | Open | 2026-07-17 |
 | [Devotional transliteration fields truncated with placeholder text in Ashtakam, Chalisa, Namavali, Stotram](#devotional-transliteration-fields-truncated-with-placeholder-text-in-ashtakam-chalisa-namavali-stotram) | Open | 2026-07-17 |
-| [Detect My Location geolocation feature is ineffective and should be removed](#detect-my-location-geolocation-feature-is-ineffective-and-should-be-removed) | Open | 2026-07-17 |
-| [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Open | 2026-07-17 |
+| [Detect My Location geolocation feature is ineffective and should be removed](#detect-my-location-geolocation-feature-is-ineffective-and-should-be-removed) | Fixed (2026-07-17) | 2026-07-17 |
+| [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Fixed (2026-07-17) | 2026-07-17 |
 | [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Fixed (2026-07-17) | 2026-07-16 |
 | [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Fixed (2026-07-17) | 2026-07-16 |
 
@@ -147,7 +147,38 @@ frozen. Update this bug's Status line in docs/bugs/backlog.md to "Fixed
 
 ## Change Language picker: Hindi barely translates anything + Regional Panchang duplicated in the dropdown
 
-- **Status:** Open
+- **Status:** Partially Fixed (2026-07-17). Issue A (Regional Panchang
+  duplication) is fully fixed: commit `b151037` removed the REGIONS
+  spread and "Regional Panchang" section from `LanguagePicker.astro`,
+  and removed the now-dead regional-i18n branch it left behind in
+  `index.astro` (`getI18N`/`regionalTithi`/`regionalNakshatra`/
+  `regionalMonth`/`regionalVara`/`regionalPaksha` + the embedded
+  `clientI18N` JSON — all unreachable once the picker can only ever
+  dispatch `'en'`/`'hi'`).
+  Issue B (full sitewide Hindi coverage — the user explicitly chose
+  this larger scope over just relabeling the picker) is in progress,
+  commit `6974e80`: a reusable pattern is established
+  (`data-hi="..."` attribute + a per-page `applyPageLang()` listening
+  for `langchange`, see `Header.astro`'s `applyHeaderLang` for the
+  reference implementation). **Done:** `Header.astro` nav (desktop +
+  mobile, present on every page), all 4 `planets/*.astro`, both
+  `events/*.astro`, `festivals/[slug].astro`, `rashifal/index.astro`,
+  `rashifal/[rashi].astro`, `prashnavali.astro`, `panchang/regional.astro`,
+  `panchang/[region].astro` (commit `7b016ab`), 9 of 10 `muhurta/*.astro`
+  (all but `shubha-dates.astro`), 5 of 16 `jyotish/*.astro` (hub +
+  gemstone/horoscope-match/janma-kundali/kundali/rudraksha — rudraksha's
+  dynamic card rendering still needs its `langchange` listener wired in,
+  interrupted mid-edit). **Still open:** `muhurta/shubha-dates.astro`;
+  the other 11 `jyotish/*.astro` pages (sunsign, kalasarpa, mangal-dosha,
+  sadesati, sahasra-chandrodaya, lagna, nakshatra, rashi, shraddha,
+  pancha-pakshi); `devotional/index.astro` +
+  `DevotionalIndexGrid.astro`/`DevotionalDetail.astro` UI chrome (not
+  lyrics content — separately out of scope, see the two Devotional bugs
+  below); and `index.astro`'s own remaining plain-English elements
+  beyond its existing 8 `en-text`/`hi-text` pairs. Work was interrupted
+  by an account-wide session/rate limit mid-rollout, not a code issue —
+  resume by dispatching the same per-page-group pattern to the
+  remaining files listed above.
 - **Reported:** 2026-07-17
 - **Severity:** Medium
 - **Affected files:** `src/components/LanguagePicker.astro` (regional section, lines 11-19 and 52-62), `src/pages/index.astro` (`applyLang()` at line 706, `.en-text`/`.hi-text` toggle), `src/components/Header.astro` (nav has zero i18n hooks), `src/pages/calendar.astro`, `src/pages/festivals.astro`, `src/components/KundaliWidget.astro` (only other files listening for `langchange`)
@@ -464,7 +495,7 @@ not all in one pass.
 
 ## Detect My Location geolocation feature is ineffective and should be removed
 
-- **Status:** Open
+- **Status:** Fixed (2026-07-17, commit `322bfd8`)
 - **Reported:** 2026-07-17
 - **Severity:** Low
 - **Affected files:** `src/components/LocationPicker.astro` (`detectLocation()` function, lines 255-295; `lp-geo` button markup, lines 47-52; event listener, line 375)
@@ -529,7 +560,7 @@ data update). Update this bug's Status line in docs/bugs/backlog.md to
 
 ## Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)
 
-- **Status:** Open
+- **Status:** Fixed (2026-07-17, commit `b77ccb9`)
 - **Reported:** 2026-07-17
 - **Severity:** Low
 - **Affected files:** `src/pages/festivals.astro` (`<Layout title>` at line 26, subtitle paragraph at line 33)
