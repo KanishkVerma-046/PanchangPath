@@ -41,7 +41,8 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
         <div style="margin-bottom:20px;">
           <a href="/festivals" style="display:inline-flex;align-items:center;gap:8px;background:var(--color-saffron-soft);color:var(--color-saffron-deep);font-size:13px;font-weight:500;padding:5px 12px;border-radius:100px;text-decoration:none;border:1px solid rgba(255,153,51,0.3);">
             <span>🪔</span>
-            <span>{todayFestivals[0].name} today</span>
+            <span class="en-text">{todayFestivals[0].name} today</span>
+            <span class="hi-text" style="display:none">आज {todayFestivals[0].nameHi} है</span>
             <span style="opacity:0.6;">→</span>
           </a>
         </div>
@@ -49,10 +50,12 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
 
       <!-- Headline -->
       <h1 style="font-size:42px;font-weight:600;letter-spacing:-1.6px;line-height:1.05;color:var(--color-ink);margin:0 0 16px;max-width:680px;" id="hero-title">
-        Today's Panchang.
+        <span class="en-text">Today's Panchang.</span>
+        <span class="hi-text" style="display:none">आज का पंचांग.</span>
       </h1>
       <p style="font-size:17px;color:var(--color-body-text);margin:0 0 32px;line-height:1.6;max-width:520px;" id="hero-sub">
-        Precise Hindu almanac for <strong id="loc-display" style="color:var(--color-ink);">{loc.name}</strong> — auto-detected from your location.
+        <span class="en-text">Precise Hindu almanac for <strong id="loc-display" style="color:var(--color-ink);">{loc.name}</strong> — auto-detected from your location.</span>
+        <span class="hi-text" style="display:none"><strong id="loc-display-hi" style="color:var(--color-ink);">{loc.nameHi ?? loc.name}</strong> के लिए सटीक हिंदू पंचांग — आपके स्थान से स्वतः पहचाना गया।</span>
       </p>
 
       <!-- Controls row -->
@@ -97,22 +100,22 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
           <div class="live-pulse"></div>
           <div class="live-pulse-dot"></div>
         </div>
-        <span class="caption-mono" style="color:var(--color-mute);">Panchang for <span id="panchang-date-label">{today.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}</span></span>
+        <span class="caption-mono" style="color:var(--color-mute);"><span class="en-text">Panchang for</span><span class="hi-text" style="display:none">पंचांग</span> <span id="panchang-date-label">{today.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}</span></span>
       </div>
 
       <!-- 5 Panchang elements -->
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:12px;" class="panchang-grid" id="pancha-grid">
         <!-- Vara -->
         <div class="card animate-in" style="padding:20px;animation-delay:0ms;">
-          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Vara</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;"><span class="en-text">Vara</span><span class="hi-text" style="display:none">वार</span></p>
           <p class="en-text" style="font-size:22px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="vara-name">{panchang.vara.name}</p>
           <p class="hi-text" style="font-size:18px;font-weight:600;color:var(--color-data-value);margin:0 0 2px;display:none;" id="vara-name-hi">{panchang.vara.nameHi}</p>
-          <p style="font-size:12px;color:var(--color-mute);margin:0;" id="vara-lord">Lord: {panchang.vara.lord}</p>
+          <p style="font-size:12px;color:var(--color-mute);margin:0;"><span class="en-text">Lord: </span><span class="hi-text" style="display:none">स्वामी: </span><span id="vara-lord">{panchang.vara.lord}</span></p>
         </div>
 
         <!-- Tithi -->
         <div class="card animate-in" style="padding:20px;animation-delay:60ms;">
-          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Tithi</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;"><span class="en-text">Tithi</span><span class="hi-text" style="display:none">तिथि</span></p>
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;">
             <div>
               <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="tithi-name">{panchang.tithi.paksha} {panchang.tithi.name}</p>
@@ -120,21 +123,21 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
             </div>
             <span class="badge" id="tithi-type" style="flex-shrink:0;font-size:10px;">{panchang.tithi.type}</span>
           </div>
-          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="tithi-end">Ends: {panchang.tithi.endTime}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;"><span class="en-text">Ends: </span><span class="hi-text" style="display:none">समाप्ति: </span><span id="tithi-end">{panchang.tithi.endTime}</span></p>
         </div>
 
         <!-- Nakshatra -->
         <div class="card animate-in" style="padding:20px;animation-delay:120ms;">
-          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Nakshatra</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;"><span class="en-text">Nakshatra</span><span class="hi-text" style="display:none">नक्षत्र</span></p>
           <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="nakshatra-name">{panchang.nakshatra.name}</p>
           <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-data-value);margin:0 0 2px;display:none;" id="nakshatra-name-hi">{panchang.nakshatra.nameHi}</p>
-          <p style="font-size:11px;color:var(--color-mute);margin:2px 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="nakshatra-meta">Pada {panchang.nakshatra.pada} · {panchang.nakshatra.lord}</p>
-          <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="nakshatra-end">Ends: {panchang.nakshatra.endTime}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:2px 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;"><span class="en-text">Pada </span><span class="hi-text" style="display:none">पद </span><span id="nakshatra-meta">{panchang.nakshatra.pada} · {panchang.nakshatra.lord}</span></p>
+          <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;"><span class="en-text">Ends: </span><span class="hi-text" style="display:none">समाप्ति: </span><span id="nakshatra-end">{panchang.nakshatra.endTime}</span></p>
         </div>
 
         <!-- Yoga -->
         <div class="card animate-in" style="padding:20px;animation-delay:180ms;">
-          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Yoga</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;"><span class="en-text">Yoga</span><span class="hi-text" style="display:none">योग</span></p>
           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:4px;">
             <div>
               <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="yoga-name">{panchang.yoga.name}</p>
@@ -142,15 +145,15 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
             </div>
             <span class="badge" id="yoga-type" style="flex-shrink:0;font-size:10px;">{panchang.yoga.type}</span>
           </div>
-          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="yoga-end">Ends: {panchang.yoga.endTime}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;"><span class="en-text">Ends: </span><span class="hi-text" style="display:none">समाप्ति: </span><span id="yoga-end">{panchang.yoga.endTime}</span></p>
         </div>
 
         <!-- Karana -->
         <div class="card animate-in" style="padding:20px;animation-delay:240ms;">
-          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;">Karana</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 10px;"><span class="en-text">Karana</span><span class="hi-text" style="display:none">करण</span></p>
           <p class="en-text" style="font-size:20px;font-weight:600;letter-spacing:-0.5px;color:var(--color-data-value);margin:0 0 2px;" id="karana-name">{panchang.karana.name}</p>
           <p class="hi-text" style="font-size:16px;font-weight:600;color:var(--color-data-value);margin:0 0 2px;display:none;" id="karana-name-hi">{panchang.karana.nameHi}</p>
-          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;" id="karana-end">Ends: {panchang.karana.endTime}</p>
+          <p style="font-size:11px;color:var(--color-mute);margin:4px 0 0;font-family:var(--font-mono);font-variant-numeric:tabular-nums;"><span class="en-text">Ends: </span><span class="hi-text" style="display:none">समाप्ति: </span><span id="karana-end">{panchang.karana.endTime}</span></p>
         </div>
       </div>
 
@@ -158,22 +161,22 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
       <div id="sun-abhijit-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <!-- Sun & Moon times -->
         <div class="card" style="padding:24px;min-width:0;">
-          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 16px;">Sun & Moon</p>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0 0 16px;"><span class="en-text">Sun & Moon</span><span class="hi-text" style="display:none">सूर्य व चन्द्र</span></p>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;">
             <div>
-              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);">SUNRISE</p>
+              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);"><span class="en-text">SUNRISE</span><span class="hi-text" style="display:none">सूर्योदय</span></p>
               <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0;" id="sunrise">{panchang.sunrise}</p>
             </div>
             <div>
-              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);">SUNSET</p>
+              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);"><span class="en-text">SUNSET</span><span class="hi-text" style="display:none">सूर्यास्त</span></p>
               <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0;" id="sunset">{panchang.sunset}</p>
             </div>
             <div>
-              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);">MOONRISE</p>
+              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);"><span class="en-text">MOONRISE</span><span class="hi-text" style="display:none">चंद्रोदय</span></p>
               <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0;" id="moonrise">{panchang.moonrise}</p>
             </div>
             <div>
-              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);">DAY LENGTH</p>
+              <p style="font-size:11px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);"><span class="en-text">DAY LENGTH</span><span class="hi-text" style="display:none">दिन की अवधि</span></p>
               <p style="font-size:18px;font-weight:600;letter-spacing:-0.3px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0;" id="day-duration">{panchang.durationDay}</p>
             </div>
           </div>
@@ -182,42 +185,42 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
         <!-- Abhijit Muhurta -->
         <div class="card" style="padding:24px;background:var(--color-canvas);min-width:0;">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-            <p class="caption-mono" style="color:var(--color-data-label);margin:0;">Abhijit Muhurta</p>
-            <span class="badge-auspicious badge" style="font-size:10px;">Most Auspicious</span>
+            <p class="caption-mono" style="color:var(--color-data-label);margin:0;"><span class="en-text">Abhijit Muhurta</span><span class="hi-text" style="display:none">अभिजित मुहूर्त</span></p>
+            <span class="badge-auspicious badge" style="font-size:10px;"><span class="en-text">Most Auspicious</span><span class="hi-text" style="display:none">सर्वाधिक शुभ</span></span>
           </div>
           <p class="en-text" style="font-size:26px;font-weight:600;letter-spacing:-0.8px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0 0 4px;" id="abhijit-time">{panchang.abhijitMuhurta.start} – {panchang.abhijitMuhurta.end}</p>
-          <p style="font-size:13px;color:var(--color-body-text);margin:0;">Solar noon window — ideal for any important work, travel, or ceremony.</p>
+          <p style="font-size:13px;color:var(--color-body-text);margin:0;"><span class="en-text">Solar noon window — ideal for any important work, travel, or ceremony.</span><span class="hi-text" style="display:none">सूर्य के मध्याह्न का समय — किसी भी महत्वपूर्ण कार्य, यात्रा या समारोह के लिए उपयुक्त।</span></p>
         </div>
       </div>
 
       <!-- Inauspicious times -->
       <div class="card" style="padding:24px;margin-bottom:12px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;">
-          <p class="caption-mono" style="color:var(--color-data-label);margin:0;">Inauspicious Periods</p>
-          <span class="badge-inauspicious badge" style="font-size:10px;">Avoid important work</span>
+          <p class="caption-mono" style="color:var(--color-data-label);margin:0;"><span class="en-text">Inauspicious Periods</span><span class="hi-text" style="display:none">अशुभ काल</span></p>
+          <span class="badge-inauspicious badge" style="font-size:10px;"><span class="en-text">Avoid important work</span><span class="hi-text" style="display:none">महत्वपूर्ण कार्य न करें</span></span>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
           <div>
-            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Rahu Kalam</p>
+            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;"><span class="en-text">Rahu Kalam</span><span class="hi-text" style="display:none;text-transform:none;">राहु काल</span></p>
             <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0 0 2px;" id="rahu-time">{panchang.rahuKalam.start} – {panchang.rahuKalam.end}</p>
-            <p style="font-size:12px;color:var(--color-mute);margin:0;">Shadow of Rahu — most inauspicious</p>
+            <p style="font-size:12px;color:var(--color-mute);margin:0;"><span class="en-text">Shadow of Rahu — most inauspicious</span><span class="hi-text" style="display:none">राहु की छाया — सबसे अशुभ</span></p>
           </div>
           <div>
-            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Gulika Kalam</p>
+            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;"><span class="en-text">Gulika Kalam</span><span class="hi-text" style="display:none;text-transform:none;">गुलिक काल</span></p>
             <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0 0 2px;" id="gulika-time">{panchang.gulikaKalam.start} – {panchang.gulikaKalam.end}</p>
-            <p style="font-size:12px;color:var(--color-mute);margin:0;">Son of Saturn — avoid new ventures</p>
+            <p style="font-size:12px;color:var(--color-mute);margin:0;"><span class="en-text">Son of Saturn — avoid new ventures</span><span class="hi-text" style="display:none">शनि पुत्र — नए कार्य न करें</span></p>
           </div>
           <div>
-            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;">Yamaganda</p>
+            <p style="font-size:11px;color:var(--color-data-label);margin:0 0 6px;font-family:var(--font-mono);letter-spacing:0.06em;text-transform:uppercase;"><span class="en-text">Yamaganda</span><span class="hi-text" style="display:none;text-transform:none;">यमगण्ड</span></p>
             <p style="font-size:20px;font-weight:600;letter-spacing:-0.4px;color:var(--color-data-value);font-variant-numeric:tabular-nums;margin:0 0 2px;" id="yama-time">{panchang.yamaganda.start} – {panchang.yamaganda.end}</p>
-            <p style="font-size:12px;color:var(--color-mute);margin:0;">Period of Yama — avoid travel</p>
+            <p style="font-size:12px;color:var(--color-mute);margin:0;"><span class="en-text">Period of Yama — avoid travel</span><span class="hi-text" style="display:none">यम काल — यात्रा से बचें</span></p>
           </div>
         </div>
       </div>
 
       <!-- Day timeline bar -->
       <div class="card" style="padding:20px 24px;margin-bottom:12px;overflow:hidden;">
-        <p class="caption-mono" style="color:var(--color-mute);margin:0 0 14px;">Day Timeline</p>
+        <p class="caption-mono" style="color:var(--color-mute);margin:0 0 14px;"><span class="en-text">Day Timeline</span><span class="hi-text" style="display:none">दिन की समयरेखा</span></p>
         <div style="position:relative;height:32px;background:var(--color-canvas-soft-2);border-radius:4px;overflow:hidden;" id="timeline-bar">
           <!-- Filled by JS -->
         </div>
@@ -245,32 +248,32 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
   <!-- SEO CONTENT: Full feature guide -->
   <section style="padding:40px 0 56px;">
     <div class="container" style="max-width:840px;margin:0 auto;padding:0 24px;">
-      <h2 style="font-size:28px;font-weight:600;letter-spacing:-0.9px;color:var(--color-ink);margin:0 0 20px;">Panchang, Muhurta, Jyotish & Devotional Tools — All in One Place</h2>
+      <h2 style="font-size:28px;font-weight:600;letter-spacing:-0.9px;color:var(--color-ink);margin:0 0 20px;"><span class="en-text">Panchang, Muhurta, Jyotish & Devotional Tools — All in One Place</span><span class="hi-text" style="display:none">पंचांग, मुहूर्त, ज्योतिष और भक्ति उपकरण — सब एक ही स्थान पर</span></h2>
       <div style="font-size:15px;line-height:1.8;color:var(--color-body-text);">
         <p style="margin:0 0 16px;">PanchangPath is a free, ad-free home for everything Hindu Panchang and Jyotish — a modern <strong>Panchang calculator</strong>, a full <strong>Muhurta</strong> toolkit, 15 <strong>Jyotish calculators</strong>, a <strong>Rashifal</strong> horoscope section, a <strong>Hindu festival calendar</strong>, region-specific Panchang traditions, and a growing devotional library of Aartis, Chalisas and Stotrams. Every calculation on the site uses the <strong>Drik (astronomical) method</strong> with <strong>Lahiri Ayanamsha</strong> — the same sidereal standard used by India's Rashtriya Panchang — so results match what a traditional pandit's almanac would show, without the ads and clutter of older Panchang sites. The whole site loads instantly, works equally well on a phone or a desktop, and never asks for a sign-up or a subscription.</p>
 
-        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;">Why Use PanchangPath Over Any Other Panchang Site</h3>
+        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;"><span class="en-text">Why Use PanchangPath Over Any Other Panchang Site</span><span class="hi-text" style="display:none">पंचांगपथ को किसी अन्य पंचांग साइट से बेहतर क्यों चुनें</span></h3>
         <p style="margin:0 0 16px;">Most Panchang websites still run on decades-old Swiss Ephemeris shortcuts, buried under banner ads and pop-ups. PanchangPath is <strong>astronomically precise</strong> — the same Drik method and Lahiri Ayanamsha used by traditional pandits and modern ephemerides, not an approximation. It is fully <strong>location-aware</strong>: sunrise, Rahu Kalam, Gulika Kalam, Yamaganda and every Muhurta on the site are recalculated for your exact GPS coordinates, not a single national average. It offers a genuine <strong>dark mode</strong> that works across every page, a complete <strong>Hindi and English</strong> toggle so every Tithi, Nakshatra and festival name is available in Devanagari or Roman script with one tap, and a full <a href="/calendar" style="color:var(--color-saffron-deep);">monthly Panchang calendar</a> to browse Tithis, Nakshatras and festivals at a glance. Most importantly, it carries <strong>zero advertising</strong> — sacred, everyday-use information shouldn't be wrapped in banner ads. Every page is built as a lightweight static page rather than a heavy, script-bloated app, so pages that would take five or six seconds to load elsewhere open on PanchangPath almost instantly, even on a slower mobile connection.</p>
 
-        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;">Today's Panchang: Tithi, Nakshatra, Yoga, Karana & Hindu Calendar</h3>
+        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;"><span class="en-text">Today's Panchang: Tithi, Nakshatra, Yoga, Karana & Hindu Calendar</span><span class="hi-text" style="display:none">आज का पंचांग: तिथि, नक्षत्र, योग, करण और हिंदू कैलेंडर</span></h3>
         <p style="margin:0 0 16px;">A Panchang (पंचांग) is the traditional Hindu almanac used to plan everything from a morning puja to a wedding date. It literally means "five limbs" — <strong>Tithi</strong> (lunar day), <strong>Vara</strong> (weekday), <strong>Nakshatra</strong> (lunar mansion), <strong>Yoga</strong> (Sun-Moon angle), and <strong>Karana</strong> (half-Tithi). PanchangPath shows <strong>today's Panchang</strong> — often searched as "aaj ka Panchang" — for any Indian city, auto-detected from your location, along with the current Vikram Samvat and Shaka Samvat year, the ruling Nakshatra lord and pada, whether the day's Yoga is auspicious or inauspicious, and the Amanta/Purnimanta Hindu month. Need a date that isn't today? The full <a href="/calendar" style="color:var(--color-saffron-deep);">monthly Panchang calendar</a> lets you look ahead or back to any date with the same precision. Each Tithi also carries one of five types — Nanda, Bhadra, Jaya, Rikta and Purna — used to judge how favourable it is for a given activity, and each Karana is marked as either fixed (Sthira) or movable (Chara), a distinction traditionally used when timing precise rituals down to the hour.</p>
 
-        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;">Muhurta & Auspicious Timing: Choghadiya, Rahu Kalam, Shubh Muhurat</h3>
+        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;"><span class="en-text">Muhurta & Auspicious Timing: Choghadiya, Rahu Kalam, Shubh Muhurat</span><span class="hi-text" style="display:none">मुहूर्त और शुभ समय: चौघड़िया, राहु काल, शुभ मुहूर्त</span></h3>
         <p style="margin:0 0 16px;">The homepage surfaces the day's <strong>Abhijit Muhurta</strong> — the most universally auspicious window, centred on solar noon — alongside the three inauspicious periods to plan around: <strong>Rahu Kalam</strong>, Gulika Kalam and Yamaganda. The dedicated <a href="/muhurta" style="color:var(--color-saffron-deep);">Muhurta Finder</a> goes much deeper, with a live <a href="/muhurta/choghadiya" style="color:var(--color-saffron-deep);">Choghadiya</a> table for picking a good hour, a <a href="/muhurta/hora" style="color:var(--color-saffron-deep);">Shubha Hora</a> (planetary hour) calculator, a standalone <a href="/muhurta/rahu-kala" style="color:var(--color-saffron-deep);">Rahu Kala</a> timing page, a <a href="/muhurta/lagna" style="color:var(--color-saffron-deep);">Lagna table</a>, a dedicated <a href="/muhurta/abhijit" style="color:var(--color-saffron-deep);">Abhijit Muhurat</a> page, and a <a href="/muhurta/panchaka" style="color:var(--color-saffron-deep);">Panchaka / Gowri Nalla Neram</a> finder for South Indian timing conventions. For life's bigger decisions there are purpose-built date-finders: <a href="/muhurta/vivah" style="color:var(--color-saffron-deep);">Vivah Muhurat</a> for wedding dates, <a href="/muhurta/griha-pravesh" style="color:var(--color-saffron-deep);">Griha Pravesh Muhurat</a> for housewarmings, and a general <a href="/muhurta/shubha-dates" style="color:var(--color-saffron-deep);">Shubh Muhurat</a> date-scorer that ranks upcoming dates for any purpose, from vehicle purchase to starting a new venture. Rahu Kalam, Gulika Kalam and Yamaganda each occupy roughly one-eighth of daylight hours and shift daily with sunrise and sunset, which is exactly why a fixed table can never be accurate — PanchangPath recalculates the start and end minute for every visitor's own city, every single day.</p>
 
-        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;">Sunrise, Sunset, Moonrise, Moonset & Live Planetary Positions</h3>
+        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;"><span class="en-text">Sunrise, Sunset, Moonrise, Moonset & Live Planetary Positions</span><span class="hi-text" style="display:none">सूर्योदय, सूर्यास्त, चंद्रोदय, चंद्रास्त और लाइव ग्रह स्थिति</span></h3>
         <p style="margin:0 0 16px;">Alongside the daily summary, standalone pages track <a href="/sunrise-sunset" style="color:var(--color-saffron-deep);">sunrise and sunset time</a> and <a href="/moonrise-moonset" style="color:var(--color-saffron-deep);">moonrise and moonset time</a> for any location, computed with a full equation-of-time correction rather than a rough approximation. The <a href="/planets/planetary-positions" style="color:var(--color-saffron-deep);">live Planetary Positions</a> tracker shows real-time sidereal longitudes for all nine Grahas, refreshing automatically without needing your location. Three more pages cover <a href="/planets/gochara" style="color:var(--color-saffron-deep);">Gochara</a> — which rashi each planet is currently transiting — the ongoing <a href="/planets/rahu-ketu" style="color:var(--color-saffron-deep);">Rahu-Ketu transit</a> axis, and <a href="/planets/shani" style="color:var(--color-saffron-deep);">Shani</a>'s current position, all self-refreshing every 60 seconds.</p>
 
-        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;">Free Jyotish Calculators: Kundali, Matching, Dosha & Gemstones</h3>
+        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;"><span class="en-text">Free Jyotish Calculators: Kundali, Matching, Dosha & Gemstones</span><span class="hi-text" style="display:none">मुफ़्त ज्योतिष कैलकुलेटर: कुंडली, मिलान, दोष और रत्न</span></h3>
         <p style="margin:0 0 16px;">The homepage's Lagna Kundali widget draws a live birth chart for the current moment in North or South Indian style, with retrograde (Vakri) and combusion (Asta) status for every planet. The full <a href="/jyotish" style="color:var(--color-saffron-deep);">Jyotish hub</a> extends this into 15 calculators built on the same orbital mechanics: a free <a href="/jyotish/kundali" style="color:var(--color-saffron-deep);">Kundali</a> / birth chart generator and a <a href="/jyotish/janma-kundali" style="color:var(--color-saffron-deep);">Janma Kundali</a> with Vimshottari Dasha periods, <a href="/jyotish/horoscope-match" style="color:var(--color-saffron-deep);">Kundali Matching</a> (Gun Milan) for marriage compatibility, a <a href="/jyotish/mangal-dosha" style="color:var(--color-saffron-deep);">Mangal Dosha</a> checker and <a href="/jyotish/kalasarpa" style="color:var(--color-saffron-deep);">Kalasarpa Yoga</a> detector, a <a href="/jyotish/sadesati" style="color:var(--color-saffron-deep);">Shani Sadesati</a> calculator for tracking Saturn's seven-and-a-half-year transit, and <a href="/jyotish/gemstone" style="color:var(--color-saffron-deep);">gemstone</a> and <a href="/jyotish/rudraksha" style="color:var(--color-saffron-deep);">Rudraksha</a> recommendation tools. Rounding out the hub are quick finders for <a href="/jyotish/rashi" style="color:var(--color-saffron-deep);">Rashi</a>, <a href="/jyotish/sunsign" style="color:var(--color-saffron-deep);">Sun Sign</a>, <a href="/jyotish/nakshatra" style="color:var(--color-saffron-deep);">Nakshatra</a>, and <a href="/jyotish/lagna" style="color:var(--color-saffron-deep);">Lagna</a>, plus specialised calculators for <a href="/jyotish/shraddha" style="color:var(--color-saffron-deep);">Shraddha Tithi</a> (death-anniversary dates), <a href="/jyotish/sahasra-chandrodaya" style="color:var(--color-saffron-deep);">Sahasra Chandrodaya</a> (1000th-moonrise birthday), and <a href="/jyotish/pancha-pakshi" style="color:var(--color-saffron-deep);">Pancha Pakshi</a> daily activity timing. Mangal Dosha (also called Kuja Dosha) flags a chart where Mars sits in a position believed to affect married life, while Kalasarpa Yoga checks whether every planet falls between Rahu and Ketu — both are among the most-searched compatibility checks before a wedding, and PanchangPath runs them instantly from a birth date, time and place with no consultation fee.</p>
 
-        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;">Daily Rashifal, Horoscope & Prashnavali</h3>
+        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;"><span class="en-text">Daily Rashifal, Horoscope & Prashnavali</span><span class="hi-text" style="display:none">दैनिक राशिफल, कुंडली फल और प्रश्नावली</span></h3>
         <p style="margin:0 0 16px;">The <a href="/rashifal" style="color:var(--color-saffron-deep);">Rashifal</a> section covers daily, weekly, monthly and yearly horoscope predictions for all 12 rashis — Mesha, Vrishabha, Mithuna, Karka, Simha, Kanya, Tula, Vrishchika, Dhanu, Makara, Kumbha and Meena — each with its own detail page, lucky colours, lucky numbers and compatible signs. Not sure which rashi is yours? The Rashifal page includes a find-your-rashi tool by name syllable or exact birth date, so there's no need to already know your Moon sign. For a quick answer to a specific question, the <a href="/prashnavali" style="color:var(--color-saffron-deep);">Prashnavali</a> oracle gives an instant yes/no reading using the traditional 108-answer method. Every Rashifal prediction covers the areas readers actually check first — career and finance, love and relationships, health, and general luck for the day, week, month or year — written fresh rather than recycled from a single generic template.</p>
 
-        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;">Hindu Festival Calendar, Vrat Dates & Regional Panchang</h3>
+        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;"><span class="en-text">Hindu Festival Calendar, Vrat Dates & Regional Panchang</span><span class="hi-text" style="display:none">हिंदू त्योहार कैलेंडर, व्रत तिथियां और क्षेत्रीय पंचांग</span></h3>
         <p style="margin:0 0 16px;">The <a href="/festivals" style="color:var(--color-saffron-deep);">festival and vrat calendar</a> lists every major Hindu festival, Ekadashi and fasting day through 2027, complete with countdown badges and a detail page for each — exact Tithi timings, significance, and regional variations for festivals like Diwali, Navratri and Raksha Bandhan. Because calendar conventions vary sharply by region, the <a href="/panchang/regional" style="color:var(--color-saffron-deep);">Regional Panchang</a> hub adapts month names, New Year dates and Tithi/Nakshatra labels for eleven distinct traditions — Bengali, Assamese, Tamil Panchangam, Malayalam, Marathi, Gujarati, Kannada, Telugu, Odia, Nepali and ISKCON — each on its own page, with every element switchable between Hindi and English. That includes solar-month traditions like Tamil and Malayalam alongside lunar-month traditions like Marathi and Gujarati, so the Hindu New Year, festival dates and even the current month name shown always match what's actually observed in that region — not a one-size-fits-all North Indian calendar re-labelled for the rest of the country.</p>
 
-        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;">Devotional Library: Aarti, Chalisa, Stotram, Mantra & Puja Vidhi</h3>
+        <h3 style="font-size:20px;font-weight:600;color:var(--color-ink);margin:28px 0 10px;"><span class="en-text">Devotional Library: Aarti, Chalisa, Stotram, Mantra & Puja Vidhi</span><span class="hi-text" style="display:none">भक्ति पुस्तकालय: आरती, चालीसा, स्तोत्र, मंत्र और पूजा विधि</span></h3>
         <p style="margin:0 0 16px;">The <a href="/devotional" style="color:var(--color-saffron-deep);">Devotional Library</a> collects Hindi lyrics, Roman transliteration and English meaning for popular <a href="/devotional/aarti" style="color:var(--color-saffron-deep);">Aartis</a>, forty-verse <a href="/devotional/chalisa" style="color:var(--color-saffron-deep);">Chalisas</a>, Sanskrit <a href="/devotional/stotram" style="color:var(--color-saffron-deep);">Stotrams</a> and eight-verse <a href="/devotional/ashtakam" style="color:var(--color-saffron-deep);">Ashtakams</a>, <a href="/devotional/mantra" style="color:var(--color-saffron-deep);">Vedic Mantras</a> with word-for-word translation and japa instructions, <a href="/devotional/yantra" style="color:var(--color-saffron-deep);">Yantra</a> installation and puja guides, 108-name <a href="/devotional/namavali" style="color:var(--color-saffron-deep);">Namavali</a> lists for archana, the complete <a href="/devotional/durga-saptashati" style="color:var(--color-saffron-deep);">Durga Saptashati</a> (all 13 chapters, verbatim Sanskrit) and <a href="/devotional/sundarkand" style="color:var(--color-saffron-deep);">Sundarkand</a> (all 60 dohas), plus <a href="/devotional/vrat-katha" style="color:var(--color-saffron-deep);">Vrat Katha</a> fasting stories and step-by-step <a href="/devotional/puja-vidhi" style="color:var(--color-saffron-deep);">Puja Vidhi</a> ritual guides for major festivals. A companion <a href="/blog" style="color:var(--color-saffron-deep);">blog</a> explains how to actually use all of it — from reading your first Kundali to the real difference between your Rashi and your Western Moon sign. Every text is sourced and checked verse-for-verse against traditional references rather than paraphrased, so the Sanskrit and Hindi you recite here matches what's printed in a physical prayer book.</p>
 
         <p style="margin:0;">Whether you're searching for "today's Panchang," a specific Rahu Kalam or Choghadiya timing, a free Kundali, a Shubh Muhurat for a wedding date, or your daily Rashifal, PanchangPath gives you a real, astronomically-calculated answer in under a second — with no sign-ups, no paywalls, and no advertising anywhere on the site. Bookmark this page and it becomes a daily habit: the date, Tithi and Muhurat refresh automatically every time you open it, in your language, for your location.</p>
@@ -281,14 +284,14 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
   <!-- CTA BAND -->
   <section style="background:var(--color-ink);padding:64px 0;">
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;text-align:center;">
-      <h2 style="font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--color-on-primary);margin:0 0 12px;">Start every day with Panchang.</h2>
-      <p style="font-size:16px;color:color-mix(in srgb, var(--color-on-primary), transparent 40%);margin:0 0 28px;">Bookmark this page, or set it as your homepage.</p>
+      <h2 style="font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--color-on-primary);margin:0 0 12px;"><span class="en-text">Start every day with Panchang.</span><span class="hi-text" style="display:none">पंचांग के साथ हर दिन की शुरुआत करें।</span></h2>
+      <p style="font-size:16px;color:color-mix(in srgb, var(--color-on-primary), transparent 40%);margin:0 0 28px;"><span class="en-text">Bookmark this page, or set it as your homepage.</span><span class="hi-text" style="display:none">इस पृष्ठ को बुकमार्क करें, या इसे अपना होमपेज बनाएं।</span></p>
       <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
         <a href="/" style="display:inline-flex;align-items:center;gap:6px;background:var(--color-canvas);color:var(--color-ink);font-size:14px;font-weight:500;padding:0 20px;height:40px;border-radius:100px;text-decoration:none;">
-          🕉️ Open Today's Panchang
+          🕉️ <span class="en-text">Open Today's Panchang</span><span class="hi-text" style="display:none">आज का पंचांग खोलें</span>
         </a>
         <a href="/festivals" style="display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb, var(--color-on-primary), transparent 90%);color:var(--color-on-primary);font-size:14px;font-weight:500;padding:0 20px;height:40px;border-radius:100px;text-decoration:none;border:1px solid color-mix(in srgb, var(--color-on-primary), transparent 80%);">
-          View Festival Calendar →
+          <span class="en-text">View Festival Calendar →</span><span class="hi-text" style="display:none">त्योहार कैलेंडर देखें →</span>
         </a>
       </div>
     </div>
@@ -621,21 +624,21 @@ function setText(id: string, val: string) {
 function updateUI(p: ReturnType<typeof calcPanchang>) {
   // Vara
   setText('vara-name', p.vara.name); setText('vara-name-hi', p.vara.nameHi);
-  setText('vara-lord', `Lord: ${p.vara.lord}`);
+  setText('vara-lord', p.vara.lord);
   // Tithi
   setText('tithi-name', `${p.tithi.paksha} ${p.tithi.name}`);
   setText('tithi-name-hi', `${p.tithi.pakshaNi} ${p.tithi.nameHi}`);
-  setText('tithi-type', p.tithi.type); setText('tithi-end', `Ends: ${p.tithi.endTime}`);
+  setText('tithi-type', p.tithi.type); setText('tithi-end', p.tithi.endTime);
   // Nakshatra
   setText('nakshatra-name', p.nakshatra.name); setText('nakshatra-name-hi', p.nakshatra.nameHi);
-  setText('nakshatra-meta', `Pada ${p.nakshatra.pada} · ${p.nakshatra.lord}`);
-  setText('nakshatra-end', `Ends: ${p.nakshatra.endTime}`);
+  setText('nakshatra-meta', `${p.nakshatra.pada} · ${p.nakshatra.lord}`);
+  setText('nakshatra-end', p.nakshatra.endTime);
   // Yoga
   setText('yoga-name', p.yoga.name); setText('yoga-name-hi', p.yoga.nameHi);
-  setText('yoga-type', p.yoga.type); setText('yoga-end', `Ends: ${p.yoga.endTime}`);
+  setText('yoga-type', p.yoga.type); setText('yoga-end', p.yoga.endTime);
   // Karana
   setText('karana-name', p.karana.name); setText('karana-name-hi', p.karana.nameHi);
-  setText('karana-end', `Ends: ${p.karana.endTime}`);
+  setText('karana-end', p.karana.endTime);
   // Sun times
   setText('sunrise', p.sunrise); setText('sunset', p.sunset);
   setText('moonrise', p.moonrise); setText('day-duration', p.durationDay);
@@ -680,10 +683,12 @@ function applyLang(langCode: string) {
   currentLang = langCode;
   isHindi = langCode === 'hi';
   const showHindi = isHindi;
-  document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = showHindi ? 'none' : 'block');
-  document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = showHindi ? 'block' : 'none');
+  document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = showHindi ? 'none' : '');
+  document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = showHindi ? '' : 'none');
   const locDisplay = document.getElementById('loc-display');
-  if (locDisplay) locDisplay.textContent = isHindi ? (currentLoc.nameHi ?? currentLoc.name) : currentLoc.name;
+  if (locDisplay) locDisplay.textContent = currentLoc.name;
+  const locDisplayHi = document.getElementById('loc-display-hi');
+  if (locDisplayHi) locDisplayHi.textContent = currentLoc.nameHi ?? currentLoc.name;
   // Refresh summary card so regional names apply
   const p = calcPanchang(currentDate, currentLoc);
   updateSummaryCard(p, currentDate, currentLoc);
@@ -831,7 +836,9 @@ function renderWithLoc(loc: Location, date: Date) {
   setText('date-display', d);
   setText('panchang-date-label', date.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }));
   const locDisplay = document.getElementById('loc-display');
-  if (locDisplay) locDisplay.textContent = isHindi ? (loc.nameHi || loc.name) : loc.name;
+  if (locDisplay) locDisplay.textContent = loc.name;
+  const locDisplayHi = document.getElementById('loc-display-hi');
+  if (locDisplayHi) locDisplayHi.textContent = loc.nameHi || loc.name;
 }
 
 // Date picker
