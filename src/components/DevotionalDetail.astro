@@ -18,6 +18,52 @@ const {
   meaningLabel = 'Meaning',
   benefitsLabel = 'When & Why It Is Recited',
 } = Astro.props;
+
+// UI-chrome Hindi translations. Covers the default section labels plus every
+// lyricsLabel/meaningLabel/benefitsLabel override passed by the per-category
+// [slug].astro pages (see durga-saptashati, yantra, puja-vidhi, namavali,
+// vrat-katha, sundarkand). Falls back to the English string if unmapped.
+const LABEL_HI: Record<string, string> = {
+  'Lyrics (Devanagari)': 'बोल (देवनागरी)',
+  'Meaning': 'अर्थ',
+  'When & Why It Is Recited': 'कब और क्यों पढ़ा जाता है',
+  'Sanskrit Text (Devanagari)': 'संस्कृत पाठ (देवनागरी)',
+  'Chapter Summary': 'अध्याय सारांश',
+  'Significance': 'महत्व',
+  'Associated Mantra': 'संबंधित मंत्र',
+  'Structure & Presiding Deity': 'संरचना और अधिष्ठाता देवता',
+  'Installation & Puja Vidhi': 'स्थापना और पूजा विधि',
+  'Samagri (Materials Needed)': 'सामग्री (आवश्यक वस्तुएं)',
+  'Step-by-Step Vidhi': 'चरणबद्ध विधि',
+  'Auspicious Timing & Mantras': 'शुभ समय और मंत्र',
+  '108 Names (Devanagari)': '108 नाम (देवनागरी)',
+  'About This Namavali': 'इस नामावली के बारे में',
+  'Archana & Recitation Guide': 'अर्चना और पाठ मार्गदर्शिका',
+  'Katha (Story)': 'कथा',
+  'How the Vrat Is Observed': 'व्रत कैसे रखा जाता है',
+  'Full Text (Awadhi / Sanskrit, Devanagari)': 'पूर्ण पाठ (अवधी / संस्कृत, देवनागरी)',
+  'Summary': 'सारांश',
+};
+const lyricsLabelHi = LABEL_HI[lyricsLabel] ?? lyricsLabel;
+const meaningLabelHi = LABEL_HI[meaningLabel] ?? meaningLabel;
+const benefitsLabelHi = LABEL_HI[benefitsLabel] ?? benefitsLabel;
+
+// UI-chrome Hindi translations for the category blurb shown in the sidebar.
+const DESC_HI: Record<string, string> = {
+  'aarti': 'पूजा के दौरान देवताओं की आरती में गाए जाने वाले भक्ति गीत, हिंदी बोल, लिप्यंतरण और अर्थ सहित।',
+  'chalisa': 'देवता के गुणों और कार्यों की स्तुति में चालीस दोहों वाले भक्ति स्तोत्र, आशीर्वाद और सुरक्षा हेतु पाठ किए जाते हैं।',
+  'stotram': 'ऋषियों द्वारा रचित संस्कृत स्तुति गीत, आध्यात्मिक पुण्य और ईश्वरीय कृपा हेतु पाठ किए जाते हैं।',
+  'ashtakam': 'एक ही देवता को समर्पित आठ श्लोकों वाले संस्कृत स्तोत्र, अपनी संक्षिप्त भक्ति शक्ति के लिए विशेष।',
+  'mantra': 'शब्दार्थ अनुवाद, अर्थ और जप विधि सहित पवित्र वैदिक मंत्र।',
+  'yantra': 'पूजा हेतु पवित्र ज्यामितीय आकृतियां, प्रत्येक यंत्र की स्थापना, पूजा विधि और लाभ सहित।',
+  'namavali': 'अर्चना और जप हेतु देवताओं की 108 (अष्टोत्तरशतनामावली) और 1000 नाम (सहस्रनामावली) की सूचियां।',
+  'durga-saptashati': 'देवी माहात्म्य के सभी 13 अध्याय — देवी दुर्गा की असुरों पर विजय की गाथा।',
+  'sundarkand': 'रामचरितमानस का पांचवां सोपान, हनुमान जी की लंका यात्रा का वर्णन — साहस और सुरक्षा हेतु पाठ किया जाता है।',
+  'nama-ramayanam': 'श्री राम के नामों और महिमा के माध्यम से पूर्णतः वर्णित रामायण की कथा, भक्ति गीत के रूप में गाई जाती है।',
+  'vrat-katha': 'व्रत के दौरान सुनाई जाने वाली पारंपरिक कथाएं, जो व्रत की उत्पत्ति और महत्व को समझाती हैं।',
+  'puja-vidhi': 'प्रमुख त्योहारों के दौरान सही ढंग से पूजा करने हेतु चरणबद्ध विधि मार्गदर्शिका।',
+};
+const backToCategoryHi = `← ${category.labelHi} पर वापस`;
 ---
 
 <BreadcrumbSchema items={[
@@ -33,11 +79,11 @@ const {
     <span class="dv-icon" aria-hidden="true">{item.icon}</span>
     <div class="dv-hero-text">
       <div class="dv-breadcrumb">
-        <a href="/">Home</a>
+        <a href="/" data-hi="होम">Home</a>
         <span aria-hidden="true">›</span>
-        <a href="/devotional">Devotional</a>
+        <a href="/devotional" data-hi="भक्ति पुस्तकालय">Devotional</a>
         <span aria-hidden="true">›</span>
-        <a href={category.url}>{category.label}</a>
+        <a href={category.url} data-hi={category.labelHi}>{category.label}</a>
         <span aria-hidden="true">›</span>
         <span>{item.title}</span>
       </div>
@@ -59,7 +105,7 @@ const {
       <!-- Lyrics -->
       <div class="dv-section">
         <div class="dv-section-header">
-          <h2 class="dv-section-title">{lyricsLabel}</h2>
+          <h2 class="dv-section-title" data-hi={lyricsLabelHi}>{lyricsLabel}</h2>
           {item.transliteration && (
             <button id="dv-translit-toggle" class="dv-toggle-btn" type="button">Show Transliteration</button>
           )}
@@ -74,14 +120,14 @@ const {
 
       {item.meaning && (
         <div class="dv-section">
-          <h2 class="dv-section-title">{meaningLabel}</h2>
+          <h2 class="dv-section-title" data-hi={meaningLabelHi}>{meaningLabel}</h2>
           <p class="dv-body">{item.meaning}</p>
         </div>
       )}
 
       {item.benefits && (
         <div class="dv-section">
-          <h2 class="dv-section-title">{benefitsLabel}</h2>
+          <h2 class="dv-section-title" data-hi={benefitsLabelHi}>{benefitsLabel}</h2>
           <p class="dv-body">{item.benefits}</p>
         </div>
       )}
@@ -91,14 +137,14 @@ const {
     <!-- Sidebar -->
     <aside class="dv-sidebar">
       <div class="dv-side-card">
-        <h3 class="dv-side-title">{category.label}</h3>
-        <p class="dv-side-body">{category.description}</p>
-        <a href={category.url} class="dv-side-btn">← Back to {category.label}</a>
+        <h3 class="dv-side-title" data-hi={category.labelHi}>{category.label}</h3>
+        <p class="dv-side-body" data-hi={DESC_HI[category.id]}>{category.description}</p>
+        <a href={category.url} class="dv-side-btn" data-hi={backToCategoryHi}>← Back to {category.label}</a>
       </div>
       <div class="dv-side-card">
-        <h3 class="dv-side-title">Devotional Library</h3>
-        <p class="dv-side-body">Explore aartis, chalisas, stotrams, mantras, vrat kathas and more.</p>
-        <a href="/devotional" class="dv-side-btn">View Full Library →</a>
+        <h3 class="dv-side-title" data-hi="भक्ति पुस्तकालय">Devotional Library</h3>
+        <p class="dv-side-body" data-hi="आरती, चालीसा, स्तोत्र, मंत्र, व्रत कथा और बहुत कुछ देखें।">Explore aartis, chalisas, stotrams, mantras, vrat kathas and more.</p>
+        <a href="/devotional" class="dv-side-btn" data-hi="पूरी लाइब्रेरी देखें →">View Full Library →</a>
       </div>
     </aside>
 
@@ -110,7 +156,7 @@ const {
       <a href={`${category.url}/${prev.slug}`} class="dv-nav-btn dv-nav-prev">
         <span class="dv-nav-arrow">←</span>
         <div class="dv-nav-meta">
-          <span class="dv-nav-label">Previous</span>
+          <span class="dv-nav-label" data-hi="पिछला">Previous</span>
           <span class="dv-nav-name en-text">{prev.title}</span>
         </div>
       </a>
@@ -118,7 +164,7 @@ const {
     {next && (
       <a href={`${category.url}/${next.slug}`} class="dv-nav-btn dv-nav-next">
         <div class="dv-nav-meta">
-          <span class="dv-nav-label">Next</span>
+          <span class="dv-nav-label" data-hi="अगला">Next</span>
           <span class="dv-nav-name en-text">{next.title}</span>
         </div>
         <span class="dv-nav-arrow">→</span>
@@ -132,12 +178,36 @@ const {
   const hiBlock = document.getElementById('dv-lyrics-hi');
   const translitBlock = document.getElementById('dv-lyrics-translit');
   let showingTranslit = false;
+  let isHindiLang = false;
+
+  function updateToggleBtnText() {
+    if (!toggleBtn) return;
+    if (showingTranslit) {
+      toggleBtn.textContent = isHindiLang ? 'देवनागरी दिखाएं' : 'Show Devanagari';
+    } else {
+      toggleBtn.textContent = isHindiLang ? 'लिप्यंतरण दिखाएं' : 'Show Transliteration';
+    }
+  }
+
   toggleBtn?.addEventListener('click', () => {
     showingTranslit = !showingTranslit;
     if (hiBlock) hiBlock.hidden = showingTranslit;
     if (translitBlock) translitBlock.hidden = !showingTranslit;
-    toggleBtn.textContent = showingTranslit ? 'Show Devanagari' : 'Show Transliteration';
+    updateToggleBtnText();
   });
+
+  function applyPageLang(hindi: boolean) {
+    isHindiLang = hindi;
+    document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+    });
+    updateToggleBtnText();
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
 
 <style>

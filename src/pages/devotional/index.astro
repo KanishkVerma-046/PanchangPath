@@ -4,6 +4,23 @@ import MandalaWatermark from '../../components/motifs/MandalaWatermark.astro';
 import { CATEGORY_META } from '../../lib/devotional/types';
 
 const categories = Object.values(CATEGORY_META);
+
+// UI-chrome Hindi translations for the category blurbs on this hub page.
+// (Category item content itself — lyricsHi/transliteration/meaning — is out of scope.)
+const DESC_HI: Record<string, string> = {
+  'aarti': 'पूजा के दौरान देवताओं की आरती में गाए जाने वाले भक्ति गीत, हिंदी बोल, लिप्यंतरण और अर्थ सहित।',
+  'chalisa': 'देवता के गुणों और कार्यों की स्तुति में चालीस दोहों वाले भक्ति स्तोत्र, आशीर्वाद और सुरक्षा हेतु पाठ किए जाते हैं।',
+  'stotram': 'ऋषियों द्वारा रचित संस्कृत स्तुति गीत, आध्यात्मिक पुण्य और ईश्वरीय कृपा हेतु पाठ किए जाते हैं।',
+  'ashtakam': 'एक ही देवता को समर्पित आठ श्लोकों वाले संस्कृत स्तोत्र, अपनी संक्षिप्त भक्ति शक्ति के लिए विशेष।',
+  'mantra': 'शब्दार्थ अनुवाद, अर्थ और जप विधि सहित पवित्र वैदिक मंत्र।',
+  'yantra': 'पूजा हेतु पवित्र ज्यामितीय आकृतियां, प्रत्येक यंत्र की स्थापना, पूजा विधि और लाभ सहित।',
+  'namavali': 'अर्चना और जप हेतु देवताओं की 108 (अष्टोत्तरशतनामावली) और 1000 नाम (सहस्रनामावली) की सूचियां।',
+  'durga-saptashati': 'देवी माहात्म्य के सभी 13 अध्याय — देवी दुर्गा की असुरों पर विजय की गाथा।',
+  'sundarkand': 'रामचरितमानस का पांचवां सोपान, हनुमान जी की लंका यात्रा का वर्णन — साहस और सुरक्षा हेतु पाठ किया जाता है।',
+  'nama-ramayanam': 'श्री राम के नामों और महिमा के माध्यम से पूर्णतः वर्णित रामायण की कथा, भक्ति गीत के रूप में गाई जाती है।',
+  'vrat-katha': 'व्रत के दौरान सुनाई जाने वाली पारंपरिक कथाएं, जो व्रत की उत्पत्ति और महत्व को समझाती हैं।',
+  'puja-vidhi': 'प्रमुख त्योहारों के दौरान सही ढंग से पूजा करने हेतु चरणबद्ध विधि मार्गदर्शिका।',
+};
 ---
 
 <Layout
@@ -16,8 +33,8 @@ const categories = Object.values(CATEGORY_META);
     <MandalaWatermark size={480} opacity={0.06} />
     <div class="container" style="position:relative;">
       <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">भक्ति साहित्य · DEVOTIONAL LIBRARY</p>
-      <h1 style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Devotional Content Library</h1>
-      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">A free, growing collection of Hindu devotional texts — Aartis, Chalisas, Stotrams, Ashtakams, Vedic Mantras, Yantras, Namavalis, the Durga Saptashati, Sundarkand, Nama Ramayanam, Vrat Kathas and Puja Vidhi guides — each with Devanagari lyrics, transliteration and meaning.</p>
+      <h1 data-hi="भक्ति सामग्री पुस्तकालय" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Devotional Content Library</h1>
+      <p data-hi="हिंदू भक्ति ग्रंथों का एक निःशुल्क, बढ़ता हुआ संग्रह — आरती, चालीसा, स्तोत्र, अष्टकम्, वैदिक मंत्र, यंत्र, नामावली, दुर्गा सप्तशती, सुंदरकांड, नाम रामायणम्, व्रत कथा और पूजा विधि मार्गदर्शिकाएं — प्रत्येक में देवनागरी बोल, लिप्यंतरण और अर्थ सहित।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">A free, growing collection of Hindu devotional texts — Aartis, Chalisas, Stotrams, Ashtakams, Vedic Mantras, Yantras, Namavalis, the Durga Saptashati, Sundarkand, Nama Ramayanam, Vrat Kathas and Puja Vidhi guides — each with Devanagari lyrics, transliteration and meaning.</p>
     </div>
   </section>
 
@@ -32,7 +49,7 @@ const categories = Object.values(CATEGORY_META);
               <div class="dv-cat-body">
                 <h3 class="dv-cat-title">{c.label}</h3>
                 <p class="dv-cat-title-hi hi-text">{c.labelHi}</p>
-                <p class="dv-cat-desc">{c.description}</p>
+                <p class="dv-cat-desc" data-hi={DESC_HI[c.id]}>{c.description}</p>
               </div>
             </a>
           ) : (
@@ -41,8 +58,8 @@ const categories = Object.values(CATEGORY_META);
               <div class="dv-cat-body">
                 <h3 class="dv-cat-title">{c.label}</h3>
                 <p class="dv-cat-title-hi hi-text">{c.labelHi}</p>
-                <p class="dv-cat-desc">{c.description}</p>
-                <span class="dv-soon-badge">Coming Soon</span>
+                <p class="dv-cat-desc" data-hi={DESC_HI[c.id]}>{c.description}</p>
+                <span class="dv-soon-badge" data-hi="जल्द आ रहा है">Coming Soon</span>
               </div>
             </div>
           )
@@ -51,6 +68,19 @@ const categories = Object.values(CATEGORY_META);
     </div>
   </section>
 </Layout>
+
+<script>
+  function applyPageLang(hindi: boolean) {
+    document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+    });
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>
 
 <style>
   .dv-cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }

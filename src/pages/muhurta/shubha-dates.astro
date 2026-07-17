@@ -7,27 +7,27 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
       <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शुभ दिन · Shubha Dates</p>
-      <h1 style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shubha Dates Finder</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find auspicious dates for vehicle purchase, property purchase, business launch, and any important activity — scored by Nakshatra, Tithi, Vara and Yoga.</p>
+      <h1 data-hi="शुभ तिथियां खोजक" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shubha Dates Finder</h1>
+      <p data-hi="वाहन खरीद, संपत्ति खरीद, व्यवसाय शुरुआत और किसी भी महत्वपूर्ण कार्य के लिए शुभ तिथियां खोजें — नक्षत्र, तिथि, वार और योग के आधार पर स्कोर की गई।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find auspicious dates for vehicle purchase, property purchase, business launch, and any important activity — scored by Nakshatra, Tithi, Vara and Yoga.</p>
     </div>
   </section>
 
   <section style="padding:28px 0 48px;">
     <div class="container" style="max-width:900px;margin:0 auto;">
       <div class="card" style="padding:28px;margin-bottom:32px;">
-        <h2 style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 20px;">Find Auspicious Dates</h2>
+        <h2 data-hi="शुभ तिथियां खोजें" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 20px;">Find Auspicious Dates</h2>
 
         <!-- Activity tabs -->
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
           {[
-            {id:'vehicle',label:'🚗 Vehicle Purchase'},
-            {id:'property',label:'🏗️ Property Purchase'},
-            {id:'business',label:'💼 Business Start'},
-            {id:'general',label:'📅 General Shubha'},
+            {id:'vehicle',label:'🚗 Vehicle Purchase',labelHi:'🚗 वाहन खरीद'},
+            {id:'property',label:'🏗️ Property Purchase',labelHi:'🏗️ संपत्ति खरीद'},
+            {id:'business',label:'💼 Business Start',labelHi:'💼 व्यवसाय शुरू'},
+            {id:'general',label:'📅 General Shubha',labelHi:'📅 सामान्य शुभ'},
           ].map(t => (
-            <button class="activity-tab" data-activity={t.id} style="padding:7px 14px;border-radius:20px;border:1px solid var(--color-hairline);background:var(--color-canvas-soft-2);font-size:13px;cursor:pointer;transition:all 0.15s;">
+            <button class="activity-tab" data-activity={t.id} data-hi={t.labelHi} style="padding:7px 14px;border-radius:20px;border:1px solid var(--color-hairline);background:var(--color-canvas-soft-2);font-size:13px;cursor:pointer;transition:all 0.15s;">
               {t.label}
             </button>
           ))}
@@ -35,19 +35,19 @@ import Layout from '../../layouts/Layout.astro';
 
         <div class="finder-form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
           <div>
-            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
+            <label data-hi="प्रारंभ तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
             <input type="date" id="sd-from" class="input" style="height:38px;" />
           </div>
           <div>
-            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
+            <label data-hi="अंतिम तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
             <input type="date" id="sd-to" class="input" style="height:38px;" />
           </div>
           <div>
-            <label style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+            <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
             <select id="sd-city" class="input" style="height:38px;"></select>
           </div>
         </div>
-        <button id="sd-find" class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:15px;">Find Shubha Dates →</button>
+        <button id="sd-find" data-hi="शुभ तिथियां खोजें →" class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:15px;">Find Shubha Dates →</button>
       </div>
 
       <div id="sd-results" style="display:none;">
@@ -83,6 +83,11 @@ const LOCS = [
 ];
 
 type Activity = 'vehicle'|'property'|'business'|'general';
+
+let isHindi = false;
+const ACTIVITY_LABEL_HI: Record<Activity,string> = {
+  vehicle:'वाहन खरीद', property:'संपत्ति खरीद', business:'व्यवसाय शुरू', general:'सामान्य शुभ',
+};
 
 const CRITERIA: Record<Activity,{label:string;naks:number[];tithis:number[];varas:number[];avoidNaks:number[];avoidTithis:number[];desc:string}> = {
   vehicle: {
@@ -158,14 +163,14 @@ function scoreDay(res:ReturnType<typeof calcDay>,activity:Activity){
   const c=CRITERIA[activity];
   let score=0; const notes:string[]=[],bad:string[]=[];
   if(c.varas.includes(res.wd)){score+=3;notes.push(VARA_NAMES[res.wd]);}
-  else bad.push(VARA_NAMES[res.wd]+' (not ideal)');
-  if(c.avoidNaks.includes(res.nakIdx)){score-=3;bad.push(NAK_NAMES[res.nakIdx]+' (avoid)');}
+  else bad.push(VARA_NAMES[res.wd]+(isHindi?' (उपयुक्त नहीं)':' (not ideal)'));
+  if(c.avoidNaks.includes(res.nakIdx)){score-=3;bad.push(NAK_NAMES[res.nakIdx]+(isHindi?' (वर्जित)':' (avoid)'));}
   else if(c.naks.includes(res.nakIdx)){score+=4;notes.push(NAK_NAMES[res.nakIdx]);}
-  else if(PANCHAKA_NAKS.includes(res.nakIdx)){score-=1;bad.push('Panchaka');}
-  if(c.avoidTithis.includes(res.tithiIdx)){score-=3;bad.push(TITHI_NAMES[res.tithiIdx]+' (avoid)');}
+  else if(PANCHAKA_NAKS.includes(res.nakIdx)){score-=1;bad.push(isHindi?'पंचक':'Panchaka');}
+  if(c.avoidTithis.includes(res.tithiIdx)){score-=3;bad.push(TITHI_NAMES[res.tithiIdx]+(isHindi?' (वर्जित)':' (avoid)'));}
   else if(c.tithis.includes(res.tithiIdx)){score+=3;notes.push(TITHI_NAMES[res.tithiIdx]);}
-  if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push('Auspicious yoga');}
-  if(res.sunRashiIdx===8||res.sunRashiIdx===11){score-=4;bad.push('Kharmas month');}
+  if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push(isHindi?'शुभ योग':'Auspicious yoga');}
+  if(res.sunRashiIdx===8||res.sunRashiIdx===11){score-=4;bad.push(isHindi?'खरमास':'Kharmas month');}
   return {score,notes,bad};
 }
 
@@ -215,10 +220,10 @@ function updateTabs(){
   const critEl=document.getElementById('sd-criteria');
   if(critEl){
     critEl.innerHTML=[
-      {label:'Description',text:crit.desc},
-      {label:'Good Nakshatras',text:crit.naks.map(i=>NAK_NAMES[i]).join(', ')},
-      {label:'Good Tithis',text:crit.tithis.map(i=>TITHI_NAMES[i]).join(', ')},
-      {label:'Good Weekdays',text:crit.varas.map(i=>VARA_NAMES[i]).join(', ')},
+      {label:isHindi?'विवरण':'Description',text:crit.desc},
+      {label:isHindi?'शुभ नक्षत्र':'Good Nakshatras',text:crit.naks.map(i=>NAK_NAMES[i]).join(', ')},
+      {label:isHindi?'शुभ तिथियां':'Good Tithis',text:crit.tithis.map(i=>TITHI_NAMES[i]).join(', ')},
+      {label:isHindi?'शुभ वार':'Good Weekdays',text:crit.varas.map(i=>VARA_NAMES[i]).join(', ')},
     ].map(c=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">${c.label}</p><p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${c.text}</p></div>`).join('');
   }
 }
@@ -235,7 +240,7 @@ document.querySelectorAll<HTMLButtonElement>('.activity-tab').forEach(btn=>{
 });
 updateTabs();
 
-document.getElementById('sd-find')?.addEventListener('click',()=>{
+function findDates(scroll=true){
   const fromStr=fromInput.value, toStr=toInput.value;
   const cityName=sel.value;
   const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
@@ -243,7 +248,7 @@ document.getElementById('sd-find')?.addEventListener('click',()=>{
   const [ty,tm,td]=toStr.split('-').map(Number);
   const fromD=new Date(fy,fm-1,fd), toD=new Date(ty,tm-1,td);
   if(toD<=fromD||((toD.getTime()-fromD.getTime())>400*24*3600*1000)){
-    alert('Please select a valid range up to ~13 months.');return;
+    alert(isHindi?'कृपया लगभग 13 महीने तक की एक वैध सीमा चुनें।':'Please select a valid range up to ~13 months.');return;
   }
 
   const results:any[]=[];
@@ -262,13 +267,13 @@ document.getElementById('sd-find')?.addEventListener('click',()=>{
   const titleEl=document.getElementById('sd-results-title');
   const secEl=document.getElementById('sd-results');
   if(!listEl||!titleEl||!secEl)return;
-  const actLabel=CRITERIA[currentActivity].label;
-  titleEl.textContent=`${top.length} auspicious ${actLabel} dates found`;
+  const actLabel=isHindi?ACTIVITY_LABEL_HI[currentActivity]:CRITERIA[currentActivity].label;
+  titleEl.textContent=isHindi?`${top.length} शुभ ${actLabel} तिथियां मिलीं`:`${top.length} auspicious ${actLabel} dates found`;
   if(!top.length){
-    listEl.innerHTML=`<div class="card" style="padding:20px;text-align:center;"><p style="color:var(--color-mute);">No strong dates found. Try extending the date range.</p></div>`;
+    listEl.innerHTML=isHindi?`<div class="card" style="padding:20px;text-align:center;"><p style="color:var(--color-mute);">कोई प्रबल तिथि नहीं मिली। कृपया तिथि सीमा बढ़ाएं।</p></div>`:`<div class="card" style="padding:20px;text-align:center;"><p style="color:var(--color-mute);">No strong dates found. Try extending the date range.</p></div>`;
   } else {
     listEl.innerHTML=top.map((r,i)=>{
-      const label=r.score>=9?'Excellent':r.score>=7?'Very Good':r.score>=5?'Good':'Acceptable';
+      const label=r.score>=9?(isHindi?'उत्कृष्ट':'Excellent'):r.score>=7?(isHindi?'बहुत अच्छा':'Very Good'):r.score>=5?(isHindi?'अच्छा':'Good'):(isHindi?'स्वीकार्य':'Acceptable');
       const lc=r.score>=9?'#16803D':r.score>=7?'#97690F':r.score>=5?'#B5390A':'#8C7660';
       const isTop=i===0;
       const tc=isTop?'var(--color-on-primary)':'var(--color-ink)';
@@ -285,11 +290,28 @@ document.getElementById('sd-find')?.addEventListener('click',()=>{
           ${r.notes.map((n:string)=>`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 85%)':'var(--color-canvas-soft-2)'};color:${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 15%)':'var(--color-body-text)'};border:1px solid ${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 80%)':'var(--color-hairline)'};">✓ ${n}</span>`).join('')}
           ${r.bad.map((n:string)=>`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:#fee2e2;color:#dc2626;border:1px solid #fecaca;">✗ ${n}</span>`).join('')}
         </div>
-        ${isTop?`<div style="margin-top:10px;padding-top:10px;border-top:1px solid color-mix(in srgb, var(--color-on-primary), transparent 85%);"><p style="font-size:10px;color:color-mix(in srgb, var(--color-on-primary), transparent 50%);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">Avoid Rahu Kala</p><p style="font-size:12px;color:color-mix(in srgb, var(--color-on-primary), transparent 15%);margin:0;">${fmtMins(r.res.rahuStart)} – ${fmtMins(r.res.rahuEnd)}</p></div>`:''}
+        ${isTop?`<div style="margin-top:10px;padding-top:10px;border-top:1px solid color-mix(in srgb, var(--color-on-primary), transparent 85%);"><p style="font-size:10px;color:color-mix(in srgb, var(--color-on-primary), transparent 50%);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">${isHindi?'राहु काल से बचें':'Avoid Rahu Kala'}</p><p style="font-size:12px;color:color-mix(in srgb, var(--color-on-primary), transparent 15%);margin:0;">${fmtMins(r.res.rahuStart)} – ${fmtMins(r.res.rahuEnd)}</p></div>`:''}
       </div>`;
     }).join('');
   }
   secEl.style.display='block';
-  secEl.scrollIntoView({behavior:'smooth',block:'start'});
+  if(scroll) secEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('sd-find')?.addEventListener('click',()=>findDates(true));
+
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  updateTabs();
+  const secEl = document.getElementById('sd-results');
+  if (secEl && secEl.style.display === 'block') findDates(false);
+}
+document.addEventListener('langchange', (e: Event) => {
+  applyPageLang((e as CustomEvent).detail.langCode === 'hi');
 });
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
