@@ -99,7 +99,7 @@ const LOCS = [
   {name:'London',lat:51.5074,lng:-0.1278,tz:1},
 ];
 
-let isHindi = false;
+let isHindi = localStorage.getItem('pp-lang') === 'hi';
 const GP_GOOD_NAKS = [3,4,6,7,11,12,13,14,16,20,21,22,26];
 const GP_GOOD_TITHIS = [1,2,4,6,9,10,11,12];
 const GP_AVOID_TITHIS = [3,8,13,29];
@@ -197,7 +197,7 @@ fromInput.value=now.toISOString().split('T')[0];
 const sixMonths=new Date(now); sixMonths.setMonth(sixMonths.getMonth()+6);
 toInput.value=sixMonths.toISOString().split('T')[0];
 
-document.getElementById('gp-find')?.addEventListener('click',()=>{
+function findGPDates(scroll=true){
   const fromStr=fromInput.value, toStr=toInput.value;
   const cityName=sel.value;
   const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
@@ -256,6 +256,21 @@ document.getElementById('gp-find')?.addEventListener('click',()=>{
     }).join('');
   }
   secEl.style.display='block';
-  secEl.scrollIntoView({behavior:'smooth',block:'start'});
+  if(scroll) secEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.getElementById('gp-find')?.addEventListener('click',()=>findGPDates());
+
+function applyPageLang(hindi:boolean){
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el=>{
+    if(!el.dataset.en) el.dataset.en=el.textContent||'';
+    el.textContent=hindi?(el.dataset.hi as string):(el.dataset.en as string);
+  });
+  isHindi=hindi;
+  const secEl=document.getElementById('gp-results');
+  if(secEl && secEl.style.display!=='none' && secEl.style.display!=='') findGPDates(false);
+}
+document.addEventListener('langchange',(e:Event)=>{
+  applyPageLang((e as CustomEvent).detail.langCode==='hi');
 });
+if(localStorage.getItem('pp-lang')==='hi') applyPageLang(true);
 </script>
