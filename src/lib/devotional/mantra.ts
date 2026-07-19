@@ -172,7 +172,7 @@ Sharanye Tryambake Gauri Narayani Namo'stu Te.`,
     icon: '🐒',
     lyricsHi: `ॐ हं हनुमते नमः।
 
-ॐ हुं हनुमते रुद्रात्मकाय हुं फट्।`,
+ॐ हं हनुमते रुद्रात्मकाय हुं फट्।`,
     transliteration: `Om Ham Hanumate Namah.
 
 Om Hum Hanumate Rudratmakaya Hum Phat.`,

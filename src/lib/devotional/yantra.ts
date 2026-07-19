@@ -18,7 +18,8 @@ export const YANTRAS: DevotionalItem[] = [
     titleHi: 'कुबेर यंत्र',
     deity: 'Kuber', deityHi: 'कुबेर देव',
     icon: '💰',
-    lyricsHi: `ॐ यक्षाय कुबेराय वैश्रवणाय धनधान्याधिपतये स्वाहा।`,
+    lyricsHi: `ॐ यक्षाय कुबेराय वैश्रवणाय धनधान्याधिपतये
+धनधान्यसमृद्धिं मे देहि दापय स्वाहा॥`,
     transliteration: `Om Yakshaya Kuberaya Vaishravanaya Dhana-Dhanyadhipataye Swaha.`,
     meaning: 'The Kuber Yantra is a geometric diagram with numerical figures (typically an 8-number grid) invoking Kubera, the treasurer of the gods and guardian of wealth. It is designed to attract and preserve financial prosperity.',
     benefits: 'Installed in the cash box, locker, or north direction of the home/shop, worshipped on Fridays and Kubera Jayanti (near Dhanteras) with the Kuber mantra chanted 108 times. Believed to improve financial stability and business growth.',
@@ -62,8 +63,8 @@ export const YANTRAS: DevotionalItem[] = [
     titleHi: 'नवग्रह यंत्र',
     deity: 'Navagrahas', deityHi: 'नवग्रह देवता',
     icon: '🪐',
-    lyricsHi: `ॐ ग्रहाणां आदिरादित्यो लोकरक्षणकारकः।
-विषमस्थानसंभूतां पीडां हरतु मे सदा॥`,
+    lyricsHi: `ग्रहाणामादिरादित्यो लोकरक्षणकारकः।
+विषमस्थानसंभूतां पीडां हरतु मे रविः॥`,
     transliteration: `Om Grahanam Adiradityo Lokarakshanakarakah,
 Vishamasthana-sambhutam Peedam Haratu Me Sada.`,
     meaning: 'The Navgraha Yantra is a 3x3 grid representing all nine celestial bodies (Surya, Chandra, Mangal, Budh, Guru, Shukra, Shani, Rahu, Ketu), each occupying its own cell, designed to balance and harmonize the combined planetary influences on a person\'s life.',

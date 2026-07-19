@@ -47,7 +47,7 @@ Paste this into a fresh session (fill in the bracketed part):
 |---|---|---|
 | [Homepage date and Panchang data freeze after reopening the site (no bfcache/visibility refresh)](#homepage-date-and-panchang-data-freeze-after-reopening-the-site-no-bfcachevisibility-refresh) | Fixed (2026-07-17) | 2026-07-17 |
 | [Change Language picker: Hindi barely translates anything + Regional Panchang duplicated in the dropdown](#change-language-picker-hindi-barely-translates-anything-regional-panchang-duplicated-in-the-dropdown) | Fixed (2026-07-17) | 2026-07-17 |
-| [Devotional Library lyrics contain memory-sourced inaccuracies, not verified against sources](#devotional-library-lyrics-contain-memory-sourced-inaccuracies-not-verified-against-sources) | Open | 2026-07-17 |
+| [Devotional Library lyrics contain memory-sourced inaccuracies, not verified against sources](#devotional-library-lyrics-contain-memory-sourced-inaccuracies-not-verified-against-sources) | Fixed (2026-07-19) | 2026-07-17 |
 | [Devotional transliteration fields truncated with placeholder text in Ashtakam, Chalisa, Namavali, Stotram](#devotional-transliteration-fields-truncated-with-placeholder-text-in-ashtakam-chalisa-namavali-stotram) | Open | 2026-07-17 |
 | [Detect My Location geolocation feature is ineffective and should be removed](#detect-my-location-geolocation-feature-is-ineffective-and-should-be-removed) | Fixed (2026-07-17) | 2026-07-17 |
 | [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Fixed (2026-07-17) | 2026-07-17 |
@@ -277,7 +277,37 @@ docs/bugs/backlog.md to "Fixed (<date>, commit <hash>)" once verified.
 
 ## Devotional Library lyrics contain memory-sourced inaccuracies, not verified against sources
 
-- **Status:** Open
+- **Status:** Fixed (2026-07-19). All 9 in-scope categories re-verified against
+  curl-fetched, tag-stripped verbatim sources (drikpanchang.com,
+  aartichalisa.com, stotranidhi.com, sanatanveda.com, vignanam.org, and
+  others), per CLAUDE.md's sourcing discipline — never WebFetch, never
+  memory-reconstruction. `chalisa.ts` (15 items, 12 corrected — see prior
+  session), `mantra.ts` (15 items, 1 corrected), `pujavidhi.ts` (15 items, 5
+  corrected), `yantra.ts` (12 items, 2 corrected), `vratkatha.ts` (18 items,
+  6 corrected — independently spot-checked against the well-documented
+  Veeravati Karva Chauth katha, confirmed genuine), `aarti.ts` (18 items, 13
+  corrected; 1 item, `ayyappa-swamy-aarti`, left unresolved — no Hindi
+  source could be located to verify or correct it, flagged for a future
+  pass), `stotram.ts` (15 items, 13 corrected — mostly severe truncation,
+  e.g. Aditya Hridayam/Ram Raksha/Shri Suktam had verses replaced by "..."
+  placeholders, restored to full verse counts), `ashtakam.ts` (11 items, 10
+  corrected, including one item — `venkateswara-ashtakam` — that was
+  entirely mislabeled Suprabhatam text instead of the actual Ashtakam), and
+  `namavali.ts` (10 items, 9 corrected; agent wrote a Sanskrit
+  dative→nominative case converter since sourced archana-format lists use
+  "... नमः" grammar, independently spot-checked and confirmed correct — a
+  small number of legitimately-repeated names within some lists, e.g.
+  Durga's `निर्गुणा`, were traced to the source text itself and kept
+  faithfully rather than "corrected" into invented substitutes, matching
+  this project's existing Gowri Panchangam precedent).
+  `durgasaptashati.ts` and `sundarkand.ts` were already verbatim-sourced
+  prior to this bug (see CLAUDE.md) and were not re-touched. Every category
+  was independently spot-checked (`git diff --stat` + re-fetching the
+  agent's cited source and diffing against the corrected text) before being
+  trusted — all spot-checks confirmed genuine, sourced corrections. `npm run
+  build` passes clean (396 pages) on the full combined diff. Only the
+  `lyricsHi` field was touched throughout — `transliteration` completeness
+  is tracked separately in the sibling bug below.
 - **Reported:** 2026-07-17
 - **Severity:** High
 - **Affected files:** `src/lib/devotional/*.ts` (all content files for the 10 built categories — confirmed error in `chalisa.ts`'s `krishna-chalisa` entry; other items not yet individually checked)
