@@ -32,6 +32,8 @@ export function julianDay(year: number, month: number, day: number, hour = 0): n
   return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + hour / 24 + B - 1524.5;
 }
 
+// astronomy-engine reads a bare number as UT days since the J2000 epoch, i.e. jd - 2451545.0 —
+// pass a raw Julian Day here and the result is off by ~6700 years with no type error.
 export function sunTrueLongitude(jd: number): number {
   return norm360(SunPosition(jd - 2451545.0).elon);
 }

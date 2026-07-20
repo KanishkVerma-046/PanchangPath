@@ -301,7 +301,9 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
 <script>
 // ─── Client-side Panchang engine ─────────────────────────────────────────
 // Orchestration and formatting only — astronomy math imported from src/lib/panchang.ts,
-// the same functions the server-rendered "today" values use at build time.
+// the same functions the server-rendered "today" values use at build time. Aliased to
+// sunTrueLon/moonLon/ayanamsha below purely to keep every existing call site in this file
+// unchanged.
 import {
   julianDay,
   sunTrueLongitude as sunTrueLon,
