@@ -89,8 +89,8 @@ Ram doot atulit bal dhama, Anjani-putra Pavansut nama.
 
 Pavan-tanay sankat haran, mangal murati roop,
 Ram Lakhan Sita sahit, hriday basahu sur bhoop.`,
-    meaning: 'Composed by Goswami Tulsidas, the Hanuman Chalisa is a 40-verse hymn (chaupai) framed by two dohas, praising Hanuman\'s strength, wisdom, devotion to Rama, and his heroic deeds — from carrying the Sanjeevani mountain to burning Lanka. It is the most widely recited devotional text in North India.',
-    benefits: 'Recited daily by millions for protection, courage and removal of obstacles. Especially powerful on Tuesdays and Saturdays; reciting it 7 or 108 times is believed to remove fear, negative energy and difficult planetary influences (especially Shani).',
+    meaning: 'Composed by Goswami Tulsidas, the Hanuman Chalisa is a 40-verse hymn (chaupai) framed by two dohas, praising Hanuman\'s strength, wisdom, devotion to Rama, and his heroic deeds — from carrying the Sanjeevani mountain to burning Lanka. It is the most widely recited devotional text in North India.', meaningHi: 'गोस्वामी तुलसीदास द्वारा रचित, हनुमान चालीसा दो दोहों से आबद्ध 40 छंदों (चौपाई) की एक स्तुति है, जो हनुमान की शक्ति, बुद्धि, राम के प्रति भक्ति, और उनके वीरतापूर्ण कार्यों — संजीवनी पर्वत ले जाने से लेकर लंका दहन तक — की प्रशंसा करती है। यह उत्तर भारत में सबसे व्यापक रूप से पढ़ा जाने वाला भक्ति ग्रंथ है।',
+    benefits: 'Recited daily by millions for protection, courage and removal of obstacles. Especially powerful on Tuesdays and Saturdays; reciting it 7 or 108 times is believed to remove fear, negative energy and difficult planetary influences (especially Shani).', benefitsHi: 'करोड़ों लोगों द्वारा प्रतिदिन सुरक्षा, साहस और बाधाओं के निवारण के लिए पाठ किया जाता है। मंगलवार और शनिवार को विशेष रूप से प्रभावी; इसे 7 या 108 बार पाठ करने से भय, नकारात्मक ऊर्जा और कठिन ग्रहीय प्रभावों (विशेष रूप से शनि) के दूर होने की मान्यता है।',
   },
   {
     slug: 'shiv-chalisa',
@@ -180,8 +180,8 @@ Bhaal chandrama sohat neeke, kanan kundal naagphani ke.
 
 Nitt nem kar praat hi, paath karo chaalees,
 Tum meri manokamna, pooran karo Jagdish.`,
-    meaning: 'Composed by Pandit Ayodhyadas, the Shiv Chalisa venerates Shiva as Girija-pati (Parvati\'s consort), describing his ash-smeared form, the crescent moon and Ganga on his head, and recounting his mythological deeds — from swallowing poison during the churning of the ocean to destroying Tripurasura and blessing Bhagiratha and Vibhishana.',
-    benefits: 'Recited every Monday and during Shravan month, Maha Shivaratri, and before undertaking any difficult task, seeking Shiva\'s protection from obstacles and enemies.',
+    meaning: 'Composed by Pandit Ayodhyadas, the Shiv Chalisa venerates Shiva as Girija-pati (Parvati\'s consort), describing his ash-smeared form, the crescent moon and Ganga on his head, and recounting his mythological deeds — from swallowing poison during the churning of the ocean to destroying Tripurasura and blessing Bhagiratha and Vibhishana.', meaningHi: 'पंडित अयोध्यादास द्वारा रचित, शिव चालीसा शिव को गिरिजा-पति (पार्वती के पति) के रूप में वंदना करती है, उनके भस्म-लिप्त स्वरूप, सिर पर अर्धचंद्र और गंगा का वर्णन करते हुए, तथा समुद्र मंथन के दौरान विष पीने से लेकर त्रिपुरासुर के विनाश और भगीरथ व विभीषण को आशीर्वाद देने तक उनके पौराणिक कार्यों का वर्णन करते हुए।',
+    benefits: 'Recited every Monday and during Shravan month, Maha Shivaratri, and before undertaking any difficult task, seeking Shiva\'s protection from obstacles and enemies.', benefitsHi: 'प्रत्येक सोमवार तथा श्रावण मास, महाशिवरात्रि के दौरान, और किसी भी कठिन कार्य को करने से पहले, बाधाओं और शत्रुओं से शिव की सुरक्षा की कामना करते हुए पाठ किया जाता है।',
   },
   {
     slug: 'durga-chalisa',
@@ -262,8 +262,8 @@ Nirankar hai jyoti tumhari, tihoon lok phaili ujiyari.
 
 Devidas sharan nij jani, karo kripa he matu,
 Jaise tum Prahlad bachayo, trast haro sukh datu.`,
-    meaning: 'Composed by Pandit Anand Ram Sharma, the Durga Chalisa hails the Goddess as the eternal light behind creation, protector who rescued Prahlad, destroyer of Mahishasura, and the source of Lakshmi and Saraswati\'s power. It lists many of her forms including Mahakali, Bagalamukhi, and Bhairavi.',
-    benefits: 'Recited daily during Navratri and Fridays, and whenever seeking removal of poverty, fear and obstacles through the Divine Mother\'s grace.',
+    meaning: 'Composed by Pandit Anand Ram Sharma, the Durga Chalisa hails the Goddess as the eternal light behind creation, protector who rescued Prahlad, destroyer of Mahishasura, and the source of Lakshmi and Saraswati\'s power. It lists many of her forms including Mahakali, Bagalamukhi, and Bhairavi.', meaningHi: 'पंडित आनंद राम शर्मा द्वारा रचित, दुर्गा चालीसा देवी को सृष्टि के पीछे के शाश्वत प्रकाश, प्रह्लाद की रक्षा करने वाली रक्षक, महिषासुर की संहारक, तथा लक्ष्मी और सरस्वती की शक्ति के स्रोत के रूप में महिमामंडित करती है। इसमें महाकाली, बगलामुखी और भैरवी सहित उनके कई रूपों की सूची है।',
+    benefits: 'Recited daily during Navratri and Fridays, and whenever seeking removal of poverty, fear and obstacles through the Divine Mother\'s grace.', benefitsHi: 'नवरात्रि के दौरान प्रतिदिन और शुक्रवार को, तथा जब भी दिव्य माता की कृपा से दरिद्रता, भय और बाधाओं के निवारण की कामना हो, पाठ किया जाता है।',
   },
   {
     slug: 'ganesh-chalisa',
@@ -348,8 +348,8 @@ Jai gajbadan sadan sukhdata, vishwa vinayak buddhi vidhata.
 
 Sharada Ganpati Gauri pad, prem sahit dhari dhyan,
 Sundar kavi is chalisa ko, gaaven sunen sujaan.`,
-    meaning: 'This chalisa narrates the story of Ganesha\'s birth to Parvati, the incident where Shani\'s gaze caused his original head to vanish, and Vishnu\'s solution of giving him an elephant\'s head — establishing him as Vighnaharta (remover of obstacles) and the deity worshipped first before any undertaking.',
-    benefits: 'Recited before starting any new venture, on Wednesdays, and throughout the ten days of Ganesh Chaturthi for wisdom, prosperity and removal of obstacles.',
+    meaning: 'This chalisa narrates the story of Ganesha\'s birth to Parvati, the incident where Shani\'s gaze caused his original head to vanish, and Vishnu\'s solution of giving him an elephant\'s head — establishing him as Vighnaharta (remover of obstacles) and the deity worshipped first before any undertaking.', meaningHi: 'यह चालीसा पार्वती से गणेश के जन्म की कथा, उस घटना का वर्णन करती है जिसमें शनि की दृष्टि से उनका मूल सिर लुप्त हो गया था, और विष्णु द्वारा उन्हें हाथी का सिर देने के समाधान का — जिससे उन्हें विघ्नहर्ता (बाधाओं के निवारक) और किसी भी कार्य से पहले पूजे जाने वाले देवता के रूप में स्थापित किया गया।',
+    benefits: 'Recited before starting any new venture, on Wednesdays, and throughout the ten days of Ganesh Chaturthi for wisdom, prosperity and removal of obstacles.', benefitsHi: 'किसी भी नए कार्य को आरंभ करने से पहले, बुधवार को, और गणेश चतुर्थी के दस दिनों के दौरान बुद्धि, समृद्धि और बाधाओं के निवारण के लिए पाठ किया जाता है।',
   },
   {
     slug: 'vishnu-chalisa',
@@ -435,8 +435,8 @@ Tum ho sab jag ke adhara, tum bin kaun kare nistara.
 
 Sumirat Vishnu kripanidhi, mitat sakal santap,
 Bhaktidas sharanagati, harahu janam ke paap.`,
-    meaning: 'This chalisa venerates Vishnu, the preserver of the universe, reclining on Shesha in the Kshira Sagar (ocean of milk), and recounts his Dashavatara — the ten incarnations from Matsya to Kalki — through which he protects dharma in every age.',
-    benefits: 'Recited on Thursdays and Ekadashi, and by devotees seeking protection, prosperity and liberation through surrender to Vishnu.',
+    meaning: 'This chalisa venerates Vishnu, the preserver of the universe, reclining on Shesha in the Kshira Sagar (ocean of milk), and recounts his Dashavatara — the ten incarnations from Matsya to Kalki — through which he protects dharma in every age.', meaningHi: 'यह चालीसा ब्रह्मांड के पालनकर्ता विष्णु की वंदना करती है, जो क्षीर सागर में शेषनाग पर शयन करते हैं, और उनके दशावतार — मत्स्य से लेकर कल्कि तक के दस अवतार — का वर्णन करती है, जिनके माध्यम से वे प्रत्येक युग में धर्म की रक्षा करते हैं।',
+    benefits: 'Recited on Thursdays and Ekadashi, and by devotees seeking protection, prosperity and liberation through surrender to Vishnu.', benefitsHi: 'गुरुवार और एकादशी को, तथा विष्णु के प्रति समर्पण के माध्यम से सुरक्षा, समृद्धि और मुक्ति चाहने वाले भक्तों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'lakshmi-chalisa',
@@ -527,8 +527,8 @@ Sindhu suta jag janani tum hi, namo namo jai palan kartri.
 
 Kamala Chalisa jo padhe, kar ke man se dhyan,
 Nishchay hi dhan dhanya ko, paave kripa nidhaan.`,
-    meaning: 'This chalisa venerates Lakshmi, daughter of the ocean (born during Samudra Manthan), consort of Vishnu, describing her various forms as Sita, Durga and Saraswati, and her role as the giver of wealth, grain and prosperity to any home she resides in.',
-    benefits: 'Recited on Fridays, during Diwali and Sharad Purnima, and whenever seeking financial stability and abundance.',
+    meaning: 'This chalisa venerates Lakshmi, daughter of the ocean (born during Samudra Manthan), consort of Vishnu, describing her various forms as Sita, Durga and Saraswati, and her role as the giver of wealth, grain and prosperity to any home she resides in.', meaningHi: 'यह चालीसा समुद्र-पुत्री (समुद्र मंथन के दौरान जन्मी) लक्ष्मी, विष्णु की पत्नी, की वंदना करती है, उनके सीता, दुर्गा और सरस्वती के रूप में विभिन्न रूपों का वर्णन करते हुए, तथा वे जिस भी घर में निवास करती हैं वहां धन, अन्न और समृद्धि प्रदान करने में उनकी भूमिका का वर्णन करते हुए।',
+    benefits: 'Recited on Fridays, during Diwali and Sharad Purnima, and whenever seeking financial stability and abundance.', benefitsHi: 'शुक्रवार को, दिवाली और शरद पूर्णिमा के दौरान, तथा जब भी वित्तीय स्थिरता और प्रचुरता की कामना हो, पाठ किया जाता है।',
   },
   {
     slug: 'saraswati-chalisa',
@@ -617,8 +617,8 @@ Chandravadani veenapani, sphatik maal hans vimani.
 
 Matu Saraswati chalisa, padhe sune chit laay,
 Buddhi vidya vivek dhan, tako mile sadaay.`,
-    meaning: 'This chalisa venerates Saraswati as the source of all knowledge, wisdom and the arts — seated on a lotus, holding a veena and book, riding a swan, and invoked at the beginning of a child\'s education and during Basant Panchami.',
-    benefits: 'Recited before exams, at the start of learning, on Basant Panchami, and by students, writers, musicians and artists seeking clarity and skill.',
+    meaning: 'This chalisa venerates Saraswati as the source of all knowledge, wisdom and the arts — seated on a lotus, holding a veena and book, riding a swan, and invoked at the beginning of a child\'s education and during Basant Panchami.', meaningHi: 'यह चालीसा सरस्वती को समस्त ज्ञान, बुद्धि और कला के स्रोत के रूप में वंदना करती है — कमल पर विराजमान, वीणा और पुस्तक धारण किए, हंस की सवारी करते हुए, और बच्चे की शिक्षा के आरंभ में तथा बसंत पंचमी के दौरान आह्वानित।',
+    benefits: 'Recited before exams, at the start of learning, on Basant Panchami, and by students, writers, musicians and artists seeking clarity and skill.', benefitsHi: 'परीक्षाओं से पहले, अध्ययन के आरंभ में, बसंत पंचमी को, और स्पष्टता व कौशल चाहने वाले विद्यार्थियों, लेखकों, संगीतकारों और कलाकारों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'krishna-chalisa',
@@ -670,8 +670,8 @@ Jai Yashoda sut Nand dulare, jai prabhu bhaktan ke rakhwaare.
 
 Krishna Chalisa jo padhe, prem sahit sukh paay,
 Gopal kripa karahu sada, charanan sheesh navaay.`,
-    meaning: 'This chalisa celebrates Krishna\'s life — from his birth to Devaki and Vasudeva, his childhood in Gokul and Vrindavan (lifting Govardhan hill, subduing the Kaliya serpent), his friendship with Sudama, protecting Draupadi, and imparting the Bhagavad Gita to Arjuna.',
-    benefits: 'Recited daily by Krishna devotees, especially on Janmashtami and Wednesdays, seeking his protection and divine love (prema-bhakti).',
+    meaning: 'This chalisa celebrates Krishna\'s life — from his birth to Devaki and Vasudeva, his childhood in Gokul and Vrindavan (lifting Govardhan hill, subduing the Kaliya serpent), his friendship with Sudama, protecting Draupadi, and imparting the Bhagavad Gita to Arjuna.', meaningHi: 'यह चालीसा कृष्ण के जीवन का उत्सव मनाती है — देवकी और वसुदेव से उनके जन्म से लेकर, गोकुल और वृंदावन में उनके बचपन (गोवर्धन पर्वत उठाना, कालिया सर्प को वश में करना), सुदामा के साथ उनकी मित्रता, द्रौपदी की रक्षा करने, और अर्जुन को भगवद्गीता का उपदेश देने तक।',
+    benefits: 'Recited daily by Krishna devotees, especially on Janmashtami and Wednesdays, seeking his protection and divine love (prema-bhakti).', benefitsHi: 'कृष्ण भक्तों द्वारा प्रतिदिन, विशेष रूप से जन्माष्टमी और बुधवार को, उनकी सुरक्षा और दिव्य प्रेम (प्रेम-भक्ति) की कामना करते हुए पाठ किया जाता है।',
   },
   {
     slug: 'ram-chalisa',
@@ -764,8 +764,8 @@ Jai Avadhesh Dashrath ke jaaye, munivar siddh sakal sukhdaye.
 
 Ram Chalisa jo padhe, hriday dhare vishwas,
 Bhav sagar se paar ho, pooran hoy sab aas.`,
-    meaning: 'This chalisa narrates the full story of Rama — his birth in Ayodhya, marriage to Sita, fourteen years of exile, the abduction of Sita by Ravana, his alliance with Hanuman and Sugriva, the war in Lanka, and his triumphant return as the ideal king (Ram Rajya).',
-    benefits: 'Recited during Ram Navami, Diwali, and daily by devotees seeking righteousness, courage and the removal of hardship through faith in Rama.',
+    meaning: 'This chalisa narrates the full story of Rama — his birth in Ayodhya, marriage to Sita, fourteen years of exile, the abduction of Sita by Ravana, his alliance with Hanuman and Sugriva, the war in Lanka, and his triumphant return as the ideal king (Ram Rajya).', meaningHi: 'यह चालीसा राम की संपूर्ण कथा का वर्णन करती है — अयोध्या में उनका जन्म, सीता से विवाह, चौदह वर्षों का वनवास, रावण द्वारा सीता का हरण, हनुमान और सुग्रीव के साथ उनका गठबंधन, लंका का युद्ध, और आदर्श राजा (राम राज्य) के रूप में उनकी विजयी वापसी।',
+    benefits: 'Recited during Ram Navami, Diwali, and daily by devotees seeking righteousness, courage and the removal of hardship through faith in Rama.', benefitsHi: 'राम नवमी, दिवाली के दौरान, और राम में आस्था के माध्यम से धार्मिकता, साहस और कठिनाई के निवारण की कामना करने वाले भक्तों द्वारा प्रतिदिन पाठ किया जाता है।',
   },
   {
     slug: 'shani-chalisa',
@@ -853,8 +853,8 @@ Chaar bhuja tanu Krishna sharira, dhanush baan gada var dhara.
 
 Shani Chalisa bhakti se, padhe jo nar naari,
 Shani ki kripa use mile, door hoy dukhbhari.`,
-    meaning: 'This chalisa venerates Shani (Saturn), son of Surya and Chhaya, describing his dark form and his role as the impartial giver of karmic results (Karmaphaladata) who tested even great kings like Vikramaditya and Harishchandra.',
-    benefits: 'Recited on Saturdays, during Shani Jayanti, and by those undergoing Sadhesati or Dhaiya to seek relief from Shani\'s afflictions.',
+    meaning: 'This chalisa venerates Shani (Saturn), son of Surya and Chhaya, describing his dark form and his role as the impartial giver of karmic results (Karmaphaladata) who tested even great kings like Vikramaditya and Harishchandra.', meaningHi: 'यह चालीसा सूर्य और छाया के पुत्र शनि की वंदना करती है, उनके श्याम स्वरूप और विक्रमादित्य तथा हरिश्चंद्र जैसे महान राजाओं की भी परीक्षा लेने वाले कर्मफलदाता (कर्म के परिणामों के निष्पक्ष दाता) के रूप में उनकी भूमिका का वर्णन करते हुए।',
+    benefits: 'Recited on Saturdays, during Shani Jayanti, and by those undergoing Sadhesati or Dhaiya to seek relief from Shani\'s afflictions.', benefitsHi: 'शनिवार को, शनि जयंती के दौरान, और साढ़े साती या ढैय्या से गुजर रहे लोगों द्वारा शनि के दुष्प्रभावों से राहत पाने के लिए पाठ किया जाता है।',
   },
   {
     slug: 'sai-chalisa',
@@ -1025,8 +1025,8 @@ Shirdi dham base Bhagwana, sabke tum ho antaryami jaana.
 
 Sai Chalisa jo padhe, prem sahit man laay,
 Sab sankat kat jaay, Sai kripa barsaay.`,
-    meaning: 'This chalisa venerates Shirdi Sai Baba, who lived at the Dwarkamai mosque-temple, taught "Sabka Malik Ek" (one God for all), and is revered by Hindus and Muslims alike for his miracles and compassion toward devotees.',
-    benefits: 'Recited on Thursdays and during Sai Baba\'s Punyatithi (Ramnavami-linked Urus festival), by devotees seeking peace of mind and resolution of hardship.',
+    meaning: 'This chalisa venerates Shirdi Sai Baba, who lived at the Dwarkamai mosque-temple, taught "Sabka Malik Ek" (one God for all), and is revered by Hindus and Muslims alike for his miracles and compassion toward devotees.', meaningHi: 'यह चालीसा शिरडी साईं बाबा की वंदना करती है, जो द्वारकामाई मस्जिद-मंदिर में रहते थे, "सबका मालिक एक" (सभी के लिए एक ईश्वर) का उपदेश देते थे, और अपने चमत्कारों तथा भक्तों के प्रति करुणा के लिए हिंदुओं और मुसलमानों दोनों द्वारा पूजनीय हैं।',
+    benefits: 'Recited on Thursdays and during Sai Baba\'s Punyatithi (Ramnavami-linked Urus festival), by devotees seeking peace of mind and resolution of hardship.', benefitsHi: 'गुरुवार को और साईं बाबा की पुण्यतिथि (रामनवमी से जुड़े उरुस उत्सव) के दौरान, मानसिक शांति और कठिनाइयों के समाधान की कामना करने वाले भक्तों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'kali-chalisa',
@@ -1135,8 +1135,8 @@ Shyamvarna tanu ghor swaroopa, mundmal gal shobhit roopa.
 
 Kali Chalisa bhakti se, padhe jo man laay,
 Sab bhay sankat door hon, maa karuna barsaay.`,
-    meaning: 'This chalisa venerates Kali in her fierce protective form — dark-complexioned, garlanded with skulls, wielding sword and skull-bowl — as the destroyer of the demons Shumbha-Nishumbha and Raktabija, and as the compassionate mother worshipped at Dakshineswar.',
-    benefits: 'Recited during Kali Puja, Navratri, and by devotees seeking protection from fear, negative influences and enemies.',
+    meaning: 'This chalisa venerates Kali in her fierce protective form — dark-complexioned, garlanded with skulls, wielding sword and skull-bowl — as the destroyer of the demons Shumbha-Nishumbha and Raktabija, and as the compassionate mother worshipped at Dakshineswar.', meaningHi: 'यह चालीसा काली को उनके उग्र रक्षात्मक रूप में वंदना करती है — श्याम वर्ण, खोपड़ियों की माला पहने, तलवार और कपाल-पात्र धारण किए — शुंभ-निशुंभ और रक्तबीज राक्षसों की संहारक के रूप में, तथा दक्षिणेश्वर में पूजी जाने वाली करुणामयी मां के रूप में।',
+    benefits: 'Recited during Kali Puja, Navratri, and by devotees seeking protection from fear, negative influences and enemies.', benefitsHi: 'काली पूजा, नवरात्रि के दौरान, और भय, नकारात्मक प्रभावों तथा शत्रुओं से सुरक्षा चाहने वाले भक्तों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'surya-chalisa',
@@ -1222,8 +1222,8 @@ Sapt ashwan rath par savara, Arun sarathi sang tumhara.
 
 Surya Chalisa jo padhe, nitya prati bhakti sujaan,
 Aarogya tej bal pavahi, badhe yash aur maan.`,
-    meaning: 'This chalisa venerates Surya, the sun god, describing his twelve names (Mitra, Ravi, Surya, Bhanu, Divakar and others), his chariot of seven horses, and his role as the giver of health, energy and life to all living beings.',
-    benefits: 'Recited at sunrise, during Chhath Puja and Ratha Saptami, and by those seeking good health, vitality and success.',
+    meaning: 'This chalisa venerates Surya, the sun god, describing his twelve names (Mitra, Ravi, Surya, Bhanu, Divakar and others), his chariot of seven horses, and his role as the giver of health, energy and life to all living beings.', meaningHi: 'यह चालीसा सूर्य देव की वंदना करती है, उनके बारह नामों (मित्र, रवि, सूर्य, भानु, दिवाकर और अन्य), सात घोड़ों वाले उनके रथ, तथा सभी जीवित प्राणियों को स्वास्थ्य, ऊर्जा और जीवन प्रदान करने में उनकी भूमिका का वर्णन करते हुए।',
+    benefits: 'Recited at sunrise, during Chhath Puja and Ratha Saptami, and by those seeking good health, vitality and success.', benefitsHi: 'सूर्योदय के समय, छठ पूजा और रथ सप्तमी के दौरान, तथा अच्छे स्वास्थ्य, ऊर्जा और सफलता चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'bhairav-chalisa',
@@ -1305,8 +1305,8 @@ Shiv swaroop Bhairav avatara, Mahakal tum bhakt ubara.
 
 Bhairav Chalisa jo padhe, bhay bhram hoy vinash,
 Raksha ho sab vipad se, pooran ho sab aas.`,
-    meaning: 'This chalisa venerates Kaal Bhairav, the fierce form of Shiva who serves as guardian (Kotwal) of Kashi (Varanasi), rides a dog, wields a sword and trident, and protects devotees from fear, evil spirits and negative tantric influences.',
-    benefits: 'Recited on Sundays and during Bhairav Ashtami, especially by those seeking protection from fear, black magic or malevolent forces.',
+    meaning: 'This chalisa venerates Kaal Bhairav, the fierce form of Shiva who serves as guardian (Kotwal) of Kashi (Varanasi), rides a dog, wields a sword and trident, and protects devotees from fear, evil spirits and negative tantric influences.', meaningHi: 'यह चालीसा काल भैरव की वंदना करती है, जो शिव के उग्र रूप हैं और काशी (वाराणसी) के रक्षक (कोतवाल) के रूप में सेवा करते हैं, कुत्ते की सवारी करते हैं, तलवार और त्रिशूल धारण करते हैं, तथा भक्तों को भय, दुष्ट आत्माओं और नकारात्मक तांत्रिक प्रभावों से बचाते हैं।',
+    benefits: 'Recited on Sundays and during Bhairav Ashtami, especially by those seeking protection from fear, black magic or malevolent forces.', benefitsHi: 'रविवार को और भैरव अष्टमी के दौरान, विशेष रूप से भय, काला जादू या दुष्ट शक्तियों से सुरक्षा चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'vaishno-devi-chalisa',
@@ -1392,7 +1392,7 @@ Mahakali Mahalakshmi roopa, Mahasaraswati teen swaroopa.
 
 Vaishno Chalisa bhakti se, padhe jo shraddha bhaay,
 Maa ke darshan payenge, manvanchhit phal paay.`,
-    meaning: 'This chalisa venerates Mata Vaishno Devi, who resides on the Trikuta mountains near Katra, embodying Mahakali, Mahalakshmi and Mahasaraswati, and describes the sacred pilgrimage route through Banganga, Ardhkuwari and Bhairon Ghati to her cave shrine.',
-    benefits: 'Recited before and during the Vaishno Devi pilgrimage (yatra), and during Navratri, by devotees seeking the Mother\'s blessings and fulfillment of wishes.',
+    meaning: 'This chalisa venerates Mata Vaishno Devi, who resides on the Trikuta mountains near Katra, embodying Mahakali, Mahalakshmi and Mahasaraswati, and describes the sacred pilgrimage route through Banganga, Ardhkuwari and Bhairon Ghati to her cave shrine.', meaningHi: 'यह चालीसा माता वैष्णो देवी की वंदना करती है, जो कटरा के निकट त्रिकुटा पर्वतों पर निवास करती हैं, महाकाली, महालक्ष्मी और महासरस्वती का अवतार हैं, तथा बाणगंगा, अर्धकुंवारी और भैरों घाटी से होकर उनके गुफा मंदिर तक जाने वाले पवित्र तीर्थ मार्ग का वर्णन करती है।',
+    benefits: 'Recited before and during the Vaishno Devi pilgrimage (yatra), and during Navratri, by devotees seeking the Mother\'s blessings and fulfillment of wishes.', benefitsHi: 'वैष्णो देवी तीर्थयात्रा (यात्रा) से पहले और उसके दौरान, तथा नवरात्रि के दौरान, माता के आशीर्वाद और इच्छाओं की पूर्ति चाहने वाले भक्तों द्वारा पाठ किया जाता है।',
   },
 ];

@@ -61,8 +61,8 @@ Shivam shankaram shambhum-ishanam-ide.
 
 Shivashtakam idam punyam yah pathechchhiva-sannidhau,
 Shivalokam avapnoti Shivena saha modate.`,
-    meaning: 'This ashtakam praises Shiva as the lord of all beings (Jagannath), the great destroyer of time (Mahakala), adorned with a garland of serpents and skulls, residing on Mount Kailash with Parvati (Girindra-atmaja), and as the formless supreme Brahman beyond attributes.',
-    benefits: 'Recited during Shiva worship, Maha Shivaratri, and Mondays, believed to grant residence in Shivaloka and closeness to Shiva when recited near a Shivalinga.',
+    meaning: 'This ashtakam praises Shiva as the lord of all beings (Jagannath), the great destroyer of time (Mahakala), adorned with a garland of serpents and skulls, residing on Mount Kailash with Parvati (Girindra-atmaja), and as the formless supreme Brahman beyond attributes.', meaningHi: 'यह अष्टकम शिव को सभी प्राणियों के स्वामी (जगन्नाथ), काल के महान संहारक (महाकाल), सर्पों और खोपड़ियों की माला से सुशोभित, कैलाश पर्वत पर पार्वती (गिरींद्र-आत्मजा) के साथ निवास करने वाले, और गुणातीत निराकार सर्वोच्च ब्रह्म के रूप में स्तुति करता है।',
+    benefits: 'Recited during Shiva worship, Maha Shivaratri, and Mondays, believed to grant residence in Shivaloka and closeness to Shiva when recited near a Shivalinga.', benefitsHi: 'शिव पूजा, महाशिवरात्रि और सोमवार के दिन पाठ किया जाता है, जिसे शिवलोक में निवास और शिवलिंग के निकट पाठ करने पर शिव से निकटता प्रदान करने वाला माना जाता है।',
   },
   {
     slug: 'ganesha-ashtakam',
@@ -104,8 +104,8 @@ Lambodaram vishalaksham vande'ham gananayakam.
 
 Ganeshashtakam etaddhi yah pathet shrinuyadapi,
 Sarvavighna-vinirmuktah sukhi deerghayureva cha.`,
-    meaning: 'This ashtakam describes Ganesha\'s divine form — single tusk, large body, elephant face, mouse vehicle, and love for modak — while praising him as the remover of obstacles (Vighnavinashaka) and bestower of desired outcomes.',
-    benefits: 'Recited before beginning any new venture and during Ganesh Chaturthi for success, freedom from obstacles, and long life.',
+    meaning: 'This ashtakam describes Ganesha\'s divine form — single tusk, large body, elephant face, mouse vehicle, and love for modak — while praising him as the remover of obstacles (Vighnavinashaka) and bestower of desired outcomes.', meaningHi: 'यह अष्टकम गणेश के दिव्य स्वरूप — एक दंत, विशाल शरीर, गजमुख, मूषक वाहन, और मोदक के प्रति उनके प्रेम — का वर्णन करता है, साथ ही उन्हें बाधाओं के नाशक (विघ्नविनाशक) और वांछित परिणाम प्रदान करने वाले के रूप में स्तुति करता है।',
+    benefits: 'Recited before beginning any new venture and during Ganesh Chaturthi for success, freedom from obstacles, and long life.', benefitsHi: 'किसी भी नए कार्य को आरंभ करने से पहले और गणेश चतुर्थी के दौरान सफलता, बाधाओं से मुक्ति, और दीर्घायु के लिए पाठ किया जाता है।',
   },
   {
     slug: 'lakshmi-ashtakam',
@@ -147,8 +147,8 @@ Shankha-chakra-gadahaste Mahalakshmi namo'stu te.
 
 Mahalakshmyashtakam stotram yah pathed bhaktiman narah,
 Sarvasiddhim avapnoti rajyam prapnoti sarvada.`,
-    meaning: 'Traditionally attributed to Indra, this ashtakam praises Mahalakshmi as the great illusion (Mahamaya), holding conch, discus and mace, seated on Garuda, embodiment of the primordial energy (Adi Shakti), and giver of both worldly enjoyment (bhukti) and liberation (mukti).',
-    benefits: 'Recited on Fridays and during Diwali, believed to grant complete success (sarva siddhi) and prosperity to sincere devotees.',
+    meaning: 'Traditionally attributed to Indra, this ashtakam praises Mahalakshmi as the great illusion (Mahamaya), holding conch, discus and mace, seated on Garuda, embodiment of the primordial energy (Adi Shakti), and giver of both worldly enjoyment (bhukti) and liberation (mukti).', meaningHi: 'परंपरागत रूप से इंद्र द्वारा रचित माना जाने वाला यह अष्टकम महालक्ष्मी को महामाया के रूप में, शंख, चक्र और गदा धारण किए हुए, गरुड़ पर विराजमान, आदि शक्ति के अवतार, तथा भुक्ति (सांसारिक भोग) और मुक्ति दोनों की दाता के रूप में स्तुति करता है।',
+    benefits: 'Recited on Fridays and during Diwali, believed to grant complete success (sarva siddhi) and prosperity to sincere devotees.', benefitsHi: 'शुक्रवार और दिवाली के दौरान पाठ किया जाता है, जिसे निष्ठावान भक्तों को संपूर्ण सफलता (सर्व सिद्धि) और समृद्धि प्रदान करने वाला माना जाता है।',
   },
   {
     slug: 'mahishasura-mardini-ashtakam',
@@ -268,8 +268,8 @@ Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
 ... (21 rhythmically intense verses celebrating Durga's destruction of the buffalo demon Mahishasura, attributed to the poet-devotee tradition of Adi Shankaracharya) ...
 
 Jaya jaya he Mahishasuramardini ramyakapardini shailasute.`,
-    meaning: 'One of the most rhythmically celebrated Sanskrit hymns, this stotram glorifies Durga as the daughter of the mountain (Girinandini) who destroys the buffalo demon Mahishasura, praising her beauty, valor, and role as protector of the three worlds.',
-    benefits: 'Recited during Navratri, especially on Ashtami and Navami, for courage, protection and victory over difficulties, often sung for its powerful rhythmic quality.',
+    meaning: 'One of the most rhythmically celebrated Sanskrit hymns, this stotram glorifies Durga as the daughter of the mountain (Girinandini) who destroys the buffalo demon Mahishasura, praising her beauty, valor, and role as protector of the three worlds.', meaningHi: 'सबसे लयबद्ध रूप से प्रसिद्ध संस्कृत स्तोत्रों में से एक, यह स्तोत्र दुर्गा को पर्वत-पुत्री (गिरिनंदिनी) के रूप में महिमामंडित करता है जो महिषासुर राक्षस का विनाश करती हैं, उनके सौंदर्य, वीरता, और तीनों लोकों की रक्षक के रूप में उनकी भूमिका की स्तुति करते हुए।',
+    benefits: 'Recited during Navratri, especially on Ashtami and Navami, for courage, protection and victory over difficulties, often sung for its powerful rhythmic quality.', benefitsHi: 'नवरात्रि के दौरान, विशेष रूप से अष्टमी और नवमी को, साहस, सुरक्षा और कठिनाइयों पर विजय के लिए पाठ किया जाता है, अक्सर इसकी शक्तिशाली लयबद्ध गुणवत्ता के लिए गाया जाता है।',
   },
   {
     slug: 'hanuman-ashtakam',
@@ -329,8 +329,8 @@ Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
 
 Lal deh lali lase, aru dhari lal langoor,
 Bajra deh danav dalan, jai jai jai kapi soor.`,
-    meaning: 'This ashtakam, composed in a folk style similar to the Hanuman Chalisa, recounts key episodes of Hanuman\'s life — swallowing the sun as an infant, his exile due to a sage\'s curse, his search for Sita, and his role as "Sankatmochan" (remover of troubles).',
-    benefits: 'Recited alongside the Hanuman Chalisa on Tuesdays and Saturdays, especially by those in difficulty, seeking Hanuman\'s protective intervention.',
+    meaning: 'This ashtakam, composed in a folk style similar to the Hanuman Chalisa, recounts key episodes of Hanuman\'s life — swallowing the sun as an infant, his exile due to a sage\'s curse, his search for Sita, and his role as "Sankatmochan" (remover of troubles).', meaningHi: 'हनुमान चालीसा के समान लोक-शैली में रचित यह अष्टकम हनुमान जी के जीवन की प्रमुख घटनाओं — शिशु रूप में सूर्य को निगलना, एक ऋषि के श्राप के कारण उनका वनवास, सीता की खोज, और "संकटमोचन" (संकटों को दूर करने वाले) के रूप में उनकी भूमिका — का वर्णन करता है।',
+    benefits: 'Recited alongside the Hanuman Chalisa on Tuesdays and Saturdays, especially by those in difficulty, seeking Hanuman\'s protective intervention.', benefitsHi: 'मंगलवार और शनिवार को हनुमान चालीसा के साथ पाठ किया जाता है, विशेष रूप से कठिनाई में पड़े लोगों द्वारा, जो हनुमान के सुरक्षात्मक हस्तक्षेप की कामना करते हैं।',
   },
   {
     slug: 'krishna-ashtakam',
@@ -393,8 +393,8 @@ Achyutasyashtakam yah pathed ishtadam
 Prematah pratyaham purushah saspriham,
 Vrittatah sundaram kartrivishvambharam
 Tasya vashyo harirjayate satvaram.`,
-    meaning: 'Composed by Adi Shankaracharya, this ashtakam is a rapid, rhythmic recitation of dozens of names of Krishna and Rama together — Achyuta, Keshava, Damodara, Vasudeva, Madhava, Govinda — reflecting the underlying unity of Vishnu\'s incarnations.',
-    benefits: 'Recited during Janmashtami and by devotees seeking to feel Krishna\'s closeness (his name is said to make Hari come "under the devotee\'s control" through love).',
+    meaning: 'Composed by Adi Shankaracharya, this ashtakam is a rapid, rhythmic recitation of dozens of names of Krishna and Rama together — Achyuta, Keshava, Damodara, Vasudeva, Madhava, Govinda — reflecting the underlying unity of Vishnu\'s incarnations.', meaningHi: 'आदि शंकराचार्य द्वारा रचित, यह अष्टकम कृष्ण और राम के दर्जनों नामों — अच्युत, केशव, दामोदर, वासुदेव, माधव, गोविंद — का तीव्र, लयबद्ध पाठ है, जो विष्णु के अवतारों की अंतर्निहित एकता को दर्शाता है।',
+    benefits: 'Recited during Janmashtami and by devotees seeking to feel Krishna\'s closeness (his name is said to make Hari come "under the devotee\'s control" through love).', benefitsHi: 'जन्माष्टमी के दौरान और उन भक्तों द्वारा पाठ किया जाता है जो कृष्ण की निकटता का अनुभव करना चाहते हैं (कहा जाता है कि उनका नाम प्रेम के माध्यम से हरि को "भक्त के वश में" कर देता है)।',
   },
   {
     slug: 'guru-ashtakam',
@@ -457,8 +457,8 @@ Guror-ashtakam yah pathet punyadehi
 Yatirbhoopatir-brahmachari cha gehi,
 Labhed-vanchhitartham padam brahma-sangyam
 Guror-uktavakye mano yasya lagnam.`,
-    meaning: 'Composed by Adi Shankaracharya, this ashtakam repeatedly asks "what use is it?" of beauty, wealth, fame, family, scholarship and status if the mind is not devoted to the Guru\'s feet — establishing that true fulfillment comes only through surrender to a realized teacher.',
-    benefits: 'Recited on Guru Purnima and by spiritual seekers as a reminder that worldly achievements are meaningless without inner guidance and devotion.',
+    meaning: 'Composed by Adi Shankaracharya, this ashtakam repeatedly asks "what use is it?" of beauty, wealth, fame, family, scholarship and status if the mind is not devoted to the Guru\'s feet — establishing that true fulfillment comes only through surrender to a realized teacher.', meaningHi: 'आदि शंकराचार्य द्वारा रचित, यह अष्टकम बार-बार पूछता है कि यदि मन गुरु के चरणों में समर्पित नहीं है तो सौंदर्य, धन, यश, परिवार, विद्वता और प्रतिष्ठा का "क्या उपयोग है?" — यह स्थापित करते हुए कि सच्ची पूर्णता केवल एक सिद्ध गुरु के प्रति समर्पण से ही प्राप्त होती है।',
+    benefits: 'Recited on Guru Purnima and by spiritual seekers as a reminder that worldly achievements are meaningless without inner guidance and devotion.', benefitsHi: 'गुरु पूर्णिमा को और आध्यात्मिक साधकों द्वारा इस स्मरण के रूप में पाठ किया जाता है कि आंतरिक मार्गदर्शन और भक्ति के बिना सांसारिक उपलब्धियां निरर्थक हैं।',
   },
   {
     slug: 'saraswati-ashtakam',
@@ -503,8 +503,8 @@ Sarvabuddhi-pradam vande Saraswatim varapradam.
 
 Idam stotram pathennityam yah shraddhabhakti-samyutah,
 Vidyavan buddhiman bhooyat sarvashastra-vishardah.`,
-    meaning: 'This ashtakam praises Saraswati as the source of all knowledge — Vedanta, grammar, poetry, logic, music and the sciences — describing her white radiance, her veena and book, and her role as bestower of wisdom to sincere seekers.',
-    benefits: 'Recited by students and scholars, especially before exams and during Basant Panchami, for intellectual clarity and mastery of learning.',
+    meaning: 'This ashtakam praises Saraswati as the source of all knowledge — Vedanta, grammar, poetry, logic, music and the sciences — describing her white radiance, her veena and book, and her role as bestower of wisdom to sincere seekers.', meaningHi: 'यह अष्टकम सरस्वती को समस्त ज्ञान — वेदांत, व्याकरण, काव्य, तर्कशास्त्र, संगीत और विज्ञान — के स्रोत के रूप में स्तुति करता है, उनकी श्वेत आभा, वीणा और पुस्तक, तथा निष्ठावान साधकों को बुद्धि प्रदान करने में उनकी भूमिका का वर्णन करते हुए।',
+    benefits: 'Recited by students and scholars, especially before exams and during Basant Panchami, for intellectual clarity and mastery of learning.', benefitsHi: 'विद्यार्थियों और विद्वानों द्वारा, विशेष रूप से परीक्षाओं से पहले और बसंत पंचमी के दौरान, बौद्धिक स्पष्टता और अध्ययन में निपुणता के लिए पाठ किया जाता है।',
   },
   {
     slug: 'radha-ashtakam',
@@ -566,8 +566,8 @@ Radha paratparatara paripaatu vishwam.
 
 Radhashtakam pathedyastu premabhakti-parayanah,
 Radha-Krishna-prasadena kritartho jayate narah.`,
-    meaning: 'This ashtakam praises Radha as the embodiment of supreme divine love (prema), inseparable from Krishna, describing her lotus-petal eyes, moon-like face, and her role as the highest object of devotion in Gaudiya and Vaishnava traditions.',
-    benefits: 'Recited by Radha-Krishna devotees, especially during Radhashtami and in Vrindavan temples, to cultivate devotional love (bhakti).',
+    meaning: 'This ashtakam praises Radha as the embodiment of supreme divine love (prema), inseparable from Krishna, describing her lotus-petal eyes, moon-like face, and her role as the highest object of devotion in Gaudiya and Vaishnava traditions.', meaningHi: 'यह अष्टकम राधा को सर्वोच्च दिव्य प्रेम (प्रेम) के अवतार के रूप में स्तुति करता है, जो कृष्ण से अविभाज्य हैं, उनकी कमल-पंखुड़ी जैसी आंखों, चंद्रमा-सम मुख, तथा गौड़ीय एवं वैष्णव परंपराओं में भक्ति के सर्वोच्च आधार के रूप में उनकी भूमिका का वर्णन करते हुए।',
+    benefits: 'Recited by Radha-Krishna devotees, especially during Radhashtami and in Vrindavan temples, to cultivate devotional love (bhakti).', benefitsHi: 'राधा-कृष्ण भक्तों द्वारा, विशेष रूप से राधाष्टमी के दौरान और वृंदावन के मंदिरों में, भक्ति-प्रेम विकसित करने के लिए पाठ किया जाता है।',
   },
   {
     slug: 'ayyappa-ashtakam',
@@ -613,8 +613,8 @@ Parvati-hridayanandam Shastaram pranamamyaham.
 
 Ashtakam Shastru-devasya yah pathed bhakti-poorvakam,
 Sarvarishta-vinirmuktah Shastru-sayujyam apnuyat.`,
-    meaning: 'This ashtakam venerates Ayyappa (also called Shasta), son of Shiva and Mohini (an incarnation of Vishnu), lord of Sabarimala and Ponnambalamedu, praising his form seated in meditation, his wisdom of the Vedas, and his role as protector of devotees.',
-    benefits: 'Recited daily by Ayyappa devotees during the Mandala-Makaravilakku pilgrimage season and as part of the 41-day vratam preceding the Sabarimala yatra.',
+    meaning: 'This ashtakam venerates Ayyappa (also called Shasta), son of Shiva and Mohini (an incarnation of Vishnu), lord of Sabarimala and Ponnambalamedu, praising his form seated in meditation, his wisdom of the Vedas, and his role as protector of devotees.', meaningHi: 'यह अष्टकम अयप्पा (जिन्हें शास्ता भी कहा जाता है) की वंदना करता है, जो शिव और मोहिनी (विष्णु का एक अवतार) के पुत्र, सबरीमाला और पोन्नंबलमेडु के स्वामी हैं, ध्यानमग्न बैठी उनकी मुद्रा, वेदों में उनकी विद्वता, और भक्तों के रक्षक के रूप में उनकी भूमिका की स्तुति करते हुए।',
+    benefits: 'Recited daily by Ayyappa devotees during the Mandala-Makaravilakku pilgrimage season and as part of the 41-day vratam preceding the Sabarimala yatra.', benefitsHi: 'अयप्पा भक्तों द्वारा मंडल-मकरविलक्कु तीर्थयात्रा के मौसम में प्रतिदिन, तथा सबरीमाला यात्रा से पूर्व के 41-दिवसीय व्रतम के भाग के रूप में पाठ किया जाता है।',
   },
   {
     slug: 'venkateswara-ashtakam',
@@ -676,7 +676,7 @@ Shri Venkatachalapate tava suprabhatam.
 
 Venkateshashtakam punyam yah pathet prataruthitah,
 Kotijanmarjitam papam tatkshanadeva nashyati.`,
-    meaning: 'This ashtakam, in the tradition of the famous Venkateswara Suprabhatam, praises Lord Venkateswara (Balaji) of Tirumala, describing the seven hills of his abode, his ornaments, and his role as protector who removes fear and grants prosperity.',
-    benefits: 'Recited at dawn (as an awakening hymn) and during pilgrimage to Tirumala Tirupati, believed to remove sins accumulated over many lifetimes.',
+    meaning: 'This ashtakam, in the tradition of the famous Venkateswara Suprabhatam, praises Lord Venkateswara (Balaji) of Tirumala, describing the seven hills of his abode, his ornaments, and his role as protector who removes fear and grants prosperity.', meaningHi: 'प्रसिद्ध वेंकटेश्वर सुप्रभातम की परंपरा में रचित यह अष्टकम तिरुमला के भगवान वेंकटेश्वर (बालाजी) की स्तुति करता है, उनके निवास के सात पहाड़ों, उनके आभूषणों, तथा भय दूर करने और समृद्धि प्रदान करने वाले रक्षक के रूप में उनकी भूमिका का वर्णन करते हुए।',
+    benefits: 'Recited at dawn (as an awakening hymn) and during pilgrimage to Tirumala Tirupati, believed to remove sins accumulated over many lifetimes.', benefitsHi: 'प्रातःकाल (जागरण स्तोत्र के रूप में) और तिरुमला तिरुपति की तीर्थयात्रा के दौरान पाठ किया जाता है, जिसे कई जन्मों के संचित पापों को दूर करने वाला माना जाता है।',
   },
 ];

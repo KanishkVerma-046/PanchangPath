@@ -21,8 +21,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Shivah 2. Maheshwarah 3. Shambhuh 4. Pinaki 5. Shashishekharah 6. Vamadevah 7. Virupakshah 8. Kapardi 9. Neelalohitah 10. Shankarah
 11. Shoolapanih 12. Khatwangi 13. Vishnuvallabhah 14. Shipivishtah 15. Ambikanathah ... (continuing through all 108 names)
 101. Bhaganetrabhit 102. Avyaktah 103. Sahasrakshah 104. Sahasrapat 105. Apavargapradah 106. Anantah 107. Tarakah 108. Parameshwarah.`,
-    meaning: 'This is a list of 108 names (Ashtottara Shatanamavali) of Lord Shiva, each describing a different aspect of his form and nature — from Shambhu (the auspicious one) and Nataraja-like Vamadeva, to Mrityunjaya (conqueror of death) and Parameshwara (the supreme lord).',
-    benefits: 'Recited or used for Archana (offering a flower or bilva leaf with each name) during Shiva puja, especially on Mondays, Pradosh and Maha Shivaratri. Each name may be prefixed with "Om" and suffixed with "Namah" when performing archana.',
+    meaning: 'This is a list of 108 names (Ashtottara Shatanamavali) of Lord Shiva, each describing a different aspect of his form and nature — from Shambhu (the auspicious one) and Nataraja-like Vamadeva, to Mrityunjaya (conqueror of death) and Parameshwara (the supreme lord).', meaningHi: 'यह भगवान शिव के 108 नामों (अष्टोत्तरशतनामावली) की सूची है, जिनमें से प्रत्येक नाम उनके स्वरूप और स्वभाव के एक अलग पक्ष का वर्णन करता है — शंभु (मंगलकारी) और नटराज जैसे वामदेव से लेकर, मृत्युंजय (मृत्यु पर विजयी) और परमेश्वर (सर्वोच्च प्रभु) तक।',
+    benefits: 'Recited or used for Archana (offering a flower or bilva leaf with each name) during Shiva puja, especially on Mondays, Pradosh and Maha Shivaratri. Each name may be prefixed with "Om" and suffixed with "Namah" when performing archana.', benefitsHi: 'शिव पूजा के दौरान, विशेष रूप से सोमवार, प्रदोष और महाशिवरात्रि को, प्रत्येक नाम के साथ फूल या बिल्व पत्र अर्पित करते हुए अर्चना के लिए पाठ या उपयोग किया जाता है। अर्चना करते समय प्रत्येक नाम के आगे "ॐ" और अंत में "नमः" जोड़ा जा सकता है।',
   },
   {
     slug: 'ganesh-ashtottara-shatanamavali',
@@ -44,8 +44,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Gajananah 2. Ganadhyakshah 3. Vighnarajah 4. Vinayakah 5. Dvaimaturah 6. Dvimukhah 7. Pramukhah 8. Sumukhah 9. Kritih 10. Supradipah
 ... (continuing through all 108 names of Ganesha) ...
 101. Umaputrah 102. Skandagrajah 103. Ibhavaktrah 104. Brahmachari 105. Kumaraguruh 106. Jishnuh 107. Ganadhishah 108. Kalyanaguruh.`,
-    meaning: 'This is a list of 108 names of Lord Ganesha, describing his elephant face, mouse vehicle, role as remover of obstacles (Vighnaraja), and his identity as Siddhivinayaka — the giver of success and spiritual accomplishment.',
-    benefits: 'Recited or used for Archana with durva grass or red flowers before beginning any new undertaking, and throughout Ganesh Chaturthi, believed to remove obstacles and bring auspicious outcomes.',
+    meaning: 'This is a list of 108 names of Lord Ganesha, describing his elephant face, mouse vehicle, role as remover of obstacles (Vighnaraja), and his identity as Siddhivinayaka — the giver of success and spiritual accomplishment.', meaningHi: 'यह भगवान गणेश के 108 नामों की सूची है, जो उनके गजमुख, मूषक वाहन, विघ्नों को दूर करने वाले (विघ्नराज) की भूमिका, और सिद्धि तथा आध्यात्मिक उपलब्धि प्रदान करने वाले सिद्धिविनायक के रूप में उनकी पहचान का वर्णन करती है।',
+    benefits: 'Recited or used for Archana with durva grass or red flowers before beginning any new undertaking, and throughout Ganesh Chaturthi, believed to remove obstacles and bring auspicious outcomes.', benefitsHi: 'किसी भी नए कार्य को आरंभ करने से पहले और गणेश चतुर्थी के दौरान दूर्वा घास या लाल फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो बाधाओं को दूर करने और शुभ परिणाम लाने वाला माना जाता है।',
   },
   {
     slug: 'durga-ashtottara-shatanamavali',
@@ -67,8 +67,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Durga 2. Shiva 3. Mahalakshmi 4. Mahagauri 5. Chandi 6. Chandika 7. Chamunda 8. Vaishnavi 9. Varahi 10. Lakshmi
 ... (continuing through all 108 names of Durga, including her nine forms — Navadurga — and ten Mahavidyas) ...
 101. Dhumavati 102. Chhinnamasta 103. Swaha 104. Tara 105. Kali 106. Sarvashaktiswarupini 107. Maheshwari 108. Jagadamba.`,
-    meaning: 'This is a list of 108 names of Goddess Durga, encompassing her many forms — Chandika, Kali, Kaushiki, Kaatyayani, the Navadurgas and Mahavidyas — describing her power to destroy evil and protect the universe.',
-    benefits: 'Recited or used for Archana with red hibiscus (japa) flowers during Navratri, Durga Puja and Fridays, invoking the Divine Mother\'s protection and grace.',
+    meaning: 'This is a list of 108 names of Goddess Durga, encompassing her many forms — Chandika, Kali, Kaushiki, Kaatyayani, the Navadurgas and Mahavidyas — describing her power to destroy evil and protect the universe.', meaningHi: 'यह देवी दुर्गा के 108 नामों की सूची है, जो उनके अनेक रूपों — चंडिका, काली, कौशिकी, कात्यायनी, नवदुर्गा और महाविद्याओं — को समाहित करती है, जो बुराई का नाश करने और ब्रह्मांड की रक्षा करने की उनकी शक्ति का वर्णन करती है।',
+    benefits: 'Recited or used for Archana with red hibiscus (japa) flowers during Navratri, Durga Puja and Fridays, invoking the Divine Mother\'s protection and grace.', benefitsHi: 'नवरात्रि, दुर्गा पूजा और शुक्रवार के दिन लाल गुड़हल (जपा) के फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो दिव्य माता की सुरक्षा और कृपा का आह्वान करता है।',
   },
   {
     slug: 'lakshmi-ashtottara-shatanamavali',
@@ -90,8 +90,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Prakritih 2. Vikritih 3. Vidya 4. Sarvabhutahitaprada 5. Shraddha 6. Vibhutih 7. Surabhih 8. Paramatmika 9. Vachya 10. Padmalaya
 ... (continuing through all 108 names of Lakshmi, drawn from the traditional Lakshmi Ashtottara Shatanamavali) ...
 101. Mahakali 102. Brahmavishnushivatmika 103. Trikalajnanasampanna 104. Bhuvaneshwari 105. Lakshmivilasini 106. Siddhih 107. Mahalakshmih 108. Maheshwari.`,
-    meaning: 'This is a list of 108 names of Goddess Lakshmi, describing her many forms and attributes — as the giver of prosperity, purity, fame, contentment (Tushti), forgiveness (Kshama) and auspiciousness — traditionally used for archana during Sri Sukta recitation.',
-    benefits: 'Recited or used for Archana with lotus flowers on Fridays, during Diwali and Varalakshmi Vratam, invoking wealth, prosperity and well-being.',
+    meaning: 'This is a list of 108 names of Goddess Lakshmi, describing her many forms and attributes — as the giver of prosperity, purity, fame, contentment (Tushti), forgiveness (Kshama) and auspiciousness — traditionally used for archana during Sri Sukta recitation.', meaningHi: 'यह देवी लक्ष्मी के 108 नामों की सूची है, जो उनके अनेक रूपों और गुणों का वर्णन करती है — समृद्धि, पवित्रता, यश, संतोष (तुष्टि), क्षमा और मंगलकारीता की दाता के रूप में — जिसे परंपरागत रूप से श्री सूक्त पाठ के दौरान अर्चना के लिए उपयोग किया जाता है।',
+    benefits: 'Recited or used for Archana with lotus flowers on Fridays, during Diwali and Varalakshmi Vratam, invoking wealth, prosperity and well-being.', benefitsHi: 'शुक्रवार, दिवाली और वरलक्ष्मी व्रतम के दौरान कमल के फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो धन, समृद्धि और कल्याण का आह्वान करता है।',
   },
   {
     slug: 'saraswati-ashtottara-shatanamavali',
@@ -113,8 +113,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Saraswati 2. Mahabhadra 3. Mahamaya 4. Varaprada 5. Shriprada 6. Padmanilaya 7. Padmakshi 8. Padmavaktraga 9. Shivanuja 10. Pustakadhrik
 ... (continuing through all 108 names of Saraswati) ...
 101. Vedamata 102. Vedavidya 103. Sarvada 104. Sarvadaivata 105. Vagdevata 106. Vagishwari 107. Chaturvargaphalaprada 108. Sarveshwari.`,
-    meaning: 'This is a list of 108 names of Goddess Saraswati, describing her as the mother of the Vedas (Vedamata), giver of speech (Vagdevi), and embodiment of knowledge, music and the arts in her many forms.',
-    benefits: 'Recited or used for Archana with white flowers during Basant Panchami and Navratri, and by students seeking clarity of intellect and academic success.',
+    meaning: 'This is a list of 108 names of Goddess Saraswati, describing her as the mother of the Vedas (Vedamata), giver of speech (Vagdevi), and embodiment of knowledge, music and the arts in her many forms.', meaningHi: 'यह देवी सरस्वती के 108 नामों की सूची है, जो उन्हें वेदों की माता (वेदमाता), वाणी की दाता (वाग्देवी), और अपने अनेक रूपों में ज्ञान, संगीत तथा कला के अवतार के रूप में वर्णित करती है।',
+    benefits: 'Recited or used for Archana with white flowers during Basant Panchami and Navratri, and by students seeking clarity of intellect and academic success.', benefitsHi: 'बसंत पंचमी और नवरात्रि के दौरान श्वेत फूलों से अर्चना के लिए, तथा बुद्धि की स्पष्टता और शैक्षणिक सफलता चाहने वाले विद्यार्थियों द्वारा पाठ या उपयोग किया जाता है।',
   },
   {
     slug: 'krishna-ashtottara-shatanamavali',
@@ -136,8 +136,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Krishnah 2. Kamalanathah 3. Vasudevah 4. Sanatanah 5. Vasudevatmajah 6. Punyah 7. Leelamanushavigrahah 8. Shrivatsakaustubhadharah 9. Yashodavatsalah 10. Harih
 ... (continuing through all 108 names of Krishna) ...
 101. Parabrahma 102. Pannagashanavahanah 103. Jalakreedasamasaktagopivastrapaharakah 104. Punyashlokah 105. Tirthakarah 106. Vedavedyah 107. Dayanidhih 108. Sarvatirthatmakah.`,
-    meaning: 'This is a list of 108 names of Lord Krishna, describing his childhood pastimes in Vrindavan, his role in the Mahabharata, his relationship with the Gopis and Radha, and his identity as the Supreme Being (Parabrahma) who imparted the Bhagavad Gita.',
-    benefits: 'Recited or used for Archana with tulsi (basil) leaves during Janmashtami and Wednesdays, cultivating devotional love (bhakti) for Krishna.',
+    meaning: 'This is a list of 108 names of Lord Krishna, describing his childhood pastimes in Vrindavan, his role in the Mahabharata, his relationship with the Gopis and Radha, and his identity as the Supreme Being (Parabrahma) who imparted the Bhagavad Gita.', meaningHi: 'यह भगवान कृष्ण के 108 नामों की सूची है, जो वृंदावन में उनकी बाल-लीलाओं, महाभारत में उनकी भूमिका, गोपियों और राधा के साथ उनके संबंध, तथा भगवद्गीता का उपदेश देने वाले परब्रह्म के रूप में उनकी पहचान का वर्णन करती है।',
+    benefits: 'Recited or used for Archana with tulsi (basil) leaves during Janmashtami and Wednesdays, cultivating devotional love (bhakti) for Krishna.', benefitsHi: 'जन्माष्टमी और बुधवार के दिन तुलसी पत्तों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो कृष्ण के प्रति भक्ति-प्रेम (भक्ति) को विकसित करता है।',
   },
   {
     slug: 'rama-ashtottara-shatanamavali',
@@ -159,8 +159,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Shri Ramah 2. Ramabhadrah 3. Ramachandrah 4. Shashwatah 5. Rajivalochanah 6. Shriman 7. Rajendrah 8. Raghupungavah 9. Janakivallabhah 10. Jaitrah
 ... (continuing through all 108 names of Rama) ...
 101. Sugriveipsitarajyadah 102. Sarvakamapradah 103. Sharanagatavatsalah 104. Adbhutaroopapradarshakah 105. Ramayanakathanayakah 106. Ayodhyapatih 107. Suryavamsharatnah 108. Maryadapurushottamah.`,
-    meaning: 'This is a list of 108 names of Lord Rama, describing his birth as the ideal king (Maryada Purushottam), his exile, his alliance with Hanuman and Sugriva, his war with Ravana, and his role as the seventh avatar of Vishnu.',
-    benefits: 'Recited or used for Archana with lotus or tulsi during Ram Navami and daily prayer, invoking righteousness, courage and devotion.',
+    meaning: 'This is a list of 108 names of Lord Rama, describing his birth as the ideal king (Maryada Purushottam), his exile, his alliance with Hanuman and Sugriva, his war with Ravana, and his role as the seventh avatar of Vishnu.', meaningHi: 'यह भगवान राम के 108 नामों की सूची है, जो आदर्श राजा (मर्यादा पुरुषोत्तम) के रूप में उनके जन्म, उनके वनवास, हनुमान और सुग्रीव के साथ उनके गठबंधन, रावण के साथ उनके युद्ध, और विष्णु के सातवें अवतार के रूप में उनकी भूमिका का वर्णन करती है।',
+    benefits: 'Recited or used for Archana with lotus or tulsi during Ram Navami and daily prayer, invoking righteousness, courage and devotion.', benefitsHi: 'राम नवमी और दैनिक प्रार्थना के दौरान कमल या तुलसी से अर्चना के लिए पाठ या उपयोग किया जाता है, जो धार्मिकता, साहस और भक्ति का आह्वान करता है।',
   },
   {
     slug: 'hanuman-ashtottara-shatanamavali',
@@ -182,8 +182,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Hanuman 2. Anjanisutah 3. Vayuputrah 4. Mahabalah 5. Ramesthah 6. Phalgunasakhah 7. Pingakshah 8. Amitavikramah 9. Udadhikramanah 10. Sitanveshanapanditah
 ... (continuing through all 108 names of Hanuman) ...
 101. Kalyanadayakah 102. Dayasagarah 103. Siddhivinayakah 104. Mahaveerah 105. Sankatamochanahanuman 106. Ramadootah 107. Bhaktarakshakah 108. Mahabalaparakrami.`,
-    meaning: 'This is a list of 108 names of Hanuman, describing his birth, strength, devotion to Rama, his crossing of the ocean, and his role as Sankatmochan (remover of troubles) and eternal (Chiranjeevi) protector of devotees.',
-    benefits: 'Recited or used for Archana with sindoor or red flowers on Tuesdays and Saturdays, invoking courage, protection and freedom from fear.',
+    meaning: 'This is a list of 108 names of Hanuman, describing his birth, strength, devotion to Rama, his crossing of the ocean, and his role as Sankatmochan (remover of troubles) and eternal (Chiranjeevi) protector of devotees.', meaningHi: 'यह हनुमान जी के 108 नामों की सूची है, जो उनके जन्म, शक्ति, राम के प्रति भक्ति, समुद्र पार करने, और संकटमोचन (संकटों को दूर करने वाले) तथा भक्तों के चिरंजीवी रक्षक के रूप में उनकी भूमिका का वर्णन करती है।',
+    benefits: 'Recited or used for Archana with sindoor or red flowers on Tuesdays and Saturdays, invoking courage, protection and freedom from fear.', benefitsHi: 'मंगलवार और शनिवार के दिन सिंदूर या लाल फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो साहस, सुरक्षा और भय से मुक्ति का आह्वान करता है।',
   },
   {
     slug: 'surya-ashtottara-shatanamavali',
@@ -205,8 +205,8 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Suryah 2. Aryama 3. Bhagah 4. Tvashta 5. Pusha 6. Arkah 7. Savita 8. Ravih 9. Gabhastiman 10. Ajah
 ... (continuing through all 108 names of Surya, drawn from traditional Aditya Ashtottara texts) ...
 101. Ekaki 102. Bhagavan 103. Hiranyagarbhah 104. Kalachakrapravartakah 105. Saptasansthanasansthitah 106. Prakasharupah 107. Sarvaduritanashakah 108. Arogyakarakah.`,
-    meaning: 'This is a list of 108 names of Surya, the Sun God, describing his twelve principal forms (the Dvadasha Adityas embedded within the list — Mitra, Ravi, Surya, Bhanu and others) and his role as source of light, health and the cycle of time.',
-    benefits: 'Recited or used for Archana with red flowers at sunrise, during Chhath Puja and Ratha Saptami, invoking health, vitality and success.',
+    meaning: 'This is a list of 108 names of Surya, the Sun God, describing his twelve principal forms (the Dvadasha Adityas embedded within the list — Mitra, Ravi, Surya, Bhanu and others) and his role as source of light, health and the cycle of time.', meaningHi: 'यह सूर्य देव के 108 नामों की सूची है, जो उनके बारह प्रमुख रूपों (सूची में सम्मिलित द्वादश आदित्य — मित्र, रवि, सूर्य, भानु और अन्य) तथा प्रकाश, स्वास्थ्य और काल-चक्र के स्रोत के रूप में उनकी भूमिका का वर्णन करती है।',
+    benefits: 'Recited or used for Archana with red flowers at sunrise, during Chhath Puja and Ratha Saptami, invoking health, vitality and success.', benefitsHi: 'सूर्योदय के समय, छठ पूजा और रथ सप्तमी के दौरान लाल फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो स्वास्थ्य, ऊर्जा और सफलता का आह्वान करता है।',
   },
   {
     slug: 'shani-ashtottara-shatanamavali',
@@ -228,7 +228,7 @@ export const NAMAVALIS: DevotionalItem[] = [
     transliteration: `1. Shanaishcharah 2. Shantah 3. Sarvabheeshtapradayakah 4. Sharanyah 5. Varenyah 6. Sarveshah 7. Saumyah 8. Suravanditah 9. Mandah 10. Suryaputrah
 ... (continuing through all 108 names of Shani) ...
 101. Maharaudrah 102. Sarvasantapaharakah 103. Nishthurah 104. Nyayakarakah 105. Prajapalakah 106. Sarvajanapriyah 107. Saurashtranathah 108. Neelachchhatrah.`,
-    meaning: 'This is a list of 108 names of Shani (Saturn), describing him as the impartial judge of karma (Nyayadhish), son of Surya, associated with discipline, delay, and justice, and as the one who tests and ultimately rewards perseverance.',
-    benefits: 'Recited or used for Archana with black sesame or blue flowers on Saturdays, during Shani Jayanti and Sadhesati, invoking relief from hardship and karmic justice.',
+    meaning: 'This is a list of 108 names of Shani (Saturn), describing him as the impartial judge of karma (Nyayadhish), son of Surya, associated with discipline, delay, and justice, and as the one who tests and ultimately rewards perseverance.', meaningHi: 'यह शनि (शनि ग्रह) के 108 नामों की सूची है, जो उन्हें कर्म के निष्पक्ष न्यायाधीश (न्यायाधीश), सूर्यपुत्र, अनुशासन, विलंब और न्याय से जुड़े, तथा दृढ़ता की परीक्षा लेकर अंततः पुरस्कृत करने वाले के रूप में वर्णित करती है।',
+    benefits: 'Recited or used for Archana with black sesame or blue flowers on Saturdays, during Shani Jayanti and Sadhesati, invoking relief from hardship and karmic justice.', benefitsHi: 'शनिवार, शनि जयंती और साढ़े साती के दौरान काले तिल या नीले फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो कठिनाई से राहत और कर्मिक न्याय का आह्वान करता है।',
   },
 ];

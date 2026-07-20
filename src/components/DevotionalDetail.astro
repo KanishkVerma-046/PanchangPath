@@ -121,14 +121,14 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
       {item.meaning && (
         <div class="dv-section">
           <h2 class="dv-section-title" data-hi={meaningLabelHi}>{meaningLabel}</h2>
-          <p class="dv-body">{item.meaning}</p>
+          <p class="dv-body" data-hi={item.meaningHi}>{item.meaning}</p>
         </div>
       )}
 
       {item.benefits && (
         <div class="dv-section">
           <h2 class="dv-section-title" data-hi={benefitsLabelHi}>{benefitsLabel}</h2>
-          <p class="dv-body">{item.benefits}</p>
+          <p class="dv-body" data-hi={item.benefitsHi}>{item.benefits}</p>
         </div>
       )}
 

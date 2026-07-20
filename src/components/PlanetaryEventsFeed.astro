@@ -25,6 +25,20 @@ function typeLabel(type: string): string {
   }
 }
 
+function typeLabelHi(type: string): string {
+  switch (type) {
+    case 'sign_transit':     return 'गोचर';
+    case 'retrograde_start': return 'वक्री';
+    case 'direct_start':     return 'मार्गी';
+    case 'conjunction':      return 'युति';
+    case 'opposition':       return 'प्रतियुति';
+    case 'solar_eclipse':    return 'सूर्य ग्रहण';
+    case 'lunar_eclipse':    return 'चंद्र ग्रहण';
+    case 'solstice_equinox': return 'अयनांत / विषुव';
+    default:                 return 'घटना';
+  }
+}
+
 function typeClass(type: string): string {
   switch (type) {
     case 'sign_transit':      return 'pef-tag-transit';
@@ -46,7 +60,7 @@ function typeClass(type: string): string {
     <!-- Header -->
     <div class="pef-header">
       <div>
-        <p class="caption-mono" style="color:var(--color-mute);margin:0 0 6px;">Upcoming</p>
+        <p class="caption-mono" data-hi="आगामी" style="color:var(--color-mute);margin:0 0 6px;">Upcoming</p>
         <h2 class="pef-title">
           <span class="en-text">Planetary Events</span>
           <span class="hi-text">ग्रह घटनाएँ</span>
@@ -71,6 +85,7 @@ function typeClass(type: string): string {
             href={`/events/${ev.id}`}
             class={`pef-row ${isToday ? 'pef-today' : ''}`}
             role="listitem"
+            data-event-id={ev.id}
           >
             <!-- Timeline connector -->
             <div class="pef-timeline">
@@ -85,12 +100,12 @@ function typeClass(type: string): string {
             <!-- Content -->
             <div class="pef-content">
               <div class="pef-meta">
-                <span class={`pef-tag ${typeClass(ev.type)}`}>
+                <span class={`pef-tag ${typeClass(ev.type)}`} data-hi={typeLabelHi(ev.type)}>
                   {typeLabel(ev.type)}
                 </span>
                 <span class={`pef-countdown ${isToday ? 'pef-now' : isSoon ? 'pef-soon' : ''}`}>
                   {isToday && <span class="pef-pulse" aria-hidden="true"></span>}
-                  {countdown}
+                  <span class="pef-countdown-text">{countdown}</span>
                 </span>
               </div>
 
@@ -99,7 +114,7 @@ function typeClass(type: string): string {
                 <span class="hi-text">{ev.titleHi}</span>
               </p>
               <p class="pef-datetime">{datetime}</p>
-              <p class="pef-desc">{ev.description}</p>
+              <p class="pef-desc" data-hi={ev.descriptionHi}>{ev.description}</p>
             </div>
 
             <!-- Arrow -->
@@ -119,17 +134,17 @@ function typeClass(type: string): string {
   </div>
 </section>
 
-<script>
+<script define:vars={{ eventsData: displayed.map(ev => ({ id: ev.id, dateISO: ev.dateISO, timeUTC: ev.timeUTC })) }}>
   // ── Scroll-in reveal: slide-up + fade-in, staggered 60ms per row ──
   (function () {
-    const rows = Array.from(document.querySelectorAll<HTMLElement>('.pef-row'));
+    const rows = Array.from(document.querySelectorAll('.pef-row'));
     if (!rows.length) return;
     rows.forEach((el, i) => { el.dataset.revealIndex = String(i); });
 
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        const el = entry.target as HTMLElement;
+        const el = entry.target;
         const idx = Number(el.dataset.revealIndex || '0');
         el.style.transitionDelay = (idx * 60) + 'ms';
         el.classList.add('pef-visible');
@@ -139,6 +154,49 @@ function typeClass(type: string): string {
 
     rows.forEach((el) => observer.observe(el));
   })();
+
+  // ── Live Hindi-aware countdown ──
+  // Mirrors the formatCountdown() pattern in events/index.astro and events/[id].astro
+  // so this homepage widget's countdown badges also flip to Hindi on langchange
+  // instead of staying frozen in whatever language the page built in.
+  function formatCountdown(daysAway, hindi) {
+    if (!hindi) {
+      if (daysAway === 0) return 'Today';
+      if (daysAway === 1) return 'Tomorrow';
+      if (daysAway < 7)   return `${daysAway} Days`;
+      if (daysAway < 30)  return `${Math.floor(daysAway / 7)}w ${daysAway % 7}d`;
+      const months = Math.floor(daysAway / 30);
+      const rem = daysAway % 30;
+      return rem > 0 ? `${months}m ${rem}d` : `${months} Month${months > 1 ? 's' : ''}`;
+    }
+    if (daysAway === 0) return 'आज';
+    if (daysAway === 1) return 'कल';
+    if (daysAway < 7)   return `${daysAway} दिन`;
+    if (daysAway < 30)  return `${Math.floor(daysAway / 7)} सप्ताह ${daysAway % 7} दिन`;
+    const months = Math.floor(daysAway / 30);
+    const rem = daysAway % 30;
+    return rem > 0 ? `${months} माह ${rem} दिन` : `${months} माह`;
+  }
+
+  const byId = {};
+  for (const ev of eventsData) byId[ev.id] = ev;
+  let pefHindi = localStorage.getItem('pp-lang') === 'hi';
+
+  function pefUpdateRows() {
+    document.querySelectorAll('.pef-row[data-event-id]').forEach((row) => {
+      const ev = byId[row.dataset.eventId];
+      if (!ev) return;
+      const eventMs = Date.parse(ev.dateISO + 'T00:00:00Z') + ev.timeUTC * 3600 * 1000;
+      const daysAway = Math.round((eventMs - Date.now()) / 86400000);
+      const text = row.querySelector('.pef-countdown-text');
+      if (text) text.textContent = formatCountdown(daysAway, pefHindi);
+    });
+  }
+  pefUpdateRows();
+  document.addEventListener('langchange', (e) => {
+    pefHindi = e.detail.langCode === 'hi';
+    pefUpdateRows();
+  });
 </script>
 
 <style>

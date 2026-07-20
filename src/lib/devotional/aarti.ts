@@ -56,8 +56,8 @@ Shraddha bhakti badhao, santan ki seva.
 
 Shri Jagdish ji ki aarti, jo koi nar gaave,
 Kahat Shivanand Swami, manvanchhit phal paave.`,
-    meaning: 'Composed by Pandit Shraddha Ram Phillauri, this is the most widely sung aarti in Hindu households — addressed to Lord Vishnu (Jagdish, "Lord of the Universe"). It praises him as the sustainer and protector of all beings who removes the sorrows of devotees the moment they remember him.',
-    benefits: 'Sung at the close of any puja regardless of the deity worshipped, as Vishnu is considered the preserver of all creation. Especially recited on Ekadashi, Vaikuntha Chaturdashi and Thursday (Vishnu\'s day) evenings.',
+    meaning: 'Composed by Pandit Shraddha Ram Phillauri, this is the most widely sung aarti in Hindu households — addressed to Lord Vishnu (Jagdish, "Lord of the Universe"). It praises him as the sustainer and protector of all beings who removes the sorrows of devotees the moment they remember him.', meaningHi: 'पंडित श्रद्धा राम फिल्लौरी द्वारा रचित, यह हिंदू घरों में सबसे व्यापक रूप से गाई जाने वाली आरती है — भगवान विष्णु (जगदीश, "ब्रह्मांड के स्वामी") को संबोधित। यह उन्हें सभी प्राणियों के पालनकर्ता और रक्षक के रूप में स्तुति करती है जो स्मरण करते ही भक्तों के दुखों को दूर कर देते हैं।',
+    benefits: 'Sung at the close of any puja regardless of the deity worshipped, as Vishnu is considered the preserver of all creation. Especially recited on Ekadashi, Vaikuntha Chaturdashi and Thursday (Vishnu\'s day) evenings.', benefitsHi: 'जिस भी देवता की पूजा की जाए, किसी भी पूजा के समापन पर गाई जाती है, क्योंकि विष्णु को संपूर्ण सृष्टि का पालनकर्ता माना जाता है। विशेष रूप से एकादशी, वैकुंठ चतुर्दशी और गुरुवार (विष्णु के दिन) की संध्या को पाठ की जाती है।',
   },
   {
     slug: 'aarti-kunj-bihari-ki',
@@ -91,8 +91,8 @@ Gagan so suman raasi barse, baje murchang madhur mridang.
 
 Jahan te prakat bhai Ganga, katat mal harat malanga,
 Charan chhooi agh khandan haari, Aarti Kunj Bihari ki.`,
-    meaning: 'Composed by Swami Shraddhanand, this aarti describes Krishna as "Kunj Bihari" — the one who wanders and plays in the groves of Vrindavan. It vividly paints his form: the peacock-feather crown, the flute at his lips, the Vaijayanti garland, and his divine dance (Raas Leela) with the gopis.',
-    benefits: 'Sung every evening in Krishna and Vaishnava temples, especially at Vrindavan, Mathura and Dwarka. Widely recited during Janmashtami celebrations.',
+    meaning: 'Composed by Swami Shraddhanand, this aarti describes Krishna as "Kunj Bihari" — the one who wanders and plays in the groves of Vrindavan. It vividly paints his form: the peacock-feather crown, the flute at his lips, the Vaijayanti garland, and his divine dance (Raas Leela) with the gopis.', meaningHi: 'स्वामी श्रद्धानंद द्वारा रचित, यह आरती कृष्ण को "कुंज बिहारी" — वृंदावन के कुंजों में विहार और क्रीड़ा करने वाले — के रूप में वर्णित करती है। यह उनके स्वरूप का जीवंत चित्रण करती है: मोर पंख का मुकुट, अधरों पर बांसुरी, वैजयंती माला, और गोपियों के साथ उनकी दिव्य रास लीला।',
+    benefits: 'Sung every evening in Krishna and Vaishnava temples, especially at Vrindavan, Mathura and Dwarka. Widely recited during Janmashtami celebrations.', benefitsHi: 'कृष्ण और वैष्णव मंदिरों में प्रतिदिन शाम को, विशेष रूप से वृंदावन, मथुरा और द्वारका में गाई जाती है। जन्माष्टमी उत्सव के दौरान व्यापक रूप से पाठ की जाती है।',
   },
   {
     slug: 'jai-ganesh-deva',
@@ -133,8 +133,8 @@ Laddu-an ka bhog lage, sant karein seva.
 
 Andhan ko aankh det, kodhin ko kaaya,
 Baanjhan ko putra det, nirdhan ko maaya.`,
-    meaning: 'Composed by Vaikunthanath Pandit and set to a widely loved tune, this aarti hails Ganesha as the compassionate, single-tusked, four-armed son of Shiva and Parvati. It describes offerings of betel leaf, flowers and modak/laddu, and praises his power to grant sight to the blind, health to the sick, and prosperity to the poor.',
-    benefits: 'Sung at the start of any puja, since Ganesha is worshipped first (Prathama Pujya) to remove obstacles. Central to Ganesh Chaturthi celebrations every evening for 10 days.',
+    meaning: 'Composed by Vaikunthanath Pandit and set to a widely loved tune, this aarti hails Ganesha as the compassionate, single-tusked, four-armed son of Shiva and Parvati. It describes offerings of betel leaf, flowers and modak/laddu, and praises his power to grant sight to the blind, health to the sick, and prosperity to the poor.', meaningHi: 'वैकुंठनाथ पंडित द्वारा रचित और एक व्यापक रूप से प्रिय धुन में निबद्ध, यह आरती गणेश को शिव और पार्वती के करुणामय, एक-दंत, चतुर्भुज पुत्र के रूप में नमन करती है। यह पान के पत्ते, फूल और मोदक/लड्डू के भोग का वर्णन करती है, तथा अंधों को दृष्टि, बीमारों को स्वास्थ्य, और गरीबों को समृद्धि प्रदान करने की उनकी शक्ति की स्तुति करती है।',
+    benefits: 'Sung at the start of any puja, since Ganesha is worshipped first (Prathama Pujya) to remove obstacles. Central to Ganesh Chaturthi celebrations every evening for 10 days.', benefitsHi: 'किसी भी पूजा के आरंभ में गाई जाती है, क्योंकि गणेश की पूजा बाधाओं को दूर करने के लिए सबसे पहले (प्रथम पूज्य) की जाती है। गणेश चतुर्थी उत्सव के दौरान प्रतिदिन शाम को 10 दिनों तक केंद्रीय भूमिका निभाती है।',
   },
   {
     slug: 'jai-ambe-gauri',
@@ -203,8 +203,8 @@ Dhoomra vilochan naina, nishidin madmati.
 
 Chand Mund sanhare, Shonit beej hare,
 Madhu Kaitabh dou maare, sur bhay door kare.`,
-    meaning: 'Composed by Pandit Shraddha Ram Phillauri, this aarti glorifies Goddess Durga (Ambe/Gauri) in her fierce and compassionate forms — riding a lion, wielding the sword and skull-bowl, and destroying the demons Mahishasura, Shumbha-Nishumbha, Chanda-Munda and Raktabija.',
-    benefits: 'Sung every evening during Navratri and in Devi temples throughout the year. Considered essential to conclude any Durga Puja or Devi worship.',
+    meaning: 'Composed by Pandit Shraddha Ram Phillauri, this aarti glorifies Goddess Durga (Ambe/Gauri) in her fierce and compassionate forms — riding a lion, wielding the sword and skull-bowl, and destroying the demons Mahishasura, Shumbha-Nishumbha, Chanda-Munda and Raktabija.', meaningHi: 'पंडित श्रद्धा राम फिल्लौरी द्वारा रचित, यह आरती देवी दुर्गा (अंबे/गौरी) को उनके उग्र और करुणामय रूपों में महिमामंडित करती है — सिंह पर सवार, तलवार और कपाल-पात्र धारण किए, तथा महिषासुर, शुंभ-निशुंभ, चंड-मुंड और रक्तबीज राक्षसों का विनाश करते हुए।',
+    benefits: 'Sung every evening during Navratri and in Devi temples throughout the year. Considered essential to conclude any Durga Puja or Devi worship.', benefitsHi: 'नवरात्रि के दौरान प्रतिदिन शाम को और वर्ष भर देवी मंदिरों में गाई जाती है। किसी भी दुर्गा पूजा या देवी उपासना के समापन के लिए आवश्यक मानी जाती है।',
   },
   {
     slug: 'om-jai-shiv-omkara',
@@ -243,8 +243,8 @@ Hansasan garudasan vrishvahan saje.
 
 Kar ke madhya kamandalu chakra trishuldhari,
 Sukhkari dukhhari jagpalankari.`,
-    meaning: 'Composed by Pandit Shraddha Ram Phillauri, this aarti describes Shiva as Omkara — the primordial sound and unity of Brahma, Vishnu and Shiva. It describes his multiple faces and forms, his trident, the crescent moon on his crown, and his role as the one who gives comfort and removes suffering.',
-    benefits: 'Sung every Monday (Shiva\'s day), during Shravan month, Maha Shivaratri, and at the close of any Shiva puja or Rudrabhishek.',
+    meaning: 'Composed by Pandit Shraddha Ram Phillauri, this aarti describes Shiva as Omkara — the primordial sound and unity of Brahma, Vishnu and Shiva. It describes his multiple faces and forms, his trident, the crescent moon on his crown, and his role as the one who gives comfort and removes suffering.', meaningHi: 'पंडित श्रद्धा राम फिल्लौरी द्वारा रचित, यह आरती शिव को ओंकार — ब्रह्मा, विष्णु और शिव की आदिम ध्वनि और एकता — के रूप में वर्णित करती है। यह उनके अनेक मुखों और रूपों, उनके त्रिशूल, मुकुट पर अर्धचंद्र, तथा सांत्वना देने और दुख दूर करने में उनकी भूमिका का वर्णन करती है।',
+    benefits: 'Sung every Monday (Shiva\'s day), during Shravan month, Maha Shivaratri, and at the close of any Shiva puja or Rudrabhishek.', benefitsHi: 'प्रत्येक सोमवार (शिव का दिन), श्रावण मास, महाशिवरात्रि के दौरान, और किसी भी शिव पूजा या रुद्राभिषेक के समापन पर गाई जाती है।',
   },
   {
     slug: 'aarti-kije-hanuman-lala-ki',
@@ -278,8 +278,8 @@ Anjani putra maha baldai, santan ke prabhu sada sahai.
 
 Sur nar muni aarti utaren, jai jai jai Hanuman uchaaren,
 Kanchan thaar kapoor lau chhai, aarti karat Anjana mai.`,
-    meaning: 'Composed by Goswami Tulsidas, this aarti praises Hanuman as the destroyer of evil, son of Anjani, and mighty devotee whose strength shakes mountains. It recounts his burning of Lanka, his fetching of the Sanjeevani herb to save Lakshmana, and the protection he offers his devotees.',
-    benefits: 'Sung every Tuesday and Saturday (Hanuman\'s days), during Hanuman Jayanti, and whenever protection from fear, evil spirits or obstacles is sought.',
+    meaning: 'Composed by Goswami Tulsidas, this aarti praises Hanuman as the destroyer of evil, son of Anjani, and mighty devotee whose strength shakes mountains. It recounts his burning of Lanka, his fetching of the Sanjeevani herb to save Lakshmana, and the protection he offers his devotees.', meaningHi: 'गोस्वामी तुलसीदास द्वारा रचित, यह आरती हनुमान को बुराई के संहारक, अंजनी के पुत्र, और पर्वतों को हिला देने वाली शक्ति के महान भक्त के रूप में स्तुति करती है। यह लंका दहन, लक्ष्मण को बचाने के लिए संजीवनी जड़ी-बूटी लाने, और अपने भक्तों को प्रदान की जाने वाली सुरक्षा का वर्णन करती है।',
+    benefits: 'Sung every Tuesday and Saturday (Hanuman\'s days), during Hanuman Jayanti, and whenever protection from fear, evil spirits or obstacles is sought.', benefitsHi: 'प्रत्येक मंगलवार और शनिवार (हनुमान के दिन), हनुमान जयंती के दौरान, और जब भी भय, दुष्ट आत्माओं या बाधाओं से सुरक्षा चाही जाती है, गाई जाती है।',
   },
   {
     slug: 'om-jai-lakshmi-mata',
@@ -318,8 +318,8 @@ Surya Chandrama dhyavat, Narad Rishi gaata.
 
 Jis ghar mein tum rahti, tanh sab sadgun aata,
 Sab sambhav ho jaata, man nahi ghabrata.`,
-    meaning: 'Composed by Pandit Shraddha Ram Phillauri, this aarti hails Lakshmi, goddess of wealth and prosperity, as consort of Vishnu and the mother of the universe. It describes her presence bringing all virtues and good fortune into a home.',
-    benefits: 'Central to Diwali (especially Lakshmi Puja night), Dhanteras, and Friday worship. Sung whenever seeking prosperity and well-being.',
+    meaning: 'Composed by Pandit Shraddha Ram Phillauri, this aarti hails Lakshmi, goddess of wealth and prosperity, as consort of Vishnu and the mother of the universe. It describes her presence bringing all virtues and good fortune into a home.', meaningHi: 'पंडित श्रद्धा राम फिल्लौरी द्वारा रचित, यह आरती धन और समृद्धि की देवी लक्ष्मी को विष्णु की पत्नी और ब्रह्मांड की माता के रूप में नमन करती है। यह वर्णन करती है कि उनकी उपस्थिति घर में सभी गुण और सौभाग्य लाती है।',
+    benefits: 'Central to Diwali (especially Lakshmi Puja night), Dhanteras, and Friday worship. Sung whenever seeking prosperity and well-being.', benefitsHi: 'दिवाली (विशेष रूप से लक्ष्मी पूजा की रात), धनतेरस, और शुक्रवार की पूजा में केंद्रीय भूमिका निभाती है। जब भी समृद्धि और कल्याण चाहा जाता है, गाई जाती है।',
   },
   {
     slug: 'jai-saraswati-mata',
@@ -355,8 +355,8 @@ Sohai shubh hans savari, atul tej tumhari.
 
 Baaye kar mein veena, daaye kar mein mala,
 Sheesh mukut mani sohai, gal motiyan mala.`,
-    meaning: 'This aarti venerates Saraswati, goddess of knowledge, music and the arts. It describes her moon-like face, lotus seat, swan mount, veena (lute) in one hand and japa mala in the other, and prays for the light of wisdom to dispel ignorance.',
-    benefits: 'Sung during Basant Panchami (Saraswati Puja), before starting education or exams, and at the opening of schools, libraries and music/art performances.',
+    meaning: 'This aarti venerates Saraswati, goddess of knowledge, music and the arts. It describes her moon-like face, lotus seat, swan mount, veena (lute) in one hand and japa mala in the other, and prays for the light of wisdom to dispel ignorance.', meaningHi: 'यह आरती ज्ञान, संगीत और कला की देवी सरस्वती की वंदना करती है। यह उनके चंद्रमा-सम मुख, कमल आसन, हंस वाहन, एक हाथ में वीणा और दूसरे में जप माला का वर्णन करती है, तथा अज्ञान को दूर करने के लिए बुद्धि के प्रकाश की प्रार्थना करती है।',
+    benefits: 'Sung during Basant Panchami (Saraswati Puja), before starting education or exams, and at the opening of schools, libraries and music/art performances.', benefitsHi: 'बसंत पंचमी (सरस्वती पूजा) के दौरान, शिक्षा या परीक्षा शुरू करने से पहले, और स्कूलों, पुस्तकालयों तथा संगीत/कला प्रदर्शनों के उद्घाटन पर गाई जाती है।',
   },
   {
     slug: 'jai-santoshi-mata',
@@ -407,8 +407,8 @@ Sat asat ka saathi, tu hi rakhwari.
 
 Shukravaar ko tera, vrat jo koi karta,
 Maa bigdi baat banave, sankat sab harta.`,
-    meaning: 'This aarti honors Santoshi Maa, the goddess of contentment, worshipped especially by women. It celebrates her as protector of her devotees\' honor and remover of hardship for those who observe her Friday fast.',
-    benefits: 'Sung during the 16-Friday Santoshi Maa Vrat and at the conclusion of Friday worship.',
+    meaning: 'This aarti honors Santoshi Maa, the goddess of contentment, worshipped especially by women. It celebrates her as protector of her devotees\' honor and remover of hardship for those who observe her Friday fast.', meaningHi: 'यह आरती संतोष की देवी संतोषी माता को सम्मानित करती है, जिनकी विशेष रूप से महिलाओं द्वारा पूजा की जाती है। यह उन्हें अपने भक्तों के सम्मान की रक्षक और शुक्रवार का व्रत रखने वालों की कठिनाइयों को दूर करने वाली के रूप में मनाती है।',
+    benefits: 'Sung during the 16-Friday Santoshi Maa Vrat and at the conclusion of Friday worship.', benefitsHi: '16-शुक्रवार संतोषी माता व्रत के दौरान और शुक्रवार की पूजा के समापन पर गाई जाती है।',
   },
   {
     slug: 'aarti-shri-ramchandra-ji-ki',
@@ -435,8 +435,8 @@ Rajat Raghukul-kamal-divakar, hast dhare shar dhanu aur tuneer.
 
 Neel saroruh-nayan, manohar, nar-tanu-dhar tribhuvan-pati soi,
 Bhrata Lakhan veer sang sobhit, anand-kand bhav-bhay-bhoi.`,
-    meaning: 'This aarti, drawn in style from the Ramcharitmanas tradition, glorifies Lord Rama seated on his jewelled throne with Sita, holding his bow and quiver, accompanied by his devoted brother Lakshmana — the remover of the deep fear of worldly existence.',
-    benefits: 'Sung during Ram Navami, Diwali (Rama\'s return to Ayodhya), Vivah Panchami, and daily evening aarti in Rama temples.',
+    meaning: 'This aarti, drawn in style from the Ramcharitmanas tradition, glorifies Lord Rama seated on his jewelled throne with Sita, holding his bow and quiver, accompanied by his devoted brother Lakshmana — the remover of the deep fear of worldly existence.', meaningHi: 'रामचरितमानस परंपरा की शैली में रचित यह आरती भगवान राम को सीता के साथ अपने रत्नजड़ित सिंहासन पर विराजमान, धनुष और तरकश धारण किए, अपने समर्पित भाई लक्ष्मण के साथ — सांसारिक अस्तित्व के गहन भय को दूर करने वाले — के रूप में महिमामंडित करती है।',
+    benefits: 'Sung during Ram Navami, Diwali (Rama\'s return to Ayodhya), Vivah Panchami, and daily evening aarti in Rama temples.', benefitsHi: 'राम नवमी, दिवाली (अयोध्या को राम की वापसी), विवाह पंचमी के दौरान, और राम मंदिरों में प्रतिदिन शाम की आरती में गाई जाती है।',
   },
   {
     slug: 'om-jai-surya-bhagwan',
@@ -483,8 +483,8 @@ Udit hot Himgiri se, karte nitya prasthaan.
 
 Tej roop Bhaskar tum, kamal divakar naam,
 Andhkaar ko harte, karte jag kalyaan.`,
-    meaning: 'This aarti venerates Surya, the Sun God, who rides a chariot of seven horses driven by Aruna, dispelling darkness and sustaining all life, crops and vegetation on earth.',
-    benefits: 'Sung during Chhath Puja, Makar Sankranti, Ratha Saptami, and at sunrise while offering Arghya (water offering) to the sun.',
+    meaning: 'This aarti venerates Surya, the Sun God, who rides a chariot of seven horses driven by Aruna, dispelling darkness and sustaining all life, crops and vegetation on earth.', meaningHi: 'यह आरती सूर्य देव की वंदना करती है, जो अरुण द्वारा संचालित सात घोड़ों के रथ पर सवार होकर, अंधकार को दूर करते हैं और पृथ्वी पर सभी जीवन, फसलों और वनस्पति का पोषण करते हैं।',
+    benefits: 'Sung during Chhath Puja, Makar Sankranti, Ratha Saptami, and at sunrise while offering Arghya (water offering) to the sun.', benefitsHi: 'छठ पूजा, मकर संक्रांति, रथ सप्तमी के दौरान, और सूर्योदय के समय सूर्य को अर्घ्य (जल की भेंट) अर्पित करते समय गाई जाती है।',
   },
   {
     slug: 'aarti-shri-kali-ji-ki',
@@ -523,8 +523,8 @@ Gal mein mund ki mala, bhaktan ko harshaaye.
 
 Shumbh Nishumbh sanhaare, Raktabeej ko maare,
 Chand Mund ka naash kiya, dushton ko sanhaare.`,
-    meaning: 'This aarti honors Kali, the fierce form of the Divine Mother who destroys evil (Shumbha-Nishumbha, Raktabija, Chanda-Munda) and protects her devotees, wearing a garland of skulls and wielding a sword as the primordial power (Adi Shakti).',
-    benefits: 'Sung during Kali Puja (Diwali night in Bengal), Navratri, and by devotees seeking protection from fear and negative influences.',
+    meaning: 'This aarti honors Kali, the fierce form of the Divine Mother who destroys evil (Shumbha-Nishumbha, Raktabija, Chanda-Munda) and protects her devotees, wearing a garland of skulls and wielding a sword as the primordial power (Adi Shakti).', meaningHi: 'यह आरती काली को सम्मानित करती है, दिव्य माता का उग्र रूप जो बुराई (शुंभ-निशुंभ, रक्तबीज, चंड-मुंड) का विनाश करती हैं और अपने भक्तों की रक्षा करती हैं, खोपड़ियों की माला पहने और आदि शक्ति के रूप में तलवार धारण किए।',
+    benefits: 'Sung during Kali Puja (Diwali night in Bengal), Navratri, and by devotees seeking protection from fear and negative influences.', benefitsHi: 'काली पूजा (बंगाल में दिवाली की रात), नवरात्रि के दौरान, और भय तथा नकारात्मक प्रभावों से सुरक्षा चाहने वाले भक्तों द्वारा गाई जाती है।',
   },
   {
     slug: 'aarti-radha-ji-ki',
@@ -556,8 +556,8 @@ Krishna sang raas rachayo, prem ki gali.
 
 Radhe naam japat hi, Krishna milan ho jaaye,
 Radha naam sumiran se, sab sankat mit jaaye.`,
-    meaning: 'This aarti honors Radha, the beloved of Krishna and embodiment of divine love (prema-bhakti), daughter of Vrishabhanu, raised in Barsana, whose name is considered inseparable from Krishna\'s.',
-    benefits: 'Sung in Radha-Krishna temples every evening, and especially during Radhashtami and Janmashtami celebrations.',
+    meaning: 'This aarti honors Radha, the beloved of Krishna and embodiment of divine love (prema-bhakti), daughter of Vrishabhanu, raised in Barsana, whose name is considered inseparable from Krishna\'s.', meaningHi: 'यह आरती राधा को सम्मानित करती है, कृष्ण की प्रिया और दिव्य प्रेम (प्रेम-भक्ति) की अवतार, वृषभानु की पुत्री, बरसाना में पली-बढ़ी, जिनका नाम कृष्ण से अभिन्न माना जाता है।',
+    benefits: 'Sung in Radha-Krishna temples every evening, and especially during Radhashtami and Janmashtami celebrations.', benefitsHi: 'राधा-कृष्ण मंदिरों में प्रतिदिन शाम को, और विशेष रूप से राधाष्टमी और जन्माष्टमी उत्सवों के दौरान गाई जाती है।',
   },
   {
     slug: 'sai-baba-aarti',
@@ -596,8 +596,8 @@ Bhakt hriday-ketaki, vikasit tya prasanna.
 
 Fite sanshaya-jaal, durit ten aatoni,
 Sai sarva sharanya, vishwase namana jodoni.`,
-    meaning: 'Composed originally in Marathi, this aarti of Shirdi Sai Baba describes him as the giver of comfort and bliss whose feet grant rest to all beings, and whose grace dissolves doubt and destroys sin for those who take refuge in him.',
-    benefits: 'Sung twice daily at Sai temples (morning Kakad Aarti and evening Dhoop Aarti), and on Thursdays, the day especially associated with Sai Baba.',
+    meaning: 'Composed originally in Marathi, this aarti of Shirdi Sai Baba describes him as the giver of comfort and bliss whose feet grant rest to all beings, and whose grace dissolves doubt and destroys sin for those who take refuge in him.', meaningHi: 'मूल रूप से मराठी में रचित, शिरडी साईं बाबा की यह आरती उन्हें सांत्वना और आनंद देने वाले के रूप में वर्णित करती है जिनके चरण सभी प्राणियों को विश्राम प्रदान करते हैं, और जिनकी कृपा शरण लेने वालों के संदेह को दूर करती है और पाप का नाश करती है।',
+    benefits: 'Sung twice daily at Sai temples (morning Kakad Aarti and evening Dhoop Aarti), and on Thursdays, the day especially associated with Sai Baba.', benefitsHi: 'साईं मंदिरों में प्रतिदिन दो बार (प्रातः काकड़ आरती और शाम की धूप आरती) गाई जाती है, तथा गुरुवार को, जो साईं बाबा से विशेष रूप से जुड़ा दिन है।',
   },
   {
     slug: 'khatu-shyam-aarti',
@@ -640,8 +640,8 @@ Lakhdatar tumhi ho, sankatmochan pyare.
 
 Barbarik naam tera, danveer kehlaaye,
 Sheesh daan kiya prabhu ko, Krishna ne vardaan paaye.`,
-    meaning: 'This aarti honors Khatu Shyam ji, worshipped as Barbarika, the grandson of Bhima, who offered his head in sacrifice to Krishna during the Mahabharata war and was blessed to be worshipped in Kali Yuga as "Shyam" — known as "Haare ka Sahara" (support of the hopeless).',
-    benefits: 'Sung daily at Khatu temples, especially during the Falgun Mela at Khatu Nagri (Rajasthan), and by devotees seeking relief from difficult circumstances.',
+    meaning: 'This aarti honors Khatu Shyam ji, worshipped as Barbarika, the grandson of Bhima, who offered his head in sacrifice to Krishna during the Mahabharata war and was blessed to be worshipped in Kali Yuga as "Shyam" — known as "Haare ka Sahara" (support of the hopeless).', meaningHi: 'यह आरती खाटू श्याम जी को सम्मानित करती है, जिनकी बर्बरीक के रूप में पूजा की जाती है, भीम के पौत्र, जिन्होंने महाभारत युद्ध के दौरान कृष्ण को अपने सिर का बलिदान अर्पित किया था और कलियुग में "श्याम" के रूप में पूजित होने का आशीर्वाद पाया — जिन्हें "हारे का सहारा" के नाम से जाना जाता है।',
+    benefits: 'Sung daily at Khatu temples, especially during the Falgun Mela at Khatu Nagri (Rajasthan), and by devotees seeking relief from difficult circumstances.', benefitsHi: 'खाटू मंदिरों में प्रतिदिन, विशेष रूप से खाटू नगरी (राजस्थान) के फाल्गुन मेले के दौरान, और कठिन परिस्थितियों से राहत चाहने वाले भक्तों द्वारा गाई जाती है।',
   },
   {
     slug: 'vaishno-devi-aarti',
@@ -688,8 +688,8 @@ Teenon roop mein shobhit, tu hi Brahmaswaroopa.
 
 Pavan Putra Hanuman tere, dwaar khade rakhwaari,
 Bhakton ko darshan deti, chadh ke pahaadi saari.`,
-    meaning: 'This aarti honors Mata Vaishno Devi, who resides as a self-manifested rock form (pindi) in a cave shrine on the Trikuta mountains, embodying the combined power of Mahakali, Mahalakshmi and Mahasaraswati, guarded by Bhairon and Hanuman.',
-    benefits: 'Sung during the pilgrimage (yatra) to the Vaishno Devi shrine in Jammu, and in her temples across India, especially during Navratri.',
+    meaning: 'This aarti honors Mata Vaishno Devi, who resides as a self-manifested rock form (pindi) in a cave shrine on the Trikuta mountains, embodying the combined power of Mahakali, Mahalakshmi and Mahasaraswati, guarded by Bhairon and Hanuman.', meaningHi: 'यह आरती माता वैष्णो देवी को सम्मानित करती है, जो त्रिकुटा पर्वतों पर एक गुफा मंदिर में स्वयं-प्रकट शिला रूप (पिंडी) के रूप में निवास करती हैं, महाकाली, महालक्ष्मी और महासरस्वती की संयुक्त शक्ति का अवतार, भैरों और हनुमान द्वारा रक्षित।',
+    benefits: 'Sung during the pilgrimage (yatra) to the Vaishno Devi shrine in Jammu, and in her temples across India, especially during Navratri.', benefitsHi: 'जम्मू में वैष्णो देवी मंदिर की तीर्थयात्रा (यात्रा) के दौरान, और भारत भर के उनके मंदिरों में, विशेष रूप से नवरात्रि के दौरान गाई जाती है।',
   },
   {
     slug: 'ayyappa-swamy-aarti',
@@ -719,8 +719,8 @@ Sabarimala ke vaasi swami, Manikanth tera naam.
 
 Vrat tap sanyam dhaaran karke, swami tere bhakt pukaare,
 Ayyappa teri sharan mein aakar, sab sankat taare.`,
-    meaning: 'This aarti venerates Lord Ayyappa, born of the union of Shiva and Vishnu (as Mohini), who resides at Sabarimala beyond the eighteen sacred steps on the banks of the Pamba river. Devotees observe strict 41-day vratam before the pilgrimage.',
-    benefits: 'Sung by Ayyappa devotees (Ayyappa Swamis) during the Mandala-Makaravilakku pilgrimage season and at Ayyappa temples.',
+    meaning: 'This aarti venerates Lord Ayyappa, born of the union of Shiva and Vishnu (as Mohini), who resides at Sabarimala beyond the eighteen sacred steps on the banks of the Pamba river. Devotees observe strict 41-day vratam before the pilgrimage.', meaningHi: 'यह आरती भगवान अयप्पा की वंदना करती है, जो शिव और विष्णु (मोहिनी रूप में) के मिलन से जन्मे, जो पंबा नदी के तट पर अठारह पवित्र सीढ़ियों से परे सबरीमाला में निवास करते हैं। भक्त तीर्थयात्रा से पहले कठोर 41-दिवसीय व्रतम रखते हैं।',
+    benefits: 'Sung by Ayyappa devotees (Ayyappa Swamis) during the Mandala-Makaravilakku pilgrimage season and at Ayyappa temples.', benefitsHi: 'अयप्पा भक्तों (अयप्पा स्वामियों) द्वारा मंडल-मकरविलक्कु तीर्थयात्रा के मौसम में और अयप्पा मंदिरों में गाई जाती है।',
   },
   {
     slug: 'navgraha-aarti',
@@ -771,7 +771,7 @@ Janampatri mein baithe, phal shubh ashubh dikhaaye.
 
 Navgrah shanti karo prabhu, dosh sabhi har leeje,
 Sukh shanti samriddhi dekar, kripa drishti kar deeje.`,
-    meaning: 'This aarti invokes the nine celestial bodies of Jyotish — Surya, Chandra, Mangal, Budh, Guru, Shukra, Shani, Rahu and Ketu — praying for peace from their afflictions (graha dosha) and for their combined blessings of intellect, prosperity and justice.',
-    benefits: 'Sung during Navgraha Shanti Puja, Navgraha Homam, and at Navgraha shrines within Shiva and Vishnu temples to pacify malefic planetary influences.',
+    meaning: 'This aarti invokes the nine celestial bodies of Jyotish — Surya, Chandra, Mangal, Budh, Guru, Shukra, Shani, Rahu and Ketu — praying for peace from their afflictions (graha dosha) and for their combined blessings of intellect, prosperity and justice.', meaningHi: 'यह आरती ज्योतिष के नौ खगोलीय पिंडों — सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र, शनि, राहु और केतु — का आह्वान करती है, उनके दुष्प्रभावों (ग्रह दोष) से शांति की तथा बुद्धि, समृद्धि और न्याय के उनके संयुक्त आशीर्वाद की प्रार्थना करते हुए।',
+    benefits: 'Sung during Navgraha Shanti Puja, Navgraha Homam, and at Navgraha shrines within Shiva and Vishnu temples to pacify malefic planetary influences.', benefitsHi: 'नवग्रह शांति पूजा, नवग्रह हवन के दौरान, तथा शिव और विष्णु मंदिरों में नवग्रह मंदिरों में अशुभ ग्रहीय प्रभावों को शांत करने के लिए गाई जाती है।',
   },
 ];

@@ -125,7 +125,7 @@ function monthLabel(key: string): string {
                   <p class="ev-name en-text">{ev.title}</p>
                   <p class="ev-name hi-text">{ev.titleHi}</p>
                   <p class="ev-dt">{datetime}</p>
-                  <p class="ev-blurb">{ev.description}</p>
+                  <p class="ev-blurb" data-hi={ev.descriptionHi}>{ev.description}</p>
                 </div>
                 <span class="ev-arrow" aria-hidden="true">›</span>
               </a>

@@ -16,7 +16,7 @@ const { festivals, today } = Astro.props;
     <!-- Header -->
     <div class="ff-header">
       <div>
-        <p class="caption-mono" style="color:var(--color-mute);margin:0 0 6px;">Coming up</p>
+        <p class="caption-mono" data-hi="आने वाले" style="color:var(--color-mute);margin:0 0 6px;">Coming up</p>
         <h2 class="ff-title">
           <span class="en-text">Festivals &amp; Vrats</span>
           <span class="hi-text">त्योहार &amp; व्रत</span>
@@ -56,7 +56,7 @@ const { festivals, today } = Astro.props;
                   {isToday && <span class="ff-dot" aria-hidden="true"></span>}
                   {countdown}
                 </span>
-                <span class={`ff-type ff-type-${f.type}`}>
+                <span class={`ff-type ff-type-${f.type}`} data-hi={f.type === 'major' ? '✦ प्रमुख' : f.type === 'vrat' ? 'व्रत' : 'क्षेत्रीय'}>
                   {f.type === 'major' ? '✦ Major' : f.type === 'vrat' ? 'Vrat' : 'Regional'}
                 </span>
               </div>
@@ -69,7 +69,7 @@ const { festivals, today } = Astro.props;
               <p class="ff-date">{dateLabel}</p>
 
               <!-- Description -->
-              <p class="ff-desc">{f.description}</p>
+              <p class="ff-desc" data-hi={f.descriptionHi}>{f.description}</p>
             </div>
           </a>
         );

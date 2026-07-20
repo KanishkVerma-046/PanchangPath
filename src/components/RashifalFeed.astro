@@ -14,7 +14,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
     <!-- Section header -->
     <div class="rf-header">
       <div>
-        <p class="caption-mono" style="color:var(--color-mute);margin:0 0 6px;">Jyotish · Astrology</p>
+        <p class="caption-mono" data-hi="ज्योतिष · खगोल विद्या" style="color:var(--color-mute);margin:0 0 6px;">Jyotish · Astrology</p>
         <h2 class="rf-title">
           <span class="en-text">Today's Rashifal</span>
           <span class="hi-text" style="display:none;">आज का राशिफल</span>
@@ -24,10 +24,10 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
       <div class="rf-header-right">
         <!-- Period tabs -->
         <div class="rf-period-tabs" role="tablist" aria-label="Rashifal period">
-          <a href="/rashifal?period=daily" class="rf-tab rf-tab-active">Daily</a>
-          <a href="/rashifal?period=weekly" class="rf-tab">Weekly</a>
-          <a href="/rashifal?period=monthly" class="rf-tab">Monthly</a>
-          <a href="/rashifal?period=yearly" class="rf-tab">Yearly</a>
+          <a href="/rashifal?period=daily" class="rf-tab rf-tab-active" data-hi="दैनिक">Daily</a>
+          <a href="/rashifal?period=weekly" class="rf-tab" data-hi="साप्ताहिक">Weekly</a>
+          <a href="/rashifal?period=monthly" class="rf-tab" data-hi="मासिक">Monthly</a>
+          <a href="/rashifal?period=yearly" class="rf-tab" data-hi="वार्षिक">Yearly</a>
         </div>
         <a href="/rashifal" class="rf-more-link">
           <span class="en-text">All Rashis →</span>
@@ -59,7 +59,8 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
                   <p class="rf-rashi-name hi-text" style="display:none;">{rashi.nameHi}</p>
                   <p class="rf-rashi-en">{rashi.english}</p>
                 </a>
-                <span class="rf-lord-badge">{rashi.lord}</span>
+                <span class="rf-lord-badge en-text">{rashi.lord}</span>
+                <span class="rf-lord-badge hi-text" style="display:none;">{rashi.lordHi}</span>
               </div>
               <p class="rf-prediction rf-prediction-short">{short}</p>
               {isTruncated && <p class="rf-prediction rf-prediction-full" hidden>{prediction}</p>}
@@ -108,10 +109,11 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
               id="name-input"
               class="rf-input"
               placeholder="Enter first name…"
+              data-hi-placeholder="पहला नाम दर्ज करें…"
               maxlength="40"
               autocomplete="off"
             />
-            <button class="rf-find-btn" id="name-find-btn">Find</button>
+            <button class="rf-find-btn" id="name-find-btn" data-hi="खोजें">Find</button>
           </div>
           <p class="rf-finder-result" id="name-result" hidden></p>
         </div>
@@ -127,7 +129,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
           </p>
           <div class="rf-finder-input-row">
             <input type="date" id="dob-input" class="rf-input" />
-            <button class="rf-find-btn" id="dob-find-btn">Find</button>
+            <button class="rf-find-btn" id="dob-find-btn" data-hi="खोजें">Find</button>
           </div>
           <p class="rf-finder-result" id="dob-result" hidden></p>
         </div>
@@ -138,6 +140,12 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
 </section>
 
 <script>
+// ─── Language ────────────────────────────────────────────────────────────────
+// Mirrors the applyPageLang() pattern used by rashifal/index.astro: Header.astro's
+// global [data-hi] swap only fires once per langchange, so JS-generated strings
+// (expand/collapse label, finder result text) need their own isHindi check.
+let rfIsHindi = localStorage.getItem('pp-lang') === 'hi';
+
 // ─── Prediction expand/collapse ─────────────────────────────────────────────
 document.getElementById('rashifal-grid')?.addEventListener('click', (e) => {
   const btn = (e.target as Element).closest<HTMLElement>('.rf-expand-btn');
@@ -150,8 +158,12 @@ document.getElementById('rashifal-grid')?.addEventListener('click', (e) => {
   if (full) full.hidden = wasExpanded;
   btn.setAttribute('aria-expanded', String(!wasExpanded));
   btn.classList.toggle('expanded', !wasExpanded);
-  const label = btn.querySelector('.rf-expand-label');
-  if (label) label.textContent = wasExpanded ? 'Read more' : 'Read less';
+  const label = btn.querySelector<HTMLElement>('.rf-expand-label');
+  if (label) {
+    label.textContent = rfIsHindi
+      ? (wasExpanded ? 'और पढ़ें' : 'कम पढ़ें')
+      : (wasExpanded ? 'Read more' : 'Read less');
+  }
 });
 
 // ─── Name-to-Rashi lookup ─────────────────────────────────────────────────
@@ -208,23 +220,25 @@ function findByDate(dateStr: string): string {
 function showResult(el: HTMLElement, rashi: string) {
   const hi = RASHI_HI[rashi] ?? '';
   const id = RASHI_ID[rashi] ?? rashi.toLowerCase();
-  el.innerHTML = `Your Rashi is <strong>${rashi} (${hi})</strong>. <a href="/rashifal/${id}" style="color:var(--color-saffron-deep);text-decoration:none;font-weight:600;">View prediction →</a>`;
+  const label = rfIsHindi ? 'आपकी राशि है' : 'Your Rashi is';
+  const linkText = rfIsHindi ? 'भविष्यवाणी देखें →' : 'View prediction →';
+  el.innerHTML = `${label} <strong>${rashi} (${hi})</strong>. <a href="/rashifal/${id}" style="color:var(--color-saffron-deep);text-decoration:none;font-weight:600;">${linkText}</a>`;
   el.hidden = false;
 }
 
 document.getElementById('name-find-btn')?.addEventListener('click', () => {
   const val = (document.getElementById('name-input') as HTMLInputElement)?.value ?? '';
   const result = document.getElementById('name-result') as HTMLElement;
-  if (!val.trim()) { result.textContent = 'Please enter a name.'; result.hidden = false; return; }
+  if (!val.trim()) { result.textContent = rfIsHindi ? 'कृपया एक नाम दर्ज करें।' : 'Please enter a name.'; result.hidden = false; return; }
   const rashi = findByName(val);
   if (rashi) showResult(result, rashi);
-  else { result.textContent = 'Could not determine Rashi from this name. Try the birth date tool.'; result.hidden = false; }
+  else { result.textContent = rfIsHindi ? 'इस नाम से राशि निर्धारित नहीं हो सकी। जन्म तिथि टूल आज़माएं।' : 'Could not determine Rashi from this name. Try the birth date tool.'; result.hidden = false; }
 });
 
 document.getElementById('dob-find-btn')?.addEventListener('click', () => {
   const val = (document.getElementById('dob-input') as HTMLInputElement)?.value ?? '';
   const result = document.getElementById('dob-result') as HTMLElement;
-  if (!val) { result.textContent = 'Please select a date.'; result.hidden = false; return; }
+  if (!val) { result.textContent = rfIsHindi ? 'कृपया एक तिथि चुनें।' : 'Please select a date.'; result.hidden = false; return; }
   const rashi = findByDate(val);
   showResult(result, rashi);
 });
@@ -235,6 +249,26 @@ document.getElementById('name-input')?.addEventListener('keydown', (e) => {
 document.getElementById('dob-input')?.addEventListener('keydown', (e) => {
   if ((e as KeyboardEvent).key === 'Enter') document.getElementById('dob-find-btn')?.click();
 });
+
+// ── Hindi UI coverage ──
+// Header.astro's global [data-hi] listener already swaps this component's static
+// text; this just keeps the JS-generated strings (expand label, finder results,
+// placeholder) in sync with the same langchange event.
+function rfApplyExpandLabels() {
+  document.querySelectorAll<HTMLElement>('.rf-expand-btn').forEach(btn => {
+    const label = btn.querySelector<HTMLElement>('.rf-expand-label');
+    const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+    if (label) label.textContent = rfIsHindi ? (isExpanded ? 'कम पढ़ें' : 'और पढ़ें') : (isExpanded ? 'Read less' : 'Read more');
+  });
+}
+document.addEventListener('langchange', (e: Event) => {
+  const evt = e as CustomEvent;
+  rfIsHindi = evt.detail.langCode === 'hi';
+  const nameInput = document.getElementById('name-input') as HTMLInputElement | null;
+  if (nameInput) nameInput.placeholder = rfIsHindi ? (nameInput.dataset.hiPlaceholder || '') : 'Enter first name…';
+  rfApplyExpandLabels();
+});
+rfApplyExpandLabels();
 </script>
 
 <style>

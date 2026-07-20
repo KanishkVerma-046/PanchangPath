@@ -13,14 +13,14 @@
           <div class="vc-live-wrap">
             <div class="live-pulse"></div>
             <div class="live-pulse-dot"></div>
-            <span class="caption-mono vc-badge-txt">Vedic Time</span>
+            <span class="caption-mono vc-badge-txt" data-hi="वैदिक समय">Vedic Time</span>
           </div>
           <p class="vc-city" id="vc-city">—</p>
         </div>
         <!-- 60 / 30 Ghati mode toggle -->
         <div class="vc-seg" role="group" aria-label="Ghati clock style">
-          <button class="vc-seg-btn active" data-mode="60" aria-pressed="true">60-Ghati</button>
-          <button class="vc-seg-btn" data-mode="30" aria-pressed="false">30-Ghati</button>
+          <button class="vc-seg-btn active" data-mode="60" aria-pressed="true" data-hi="60-घटी">60-Ghati</button>
+          <button class="vc-seg-btn" data-mode="30" aria-pressed="false" data-hi="30-घटी">30-Ghati</button>
         </div>
       </div>
 
@@ -74,7 +74,7 @@
 
           <!-- Gregorian secondary -->
           <div class="vc-greg-row">
-            <span class="caption-mono" style="color:var(--color-mute);font-size:10px;letter-spacing:0.08em;">GREGORIAN</span>
+            <span class="caption-mono" data-hi="ग्रेगोरियन" style="color:var(--color-mute);font-size:10px;letter-spacing:0.08em;">GREGORIAN</span>
             <span class="vc-greg" id="vc-greg">—</span>
           </div>
 
@@ -88,7 +88,7 @@
             </div>
             <div class="vc-bar-stamps">
               <span id="vc-sr-lbl" style="color:var(--color-mute);">—</span>
-              <span style="color:var(--color-mute);">Noon</span>
+              <span style="color:var(--color-mute);" data-hi="दोपहर">Noon</span>
               <span id="vc-ss-lbl" style="color:var(--color-mute);">—</span>
             </div>
           </div>
@@ -98,40 +98,40 @@
         <!-- RIGHT: info panel -->
         <div class="vc-info-panel">
 
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 12px;">Unit Equivalences</p>
+          <p class="caption-mono" data-hi="इकाई समतुल्यता" style="color:var(--color-mute);margin:0 0 12px;">Unit Equivalences</p>
           <div class="vc-eq-list">
             <div class="vc-eq-row">
-              <span class="vc-eq-name">1 Ghati</span>
+              <span class="vc-eq-name" data-hi="1 घटी">1 Ghati</span>
               <span class="vc-eq-val" id="eq-ghati">= 24 min</span>
             </div>
             <div class="vc-eq-row">
-              <span class="vc-eq-name">1 Pal</span>
+              <span class="vc-eq-name" data-hi="1 पल">1 Pal</span>
               <span class="vc-eq-val" id="eq-pal">= 24 sec</span>
             </div>
             <div class="vc-eq-row">
-              <span class="vc-eq-name">1 Vipal</span>
+              <span class="vc-eq-name" data-hi="1 विपल">1 Vipal</span>
               <span class="vc-eq-val" id="eq-vipal">= 0.4 sec</span>
             </div>
             <div class="vc-eq-row">
-              <span class="vc-eq-name">1 Day</span>
+              <span class="vc-eq-name" data-hi="1 दिन">1 Day</span>
               <span class="vc-eq-val" id="eq-day">= 60 Ghati</span>
             </div>
           </div>
 
           <div class="divider" style="margin:16px 0;"></div>
 
-          <p class="caption-mono" style="color:var(--color-mute);margin:0 0 12px;">Solar Times</p>
+          <p class="caption-mono" data-hi="सौर समय" style="color:var(--color-mute);margin:0 0 12px;">Solar Times</p>
           <div class="vc-eq-list">
             <div class="vc-eq-row">
-              <span class="vc-eq-name">Sunrise</span>
+              <span class="vc-eq-name" data-hi="सूर्योदय">Sunrise</span>
               <span class="vc-eq-val" id="vc-sr-val">—</span>
             </div>
             <div class="vc-eq-row">
-              <span class="vc-eq-name">Sunset</span>
+              <span class="vc-eq-name" data-hi="सूर्यास्त">Sunset</span>
               <span class="vc-eq-val" id="vc-ss-val">—</span>
             </div>
             <div class="vc-eq-row">
-              <span class="vc-eq-name">Day Length</span>
+              <span class="vc-eq-name" data-hi="दिन की अवधि">Day Length</span>
               <span class="vc-eq-val" id="vc-daylen">—</span>
             </div>
           </div>
@@ -158,6 +158,7 @@ let vcSsMins = 1080;    // sunset in minutes from midnight (default 6:00 PM)
 let vcMode: 60 | 30 = 60;
 let vcSrFmt = "06:00 AM";
 let vcSsFmt = "06:00 PM";
+let vcIsHindi = false;
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 function vcPad(n: number): string { return String(Math.max(0, Math.floor(n))).padStart(2, '0'); }
@@ -240,8 +241,14 @@ function vcTick() {
 
   // Period note
   const isDay = nowSecs >= srSecs && nowSecs < ssSecs;
-  const since = isDay ? ("sunrise " + vcSrFmt) : (nowSecs >= ssSecs ? ("sunset " + vcSsFmt) : "midnight");
-  vcSet("vc-period", period + " elapsed since " + since);
+  if (vcIsHindi) {
+    const periodHi = period === "daytime" ? "दिन" : period === "nighttime" ? "रात" : "व्यतीत";
+    const sinceHi = isDay ? ("सूर्योदय " + vcSrFmt) : (nowSecs >= ssSecs ? ("सूर्यास्त " + vcSsFmt) : "मध्यरात्रि");
+    vcSet("vc-period", sinceHi + " से " + periodHi + " व्यतीत");
+  } else {
+    const since = isDay ? ("sunrise " + vcSrFmt) : (nowSecs >= ssSecs ? ("sunset " + vcSsFmt) : "midnight");
+    vcSet("vc-period", period + " elapsed since " + since);
+  }
 
   // Gregorian time
   const ap = h < 12 ? "AM" : "PM";
@@ -279,24 +286,45 @@ function vcTick() {
 
   // Equivalence panel
   if (vcMode === 60) {
-    vcSet("eq-ghati", "= 24 min");
-    vcSet("eq-pal",   "= 24 sec");
-    vcSet("eq-vipal", "= 0.4 sec");
-    vcSet("eq-day",   "= 60 Ghati");
-    vcSet("vc-explainer",
-      "In the 60-Ghati system each Ghati has a fixed duration of 24 minutes. " +
-      "The Vedic day begins at sunrise and counts 60 equal Ghatis back to the following sunrise.");
+    if (vcIsHindi) {
+      vcSet("eq-ghati", "= 24 मिनट");
+      vcSet("eq-pal",   "= 24 सेकंड");
+      vcSet("eq-vipal", "= 0.4 सेकंड");
+      vcSet("eq-day",   "= 60 घटी");
+      vcSet("vc-explainer",
+        "60-घटी प्रणाली में प्रत्येक घटी की अवधि स्थिर रूप से 24 मिनट होती है। " +
+        "वैदिक दिन सूर्योदय से शुरू होता है और अगले सूर्योदय तक 60 बराबर घटियां गिनता है।");
+    } else {
+      vcSet("eq-ghati", "= 24 min");
+      vcSet("eq-pal",   "= 24 sec");
+      vcSet("eq-vipal", "= 0.4 sec");
+      vcSet("eq-day",   "= 60 Ghati");
+      vcSet("vc-explainer",
+        "In the 60-Ghati system each Ghati has a fixed duration of 24 minutes. " +
+        "The Vedic day begins at sunrise and counts 60 equal Ghatis back to the following sunrise.");
+    }
   } else {
     const gMin   = (ghatiSecs / 60).toFixed(1);
     const pSec   = palSecs.toFixed(1);
     const vpSec  = (palSecs / 60).toFixed(2);
-    vcSet("eq-ghati", "≈ " + gMin + " min (" + period + ")");
-    vcSet("eq-pal",   "≈ " + pSec + " sec");
-    vcSet("eq-vipal", "≈ " + vpSec + " sec");
-    vcSet("eq-day",   "= 30 day + 30 night");
-    vcSet("vc-explainer",
-      "In the 30-Ghati system, daytime (sunrise to sunset) and nighttime each have 30 Ghatis " +
-      "of variable duration — longer in summer days, shorter in winter days.");
+    if (vcIsHindi) {
+      const periodHi = period === "daytime" ? "दिन" : "रात";
+      vcSet("eq-ghati", "≈ " + gMin + " मिनट (" + periodHi + ")");
+      vcSet("eq-pal",   "≈ " + pSec + " सेकंड");
+      vcSet("eq-vipal", "≈ " + vpSec + " सेकंड");
+      vcSet("eq-day",   "= 30 दिन + 30 रात");
+      vcSet("vc-explainer",
+        "30-घटी प्रणाली में, दिन (सूर्योदय से सूर्यास्त तक) और रात दोनों में 30-30 घटियां होती हैं, " +
+        "जिनकी अवधि परिवर्तनशील होती है — गर्मियों में लंबी, सर्दियों में छोटी।");
+    } else {
+      vcSet("eq-ghati", "≈ " + gMin + " min (" + period + ")");
+      vcSet("eq-pal",   "≈ " + pSec + " sec");
+      vcSet("eq-vipal", "≈ " + vpSec + " sec");
+      vcSet("eq-day",   "= 30 day + 30 night");
+      vcSet("vc-explainer",
+        "In the 30-Ghati system, daytime (sunrise to sunset) and nighttime each have 30 Ghatis " +
+        "of variable duration — longer in summer days, shorter in winter days.");
+    }
   }
 }
 
@@ -341,6 +369,17 @@ document.querySelectorAll<HTMLButtonElement>(".vc-seg-btn").forEach(btn => {
     vcTick();
   });
 });
+
+// ── Language ─────────────────────────────────────────────────────────────────
+// This card's Ghati/Pal/Vipal readout, period note, and explainer text are
+// regenerated every 400ms by vcTick(), so unlike static markup they can't rely
+// on Header.astro's global [data-hi] swap — vcIsHindi must be read by vcTick itself.
+document.addEventListener('langchange', (e: Event) => {
+  const evt = e as CustomEvent;
+  vcIsHindi = evt.detail.langCode === 'hi';
+  vcTick();
+});
+if (localStorage.getItem('pp-lang') === 'hi') vcIsHindi = true;
 
 // ── Start ────────────────────────────────────────────────────────────────────
 vcTick();

@@ -32,23 +32,26 @@ const jsonLd = {
 <section class="bl-hero">
   <div class="bl-hero-inner">
     <div class="bl-breadcrumb">
-      <a href="/">Home</a>
+      <a href="/" data-hi="होम">Home</a>
       <span aria-hidden="true">›</span>
-      <a href="/blog">Blog</a>
+      <a href="/blog" data-hi="ब्लॉग">Blog</a>
       <span aria-hidden="true">›</span>
-      <span>{post.title}</span>
+      <span data-hi={post.titleHi}>{post.title}</span>
     </div>
-    <h1 class="bl-heading">{post.title}</h1>
+    <h1 class="bl-heading" data-hi={post.titleHi}>{post.title}</h1>
     <p class="bl-hero-meta">
       {new Date(post.publishDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-      {' · '}{estimateReadingTime(post.contentHtml)} min read
+      {' · '}{estimateReadingTime(post.contentHtml)} <span data-hi="मिनट में पढ़ें">min read</span>
     </p>
   </div>
 </section>
 
 <!-- Main content -->
 <div class="bl-wrapper">
-  <article class="bl-article" set:html={post.contentHtml} />
+  <article class="bl-article en-text" set:html={post.contentHtml} />
+  {post.contentHtmlHi && (
+    <article class="bl-article hi-text" style="display:none" set:html={post.contentHtmlHi} />
+  )}
 
   <!-- Prev / Next navigation -->
   <nav class="bl-nav" aria-label="Blog navigation">
@@ -56,22 +59,37 @@ const jsonLd = {
       <a href={`/blog/${prev.slug}`} class="bl-nav-btn bl-nav-prev">
         <span class="bl-nav-arrow">←</span>
         <div class="bl-nav-meta">
-          <span class="bl-nav-label">Previous</span>
-          <span class="bl-nav-name">{prev.title}</span>
+          <span class="bl-nav-label" data-hi="पिछला">Previous</span>
+          <span class="bl-nav-name" data-hi={prev.titleHi}>{prev.title}</span>
         </div>
       </a>
     ) : <div></div>}
     {next && (
       <a href={`/blog/${next.slug}`} class="bl-nav-btn bl-nav-next">
         <div class="bl-nav-meta">
-          <span class="bl-nav-label">Next</span>
-          <span class="bl-nav-name">{next.title}</span>
+          <span class="bl-nav-label" data-hi="अगला">Next</span>
+          <span class="bl-nav-name" data-hi={next.titleHi}>{next.title}</span>
         </div>
         <span class="bl-nav-arrow">→</span>
       </a>
     )}
   </nav>
 </div>
+
+<script>
+  // The article body (post.contentHtml/contentHtmlHi) is raw HTML with embedded
+  // links, so it's rendered as two full en-text/hi-text <article> blocks rather
+  // than using data-hi's textContent-based swap, which would strip the links.
+  function applyPageLang(hindi: boolean) {
+    const hasHindi = document.querySelector('.hi-text') !== null;
+    document.querySelectorAll<HTMLElement>('.en-text').forEach(el => el.style.display = (hindi && hasHindi) ? 'none' : '');
+    document.querySelectorAll<HTMLElement>('.hi-text').forEach(el => el.style.display = hindi ? '' : 'none');
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>
 
 <style>
 .bl-hero { padding: 48px 0 32px; border-bottom: 1px solid var(--color-hairline); }

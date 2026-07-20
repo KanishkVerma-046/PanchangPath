@@ -148,13 +148,13 @@ function heroBg(type: string): string {
         <!-- Description -->
         <div class="ed-section">
           <h2 class="ed-section-title" data-hi="इस घटना के बारे में">About this Event</h2>
-          <p class="ed-body">{ev.description}</p>
+          <p class="ed-body" data-hi={ev.descriptionHi}>{ev.description}</p>
         </div>
 
         <!-- Jyotish significance -->
         <div class="ed-section">
           <h2 class="ed-section-title" data-hi="ज्योतिष महत्व">Jyotish Significance</h2>
-          <p class="ed-body">{ev.significance}</p>
+          <p class="ed-body" data-hi={ev.significanceHi}>{ev.significance}</p>
         </div>
 
         <!-- Planets involved -->

@@ -107,7 +107,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
         <!-- Description -->
         <div class="fd-section">
           <h2 class="fd-section-title" data-hi="इस त्योहार के बारे में">About this Festival</h2>
-          <p class="fd-body">
+          <p class="fd-body" data-hi={f.longDescHi ?? f.descriptionHi}>
             {f.longDesc ?? f.description}
           </p>
         </div>

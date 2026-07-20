@@ -39,8 +39,8 @@ Bhootakrid bhootabhrid bhaavo bhootatma bhootabhavanah.
 
 Iti idam kirtaniyasya Keshavasya mahatmanah,
 Namnam sahasram divyanam asheshena prakirtitam.`,
-    meaning: 'Composed by sage Veda Vyasa and found in the Mahabharata (Anushasana Parva), recited to Yudhishthira by Bhishma on his deathbed, this stotram lists 1000 names of Vishnu describing his cosmic form, his role as sustainer of the universe, and his infinite attributes. This page presents the dhyana (meditation) verse and phalashruti (benefits) — the complete 1000-name list is available under the Namavali category.',
-    benefits: 'Considered one of the most powerful stotras in Hindu tradition, recited daily for peace, prosperity and spiritual merit, and especially on Ekadashi and Vaikuntha Ekadashi. Believed to remove all sins and grant liberation.',
+    meaning: 'Composed by sage Veda Vyasa and found in the Mahabharata (Anushasana Parva), recited to Yudhishthira by Bhishma on his deathbed, this stotram lists 1000 names of Vishnu describing his cosmic form, his role as sustainer of the universe, and his infinite attributes. This page presents the dhyana (meditation) verse and phalashruti (benefits) — the complete 1000-name list is available under the Namavali category.', meaningHi: 'ऋषि वेद व्यास द्वारा रचित और महाभारत (अनुशासन पर्व) में पाया जाने वाला, यह स्तोत्र भीष्म द्वारा अपनी मृत्युशय्या पर युधिष्ठिर को सुनाया गया है, जो विष्णु के 1000 नामों को सूचीबद्ध करता है, उनके ब्रह्मांडीय स्वरूप, ब्रह्मांड के पालनकर्ता के रूप में उनकी भूमिका, और उनके अनंत गुणों का वर्णन करते हुए। यह पृष्ठ ध्यान (मनन) श्लोक और फलश्रुति (लाभ) प्रस्तुत करता है — संपूर्ण 1000-नाम सूची नामावली श्रेणी के अंतर्गत उपलब्ध है।',
+    benefits: 'Considered one of the most powerful stotras in Hindu tradition, recited daily for peace, prosperity and spiritual merit, and especially on Ekadashi and Vaikuntha Ekadashi. Believed to remove all sins and grant liberation.', benefitsHi: 'हिंदू परंपरा के सबसे शक्तिशाली स्तोत्रों में से एक माना जाता है, शांति, समृद्धि और आध्यात्मिक पुण्य के लिए प्रतिदिन, और विशेष रूप से एकादशी और वैकुंठ एकादशी को पाठ किया जाता है। इसे सभी पापों को दूर करने और मुक्ति प्रदान करने वाला माना जाता है।',
   },
   {
     slug: 'lalita-sahasranama-stotram',
@@ -78,8 +78,8 @@ Chidagnikundasambhuta devakaryasamudyata.
 
 Ya idam paramam guhyam namnam sahasrakam pathet,
 Labhate paramam siddhim param shantim tathaiva cha.`,
-    meaning: 'Found in the Brahmanda Purana as part of the sacred dialogue between Hayagriva and Agastya, this stotram describes 1000 names of Devi Lalita Tripurasundari, the supreme form of the Divine Mother in Shakta tradition, seated on the Sri Chakra. This page presents the dhyana verse and phalashruti — the full 1000-name list appears under the Namavali category.',
-    benefits: 'Recited by Shakta and Sri Vidya practitioners daily, and especially during Navratri and on Fridays, for spiritual elevation, protection and fulfillment of desires.',
+    meaning: 'Found in the Brahmanda Purana as part of the sacred dialogue between Hayagriva and Agastya, this stotram describes 1000 names of Devi Lalita Tripurasundari, the supreme form of the Divine Mother in Shakta tradition, seated on the Sri Chakra. This page presents the dhyana verse and phalashruti — the full 1000-name list appears under the Namavali category.', meaningHi: 'ब्रह्मांड पुराण में हयग्रीव और अगस्त्य के बीच पवित्र संवाद के भाग के रूप में पाया जाने वाला, यह स्तोत्र देवी ललिता त्रिपुरसुंदरी, शाक्त परंपरा में दिव्य माता के सर्वोच्च रूप, जो श्री चक्र पर विराजमान हैं, के 1000 नामों का वर्णन करता है। यह पृष्ठ ध्यान श्लोक और फलश्रुति प्रस्तुत करता है — संपूर्ण 1000-नाम सूची नामावली श्रेणी के अंतर्गत दिखाई देती है।',
+    benefits: 'Recited by Shakta and Sri Vidya practitioners daily, and especially during Navratri and on Fridays, for spiritual elevation, protection and fulfillment of desires.', benefitsHi: 'शाक्त और श्री विद्या साधकों द्वारा प्रतिदिन, और विशेष रूप से नवरात्रि के दौरान तथा शुक्रवार को, आध्यात्मिक उन्नति, सुरक्षा और इच्छाओं की पूर्ति के लिए पाठ किया जाता है।',
   },
   {
     slug: 'aditya-hridayam-stotram',
@@ -194,8 +194,8 @@ Chinta-shoka-prashamanam ayur-vardhanam uttamam.
 
 Etachchhrutva mahateja nashtashoko'bhavat tada,
 Dharayamasa supreeto Raghavah prayatatmavan.`,
-    meaning: 'Found in the Yuddha Kanda of the Valmiki Ramayana, this stotram was given by sage Agastya to Rama on the battlefield before his final duel with Ravana. It venerates Surya as the embodiment of all gods (Brahma, Vishnu, Shiva) and a source of victory, strength and removal of sorrow.',
-    benefits: 'Recited at sunrise for courage, victory over difficulties, and removal of fatigue, worry and fear — especially before facing a major challenge or competition.',
+    meaning: 'Found in the Yuddha Kanda of the Valmiki Ramayana, this stotram was given by sage Agastya to Rama on the battlefield before his final duel with Ravana. It venerates Surya as the embodiment of all gods (Brahma, Vishnu, Shiva) and a source of victory, strength and removal of sorrow.', meaningHi: 'वाल्मीकि रामायण के युद्ध कांड में पाया जाने वाला, यह स्तोत्र ऋषि अगस्त्य द्वारा रावण के साथ अपने अंतिम द्वंद्व से पहले युद्धभूमि पर राम को दिया गया था। यह सूर्य को सभी देवताओं (ब्रह्मा, विष्णु, शिव) के अवतार, तथा विजय, शक्ति और दुख के निवारण के स्रोत के रूप में वंदना करता है।',
+    benefits: 'Recited at sunrise for courage, victory over difficulties, and removal of fatigue, worry and fear — especially before facing a major challenge or competition.', benefitsHi: 'सूर्योदय के समय साहस, कठिनाइयों पर विजय, तथा थकान, चिंता और भय के निवारण के लिए पाठ किया जाता है — विशेष रूप से किसी बड़ी चुनौती या प्रतिस्पर्धा का सामना करने से पहले।',
   },
   {
     slug: 'shiva-tandava-stotram',
@@ -288,8 +288,8 @@ Idam hi nityam evamuktam uttamottamam stavam
 Pathan smaran bruvan naro vishuddhim eti santatam,
 Hare gurau subhaktim ashu yati nanyatha gatim
 Vimohanam hi dehinam sushankarasya chintanam.`,
-    meaning: 'Composed by Ravana as a devotional offering to Shiva, this stotram describes his cosmic dance of destruction and creation (Tandava), his matted hair flowing with the Ganga, the crescent moon on his crown, and his union with Parvati. It is considered one of the most rhythmically powerful Sanskrit compositions.',
-    benefits: 'Recited during Maha Shivaratri and by dancers and musicians for its rhythmic power; believed to grant devotion, remove delusion, and instill fearlessness.',
+    meaning: 'Composed by Ravana as a devotional offering to Shiva, this stotram describes his cosmic dance of destruction and creation (Tandava), his matted hair flowing with the Ganga, the crescent moon on his crown, and his union with Parvati. It is considered one of the most rhythmically powerful Sanskrit compositions.', meaningHi: 'रावण द्वारा शिव को भक्ति भेंट के रूप में रचित, यह स्तोत्र उनके सृजन और संहार के ब्रह्मांडीय नृत्य (तांडव), गंगा से बहती उनकी जटाओं, उनके मुकुट पर अर्धचंद्र, और पार्वती के साथ उनके मिलन का वर्णन करता है। इसे सबसे लयबद्ध रूप से शक्तिशाली संस्कृत रचनाओं में से एक माना जाता है।',
+    benefits: 'Recited during Maha Shivaratri and by dancers and musicians for its rhythmic power; believed to grant devotion, remove delusion, and instill fearlessness.', benefitsHi: 'महाशिवरात्रि के दौरान तथा नर्तकों और संगीतकारों द्वारा इसकी लयबद्ध शक्ति के लिए पाठ किया जाता है; इसे भक्ति प्रदान करने, मोह दूर करने, और निर्भयता स्थापित करने वाला माना जाता है।',
   },
   {
     slug: 'kanakadhara-stotram',
@@ -414,8 +414,8 @@ Stuvanti ye stutibhiramoobhiranvaham
 Trayimayim tribhuvanamataram ramam,
 Gunadhika gurutarabhagyabhagino
 Bhavanti te bhuvi budhabhavitashayah.`,
-    meaning: 'Composed by Adi Shankaracharya after Goddess Lakshmi rained golden amla fruits into the home of a poor Brahmin woman who offered him a single dried amla in alms, this stotram praises Lakshmi\'s glance (kataksha) as bestowing wealth and auspiciousness upon her devotees.',
-    benefits: 'Recited for financial prosperity and removal of poverty, especially on Fridays, during Diwali, and by those facing severe financial hardship.',
+    meaning: 'Composed by Adi Shankaracharya after Goddess Lakshmi rained golden amla fruits into the home of a poor Brahmin woman who offered him a single dried amla in alms, this stotram praises Lakshmi\'s glance (kataksha) as bestowing wealth and auspiciousness upon her devotees.', meaningHi: 'एक गरीब ब्राह्मण महिला द्वारा उन्हें भिक्षा में एक सूखा आंवला अर्पित करने पर देवी लक्ष्मी द्वारा उसके घर में सुनहरे आंवले बरसाने के बाद आदि शंकराचार्य द्वारा रचित, यह स्तोत्र लक्ष्मी की दृष्टि (कटाक्ष) को उनके भक्तों पर धन और शुभता प्रदान करने वाला बताते हुए स्तुति करता है।',
+    benefits: 'Recited for financial prosperity and removal of poverty, especially on Fridays, during Diwali, and by those facing severe financial hardship.', benefitsHi: 'वित्तीय समृद्धि और दरिद्रता के निवारण के लिए, विशेष रूप से शुक्रवार को, दिवाली के दौरान, और गंभीर वित्तीय कठिनाई का सामना कर रहे लोगों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'ganesh-stotram',
@@ -460,8 +460,8 @@ Na cha vighnabhayam tasya sarvasiddhikaram prabho.
 
 Japedganapatistotram shadbhirmasaih phalam labhet,
 Samvatsarena siddhim cha labhate natra sanshayah.`,
-    meaning: 'This stotram lists twelve names of Ganesha — Vakratunda, Ekadanta, Krishnapingaksha, Gajavaktra, Lambodara, Vikata, Vighnaraja, Dhumravarna, Bhalachandra, Vinayaka, Ganapati and Gajanana — each representing a different aspect of his form and power.',
-    benefits: 'Recited three times a day (trisandhya) to remove obstacles and fear; students recite it for knowledge, the wealth-seeker for prosperity, and those wanting children or liberation for their respective goals.',
+    meaning: 'This stotram lists twelve names of Ganesha — Vakratunda, Ekadanta, Krishnapingaksha, Gajavaktra, Lambodara, Vikata, Vighnaraja, Dhumravarna, Bhalachandra, Vinayaka, Ganapati and Gajanana — each representing a different aspect of his form and power.', meaningHi: 'यह स्तोत्र गणेश के बारह नामों — वक्रतुंड, एकदंत, कृष्णपिंगाक्ष, गजवक्त्र, लंबोदर, विकट, विघ्नराज, धूम्रवर्ण, भालचंद्र, विनायक, गणपति और गजानन — को सूचीबद्ध करता है, प्रत्येक उनके स्वरूप और शक्ति के एक अलग पक्ष का प्रतिनिधित्व करते हुए।',
+    benefits: 'Recited three times a day (trisandhya) to remove obstacles and fear; students recite it for knowledge, the wealth-seeker for prosperity, and those wanting children or liberation for their respective goals.', benefitsHi: 'बाधाओं और भय को दूर करने के लिए दिन में तीन बार (त्रिसंध्या) पाठ किया जाता है; विद्यार्थी ज्ञान के लिए, धन चाहने वाला समृद्धि के लिए, और संतान या मुक्ति चाहने वाले अपने संबंधित लक्ष्यों के लिए इसका पाठ करते हैं।',
   },
   {
     slug: 'ashta-lakshmi-stotram',
@@ -517,8 +517,8 @@ Jaya jaya he Madhusudana-kamini, Adi-Lakshmi paripalaya mam.
 
 Dhanadhanyakari shubhayuktamaye, Harini tanotu kripa jagati,
 Jaya jaya he Madhusudana-kamini, Dhana-Lakshmi paripalaya mam.`,
-    meaning: 'This stotram venerates the eight forms (Ashta Lakshmi) of the Goddess of prosperity: Adi Lakshmi (primal), Dhana Lakshmi (wealth), Dhanya Lakshmi (grain), Gaja Lakshmi (elephants/royal power), Santana Lakshmi (progeny), Vijaya Lakshmi (victory), Vidya Lakshmi (knowledge) and Dhairya Lakshmi (courage) — together representing all forms of abundance.',
-    benefits: 'Recited on Fridays and during Diwali for complete prosperity — material, intellectual and spiritual — and often sung in temples dedicated to Ashta Lakshmi.',
+    meaning: 'This stotram venerates the eight forms (Ashta Lakshmi) of the Goddess of prosperity: Adi Lakshmi (primal), Dhana Lakshmi (wealth), Dhanya Lakshmi (grain), Gaja Lakshmi (elephants/royal power), Santana Lakshmi (progeny), Vijaya Lakshmi (victory), Vidya Lakshmi (knowledge) and Dhairya Lakshmi (courage) — together representing all forms of abundance.', meaningHi: 'यह स्तोत्र समृद्धि की देवी के आठ रूपों (अष्ट लक्ष्मी) की वंदना करता है: आदि लक्ष्मी (आदिम), धन लक्ष्मी (धन), धान्य लक्ष्मी (अन्न), गज लक्ष्मी (हाथी/राजसी शक्ति), संतान लक्ष्मी (संतान), विजय लक्ष्मी (विजय), विद्या लक्ष्मी (ज्ञान) और धैर्य लक्ष्मी (साहस) — जो मिलकर प्रचुरता के सभी रूपों का प्रतिनिधित्व करती हैं।',
+    benefits: 'Recited on Fridays and during Diwali for complete prosperity — material, intellectual and spiritual — and often sung in temples dedicated to Ashta Lakshmi.', benefitsHi: 'शुक्रवार को और दिवाली के दौरान संपूर्ण समृद्धि — भौतिक, बौद्धिक और आध्यात्मिक — के लिए पाठ किया जाता है, और अक्सर अष्ट लक्ष्मी को समर्पित मंदिरों में गाया जाता है।',
   },
   {
     slug: 'durga-stotram-devi-kavach',
@@ -675,8 +675,8 @@ Navamam Siddhidatri cha navadurgah prakirtitah.
 Idam tu Devyah kavacham devanamapi durlabham,
 Yah pathet prayato nityam trisandhyam shraddhayanvitah,
 Na tasya jayate vyadhih sarvatra vijayi bhavet.`,
-    meaning: 'The Devi Kavach ("armor of the Goddess") is a protective hymn from the Durga Saptashati in which the nine forms of Durga (Navadurga) are invoked to guard every part of the devotee\'s body from head to toe, providing complete spiritual and physical protection.',
-    benefits: 'Recited before reading the Durga Saptashati, during Navratri, and by those seeking protection from illness, enemies and danger.',
+    meaning: 'The Devi Kavach ("armor of the Goddess") is a protective hymn from the Durga Saptashati in which the nine forms of Durga (Navadurga) are invoked to guard every part of the devotee\'s body from head to toe, providing complete spiritual and physical protection.', meaningHi: 'देवी कवच ("देवी का कवच") दुर्गा सप्तशती से लिया गया एक रक्षात्मक स्तोत्र है जिसमें दुर्गा के नौ रूपों (नवदुर्गा) का आह्वान भक्त के शरीर के हर अंग की सिर से पैर तक रक्षा करने के लिए किया जाता है, जो संपूर्ण आध्यात्मिक और शारीरिक सुरक्षा प्रदान करता है।',
+    benefits: 'Recited before reading the Durga Saptashati, during Navratri, and by those seeking protection from illness, enemies and danger.', benefitsHi: 'दुर्गा सप्तशती पढ़ने से पहले, नवरात्रि के दौरान, और बीमारी, शत्रुओं और खतरे से सुरक्षा चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'ram-raksha-stotram',
@@ -836,8 +836,8 @@ Raghunathaya nathaya Sitayah pataye namah.
 
 Rama Rameti Rameti rame Rame manorame,
 Sahasranama tattulyam Ramanama varanane.`,
-    meaning: 'Composed by sage Budhakaushika, this stotram is a protective armor (kavach) invoking Rama\'s name and form for complete protection from head to toe, and is considered equal in merit to chanting the entire Vishnu Sahasranama.',
-    benefits: 'Recited daily, especially by children and travellers, for protection from danger, evil influences and difficulties; widely taught in Maharashtra as part of daily prayer.',
+    meaning: 'Composed by sage Budhakaushika, this stotram is a protective armor (kavach) invoking Rama\'s name and form for complete protection from head to toe, and is considered equal in merit to chanting the entire Vishnu Sahasranama.', meaningHi: 'ऋषि बुधकौशिक द्वारा रचित, यह स्तोत्र एक रक्षात्मक कवच है जो राम के नाम और स्वरूप का आह्वान सिर से पैर तक संपूर्ण सुरक्षा के लिए करता है, और इसे संपूर्ण विष्णु सहस्रनाम के जप के समान पुण्यदायी माना जाता है।',
+    benefits: 'Recited daily, especially by children and travellers, for protection from danger, evil influences and difficulties; widely taught in Maharashtra as part of daily prayer.', benefitsHi: 'प्रतिदिन, विशेष रूप से बच्चों और यात्रियों द्वारा, खतरे, बुरे प्रभावों और कठिनाइयों से सुरक्षा के लिए पाठ किया जाता है; महाराष्ट्र में दैनिक प्रार्थना के भाग के रूप में व्यापक रूप से सिखाया जाता है।',
   },
   {
     slug: 'kala-bhairav-stotram',
@@ -907,8 +907,8 @@ Kalabhairavashtakam pathanti ye manoharam
 Jnanamuktisadhanam vichitra-punya-vardhanam,
 Shoka-moha-dainya-lobha-kopa-tapa-nashanam
 Te prayanti Kalabhairava-anghri-sannidhim dhruvam.`,
-    meaning: 'Composed by Adi Shankaracharya, this ashtakam praises Kala Bhairav, the fierce guardian deity of Kashi (Varanasi), describing his cosmic power, his serpent sacred thread, and his role in granting liberation and knowledge while removing sorrow, delusion, greed and anger.',
-    benefits: 'Recited on Sundays, during Bhairav Ashtami, and by those seeking freedom from fear, negative influences and obstacles in their spiritual path.',
+    meaning: 'Composed by Adi Shankaracharya, this ashtakam praises Kala Bhairav, the fierce guardian deity of Kashi (Varanasi), describing his cosmic power, his serpent sacred thread, and his role in granting liberation and knowledge while removing sorrow, delusion, greed and anger.', meaningHi: 'आदि शंकराचार्य द्वारा रचित, यह अष्टकम काशी (वाराणसी) के उग्र रक्षक देवता काल भैरव की स्तुति करता है, उनकी ब्रह्मांडीय शक्ति, उनके सर्प यज्ञोपवीत, तथा दुख, मोह, लोभ और क्रोध को दूर करते हुए मुक्ति और ज्ञान प्रदान करने में उनकी भूमिका का वर्णन करते हुए।',
+    benefits: 'Recited on Sundays, during Bhairav Ashtami, and by those seeking freedom from fear, negative influences and obstacles in their spiritual path.', benefitsHi: 'रविवार को, भैरव अष्टमी के दौरान, और अपने आध्यात्मिक पथ में भय, नकारात्मक प्रभावों और बाधाओं से मुक्ति चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'shani-stotram',
@@ -960,8 +960,8 @@ Namah Pushkalagatraya Sthularomne'tha vai namah.
 
 Prayatnena maya proktam stotrametat samahitah,
 Yah pathet prayato nityam Shanitushtikaram shubham.`,
-    meaning: 'This stotram, attributed to sage Dasharatha (father of Rama, who is said to have propitiated Shani), salutes the many fierce forms of Shani — dark-complexioned, gaunt, vulture-mounted, holding a trident — describing him as the impartial witness of all karma.',
-    benefits: 'Recited on Saturdays, during Sadhesati and Dhaiya (Shani\'s planetary transits), for pacifying malefic Saturn influences and gaining his protective grace.',
+    meaning: 'This stotram, attributed to sage Dasharatha (father of Rama, who is said to have propitiated Shani), salutes the many fierce forms of Shani — dark-complexioned, gaunt, vulture-mounted, holding a trident — describing him as the impartial witness of all karma.', meaningHi: 'ऋषि दशरथ (राम के पिता, जिन्होंने कहा जाता है कि शनि को प्रसन्न किया था) को समर्पित यह स्तोत्र शनि के अनेक उग्र रूपों — श्याम वर्ण, कृशकाय, गिद्ध-वाहन, त्रिशूल धारण किए — को नमन करता है, उन्हें सभी कर्मों के निष्पक्ष साक्षी के रूप में वर्णित करते हुए।',
+    benefits: 'Recited on Saturdays, during Sadhesati and Dhaiya (Shani\'s planetary transits), for pacifying malefic Saturn influences and gaining his protective grace.', benefitsHi: 'शनिवार को, साढ़े साती और ढैय्या (शनि के ग्रहीय गोचर) के दौरान, अशुभ शनि प्रभावों को शांत करने और उनकी रक्षात्मक कृपा प्राप्त करने के लिए पाठ किया जाता है।',
   },
   {
     slug: 'saraswati-stotram',
@@ -1046,8 +1046,8 @@ Vidyarambham karishyami siddhirbhavatu me sada.
 
 Ya devi sarvabhuteshu vidyarupena samsthita,
 Namastasyai namastasyai namastasyai namo namah.`,
-    meaning: 'This stotram, drawn from classical verses widely used across India, praises Saraswati as white as jasmine and the moon, seated on a white lotus, holding a veena, worshipped by Brahma, Vishnu and Shiva, and as the dispeller of ignorance who grants wisdom to all beings.',
-    benefits: 'Recited at the start of learning, before exams, and during Basant Panchami and Navratri (especially the day dedicated to Saraswati Puja) for clarity of mind and academic success.',
+    meaning: 'This stotram, drawn from classical verses widely used across India, praises Saraswati as white as jasmine and the moon, seated on a white lotus, holding a veena, worshipped by Brahma, Vishnu and Shiva, and as the dispeller of ignorance who grants wisdom to all beings.', meaningHi: 'भारत भर में व्यापक रूप से उपयोग किए जाने वाले शास्त्रीय श्लोकों से लिया गया यह स्तोत्र सरस्वती को चमेली और चंद्रमा के समान श्वेत, श्वेत कमल पर विराजमान, वीणा धारण किए, ब्रह्मा, विष्णु और शिव द्वारा पूजित, तथा अज्ञान को दूर करने वाली और सभी प्राणियों को बुद्धि प्रदान करने वाली के रूप में स्तुति करता है।',
+    benefits: 'Recited at the start of learning, before exams, and during Basant Panchami and Navratri (especially the day dedicated to Saraswati Puja) for clarity of mind and academic success.', benefitsHi: 'अध्ययन के आरंभ में, परीक्षाओं से पहले, और बसंत पंचमी तथा नवरात्रि (विशेष रूप से सरस्वती पूजा को समर्पित दिन) के दौरान मानसिक स्पष्टता और शैक्षणिक सफलता के लिए पाठ किया जाता है।',
   },
   {
     slug: 'navgraha-stotram',
@@ -1094,8 +1094,8 @@ Namami Shashinam Somam Shambhormukuta-bhushanam.
 
 Iti Vyasa-mukhodgeetam yah pathet susamahitah,
 Diva va yadi va ratrau vighnashantirbhavishyati.`,
-    meaning: 'Composed by sage Vyasa, this stotram offers a dedicated verse to each of the nine celestial bodies in Jyotish — describing their forms, colors and cosmic origins — invoking their combined blessing for the removal of obstacles.',
-    benefits: 'Recited during Navgraha Puja/Homam, and by those wishing to pacify all nine planetary influences at once rather than a single graha.',
+    meaning: 'Composed by sage Vyasa, this stotram offers a dedicated verse to each of the nine celestial bodies in Jyotish — describing their forms, colors and cosmic origins — invoking their combined blessing for the removal of obstacles.', meaningHi: 'ऋषि व्यास द्वारा रचित, यह स्तोत्र ज्योतिष के नौ खगोलीय पिंडों में से प्रत्येक को एक समर्पित श्लोक अर्पित करता है — उनके स्वरूपों, रंगों और ब्रह्मांडीय उत्पत्ति का वर्णन करते हुए — बाधाओं के निवारण के लिए उनका संयुक्त आशीर्वाद आह्वान करते हुए।',
+    benefits: 'Recited during Navgraha Puja/Homam, and by those wishing to pacify all nine planetary influences at once rather than a single graha.', benefitsHi: 'नवग्रह पूजा/हवन के दौरान, और एकल ग्रह के बजाय सभी नौ ग्रहीय प्रभावों को एक साथ शांत करना चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
   {
     slug: 'guru-stotram',
@@ -1159,8 +1159,8 @@ Chakshurunmeelitam yena tasmai Shri Gurave namah.
 
 Gururadiranadishcha guruh paramadaivatam,
 Guroh parataram nasti tasmai Shri Gurave namah.`,
-    meaning: 'This widely recited stotram honors the Guru as the embodiment of Brahma (creator), Vishnu (preserver) and Maheshwara (destroyer) — the one who removes the darkness of ignorance with the light of knowledge and is considered non-different from the Supreme Brahman itself.',
-    benefits: 'Recited on Guru Purnima and Thursdays (associated with Brihaspati/Guru), and whenever beginning study under a teacher, as an expression of gratitude and reverence.',
+    meaning: 'This widely recited stotram honors the Guru as the embodiment of Brahma (creator), Vishnu (preserver) and Maheshwara (destroyer) — the one who removes the darkness of ignorance with the light of knowledge and is considered non-different from the Supreme Brahman itself.', meaningHi: 'यह व्यापक रूप से पढ़ा जाने वाला स्तोत्र गुरु को ब्रह्मा (सृष्टिकर्ता), विष्णु (पालनकर्ता) और महेश्वर (संहारक) के अवतार के रूप में सम्मानित करता है — जो ज्ञान के प्रकाश से अज्ञान के अंधकार को दूर करते हैं और जिन्हें सर्वोच्च ब्रह्म से अभिन्न माना जाता है।',
+    benefits: 'Recited on Guru Purnima and Thursdays (associated with Brihaspati/Guru), and whenever beginning study under a teacher, as an expression of gratitude and reverence.', benefitsHi: 'गुरु पूर्णिमा और गुरुवार (बृहस्पति/गुरु से जुड़े) को, तथा जब भी किसी शिक्षक के अधीन अध्ययन आरंभ किया जाता है, कृतज्ञता और श्रद्धा की अभिव्यक्ति के रूप में पाठ किया जाता है।',
   },
   {
     slug: 'shri-suktam',
@@ -1279,7 +1279,7 @@ Yasyam hiranyam vindeyam gam ashvam purushan aham.
 
 Gandhadvaram duradharsham nityapushtam karishinim,
 Ishwarim sarvabhutanam tamihopahvaye Shriyam.`,
-    meaning: 'The Shri Suktam is an ancient Vedic hymn (khila appended to the Rigveda) invoking Shri/Lakshmi as the golden goddess of prosperity, fame and abundance, describing her in symbolic forms including gold, cattle, the Bilva tree, and the elephant that bathes her.',
-    benefits: 'Recited during Lakshmi Puja, Diwali, and Vedic yajnas for prosperity; considered one of the most authoritative and ancient hymns dedicated to wealth and abundance.',
+    meaning: 'The Shri Suktam is an ancient Vedic hymn (khila appended to the Rigveda) invoking Shri/Lakshmi as the golden goddess of prosperity, fame and abundance, describing her in symbolic forms including gold, cattle, the Bilva tree, and the elephant that bathes her.', meaningHi: 'श्री सूक्तम एक प्राचीन वैदिक स्तोत्र है (ऋग्वेद से जुड़ा खिल) जो श्री/लक्ष्मी को समृद्धि, यश और प्रचुरता की स्वर्णिम देवी के रूप में आह्वान करता है, उन्हें सोना, गाय, बिल्व वृक्ष, और उन्हें स्नान कराने वाले हाथी सहित प्रतीकात्मक रूपों में वर्णित करते हुए।',
+    benefits: 'Recited during Lakshmi Puja, Diwali, and Vedic yajnas for prosperity; considered one of the most authoritative and ancient hymns dedicated to wealth and abundance.', benefitsHi: 'लक्ष्मी पूजा, दिवाली, और वैदिक यज्ञों के दौरान समृद्धि के लिए पाठ किया जाता है; इसे धन और प्रचुरता को समर्पित सबसे आधिकारिक और प्राचीन स्तोत्रों में से एक माना जाता है।',
   },
 ];

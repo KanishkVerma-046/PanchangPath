@@ -10,7 +10,9 @@ export interface DevotionalItem {
   lyricsHi: string;      // Devanagari text, lines separated by \n
   transliteration?: string; // Roman transliteration, lines separated by \n
   meaning?: string;      // English meaning / summary
+  meaningHi?: string;    // Hindi translation of meaning
   benefits?: string;     // When / why it is recited, benefits
+  benefitsHi?: string;   // Hindi translation of benefits
 }
 
 export type DevotionalCategoryId =

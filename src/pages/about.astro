@@ -4,10 +4,28 @@ import StaticPage from '../components/StaticPage.astro';
 ---
 
 <Layout title="About Us — PanchangPath" description="Learn about PanchangPath — an independent, ad-free Hindu Panchang built on Drik astronomical calculations and Lahiri Ayanamsha.">
-  <StaticPage title="About PanchangPath">
-    <p>PanchangPath is an independent, ad-free Hindu Panchang built for people who want accurate Tithi, Nakshatra, Yoga, Karana, Rahu Kalam and Muhurta timings without wading through pop-ups, autoplay videos, or a dozen ad networks to find them.</p>
-    <p>Every calculation on this site uses the Drik (astronomical) method with Lahiri Ayanamsha — the same observational approach used by most modern Panchang authorities — rather than older tabular (Vakya) methods. Sunrise, sunset, planetary positions, and festival dates are computed directly from orbital mechanics rather than looked up from a fixed almanac, so they stay accurate for any date and any location worldwide.</p>
-    <p>Beyond the daily Panchang, PanchangPath includes a live Kundali (birth chart) generator, a full festival and vrat calendar, Rashifal (daily horoscope) predictions for all twelve rashis, a set of Muhurta timing tools for choosing auspicious moments, and a library of devotional texts — aartis, chalisas, stotras, and more.</p>
-    <p>This is a work in progress, built and maintained by one person. If you spot an error or have a suggestion, the <a href="/contact">Contact Us</a> page is the fastest way to reach out.</p>
+  <StaticPage title="About PanchangPath" titleHi="पंचांगपथ के बारे में">
+    <p class="en-text">PanchangPath is an independent, ad-free Hindu Panchang built for people who want accurate Tithi, Nakshatra, Yoga, Karana, Rahu Kalam and Muhurta timings without wading through pop-ups, autoplay videos, or a dozen ad networks to find them.</p>
+    <p class="hi-text" style="display:none">पंचांगपथ एक स्वतंत्र, विज्ञापन-मुक्त हिंदू पंचांग है जो उन लोगों के लिए बनाया गया है जो पॉप-अप, ऑटोप्ले वीडियो, या दर्जनों विज्ञापन नेटवर्क से गुज़रे बिना सटीक तिथि, नक्षत्र, योग, करण, राहु काल और मुहूर्त समय चाहते हैं।</p>
+    <p class="en-text">Every calculation on this site uses the Drik (astronomical) method with Lahiri Ayanamsha — the same observational approach used by most modern Panchang authorities — rather than older tabular (Vakya) methods. Sunrise, sunset, planetary positions, and festival dates are computed directly from orbital mechanics rather than looked up from a fixed almanac, so they stay accurate for any date and any location worldwide.</p>
+    <p class="hi-text" style="display:none">इस साइट पर हर गणना द्रिक (खगोलीय) पद्धति और लाहिरी अयनांश का उपयोग करती है — वही अवलोकन-आधारित दृष्टिकोण जो अधिकांश आधुनिक पंचांग प्राधिकरण उपयोग करते हैं — न कि पुरानी सारणी (वाक्य) पद्धतियों का। सूर्योदय, सूर्यास्त, ग्रह स्थिति, और त्योहार की तिथियां एक निश्चित पंचांग से देखने के बजाय सीधे कक्षीय गणित से गणना की जाती हैं, इसलिए वे दुनिया में किसी भी तिथि और किसी भी स्थान के लिए सटीक बनी रहती हैं।</p>
+    <p class="en-text">Beyond the daily Panchang, PanchangPath includes a live Kundali (birth chart) generator, a full festival and vrat calendar, Rashifal (daily horoscope) predictions for all twelve rashis, a set of Muhurta timing tools for choosing auspicious moments, and a library of devotional texts — aartis, chalisas, stotras, and more.</p>
+    <p class="hi-text" style="display:none">दैनिक पंचांग के अलावा, पंचांगपथ में एक लाइव कुंडली (जन्म कुंडली) जनरेटर, एक पूर्ण त्योहार और व्रत कैलेंडर, सभी बारह राशियों के लिए राशिफल (दैनिक कुंडली फल) भविष्यवाणियां, शुभ क्षण चुनने के लिए मुहूर्त समय उपकरणों का एक सेट, और भक्ति ग्रंथों की एक लाइब्रेरी — आरती, चालीसा, स्तोत्र, और बहुत कुछ शामिल है।</p>
+    <p class="en-text">This is a work in progress, built and maintained by one person. If you spot an error or have a suggestion, the <a href="/contact">Contact Us</a> page is the fastest way to reach out.</p>
+    <p class="hi-text" style="display:none">यह एक चालू परियोजना है, जिसे एक व्यक्ति द्वारा बनाया और बनाए रखा जाता है। यदि आपको कोई त्रुटि दिखे या कोई सुझाव हो, तो <a href="/contact">संपर्क करें</a> पृष्ठ संपर्क करने का सबसे तेज़ तरीका है।</p>
   </StaticPage>
 </Layout>
+
+<script>
+  // This page's prose paragraphs use en-text/hi-text pairs (rather than
+  // data-hi) because some contain an embedded <a> link that data-hi's
+  // textContent-based swap would otherwise strip.
+  function applyPageLang(hindi: boolean) {
+    document.querySelectorAll<HTMLElement>('.en-text').forEach(el => el.style.display = hindi ? 'none' : '');
+    document.querySelectorAll<HTMLElement>('.hi-text').forEach(el => el.style.display = hindi ? '' : 'none');
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>

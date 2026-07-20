@@ -23,6 +23,16 @@ function monthLabel(key: string) {
   const [y, m] = key.split('-');
   return new Date(+y, +m - 1, 1).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
 }
+
+const MONTH_HI = ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+const WEEKDAY_HI = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+function monthLabelHi(key: string) {
+  const [y, m] = key.split('-');
+  return `${MONTH_HI[+m - 1]} ${y}`;
+}
+function typeLabelHi(type: string) {
+  return type === 'major' ? '✦ प्रमुख' : type === 'vrat' ? 'व्रत' : 'क्षेत्रीय';
+}
 ---
 
 <Layout title={`Hindu Festival Calendar ${yearRange} — PanchangPath`} description={`Complete Hindu festival and vrat calendar for ${yearRange.replace('-', ' to ')}. All major festivals with dates, descriptions, and countdowns.`}>
@@ -30,19 +40,19 @@ function monthLabel(key: string) {
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Complete Calendar</p>
-      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Hindu Festivals & Vrats.</h1>
-      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;">All major Hindu festivals, vrats, and auspicious days for {yearRange.replace('-', '–')} with detailed information.</p>
+      <p class="caption-mono" data-hi="पूर्ण कैलेंडर" style="color:var(--color-mute);margin:0 0 10px;">Complete Calendar</p>
+      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;"><span class="en-text">Hindu Festivals &amp; Vrats.</span><span class="hi-text" style="display:none">हिंदू त्योहार और व्रत।</span></h1>
+      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;"><span class="en-text">All major Hindu festivals, vrats, and auspicious days for {yearRange.replace('-', '–')} with detailed information.</span><span class="hi-text" style="display:none">{yearRange.replace('-', '–')} के लिए सभी प्रमुख हिंदू त्योहार, व्रत और शुभ दिन विस्तृत जानकारी के साथ।</span></p>
     </div>
   </section>
 
   <!-- Filter row -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:12px 0;position:sticky;top:60px;z-index:40;">
     <div class="container" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-      <button class="filter-btn active" data-filter="all" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-ink);color:var(--color-on-primary);cursor:pointer;">All</button>
-      <button class="filter-btn" data-filter="major" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">✦ Major</button>
-      <button class="filter-btn" data-filter="vrat" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">Vrat</button>
-      <button class="filter-btn" data-filter="regional" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">Regional</button>
+      <button class="filter-btn active" data-filter="all" data-hi="सभी" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-ink);color:var(--color-on-primary);cursor:pointer;">All</button>
+      <button class="filter-btn" data-filter="major" data-hi="✦ प्रमुख" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">✦ Major</button>
+      <button class="filter-btn" data-filter="vrat" data-hi="व्रत" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">Vrat</button>
+      <button class="filter-btn" data-filter="regional" data-hi="क्षेत्रीय" style="font-size:13px;font-weight:500;padding:5px 14px;border-radius:100px;border:1px solid var(--color-hairline);background:var(--color-canvas);color:var(--color-ink);cursor:pointer;">Regional</button>
     </div>
   </section>
 
@@ -51,7 +61,7 @@ function monthLabel(key: string) {
     <div class="container" id="festival-list">
       {Object.entries(byMonth).map(([key, festivals]) => (
         <div class="month-section" style="margin-bottom:40px;">
-          <h2 style="font-size:13px;font-weight:500;color:var(--color-mute);letter-spacing:0.06em;text-transform:uppercase;font-family:var(--font-mono);margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--color-hairline);">{monthLabel(key)}</h2>
+          <h2 style="font-size:13px;font-weight:500;color:var(--color-mute);letter-spacing:0.06em;text-transform:uppercase;font-family:var(--font-mono);margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--color-hairline);" data-hi={monthLabelHi(key)}>{monthLabel(key)}</h2>
           <div style="display:flex;flex-direction:column;gap:8px;">
             {festivals.map(f => {
               const fd = new Date(f.date);
@@ -68,21 +78,21 @@ function monthLabel(key: string) {
                     <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap;">
                       <p class="en-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">{f.name}</p>
                       <p class="hi-text" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;display:none;">{f.nameHi}</p>
-                      <span class={f.type === 'major' ? 'badge badge-saffron' : 'badge'} style="font-size:10px;">{f.type === 'major' ? '✦ Major' : f.type === 'vrat' ? 'Vrat' : 'Regional'}</span>
+                      <span class={f.type === 'major' ? 'badge badge-saffron' : 'badge'} style="font-size:10px;" data-hi={typeLabelHi(f.type)}>{f.type === 'major' ? '✦ Major' : f.type === 'vrat' ? 'Vrat' : 'Regional'}</span>
                     </div>
-                    <p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">{fd.toLocaleDateString('en-IN',{weekday:'long'})}</p>
-                    <p style="font-size:13px;color:var(--color-body-text);margin:4px 0 0;">{f.description}</p>
+                    <p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" data-hi={WEEKDAY_HI[fd.getDay()]}>{fd.toLocaleDateString('en-IN',{weekday:'long'})}</p>
+                    <p style="font-size:13px;color:var(--color-body-text);margin:4px 0 0;" data-hi={f.descriptionHi}>{f.description}</p>
                   </div>
                   <!-- Countdown -->
                   <div style="flex-shrink:0;text-align:right;">
                     {days === 0 ? (
-                      <span class="badge badge-saffron" style="font-size:12px;">Today 🎉</span>
+                      <span class="badge badge-saffron" style="font-size:12px;" data-hi="आज 🎉">Today 🎉</span>
                     ) : days === 1 ? (
-                      <span class="badge badge-auspicious" style="font-size:12px;">Tomorrow</span>
+                      <span class="badge badge-auspicious" style="font-size:12px;" data-hi="कल">Tomorrow</span>
                     ) : (
                       <div>
                         <p style="font-size:22px;font-weight:700;color:var(--color-ink);margin:0;letter-spacing:-0.5px;line-height:1;">{days}</p>
-                        <p style="font-size:10px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">days away</p>
+                        <p style="font-size:10px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" data-hi="दिन शेष">days away</p>
                       </div>
                     )}
                   </div>

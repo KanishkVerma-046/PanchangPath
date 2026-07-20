@@ -33,12 +33,12 @@ const defaultCity = getDefaultLocation();
         </button>
       </div>
       <div class="lp-grid">
-        <div class="lp-row"><span class="lp-lbl">Latitude</span>    <span class="lp-val" id="lp-lat">—</span></div>
-        <div class="lp-row"><span class="lp-lbl">Longitude</span>   <span class="lp-val" id="lp-lng">—</span></div>
-        <div class="lp-row"><span class="lp-lbl">Elevation</span>   <span class="lp-val" id="lp-elev">—</span></div>
-        <div class="lp-row"><span class="lp-lbl">Timezone</span>    <span class="lp-val lp-tz" id="lp-tz">—</span></div>
-        <div class="lp-row"><span class="lp-lbl">UTC Offset</span>  <span class="lp-val" id="lp-offset">—</span></div>
-        <div class="lp-row"><span class="lp-lbl">DST</span>         <span class="lp-val lp-dst" id="lp-dst">—</span></div>
+        <div class="lp-row"><span class="lp-lbl" data-hi="अक्षांश">Latitude</span>    <span class="lp-val" id="lp-lat">—</span></div>
+        <div class="lp-row"><span class="lp-lbl" data-hi="देशांतर">Longitude</span>   <span class="lp-val" id="lp-lng">—</span></div>
+        <div class="lp-row"><span class="lp-lbl" data-hi="ऊंचाई">Elevation</span>   <span class="lp-val" id="lp-elev">—</span></div>
+        <div class="lp-row"><span class="lp-lbl" data-hi="समय क्षेत्र">Timezone</span>    <span class="lp-val lp-tz" id="lp-tz">—</span></div>
+        <div class="lp-row"><span class="lp-lbl" data-hi="यूटीसी ऑफ़सेट">UTC Offset</span>  <span class="lp-val" id="lp-offset">—</span></div>
+        <div class="lp-row"><span class="lp-lbl" data-hi="डीएसटी">DST</span>         <span class="lp-val lp-dst" id="lp-dst">—</span></div>
       </div>
     </div>
 
@@ -53,6 +53,7 @@ const defaultCity = getDefaultLocation();
           class="lp-search"
           type="search"
           placeholder="Search 160+ cities…"
+          data-hi-placeholder="160+ शहर खोजें…"
           autocomplete="off"
           autocorrect="off"
           spellcheck="false"
@@ -76,6 +77,7 @@ const defaultCity = getDefaultLocation();
 let allCities = [];
 let citiesLoaded = false;
 let currentLoc = null;
+let lpIsHindi = localStorage.getItem('pp-lang') === 'hi';
 
 // ── Helpers ─────────────────────────────────────────────────────────────────
 function lpSet(id, txt) {
@@ -136,13 +138,13 @@ function updateInfoCard(loc) {
   const dstEl = document.getElementById('lp-dst');
   if (dstEl) {
     if (tzInfo.isDST) {
-      dstEl.textContent = 'In Effect';
+      dstEl.textContent = lpIsHindi ? 'लागू' : 'In Effect';
       dstEl.className = 'lp-val lp-dst lp-dst-on';
     } else if (tzInfo.observesDST) {
-      dstEl.textContent = 'Not In Effect';
+      dstEl.textContent = lpIsHindi ? 'लागू नहीं' : 'Not In Effect';
       dstEl.className = 'lp-val lp-dst';
     } else {
-      dstEl.textContent = 'Not Observed';
+      dstEl.textContent = lpIsHindi ? 'लागू नहीं होता' : 'Not Observed';
       dstEl.className = 'lp-val lp-dst lp-dst-none';
     }
   }
@@ -173,7 +175,9 @@ function renderCityList(cities) {
   if (!container) return;
 
   if (!cities.length) {
-    container.innerHTML = '<p class="lp-no-results">No cities found. Try a different name or country.</p>';
+    container.innerHTML = lpIsHindi
+      ? '<p class="lp-no-results">कोई शहर नहीं मिला। कोई अन्य नाम या देश आज़माएं।</p>'
+      : '<p class="lp-no-results">No cities found. Try a different name or country.</p>';
     return;
   }
 
@@ -337,6 +341,16 @@ window.addEventListener('locationchange-external', e => {
     updateInfoCard(loc);
     currentLoc = loc;
   }
+});
+
+// Language change — re-render the DST label, "no results" message and search
+// placeholder, none of which are covered by Header.astro's global [data-hi] swap
+// since they're generated/kept in JS state rather than static markup.
+document.addEventListener('langchange', (e) => {
+  lpIsHindi = e.detail.langCode === 'hi';
+  if (searchEl) searchEl.placeholder = lpIsHindi ? (searchEl.dataset.hiPlaceholder || '') : 'Search 160+ cities…';
+  if (currentLoc) updateInfoCard(currentLoc);
+  if (citiesLoaded) renderCityList(filterCities(searchEl?.value || ''));
 });
 
 // Start

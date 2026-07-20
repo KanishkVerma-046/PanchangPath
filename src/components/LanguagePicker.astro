@@ -28,7 +28,7 @@ const LANGS: LangOption[] = [
 
   <div class="lng-dropdown" id="lng-dropdown" role="listbox" aria-label="Select language" hidden>
     <!-- Interface section -->
-    <p class="lng-section-head">Interface</p>
+    <p class="lng-section-head" data-hi="इंटरफ़ेस">Interface</p>
     {LANGS.map(l => (
       <button class="lng-opt" data-code={l.code} role="option">
         <span class="lng-opt-native">{l.nativeName}</span>

@@ -22,7 +22,7 @@ const pakshaHi  = p.tithi.pakshaNi;
     <div class="ps-toolbar" id="ps-toolbar">
       <!-- Time format -->
       <div class="ps-tool-group">
-        <span class="ps-tool-label">Time</span>
+        <span class="ps-tool-label" data-hi="समय">Time</span>
         <div class="ps-seg" role="group" aria-label="Time format">
           <button class="ps-seg-btn active" data-fmt="12h" id="fmt-12h" aria-pressed="true">12h</button>
           <button class="ps-seg-btn" data-fmt="24h" id="fmt-24h" aria-pressed="false">24h</button>
@@ -34,7 +34,7 @@ const pakshaHi  = p.tithi.pakshaNi;
 
       <!-- Calendar school -->
       <div class="ps-tool-group">
-        <span class="ps-tool-label">Calendar</span>
+        <span class="ps-tool-label" data-hi="कैलेंडर">Calendar</span>
         <div class="ps-seg" role="group" aria-label="Calendar school">
           <button class="ps-seg-btn active" data-school="amanta" id="school-amanta" aria-pressed="true">Amanta</button>
           <button class="ps-seg-btn" data-school="purnimanta" id="school-purnimanta" aria-pressed="false">Purnimanta</button>
@@ -49,7 +49,7 @@ const pakshaHi  = p.tithi.pakshaNi;
           <rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/>
           <rect x="17" y="3" width="4" height="18"/>
         </svg>
-        Chart
+        <span data-hi="चार्ट">Chart</span>
       </button>
 
       <!-- Spacer -->
@@ -57,7 +57,7 @@ const pakshaHi  = p.tithi.pakshaNi;
 
       <!-- Full Panchang link -->
       <a href="/" class="ps-more-link">
-        Full Panchang
+        <span data-hi="पूर्ण पंचांग">Full Panchang</span>
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
         </svg>
@@ -87,14 +87,14 @@ const pakshaHi  = p.tithi.pakshaNi;
         <!-- ── LEFT COLUMN ── -->
         <div class="ps-col">
           <div class="ps-row">
-            <div class="ps-row-lbl">Vikram Samvat</div>
+            <div class="ps-row-lbl" data-hi="विक्रम संवत">Vikram Samvat</div>
             <div class="ps-row-val">
               <strong id="ps-vs-year">{h.vikramaSamvat}</strong>
               <span class="ps-muted" id="ps-vs-name">{h.vikramaSamvatsara}</span>
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Shaka Samvat</div>
+            <div class="ps-row-lbl" data-hi="शक संवत">Shaka Samvat</div>
             <div class="ps-row-val">
               <strong id="ps-ss-year">{h.shakaSamvat}</strong>
             </div>
@@ -107,14 +107,14 @@ const pakshaHi  = p.tithi.pakshaNi;
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Var (Weekday)</div>
+            <div class="ps-row-lbl" data-hi="वार">Var (Weekday)</div>
             <div class="ps-row-val">
               <span class="en-text" id="ps-vara">{p.vara.name}</span>
               <span class="hi-text" id="ps-vara-hi" style="display:none;">{p.vara.nameHi}</span>
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Sunrise</div>
+            <div class="ps-row-lbl" data-hi="सूर्योदय">Sunrise</div>
             <div class="ps-row-val ps-sun">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-saffron)" stroke-width="2">
                 <circle cx="12" cy="12" r="5"/>
@@ -127,7 +127,7 @@ const pakshaHi  = p.tithi.pakshaNi;
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Sunset</div>
+            <div class="ps-row-lbl" data-hi="सूर्यास्त">Sunset</div>
             <div class="ps-row-val ps-sun">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--color-mute)" stroke-width="2">
                 <path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="9" x2="12" y2="2"/>
@@ -138,14 +138,14 @@ const pakshaHi  = p.tithi.pakshaNi;
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Sun Sign</div>
+            <div class="ps-row-lbl" data-hi="सूर्य राशि">Sun Sign</div>
             <div class="ps-row-val">
               <span class="en-text" id="ps-sunsign">{h.sunRashi.name} ({h.sunRashi.en})</span>
               <span class="hi-text" id="ps-sunsign-hi" style="display:none;">{h.sunRashi.nameHi}</span>
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Moon Sign</div>
+            <div class="ps-row-lbl" data-hi="चंद्र राशि">Moon Sign</div>
             <div class="ps-row-val">
               <span class="en-text" id="ps-moonsign">{h.moonRashi.name} ({h.moonRashi.en})</span>
               <span class="hi-text" id="ps-moonsign-hi" style="display:none;">{h.moonRashi.nameHi}</span>
@@ -159,7 +159,7 @@ const pakshaHi  = p.tithi.pakshaNi;
         <!-- ── RIGHT COLUMN ── -->
         <div class="ps-col">
           <div class="ps-row">
-            <div class="ps-row-lbl">Paksha</div>
+            <div class="ps-row-lbl" data-hi="पक्ष">Paksha</div>
             <div class="ps-row-val">
               <span class="ps-paksha-badge" id="ps-paksha-badge"
                 data-is-shukla={paksha === 'Shukla' ? 'true' : 'false'}>
@@ -170,7 +170,7 @@ const pakshaHi  = p.tithi.pakshaNi;
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Tithi</div>
+            <div class="ps-row-lbl" data-hi="तिथि">Tithi</div>
             <div class="ps-row-val ps-multi">
               <span>
                 <span class="en-text" id="ps-tithi">{p.tithi.name}</span>
@@ -180,7 +180,7 @@ const pakshaHi  = p.tithi.pakshaNi;
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Nakshatra</div>
+            <div class="ps-row-lbl" data-hi="नक्षत्र">Nakshatra</div>
             <div class="ps-row-val ps-multi">
               <span>
                 <span class="en-text" id="ps-nakshatra">{p.nakshatra.name}</span>
@@ -191,7 +191,7 @@ const pakshaHi  = p.tithi.pakshaNi;
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Yoga</div>
+            <div class="ps-row-lbl" data-hi="योग">Yoga</div>
             <div class="ps-row-val ps-multi">
               <span style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                 <span class="en-text" id="ps-yoga">{p.yoga.name}</span>
@@ -207,7 +207,7 @@ const pakshaHi  = p.tithi.pakshaNi;
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Karana</div>
+            <div class="ps-row-lbl" data-hi="करण">Karana</div>
             <div class="ps-row-val ps-multi">
               <span class="en-text" id="ps-karana">{p.karana.name}</span>
               <span class="hi-text" id="ps-karana-hi" style="display:none;">{p.karana.nameHi}</span>
@@ -215,19 +215,19 @@ const pakshaHi  = p.tithi.pakshaNi;
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Rahu Kalam</div>
+            <div class="ps-row-lbl" data-hi="राहु काल">Rahu Kalam</div>
             <div class="ps-row-val">
               <span class="ps-inauspicious-time" id="ps-rahu-kalam">{p.rahuKalam.start} – {p.rahuKalam.end}</span>
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Abhijit Muhurta</div>
+            <div class="ps-row-lbl" data-hi="अभिजित मुहूर्त">Abhijit Muhurta</div>
             <div class="ps-row-val">
               <span class="ps-auspicious-time" id="ps-abhijit">{p.abhijitMuhurta.start} – {p.abhijitMuhurta.end}</span>
             </div>
           </div>
           <div class="ps-row">
-            <div class="ps-row-lbl">Day Length</div>
+            <div class="ps-row-lbl" data-hi="दिन की अवधि">Day Length</div>
             <div class="ps-row-val" id="ps-day-length">{p.durationDay}</div>
           </div>
         </div>
@@ -237,11 +237,11 @@ const pakshaHi  = p.tithi.pakshaNi;
       <div class="ps-chart-wrap" id="ps-chart-wrap" hidden>
         <div class="ps-chart-inner">
           <div class="ps-chart-header">
-            <span class="caption-mono" style="color:var(--color-mute);font-size:10px;">Day Timeline</span>
+            <span class="caption-mono" data-hi="दिन की समयरेखा" style="color:var(--color-mute);font-size:10px;">Day Timeline</span>
             <div class="ps-chart-legend">
-              <span class="ps-legend-dot" style="background:#ef4444;"></span><span>Rahu Kalam</span>
-              <span class="ps-legend-dot" style="background:#f59e0b;"></span><span>Gulika</span>
-              <span class="ps-legend-dot" style="background:#8b5cf6;"></span><span>Yamaganda</span>
+              <span class="ps-legend-dot" style="background:#ef4444;"></span><span data-hi="राहु काल">Rahu Kalam</span>
+              <span class="ps-legend-dot" style="background:#f59e0b;"></span><span data-hi="गुलिक">Gulika</span>
+              <span class="ps-legend-dot" style="background:#8b5cf6;"></span><span data-hi="यमगण्ड">Yamaganda</span>
             </div>
           </div>
           <div class="ps-timeline" id="ps-timeline" aria-label="Day timeline chart"></div>
