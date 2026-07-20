@@ -106,27 +106,17 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 </Layout>
 
 <script>
+import { julianDay, sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../lib/panchang';
+
 const NAKSHATRAS = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const TITHIS = ['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
-const toRad = (d: number) => d * Math.PI / 180;
 const norm = (a: number) => ((a % 360) + 360) % 360;
 
 function quickPanchang(date: Date) {
-  const yr = date.getFullYear(), mo = date.getMonth()+1, dy = date.getDate();
-  let y = yr, m = mo;
-  if (m <= 2) { y -= 1; m += 12; }
-  const A = Math.floor(y/100), B = 2 - A + Math.floor(A/4);
-  const jd = Math.floor(365.25*(y+4716)) + Math.floor(30.6001*(m+1)) + dy + 6/24 + B - 1524.5;
-  const T = (jd - 2451545)/36525;
-  const L0 = norm(280.46646 + 36000.76983*T);
-  const Msun = norm(357.52911 + 35999.05029*T);
-  const sunLon = norm(L0 + (1.914602-0.004817*T)*Math.sin(toRad(Msun)) + 0.019993*Math.sin(2*toRad(Msun)));
-  const moonL = norm(218.3164477 + 481267.88123421*T);
-  const moonD = norm(297.8501921 + 445267.1114034*T);
-  const moonMp = norm(134.9633964 + 477198.8675055*T);
-  const dL = 6.288774*Math.sin(toRad(moonMp)) + 1.274027*Math.sin(toRad(2*moonD-moonMp)) + 0.658314*Math.sin(toRad(2*moonD)) + 0.213618*Math.sin(toRad(2*moonMp));
-  const moonLon = norm(moonL + dL);
-  const ay = 23.85 + 1.3612*T;
+  const jd = julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), 6);
+  const sunLon = sunTrueLongitude(jd);
+  const moonLon = moonLongitude(jd);
+  const ay = lahiriAyanamsha(jd);
   const moonSid = norm(moonLon - ay);
   const elong = norm(moonLon - sunLon);
   const tithiIdx = Math.floor(elong/12)%30;
