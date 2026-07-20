@@ -300,7 +300,22 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
 
 <script>
 // ─── Client-side Panchang engine ─────────────────────────────────────────
-// Mirrors src/lib/panchang.ts + src/lib/panchang.ts#getHinduCalendarInfo
+// Orchestration and formatting only — astronomy math imported from src/lib/panchang.ts,
+// the same functions the server-rendered "today" values use at build time. Aliased to
+// sunTrueLon/moonLon/ayanamsha below purely to keep every existing call site in this file
+// unchanged.
+import {
+  julianDay,
+  sunTrueLongitude as sunTrueLon,
+  moonLongitude as moonLon,
+  lahiriAyanamsha as ayanamsha,
+  equationOfTimeMinutes,
+  sunriseUTC,
+  gmstDegrees,
+  moonEquatorial,
+  moonRiseSetUTC,
+  findAngleCrossing,
+} from '../lib/panchang';
 
 // ── Global display state ──
 let timeFormat: '12h' | '24h' | '24p' = '12h';
@@ -308,125 +323,7 @@ let calSchool: 'amanta' | 'purnimanta' = 'amanta';
 let chartVisible = false;
 let srMinsGlobal = 0; // sunrise (mins from midnight) for 24+ format
 
-const toRad = (d: number) => d * Math.PI / 180;
-const toDeg = (r: number) => r * 180 / Math.PI;
 const norm360 = (a: number) => ((a % 360) + 360) % 360;
-
-function julianDay(year: number, month: number, day: number, hour = 0): number {
-  if (month <= 2) { year -= 1; month += 12; }
-  const A = Math.floor(year / 100);
-  const B = 2 - A + Math.floor(A / 4);
-  return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + hour / 24 + B - 1524.5;
-}
-
-function sunTrueLon(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  const L0 = norm360(280.46646 + 36000.76983 * T);
-  const M = norm360(357.52911 + 35999.05029 * T);
-  const Mr = toRad(M);
-  return norm360(L0 + (1.914602 - 0.004817 * T) * Math.sin(Mr) + 0.019993 * Math.sin(2 * Mr));
-}
-
-function moonLon(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  const L = norm360(218.3164477 + 481267.88123421 * T);
-  const D = norm360(297.8501921 + 445267.1114034 * T);
-  const M = norm360(357.5291092 + 35999.0502909 * T);
-  const Mp = norm360(134.9633964 + 477198.8675055 * T);
-  const F = norm360(93.2720950 + 483202.0175233 * T);
-  const Dr = toRad(D), Mr = toRad(M), Mpr = toRad(Mp), Fr = toRad(F);
-  const dL = 6.288774*Math.sin(Mpr)+1.274027*Math.sin(2*Dr-Mpr)+0.658314*Math.sin(2*Dr)
-    +0.213618*Math.sin(2*Mpr)-0.185116*Math.sin(Mr)-0.114332*Math.sin(2*Fr)
-    +0.058793*Math.sin(2*Dr-2*Mpr)+0.057066*Math.sin(2*Dr-Mr-Mpr)+0.053322*Math.sin(2*Dr+Mpr)
-    +0.045758*Math.sin(2*Dr-Mr)-0.040923*Math.sin(Mr-Mpr)-0.034720*Math.sin(Dr)
-    -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010980*Math.sin(Mpr-2*Fr)
-    +0.010675*Math.sin(4*Dr-Mpr)+0.010034*Math.sin(3*Mpr)+0.008548*Math.sin(4*Dr-2*Mpr)
-    -0.007888*Math.sin(2*Dr+Mr-Mpr)-0.006766*Math.sin(2*Dr+Mr)-0.005163*Math.sin(Dr-Mpr)
-    +0.004987*Math.sin(Dr+Mr)+0.004036*Math.sin(2*Dr-Mr+Mpr)+0.003994*Math.sin(2*Dr+2*Mpr)
-    +0.003861*Math.sin(4*Dr)+0.003665*Math.sin(2*Dr-3*Mpr);
-  return norm360(L + dL);
-}
-
-function ayanamsha(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  return 23.85 + 1.3612 * T;
-}
-
-// Equation of Time in minutes (Meeus, Astronomical Algorithms ch. 28) — copied verbatim from
-// src/lib/panchang.ts's equationOfTimeMinutes() so the client-side sunrise/sunset matches the
-// server-rendered value (client scripts in static Astro can't import from src/lib — see
-// CLAUDE.md's Gotchas).
-function equationOfTimeMinutes(T: number): number {
-  const L0 = norm360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
-  const M = norm360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
-  const e = 0.016708634 - 0.000042037 * T - 0.0000001267 * T * T;
-  const epsilon0 = 23.4392911 - (46.8150 * T + 0.00059 * T * T - 0.001813 * T * T * T) / 3600;
-  const y = Math.pow(Math.tan(toRad(epsilon0) / 2), 2);
-  const L0r = toRad(L0);
-  const Mr = toRad(M);
-  const E = y * Math.sin(2 * L0r) - 2 * e * Math.sin(Mr) + 4 * e * y * Math.sin(Mr) * Math.cos(2 * L0r)
-    - 0.5 * y * y * Math.sin(4 * L0r) - 1.25 * e * e * Math.sin(2 * Mr);
-  return toDeg(E) * 4;
-}
-
-function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): number {
-  const T = (jd - 2451545.0) / 36525;
-  const M = norm360(357.52911 + 35999.05029 * T);
-  const L0 = norm360(280.46646 + 36000.76983 * T);
-  const Mr = toRad(M);
-  const sunLon = L0 + (1.914602 - 0.004817 * T) * Math.sin(Mr) + 0.019993 * Math.sin(2 * Mr);
-  const obliq = 23.4393 - 0.0000004 * T * 36525;
-  const sinDec = Math.sin(toRad(obliq)) * Math.sin(toRad(sunLon));
-  const dec = Math.asin(sinDec);
-  const latR = toRad(lat);
-  const cosHA = (Math.sin(toRad(-0.8333)) - Math.sin(latR) * Math.sin(dec)) / (Math.cos(latR) * Math.cos(dec));
-  if (cosHA < -1 || cosHA > 1) return NaN;
-  const HA = toDeg(Math.acos(cosHA));
-  const eot = equationOfTimeMinutes(T);
-  const noon = 12 - lng / 15 - eot / 60;
-  return rising ? noon - HA / 15 : noon + HA / 15;
-}
-
-function gmstDegrees(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  return norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T);
-}
-
-function moonEquatorial(jd: number): { ra: number; dec: number } {
-  const T = (jd - 2451545.0) / 36525;
-  const lambda = moonLon(jd);
-  const obliq = 23.4392911 - 0.0130042 * T;
-  const lamR = toRad(lambda);
-  const epsR = toRad(obliq);
-  const dec = Math.asin(Math.sin(epsR) * Math.sin(lamR));
-  const ra = norm360(toDeg(Math.atan2(Math.sin(lamR) * Math.cos(epsR), Math.cos(lamR))));
-  return { ra, dec: toDeg(dec) };
-}
-
-// Iterative moonrise/moonset altitude-crossing solve — see src/lib/panchang.ts's
-// moonRiseSetUTC for the full explanation of why the Moon needs this (unlike the Sun)
-// and why the result is seeded from the old day-offset heuristic.
-function moonRiseSetUTC(jd0: number, lat: number, lng: number, rising: boolean, seedUTCHour: number): number {
-  const h0 = 0.125;
-  const latR = toRad(lat);
-  let u = seedUTCHour;
-  for (let i = 0; i < 6; i++) {
-    const jd = jd0 + u / 24;
-    const { ra, dec } = moonEquatorial(jd);
-    const decR = toRad(dec);
-    const cosH0 = (Math.sin(toRad(h0)) - Math.sin(latR) * Math.sin(decR)) / (Math.cos(latR) * Math.cos(decR));
-    if (cosH0 < -1 || cosH0 > 1) return NaN;
-    const H0 = toDeg(Math.acos(cosH0));
-    const lst = norm360(gmstDegrees(jd) + lng);
-    let H = ((lst - ra + 180) % 360 + 360) % 360 - 180;
-    const target = rising ? -H0 : H0;
-    let err = ((H - target + 180) % 360 + 360) % 360 - 180;
-    const du = err / 14.35;
-    u -= du;
-    if (Math.abs(du) < 0.0005) break;
-  }
-  return u;
-}
 
 function minsToFmt(totalMins: number): string {
   const m = ((totalMins % 1440) + 1440) % 1440;
@@ -450,30 +347,6 @@ function minsToFmt(totalMins: number): string {
 function fmtTime(h: number, tz: number): string {
   const local = ((h + tz) % 24 + 24) % 24;
   return minsToFmt(local * 60);
-}
-
-// Iterative boundary-crossing solve — mirrors src/lib/panchang.ts's findAngleCrossing()/
-// estimateEndTime(). Recomputes the actual instantaneous rate of change of the angle at each
-// step (via finite difference) rather than assuming a fixed rate, which is what made the old
-// single-linear-rate version run 45min-2.5h early vs. independent third-party sources (see
-// docs/bugs/backlog.md).
-function findAngleCrossing(jdStart: number, targetLon: number, lonFn: (jd: number) => number): number {
-  let jd = jdStart;
-  const dt = 1 / 1440; // 1 minute
-  for (let i = 0; i < 8; i++) {
-    const lonNow = lonFn(jd);
-    let diff = targetLon - lonNow;
-    diff = ((diff % 360) + 540) % 360 - 180;
-    const lonNext = lonFn(jd + dt);
-    let dLon = lonNext - lonNow;
-    dLon = ((dLon % 360) + 540) % 360 - 180;
-    const rate = dLon / dt;
-    if (Math.abs(rate) < 1e-6) break;
-    const dJd = diff / rate;
-    jd += dJd;
-    if (Math.abs(dJd) < 1 / 86400) break; // converged to ~1 second
-  }
-  return jd;
 }
 
 function estimateEnd(jd: number, step: number, tz: number, lonFn: (jd: number) => number): string {

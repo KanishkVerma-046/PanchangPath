@@ -1,4 +1,5 @@
 // Panchang calculation engine using Jean Meeus astronomical algorithms
+import { SunPosition, EclipticGeoMoon } from 'astronomy-engine';
 
 export interface PanchangData {
   vara: { name: string; nameHi: string; lord: string };
@@ -31,62 +32,24 @@ export function julianDay(year: number, month: number, day: number, hour = 0): n
   return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + hour / 24 + B - 1524.5;
 }
 
-function sunTrueLongitude(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  const L0 = norm360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
-  const M = norm360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
-  const Mr = toRad(M);
-  const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(Mr)
-    + (0.019993 - 0.000101 * T) * Math.sin(2 * Mr)
-    + 0.000289 * Math.sin(3 * Mr);
-  return norm360(L0 + C);
+// astronomy-engine reads a bare number as UT days since the J2000 epoch, i.e. jd - 2451545.0 —
+// pass a raw Julian Day here and the result is off by ~6700 years with no type error.
+export function sunTrueLongitude(jd: number): number {
+  return norm360(SunPosition(jd - 2451545.0).elon);
 }
 
-function moonLongitude(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  const L = norm360(218.3164477 + 481267.88123421 * T);
-  const D = norm360(297.8501921 + 445267.1114034 * T);
-  const M = norm360(357.5291092 + 35999.0502909 * T);
-  const Mp = norm360(134.9633964 + 477198.8675055 * T);
-  const F = norm360(93.2720950 + 483202.0175233 * T);
-  const Dr = toRad(D); const Mr = toRad(M); const Mpr = toRad(Mp); const Fr = toRad(F);
-  const dL = 6.288774 * Math.sin(Mpr)
-    + 1.274027 * Math.sin(2 * Dr - Mpr)
-    + 0.658314 * Math.sin(2 * Dr)
-    + 0.213618 * Math.sin(2 * Mpr)
-    - 0.185116 * Math.sin(Mr)
-    - 0.114332 * Math.sin(2 * Fr)
-    + 0.058793 * Math.sin(2 * Dr - 2 * Mpr)
-    + 0.057066 * Math.sin(2 * Dr - Mr - Mpr)
-    + 0.053322 * Math.sin(2 * Dr + Mpr)
-    + 0.045758 * Math.sin(2 * Dr - Mr)
-    - 0.040923 * Math.sin(Mr - Mpr)
-    - 0.034720 * Math.sin(Dr)
-    - 0.030383 * Math.sin(Mr + Mpr)
-    + 0.015327 * Math.sin(2 * Dr - 2 * Fr)
-    + 0.010980 * Math.sin(Mpr - 2 * Fr)
-    + 0.010675 * Math.sin(4 * Dr - Mpr)
-    + 0.010034 * Math.sin(3 * Mpr)
-    + 0.008548 * Math.sin(4 * Dr - 2 * Mpr)
-    - 0.007888 * Math.sin(2 * Dr + Mr - Mpr)
-    - 0.006766 * Math.sin(2 * Dr + Mr)
-    - 0.005163 * Math.sin(Dr - Mpr)
-    + 0.004987 * Math.sin(Dr + Mr)
-    + 0.004036 * Math.sin(2 * Dr - Mr + Mpr)
-    + 0.003994 * Math.sin(2 * Dr + 2 * Mpr)
-    + 0.003861 * Math.sin(4 * Dr)
-    + 0.003665 * Math.sin(2 * Dr - 3 * Mpr);
-  return norm360(L + dL);
+export function moonLongitude(jd: number): number {
+  return norm360(EclipticGeoMoon(jd - 2451545.0).lon);
 }
 
 // Lahiri ayanamsha (degrees)
-function lahiriAyanamsha(jd: number): number {
+export function lahiriAyanamsha(jd: number): number {
   const T = (jd - 2451545.0) / 36525;
   return 23.85 + 1.3612 * T - 0.000136 * T * T;
 }
 
 // Equation of Time in minutes (Meeus, Astronomical Algorithms ch. 28)
-function equationOfTimeMinutes(T: number): number {
+export function equationOfTimeMinutes(T: number): number {
   const L0 = norm360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
   const M = norm360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
   const e = 0.016708634 - 0.000042037 * T - 0.0000001267 * T * T;
@@ -107,7 +70,7 @@ function solarNoonUTC(jd: number, lng: number): number {
 }
 
 // Sunrise/Sunset in decimal hours UTC using standard formula
-function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): number {
+export function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): number {
   const T = (jd - 2451545.0) / 36525;
   const M = norm360(357.52911 + 35999.05029 * T);
   const L0 = norm360(280.46646 + 36000.76983 * T);
@@ -127,7 +90,7 @@ function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): numb
 }
 
 // Greenwich Mean Sidereal Time in degrees, valid for any jd (Meeus ch. 12)
-function gmstDegrees(jd: number): number {
+export function gmstDegrees(jd: number): number {
   const T = (jd - 2451545.0) / 36525;
   return norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T);
 }
@@ -135,7 +98,7 @@ function gmstDegrees(jd: number): number {
 // Moon's geocentric equatorial position (RA/Dec), ecliptic latitude approximated as 0 —
 // consistent with the rest of this codebase, which does not model the Moon's ~5.1° orbital
 // inclination anywhere else (Nakshatra/Rashi placement use ecliptic longitude only).
-function moonEquatorial(jd: number): { ra: number; dec: number } {
+export function moonEquatorial(jd: number): { ra: number; dec: number } {
   const T = (jd - 2451545.0) / 36525;
   const lambda = moonLongitude(jd);
   const obliq = 23.4392911 - 0.0130042 * T;
@@ -153,7 +116,7 @@ function moonEquatorial(jd: number): { ra: number; dec: number } {
 // position at each refined estimate, seeded from the old day-offset heuristic to stay
 // anchored to the correct calendar-day event.
 // jd0 = Julian Day at 0h UTC of the calendar date being computed for.
-function moonRiseSetUTC(jd0: number, lat: number, lng: number, rising: boolean, seedUTCHour: number): number {
+export function moonRiseSetUTC(jd0: number, lat: number, lng: number, rising: boolean, seedUTCHour: number): number {
   const h0 = 0.125; // target altitude: ~mean lunar horizontal parallax (0.7275×0.9508°) minus refraction (34')
   const latR = toRad(lat);
   let u = seedUTCHour;
@@ -356,7 +319,7 @@ function slotTime(sunriseMins: number, sunsetMins: number, slot: number): { star
 // moonRiseSetUTC() above. This is why boundary-crossing times ("ends at") land within ~1
 // minute of independent third-party sources instead of the 45min-2.5h drift the old
 // single-linear-rate extrapolation produced (see docs/bugs/backlog.md).
-function findAngleCrossing(jdStart: number, targetLon: number, longitudeFn: (jd: number) => number): number {
+export function findAngleCrossing(jdStart: number, targetLon: number, longitudeFn: (jd: number) => number): number {
   let jd = jdStart;
   const dt = 1 / 1440; // 1 minute, for the finite-difference instantaneous-rate estimate
   for (let i = 0; i < 8; i++) {
