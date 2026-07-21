@@ -70,6 +70,8 @@ import Layout from '../../layouts/Layout.astro';
 </style>
 
 <script>
+import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
+
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
   {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
@@ -110,16 +112,9 @@ const toDeg=(r:number)=>r*180/Math.PI;
 function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number}){
   const jd=toJD(y,m,d,6-loc.tz);
   const T=(jd-2451545)/36525;
-  const L0=n360(280.46646+36000.76983*T);
-  const Ms=n360(357.52911+35999.05029*T);
-  const sunLon=n360(L0+(1.914602-0.004817*T)*Math.sin(toRad(Ms))+0.019993*Math.sin(2*toRad(Ms)));
-  const moonL=n360(218.3164477+481267.88123421*T);
-  const moonD=n360(297.8501921+445267.1114034*T);
-  const moonMp=n360(134.9633964+477198.8675055*T);
-  const moonF=n360(93.2720950+483202.0175233*T);
-  const dL=6.288774*Math.sin(toRad(moonMp))+1.274027*Math.sin(toRad(2*moonD-moonMp))+0.658314*Math.sin(toRad(2*moonD))+0.213618*Math.sin(toRad(2*moonMp))-0.185116*Math.sin(toRad(Ms))-0.114332*Math.sin(toRad(2*moonF));
-  const moonLon=n360(moonL+dL);
-  const ay=23.85+1.3612*T-0.000136*T*T;
+  const sunLon=sunTrueLongitude(jd);
+  const moonLon=moonLongitude(jd);
+  const ay=lahiriAyanamsha(jd);
   const sunSid=n360(sunLon-ay), moonSid=n360(moonLon-ay);
   const elong=n360(moonLon-sunLon);
   const tithiIdx=Math.floor(elong/12)%30;

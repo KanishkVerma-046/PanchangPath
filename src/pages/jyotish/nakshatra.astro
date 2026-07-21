@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
 ---
 
 <Layout title="Nakshatra Calculator — Find Your Birth Star — PanchangPath" description="Find your Janma Nakshatra (birth star) and pada from birth details. Includes lord, gana, nadi, yoni, deity, symbol and name syllables.">
@@ -80,7 +79,9 @@ import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
   #attr-list .dl-row span:last-child { color:var(--color-ink);font-weight:600;text-align:right; }
 </style>
 
-<script define:vars={{ NAKSHATRA_ICONS }}>
+<script>
+import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
+import { moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
 const YONI_HI={Horse:'घोड़ा',Elephant:'हाथी',Sheep:'भेड़',Serpent:'सर्प',Dog:'कुत्ता',Cat:'बिल्ली',Rat:'चूहा',Cow:'गाय',Buffalo:'भैंस',Tiger:'बाघ',Monkey:'बंदर',Mongoose:'नेवला',Lion:'सिंह',Deer:'हिरण'};
@@ -90,8 +91,6 @@ const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 const toR=d=>d*Math.PI/180;
-function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
-function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F))+0.058793*Math.sin(toR(2*D-2*Mp))+0.057066*Math.sin(toR(2*D-M-Mp))+0.053322*Math.sin(toR(2*D+Mp))+0.045758*Math.sin(toR(2*D-M))-0.040923*Math.sin(toR(M-Mp))-0.034720*Math.sin(toR(D))-0.030383*Math.sin(toR(M+Mp))+0.015327*Math.sin(toR(2*D-2*F))+0.010980*Math.sin(toR(Mp-2*F))+0.010675*Math.sin(toR(4*D-Mp))+0.010034*Math.sin(toR(3*Mp))+0.008548*Math.sin(toR(4*D-2*Mp))-0.007888*Math.sin(toR(2*D+M-Mp))-0.006766*Math.sin(toR(2*D+M))-0.005163*Math.sin(toR(D-Mp))+0.004987*Math.sin(toR(D+M))+0.004036*Math.sin(toR(2*D-M+Mp))+0.003994*Math.sin(toR(2*D+2*Mp))+0.003861*Math.sin(toR(4*D))+0.003665*Math.sin(toR(2*D-3*Mp));return n360(Lm+dL);}
 
 const NAKS=[
 {n:'Ashwini',h:'अश्विनी',lord:'Ketu',yoni:'Horse',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Ashwini Kumaras',sym:'Horse head',p:['Chu','Che','Cho','La'],traits:'Quick-minded and energetically pioneering, you start projects with great enthusiasm and possess natural healing instincts. Impatience can undermine follow-through, but your courage and spontaneity make you a natural trailblazer and leader.'},
@@ -160,7 +159,7 @@ function calculate(){
     const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
     const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
     const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
-    const T=(jd-2451545)/36525;const ay=ayanamsha(T);
+    const ay=ayanamsha(jd);
     const sid=n360(moonLon(jd)-ay);
     const idx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;
     const nk=NAKS[idx];

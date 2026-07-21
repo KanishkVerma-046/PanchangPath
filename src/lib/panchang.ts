@@ -1,5 +1,30 @@
 // Panchang calculation engine using Jean Meeus astronomical algorithms
-import { SunPosition, EclipticGeoMoon } from 'astronomy-engine';
+import {
+  sunLongitude as sunTrueLongitude,
+  moonLongitude,
+  lahiriAyanamsha,
+  equationOfTimeMinutes,
+  sunriseUTC,
+  gmstDegrees,
+  moonEquatorial,
+  moonRiseSetUTC,
+  findAngleCrossing,
+} from './astro-core';
+
+// Re-exported verbatim from astro-core.ts (the shared home for every astronomy-engine call and
+// the geometry/utility functions built on top of it) so every existing importer of this module
+// keeps working unchanged — see docs/superpowers/plans/2026-07-21-full-site-astronomy-engine-scope.md.
+export {
+  sunTrueLongitude,
+  moonLongitude,
+  lahiriAyanamsha,
+  equationOfTimeMinutes,
+  sunriseUTC,
+  gmstDegrees,
+  moonEquatorial,
+  moonRiseSetUTC,
+  findAngleCrossing,
+};
 
 export interface PanchangData {
   vara: { name: string; nameHi: string; lord: string };
@@ -32,110 +57,11 @@ export function julianDay(year: number, month: number, day: number, hour = 0): n
   return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + hour / 24 + B - 1524.5;
 }
 
-// astronomy-engine reads a bare number as UT days since the J2000 epoch, i.e. jd - 2451545.0 —
-// pass a raw Julian Day here and the result is off by ~6700 years with no type error.
-export function sunTrueLongitude(jd: number): number {
-  return norm360(SunPosition(jd - 2451545.0).elon);
-}
-
-export function moonLongitude(jd: number): number {
-  return norm360(EclipticGeoMoon(jd - 2451545.0).lon);
-}
-
-// Lahiri ayanamsha (degrees)
-export function lahiriAyanamsha(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  return 23.85 + 1.3612 * T - 0.000136 * T * T;
-}
-
-// Equation of Time in minutes (Meeus, Astronomical Algorithms ch. 28)
-export function equationOfTimeMinutes(T: number): number {
-  const L0 = norm360(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
-  const M = norm360(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
-  const e = 0.016708634 - 0.000042037 * T - 0.0000001267 * T * T;
-  const epsilon0 = 23.4392911 - (46.8150 * T + 0.00059 * T * T - 0.001813 * T * T * T) / 3600;
-  const y = Math.pow(Math.tan(toRad(epsilon0) / 2), 2);
-  const L0r = toRad(L0);
-  const Mr = toRad(M);
-  const E = y * Math.sin(2 * L0r) - 2 * e * Math.sin(Mr) + 4 * e * y * Math.sin(Mr) * Math.cos(2 * L0r)
-    - 0.5 * y * y * Math.sin(4 * L0r) - 1.25 * e * e * Math.sin(2 * Mr);
-  return toDeg(E) * 4;
-}
-
 // Solar noon in decimal hours (UTC)
 function solarNoonUTC(jd: number, lng: number): number {
   const T = (jd - 2451545.0) / 36525;
   const eot = equationOfTimeMinutes(T);
   return 12 - lng / 15 - eot / 60;
-}
-
-// Sunrise/Sunset in decimal hours UTC using standard formula
-export function sunriseUTC(jd: number, lat: number, lng: number, rising: boolean): number {
-  const T = (jd - 2451545.0) / 36525;
-  const M = norm360(357.52911 + 35999.05029 * T);
-  const L0 = norm360(280.46646 + 36000.76983 * T);
-  const Mr = toRad(M);
-  const C = (1.914602 - 0.004817 * T) * Math.sin(Mr) + 0.019993 * Math.sin(2 * Mr);
-  const sunLon = L0 + C;
-  const obliq = 23.4393 - 0.0000004 * T * 36525;
-  const sinDec = Math.sin(toRad(obliq)) * Math.sin(toRad(sunLon));
-  const dec = Math.asin(sinDec);
-  const latR = toRad(lat);
-  const cosHA = (Math.sin(toRad(-0.8333)) - Math.sin(latR) * Math.sin(dec)) / (Math.cos(latR) * Math.cos(dec));
-  if (cosHA < -1 || cosHA > 1) return NaN;
-  const HA = toDeg(Math.acos(cosHA));
-  const eot = equationOfTimeMinutes(T);
-  const noon = 12 - lng / 15 - eot / 60;
-  return rising ? noon - HA / 15 : noon + HA / 15;
-}
-
-// Greenwich Mean Sidereal Time in degrees, valid for any jd (Meeus ch. 12)
-export function gmstDegrees(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  return norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T);
-}
-
-// Moon's geocentric equatorial position (RA/Dec), ecliptic latitude approximated as 0 —
-// consistent with the rest of this codebase, which does not model the Moon's ~5.1° orbital
-// inclination anywhere else (Nakshatra/Rashi placement use ecliptic longitude only).
-export function moonEquatorial(jd: number): { ra: number; dec: number } {
-  const T = (jd - 2451545.0) / 36525;
-  const lambda = moonLongitude(jd);
-  const obliq = 23.4392911 - 0.0130042 * T;
-  const lamR = toRad(lambda);
-  const epsR = toRad(obliq);
-  const dec = Math.asin(Math.sin(epsR) * Math.sin(lamR));
-  const ra = norm360(toDeg(Math.atan2(Math.sin(lamR) * Math.cos(epsR), Math.cos(lamR))));
-  return { ra, dec: toDeg(dec) };
-}
-
-// Moonrise/moonset in decimal UTC hours, in the same "UTC hour relative to this calendar
-// date's 0h UTC" frame that sunriseUTC() returns (so it plugs into decimalHoursToTime() the
-// same way). Unlike the Sun, the Moon moves ~13°/day, so a single daily snapshot isn't
-// accurate — this iterates the altitude-crossing equation, recomputing the Moon's actual
-// position at each refined estimate, seeded from the old day-offset heuristic to stay
-// anchored to the correct calendar-day event.
-// jd0 = Julian Day at 0h UTC of the calendar date being computed for.
-export function moonRiseSetUTC(jd0: number, lat: number, lng: number, rising: boolean, seedUTCHour: number): number {
-  const h0 = 0.125; // target altitude: ~mean lunar horizontal parallax (0.7275×0.9508°) minus refraction (34')
-  const latR = toRad(lat);
-  let u = seedUTCHour;
-  for (let i = 0; i < 6; i++) {
-    const jd = jd0 + u / 24;
-    const { ra, dec } = moonEquatorial(jd);
-    const decR = toRad(dec);
-    const cosH0 = (Math.sin(toRad(h0)) - Math.sin(latR) * Math.sin(decR)) / (Math.cos(latR) * Math.cos(decR));
-    if (cosH0 < -1 || cosH0 > 1) return NaN;
-    const H0 = toDeg(Math.acos(cosH0));
-    const lst = norm360(gmstDegrees(jd) + lng);
-    let H = ((lst - ra + 180) % 360 + 360) % 360 - 180;
-    const target = rising ? -H0 : H0;
-    let err = ((H - target + 180) % 360 + 360) % 360 - 180;
-    const du = err / 14.35; // Moon's mean hour-angle progression rate, degrees/hour
-    u -= du;
-    if (Math.abs(du) < 0.0005) break; // converged to ~1.8 seconds
-  }
-  return u;
 }
 
 function decimalHoursToTime(h: number, tzOffset: number): string {
@@ -311,31 +237,6 @@ function slotTime(sunriseMins: number, sunsetMins: number, slot: number): { star
     return `${h12}:${min.toString().padStart(2, '0')} ${ap}`;
   };
   return { start: fmt(start), end: fmt(end) };
-}
-
-// Iteratively finds the JD at which `longitudeFn(jd)` (a 0-360° wrapped angle) next crosses
-// `targetLon`, using the actual instantaneous rate of change of that specific angle at each
-// step rather than an assumed fixed rate — the same iterative-refinement pattern as
-// moonRiseSetUTC() above. This is why boundary-crossing times ("ends at") land within ~1
-// minute of independent third-party sources instead of the 45min-2.5h drift the old
-// single-linear-rate extrapolation produced (see docs/bugs/backlog.md).
-export function findAngleCrossing(jdStart: number, targetLon: number, longitudeFn: (jd: number) => number): number {
-  let jd = jdStart;
-  const dt = 1 / 1440; // 1 minute, for the finite-difference instantaneous-rate estimate
-  for (let i = 0; i < 8; i++) {
-    const lonNow = longitudeFn(jd);
-    let diff = targetLon - lonNow;
-    diff = ((diff % 360) + 540) % 360 - 180; // shortest signed distance to target, (-180, 180]
-    const lonNext = longitudeFn(jd + dt);
-    let dLon = lonNext - lonNow;
-    dLon = ((dLon % 360) + 540) % 360 - 180;
-    const rate = dLon / dt; // actual degrees/day rate right now, not an assumed constant
-    if (Math.abs(rate) < 1e-6) break;
-    const dJd = diff / rate;
-    jd += dJd;
-    if (Math.abs(dJd) < 1 / 86400) break; // converged to ~1 second
-  }
-  return jd;
 }
 
 function estimateEndTime(jd: number, degPerUnit: number, tzOffset: number, longitudeFn: (jd: number) => number): string {

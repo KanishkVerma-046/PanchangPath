@@ -42,6 +42,9 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <script>
+import { calcLagna } from '../../lib/astro-core';
+import { lahiriAyanamsha } from '../../lib/panchang';
+
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
   {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
@@ -82,22 +85,6 @@ const n360=(a:number)=>((a%360)+360)%360;
 const toRad=(d:number)=>d*Math.PI/180;
 const toDeg=(r:number)=>r*180/Math.PI;
 
-function calcAscendant(jd:number,lat:number,lng:number){
-  const T=(jd-2451545)/36525;
-  const JD0=Math.floor(jd-0.5)+0.5;
-  const T0=(JD0-2451545)/36525;
-  let GST=((6.697374558+2400.0513369*T0+0.0000258622*T0*T0)%24+24)%24;
-  const UT=(jd-JD0)*24;
-  const LST=((GST+UT*1.00273791+lng/15)%24+24)%24;
-  const RAMC=LST*15;
-  const e=23.4393-0.0000004*T*36525;
-  const eR=toRad(e), RAMC_r=toRad(RAMC), latR=toRad(lat);
-  let asc=toDeg(Math.atan2(Math.cos(RAMC_r),-Math.sin(RAMC_r)*Math.sin(eR)-Math.tan(latR)*Math.cos(eR)));
-  if(asc<0)asc+=360;
-  // Lahiri ayanamsha
-  const ay=23.85+1.3612*T-0.000136*T*T;
-  return n360(asc-ay);
-}
 function fmtMins(m:number){
   const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
   return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
@@ -142,7 +129,7 @@ function calculate(){
   for(let i=0;i<144;i++){
     const tMins=i*10;
     const tJD=baseJD+tMins/(60*24);
-    const asc=calcAscendant(tJD,loc.lat,loc.lng);
+    const asc=n360(calcLagna(tJD,loc.lat,loc.lng)-lahiriAyanamsha(tJD));
     const rashi=Math.floor(asc/30)%12;
     if(rashi!==lastRashi){
       entries.push({rashi,startMins:tMins});

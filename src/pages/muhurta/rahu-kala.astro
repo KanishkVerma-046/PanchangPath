@@ -51,6 +51,8 @@ import Layout from '../../layouts/Layout.astro';
 </style>
 
 <script>
+import { sunriseUTC } from '../../lib/panchang';
+
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
   {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
@@ -81,26 +83,6 @@ function toJD(y:number,m:number,d:number,h=0){
 const n360=(a:number)=>((a%360)+360)%360;
 const toRad=(d:number)=>d*Math.PI/180;
 const toDeg=(r:number)=>r*180/Math.PI;
-function sunriseUTC(jd:number,lat:number,lng:number,rising=true){
-  const T=(jd-2451545)/36525;
-  const M=n360(357.52911+35999.05029*T);
-  const L0=n360(280.46646+36000.76983*T);
-  const C=(1.914602-0.004817*T)*Math.sin(toRad(M))+0.019993*Math.sin(2*toRad(M));
-  const sunL=L0+C;
-  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunL));
-  const dec=Math.asin(sinDec);
-  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(lat))*Math.sin(dec))/(Math.cos(toRad(lat))*Math.cos(dec));
-  if(cosHA<-1||cosHA>1)return NaN;
-  const ha=toDeg(Math.acos(cosHA));
-  const e=0.016708634-0.000042037*T-0.0000001267*T*T;
-  const eps0=23.4392911-(46.8150*T+0.00059*T*T-0.001813*T*T*T)/3600;
-  const y=Math.pow(Math.tan(toRad(eps0)/2),2);
-  const L0r=toRad(L0),Mr=toRad(M);
-  const E=y*Math.sin(2*L0r)-2*e*Math.sin(Mr)+4*e*y*Math.sin(Mr)*Math.cos(2*L0r)-0.5*y*y*Math.sin(4*L0r)-1.25*e*e*Math.sin(2*Mr);
-  const eot=toDeg(E)*4;
-  const noon=12-lng/15-eot/60;
-  return rising?noon-ha/15:noon+ha/15;
-}
 function fmtMins(m:number){
   const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
   return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
