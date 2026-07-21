@@ -380,38 +380,13 @@ text.kwc-chip:hover { fill: var(--color-saffron-deep) !important; }
 
 <!-- ─── Client script ─── -->
 <script>
+import { calculateKundali, RASHIS } from '../lib/kundali';
+
 const PLANET_ICONS: Record<string, string> = JSON.parse(document.getElementById('planet-icons-data')!.textContent || '{}');
 
 function planetIconSvg(id: string, size: number) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;">${PLANET_ICONS[id]}</svg>`;
 }
-// ─── Constants ───────────────────────────────────────────────────────────────
-const RASHIS_K = [
-  { name:'Mesha',      nameHi:'मेष',      abbr:'Msh' },
-  { name:'Vrishabha',  nameHi:'वृषभ',     abbr:'Vrb' },
-  { name:'Mithuna',    nameHi:'मिथुन',    abbr:'Mth' },
-  { name:'Karka',      nameHi:'कर्क',     abbr:'Krk' },
-  { name:'Simha',      nameHi:'सिंह',     abbr:'Smh' },
-  { name:'Kanya',      nameHi:'कन्या',    abbr:'Kny' },
-  { name:'Tula',       nameHi:'तुला',     abbr:'Tla' },
-  { name:'Vrishchika', nameHi:'वृश्चिक',  abbr:'Vrk' },
-  { name:'Dhanu',      nameHi:'धनु',      abbr:'Dhn' },
-  { name:'Makara',     nameHi:'मकर',      abbr:'Mkr' },
-  { name:'Kumbha',     nameHi:'कुम्भ',    abbr:'Kmb' },
-  { name:'Meena',      nameHi:'मीन',      abbr:'Men' },
-];
-
-const GRAHA_K = [
-  { id:'surya',   name:'Surya',   nameHi:'सूर्य',  abbr:'Sy', symbol:'☉', combustDeg:0  },
-  { id:'chandra', name:'Chandra', nameHi:'चन्द्र', abbr:'Ch', symbol:'☽', combustDeg:12 },
-  { id:'mangal',  name:'Mangal',  nameHi:'मंगल',   abbr:'Ma', symbol:'♂', combustDeg:17 },
-  { id:'budha',   name:'Budha',   nameHi:'बुध',    abbr:'Bu', symbol:'☿', combustDeg:14 },
-  { id:'guru',    name:'Guru',    nameHi:'गुरु',   abbr:'Gu', symbol:'♃', combustDeg:11 },
-  { id:'shukra',  name:'Shukra',  nameHi:'शुक्र',  abbr:'Sk', symbol:'♀', combustDeg:10 },
-  { id:'shani',   name:'Shani',   nameHi:'शनि',    abbr:'Sa', symbol:'♄', combustDeg:15 },
-  { id:'rahu',    name:'Rahu',    nameHi:'राहु',   abbr:'Ra', symbol:'☊', combustDeg:0  },
-  { id:'ketu',    name:'Ketu',    nameHi:'केतु',   abbr:'Ke', symbol:'☋', combustDeg:0  },
-];
 
 // North Indian diamond: house (0-indexed, house 1..12) → normalised [x,y] label position
 // Same kite/diamond coordinate scheme as the Kundali Generator's SVG chart.
@@ -425,192 +400,13 @@ const SI_CELL_RASHI: number[][] = [
   [11,0,1,2],[10,-1,-1,3],[9,-1,-1,4],[8,7,6,5]
 ];
 
-// ─── Math helpers ─────────────────────────────────────────────────────────────
-const toR = (d: number) => d * Math.PI / 180;
-const toD = (r: number) => r * 180 / Math.PI;
-const n360 = (a: number) => ((a % 360) + 360) % 360;
-
-// ─── Orbital elements ─────────────────────────────────────────────────────────
-const ORB_K: Record<string,[number,number,number,number,number,number,number,number,number,number,number]> = {
-  // [L, Ld, wp, wpd, Om, Omd, i, id, e, ed, a]
-  mercury:[252.250906,149472.6746358, 77.456119,0.1588643, 48.330893,-0.1254229,7.004979,-0.005952,0.20563069, 0.00002527,0.38709831],
-  venus:  [181.979801, 58517.8156760,131.563707,0.0036096, 76.679920,-0.2780080,3.394662,-0.000857,0.00677323,-0.00004938,0.72332102],
-  earth:  [100.464457, 36000.7698278,102.937348,0.3225557,174.873174,-0.2410908,0.000000, 0.013055,0.01671022,-0.00003804,1.00000018],
-  mars:   [355.432818, 19140.2993313,336.040768,0.4439016, 49.558093,-0.2950250,1.849726,-0.008148,0.09341233, 0.00011902,1.52371243],
-  jupiter:[ 34.351484,  3034.9056746, 14.331309,0.2155402,100.464441, 0.1350208,1.303270,-0.001987,0.04839266,-0.00012880,5.20248019],
-  saturn: [ 50.077444,  1222.1137943, 93.056787,0.5691095,113.665524,-0.2566722,2.488878, 0.002552,0.05415060,-0.00036762,9.54149883],
-};
-
-function solveK(M: number, e: number): number {
-  let E = M;
-  for (let k = 0; k < 50; k++) {
-    const dE = (M - E + e * Math.sin(E)) / (1 - e * Math.cos(E));
-    E += dE;
-    if (Math.abs(dE) < 1e-10) break;
-  }
-  return E;
-}
-
-function helioXY_K(key: string, T: number): [number, number] {
-  const o = ORB_K[key];
-  const e  = o[8] + o[9] * T;
-  const wp = n360(o[2] + o[3] * T);
-  const Om = n360(o[4] + o[5] * T);
-  const inc = o[6] + o[7] * T;
-  const L  = n360(o[0] + o[1] * T);
-  const M  = toR(n360(L - wp));
-  const w  = toR(n360(wp - Om));
-  const Omr = toR(Om);
-  const ir = toR(inc);
-  const E = solveK(M, e);
-  const nu = 2 * Math.atan2(Math.sqrt(1+e)*Math.sin(E/2), Math.sqrt(1-e)*Math.cos(E/2));
-  const r = o[10] * (1 - e * Math.cos(E));
-  const arg = nu + w;
-  const x = r*(Math.cos(Omr)*Math.cos(arg) - Math.sin(Omr)*Math.sin(arg)*Math.cos(ir));
-  const y = r*(Math.sin(Omr)*Math.cos(arg) + Math.cos(Omr)*Math.sin(arg)*Math.cos(ir));
-  return [x, y];
-}
-
-function sunLon_K(jd: number): number {
-  const T = (jd-2451545)/36525;
-  const L0 = n360(280.46646+36000.76983*T+0.0003032*T*T);
-  const M  = n360(357.52911+35999.05029*T-0.0001537*T*T);
-  const Mr = toR(M);
-  const C  = (1.914602-0.004817*T-0.000014*T*T)*Math.sin(Mr)+(0.019993-0.000101*T)*Math.sin(2*Mr)+0.000289*Math.sin(3*Mr);
-  return n360(L0+C);
-}
-
-function moonLon_K(jd: number): number {
-  const T = (jd-2451545)/36525;
-  const Lm = n360(218.3164477+481267.88123421*T);
-  const D  = n360(297.8501921+445267.1114034*T);
-  const M  = n360(357.5291092+35999.0502909*T);
-  const Mp = n360(134.9633964+477198.8675055*T);
-  const F  = n360(93.2720950+483202.0175233*T);
-  const [Dr,Mr,Mpr,Fr] = [D,M,Mp,F].map(toR);
-  const dL = 6.288774*Math.sin(Mpr)+1.274027*Math.sin(2*Dr-Mpr)+0.658314*Math.sin(2*Dr)
-    +0.213618*Math.sin(2*Mpr)-0.185116*Math.sin(Mr)-0.114332*Math.sin(2*Fr)
-    +0.058793*Math.sin(2*Dr-2*Mpr)+0.057066*Math.sin(2*Dr-Mr-Mpr)+0.053322*Math.sin(2*Dr+Mpr)
-    +0.045758*Math.sin(2*Dr-Mr)-0.040923*Math.sin(Mr-Mpr)-0.034720*Math.sin(Dr)
-    -0.030383*Math.sin(Mr+Mpr)+0.015327*Math.sin(2*Dr-2*Fr)+0.010980*Math.sin(Mpr-2*Fr)
-    +0.010675*Math.sin(4*Dr-Mpr)+0.010034*Math.sin(3*Mpr)+0.008548*Math.sin(4*Dr-2*Mpr)
-    -0.007888*Math.sin(2*Dr+Mr-Mpr)-0.006766*Math.sin(2*Dr+Mr)-0.005163*Math.sin(Dr-Mpr)
-    +0.004987*Math.sin(Dr+Mr)+0.004036*Math.sin(2*Dr-Mr+Mpr)+0.003994*Math.sin(2*Dr+2*Mpr)
-    +0.003861*Math.sin(4*Dr)+0.003665*Math.sin(2*Dr-3*Mpr);
-  return n360(Lm + dL);
-}
-
-function rahuLon_K(T: number): number {
-  return n360(125.04452 - 1934.136261*T + 0.0020708*T*T);
-}
-
-function ayanamsha_K(T: number): number {
-  return 23.85 + 1.3612*T - 0.000136*T*T;
-}
-
-function jdFull_K(date: Date): number {
-  const y = date.getUTCFullYear(), m = date.getUTCMonth()+1;
-  const d = date.getUTCDate()+(date.getUTCHours()+date.getUTCMinutes()/60+date.getUTCSeconds()/3600)/24;
-  const yr = m<=2?y-1:y, mo = m<=2?m+12:m;
-  const A = Math.floor(yr/100), B = 2-A+Math.floor(A/4);
-  return Math.floor(365.25*(yr+4716))+Math.floor(30.6001*(mo+1))+d+B-1524.5;
-}
-
-function calcLagna_K(jd: number, lat: number, lng: number): number {
-  const T  = (jd-2451545)/36525;
-  const eps = 23.439291111 - 0.013004167*T;
-  const GMST = n360(280.46061837 + 360.98564736629*(jd-2451545) + 0.000387933*T*T);
-  const RAMC = toR(n360(GMST + lng));
-  const e  = toR(eps), phi = toR(lat);
-  const tanA = -Math.cos(RAMC)/(Math.sin(e)*Math.tan(phi)+Math.cos(e)*Math.sin(RAMC));
-  let A = toD(Math.atan(tanA));
-  if (Math.cos(RAMC) > 0) A += 180;
-  return n360(A);
-}
-
-// ─── Main calculate ───────────────────────────────────────────────────────────
-function calcKundali_K(date: Date, lat: number, lng: number) {
-  const jd  = jdFull_K(date);
-  const T   = (jd-2451545)/36525;
-  const ay  = ayanamsha_K(T);
-
-  const [xE, yE] = helioXY_K('earth', T);
-  const geoLon = (key: string) => {
-    const [xP, yP] = helioXY_K(key, T);
-    return n360(toD(Math.atan2(yP-yE, xP-xE)));
-  };
-
-  const jd1 = jd+1;
-  const T1  = (jd1-2451545)/36525;
-  const [xE1,yE1] = helioXY_K('earth', T1);
-  const geoLon1 = (key: string) => {
-    const [xP,yP] = helioXY_K(key, T1);
-    return n360(toD(Math.atan2(yP-yE1, xP-xE1)));
-  };
-  const spd = (l0: number, l1: number) => { let d = l1-l0; if(d>180)d-=360; if(d<-180)d+=360; return d; };
-
-  const TROP: Record<string,number> = {
-    surya:   sunLon_K(jd),
-    chandra: moonLon_K(jd),
-    mangal:  geoLon('mars'),
-    budha:   geoLon('mercury'),
-    guru:    geoLon('jupiter'),
-    shukra:  geoLon('venus'),
-    shani:   geoLon('saturn'),
-    rahu:    rahuLon_K(T),
-  };
-  TROP.ketu = n360(TROP.rahu+180);
-
-  const TROP1: Record<string,number> = {
-    surya:   sunLon_K(jd1),
-    chandra: moonLon_K(jd1),
-    mangal:  geoLon1('mars'),
-    budha:   geoLon1('mercury'),
-    guru:    geoLon1('jupiter'),
-    shukra:  geoLon1('venus'),
-    shani:   geoLon1('saturn'),
-    rahu:    rahuLon_K(T1),
-  };
-  TROP1.ketu = n360(TROP1.rahu+180);
-
-  const sunT = TROP.surya;
-
-  const grahas = GRAHA_K.map(meta => {
-    const trop  = TROP[meta.id];
-    const sid   = n360(trop - ay);
-    const sign  = Math.floor(sid/30)%12;
-    const df    = sid%30;
-    const deg   = Math.floor(df);
-    const min   = Math.floor((df-deg)*60);
-    const speed = spd(trop, TROP1[meta.id]);
-    const retroFwd = meta.id!=='surya' && meta.id!=='chandra' ? speed<0 : false;
-    const isRet = (meta.id==='rahu'||meta.id==='ketu') ? true : retroFwd;
-    let angD = Math.abs(trop-sunT); if(angD>180)angD=360-angD;
-    const cDeg = meta.id==='budha'&&isRet?12:meta.id==='shukra'&&isRet?8:meta.combustDeg;
-    const comb = meta.id!=='surya'&&meta.id!=='rahu'&&meta.id!=='ketu'&&angD<cDeg;
-    return { ...meta, sign, signName: RASHIS_K[sign].name, signNameHi: RASHIS_K[sign].nameHi,
-             abbr: meta.abbr, deg, min, speed, isRetrograde:isRet, isCombust:comb };
-  });
-
-  const lagT  = calcLagna_K(jd, lat, lng);
-  const lagS  = n360(lagT-ay);
-  const lagSn = Math.floor(lagS/30)%12;
-  const lagDf = lagS%30;
-
-  return {
-    lagna: { sign:lagSn, signName:RASHIS_K[lagSn].name, signNameHi:RASHIS_K[lagSn].nameHi,
-             deg:Math.floor(lagDf), min:Math.floor((lagDf-Math.floor(lagDf))*60) },
-    grahas,
-  };
-}
-
 // ─── Chart rendering ──────────────────────────────────────────────────────────
 let currentStyle = 'north';
-let currentData: ReturnType<typeof calcKundali_K> | null = null;
+let currentData: ReturnType<typeof calculateKundali> | null = null;
 
 // True North Indian diamond chart, rendered as SVG (matching the Kundali
-// Generator's chart geometry). Sanskrit-abbreviated planet labels (GRAHA_K.abbr).
-function drawNorthDiamond(data: ReturnType<typeof calcKundali_K>): string {
+// Generator's chart geometry). Sanskrit-abbreviated planet labels (g.abbr).
+function drawNorthDiamond(data: ReturnType<typeof calculateKundali>): string {
   const S = 272;
   const planetsByHouse: (typeof data.grahas) [] = Array.from({ length: 12 }, () => []);
   data.grahas.forEach(g => {
@@ -646,7 +442,7 @@ function drawNorthDiamond(data: ReturnType<typeof calcKundali_K>): string {
 }
 
 // South Indian: fixed rashi positions, 4×4 cell grid (unchanged layout).
-function drawSouthGrid(data: ReturnType<typeof calcKundali_K>): string {
+function drawSouthGrid(data: ReturnType<typeof calculateKundali>): string {
   let cells = '';
   for (let r = 0; r < 4; r++) {
     for (let c = 0; c < 4; c++) {
@@ -659,7 +455,7 @@ function drawSouthGrid(data: ReturnType<typeof calcKundali_K>): string {
       const isLagna = rashiIdx === data.lagna.sign;
       const planetsHere = data.grahas.filter(g => g.sign === rashiIdx);
       cells += `<div class="kw-cell${isLagna ? ' kw-lagna-cell' : ''}">
-        <span class="kwc-si-rashi">${RASHIS_K[rashiIdx].abbr}</span>
+        <span class="kwc-si-rashi">${RASHIS[rashiIdx].abbr}</span>
         ${isLagna ? '<span class="kwc-si-lagna">La</span>' : ''}
         <span class="kwc-si-planets">${planetsHere.map(p =>
           `<span class="kwc-chip ${p.isRetrograde?'vakri':''} ${p.isCombust?'asta':''}" data-pid="${p.id}">${p.abbr}${p.isRetrograde?'ᴿ':''}</span>`
@@ -670,14 +466,14 @@ function drawSouthGrid(data: ReturnType<typeof calcKundali_K>): string {
   return `<div class="kw-grid" id="kw-grid">${cells}</div>`;
 }
 
-function renderChart(data: ReturnType<typeof calcKundali_K>, style: string) {
+function renderChart(data: ReturnType<typeof calculateKundali>, style: string) {
   const container = document.getElementById('kw-chart-container');
   if (!container) return;
   container.innerHTML = style === 'north' ? drawNorthDiamond(data) : drawSouthGrid(data);
 }
 
 // ─── Planet table ─────────────────────────────────────────────────────────────
-function renderTable(data: ReturnType<typeof calcKundali_K>, isHindi: boolean) {
+function renderTable(data: ReturnType<typeof calculateKundali>, isHindi: boolean) {
   const tbody = document.getElementById('kw-tbody')!;
   const isHi = isHindi || document.documentElement.dataset.lang === 'hi';
   tbody.innerHTML = data.grahas.map(g => `
@@ -699,7 +495,7 @@ function renderTable(data: ReturnType<typeof calcKundali_K>, isHindi: boolean) {
 }
 
 // ─── Lagna info ───────────────────────────────────────────────────────────────
-function updateLagnaInfo(data: ReturnType<typeof calcKundali_K>) {
+function updateLagnaInfo(data: ReturnType<typeof calculateKundali>) {
   const isHi = document.documentElement.dataset.lang === 'hi';
   const ls = document.getElementById('kw-lagna-sign');
   const ld = document.getElementById('kw-lagna-deg');
@@ -708,7 +504,7 @@ function updateLagnaInfo(data: ReturnType<typeof calcKundali_K>) {
 }
 
 // ─── Popup ────────────────────────────────────────────────────────────────────
-function showPopup(pid: string, data: ReturnType<typeof calcKundali_K>) {
+function showPopup(pid: string, data: ReturnType<typeof calculateKundali>) {
   const g = data.grahas.find(x => x.id === pid);
   if (!g) return;
   const isHi = document.documentElement.dataset.lang === 'hi';
@@ -738,7 +534,7 @@ function hidePopup() {
 }
 
 // ─── Full render ──────────────────────────────────────────────────────────────
-function fullRender(data: ReturnType<typeof calcKundali_K>) {
+function fullRender(data: ReturnType<typeof calculateKundali>) {
   currentData = data;
   renderChart(data, currentStyle);
   renderTable(data, false);
@@ -767,7 +563,7 @@ let kwLat = 28.6139, kwLng = 77.2090, kwCity = 'New Delhi';
 (window as any).updateKundaliWidget = function(lat: number, lng: number, cityName: string) {
   kwLat = lat; kwLng = lng; kwCity = cityName;
   const now = new Date();
-  const data = calcKundali_K(now, lat, lng);
+  const data = calculateKundali(now, lat, lng, 0);
   fullRender(data);
   updateTimestamp(now, cityName);
 };
@@ -776,7 +572,7 @@ let kwLat = 28.6139, kwLng = 77.2090, kwCity = 'New Delhi';
 document.addEventListener('DOMContentLoaded', () => {
   // Initial calculation
   const now = new Date();
-  const data = calcKundali_K(now, kwLat, kwLng);
+  const data = calculateKundali(now, kwLat, kwLng, 0);
   fullRender(data);
   updateTimestamp(now, kwCity);
 
@@ -821,7 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Live Lagna update every 2 minutes (Lagna changes ~2° per minute)
   setInterval(() => {
     const now = new Date();
-    const data = calcKundali_K(now, kwLat, kwLng);
+    const data = calculateKundali(now, kwLat, kwLng, 0);
     fullRender(data);
     updateTimestamp(now, kwCity);
   }, 120_000);
