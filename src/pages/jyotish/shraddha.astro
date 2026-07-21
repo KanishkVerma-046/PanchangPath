@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { TITHI_ICONS } from '../../lib/icons/tithi';
 ---
 
 <Layout title="Shraddha Tithi Calculator — Pitru Paksha — PanchangPath" description="Find the tithi of a death anniversary and the correct day to perform Shraddha during Pitru Paksha. Includes the full Pitru Paksha tithi schedule.">
@@ -96,27 +95,38 @@ import { TITHI_ICONS } from '../../lib/icons/tithi';
   .sh-mode-btn.active { background:var(--color-ink);color:var(--color-canvas);border-color:var(--color-ink); }
 </style>
 
-<script define:vars={{ TITHI_ICONS }}>
+<script>
+import { TITHI_ICONS } from '../../lib/icons/tithi';
+import { sunTrueLongitude, moonLongitude, lahiriAyanamsha, sunriseUTC } from '../../lib/panchang';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
 function tithiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${TITHI_ICONS[id]}</svg>`;}
 const NAME_TO_NUM={Pratipada:1,Dwitiya:2,Tritiya:3,Chaturthi:4,Panchami:5,Shashthi:6,Saptami:7,Ashtami:8,Navami:9,Dashami:10,Ekadashi:11,Dwadashi:12,Trayodashi:13,Chaturdashi:14,Purnima:15,Amavasya:15};
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
-const toR=d=>d*Math.PI/180;
-function sunLon(jd){const T=(jd-2451545)/36525;const L0=n360(280.46646+36000.76983*T+0.0003032*T*T);const M=n360(357.52911+35999.05029*T-0.0001537*T*T);const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(toR(M))+(0.019993-0.000101*T)*Math.sin(2*toR(M))+0.000289*Math.sin(3*toR(M));return n360(L0+C);}
-function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F))+0.058793*Math.sin(toR(2*D-2*Mp))+0.057066*Math.sin(toR(2*D-M-Mp))+0.053322*Math.sin(toR(2*D+Mp))+0.045758*Math.sin(toR(2*D-M))-0.040923*Math.sin(toR(M-Mp))-0.034720*Math.sin(toR(D))-0.030383*Math.sin(toR(M+Mp))+0.015327*Math.sin(toR(2*D-2*F))+0.010980*Math.sin(toR(Mp-2*F))+0.010675*Math.sin(toR(4*D-Mp))+0.010034*Math.sin(toR(3*Mp))+0.008548*Math.sin(toR(4*D-2*Mp))-0.007888*Math.sin(toR(2*D+M-Mp))-0.006766*Math.sin(toR(2*D+M))-0.005163*Math.sin(toR(D-Mp))+0.004987*Math.sin(toR(D+M))+0.004036*Math.sin(toR(2*D-M+Mp))+0.003994*Math.sin(toR(2*D+2*Mp))+0.003861*Math.sin(toR(4*D))+0.003665*Math.sin(toR(2*D-3*Mp));return n360(Lm+dL);}
-
 const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima/Amavasya'];
 
-function ayanamsha_pp(jd){const T=(jd-2451545)/36525;return 23.85+1.3612*T-0.000136*T*T;}
 const MOON_SUN_RATE_PP=12.19;
 function findElongationPP(jdSeed,targetElong){
   let jd=jdSeed;
-  let err=n360(targetElong-n360(moonLon(jd)-sunLon(jd)));
+  let err=n360(targetElong-n360(moonLongitude(jd)-sunTrueLongitude(jd)));
   jd+=err/MOON_SUN_RATE_PP;
   for(let i=0;i<4;i++){
-    let e=n360(targetElong-n360(moonLon(jd)-sunLon(jd)));
+    let e=n360(targetElong-n360(moonLongitude(jd)-sunTrueLongitude(jd)));
+    if(e>180)e-=360;
+    jd+=e/MOON_SUN_RATE_PP;
+  }
+  return jd;
+}
+// Used only for walking backward one tithi-boundary at a time in computePitruPaksha below, where
+// the seed is always <1.1 days from its target -- unlike findElongationPP above (whose unsigned
+// first step deliberately always advances forward to find "the next occurrence", relied on by its
+// jdAmaEnd call site), this uses a signed correction from the first step so it converges to the
+// *nearest* crossing rather than always jumping forward, which would overshoot by a full lunar month.
+function refineTithiBoundaryPP(jdSeed,targetElong){
+  let jd=jdSeed;
+  for(let i=0;i<6;i++){
+    let e=n360(targetElong-n360(moonLongitude(jd)-sunTrueLongitude(jd)));
     if(e>180)e-=360;
     jd+=e/MOON_SUN_RATE_PP;
   }
@@ -125,15 +135,27 @@ function findElongationPP(jdSeed,targetElong){
 function findSunSiderealCrossingPP(jdSeed,targetDeg){
   let jd=jdSeed;
   for(let i=0;i<6;i++){
-    let err=targetDeg-n360(sunLon(jd)-ayanamsha_pp(jd));
+    let err=targetDeg-n360(sunTrueLongitude(jd)-lahiriAyanamsha(jd));
     if(err>180)err-=360; if(err<-180)err+=360;
     jd+=err/0.9856;
   }
   return jd;
 }
-function tithiAtSunriseIST(y,m,d){
-  const jd=toJD(y,m,d,6-5.5);
-  return Math.floor(n360(moonLon(jd)-sunLon(jd))/12)+1;
+// Shraddha day-assignment uses Aparahna Kaal (the 4th of 5 equal parts of daylight, the
+// traditional afternoon window Dharmashastra prescribes for Shraddha rites) rather than the
+// sunrise-tithi rule used elsewhere on the site for festivals/Panchang elements. A tithi is
+// "Aparahna-vyapini" (assigned to a calendar day) if its span overlaps that day's Aparahna
+// window at all -- not just at one sampled instant, since a tithi can start or end mid-window.
+// Two classical edge cases fall out of this: Vriddhi (a long tithi overlaps two consecutive
+// days' Aparahna windows -- take the first day) and Kshaya (a short tithi overlaps no day's
+// Aparahna window at all -- take the day whose window is temporally nearest to the tithi's span).
+const ND_LAT=28.6139, ND_LNG=77.2090;
+function aparahnaWindowJD(y,m,d){
+  const jdNoon=toJD(y,m,d,12);
+  const srUTC=sunriseUTC(jdNoon,ND_LAT,ND_LNG,true);
+  const ssUTC=sunriseUTC(jdNoon,ND_LAT,ND_LNG,false);
+  const dayStart=toJD(y,m,d,0);
+  return [dayStart+(srUTC+3/5*(ssUTC-srUTC))/24, dayStart+(srUTC+4/5*(ssUTC-srUTC))/24];
 }
 const PP_TITHI_NAME={15:'Purnima',16:'Pratipada',17:'Dwitiya',18:'Tritiya',19:'Chaturthi',20:'Panchami',21:'Shashthi',22:'Saptami',23:'Ashtami',24:'Navami',25:'Dashami',26:'Ekadashi',27:'Dwadashi',28:'Trayodashi',29:'Chaturdashi',30:'Amavasya'};
 const PP_TITHI_NOTE={
@@ -151,38 +173,62 @@ const PP_TITHI_NOTE_HI={
   30:'सर्व पितृ अमावस्या (सभी पूर्वज, अज्ञात तिथि)',
 };
 // Computes Pitru Paksha (Purnima start -> Sarva Pitru Amavasya end) for New Delhi/IST for any year.
-// Verified against drikpanchang.com for 2025/2026/2027 during planning: exact match for 2025 and
-// 2026; 2027 lands one calendar day later than drikpanchang's listing (a boundary-precision edge
-// case from this site's Moon/Sun longitude formulas, same class as the audit's known boundary-drift
-// finding — not something this function can fully correct without higher-precision ephemeris terms).
+// Fixed 2026-07-21: previously scanned tithi at a fixed 6:00 AM IST sunrise approximation, one
+// sample per calendar day. That's the wrong rule for Shraddha (see aparahnaWindowJD's comment
+// above) and put 2027's Sarva Pitru Amavasya one day late (Sept 30 instead of Sept 29). A first
+// attempt at an Aparahna-midpoint sample per day fixed that but silently dropped other tithis
+// from the table (e.g. 2027's Trayodashi, 2026's Panchami) whenever a tithi's boundary fell
+// inside the Aparahna window itself. This version instead finds each tithi's precise start/end
+// instant and assigns it to whichever calendar day's Aparahna window it actually overlaps (see
+// Vriddhi/Kshaya handling above) -- verified against drikpanchang.com for 2025/2026/2027: exact
+// match for all three years, all 16 rows present with no gaps or duplicate dates.
 function computePitruPaksha(year){
   const jdSeed=toJD(year,8,20,12);
   const jdKanyaStart=findSunSiderealCrossingPP(jdSeed,150);
   const jdKanyaEnd=findSunSiderealCrossingPP(jdKanyaStart+5,180);
-  let jdAmaApprox=findElongationPP(jdKanyaStart,360);
-  if(jdAmaApprox<jdKanyaStart)jdAmaApprox=findElongationPP(jdKanyaStart+1,360);
-  if(jdAmaApprox>jdKanyaEnd)jdAmaApprox=findElongationPP(jdKanyaEnd-1,360);
+  let jdAmaEnd=findElongationPP(jdKanyaStart,360);
+  if(jdAmaEnd<jdKanyaStart)jdAmaEnd=findElongationPP(jdKanyaStart+1,360);
+  if(jdAmaEnd>jdKanyaEnd)jdAmaEnd=findElongationPP(jdKanyaEnd-1,360);
+
+  // Precisely locate every tithi boundary from Purnima-start (elongation 168°) through
+  // Amavasya-end (elongation 360°/0°), walking backward 12° at a time from jdAmaEnd.
+  const NUM_B=17; // elongations 168,180,...,360 -> bounds for the 16 tithis Purnima(15)..Amavasya(30)
+  const boundaries=new Array(NUM_B);
+  boundaries[NUM_B-1]=jdAmaEnd;
+  for(let k=NUM_B-2;k>=0;k--){
+    boundaries[k]=refineTithiBoundaryPP(boundaries[k+1]-1,168+12*k);
+  }
+
   const approxCalDate=new Date(Date.UTC(year,7,20));
-  approxCalDate.setUTCDate(approxCalDate.getUTCDate()+Math.round(jdAmaApprox-jdSeed)-20);
-  const scanned=[];
+  approxCalDate.setUTCDate(approxCalDate.getUTCDate()+Math.round(jdAmaEnd-jdSeed)-23);
+  const days=[];
   const cursor=new Date(approxCalDate);
-  for(let i=0;i<40;i++){
+  for(let i=0;i<46;i++){
     const y=cursor.getUTCFullYear(),m=cursor.getUTCMonth()+1,d=cursor.getUTCDate();
-    scanned.push({y,m,d,t:tithiAtSunriseIST(y,m,d)});
+    const [aStart,aEnd]=aparahnaWindowJD(y,m,d);
+    days.push({y,m,d,aStart,aEnd});
     cursor.setUTCDate(cursor.getUTCDate()+1);
   }
-  const approxIdx=20;
-  let pIdx=approxIdx;
-  for(let i=approxIdx;i>=0;i--){if(scanned[i].t===15){pIdx=i;break;}}
-  let amaIdx=pIdx;
-  for(let i=pIdx+1;i<scanned.length;i++){if(scanned[i].t===30){amaIdx=i;break;}}
+
   const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return scanned.slice(pIdx,amaIdx+1).map(s=>({
-    date:`${MONTHS[s.m-1]} ${s.d}`,
-    tithi:PP_TITHI_NAME[s.t],
-    note:PP_TITHI_NOTE[s.t],
-    t:s.t,
-  }));
+  const schedule=[];
+  for(let k=0;k<NUM_B-1;k++){
+    const t=15+k;
+    const tStart=boundaries[k],tEnd=boundaries[k+1];
+    const overlapping=days.filter(day=>Math.min(tEnd,day.aEnd)>Math.max(tStart,day.aStart));
+    let chosen;
+    if(overlapping.length>=1){
+      chosen=overlapping[0]; // Vriddhi (overlaps 2 days): use the first, per convention
+    }else{
+      let bestGap=Infinity;
+      for(const day of days){
+        const gap=Math.max(tStart-day.aEnd,day.aStart-tEnd,0); // Kshaya: nearest day's window
+        if(gap<bestGap){bestGap=gap;chosen=day;}
+      }
+    }
+    schedule.push({date:`${MONTHS[chosen.m-1]} ${chosen.d}`,tithi:PP_TITHI_NAME[t],note:PP_TITHI_NOTE[t],t});
+  }
+  return schedule;
 }
 const ppYear=new Date().getFullYear();
 const PP_SCHEDULE=computePitruPaksha(ppYear);
@@ -201,7 +247,7 @@ function calculate(){
     const timeStr=document.getElementById('f-time').value||'12:00';
     const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
     const jd=toJD(y,m,d,(hh+mm/60)-5.5);
-    const diff=n360(moonLon(jd)-sunLon(jd));
+    const diff=n360(moonLongitude(jd)-sunTrueLongitude(jd));
     const tithiNum=Math.floor(diff/12)+1; // 1..30
     const paksha=tithiNum<=15?'Shukla':'Krishna';
     const inPaksha=tithiNum<=15?tithiNum:tithiNum-15;

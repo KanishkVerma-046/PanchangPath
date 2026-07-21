@@ -45,6 +45,7 @@ Paste this into a fresh session (fill in the bracketed part):
 
 | Title | Status | Reported |
 |---|---|---|
+| [`findElongationPP`'s unsigned-first-step convergence only empirically verified for 2025-2027](#findelongationpps-unsigned-first-step-convergence-only-empirically-verified-for-2025-2027) | Open | 2026-07-21 |
 | [Homepage date and Panchang data freeze after reopening the site (no bfcache/visibility refresh)](#homepage-date-and-panchang-data-freeze-after-reopening-the-site-no-bfcachevisibility-refresh) | Fixed (2026-07-17) | 2026-07-17 |
 | [Change Language picker: Hindi barely translates anything + Regional Panchang duplicated in the dropdown](#change-language-picker-hindi-barely-translates-anything-regional-panchang-duplicated-in-the-dropdown) | Fixed (2026-07-17) | 2026-07-17 |
 | [Devotional Library lyrics contain memory-sourced inaccuracies, not verified against sources](#devotional-library-lyrics-contain-memory-sourced-inaccuracies-not-verified-against-sources) | Fixed (2026-07-19) | 2026-07-17 |
@@ -53,6 +54,123 @@ Paste this into a fresh session (fill in the bracketed part):
 | [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Fixed (2026-07-17) | 2026-07-17 |
 | [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Fixed (2026-07-17) | 2026-07-16 |
 | [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Fixed (2026-07-17) | 2026-07-16 |
+
+---
+
+## `findElongationPP`'s unsigned-first-step convergence only empirically verified for 2025-2027
+
+- **Status:** Open
+- **Reported:** 2026-07-21
+- **Severity:** Low (no known-wrong year found; this is a robustness/correctness-by-construction
+  gap, not a confirmed bad output)
+- **Affected files:** `src/pages/jyotish/shraddha.astro` (`findElongationPP`, lines ~110-119;
+  called from `computePitruPaksha` at lines ~189-191)
+
+### Description
+Found while fixing the 2027 Sarva Pitru Amavasya date bug in the same file (see git history for
+the 2026-07-21 shraddha.astro Aparahna-Kaal rewrite). `findElongationPP(jdSeed, targetElong)`'s
+very first correction step computes its error as `n360(targetElong - n360(moonLongitude(jd) -
+sunTrueLongitude(jd)))` — always in `[0,360)` — whereas every subsequent loop iteration clamps
+the same error to the signed range `(-180,180]` before applying it. When a seed's current
+elongation is already just past the target, the unsigned first step produces a large positive
+error (near 360) instead of a small negative one, causing a jump of nearly a full synodic month
+(~29.5 days) forward, rather than the tiny backward correction that's actually needed.
+
+This was confirmed to be a real, reproducible failure mode during this session: signed-clamping
+that first step (to make a new backward tithi-boundary walk converge correctly) inadvertently
+broke `computePitruPaksha`'s original `jdAmaEnd = findElongationPP(jdKanyaStart, 360)` call —
+2026's computed Pitru Paksha window jumped a full lunar month early (Aug 27 - Sep 10 instead of
+the correct Sep 26 - Oct 10) once seeded at exactly the kind of "just past the target" point that
+triggers this. The fix committed this session avoided touching `findElongationPP` at all (a new,
+separately-scoped `refineTithiBoundaryPP` was added for the new backward-walk use, since its
+seeds are always known to be <1.1 days from target — safe for signed-only correction) — but
+`findElongationPP` itself, and its 3 existing call sites (the primary `jdAmaEnd` computation plus
+two retry branches), still rely on the unsigned-first-step behavior to reliably jump *forward* to
+the correct occurrence. This has only been empirically verified correct for **2025, 2026, and
+2027** (the years checked while fixing the reported bug) — not proven correct for any other year,
+and not correct *by construction* (it works because the specific seed-to-target distances for
+those 3 years happen to land on the safe side of the unsigned-vs-signed boundary, not because the
+algorithm can't alias).
+
+Related, same-session finding worth sweeping together: `computePitruPaksha`'s Kshaya nearest-gap
+fallback branch (the `else` branch in its per-tithi assignment loop, used when a tithi overlaps
+zero days' Aparahna windows) is logically sound and was confirmed correct against fabricated
+synthetic input (a deliberate zero-overlap gap), but is not exercised by any real date across
+2025-2027 — every tithi in all three verified years resolved via the plain single-overlap path.
+It remains untested against a genuine astronomical Kshaya tithi. A future year-sweep (see the fix
+prompt below) should watch for the first real year that hits this branch and confirm the date it
+picks looks right, not just that it doesn't crash.
+
+### Root cause
+Architectural fragility in `findElongationPP`: it relies on an implicit, undocumented invariant
+(the seed is never so close past the target that unsigned wraparound produces a large spurious
+forward jump) that has not been proven to hold for all years `computePitruPaksha(year)` might be
+called with, only spot-checked for three.
+
+### Claude Code Fix Prompt
+```
+Follow-up robustness check for PanchangPath's Shraddha calculator
+(src/pages/jyotish/shraddha.astro). Not urgent -- no known-wrong year has been
+found, this is a "verify it can't happen" pass, not a live bug fix.
+
+Context: findElongationPP (lines ~110-119) computes its first correction step
+as an unsigned n360() error (range [0,360)) while every subsequent loop
+iteration uses a signed error clamped to (-180,180]. This means the first step
+always jumps *forward* in time (by up to ~29.5 days) rather than toward the
+nearest occurrence of the target elongation. computePitruPaksha's jdAmaEnd
+computation (lines ~189-191) relies on this forward-only behavior to reliably
+land on the *next* Amavasya after jdKanyaStart (this year's Kanya Sankranti
+sidereal crossing) -- confirmed empirically correct for 2025, 2026, and 2027
+only, during the 2026-07-21 session that fixed a related day-boundary bug in
+this same file (see git history/CLAUDE.md for that fix's detail).
+
+Task (pick one):
+(a) Sweep verification: write a standalone Node script (see this session's
+    temporary shraddha_verify*.mjs scripts in git history/session transcript
+    for the pattern -- import astronomy-engine directly, replicate
+    findElongationPP/findSunSiderealCrossingPP/computePitruPaksha verbatim) and
+    run computePitruPaksha(year) for a wide range, e.g. 2010-2040 (covers more
+    than one full 19-year Metonic cycle). For each year, sanity-check the
+    output: Purnima-to-Amavasya span is a plausible 14-16 days, all 16 tithi
+    rows are chronologically non-decreasing, and the Purnima date falls within
+    a few weeks of mid-September (Bhadrapada Purnima). Flag any year that
+    fails these checks for closer inspection -- that would indicate the
+    aliasing bug actually firing.
+(b) Correctness-by-construction fix: replace the jdAmaEnd computation's
+    reliance on findElongationPP's unsigned-first-step accident with an
+    explicit "search forward only" primitive -- e.g. a small helper that takes
+    a seed and target, computes the unsigned forward-only delta explicitly
+    (`n360(targetElong - currentElong) / MOON_SUN_RATE_PP`, which is what the
+    current first step effectively (if accidentally) does) as its *only* first
+    step, then switches to signed-clamped refinement for the remaining
+    iterations once already within a day or so of the true crossing. This
+    keeps the "always advance forward from the seed" guarantee explicit and
+    intentional instead of an accidental side effect of using n360()
+    inconsistently.
+
+Either approach is acceptable; (a) is faster and answers "is this actually
+broken anywhere," (b) is more durable long-term. Do not change
+refineTithiBoundaryPP (the function added in the 2026-07-21 fix for the
+backward tithi-boundary walk) -- it's a different, already-correctly-scoped
+function seeded close to its target, not affected by this issue.
+
+Verify: if (a), report which years (if any) fail the sanity checks, with
+their computed Purnima/Amavasya dates, so a human can decide whether those
+need the same Aparahna-overlap treatment 2027 got. If (b), re-run this
+session's verification for 2025/2026/2027 (should still match: 2025 Sep 7 -
+Sep 21, 2026 Sep 26 - Oct 10, 2027 Sep 15 - Sep 29) plus the wider sweep from
+(a) to confirm the new construction holds across all tested years. Update
+this bug's Status line in docs/bugs/backlog.md to "Fixed (<date>, commit
+<hash>)" once verified.
+
+While sweeping, also watch for a year that exercises computePitruPaksha's
+Kshaya nearest-gap fallback (the `else` branch reached when a tithi overlaps
+zero days' Aparahna windows) -- confirmed logically correct against
+fabricated synthetic input, but not yet hit by any real date across
+2025-2027. If the sweep finds one, verify the date it picks looks
+astronomically sensible (nearest Aparahna window to the tithi's true span),
+not just that it runs without crashing.
+```
 
 ---
 
