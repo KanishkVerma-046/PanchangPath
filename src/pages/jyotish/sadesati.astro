@@ -48,21 +48,19 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
   @media (max-width:640px){ .phase-grid{ grid-template-columns:1fr !important; } }
 </style>
 
-<script define:vars={{ SHANI_SVG: PLANET_ICONS.shani }}>
+<script>
+import { PLANET_ICONS } from '../../lib/icons/planets';
+import { moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
+import { planetLongitude } from '../../lib/astro-core';
+
+const SHANI_SVG = PLANET_ICONS.shani;
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
 function shaniIconSvg(size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${SHANI_SVG}</svg>`;}
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
 const n360=a=>((a%360)+360)%360;
-const toR=d=>d*Math.PI/180;
-const toD=r=>r*180/Math.PI;
-function ayanamsha(T){return 23.85+1.3612*T-0.000136*T*T;}
-function moonLon(jd){const T=(jd-2451545)/36525;const Lm=n360(218.3164477+481267.88123421*T);const D=n360(297.8501921+445267.1114034*T);const M=n360(357.5291092+35999.0502909*T);const Mp=n360(134.9633964+477198.8675055*T);const F=n360(93.2720950+483202.0175233*T);const dL=6.288774*Math.sin(toR(Mp))+1.274027*Math.sin(toR(2*D-Mp))+0.658314*Math.sin(toR(2*D))+0.213618*Math.sin(toR(2*Mp))-0.185116*Math.sin(toR(M))-0.114332*Math.sin(toR(2*F))+0.058793*Math.sin(toR(2*D-2*Mp))+0.057066*Math.sin(toR(2*D-M-Mp))+0.053322*Math.sin(toR(2*D+Mp))+0.045758*Math.sin(toR(2*D-M))-0.040923*Math.sin(toR(M-Mp))-0.034720*Math.sin(toR(D))-0.030383*Math.sin(toR(M+Mp))+0.015327*Math.sin(toR(2*D-2*F))+0.010980*Math.sin(toR(Mp-2*F))+0.010675*Math.sin(toR(4*D-Mp))+0.010034*Math.sin(toR(3*Mp))+0.008548*Math.sin(toR(4*D-2*Mp))-0.007888*Math.sin(toR(2*D+M-Mp))-0.006766*Math.sin(toR(2*D+M))-0.005163*Math.sin(toR(D-Mp))+0.004987*Math.sin(toR(D+M))+0.004036*Math.sin(toR(2*D-M+Mp))+0.003994*Math.sin(toR(2*D+2*Mp))+0.003861*Math.sin(toR(4*D))+0.003665*Math.sin(toR(2*D-3*Mp));return n360(Lm+dL);}
-function solveKepler(M,e){let E=M;for(let k=0;k<50;k++){const dE=(M-E+e*Math.sin(E))/(1-e*Math.cos(E));E+=dE;if(Math.abs(dE)<1e-10)break;}return E;}
-const ORB={earth:{L:100.464457,Ld:36000.7698278,wp:102.937348,wpd:0.3225557,Om:174.873174,Omd:-0.2410908,i:0,id:0.013055,e:0.01671022,ed:-0.00003804,a:1.00000018},saturn:{L:50.077444,Ld:1222.1137943,wp:93.056787,wpd:0.5691095,Om:113.665524,Omd:-0.2566722,i:2.488878,id:0.002552,e:0.0541506,ed:-0.00036762,a:9.54149883}};
-function helioXY(el,T){const e=el.e+el.ed*T;const wp=n360(el.wp+el.wpd*T);const Om=n360(el.Om+el.Omd*T);const inc=el.i+el.id*T;const L=n360(el.L+el.Ld*T);const M=toR(n360(L-wp));const w=toR(n360(wp-Om));const Omega=toR(Om);const iR=toR(inc);const E=solveKepler(M,e);const nu=2*Math.atan2(Math.sqrt(1+e)*Math.sin(E/2),Math.sqrt(1-e)*Math.cos(E/2));const r=el.a*(1-e*Math.cos(E));const arg=nu+w;const x=r*(Math.cos(Omega)*Math.cos(arg)-Math.sin(Omega)*Math.sin(arg)*Math.cos(iR));const y=r*(Math.sin(Omega)*Math.cos(arg)+Math.cos(Omega)*Math.sin(arg)*Math.cos(iR));return[x,y];}
-function saturnSign(jd){const T=(jd-2451545)/36525;const[xE,yE]=helioXY(ORB.earth,T);const[xS,yS]=helioXY(ORB.saturn,T);const trop=n360(toD(Math.atan2(yS-yE,xS-xE)));return Math.floor(n360(trop-ayanamsha(T))/30);}
+function saturnSign(jd){return Math.floor(n360(planetLongitude('saturn',jd)-lahiriAyanamsha(jd))/30);}
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -92,7 +90,7 @@ function calculate(){
     const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
     const [by,bm,bd]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
     const jdBirth=toJD(by,bm,bd,(hh+mm/60)-loc.tz);
-    const moonSign=Math.floor(n360(moonLon(jdBirth)-ayanamsha((jdBirth-2451545)/36525))/30);
+    const moonSign=Math.floor(n360(moonLongitude(jdBirth)-lahiriAyanamsha(jdBirth))/30);
     const setSigns=[(moonSign+11)%12,moonSign,(moonSign+1)%12]; // 12th,1st,2nd from Moon
 
     // scan monthly from birth to birth+95 years
