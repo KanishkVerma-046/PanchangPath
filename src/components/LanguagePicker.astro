@@ -44,6 +44,37 @@ const LANGS: LangOption[] = [
 <div class="lng-backdrop" id="lng-backdrop" hidden></div>
 
 <script define:vars={{ LANGS }}>
+// Reliable langchange delivery: consuming pages (index.astro, calendar.astro,
+// festivals, rashifal, events, prashnavali, etc.) register a plain
+// document.addEventListener('langchange', ...) listener, but heavier pages
+// with async import chains (e.g. astro-core.ts) may not have registered that
+// listener yet by the time a stored Hindi preference needs to be broadcast on
+// load. A fixed setTimeout delay races that registration and can lose the
+// event. This shim caches the most recently dispatched 'langchange' event and
+// replays it to any listener the moment it's added, however late — so no
+// consuming page needs to change how it subscribes.
+(function setupLangChangeReplay() {
+  let lastLangEvent = null;
+  const nativeAddEventListener = document.addEventListener.bind(document);
+  const nativeDispatchEvent = document.dispatchEvent.bind(document);
+
+  document.addEventListener = function (type, listener, options) {
+    nativeAddEventListener(type, listener, options);
+    if (type === 'langchange' && lastLangEvent) {
+      if (typeof listener === 'function') {
+        listener(lastLangEvent);
+      } else if (listener && typeof listener.handleEvent === 'function') {
+        listener.handleEvent(lastLangEvent);
+      }
+    }
+  };
+
+  document.dispatchEvent = function (event) {
+    if (event && event.type === 'langchange') lastLangEvent = event;
+    return nativeDispatchEvent(event);
+  };
+})();
+
 let currentLang = localStorage.getItem('pp-lang') || 'en';
 
 function getLang(code) {
@@ -54,6 +85,11 @@ function updatePill() {
   const lang = getLang(currentLang);
   const label = document.getElementById('lng-label');
   if (label) label.textContent = lang.label;
+
+  // Single global source of truth for the current language, read by
+  // components (e.g. KundaliWidget.astro) that can't rely on catching the
+  // langchange event.
+  document.documentElement.dataset.lang = currentLang;
 
   // Update checked state
   document.querySelectorAll('.lng-opt').forEach(btn => {
@@ -119,12 +155,12 @@ document.querySelectorAll('.lng-opt').forEach(btn => {
 // Init
 updatePill();
 
-// Fire initial langchange so index.astro renders with the stored language
+// Broadcast the stored preference immediately. The replay shim above
+// guarantees any page whose listener registers later (e.g. after awaiting
+// heavy astro-core imports) still receives it, so no arbitrary delay is
+// needed here.
 if (currentLang !== 'en') {
-  // Slight delay so index.astro's listener is registered first
-  setTimeout(() => {
-    document.dispatchEvent(new CustomEvent('langchange', { detail: { langCode: currentLang } }));
-  }, 80);
+  document.dispatchEvent(new CustomEvent('langchange', { detail: { langCode: currentLang } }));
 }
 </script>
 

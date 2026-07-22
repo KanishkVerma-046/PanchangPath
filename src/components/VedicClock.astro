@@ -52,20 +52,17 @@
           <div class="vc-digits" aria-live="polite" aria-atomic="true" aria-label="Vedic time">
             <div class="vc-col">
               <span class="vc-num vc-ghati-num" id="vc-ghati">--</span>
-              <span class="vc-unit-lbl">Ghati</span>
-              <span class="vc-unit-hi">घटी</span>
+              <span class="vc-unit-lbl" data-hi="घटी">Ghati</span>
             </div>
             <span class="vc-sep" aria-hidden="true">:</span>
             <div class="vc-col">
               <span class="vc-num vc-pal-num" id="vc-pal">--</span>
-              <span class="vc-unit-lbl">Pal</span>
-              <span class="vc-unit-hi">पल</span>
+              <span class="vc-unit-lbl" data-hi="पल">Pal</span>
             </div>
             <span class="vc-sep" aria-hidden="true">:</span>
             <div class="vc-col">
               <span class="vc-num vc-vipal-num" id="vc-vipal">--</span>
-              <span class="vc-unit-lbl">Vipal</span>
-              <span class="vc-unit-hi">विपल</span>
+              <span class="vc-unit-lbl" data-hi="विपल">Vipal</span>
             </div>
           </div>
 
@@ -592,12 +589,6 @@ setInterval(vcTick, 400);
   margin-top: 4px;
   font-family: var(--font-mono);
 }
-.vc-unit-hi {
-  font-size: 13px;
-  color: var(--color-mute);
-  margin-top: 1px;
-}
-
 /* ── Period note ── */
 .vc-period {
   font-size: 12px;

@@ -16,14 +16,14 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
     <!-- Header row -->
     <div class="kw-header">
       <div>
-        <h2 class="kw-title">Lagna Kundali</h2>
+        <h2 class="kw-title" data-hi="लग्न कुंडली">Lagna Kundali</h2>
         <p class="kw-subtitle" id="kw-subtitle">
           {loc.name} · <span id="kw-timestamp"></span>
         </p>
       </div>
       <div class="kw-tabs" role="group" aria-label="Chart style">
-        <button class="kw-tab active" data-style="north">North</button>
-        <button class="kw-tab"        data-style="south">South</button>
+        <button class="kw-tab active" data-style="north" data-hi="उत्तर">North</button>
+        <button class="kw-tab"        data-style="south" data-hi="दक्षिण">South</button>
       </div>
     </div>
 
@@ -37,7 +37,7 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
         </div>
         <!-- Lagna info under chart -->
         <div class="kw-lagna-row">
-          <span class="kw-lagna-label">Lagna:</span>
+          <span class="kw-lagna-label" data-hi="लग्न:">Lagna:</span>
           <span id="kw-lagna-sign" class="kw-lagna-val">{init.lagna.signName}</span>
           <span id="kw-lagna-deg"  class="kw-lagna-deg">{init.lagna.deg}° {init.lagna.min}'</span>
         </div>
@@ -48,10 +48,10 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
         <table class="kw-table">
           <thead>
             <tr>
-              <th>Graha</th>
-              <th>Rashi</th>
-              <th>Deg</th>
-              <th>Motion</th>
+              <th data-hi="ग्रह">Graha</th>
+              <th data-hi="राशि">Rashi</th>
+              <th data-hi="अंश">Deg</th>
+              <th data-hi="गति">Motion</th>
             </tr>
           </thead>
           <tbody id="kw-tbody">
@@ -81,8 +81,8 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
 
     <!-- Footer -->
     <div class="kw-footer">
-      <span class="kw-note">Lahiri Ayanamsha · Tropical-to-Sidereal</span>
-      <a href="/jyotish/kundali" class="ps-more-link">Full Kundali →</a>
+      <span class="kw-note" data-hi="लाहिड़ी अयनांश · उष्णकटिबंधीय से नाक्षत्र">Lahiri Ayanamsha · Tropical-to-Sidereal</span>
+      <a href="/jyotish/kundali" class="ps-more-link" data-hi="पूर्ण कुंडली →">Full Kundali →</a>
     </div>
 
   </div><!-- .kw-card -->
@@ -482,8 +482,8 @@ function renderTable(data: ReturnType<typeof calculateKundali>, isHindi: boolean
       <td>${isHi ? g.signNameHi : g.signName}</td>
       <td class="kw-deg-cell">${g.deg}°${String(g.min).padStart(2,'0')}'</td>
       <td>
-        <span class="kw-badge ${g.isRetrograde?'vakri':'margi'}">${g.isRetrograde?'Vakri':'Margi'}</span>
-        ${g.isCombust?'<span class="kw-badge asta">Asta</span>':''}
+        <span class="kw-badge ${g.isRetrograde?'vakri':'margi'}">${g.isRetrograde?(isHi?'वक्री':'Vakri'):(isHi?'मार्गी':'Margi')}</span>
+        ${g.isCombust?`<span class="kw-badge asta">${isHi?'अस्त':'Asta'}</span>`:''}
       </td>
     </tr>
   `).join('');
@@ -519,10 +519,10 @@ function showPopup(pid: string, data: ReturnType<typeof calculateKundali>) {
       </div>
     </div>
     <table style="width:100%;border-collapse:collapse;font-size:12px">
-      <tr><td style="color:var(--color-mute);padding:3px 0">Rashi</td><td style="font-weight:600">${isHi?g.signNameHi:g.signName}</td></tr>
-      <tr><td style="color:var(--color-mute);padding:3px 0">Degree</td><td style="font-family:monospace">${g.deg}° ${g.min}'</td></tr>
-      <tr><td style="color:var(--color-mute);padding:3px 0">Motion</td><td><span class="kw-badge ${g.isRetrograde?'vakri':'margi'}">${g.isRetrograde?'Vakri':'Margi'}</span></td></tr>
-      <tr><td style="color:var(--color-mute);padding:3px 0">Visibility</td><td><span class="kw-badge ${g.isCombust?'asta':'margi'}">${g.isCombust?'Asta':'Udita'}</span></td></tr>
+      <tr><td style="color:var(--color-mute);padding:3px 0">${isHi?'राशि':'Rashi'}</td><td style="font-weight:600">${isHi?g.signNameHi:g.signName}</td></tr>
+      <tr><td style="color:var(--color-mute);padding:3px 0">${isHi?'अंश':'Degree'}</td><td style="font-family:monospace">${g.deg}° ${g.min}'</td></tr>
+      <tr><td style="color:var(--color-mute);padding:3px 0">${isHi?'गति':'Motion'}</td><td><span class="kw-badge ${g.isRetrograde?'vakri':'margi'}">${g.isRetrograde?(isHi?'वक्री':'Vakri'):(isHi?'मार्गी':'Margi')}</span></td></tr>
+      <tr><td style="color:var(--color-mute);padding:3px 0">${isHi?'दृश्यता':'Visibility'}</td><td><span class="kw-badge ${g.isCombust?'asta':'margi'}">${g.isCombust?(isHi?'अस्त':'Asta'):(isHi?'उदित':'Udita')}</span></td></tr>
     </table>
   `;
   popup.hidden = false;
@@ -537,7 +537,7 @@ function hidePopup() {
 function fullRender(data: ReturnType<typeof calculateKundali>) {
   currentData = data;
   renderChart(data, currentStyle);
-  renderTable(data, false);
+  renderTable(data, document.documentElement.dataset.lang === 'hi');
   updateLagnaInfo(data);
 }
 
@@ -609,7 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Language change: re-render table labels
   document.addEventListener('langchange', () => {
     if (currentData) {
-      renderTable(currentData, false);
+      renderTable(currentData, document.documentElement.dataset.lang === 'hi');
       updateLagnaInfo(currentData);
     }
   });

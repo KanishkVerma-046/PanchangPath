@@ -28,7 +28,7 @@ export {
 
 export interface PanchangData {
   vara: { name: string; nameHi: string; lord: string };
-  tithi: { number: number; name: string; nameHi: string; paksha: 'Shukla' | 'Krishna'; pakshaNi: string; endTime: string; type: string };
+  tithi: { number: number; name: string; nameHi: string; paksha: 'Shukla' | 'Krishna'; pakshaNi: string; endTime: string; type: string; typeHi: string };
   nakshatra: { number: number; name: string; nameHi: string; endTime: string; lord: string; pada: number };
   yoga: { number: number; name: string; nameHi: string; endTime: string; type: string };
   karana: { number: number; name: string; nameHi: string; endTime: string };
@@ -93,40 +93,43 @@ function timeToMinutes(timeStr: string): number {
   return (h % 12 + (period === 'PM' ? 12 : 0)) * 60 + m;
 }
 
-const TITHIS = [
-  { name: 'Pratipada', nameHi: 'प्रतिपदा', type: 'Nanda' },
-  { name: 'Dwitiya', nameHi: 'द्वितीया', type: 'Bhadra' },
-  { name: 'Tritiya', nameHi: 'तृतीया', type: 'Jaya' },
-  { name: 'Chaturthi', nameHi: 'चतुर्थी', type: 'Rikta' },
-  { name: 'Panchami', nameHi: 'पंचमी', type: 'Purna' },
-  { name: 'Shashthi', nameHi: 'षष्ठी', type: 'Nanda' },
-  { name: 'Saptami', nameHi: 'सप्तमी', type: 'Bhadra' },
-  { name: 'Ashtami', nameHi: 'अष्टमी', type: 'Jaya' },
-  { name: 'Navami', nameHi: 'नवमी', type: 'Rikta' },
-  { name: 'Dashami', nameHi: 'दशमी', type: 'Purna' },
-  { name: 'Ekadashi', nameHi: 'एकादशी', type: 'Nanda' },
-  { name: 'Dwadashi', nameHi: 'द्वादशी', type: 'Bhadra' },
-  { name: 'Trayodashi', nameHi: 'त्रयोदशी', type: 'Jaya' },
-  { name: 'Chaturdashi', nameHi: 'चतुर्दशी', type: 'Rikta' },
-  { name: 'Purnima', nameHi: 'पूर्णिमा', type: 'Purna' },
-  { name: 'Pratipada', nameHi: 'प्रतिपदा', type: 'Nanda' },
-  { name: 'Dwitiya', nameHi: 'द्वितीया', type: 'Bhadra' },
-  { name: 'Tritiya', nameHi: 'तृतीया', type: 'Jaya' },
-  { name: 'Chaturthi', nameHi: 'चतुर्थी', type: 'Rikta' },
-  { name: 'Panchami', nameHi: 'पंचमी', type: 'Purna' },
-  { name: 'Shashthi', nameHi: 'षष्ठी', type: 'Nanda' },
-  { name: 'Saptami', nameHi: 'सप्तमी', type: 'Bhadra' },
-  { name: 'Ashtami', nameHi: 'अष्टमी', type: 'Jaya' },
-  { name: 'Navami', nameHi: 'नवमी', type: 'Rikta' },
-  { name: 'Dashami', nameHi: 'दशमी', type: 'Purna' },
-  { name: 'Ekadashi', nameHi: 'एकादशी', type: 'Nanda' },
-  { name: 'Dwadashi', nameHi: 'द्वादशी', type: 'Bhadra' },
-  { name: 'Trayodashi', nameHi: 'त्रयोदशी', type: 'Jaya' },
-  { name: 'Chaturdashi', nameHi: 'चतुर्दशी', type: 'Rikta' },
-  { name: 'Amavasya', nameHi: 'अमावस्या', type: 'Purna' },
+// Tithi type (Nanda/Bhadra/Jaya/Rikta/Purna) is one of the five traditional
+// categories every tithi falls into, cycling every 5 tithis; typeHi carries
+// the standard Hindi rendering of each category.
+export const TITHIS = [
+  { name: 'Pratipada', nameHi: 'प्रतिपदा', type: 'Nanda', typeHi: 'नंदा' },
+  { name: 'Dwitiya', nameHi: 'द्वितीया', type: 'Bhadra', typeHi: 'भद्रा' },
+  { name: 'Tritiya', nameHi: 'तृतीया', type: 'Jaya', typeHi: 'जया' },
+  { name: 'Chaturthi', nameHi: 'चतुर्थी', type: 'Rikta', typeHi: 'रिक्ता' },
+  { name: 'Panchami', nameHi: 'पंचमी', type: 'Purna', typeHi: 'पूर्णा' },
+  { name: 'Shashthi', nameHi: 'षष्ठी', type: 'Nanda', typeHi: 'नंदा' },
+  { name: 'Saptami', nameHi: 'सप्तमी', type: 'Bhadra', typeHi: 'भद्रा' },
+  { name: 'Ashtami', nameHi: 'अष्टमी', type: 'Jaya', typeHi: 'जया' },
+  { name: 'Navami', nameHi: 'नवमी', type: 'Rikta', typeHi: 'रिक्ता' },
+  { name: 'Dashami', nameHi: 'दशमी', type: 'Purna', typeHi: 'पूर्णा' },
+  { name: 'Ekadashi', nameHi: 'एकादशी', type: 'Nanda', typeHi: 'नंदा' },
+  { name: 'Dwadashi', nameHi: 'द्वादशी', type: 'Bhadra', typeHi: 'भद्रा' },
+  { name: 'Trayodashi', nameHi: 'त्रयोदशी', type: 'Jaya', typeHi: 'जया' },
+  { name: 'Chaturdashi', nameHi: 'चतुर्दशी', type: 'Rikta', typeHi: 'रिक्ता' },
+  { name: 'Purnima', nameHi: 'पूर्णिमा', type: 'Purna', typeHi: 'पूर्णा' },
+  { name: 'Pratipada', nameHi: 'प्रतिपदा', type: 'Nanda', typeHi: 'नंदा' },
+  { name: 'Dwitiya', nameHi: 'द्वितीया', type: 'Bhadra', typeHi: 'भद्रा' },
+  { name: 'Tritiya', nameHi: 'तृतीया', type: 'Jaya', typeHi: 'जया' },
+  { name: 'Chaturthi', nameHi: 'चतुर्थी', type: 'Rikta', typeHi: 'रिक्ता' },
+  { name: 'Panchami', nameHi: 'पंचमी', type: 'Purna', typeHi: 'पूर्णा' },
+  { name: 'Shashthi', nameHi: 'षष्ठी', type: 'Nanda', typeHi: 'नंदा' },
+  { name: 'Saptami', nameHi: 'सप्तमी', type: 'Bhadra', typeHi: 'भद्रा' },
+  { name: 'Ashtami', nameHi: 'अष्टमी', type: 'Jaya', typeHi: 'जया' },
+  { name: 'Navami', nameHi: 'नवमी', type: 'Rikta', typeHi: 'रिक्ता' },
+  { name: 'Dashami', nameHi: 'दशमी', type: 'Purna', typeHi: 'पूर्णा' },
+  { name: 'Ekadashi', nameHi: 'एकादशी', type: 'Nanda', typeHi: 'नंदा' },
+  { name: 'Dwadashi', nameHi: 'द्वादशी', type: 'Bhadra', typeHi: 'भद्रा' },
+  { name: 'Trayodashi', nameHi: 'त्रयोदशी', type: 'Jaya', typeHi: 'जया' },
+  { name: 'Chaturdashi', nameHi: 'चतुर्दशी', type: 'Rikta', typeHi: 'रिक्ता' },
+  { name: 'Amavasya', nameHi: 'अमावस्या', type: 'Purna', typeHi: 'पूर्णा' },
 ];
 
-const NAKSHATRAS = [
+export const NAKSHATRAS = [
   { name: 'Ashwini', nameHi: 'अश्विनी', lord: 'Ketu' },
   { name: 'Bharani', nameHi: 'भरणी', lord: 'Venus' },
   { name: 'Krittika', nameHi: 'कृत्तिका', lord: 'Sun' },
@@ -156,7 +159,7 @@ const NAKSHATRAS = [
   { name: 'Revati', nameHi: 'रेवती', lord: 'Mercury' },
 ];
 
-const YOGAS = [
+export const YOGAS = [
   { name: 'Vishkambha', nameHi: 'विष्कम्भ', type: 'Inauspicious' },
   { name: 'Preeti', nameHi: 'प्रीति', type: 'Auspicious' },
   { name: 'Ayushman', nameHi: 'आयुष्मान', type: 'Auspicious' },
@@ -186,7 +189,7 @@ const YOGAS = [
   { name: 'Vaidhriti', nameHi: 'वैधृति', type: 'Inauspicious' },
 ];
 
-const KARANAS = [
+export const KARANAS = [
   'Kimstughna', 'Bava', 'Balava', 'Kaulava', 'Taitila', 'Garaja', 'Vanija', 'Vishti',
   'Bava', 'Balava', 'Kaulava', 'Taitila', 'Garaja', 'Vanija', 'Vishti',
   'Bava', 'Balava', 'Kaulava', 'Taitila', 'Garaja', 'Vanija', 'Vishti',
@@ -198,7 +201,7 @@ const KARANAS = [
   'Shakuni', 'Chatushpada', 'Naga', 'Kimstughna',
 ];
 
-const KARANAS_HI = [
+export const KARANAS_HI = [
   'किंस्तुघ्न', 'बव', 'बालव', 'कौलव', 'तैतिल', 'गरज', 'वणिज', 'विष्टि',
   'बव', 'बालव', 'कौलव', 'तैतिल', 'गरज', 'वणिज', 'विष्टि',
   'बव', 'बालव', 'कौलव', 'तैतिल', 'गरज', 'वणिज', 'विष्टि',
@@ -210,7 +213,7 @@ const KARANAS_HI = [
   'शकुनि', 'चतुष्पाद', 'नाग', 'किंस्तुघ्न',
 ];
 
-const VARAS = [
+export const VARAS = [
   { name: 'Sunday', nameHi: 'रविवार', lord: 'Sun' },
   { name: 'Monday', nameHi: 'सोमवार', lord: 'Moon' },
   { name: 'Tuesday', nameHi: 'मंगलवार', lord: 'Mars' },
@@ -430,9 +433,25 @@ export const SAMVATSARA_NAMES = [
   'Durmati','Dundubhi','Rudhirodgari','Raktakshi','Krodhana','Akshaya',
 ];
 
+// Standard Hindi (Devanagari) rendering of the same 60-year Vikrama Samvatsara
+// cycle, index-aligned with SAMVATSARA_NAMES.
+export const SAMVATSARA_NAMES_HI = [
+  'प्रभव','विभव','शुक्ल','प्रमोद','प्रजापति','अंगिरस',
+  'श्रीमुख','भाव','युवा','धाता','ईश्वर','बहुधान्य',
+  'प्रमाथी','विक्रम','वृष','चित्रभानु','स्वभानु','तारण',
+  'पार्थिव','व्यय','सर्वजित्','सर्वधारी','विरोधी','विकृति',
+  'खर','नन्दन','विजय','जय','मन्मथ','दुर्मुख',
+  'हेविलम्बी','विलम्बी','विकारी','शार्वरी','प्लव','शुभकृत्',
+  'शोभन','क्रोधी','विश्वावसु','पराभव','प्लवंग','कीलक',
+  'सौम्य','साधारण','विरोधकृत्','परिधावी','प्रमादी','आनन्द',
+  'राक्षस','अनल','पिंगल','कालयुक्त','सिद्धार्थी','रौद्री',
+  'दुर्मति','दुन्दुभि','रुधिरोद्गारी','रक्ताक्षी','क्रोधन','अक्षय',
+];
+
 export interface HinduCalendarInfo {
   vikramaSamvat: number;
   vikramaSamvatsara: string;
+  vikramaSamvatsaraHi: string;
   shakaSamvat: number;
   sunRashi: typeof RASHIS[0];
   moonRashi: typeof RASHIS[0];
@@ -483,10 +502,12 @@ export function getHinduCalendarInfo(
   const vsYear = dayOfYear >= 91 ? year + 57 : year + 56;
   const ssYear = vsYear - 135;
   const vsName = SAMVATSARA_NAMES[(vsYear - 1) % 60];
+  const vsNameHi = SAMVATSARA_NAMES_HI[(vsYear - 1) % 60];
 
   return {
     vikramaSamvat: vsYear,
     vikramaSamvatsara: vsName,
+    vikramaSamvatsaraHi: vsNameHi,
     shakaSamvat: ssYear,
     sunRashi:       RASHIS[sunRashiIdx],
     moonRashi:      RASHIS[moonRashiIdx],

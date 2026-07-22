@@ -137,7 +137,7 @@ document.querySelectorAll('.cal-cell').forEach(cell => {
 // Month navigation
 let displayDate = new Date();
 displayDate.setDate(1);
-let currentLang: 'en' | 'hi' = 'en';
+let currentLang: 'en' | 'hi' = localStorage.getItem('pp-lang') === 'hi' ? 'hi' : 'en';
 
 const festivals: Record<string, {name:string,nameHi:string,type:string}[]> = {};
 // Festival data from festivals.ts (subset injected)

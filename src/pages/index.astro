@@ -22,6 +22,7 @@ const upcoming = getUpcomingFestivals(today, 8);
 const planetaryEvents = computeUpcomingEvents(today, 180);
 
 const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const dateStrHi = today.toLocaleDateString('hi-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 ---
 
 <Layout
@@ -72,7 +73,7 @@ const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numer
       </div>
 
       <!-- Date display -->
-      <p class="caption-mono" style="color:var(--color-mute);margin-top:20px;" id="date-display">{dateStr}</p>
+      <p class="caption-mono" style="color:var(--color-mute);margin-top:20px;" id="date-display" data-hi={dateStrHi}>{dateStr}</p>
     </div>
   </section>
 
@@ -315,6 +316,16 @@ import {
   moonEquatorial,
   moonRiseSetUTC,
   findAngleCrossing,
+  TITHIS,
+  NAKSHATRAS,
+  YOGAS,
+  KARANAS,
+  KARANAS_HI,
+  VARAS,
+  RASHIS,
+  AMANTA_MONTHS,
+  SAMVATSARA_NAMES,
+  SAMVATSARA_NAMES_HI,
 } from '../lib/panchang';
 
 // ── Global display state ──
@@ -358,20 +369,6 @@ function estimateEnd(jd: number, step: number, tz: number, lonFn: (jd: number) =
   return fmtTime(hourUTC, tz);
 }
 
-const TITHIS = ['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
-const TITHIS_HI = ['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा','प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','अमावस्या'];
-const TITHI_TYPES = ['Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna','Nanda','Bhadra','Jaya','Rikta','Purna'];
-const NAKSHATRAS = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const NAKSHATRAS_HI = ['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
-const NAKSHATRA_LORDS = ['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury','Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn','Mercury'];
-const YOGAS = ['Vishkambha','Preeti','Ayushman','Saubhagya','Shobhana','Atiganda','Sukarma','Dhriti','Shula','Ganda','Vriddhi','Dhruva','Vyaghata','Harshana','Vajra','Siddhi','Vyatipata','Variyan','Parigha','Shiva','Siddha','Sadhya','Shubha','Shukla','Brahma','Indra','Vaidhriti'];
-const YOGAS_HI = ['विष्कम्भ','प्रीति','आयुष्मान','सौभाग्य','शोभन','अतिगण्ड','सुकर्मा','धृति','शूल','गण्ड','वृद्धि','ध्रुव','व्याघात','हर्षण','वज्र','सिद्धि','व्यतिपात','वरीयान','परिघ','शिव','सिद्ध','साध्य','शुभ','शुक्ल','ब्रह्म','इन्द्र','वैधृति'];
-const YOGA_TYPES = ['Inauspicious','Auspicious','Auspicious','Auspicious','Auspicious','Inauspicious','Auspicious','Auspicious','Inauspicious','Inauspicious','Auspicious','Auspicious','Inauspicious','Auspicious','Inauspicious','Auspicious','Inauspicious','Auspicious','Inauspicious','Auspicious','Auspicious','Auspicious','Auspicious','Auspicious','Auspicious','Auspicious','Inauspicious'];
-const KARANAS = ['Kimstughna','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Bava','Balava','Kaulava','Taitila','Garaja','Vanija','Vishti','Shakuni','Chatushpada','Naga','Kimstughna'];
-const KARANAS_HI = ['किंस्तुघ्न','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','बव','बालव','कौलव','तैतिल','गरज','वणिज','विष्टि','शकुनि','चतुष्पाद','नाग','किंस्तुघ्न'];
-const VARAS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const VARAS_HI = ['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
-const VARA_LORDS = ['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn'];
 const RAHU = [7,1,6,4,5,2,3];
 const GULIKA = [6,5,4,3,2,1,0];
 const YAMA = [3,5,2,7,4,6,1];
@@ -420,10 +417,10 @@ function calcPanchang(date: Date, loc: Location) {
   const noonMins = (srMins + ssMins) / 2;
   const abStart = noonMins - dayMins / 30, abEnd = noonMins + dayMins / 30;
   return {
-    vara: { name: VARAS[wd], nameHi: VARAS_HI[wd], lord: VARA_LORDS[wd] },
-    tithi: { name: TITHIS[tithiIdx], nameHi: TITHIS_HI[tithiIdx], paksha, pakshaNi: paksha==='Shukla'?'शुक्ल':'कृष्ण', type: TITHI_TYPES[tithiIdx], endTime: estimateEnd(jd, 12, loc.tzOffset, j => norm360(moonLon(j) - sunTrueLon(j))) },
-    nakshatra: { name: NAKSHATRAS[nIdx], nameHi: NAKSHATRAS_HI[nIdx], lord: NAKSHATRA_LORDS[nIdx], pada, endTime: estimateEnd(jd, 360/27, loc.tzOffset, j => norm360(moonLon(j) - ayanamsha(j))) },
-    yoga: { name: YOGAS[yIdx], nameHi: YOGAS_HI[yIdx], type: YOGA_TYPES[yIdx], endTime: estimateEnd(jd, 360/27, loc.tzOffset, j => norm360(norm360(sunTrueLon(j) - ayanamsha(j)) + norm360(moonLon(j) - ayanamsha(j)))) },
+    vara: VARAS[wd],
+    tithi: { ...TITHIS[tithiIdx], paksha, pakshaNi: paksha==='Shukla'?'शुक्ल':'कृष्ण', endTime: estimateEnd(jd, 12, loc.tzOffset, j => norm360(moonLon(j) - sunTrueLon(j))) },
+    nakshatra: { ...NAKSHATRAS[nIdx], pada, endTime: estimateEnd(jd, 360/27, loc.tzOffset, j => norm360(moonLon(j) - ayanamsha(j))) },
+    yoga: { ...YOGAS[yIdx], endTime: estimateEnd(jd, 360/27, loc.tzOffset, j => norm360(norm360(sunTrueLon(j) - ayanamsha(j)) + norm360(moonLon(j) - ayanamsha(j)))) },
     karana: { name: KARANAS[kIdx]||'Bava', nameHi: KARANAS_HI[kIdx]||'बव', endTime: estimateEnd(jd, 6, loc.tzOffset, j => norm360(moonLon(j) - sunTrueLon(j))) },
     sunrise: fmtTime(srUTC, loc.tzOffset),
     sunset: fmtTime(ssUTC, loc.tzOffset),
@@ -440,30 +437,6 @@ function calcPanchang(date: Date, loc: Location) {
     tithiPaksha: paksha as 'Shukla' | 'Krishna',
   };
 }
-
-// ── Hindu calendar info (mirrors panchang.ts#getHinduCalendarInfo) ──
-const RASHIS_CL = [
-  {name:'Mesha',nameHi:'मेष',en:'Aries'},{name:'Vrishabha',nameHi:'वृषभ',en:'Taurus'},
-  {name:'Mithuna',nameHi:'मिथुन',en:'Gemini'},{name:'Karka',nameHi:'कर्क',en:'Cancer'},
-  {name:'Simha',nameHi:'सिंह',en:'Leo'},{name:'Kanya',nameHi:'कन्या',en:'Virgo'},
-  {name:'Tula',nameHi:'तुला',en:'Libra'},{name:'Vrishchika',nameHi:'वृश्चिक',en:'Scorpio'},
-  {name:'Dhanu',nameHi:'धनु',en:'Sagittarius'},{name:'Makara',nameHi:'मकर',en:'Capricorn'},
-  {name:'Kumbha',nameHi:'कुम्भ',en:'Aquarius'},{name:'Meena',nameHi:'मीन',en:'Pisces'},
-];
-const AMANTA_CL = [
-  {name:'Chaitra',nameHi:'चैत्र'},{name:'Vaishakha',nameHi:'वैशाख'},{name:'Jyeshtha',nameHi:'ज्येष्ठ'},
-  {name:'Ashadha',nameHi:'आषाढ़'},{name:'Shravana',nameHi:'श्रावण'},{name:'Bhadrapada',nameHi:'भाद्रपद'},
-  {name:'Ashwin',nameHi:'आश्विन'},{name:'Kartika',nameHi:'कार्तिक'},{name:'Margashirsha',nameHi:'मार्गशीर्ष'},
-  {name:'Pausha',nameHi:'पौष'},{name:'Magha',nameHi:'माघ'},{name:'Phalguna',nameHi:'फाल्गुन'},
-];
-const SAMVATSARA_CL = [
-  'Prabhava','Vibhava','Shukla','Pramoda','Prajapati','Angirasa','Shrimukha','Bhava','Yuva','Dhatri',
-  'Ishvara','Bahudhanya','Pramathi','Vikrama','Vrisha','Chitrabhanu','Subhanu','Tarana','Parthiva','Vyaya',
-  'Sarvajit','Sarvadharin','Virodhi','Vikrita','Khara','Nandana','Vijaya','Jaya','Manmatha','Durmukhi',
-  'Hevilambi','Vilambi','Vikari','Sharvari','Plava','Shubhakrit','Shobhana','Krodhi','Vishvavasu','Parabhava',
-  'Plavanga','Kilaka','Saumya','Sadharana','Virodhikrit','Paridahvi','Pramadi','Ananda','Rakshasa','Anala',
-  'Pingala','Kalayukti','Siddharthi','Raudri','Durmati','Dundubhi','Rudhirodgari','Raktakshi','Krodhana','Akshaya',
-];
 
 function getHinduCalInfo(date: Date, sunSidereal: number, moonSidereal: number, paksha: 'Shukla' | 'Krishna') {
   const sunRashiIdx  = Math.floor(sunSidereal  / 30) % 12;
@@ -485,13 +458,20 @@ function getHinduCalInfo(date: Date, sunSidereal: number, moonSidereal: number, 
   const dayOfYear = Math.floor((Date.UTC(year, date.getMonth(), date.getDate()) - Date.UTC(year, 0, 0)) / 86400000);
   const vsYear = dayOfYear >= 91 ? year + 57 : year + 56;
   const ssYear = vsYear - 135;
-  const vsName = SAMVATSARA_CL[(vsYear - 1) % 60];
-  return { vsYear, ssYear, vsName, sunRashi: RASHIS_CL[sunRashiIdx], moonRashi: RASHIS_CL[moonRashiIdx], amantaMonth: AMANTA_CL[amantaIdx], purnimantaMonth: AMANTA_CL[purnimantaIdx] };
+  const vsName = SAMVATSARA_NAMES[(vsYear - 1) % 60];
+  const vsNameHi = SAMVATSARA_NAMES_HI[(vsYear - 1) % 60];
+  return { vsYear, ssYear, vsName, vsNameHi, sunRashi: RASHIS[sunRashiIdx], moonRashi: RASHIS[moonRashiIdx], amantaMonth: AMANTA_MONTHS[amantaIdx], purnimantaMonth: AMANTA_MONTHS[purnimantaIdx] };
 }
 
 function setText(id: string, val: string) {
   const el = document.getElementById(id);
   if (el) el.textContent = val;
+}
+
+// Shared long-date formatter for #date-display — 'hi-IN' renders full Devanagari
+// weekday/month names, matching the pattern already used in rashifal/[rashi].astro.
+function formatDateDisplay(date: Date, hindi: boolean): string {
+  return date.toLocaleDateString(hindi ? 'hi-IN' : 'en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 const PLANET_LORD_HI: Record<string, string> = {
@@ -512,7 +492,7 @@ function updateUI(p: ReturnType<typeof calcPanchang>) {
   // Tithi
   setText('tithi-name', `${p.tithi.paksha} ${p.tithi.name}`);
   setText('tithi-name-hi', `${p.tithi.pakshaNi} ${p.tithi.nameHi}`);
-  setText('tithi-type', p.tithi.type); setText('tithi-end', p.tithi.endTime);
+  setText('tithi-type', isHindi ? p.tithi.typeHi : p.tithi.type); setText('tithi-end', p.tithi.endTime);
   // Nakshatra
   setText('nakshatra-name', p.nakshatra.name); setText('nakshatra-name-hi', p.nakshatra.nameHi);
   setText('nakshatra-meta', `${p.nakshatra.pada} · ${lordLabel(p.nakshatra.lord)}`);
@@ -573,8 +553,12 @@ function applyLang(langCode: string) {
   if (locDisplay) locDisplay.textContent = currentLoc.name;
   const locDisplayHi = document.getElementById('loc-display-hi');
   if (locDisplayHi) locDisplayHi.textContent = currentLoc.nameHi ?? currentLoc.name;
-  // Refresh summary card so regional names apply
+  setText('date-display', formatDateDisplay(currentDate, isHindi));
+  // Refresh summary card and main grid (vara-lord, yoga-type, nakshatra-meta,
+  // etc.) so language-dependent auxiliary fields update together, not just
+  // on the next date/location change.
   const p = calcPanchang(currentDate, currentLoc);
+  updateUI(p);
   updateSummaryCard(p, currentDate, currentLoc);
 }
 
@@ -587,7 +571,7 @@ function updateSummaryCard(p: ReturnType<typeof calcPanchang>, date: Date, loc: 
 
   // Vikrama / Shaka
   setText('ps-vs-year', String(cal.vsYear));
-  setText('ps-vs-name', cal.vsName);
+  setText('ps-vs-name', isHindi ? cal.vsNameHi : cal.vsName);
   setText('ps-ss-year', String(cal.ssYear));
 
   // Hindu month (Amanta / Purnimanta)
@@ -722,8 +706,7 @@ function renderWithLoc(loc: Location, date: Date) {
     });
   }
   // Update date label
-  const d = date.toLocaleDateString('en-IN', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-  setText('date-display', d);
+  setText('date-display', formatDateDisplay(date, isHindi));
   setText('panchang-date-label', date.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }));
   const locDisplay = document.getElementById('loc-display');
   if (locDisplay) locDisplay.textContent = loc.name;
