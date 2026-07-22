@@ -529,11 +529,14 @@ init();
   max-height: 280px;
   overscroll-behavior: contain;
 }
-.lp-group-label {
+/* These rows are injected via innerHTML by client-side JS (renderCityList), so they
+   never receive Astro's scoped data-astro-cid attribute — :global() is required or
+   none of these rules would match and the list collapses to unstyled inline text. */
+:global(.lp-group-label) {
   padding: 6px 12px 3px;
   font-size: 10px;
   font-weight: 700;
-  color: var(--color-mute);
+  color: var(--color-ink);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-family: var(--font-mono);
@@ -541,7 +544,7 @@ init();
   position: sticky;
   top: 0;
 }
-.lp-city-row {
+:global(.lp-city-row) {
   width: 100%;
   display: flex;
   align-items: center;
@@ -556,15 +559,15 @@ init();
   border-bottom: 1px solid var(--color-hairline);
   transition: background 0.08s;
 }
-.lp-city-row:last-child { border-bottom: none; }
-.lp-city-row:hover { background: var(--color-saffron-soft); }
-.lp-city-main {
+:global(.lp-city-row:last-child) { border-bottom: none; }
+:global(.lp-city-row:hover) { background: var(--color-saffron-soft); }
+:global(.lp-city-main) {
   display: flex;
   flex-direction: column;
   gap: 1px;
   min-width: 0;
 }
-.lp-city-name {
+:global(.lp-city-name) {
   font-size: 13px;
   font-weight: 600;
   color: var(--color-ink);
@@ -572,19 +575,19 @@ init();
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.lp-city-tz {
+:global(.lp-city-tz) {
   font-size: 10px;
-  color: var(--color-mute);
+  color: var(--color-ink);
   letter-spacing: 0.03em;
 }
-.lp-city-coord {
+:global(.lp-city-coord) {
   font-size: 10.5px;
-  color: var(--color-mute);
+  color: var(--color-ink);
   font-family: var(--font-mono);
   white-space: nowrap;
   flex-shrink: 0;
 }
-.lp-no-results {
+:global(.lp-no-results) {
   padding: 20px 16px;
   text-align: center;
   font-size: 13px;
