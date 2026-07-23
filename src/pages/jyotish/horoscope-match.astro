@@ -88,7 +88,7 @@ const YONI_NAME=['Horse','Elephant','Sheep','Serpent','Dog','Cat','Rat','Cow','B
 const VASHYA=[1,1,0,4,3,0,0,4,1,2,0,2]; // by rashi
 const RASHI_LORD=[2,5,3,1,0,3,5,2,4,6,6,4];
 const PLANET_NAME=['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn'];
-const PLT_FRIEND=[[2,2,2,1,2,0,0],[2,2,1,2,1,1,1],[2,1,2,0,2,1,1],[2,0,1,2,1,2,1],[2,2,2,0,2,0,1],[0,0,1,2,1,2,2],[0,0,1,2,1,2,2]];
+const PLT_FRIEND=[[2,2,2,1,2,0,0],[2,2,1,2,1,1,1],[2,2,2,0,2,1,1],[2,0,1,2,1,2,1],[2,2,2,0,2,0,1],[0,0,1,2,1,2,2],[0,0,0,2,1,2,2]]; // [row=from][col=to]; row2(Mars)->col1(Moon)=2 friend, row6(Saturn)->col2(Mars)=0 enemy (asymmetric per classical Naisargika Maitri, verified against prokerala.com/vedicka.com 2026-07-23)
 const VARNA_RANK=[3,2,1,4,3,2,1,4,3,2,1,4]; // by rashi: Brahmin4 Ksh3 Vaishya2 Shudra1
 const VARNA_NAME=['','Shudra','Vaishya','Kshatriya','Brahmin'];
 // Yoni bitter-enemy pairs (0 pts)
@@ -110,7 +110,8 @@ function kVashya(b,g){const bv=VASHYA[b.rashi],gv=VASHYA[g.rashi];let pt;if(bv==
 function kTara(b,g){let good=0;[[b.nak,g.nak],[g.nak,b.nak]].forEach(([s,t])=>{let c=((t-s+27)%27)+1;let tara=c%9;if(tara===0)tara=9;if(![3,5,7].includes(tara))good++;});const pt=good*1.5;return{pt,max:3,bd:NAKS[b.nak],gd:NAKS[g.nak]};}
 function kYoni(b,g){const by=YONI[b.nak],gy=YONI[g.nak];let pt;if(by===gy)pt=4;else if(YONI_ENEMY.some(p=>(p[0]===by&&p[1]===gy)||(p[1]===by&&p[0]===gy)))pt=0;else pt=3;return{pt,max:4,bd:YONI_NAME[by],gd:YONI_NAME[gy]};}
 function kMaitri(b,g){const bl=RASHI_LORD[b.rashi],gl=RASHI_LORD[g.rashi];if(bl===gl)return{pt:5,max:5,bd:PLANET_NAME[bl],gd:PLANET_NAME[gl]};const r1=PLT_FRIEND[bl][gl],r2=PLT_FRIEND[gl][bl];const s=r1+r2;let pt;if(s===4)pt=5;else if(s===3)pt=4;else if(s===2)pt=3;else if(s===1)pt=0.5;else pt=0;return{pt,max:5,bd:PLANET_NAME[bl],gd:PLANET_NAME[gl]};}
-function kGana(b,g){const bg=GANA[b.nak],gg=GANA[g.nak];let pt;if(bg===gg)pt=6;else{const pair=[bg,gg].sort().join('');if(pair==='01')pt=(bg===0?6:5);else if(pair==='02')pt=1;else pt=0;}return{pt,max:6,bd:GANA_NAME[bg],gd:GANA_NAME[gg]};}
+const GANA_TABLE=[[6,5,0],[5,6,1],[0,0,6]]; // [boy gana][girl gana]; classical Gana Kuta table (Deva=0,Manushya=1,Rakshasa=2), verified 2026-07-23
+function kGana(b,g){const bg=GANA[b.nak],gg=GANA[g.nak];const pt=GANA_TABLE[bg][gg];return{pt,max:6,bd:GANA_NAME[bg],gd:GANA_NAME[gg]};}
 function kBhakoot(b,g){const d1=((g.rashi-b.rashi+12)%12)+1;const d2=((b.rashi-g.rashi+12)%12)+1;const set=[d1,d2].sort((x,y)=>x-y).join('-');const bad=['6-8','2-12','5-9'];const pt=bad.includes(set)?0:7;return{pt,max:7,bd:RASHI[b.rashi],gd:RASHI[g.rashi]};}
 function kNadi(b,g){const pt=NADI[b.nak]===NADI[g.nak]?0:8;return{pt,max:8,bd:NADI_NAME[NADI[b.nak]],gd:NADI_NAME[NADI[g.nak]]};}
 
