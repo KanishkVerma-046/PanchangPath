@@ -1,11 +1,38 @@
 # PanchangPath — QA Audit Findings
 
+## FIX PHASE SUMMARY (completed 2026-07-23 — see `qa-audit/PROGRESS.md` for the batch-by-batch log)
+
+All 34 originally-audited issues have been triaged across 4 fix batches (6 commits: Batch 1 —
+`a208e63`, `e7e5809`; Batch 2 — `ad7c00c`..`7076c53`; Batch 3 — `47de538`, `ba69966`, `9a8bdd1`;
+Batch 4 — `c706c32`..`38f5f92`), each fix re-verified against the exact evidence originally logged
+against it, none pushed to remote yet.
+
+- **32 of 34 FIXED — verified.**
+- **1 fixed with a narrow residual** — Issue #13 (Chaturmas gate) leaves one same-day Sankranti-
+  boundary edge case open (2026-08-17), tracked as new Issue #35.
+- **1 correctly left unchanged** — Issue #26 (Pancha Pakshi night-offset) has no credible source
+  either way; per the fix-phase rule against guessing, the code was left as-is rather than patched
+  blind.
+- **1 intentionally partial by original design** — Issue #31 (devotional transliterations): 4 of
+  ~48 affected entries completed this pass (Hanuman Chalisa + 3 Ashtakams); the original audit
+  explicitly flagged this as its own content-authoring project, not a single-batch fix.
+- **3 new issues surfaced while fixing** (not fixed, logged for future triage per the no-scope-creep
+  rule): **#35** (muhurta finders' fixed daily snapshot can miss a same-day Sankranti crossing),
+  **#36** (Saraswati/Radha Ashtakam transliteration doesn't match their own Devanagari lyrics —
+  different textual variant), **#37** (Mars/Jupiter/Saturn retrograde stations never detected by
+  the Planetary Events scanner — velocity threshold too tight for their slower stations).
+
+Every individual fix's evidence, commit hash, and verification method is recorded inline against
+its original issue entry below (search for "FIXED —" or "PARTIALLY FIXED").
+
+---
+
 Plan-only document. No code has been changed as part of this audit. See `qa-audit/INVENTORY.md`
 for the full page inventory and engine/context notes shared with every batch's subagent.
 
-Issues are numbered sequentially across the whole document (`Issue #1`–`#34`) so they can be
-triaged and fixed one at a time. All 16 planned batches are complete — see `qa-audit/PROGRESS.md`
-for per-batch status.
+Issues are numbered sequentially across the whole document (`Issue #1`–`#37`, the last 3 added
+during the fix phase) so they can be triaged and fixed one at a time. All 16 planned audit batches
+and all 4 planned fix batches are complete — see `qa-audit/PROGRESS.md` for per-batch status.
 
 ## Summary
 
@@ -580,6 +607,10 @@ batch):** language toggle on regional pages — traced to use the same `data-hi`
 ## Batch 6: Festivals hub + representative detail pages
 
 ### Issue #18: Festivals hub computes a "recently celebrated" `past` festivals array but never renders it — `/festivals`
+
+**FIXED — verified (commit `f68af4e`).** Wired a "Recently Celebrated" section into `festivals.astro`
+below the upcoming-by-month list, reusing existing card styling with a "days ago" indicator.
+Confirmed present in the built output.
 - Severity: minor (dead code / unfinished feature)
 - Description: `src/pages/festivals.astro` (~line 10) defines `const past = ...` (recently-passed
   festivals, sorted descending, sliced to 6) but the variable is never referenced anywhere else in
@@ -591,6 +622,11 @@ batch):** language toggle on regional pages — traced to use the same `data-hi`
   either the new section renders sensible recent festivals, or that the unused variable is gone.
 
 ### Issue #19: Festivals hub's Hindi toggle only translates the hero heading and festival names — everything else stays in English — `/festivals`
+
+**FIXED — verified (commit `f68af4e`).** Added the generic `[data-hi]` textContent-swap (matching
+`events/index.astro`'s pattern) to the langchange handler, applied on toggle and on initial load.
+Most target elements already had `data-hi` attributes from prior work — they just weren't being
+applied. Confirmed in build output.
 - Severity: minor (i18n gap)
 - Description: `festivals.astro`'s `langchange` listener only toggles `.en-text`/`.hi-text`
   elements; it never applies the generic `[data-hi]` attribute swap that 44 other files across
@@ -668,6 +704,10 @@ scores 8/8, no false Nadi Dosha.
   with no dosha warning, per the corrected Antya-vs-Madhya pairing.
 
 ### Issue #22: Horoscope Match's Gana Kuta gives 1 point for Deva-Rakshasa pairing; the standard table gives 0 (the most incompatible combination) — `/jyotish/horoscope-match`
+
+**FIXED — verified (commit `3b38a08`).** Replaced ad-hoc pair-sort logic with an explicit
+`GANA_TABLE[boy][girl]` lookup (Deva/Deva=6, Deva/Manushya=5, Deva/Rakshasa=0, etc.), cross-checked
+against classical references. Rest of the table audited, no other errors found.
 - Severity: minor
 - Evidence/cause: `kGana()` (~line 112), the `pair==='02'` branch — verified against the classical
   Gana Kuta table.
@@ -678,6 +718,10 @@ scores 8/8, no false Nadi Dosha.
   same function.
 
 ### Issue #23: Horoscope Match's Graha Maitri (planetary friendship) matrix has 2 wrong cells — `/jyotish/horoscope-match`
+
+**FIXED — verified (commit `3b38a08`).** `PLT_FRIEND` corrected: Mars→Moon 1→2 (friend),
+Saturn→Mars 1→0 (enemy). Cross-checked the full 7×7 matrix against two independent sources, no
+other cells wrong.
 - Severity: minor
 - Evidence/cause: `PLT_FRIEND` array (~line 90) — Mars→Moon coded neutral (should be friend),
   Saturn→Mars coded neutral (should be enemy), per the classical Naisargika Maitri table.
@@ -787,6 +831,13 @@ tested so far).
 ## Batch 10: Jyotish D (Gemstone, Rudraksha, Pancha Pakshi, Shraddha, Sahasra Chandrodaya)
 
 ### Issue #26: Pancha Pakshi's night-period ruling-bird sequence uses an unexplained "+2" offset instead of continuing the day sequence — `/jyotish/pancha-pakshi`
+
+**NOT-APPLICABLE — investigated, left as-is (no code change).** Researched via WebSearch/WebFetch:
+the authentic classical Pancha Pakshi system determines day/night ruling birds via independent
+lookup tables keyed by weekday **and** Paksha (lunar fortnight) — this codebase's model already
+omits Paksha entirely as a pre-existing simplification, so no source confirms or refutes the
+specific "+2" value in this model's own terms. Per the fix prompt's explicit instruction not to
+guess without a credible source, left unchanged. Still an open oddity, not a confirmed defect.
 - Severity: minor
 - Description: `makePeriods()` computes day-period ruling birds as `(dayBird+i)%5` for i=0..4 (a
   smooth +1 progression), but night periods restart at `(dayBird+i+2)%5` — a magic `nightOffset=2`
@@ -837,6 +888,10 @@ underlying math is fine; this is purely a "could add a UI field" observation, no
 ## Batch 12: Rashifal
 
 ### Issue #27: "Find Rashi by Name" tool's lookup table is missing several starting-sounds that the site's own rashi data claims belong to that rashi, causing valid names to fail to resolve — `/rashifal`, homepage widget (`RashifalFeed.astro`)
+
+**FIXED — verified (commit `b73fad1`).** Deleted the duplicated `NAME_MAP` in both files; both now
+import `getRashiByNameLetter`/`NAME_LETTER_MAP` from `lib/rashifal.ts`. "Deepak"/"Dinesh"/"Dev"/
+"Durga" now resolve to Karka; "Amit"/"Anjali" resolve to Mesha, confirmed in the built bundles.
 - Severity: major
 - Description: `NAME_MAP` (duplicated identically in `src/components/RashifalFeed.astro` ~lines
   170-184 and `src/pages/rashifal/index.astro` ~lines 166-179) has drifted out of sync with the
@@ -858,6 +913,14 @@ underlying math is fine; this is purely a "could add a UI field" observation, no
   Karka/Mesha respectively.
 
 ### Issue #28: "Find Rashi by Name" silently returns only one rashi for starting-sounds that the site's own data assigns to multiple rashis, with no indication of ambiguity — `/rashifal`, homepage widget
+
+**FIXED — verified (commit `b73fad1`).** Audited all 12 `nameLetters` arrays against
+drikpanchang's Nakshatra Pada naming chart. Found and fixed 2 genuine data-entry bugs (not
+authentic overlaps): Mithuna had a stray "Da" and was missing "Ko"/"Ha" (corrected to
+Ka,Ki,Ku,Gha,Ang,Chha,Ke,Ko,Ha); Meena had "Na" where the real syllable is "Nya". Confirmed the
+remaining collisions (Ta/Ti/Tu/Te: Simha+Tula; To/Na: Kanya+Vrishchika; Da/Di/Du/De/Do: Karka+
+Meena; Tha: Kanya+Meena) are genuine per the classical chart, documented a consistent tie-break
+rule (earliest rashi in `RASHIS` array wins) in a code comment.
 - Severity: minor
 - Description: Several starting-sounds appear in more than one rashi's canonical `nameLetters`
   array (e.g. "Ta/Ti/Tu/Te" in both Simha and Tula; "Na" in Kanya, Vrishchika, and Meena; "To" in
@@ -895,6 +958,11 @@ for awareness only.
 ## Batch 13: Prashnavali oracle
 
 ### Issue #29: `PRASHNAVALI_ANSWERS` has only 100 entries, not the 108 the site's own hero copy and CLAUDE.md both claim — `/prashnavali`
+
+**FIXED — verified (commit `38f5f92`).** Took the lower-risk option: hero meta description and
+number-picker instructional text (including a second previously-undetected hardcoded "108") now
+reference `PRASHNAVALI_ANSWERS.length` dynamically instead of a hardcoded number, same pattern the
+footer already used. Confirmed consistent (100) throughout the built output.
 - Severity: content
 - Description: `src/lib/rashifal.ts` (~lines 719-818) has exactly 100 unique answers (verified
   programmatically, zero duplicates). The page's footer note is internally consistent (it computes
@@ -986,6 +1054,10 @@ batch — everything found is content-only.
 ## Batch 15: Blog, About, Contact, Privacy, Terms, footer links
 
 ### Issue #32: Footer has no link to `/blog` in any of its 4 columns — `src/layouts/Layout.astro`
+
+**FIXED — verified (commit `bfcd768`).** Added a "Blog" link (with `data-hi="ब्लॉग"`) to the
+footer's Company column. Confirmed present and distinct from Header's existing dropdown/drawer
+Blog links.
 - Severity: minor
 - Description: `/blog` is present in Header's desktop dropdown, mobile drawer, and `searchItems`
   (all 3 nav-sync locations per the project's own established convention), but was never added to
@@ -1016,6 +1088,9 @@ corrected.
 ## Batch 16: Global link/button sweep (final batch)
 
 ### Issue #33: "Vrat Calendar" nav link exists in the desktop dropdown and mobile drawer but has no corresponding entry in `searchItems` — `Header.astro`
+
+**FIXED — verified (commit `1798910`).** Added `{ label: "Vrat Calendar", url: "/festivals?filter=vrat" }`
+to `searchItems`. Confirmed present in the built client-script bundle.
 - Severity: minor
 - Description: `/festivals?filter=vrat` ("Vrat Calendar") appears in both the desktop dropdown and
   mobile drawer, but was never added to the `searchItems` array — breaking the project's own
@@ -1027,6 +1102,9 @@ corrected.
   in the site search box and confirming it now appears in results.
 
 ### Issue #34: "Others" nav-category's top-level link points to the homepage instead of anything Others-related — `Header.astro`
+
+**FIXED — verified (commit `1798910`).** "Others" top-level `href` changed from `/` to
+`/jyotish/horoscope-match` (its first dropdown item). Confirmed in built `index.html`.
 - Severity: minor / content
 - Description: The "Others" desktop nav-cat `<a>` wrapper (~line 217) has `href="/"` — clicking the
   label itself (rather than hovering for the dropdown) navigates to the homepage. Every other

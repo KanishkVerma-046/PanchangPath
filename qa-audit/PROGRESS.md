@@ -28,4 +28,14 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
 - [x] Fix-Batch 2: Remaining majors — 9 of 10 fully FIXED-verified (#1, #3, #4, #6, #12, #20, #21, #25, #30), 1 FIXED-needs-recheck (#13, narrow same-day Sankranti-boundary residual — see new Issue #35). Commits: `ad7c00c`, `48359d3`, `aeeec5e`, `44c91c3`, `ab6ea5f`, `9452def`, `8db925a`, `7076c53`.
 - [x] Fix-Batch 3: Content & i18n — #2 and #24 FIXED-verified; #31 PARTIALLY FIXED (4 of 48 entries completed, intentionally large remaining scope, see Issue #36 for a new data-quality finding). Commits: `47de538`, `ba69966`, `9a8bdd1`.
 - [x] Fix-Batch 4a: astro-core/muhurta/panchang-i18n minors — #7, #8, #10, #11, #14, #15, #16, #17 all FIXED-verified. New Issue #37 found (Mars/Jupiter/Saturn retrograde detection gap). Commits: `c706c32`, `972cc77`, `91d7f83`, `4d25cd6`, `8767f10`.
-- [ ] Fix-Batch 4b: festivals/horoscope-match/pancha-pakshi/rashifal/header minors — #18, #19, #22, #23, #26, #27, #28, #29, #32, #33, #34
+- [x] Fix-Batch 4b: festivals/horoscope-match/pancha-pakshi/rashifal/header minors — 10 of 11 FIXED-verified (#18, #19, #22, #23, #27, #28, #29, #32, #33, #34); #26 investigated, left as-is (no credible source either way, correctly not guessed). Commits: `1798910`, `bfcd768`, `3b38a08`, `b73fad1`, `f68af4e`, `38f5f92`.
+
+## FIX PHASE COMPLETE — all 34 original issues + 3 fix-phase-discovered issues triaged (2026-07-23)
+
+Final tally: 32 of 34 original issues FIXED-verified, 1 (#13) fixed with a narrow documented
+residual edge case, 1 (#26) investigated and correctly left unchanged (no credible source).
+Issue #31 (devotional transliterations) intentionally partial per its own original scope note (4 of
+48 entries done — always meant to be its own project, not a single-batch fix). 3 new issues found
+and logged during fixing: #35 (muhurta snapshot-timing edge case), #36 (2 Ashtakam transliteration/
+lyrics text-variant mismatch), #37 (Mars/Jupiter/Saturn retrograde detection gap). None of the 3
+new issues were fixed — logged in PLAN.md for future triage, per the fix-phase's no-scope-creep rule.
