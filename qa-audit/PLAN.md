@@ -235,6 +235,14 @@ normal precision tolerance.
   now match AM/PM, within normal minute-level precision tolerance.
 
 ### Issue #7: Retrograde/direct station events show an identical, non-computed time for every planet/date instead of the actual station moment — `/events/[id]`
+
+**FIXED — verified (commit `91d7f83`).** `retrogradeEvent()` now interpolates the true
+velocity-zero-crossing from adjacent daily speed samples (same technique `signTransitEvent()`
+uses). 17 station events over a 2-year window now all have distinct times. Mercury's July 2026
+direct station: computed 22:49 UTC vs. a public source's 22:57 UTC — date exact, time within 8 min
+(expected for linear interpolation). **New issue found, not fixed — see Issue #37 below**: Mars/
+Jupiter/Saturn retrograde stations are never detected at all (pre-existing, unrelated to this fix)
+— the scan's fixed ±0.002°/day threshold is too tight for their much slower pre-station velocity.
 - Severity: minor
 - Description: `retrogradeEvent()` in `planetaryEvents.ts` (~line 602/605) passes a fixed
   `jd + 0.5` (day-midpoint) as the event time instead of interpolating the actual station moment
@@ -251,6 +259,10 @@ normal precision tolerance.
   retrograde calendar) for date AND time, not just date.
 
 ### Issue #8: Event date/time can describe two different calendar days when the IST-adjusted time crosses midnight — `/events/[id]`
+
+**FIXED — verified (commit `91d7f83`).** `formatEventDateTime()` now shifts the displayed date by
+the wrapped day-count. `lunar-eclipse-2027-02-20` now shows "Sun, 21 Feb, 2027 · 4:43 AM IST"
+(was mismatched "20 February 2027 · 4:43 AM IST").
 - Severity: minor
 - Description: `formatEventDateTime()` (`planetaryEvents.ts` ~lines 681-690) wraps the time
   correctly (`totalMins = ... % 1440`) when converting UTC to IST, but builds the displayed date
@@ -337,6 +349,10 @@ Issue #25 is a separate, still-open bug — not touched by this fix).
   changed (i.e. that they actually call the fixed function and don't have their own duplicate).
 
 ### Issue #10: Abhijit page's "Do Ghati Muhurat" card computes ±12 min but labels itself ±24 min ("1 Ghati each side") — `/muhurta/abhijit`
+
+**FIXED — verified (commit `972cc77`).** `doGhatiStart`/`doGhatiEnd` changed to `noonMins ∓ 24`;
+window is now exactly 48 minutes, centered on solar noon, matching page copy and CLAUDE.md's
+documented intent.
 - Severity: minor / content
 - Description: `src/pages/muhurta/abhijit.astro` line ~130 computes
   `doGhatiStart = noonMins - 12, doGhatiEnd = noonMins + 12` (a 24-minute total window), but the
@@ -353,6 +369,9 @@ Issue #25 is a separate, still-open bug — not touched by this fix).
   confirming the displayed window is exactly 48 minutes and centered on solar noon.
 
 ### Issue #11: Panchaka/Gowri page hand-rolls its own `sunriseUTC()` instead of importing the shared one — `/muhurta/panchaka`
+
+**FIXED — verified (commit `c706c32`).** Deleted the local `sunriseUTC`/`toRad`/`toDeg` copy, now
+imports `sunriseUTC` from `lib/panchang`. Confirmed signature match with call sites; build passes.
 - Severity: minor
 - Description: Unlike every other page in this batch (`choghadiya`, `hora`, `rahu-kala`, `abhijit`,
   which all `import { sunriseUTC } from '../../lib/panchang'`), `panchaka.astro` reimplements
@@ -431,6 +450,11 @@ gate correctly excludes the bulk of Chaturmas, this is a narrow same-day boundar
   Aug-Oct 2026 — no date should score in the "good/excellent" band, matching drikpanchang.com.
 
 ### Issue #14: Griha Pravesh "Type" radio group (Apoorva/Sapoorva/Dwandwah) is rendered but has no effect on scoring — `/muhurta/griha-pravesh`
+
+**FIXED — verified (commit `8767f10`).** Researched Apoorva/Sapoorva/Dwandwah via WebSearch — no
+source gave concrete, implementable rule differences (only vague "more/less stringent" language),
+so per the fix prompt's fallback the stub control was removed rather than inventing arbitrary
+scoring differences.
 - Severity: minor
 - Description: The `name="gp-type"` radio inputs are rendered in the form but never read anywhere
   in the page's script — selecting a different Griha Pravesh type changes nothing about the
@@ -445,6 +469,13 @@ gate correctly excludes the bulk of Chaturmas, this is a narrow same-day boundar
   result list changes (or, if removed, that the control no longer appears).
 
 ### Issue #15: `MUHURTA_CRITERIA` in `src/lib/muhurta.ts` is unused dead code — all 3 pages carry independent, already-diverged inline copies of the same criteria — `src/lib/muhurta.ts`, `vivah.astro`, `griha-pravesh.astro`, `shubha-dates.astro`
+
+**FIXED — verified (commit `8767f10`).** Cross-checked each activity's criteria against
+drikpanchang.com and consolidated the correct version into `MUHURTA_CRITERIA`; all 3 pages now
+import from it. Vivah's nakshatra list corrected (Punarvasu/Pushya removed per "पुष्ये न विवाहम्",
+Mula added), `avoidTithis` now includes Purnima (was missing). Griha Pravesh's inline criteria
+already matched — pure consolidation. Shubha Dates' vehicle/property/business `avoidNaks` were
+missing Bharani/Mula, now consolidated. Build passes.
 - Severity: content (not a live bug — nothing imports the stale shared table today — but matches
   the site's recurring "duplicate tables silently diverge" pattern, worth cleaning up)
 - Description: `muhurta.ts`'s exported `MUHURTA_CRITERIA` — which CLAUDE.md describes as the
@@ -471,6 +502,14 @@ imports resolve correctly, no `ReferenceError` risk.
 ## Batch 5: Regional Panchang
 
 ### Issue #16: Samvatsara (60-year cycle) name is computed with a wrong index offset — SYSTEMIC across Tamil, Marathi, Kannada, Telugu regional pages (and likely the homepage/main Panchang, which uses the same `panchang.ts` formula)
+
+**FIXED — verified (commit `4d25cd6`).** Solved a `+9` offset against 4 independent drikpanchang.com
+data points (VS2081=Pingala, VS2082=Kalayukti, VS2083=Siddharthi, VS2084=Raudri) and a `+11` offset
+for the Shaka-era formula (SS1947=Vishvavasu, SS1948=Parabhava); Kannada/Telugu now key off
+`ssYear` instead of `vsYear`. Same `+9` fix applied to the duplicate formula in `panchang.ts` and
+its client mirror in `index.astro` (homepage shared this bug). Verified directly against the
+production build: Tamil/Marathi show "Siddharthi (2083)", Kannada/Telugu show "Parabhava ಶಕ/శక
+1948", homepage shows "Siddharthi" — all matching drikpanchang for 2026-07-23.
 - Severity: content
 - Description: `SAMVATSARA_60[(vsYear - 1) % 60]` (in `panchang-i18n.ts`, duplicated from
   `panchang.ts`'s `SAMVATSARA_NAMES[(vsYear - 1) % 60]`) is off by roughly 10 slots. Kannada and
@@ -498,6 +537,11 @@ imports resolve correctly, no `ReferenceError` risk.
   drikpanchang.com for the current date and 1-2 other dates spanning a Samvatsara-name rollover.
 
 ### Issue #17: Bengali/Assamese Bangabda year computation has an unreachable dead-code branch — will show the wrong year for ~3.5 months every year (not visible on the 2026-07-23 test date)
+
+**FIXED — verified (commit `4d25cd6`).** Replaced the dead `sunRashiIdx >= 0` check with a real
+day-of-year threshold (`dayOfYear >= 104`, ~April 14 Mesha Sankranti) passed in from both call
+sites. 2026-02-01 now shows 1432 (was 1433), 2027-02-01 shows 1433, and the 2026-04-10/2026-04-20
+pair spanning the actual rollover correctly switches 1432→1433.
 - Severity: minor (latent bug, not observed live — flagged via code audit)
 - Description: `getYear(sunSidereal, gregYear)` computes
   `const num = sunRashiIdx >= 0 ? gregYear - 593 : gregYear - 594;` where
@@ -1037,5 +1081,20 @@ links all resolve correctly.
 - Fix prompt: not yet scoped — would need either the transliteration or the Devanagari lyrics
   re-sourced so both fields describe the same underlying verse text (per CLAUDE.md's "Sourcing
   long/sacred texts accurately" section), then the full transliteration written out to match.
+
+### Issue #37: Mars/Jupiter/Saturn retrograde/direct stations are never detected by the Planetary Events scanner — only Mercury/Venus ever produce retrograde events — `src/lib/planetaryEvents.ts`
+- Severity: minor/content (silent gap, not a crash — the site just never shows these events)
+- Description: found while fixing Issue #7. The retrograde-station day-by-day scan uses a fixed
+  `speed0/speed1 > 0.002°/day` threshold to detect a sign change in velocity, but Mars/Jupiter/
+  Saturn's velocity near their actual station point is much slower than Mercury/Venus's (e.g.
+  Mars's real Jan 2027 station has a velocity of only ~0.0005°/day the day before crossing zero),
+  which fails the `0.002` gate entirely — so the scan never even flags the day as a candidate
+  crossing for these 3 planets. Issue #7's own cited evidence example `mangal-vakri-2027-1` does
+  not actually appear anywhere in the feed, confirming this is live, not just theoretical.
+- Fix prompt: not yet scoped — likely needs either a per-planet threshold (each planet's typical
+  near-station velocity is a known, roughly fixed magnitude) or a sign-change-only detection
+  (compare `speed0`/`speed1` signs directly without a minimum-magnitude gate) instead of the
+  current fixed `0.002` cutoff. Verify against known 2026/2027 Mars/Jupiter/Saturn station dates
+  (WebSearch a public ephemeris) after fixing.
 
 ---
