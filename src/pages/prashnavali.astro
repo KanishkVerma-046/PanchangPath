@@ -156,9 +156,10 @@ function resetOracle() {
   oracleBtn.classList.remove('pv-pulse');
 }
 
-// Build 108-number grid
+// Build number grid — sized to the actual answers array (currently 100), not a hardcoded 108,
+// so every visible number has a real answer behind it (Issue #30).
 const numGrid = document.getElementById('pv-num-grid');
-for (let i = 1; i <= 108; i++) {
+for (let i = 1; i <= answers.length; i++) {
   const btn = document.createElement('button');
   btn.className = 'pv-num-btn';
   btn.textContent = String(i);
