@@ -71,6 +71,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <script>
 import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
+import { planetLongitude, isCombust } from '../../lib/astro-core';
 
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
@@ -138,10 +139,13 @@ function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number
   const rahuSlot=RAHU_SLOTS[wd];
   const dur=(ssMins-srMins)/8;
   const rahuStart=srMins+rahuSlot*dur, rahuEnd=rahuStart+dur;
-  return {tithiIdx,nakIdx,yogaIdx,wd,sunRashiIdx,rahuStart,rahuEnd,paksha:tithiIdx<15?'S':'K'};
+  // Venus (Shukra) combustion — traditionally voids all Vivah Muhurats (Issue #12).
+  const venusLon=planetLongitude('venus',jd);
+  const venusCombust=isCombust(sunLon,venusLon,10);
+  return {tithiIdx,nakIdx,yogaIdx,wd,sunRashiIdx,rahuStart,rahuEnd,paksha:tithiIdx<15?'S':'K',venusCombust};
 }
 
-function scoreVivah(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;sunRashiIdx:number;rahuStart:number;rahuEnd:number;paksha:string}){
+function scoreVivah(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;sunRashiIdx:number;rahuStart:number;rahuEnd:number;paksha:string;venusCombust:boolean}){
   let score=0;
   const notes:string[]=[];
   const bad:string[]=[];
@@ -160,6 +164,9 @@ function scoreVivah(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;
   if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push('Good yoga');}
   // Kharmas: Sun in Sagittarius (8) or Pisces (11)
   if(res.sunRashiIdx===8||res.sunRashiIdx===11){score-=5;bad.push('Kharmas (Sun in '+(res.sunRashiIdx===8?'Dhanu':'Meena')+')');}
+  // Venus combust (Shukra Ast) — hard gate: no Vivah Muhurat exists on a combust-Venus date,
+  // regardless of how favourable everything else scores (Issue #12).
+  if(res.venusCombust){bad.push('Venus combust (Shukra Ast) — voids Vivah Muhurat');score=-99;}
   // Rahu Kala note (informational)
   return {score,notes,bad};
 }
