@@ -85,7 +85,62 @@ Bal budhi vidya dehu mohi, harahu kalesh bikar.
 Jai Hanuman gyan gun sagar, jai Kapis tihun lok ujagar,
 Ram doot atulit bal dhama, Anjani-putra Pavansut nama.
 
-... (40 chaupais describing Hanuman's strength, devotion, and deeds) ...
+Mahabir Bikram Bajrangi, kumati nivar sumati ke sangi,
+Kanchan baran biraj subesa, kanan kundal kunchit kesa.
+
+Hath bajra au dhwaja biraje, kandhe moonj janeu saje,
+Sankar suvan Kesarinandan, tej pratap maha jag bandan.
+
+Bidyavan guni ati chatur, Ram kaj karibe ko atur,
+Prabhu charitra sunibe ko rasiya, Ram Lakhan Sita man basiya.
+
+Sookshma roop dhari Siyahin dikhawa, bikat roop dhari Lank jarawa,
+Bhim roop dhari asur sanhare, Ramchandra ke kaj sanware.
+
+Lay sajeevan Lakhan jiyaye, Shri Raghubir harashi ur laye,
+Raghupati kinhi bahut badai, tum mam priya Bharatahi sam bhai.
+
+Sahas badan tumharo jas gaven, as kahi Shripati kanth lagaven,
+Sanakadik Brahmadi munisa, Narad Sarad sahit Ahisa.
+
+Jam Kuber Digpal jahan te, kabi kobid kahi sake kahan te,
+Tum upkar Sugrivahin kinha, Ram milay raj pad dinha.
+
+Tumharo mantra Bibhishan mana, Lankeswar bhaye sab jag jana,
+Jug sahasra jojan par Bhanu, leelyo tahi madhur phal janu.
+
+Prabhu mudrika meli mukh mahin, jaladhi langhi gaye acharaj nahin,
+Durgam kaj jagat ke jete, sugam anugrah tumhare tete.
+
+Ram duare tum rakhware, hot na agya binu paisare,
+Sab sukh lahai tumhari sarna, tum rachchhak kahu ko dar na.
+
+Apan tej samharo aape, teenon lok hank ten kanpe,
+Bhoot pisach nikat nahin aave, Mahabir jab nam sunave.
+
+Nase rog harai sab peera, japat nirantar Hanumat beera,
+Sankat ten Hanuman chhudave, man kram bachan dhyan jo lave.
+
+Sab par Ram tapasvi raja, tin ke kaj sakal tum saja,
+Aur manorath jo koi lave, soi amit jeevan phal pave.
+
+Charon jug paratap tumhara, hai parasiddha jagat ujiyara,
+Sadhu sant ke tum rakhware, asur nikandan Ram dulare.
+
+Ashta siddhi nau nidhi ke data, as bar deen Janaki mata,
+Ram rasayan tumhare pasa, sada raho Raghupati ke dasa.
+
+Tumhare bhajan Ram ko pave, janam janam ke dukh bisrave,
+Ant kal Raghubar pur jai, jahan janma Hari-bhakt kahai.
+
+Aur devta chitta na dharai, Hanumat sei sarb sukh karai,
+Sankat katai mitai sab peera, jo sumire Hanumat balbeera.
+
+Jai jai jai Hanuman gosain, kripa karahu gurudev ki nain,
+Jo sat bar path kar koi, chhootahi bandi maha sukh hoi.
+
+Jo yah padhe Hanuman Chalisa, hoye siddhi sakhi Gaurisa,
+Tulsidas sada Hari chera, keeje Nath hriday mahan dera.
 
 Pavan-tanay sankat haran, mangal murati roop,
 Ram Lakhan Sita sahit, hriday basahu sur bhoop.`,

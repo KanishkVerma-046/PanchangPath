@@ -57,7 +57,40 @@ Jagannatha-natham sadanandabhajam,
 Bhavadbhavya-bhuteshwaram bhootanatham
 Shivam shankaram shambhum-ishanam-ide.
 
-... (8 verses composed in praise of Shiva as lord of the universe, adorned with a serpent garland and skull, seated with Parvati on Mount Kailash) ...
+Gale rundamalam tanau sarpajalam
+Mahakala-kalam ganeshadhipalam,
+Jatajuta-gangottarangair-vishalam
+Shivam shankaram shambhum-ishanam-ide.
+
+Mudamakaram mandanam mandayantam
+Mahamandalam bhasma-bhushadharam tam,
+Anadim hyaparam mahamoha-maram
+Shivam shankaram shambhum-ishanam-ide.
+
+Vatadho-nivasam mahatta-ttahasam
+Mahapapa-nasham sada-suprakasham,
+Girisham ganesham suresham mahesham
+Shivam shankaram shambhum-ishanam-ide.
+
+Girindratmaja-sangriheetardha-deham
+Girau sansthitam sarvada-asanna-geham,
+Parabrahma-brahmadibhir-vandyamanam
+Shivam shankaram shambhum-ishanam-ide.
+
+Kapalam trishoolam karabhyam dadhanam
+Padambhoja-namraya kamam dadanam,
+Baleevardayanam suranam pradhanam
+Shivam shankaram shambhum-ishanam-ide.
+
+Sharacchandra-gatram ganananda-patram
+Trinetram pavitram dhaneshasya mitram,
+Aparna-kalatram sada sachcharitram
+Shivam shankaram shambhum-ishanam-ide.
+
+Haram sarpaharam chitabhoo-viharam
+Bhavam vedasaram sada nirvikaram,
+Shmashane vasantam manojam dahantam
+Shivam shankaram shambhum-ishanam-ide.
 
 Shivashtakam idam punyam yah pathechchhiva-sannidhau,
 Shivalokam avapnoti Shivena saha modate.`,
@@ -100,7 +133,26 @@ Shivalokam avapnoti Shivena saha modate.`,
     transliteration: `Ekadantam mahakayam taptakanchana-sannibham,
 Lambodaram vishalaksham vande'ham gananayakam.
 
-... (8 verses each ending with the refrain "vande'ham gananayakam" — I bow to the lord of ganas, describing his form, elephant face, mouse-vehicle, and role as remover of obstacles) ...
+Maunji-krishnajina-dharam naga-yajnopaveetinam,
+Balendu-sukala-maulim vande'ham gananayakam.
+
+Ambika-hridayanandam matribhih pariveshtitam,
+Bhaktapriyam madonmattam vande'ham gananayakam.
+
+Chitraratna-vichitrangam chitramala-vibhooshitam,
+Chitraroopadharam devam vande'ham gananayakam.
+
+Gajavaktram sureshreshtham karnachamara-bhooshitam,
+Pashankusha-dharam devam vande'ham gananayakam.
+
+Mooshakottamam-aruhya devasura-mahahave,
+Yoddhukamam mahaveeryam vande'ham gananayakam.
+
+Yaksha-kinnara-gandharva-siddha-vidyadharaih sada,
+Stooyamanam mahabahum vande'ham gananayakam.
+
+Sarvavighnaharam devam sarvavighna-vivarjitam,
+Sarvasiddhi-pradataram vande'ham gananayakam.
 
 Ganeshashtakam etaddhi yah pathet shrinuyadapi,
 Sarvavighna-vinirmuktah sukhi deerghayureva cha.`,
@@ -143,7 +195,26 @@ Sarvavighna-vinirmuktah sukhi deerghayureva cha.`,
     transliteration: `Namaste'stu Mahamaye Shripithe surapoojite,
 Shankha-chakra-gadahaste Mahalakshmi namo'stu te.
 
-... (8 verses composed by Indra praising Mahalakshmi's forms and powers, seated on a lotus, dispeller of sin and giver of siddhi) ...
+Namaste garudaroodhe kolasura-bhayankari,
+Sarvapapahare devi Mahalakshmi namo'stu te.
+
+Sarvajne sarvavarade sarvadushta-bhayankari,
+Sarvaduhkhahare devi Mahalakshmi namo'stu te.
+
+Siddhibuddhiprade devi bhuktimukti-pradayini,
+Mantramoorte sada devi Mahalakshmi namo'stu te.
+
+Adyantarahite devi adyashakti-maheshwari,
+Yogaje yogasambhoote Mahalakshmi namo'stu te.
+
+Sthoola-sookshma-maharaudre mahashakti-mahodare,
+Mahapapahare devi Mahalakshmi namo'stu te.
+
+Padmasanasthite devi parabrahma-swaroopini,
+Parameshi jaganmatar-Mahalakshmi namo'stu te.
+
+Shwetambaradhare devi nanalankara-bhooshite,
+Jagatsthite jaganmatar-Mahalakshmi namo'stu te.
 
 Mahalakshmyashtakam stotram yah pathed bhaktiman narah,
 Sarvasiddhim avapnoti rajyam prapnoti sarvada.`,
