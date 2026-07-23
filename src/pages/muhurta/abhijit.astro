@@ -124,10 +124,9 @@ function calculate(){
   const dayMins=ssMins-srMins;
   const abhijitStart=noonMins-dayMins/30, abhijitEnd=noonMins+dayMins/30;
 
-  // Do Ghati = noon ±12 min (2 ghatis = 48 min, ±24; but "Do Ghati" as core = ±12 min = 1 Ghati either side)
-  // Actually: Do Ghati Muhurat = 2 Ghatis = 48 minutes centered on noon = noon-24 to noon+24 (same as Abhijit)
-  // The "core" 1 Ghati = noon ±12 min. Let's show: Full Abhijit and the inner Do Ghati core
-  const doGhatiStart=noonMins-12, doGhatiEnd=noonMins+12;
+  // Do Ghati Muhurat = 2 Ghatis = 48 minutes centered on solar noon (1 Ghati = 24 min, fixed
+  // by definition — unlike Abhijit, this window is NOT day-length-proportional).
+  const doGhatiStart=noonMins-24, doGhatiEnd=noonMins+24;
 
   // Brahma Muhurta = 96 min before sunrise to 48 min before sunrise (previous day's calculation)
   const brahmaStart=srMins-96, brahmaEnd=srMins-48;
@@ -153,8 +152,8 @@ function calculate(){
         name:'Do Ghati Muhurat',nameHi:'दो घटी मुहूर्त',
         start:doGhatiStart,end:doGhatiEnd,
         icon:'⏱️',color:'#b45309',bg:'#fef9eb',
-        note:'Inner 24-minute core around solar noon (1 Ghati each side)',
-        noteHi:'सौर मध्याह्न के चारों ओर 24 मिनट का मुख्य भाग (प्रत्येक ओर 1 घटी)',
+        note:'48-minute window centered on solar noon (1 Ghati each side)',
+        noteHi:'सौर मध्याह्न के चारों ओर 48 मिनट की अवधि (प्रत्येक ओर 1 घटी)',
         disabled:false,
       },
       {
