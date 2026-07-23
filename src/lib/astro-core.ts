@@ -166,9 +166,15 @@ export function calcLagna(jd: number, lat: number, lng: number): number {
   const GMST = norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T);
   const RAMC = toRad(norm360(GMST + lng));
   const e = toRad(eps), phi = toRad(lat);
-  const tanA = -Math.cos(RAMC) / (Math.sin(e) * Math.tan(phi) + Math.cos(e) * Math.sin(RAMC));
-  let A = toDeg(Math.atan(tanA));
-  if (Math.cos(RAMC) > 0) A += 180;
+  // atan2 (not atan + a cos(RAMC)-based quadrant patch) is required here: the old patch assumed
+  // the denominator's sign tracked cos(RAMC), which is false whenever
+  // sin(e)*tan(phi) + cos(e)*sin(RAMC) flips sign independently of cos(RAMC) — that produced
+  // spurious ~180° jumps in the Ascendant at certain times of day/latitude (Issue #9). Sign of
+  // both atan2 args is flipped relative to the raw tan(Asc) numerator/denominator because the
+  // unflipped pairing (-cos(RAMC), that sum) resolves to the Descendant, not the Ascendant —
+  // verified against a brute-force horizon-crossing/azimuth ground truth (eastern-horizon
+  // ecliptic-horizon intersection) at 2-hour steps across a full day, exact match to <0.001°.
+  const A = toDeg(Math.atan2(Math.cos(RAMC), -(Math.sin(e) * Math.tan(phi) + Math.cos(e) * Math.sin(RAMC))));
   return norm360(A);
 }
 
