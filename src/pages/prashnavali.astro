@@ -7,7 +7,7 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
 
 <Layout
   title="Prashnavali — Divine Question Oracle | PanchangPath"
-  description="Ask the divine oracle your deepest question. Prashnavali offers 108 cosmic answers drawn from Vedic tradition."
+  description={`Ask the divine oracle your deepest question. Prashnavali offers ${answerCount} cosmic answers drawn from Vedic tradition.`}
 >
 
   <!-- Hero -->
@@ -47,7 +47,7 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
 
       <!-- Number picker grid -->
       <div id="pv-number-section" style="display:none;margin-bottom:40px;">
-        <p data-hi="अपना प्रश्न सोचें, फिर 1 से 108 तक कोई भी अंक चुनें।" style="text-align:center;font-size:13px;color:var(--color-mute);margin:0 0 16px;">Think of your question, then choose any number from 1 to 108.</p>
+        <p data-hi={`अपना प्रश्न सोचें, फिर 1 से ${answerCount} तक कोई भी अंक चुनें।`} style="text-align:center;font-size:13px;color:var(--color-mute);margin:0 0 16px;">Think of your question, then choose any number from 1 to {answerCount}.</p>
         <div id="pv-num-grid" class="pv-num-grid"></div>
       </div>
 
