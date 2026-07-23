@@ -25,7 +25,7 @@ export interface RegionDef {
   paksha: [string, string];  // [Shukla label, Krishna label]
   description: string;
   specialNote: string;
-  getYear(sunSidereal: number, gregYear: number, vsYear: number, ssYear: number): {
+  getYear(sunSidereal: number, gregYear: number, vsYear: number, ssYear: number, dayOfYear: number): {
     num: number;
     name?: string;
     era: string;
@@ -114,11 +114,13 @@ export const REGIONS: RegionDef[] = [
     paksha: ['শুক্লপক্ষ','কৃষ্ণপক্ষ'],
     description: 'The Bengali Panjika follows a solar calendar (Bangabda), with the year beginning when the Sun enters Mesha (Aries) in mid-April.',
     specialNote: 'Poila Boishakh (Baishakh 1) marks the Bengali New Year, celebrated across West Bengal and Bangladesh.',
-    getYear(sunSidereal, gregYear) {
-      // Bangabda year increments when Sun crosses 0° (Mesha)
-      const sunRashiIdx = Math.floor(sunSidereal / 30);
-      // If Sun is in Mesha or beyond (i.e., Baishakh 1 has passed), year = gregYear - 593
-      const num = sunRashiIdx >= 0 ? gregYear - 593 : gregYear - 594;
+    getYear(sunSidereal, gregYear, vsYear, ssYear, dayOfYear) {
+      // Bangabda year increments at Poila Boishakh (Mesha Sankranti, ~April 14 — day-of-year
+      // ~104). sunRashiIdx alone can't disambiguate this (Poush, the month straddling the
+      // Gregorian year boundary, has the same rashi index whether it's "before" or "after"
+      // this Gregorian year's Boishakh 1), so use the actual day-of-year threshold instead
+      // (Issue #17 — the old `sunRashiIdx >= 0` check was unconditionally true, dead code).
+      const num = dayOfYear >= 104 ? gregYear - 593 : gregYear - 594;
       return { num, era: 'বঙ্গাব্দ', displayLabel: `${num} বঙ্গাব্দ` };
     },
   },
@@ -162,9 +164,10 @@ export const REGIONS: RegionDef[] = [
     paksha: ['শুক্লপক্ষ','কৃষ্ণপক্ষ'],
     description: 'The Assamese Panjika follows a solar calendar with the new year (Rongali Bihu) beginning when the Sun enters Mesha.',
     specialNote: 'Rongali Bihu (Bohag Bihu) marks the Assamese New Year in mid-April, when the Sun enters the Mesha rashi.',
-    getYear(sunSidereal, gregYear) {
-      // Same as Bangabda for Assamese Panjika purposes
-      const num = gregYear - 593;
+    getYear(sunSidereal, gregYear, vsYear, ssYear, dayOfYear) {
+      // Same rollover as Bangabda for Assamese Panjika purposes (Rongali/Bohag Bihu ≈
+      // Mesha Sankranti, day-of-year ~104) — see Issue #17 fix note in the Bengali block above.
+      const num = dayOfYear >= 104 ? gregYear - 593 : gregYear - 594;
       return { num, era: 'বঙ্গাব্দ', displayLabel: `${num} বঙ্গাব্দ` };
     },
   },
@@ -209,7 +212,9 @@ export const REGIONS: RegionDef[] = [
     description: 'The Tamil Panchangam follows a solar calendar (Sauramanam), with months corresponding to the Sun\'s transit through each Rashi. The year begins with Chithirai when the Sun enters Mesha.',
     specialNote: 'Tamil New Year (Puthandu) falls on Chithirai 1 when the Sun enters the Mesha rashi, usually around April 14.',
     getYear(sunSidereal, gregYear, vsYear) {
-      const samvatsara = SAMVATSARA_60[(vsYear - 1) % 60];
+      // Offset verified against drikpanchang.com: VS2081=Pingala, VS2082=Kalayukti,
+      // VS2083=Siddharthi (see Issue #16 fix) — SAMVATSARA_60[(vsYear + 9) % 60].
+      const samvatsara = SAMVATSARA_60[(vsYear + 9) % 60];
       const num = gregYear + 31; // Thiruvalluvar year (approximate)
       return { num, name: samvatsara, era: 'திருவள்ளுவர் ஆண்டு', displayLabel: `${samvatsara} (${num})` };
     },
@@ -302,7 +307,8 @@ export const REGIONS: RegionDef[] = [
     description: 'The Marathi Panchang follows the Amanta lunar calendar (Vikram Samvat), with the new year (Gudi Padwa) on Chaitra Shukla Pratipada.',
     specialNote: 'Gudi Padwa marks the Marathi New Year. Ganesh Chaturthi (Bhadrapada Shukla Chaturthi) is the most celebrated festival.',
     getYear(sunSidereal, gregYear, vsYear) {
-      const samvatsara = SAMVATSARA_60[(vsYear - 1) % 60];
+      // Offset verified against drikpanchang.com (see Issue #16 fix note in the Tamil block above).
+      const samvatsara = SAMVATSARA_60[(vsYear + 9) % 60];
       return { num: vsYear, name: samvatsara, era: 'विक्रम संवत', displayLabel: `${samvatsara} संवत ${vsYear}` };
     },
   },
@@ -391,7 +397,10 @@ export const REGIONS: RegionDef[] = [
     description: 'The Kannada Panchangam uses the Amanta lunar calendar with Shalivahana Saka year. Yugadi (New Year) falls on Chaitra Shukla Pratipada.',
     specialNote: 'Ugadi (Yugadi) is the Kannada New Year. Holigondamare (Holi) and Gowri-Ganesha are major festivals.',
     getYear(sunSidereal, gregYear, vsYear, ssYear) {
-      const samvatsara = SAMVATSARA_60[(vsYear - 1) % 60];
+      // Shaka-era Samvatsara names are keyed off ssYear, not vsYear — they genuinely differ
+      // from the Vikram-era name for the same Gregorian year (Issue #16). Offset verified
+      // against drikpanchang.com: SS1948 = Parabhava for 2026-07-23.
+      const samvatsara = SAMVATSARA_60[(ssYear + 11) % 60];
       return { num: ssYear, name: samvatsara, era: 'ಶಾಲಿವಾಹನ ಶಕ', displayLabel: `${samvatsara} ಶಕ ${ssYear}` };
     },
   },
@@ -436,7 +445,8 @@ export const REGIONS: RegionDef[] = [
     description: 'The Telugu Panchangam follows the Amanta lunar calendar with colloquial tithi names (Padyami, Vidiya…). Ugadi marks the Telugu New Year.',
     specialNote: 'Ugadi (Telugu New Year) falls on Chaitra Shukla Pratipada. The Panchangam reading on Ugadi day is a sacred tradition.',
     getYear(sunSidereal, gregYear, vsYear, ssYear) {
-      const samvatsara = SAMVATSARA_60[(vsYear - 1) % 60];
+      // Shaka-era Samvatsara names are keyed off ssYear, not vsYear (see Kannada block above).
+      const samvatsara = SAMVATSARA_60[(ssYear + 11) % 60];
       return { num: ssYear, name: samvatsara, era: 'శాలివాహన శక', displayLabel: `${samvatsara} శక ${ssYear}` };
     },
   },

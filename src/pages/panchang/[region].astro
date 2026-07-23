@@ -35,7 +35,11 @@ const monthName = regionDef.monthSystem === 'solar'
   ? (regionDef.months[solarMonthIdx] ?? regionDef.months[0])
   : (regionDef.months[AMANTA_TO_IDX[cal.amantaMonth.name] ?? 0]);
 
-const yearInfo = regionDef.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat);
+// Same day-of-year convention as panchang.ts's getHinduCalendarInfo() (Issue #17).
+const dayOfYear = Math.floor(
+  (Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) - Date.UTC(today.getFullYear(), 0, 0)) / 86_400_000,
+);
+const yearInfo = regionDef.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat, dayOfYear);
 
 // Date label
 const dateLabel = today.toLocaleDateString('en-IN', {

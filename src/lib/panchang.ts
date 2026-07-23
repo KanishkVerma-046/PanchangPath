@@ -503,8 +503,10 @@ export function getHinduCalendarInfo(
   );
   const vsYear = dayOfYear >= 91 ? year + 57 : year + 56;
   const ssYear = vsYear - 135;
-  const vsName = SAMVATSARA_NAMES[(vsYear - 1) % 60];
-  const vsNameHi = SAMVATSARA_NAMES_HI[(vsYear - 1) % 60];
+  // Offset verified against drikpanchang.com: VS2081=Pingala, VS2082=Kalayukti,
+  // VS2083=Siddharthi (see Issue #16 fix, same correction applied in panchang-i18n.ts).
+  const vsName = SAMVATSARA_NAMES[(vsYear + 9) % 60];
+  const vsNameHi = SAMVATSARA_NAMES_HI[(vsYear + 9) % 60];
 
   return {
     vikramaSamvat: vsYear,

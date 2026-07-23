@@ -460,8 +460,9 @@ function getHinduCalInfo(date: Date, sunSidereal: number, moonSidereal: number, 
   const dayOfYear = Math.floor((Date.UTC(year, date.getMonth(), date.getDate()) - Date.UTC(year, 0, 0)) / 86400000);
   const vsYear = dayOfYear >= 91 ? year + 57 : year + 56;
   const ssYear = vsYear - 135;
-  const vsName = SAMVATSARA_NAMES[(vsYear - 1) % 60];
-  const vsNameHi = SAMVATSARA_NAMES_HI[(vsYear - 1) % 60];
+  // Offset verified against drikpanchang.com (see Issue #16 fix note in panchang.ts).
+  const vsName = SAMVATSARA_NAMES[(vsYear + 9) % 60];
+  const vsNameHi = SAMVATSARA_NAMES_HI[(vsYear + 9) % 60];
   return { vsYear, ssYear, vsName, vsNameHi, sunRashi: RASHIS[sunRashiIdx], moonRashi: RASHIS[moonRashiIdx], amantaMonth: AMANTA_MONTHS[amantaIdx], purnimantaMonth: AMANTA_MONTHS[purnimantaIdx] };
 }
 

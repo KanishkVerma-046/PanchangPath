@@ -5,6 +5,10 @@ import { calculatePanchang, getHinduCalendarInfo } from '../../lib/panchang';
 import { getSolarMonthIndex } from '../../lib/panchang-i18n';
 
 const today = new Date();
+// Same day-of-year convention as panchang.ts's getHinduCalendarInfo() (Issue #17).
+const dayOfYear = Math.floor(
+  (Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) - Date.UTC(today.getFullYear(), 0, 0)) / 86_400_000,
+);
 
 const AMANTA_TO_IDX: Record<string, number> = {
   Chaitra:0,Vaishakha:1,Jyeshtha:2,Ashadha:3,Shravana:4,Bhadrapada:5,
@@ -19,7 +23,7 @@ const regionPreviews = REGIONS.map(r => {
   const monthName = r.monthSystem === 'solar'
     ? r.months[solarMonthIdx] ?? r.months[0]
     : r.months[AMANTA_TO_IDX[cal.amantaMonth.name] ?? 0];
-  const yearInfo = r.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat);
+  const yearInfo = r.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat, dayOfYear);
   const tithiName = p.tithi.paksha === 'Shukla'
     ? r.tithiShukla[(p.tithi.number - 1) % 15]
     : r.tithiKrishna[(p.tithi.number - 1) % 15];
