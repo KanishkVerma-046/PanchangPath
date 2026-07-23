@@ -50,13 +50,14 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 </style>
 
 <script>
+import { LOCATIONS } from '../../lib/locations';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import { sunTrueLongitude as sunLon, moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
 import { calcLagna } from '../../lib/astro-core';
 function planetIconSvg(id,size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;}
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
-const LOCS=[{name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},{name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},{name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},{name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},{name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},{name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},{name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},{name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},{name:'Ahmedabad',lat:23.0225,lng:72.5714,tz:5.5},{name:'Pune',lat:18.5204,lng:73.8567,tz:5.5},{name:'Dubai',lat:25.2048,lng:55.2708,tz:4},{name:'Singapore',lat:1.3521,lng:103.8198,tz:8},{name:'New York',lat:40.7128,lng:-74.006,tz:-5},{name:'London',lat:51.5074,lng:-0.1278,tz:0},{name:'Toronto',lat:43.6532,lng:-79.3832,tz:-5}];
+const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 const toR=d=>d*Math.PI/180;
