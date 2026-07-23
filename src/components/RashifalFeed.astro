@@ -140,6 +140,8 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
 </section>
 
 <script>
+import { getRashiByNameLetter } from '../lib/rashifal';
+
 // ─── Language ────────────────────────────────────────────────────────────────
 // Mirrors the applyPageLang() pattern used by rashifal/index.astro: Header.astro's
 // global [data-hi] swap only fires once per langchange, so JS-generated strings
@@ -167,21 +169,8 @@ document.getElementById('rashifal-grid')?.addEventListener('click', (e) => {
 });
 
 // ─── Name-to-Rashi lookup ─────────────────────────────────────────────────
-const NAME_MAP: Record<string, string> = {
-  chu:"Mesha",che:"Mesha",cho:"Mesha",la:"Mesha",li:"Mesha",lu:"Mesha",le:"Mesha",lo:"Mesha",
-  i:"Vrishabha",u:"Vrishabha",e:"Vrishabha",o:"Vrishabha",va:"Vrishabha",vi:"Vrishabha",vu:"Vrishabha",ve:"Vrishabha",vo:"Vrishabha",
-  ka:"Mithuna",ki:"Mithuna",ku:"Mithuna",gha:"Mithuna",cha:"Mithuna",ke:"Mithuna",
-  hi:"Karka",hu:"Karka",he:"Karka",ho:"Karka",
-  ma:"Simha",mi:"Simha",mu:"Simha",me:"Simha",mo:"Simha",
-  ta:"Simha",ti:"Simha",tu:"Simha",te:"Simha",
-  pa:"Kanya",pi:"Kanya",pu:"Kanya",sha:"Kanya",na:"Kanya",tha:"Kanya",pe:"Kanya",po:"Kanya",
-  ra:"Tula",ri:"Tula",ru:"Tula",re:"Tula",ro:"Tula",
-  to:"Vrishchika",ni:"Vrishchika",nu:"Vrishchika",ne:"Vrishchika",no:"Vrishchika",ya:"Vrishchika",yi:"Vrishchika",yu:"Vrishchika",
-  ye:"Dhanu",yo:"Dhanu",bha:"Dhanu",bhi:"Dhanu",bhu:"Dhanu",dha:"Dhanu",fa:"Dhanu",bhe:"Dhanu",
-  bho:"Makara",ja:"Makara",ji:"Makara",khi:"Makara",khu:"Makara",khe:"Makara",kho:"Makara",ga:"Makara",gi:"Makara",
-  gu:"Kumbha",ge:"Kumbha",go:"Kumbha",sa:"Kumbha",si:"Kumbha",su:"Kumbha",se:"Kumbha",so:"Kumbha",
-  di:"Meena",du:"Meena",jha:"Meena",de:"Meena",do:"Meena",chi:"Meena",
-};
+// Uses the shared, canonically-derived getRashiByNameLetter() from lib/rashifal.ts instead of a
+// locally duplicated map, so this can no longer drift out of sync with each rashi's nameLetters array.
 const RASHI_HI: Record<string, string> = {
   Mesha:"मेष",Vrishabha:"वृषभ",Mithuna:"मिथुन",Karka:"कर्क",Simha:"सिंह",Kanya:"कन्या",
   Tula:"तुला",Vrishchika:"वृश्चिक",Dhanu:"धनु",Makara:"मकर",Kumbha:"कुम्भ",Meena:"मीन",
@@ -192,12 +181,8 @@ const RASHI_ID: Record<string, string> = {
 };
 
 function findByName(name: string): string | undefined {
-  const lower = name.trim().toLowerCase();
-  for (let len = 3; len >= 1; len--) {
-    const k = lower.slice(0, len);
-    if (NAME_MAP[k]) return NAME_MAP[k];
-  }
-  return undefined;
+  const rashi = getRashiByNameLetter(name);
+  return rashi?.name; // e.g. "Mesha" — keeps the capitalized-name contract RASHI_HI/RASHI_ID below expect
 }
 
 function findByDate(dateStr: string): string {

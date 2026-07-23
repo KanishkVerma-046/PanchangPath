@@ -140,7 +140,7 @@ export const RASHIS: Rashi[] = [
     luckyNumbers: [3, 5, 14],
     luckyDay: "Wednesday",
     gradient: "linear-gradient(135deg,#7928ca,#a855f7)",
-    nameLetters: ["Ka", "Ki", "Ku", "Gha", "Da", "Cha", "Ke"],
+    nameLetters: ["Ka", "Ki", "Ku", "Gha", "Ang", "Chha", "Ke", "Ko", "Ha"],
     predictions: {
       daily: [
         "Mercury sharpens your wit and communication to a fine edge today. Intellectual exchanges and meaningful conversations bring deep satisfaction. A business negotiation tilts in your favor when you remain articulate and calm. Social energy is high — embrace it with your characteristic adaptability.",
@@ -599,7 +599,7 @@ export const RASHIS: Rashi[] = [
     luckyNumbers: [3, 7, 12],
     luckyDay: "Thursday",
     gradient: "linear-gradient(135deg,#834d9b,#d04ed6)",
-    nameLetters: ["Di", "Du", "Tha", "Jha", "Na", "De", "Do", "Cha", "Chi"],
+    nameLetters: ["Di", "Du", "Tha", "Jha", "Nya", "De", "Do", "Cha", "Chi"],
     predictions: {
       daily: [
         "Jupiter deepens your spiritual perception and creative intuition to extraordinary levels today. An artistic project reaches a new and transcendent dimension. Intuitive flashes guide you unerringly toward the right decision in a complex personal matter. Compassionate service to another person brings profound and lasting inner fulfillment.",
@@ -669,20 +669,30 @@ export function getYearlyPrediction(rashi: Rashi, date: Date): string {
   return rashi.predictions.yearly[date.getFullYear() % rashi.predictions.yearly.length];
 }
 
+// Built directly from each rashi's canonical `nameLetters` array above (RASHIS, in Mesha->Meena order).
+// Several starting-sounds genuinely belong to more than one rashi per classical nakshatra-pada naming
+// charts (verified 2026-07-23 against drikpanchang.com's Nakshatra Pada Swar Siddhanta table):
+//   - "Ta"/"Ti"/"Tu"/"Te" legitimately span both Simha (Purva Phalguni) and Tula (Vishakha) padas
+//   - "To"/"Na" legitimately span both Kanya (Uttara Phalguni/Hasta) and Vrishchika (Vishakha/Anuradha) padas
+//   - "Da"/"Di"/"Du"/"De"/"Do" legitimately span both Karka (Pushya/Ashlesha) and Kumbha/Meena
+//     (Purva Bhadrapada / Uttara Bhadrapada / Revati) padas
+//   - "Tha" legitimately spans both Kanya (Hasta) and Meena (Uttara Bhadrapada) padas
+// Since a name can only resolve to one rashi, these ties are broken consistently in favor of whichever
+// rashi appears earliest in the RASHIS array (Mesha first). This is an arbitrary but documented and
+// consistently-applied convention — it is not a claim that the other rashi's overlap is inauthentic.
 const NAME_LETTER_MAP: Record<string, string> = {
-  chu: "mesha", che: "mesha", cho: "mesha", la: "mesha", li: "mesha", lu: "mesha", le: "mesha", lo: "mesha",
+  chu: "mesha", che: "mesha", cho: "mesha", la: "mesha", li: "mesha", lu: "mesha", le: "mesha", lo: "mesha", a: "mesha",
   i: "vrishabha", u: "vrishabha", e: "vrishabha", o: "vrishabha", va: "vrishabha", vi: "vrishabha", vu: "vrishabha", ve: "vrishabha", vo: "vrishabha",
-  ka: "mithuna", ki: "mithuna", ku: "mithuna", gha: "mithuna", cha: "mithuna", ke: "mithuna",
-  hi: "karka", hu: "karka", he: "karka", ho: "karka",
-  ma: "simha", mi: "simha", mu: "simha", me: "simha", mo: "simha",
-  ta: "simha", ti: "simha", tu: "simha", te: "simha",
-  pa: "kanya", pi: "kanya", pu: "kanya", sha: "kanya", na: "kanya", tha: "kanya", pe: "kanya", po: "kanya",
+  ka: "mithuna", ki: "mithuna", ku: "mithuna", gha: "mithuna", ang: "mithuna", chha: "mithuna", ke: "mithuna", ko: "mithuna", ha: "mithuna",
+  hi: "karka", hu: "karka", he: "karka", ho: "karka", da: "karka", di: "karka", du: "karka", de: "karka", do: "karka",
+  ma: "simha", mi: "simha", mu: "simha", me: "simha", mo: "simha", ta: "simha", ti: "simha", tu: "simha", te: "simha",
+  to: "kanya", pa: "kanya", pi: "kanya", pu: "kanya", sha: "kanya", na: "kanya", tha: "kanya", pe: "kanya", po: "kanya",
   ra: "tula", ri: "tula", ru: "tula", re: "tula", ro: "tula",
-  to: "vrishchika", ni: "vrishchika", nu: "vrishchika", ne: "vrishchika", no: "vrishchika", ya: "vrishchika", yi: "vrishchika", yu: "vrishchika",
+  ni: "vrishchika", nu: "vrishchika", ne: "vrishchika", no: "vrishchika", ya: "vrishchika", yi: "vrishchika", yu: "vrishchika",
   ye: "dhanu", yo: "dhanu", bha: "dhanu", bhi: "dhanu", bhu: "dhanu", dha: "dhanu", fa: "dhanu", bhe: "dhanu",
   bho: "makara", ja: "makara", ji: "makara", khi: "makara", khu: "makara", khe: "makara", kho: "makara", ga: "makara", gi: "makara",
   gu: "kumbha", ge: "kumbha", go: "kumbha", sa: "kumbha", si: "kumbha", su: "kumbha", se: "kumbha", so: "kumbha",
-  di: "meena", du: "meena", jha: "meena", de: "meena", do: "meena", chi: "meena",
+  jha: "meena", nya: "meena", cha: "meena", chi: "meena",
 };
 
 export function getRashiByNameLetter(name: string): Rashi | undefined {
