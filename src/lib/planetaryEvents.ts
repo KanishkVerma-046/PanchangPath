@@ -602,11 +602,18 @@ export function computeUpcomingEvents(today: Date, daysAhead = 365): PlanetaryEv
         const speed1 = angDiff(s1[planet] as number, s2[planet] as number);
 
         if (speed0 > 0.002 && speed1 < -0.002) {
-          // Retrograde starts (use mid-day estimate)
-          events.push(retrogradeEvent(planet as string, true, jd + 0.5, today));
+          // Retrograde starts — interpolate the actual station moment (velocity zero-crossing).
+          // speed0 is the velocity over [jd-1, jd] (≈ velocity at jd-0.5); speed1 is the velocity
+          // over [jd, jd+1] (≈ velocity at jd+0.5). Linear-interpolate between those two samples,
+          // same technique interpolateCrossing() uses for longitude boundary crossings above.
+          const frac = speed0 / (speed0 - speed1);
+          const stationJD = (jd - 0.5) + frac;
+          events.push(retrogradeEvent(planet as string, true, stationJD, today));
         } else if (speed0 < -0.002 && speed1 > 0.002) {
-          // Direct motion resumes
-          events.push(retrogradeEvent(planet as string, false, jd + 0.5, today));
+          // Direct motion resumes — same interpolation
+          const frac = speed0 / (speed0 - speed1);
+          const stationJD = (jd - 0.5) + frac;
+          events.push(retrogradeEvent(planet as string, false, stationJD, today));
         }
       }
     }
@@ -684,8 +691,14 @@ export function computeUpcomingEvents(today: Date, daysAhead = 365): PlanetaryEv
 
 export function formatEventDateTime(e: PlanetaryEvent, tzOffsetHours = 5.5): string {
   const d = new Date(e.dateISO + 'T00:00:00Z');
+  // When the tz-adjusted time rolls past midnight (or before it), shift the displayed
+  // date by the same number of days — otherwise the date string and time string can
+  // describe two different real moments (Issue #8).
+  const rawMins = Math.round((e.timeUTC + tzOffsetHours) * 60);
+  const dayOffset = Math.floor(rawMins / 1440);
+  const totalMins = ((rawMins % 1440) + 1440) % 1440;
+  if (dayOffset !== 0) d.setUTCDate(d.getUTCDate() + dayOffset);
   const dateStr = d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
-  const totalMins = Math.round((e.timeUTC + tzOffsetHours) * 60) % 1440;
   const h = Math.floor(totalMins / 60);
   const m = totalMins % 60;
   const ap = h < 12 ? 'AM' : 'PM';
