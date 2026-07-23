@@ -146,10 +146,16 @@ export const MUHURTA_CRITERIA: Record<ActivityType, MuhurtaCriteria> = {
   vivah: {
     label: 'Vivah (Marriage)',
     labelHi: 'विवाह',
-    goodNakshatras: [3, 4, 6, 7, 9, 11, 12, 14, 16, 20, 25, 26],
+    // Verified against drikpanchang.com's "Auspicious Nakshatra for Marriage" list (Issue #15):
+    // Rohini, Mrigashirsha, Magha, Uttara Phalguni, Hasta, Swati, Anuradha, Mula, Uttara Ashadha,
+    // Uttara Bhadrapada, Revati. This excludes Punarvasu/Pushya (the old value here wrongly
+    // included both — "पुष्ये न विवाहम्", Pushya is explicitly barred from marriage muhurat) and
+    // adds Mula (the old value here AND vivah.astro's inline copy both omitted it).
+    goodNakshatras: [3, 4, 9, 11, 12, 14, 16, 18, 20, 25, 26],
     goodTithis: [1, 2, 4, 6, 9, 10, 11, 12],
     goodVaras: [1, 3, 4, 5],
-    avoidNakshatras: [0, 1, 5, 8, 15, 17, 18, 22, 23, 24],
+    // Mula (18) removed — reclassified to goodNakshatras above.
+    avoidNakshatras: [0, 1, 5, 8, 15, 17, 22, 23, 24],
     avoidTithis: [3, 8, 13, 14, 29],
   },
   'griha-pravesh': {
