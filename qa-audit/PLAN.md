@@ -72,6 +72,10 @@ core site functionality.
 ## Batch 1: Homepage + header/global widgets
 
 ### Issue #1: Homepage client-side script overwrites correct SSR Yamaganda Kalam with a stale weekday table — `/`
+
+**FIXED — verified (commit `ad7c00c`).** `YAMAGANDA_SLOTS` exported from `panchang.ts`, all 3
+inline `YAMA`/`YAMA_S` duplicates in `index.astro` replaced with the import. New Delhi, Thursday
+2026-07-23: client-recomputed Yamaganda now `5:37 AM – 7:20 AM`, matching SSR and drikpanchang.com.
 - Severity: major
 - Description: `src/pages/index.astro`'s client `<script>` re-implements the Rahu/Gulika/Yamaganda
   slot tables inline instead of importing them from `src/lib/panchang.ts`. The Rahu and Gulika
@@ -132,6 +136,11 @@ confirmed it renders and has i18n markers; individual event dates not independen
 ## Batch 2: Calendar + Sunrise/Sunset + Moonrise/Moonset + Events
 
 ### Issue #3: Calendar's festival markers use a stale, hardcoded `FEST_DATA` subset instead of `festivals.ts` — `/calendar`
+
+**FIXED — verified (commit `9452def`).** Deleted hardcoded `FEST_DATA`, now imports
+`FESTIVALS_2025_2027` from `src/lib/festivals.ts` directly (so it also picked up the Issue #20
+date correction automatically). `festivals.ts` confirms Diwali 2026-11-08 and Krishna Janmashtami
+2026-09-04 now flow through to the calendar.
 - Severity: major
 - Description: `src/pages/calendar.astro` (lines ~144-171) hardcodes its own `FEST_DATA` const with
   festival dates instead of importing `FESTIVALS_2025_2027` from `src/lib/festivals.ts` — the same
@@ -150,6 +159,10 @@ confirmed it renders and has i18n markers; individual event dates not independen
   Janmashtami shows on 2026-09-04 (not 2026-08-22).
 
 ### Issue #4: Calendar's `quickPanchang()` evaluates Tithi/Nakshatra at the wrong UTC hour, showing values ~1 tithi/nakshatra ahead of the correct one — `/calendar`
+
+**FIXED — verified (commit `9452def`).** `julianDay(..., 6)` → `julianDay(..., 6 - CAL_TZ)`.
+2026-07-23 quickPanchang now returns "S Navami / Vishakha", matching `calculatePanchang()`'s own
+"Shukla Navami / Vishakha" exactly (was a full tithi ahead before).
 - Severity: major
 - Description: `calendar.astro` line ~116 calls `julianDay(..., 6)` — a literal `6` for the UTC
   hour — instead of the correct `6 - loc.tz` pattern already used correctly in
@@ -192,6 +205,11 @@ Today card and 7-day table both populate with real times across New Delhi, Mumba
   least 2 cities.
 
 ### Issue #6: Planetary Events times are systematically 12 hours off (AM/PM flipped) for all dynamically-computed events — `/events`, `/events/[id]`
+
+**FIXED — verified (commit `48359d3`).** `jdToTimeUTC()` now routes through the same noon-epoch-
+aware `dateFromJD()` used elsewhere in the file instead of raw `(jd % 1) * 24`. Simha Sankranti
+2026 now computes as 7:30 AM IST (was 7:30 PM), matching drikpanchang.com's ~7:58 AM IST within
+normal precision tolerance.
 - Severity: major
 - Description: `src/lib/planetaryEvents.ts`'s `jdToTimeUTC()` (~lines 99-101) computes
   `(jd % 1) * 24` without accounting for the Julian Day's noon-based epoch (JD's fractional part is
@@ -353,6 +371,11 @@ tables).
 ## Batch 4: Vivah / Griha Pravesh / Shubha Dates
 
 ### Issue #12: Vivah Muhurat scoring never checks Venus combustion (or Chaturmas), so it surfaces "Excellent" wedding dates during periods with no valid Muhurat at all — `/muhurta/vivah`
+
+**FIXED — verified (commit `44c91c3`).** Imports `isCombust`/`planetLongitude('venus',...)` from
+`astro-core.ts`, hard-gates score to -99 when Venus is combust. Re-scanned January 2026: every date
+now scores -99, none reach the results threshold — matches "no Vivah Muhurat in January 2026" per
+drikpanchang.com/prokerala.com.
 - Severity: major
 - Description: The page's own "Avoided periods" copy claims to exclude eclipse periods etc., but
   `scoreVivah()` only scores Nakshatra/Tithi/Vara/Yoga/Kharmas — it never checks Venus (Shukra
@@ -373,6 +396,16 @@ tables).
   January 2026" statement.
 
 ### Issue #13: Griha Pravesh Muhurat scoring never checks Chaturmas (or combustion/Shraadh Paksha), so it surfaces "Excellent" housewarming dates throughout a period with no valid Muhurat at all — `/muhurta/griha-pravesh`
+
+**FIXED — needs recheck (commit `44c91c3`).** Added a Chaturmas gate (Sun sidereal rashi 4-6,
+computed per-date, score -10), mirroring the existing Kharmas-gate pattern. Re-scanned Aug 1 – Oct
+31 2026: 2026-08-19 and 2026-08-26 now correctly drop out. **2026-08-17 still scores 12/Excellent**
+— at the calculator's fixed 6:00 AM IST daily snapshot, the Sun hasn't crossed into Simha yet that
+day (actual Simha Sankranti 2026 is ~7:30 AM IST, ~90 min after the snapshot) — a day-boundary
+artifact of the whole site's fixed-snapshot evaluation convention, not a flaw in the new gate
+itself (the pre-existing Kharmas gate shares the same limitation on its own transition days). See
+new Issue #35 below. Not re-opening this issue for further guessing per the fix-phase rules; the
+gate correctly excludes the bulk of Chaturmas, this is a narrow same-day boundary case.
 - Severity: major
 - Description: Same root cause as Issue #12 — the page's "Months to Avoid" copy claims a
   Shraadh-Paksha exclusion, but the only void-period check actually implemented is Kharmas
@@ -524,6 +557,10 @@ batch):** language toggle on regional pages — traced to use the same `data-hi`
   switch, not just the hero and festival names.
 
 ### Issue #20: Jaya Ekadashi 2025 and 2026 entries have wrong dates — one isn't an Ekadashi at all, the other is actually a different Ekadashi — `festivals/jaya-ekadashi-2025`, `festivals/jaya-ekadashi-2026`
+
+**FIXED — verified (commit `ab6ea5f`).** Dates corrected `2025-02-12`→`2025-02-08`,
+`2026-02-13`→`2026-01-29`; 2026 `longDesc` Paksha wording reconciled to Shukla Paksha (matching
+2025's). Slug generation unaffected (dynamic, not hardcoded).
 - Severity: major
 - Description: `festivals.ts`'s Jaya Ekadashi entries (line ~18 for 2025, ~50 for 2026) are wrong.
   2025-02-12 is not an Ekadashi day at all. 2026-02-13 is actually Vijaya Ekadashi, not Jaya
@@ -560,6 +597,10 @@ project wants taxonomy consistency.
 ## Batch 7: Jyotish A (Kundali, Janma Kundali, Horoscope Match)
 
 ### Issue #21: Horoscope Match's Nadi Kuta lookup table is wrong for ~10 of 27 nakshatras, producing a false "Nadi Dosha" on the page's own default example — `/jyotish/horoscope-match`
+
+**FIXED — verified (commit `aeeec5e`).** `NADI` array replaced with the correct standard
+Adi/Madhya/Antya grouping for all 27 nakshatras. Default example (Uttara Ashadha vs Bharani) now
+scores 8/8, no false Nadi Dosha.
 - Severity: major (borderline blocker — Nadi is the single highest-weighted kuta (8 of 36 points)
   and the bug is visible on the page's default pre-filled example, the first thing a visitor sees)
 - Description: The `NADI` array (`horoscope-match.astro` ~line 83) miscodes several nakshatras'
@@ -639,6 +680,12 @@ console-error check was possible for these 4 pages specifically.
 ## Batch 9: Jyotish C (Mangal Dosha, Kalasarpa Yoga, Sadesati)
 
 ### Issue #25: Kalasarpa Yoga "type" (Ananta/Kulika/Vasuki/etc.) is derived from Rahu's raw zodiac sign instead of the house Rahu occupies from the Lagna — only correct for an Aries-Lagna person, wrong type/effects/remedies text for everyone else — `/jyotish/kalasarpa`
+
+**FIXED — verified (commit `7076c53`).** Now imports `calcLagna` (fixed in Batch 1/Issue #9),
+computes Rahu's house from the Lagna, indexes `KALASARPA_TYPES`/`KS_EFFECTS`/`KS_EFFECTS_HI` by
+house instead of raw sign. Same date/place/Rahu-sign with 3 different birth times → 3 different
+Lagnas → type now correctly varies (Padma / Ananta / Karkotak) vs. the old fixed "Vishadhar"
+regardless of Lagna.
 - Severity: major
 - Description: `kalasarpa.astro` (~lines 130-131) computes
   `rahuSign = Math.floor(rahu/30); type = KALASARPA_TYPES[rahuSign]` — but classical Kalasarpa
@@ -805,6 +852,11 @@ for awareness only.
   fix and confirming it matches `PRASHNAVALI_ANSWERS.length`.
 
 ### Issue #30: "Choose Your Number" mode's grid goes 1-108 but the answer array only has 100 entries — numbers 101-108 silently reveal a blank answer instead of an error or being disabled — `/prashnavali`
+
+**FIXED — verified (commit `8db925a`).** Loop bound changed from hardcoded `108` to
+`answers.length`. Grid now renders exactly 100 numbers (matching `PRASHNAVALI_ANSWERS.length`),
+every visible number produces a real answer. Will auto-scale to 108 once Issue #29's content work
+is done.
 - Severity: major
 - Description: `prashnavali.astro`'s number-grid loop (~line 161) hardcodes
   `for (let i = 1; i <= 108; i++)` independent of `answers.length` (100), and the click handler
@@ -927,5 +979,26 @@ Home" links, no broken assets. `robots.txt` allows all and correctly points to
 `@astrojs/sitemap` integration is registered (sitemap files are build-time-only, expected to 404 in
 `astro dev`). `FestivalFeed.astro`/`PlanetaryEventsFeed.astro` "View All" and per-card dynamic
 links all resolve correctly.
+
+---
+
+## Fix-phase-discovered issues (found while fixing, not part of the original 16-batch audit)
+
+### Issue #35: Muhurta scoring's fixed daily snapshot time can miss a Sankranti crossing that happens later the same day — `/muhurta/griha-pravesh`, `/muhurta/vivah`, likely other muhurta finders
+- Severity: minor (latent, narrow window — surfaced as a residual on Issue #13's fix)
+- Description: `griha-pravesh.astro`/`vivah.astro` (and likely sibling muhurta finders using the
+  same pattern) evaluate Sun/Moon position once per candidate date at a fixed IST-equivalent 6 AM
+  snapshot. On a day where a Sankranti (Sun rashi change) actually occurs later that same day, the
+  snapshot evaluates the OLD rashi, so the gate that depends on the new rashi (Kharmas/Chaturmas)
+  doesn't fire until the following day.
+- Evidence: found while verifying Issue #13's Chaturmas gate — 2026-08-17 (actual Simha Sankranti
+  2026, ~7:30 AM IST per the Issue #6 fix) still scored 12/Excellent on Griha Pravesh because the
+  6 AM snapshot is ~90 min before the crossing. The pre-existing Kharmas gate in both files likely
+  has the same blind spot on its own transition days each year.
+- Fix prompt: not yet scoped — would need each muhurta finder to evaluate Sun/Moon position at
+  actual local sunrise (or check both start-of-day and end-of-day rashi) rather than a fixed
+  6 AM IST snapshot, for any gate keyed to a Sankranti-style boundary. Worth a dedicated look
+  across all muhurta finders that use this snapshot pattern before fixing, rather than patching
+  one file at a time.
 
 ---

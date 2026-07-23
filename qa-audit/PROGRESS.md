@@ -25,6 +25,6 @@ Do not re-test completed batches.
 Resume point for the fix phase: check the last unchecked fix-batch below.
 
 - [x] Fix-Batch 1: Issue #9 (calcLagna blocker, 9 pages + Kundali widget) + Issue #5 (moonrise-moonset blocker) — commits `a208e63`, `e7e5809`. Both FIXED-verified.
-- [ ] Fix-Batch 2: Remaining majors — Issue #1 (Yamaganda), #12/#13 (Vivah/Griha Pravesh void-period gates), #6 (Planetary Events 12h flip), #21 (Nadi Kuta), #20 (Jaya Ekadashi dates), #25 (Kalasarpa type, depends on #9 — now unblocked), #3/#4 (Calendar), #30 (Prashnavali 101-108)
+- [x] Fix-Batch 2: Remaining majors — 9 of 10 fully FIXED-verified (#1, #3, #4, #6, #12, #20, #21, #25, #30), 1 FIXED-needs-recheck (#13, narrow same-day Sankranti-boundary residual — see new Issue #35). Commits: `ad7c00c`, `48359d3`, `aeeec5e`, `44c91c3`, `ab6ea5f`, `9452def`, `8db925a`, `7076c53`.
 - [ ] Fix-Batch 3: Content & i18n — #2 (footer i18n), #31 (truncated transliterations), #24 (duplicated city lists)
 - [ ] Fix-Batch 4: Remaining minors — #7, #8, #10, #11, #14, #15, #16, #17, #18, #19, #22, #23, #26, #27, #28, #29, #32, #33, #34
