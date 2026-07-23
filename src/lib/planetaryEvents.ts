@@ -97,7 +97,11 @@ function jdToISO(jd: number): string {
 }
 
 function jdToTimeUTC(jd: number): number {
-  return (jd % 1) * 24; // fractional part × 24
+  // Same noon-epoch-aware conversion as dateFromJD() above — JD's fractional part is 0 at
+  // noon UTC, not midnight, so `(jd % 1) * 24` was off by 12h (Issue #6). Route through the
+  // JS Date (which IS midnight-epoch) instead of doing the noon-offset arithmetic directly.
+  const d = dateFromJD(jd);
+  return d.getUTCHours() + d.getUTCMinutes() / 60 + d.getUTCSeconds() / 3600;
 }
 
 function angDiff(a: number, b: number): number {
