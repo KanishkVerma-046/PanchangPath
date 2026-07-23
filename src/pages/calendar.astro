@@ -107,13 +107,17 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 <script>
 import { julianDay, sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../lib/panchang';
+import { FESTIVALS_2025_2027 } from '../lib/festivals';
 
 const NAKSHATRAS = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const TITHIS = ['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
 const norm = (a: number) => ((a % 360) + 360) % 360;
+// This page isn't location-aware yet (no city picker) — default to IST, matching
+// getDefaultLocation() in lib/locations.ts, rather than the previous literal UTC hour (Issue #4).
+const CAL_TZ = 5.5;
 
 function quickPanchang(date: Date) {
-  const jd = julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), 6);
+  const jd = julianDay(date.getFullYear(), date.getMonth() + 1, date.getDate(), 6 - CAL_TZ);
   const sunLon = sunTrueLongitude(jd);
   const moonLon = moonLongitude(jd);
   const ay = lahiriAyanamsha(jd);
@@ -139,39 +143,14 @@ let displayDate = new Date();
 displayDate.setDate(1);
 let currentLang: 'en' | 'hi' = localStorage.getItem('pp-lang') === 'hi' ? 'hi' : 'en';
 
+// Festival markers now sourced live from lib/festivals.ts instead of a stale hardcoded
+// subset (Issue #3) — the client-side month-navigation render path was the only place
+// still carrying its own copy; the SSR-rendered current month already imported FESTIVALS_2025_2027
+// directly (see frontmatter above).
 const festivals: Record<string, {name:string,nameHi:string,type:string}[]> = {};
-// Festival data from festivals.ts (subset injected)
-const FEST_DATA = [
-  {date:'2025-01-13',name:'Lohri',nameHi:'लोहड़ी',type:'regional'},
-  {date:'2025-01-14',name:'Makar Sankranti',nameHi:'मकर संक्रांति',type:'major'},
-  {date:'2025-02-02',name:'Basant Panchami',nameHi:'बसंत पंचमी',type:'major'},
-  {date:'2025-02-26',name:'Maha Shivaratri',nameHi:'महाशिवरात्रि',type:'major'},
-  {date:'2025-03-13',name:'Holika Dahan',nameHi:'होलिका दहन',type:'major'},
-  {date:'2025-03-14',name:'Holi',nameHi:'होली',type:'major'},
-  {date:'2025-03-30',name:'Ugadi / Gudi Padwa',nameHi:'उगादि / गुड़ी पड़वा',type:'major'},
-  {date:'2025-04-06',name:'Ram Navami',nameHi:'राम नवमी',type:'major'},
-  {date:'2025-04-12',name:'Hanuman Jayanti',nameHi:'हनुमान जयंती',type:'major'},
-  {date:'2025-04-30',name:'Akshaya Tritiya',nameHi:'अक्षय तृतीया',type:'major'},
-  {date:'2025-05-12',name:'Buddha Purnima',nameHi:'बुद्ध पूर्णिमा',type:'major'},
-  {date:'2025-07-11',name:'Guru Purnima',nameHi:'गुरु पूर्णिमा',type:'major'},
-  {date:'2025-08-09',name:'Raksha Bandhan',nameHi:'रक्षा बंधन',type:'major'},
-  {date:'2025-08-16',name:'Krishna Janmashtami',nameHi:'कृष्ण जन्माष्टमी',type:'major'},
-  {date:'2025-08-27',name:'Ganesh Chaturthi',nameHi:'गणेश चतुर्थी',type:'major'},
-  {date:'2025-10-02',name:'Navratri Begins',nameHi:'नवरात्रि प्रारंभ',type:'major'},
-  {date:'2025-10-12',name:'Dussehra',nameHi:'दशहरा',type:'major'},
-  {date:'2025-10-20',name:'Diwali',nameHi:'दीपावली',type:'major'},
-  {date:'2025-10-20',name:'Dhanteras',nameHi:'धनतेरस',type:'major'},
-  {date:'2025-10-23',name:'Bhai Dooj',nameHi:'भाई दूज',type:'major'},
-  {date:'2025-10-28',name:'Chhath Puja',nameHi:'छठ पूजा',type:'major'},
-  {date:'2026-01-14',name:'Makar Sankranti',nameHi:'मकर संक्रांति',type:'major'},
-  {date:'2026-02-15',name:'Maha Shivaratri',nameHi:'महाशिवरात्रि',type:'major'},
-  {date:'2026-03-04',name:'Holi',nameHi:'होली',type:'major'},
-  {date:'2026-08-22',name:'Krishna Janmashtami',nameHi:'कृष्ण जन्माष्टमी',type:'major'},
-  {date:'2026-10-09',name:'Diwali',nameHi:'दीपावली',type:'major'},
-];
-for (const f of FEST_DATA) {
+for (const f of FESTIVALS_2025_2027) {
   if (!festivals[f.date]) festivals[f.date] = [];
-  festivals[f.date].push(f);
+  festivals[f.date].push({ name: f.name, nameHi: f.nameHi, type: f.type });
 }
 
 function renderCalendar(d: Date) {
@@ -216,7 +195,7 @@ function renderCalendar(d: Date) {
   }
 }
 
-function showPanel(dateStr: string, feasts: typeof FEST_DATA, p: {tithi:string,nakshatra:string}) {
+function showPanel(dateStr: string, feasts: {name:string,nameHi:string,type:string}[], p: {tithi:string,nakshatra:string}) {
   const panel = document.getElementById('day-panel');
   const panelDate = document.getElementById('panel-date');
   const panelContent = document.getElementById('panel-content');
