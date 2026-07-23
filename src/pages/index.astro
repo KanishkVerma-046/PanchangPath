@@ -683,6 +683,18 @@ function renderWithLoc(loc: Location, date: Date) {
   const p = calcPanchang(date, loc);
   updateUI(p);
   updateSummaryCard(p, date, loc);
+  // Keep the date-picker's displayed value in sync with whatever date is actually
+  // rendered. Its initial value is server-rendered from build-time `today` (frozen at
+  // last `astro build`/deploy on this static site) which goes stale between deploys —
+  // without this, the picker can show yesterday's date while the page already
+  // rendered today's real Panchang, making it look unresponsive to selection.
+  const dpEl = document.getElementById('date-picker') as HTMLInputElement | null;
+  if (dpEl) {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    dpEl.value = `${y}-${m}-${d}`;
+  }
   // Update Kundali widget
   if (typeof (window as any).updateKundaliWidget === 'function') {
     (window as any).updateKundaliWidget(loc.lat, loc.lng, isHindi ? (loc.nameHi ?? loc.name) : loc.name);
