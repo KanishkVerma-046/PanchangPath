@@ -100,6 +100,11 @@ inline `YAMA`/`YAMA_S` duplicates in `index.astro` replaced with the import. New
   has run (not just in the initial HTML source).
 
 ### Issue #2: Footer never translates to Hindi — all pages (via `src/layouts/Layout.astro`)
+
+**FIXED — verified (commit `47de538`).** Added `data-hi` attributes to all footer column headers,
+12 links, tagline, badge, and copyright line, matching the site-wide `data-hi` pattern (confirmed
+`Header.astro`'s existing document-wide `querySelectorAll('[data-hi]')` toggle already picks these
+up — no JS changes needed). Verified against built HTML output.
 - Severity: minor
 - Description: Footer columns ("Panchang", "Jyotish", "Company" headers + all their links: Today,
   Calendar, Festivals, Muhurta Finder, Daily Rashifal, Mesha/Vrishabha Rashifal, Prashnavali
@@ -638,6 +643,13 @@ scores 8/8, no false Nadi Dosha.
   are other sibling errors) while making the change.
 
 ### Issue #24: Kundali/Janma Kundali/Horoscope Match each duplicate their own hardcoded 15-city location list instead of importing the shared 162-city `src/lib/locations.ts` — `/jyotish/kundali`, `/jyotish/janma-kundali`, `/jyotish/horoscope-match`
+
+**FIXED — verified (commit `ba69966`).** All 13 affected pages (kundali, janma-kundali,
+horoscope-match, rashi, sunsign, nakshatra, lagna, gemstone, rudraksha, mangal-dosha, kalasarpa,
+sadesati, pancha-pakshi) now import `LOCATIONS` from `src/lib/locations.ts` and map it to each
+page's existing `{name,lat,lng,tz}` shape. Playwright-verified: city dropdown now lists 161 cities
+(was 15) including Sydney/Cape Town on 3 spot-checked pages; a full Sydney Kundali calculation
+rendered a valid result with no console errors.
 - Severity: content (usability gap, not a correctness bug — the 15 cities that do exist compute
   correctly)
 - Description: All 3 pages duplicate the same small city list verbatim, with no Southern
@@ -884,6 +896,19 @@ device, not a text-entry oracle, matching its own instructional copy).
 ## Batch 14: Devotional library
 
 ### Issue #31: `transliteration` field is truncated with a literal placeholder string across most/all Chalisa, Stotram, and Ashtakam entries, and several Namavali lists — the complete text exists in Devanagari but the transliteration was never fully authored — `/devotional/chalisa/*`, `/stotram/*`, `/ashtakam/*`, `/namavali/*`
+
+**PARTIALLY FIXED (commit `9a8bdd1`) — large content-authoring task, intentionally not fully closed
+in one batch.** Completed and verse-count-verified this pass: Hanuman Chalisa (40/40 chaupai
+lines), Shiva Ashtakam, Ganesha Ashtakam, Lakshmi Ashtakam (8/8 verses each). **44 entries remain
+affected**: 14 Chalisas, 8 Ashtakams (mahishasura-mardini, hanuman, krishna, guru, saraswati,
+radha, ayyappa, venkateswara), 12 Stotrams (including `vishnu-sahasranama`/`lalita-sahasranama`,
+which also still leak the placeholder into `meaningHi`), and all 10 checked Namavali lists (not in
+scope for this pass). **New issue found while scoping (not fixed):** `saraswati-ashtakam` and
+`radha-ashtakam`'s existing non-placeholder transliteration text doesn't match their own `lyricsHi`
+at all — appears sourced from a different textual variant — flagging as its own data-quality issue
+rather than folding into a mechanical transliteration completion; also a minor pre-existing
+phalashruti-verse mismatch noted in the 3 completed Ashtakams (2 lines each, untouched, low
+priority). Remaining scope should be triaged as its own project per the original audit note.
 - Severity: content
 - Description: All 15 Chalisa entries, all 15 Stotram entries, ~10 of 11 Ashtakam entries, and 5+
   of 10 checked Namavali lists have a `transliteration` field that cuts off mid-text with a literal
@@ -1000,5 +1025,17 @@ links all resolve correctly.
   6 AM IST snapshot, for any gate keyed to a Sankranti-style boundary. Worth a dedicated look
   across all muhurta finders that use this snapshot pattern before fixing, rather than patching
   one file at a time.
+
+### Issue #36: Saraswati Ashtakam and Radha Ashtakam's transliteration text doesn't match their own Devanagari `lyricsHi` — appears sourced from a different textual variant entirely
+- Severity: content
+- Description: found while scoping Issue #31. `saraswati-ashtakam`'s `lyricsHi` verse 1 is "अमला
+  विश्ववन्द्या सा कमलाकरमालिनी..." but the entry's existing (non-truncated-placeholder)
+  transliteration verse 1 romanizes an entirely different verse ("Namami satatam tam cha
+  Saraswatim mahabhagam..."). Same pattern for `radha-ashtakam` (`lyricsHi` begins "नमस्ते श्रियै
+  राधिकायै..." vs. transliteration beginning "Kachidvihaaravati vaarijapatra-netra..."). Skipped
+  during Issue #31's partial fix rather than extending a mismatched reference.
+- Fix prompt: not yet scoped — would need either the transliteration or the Devanagari lyrics
+  re-sourced so both fields describe the same underlying verse text (per CLAUDE.md's "Sourcing
+  long/sacred texts accurately" section), then the full transliteration written out to match.
 
 ---
