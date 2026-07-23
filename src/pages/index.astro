@@ -326,6 +326,7 @@ import {
   AMANTA_MONTHS,
   SAMVATSARA_NAMES,
   SAMVATSARA_NAMES_HI,
+  YAMAGANDA_SLOTS,
 } from '../lib/panchang';
 
 // ── Global display state ──
@@ -371,7 +372,8 @@ function estimateEnd(jd: number, step: number, tz: number, lonFn: (jd: number) =
 
 const RAHU = [7,1,6,4,5,2,3];
 const GULIKA = [6,5,4,3,2,1,0];
-const YAMA = [3,5,2,7,4,6,1];
+// Yamaganda: imported YAMAGANDA_SLOTS from panchang.ts (Issue #1) — no local copy, so this
+// can never drift from the server-rendered value again.
 
 interface Location { name: string; nameHi?: string; lat: number; lng: number; tzOffset: number; tz?: string; elevation?: number; country: string; state?: string; }
 
@@ -429,7 +431,7 @@ function calcPanchang(date: Date, loc: Location) {
     durationDay: `${Math.floor(dayMins/60)}h ${Math.round(dayMins%60)}m`,
     rahuKalam: slot(RAHU[wd]),
     gulikaKalam: slot(GULIKA[wd]),
-    yamaganda: slot(YAMA[wd] < 8 ? YAMA[wd] : 7),
+    yamaganda: slot(YAMAGANDA_SLOTS[wd]),
     abhijitMuhurta: { start: minsToFmt(abStart), end: minsToFmt(abEnd) },
     srMins, ssMins,
     sunSidereal: sSid,
@@ -533,7 +535,7 @@ function drawTimeline(p: ReturnType<typeof calcPanchang>) {
   const segments = [
     { color: '#ef4444', label: 'Rahu', startM: sr + RAHU[currentDate.getDay()] * (total/8) },
     { color: '#f59e0b', label: 'Gulika', startM: sr + GULIKA[currentDate.getDay()] * (total/8) },
-    { color: '#8b5cf6', label: 'Yama', startM: sr + (YAMA[currentDate.getDay()] < 8 ? YAMA[currentDate.getDay()] : 7) * (total/8) },
+    { color: '#8b5cf6', label: 'Yama', startM: sr + YAMAGANDA_SLOTS[currentDate.getDay()] * (total/8) },
   ];
   const nowPct = pct(nowMins);
   bar.innerHTML = segments.map(s => {
@@ -661,12 +663,12 @@ function drawSummaryTimeline(p: ReturnType<typeof calcPanchang>) {
   const now = new Date();
   const nowMins = now.getHours() * 60 + now.getMinutes();
   const wd = currentDate.getDay();
-  const RAHU_S = [7,1,6,4,5,2,3], GULIKA_S = [6,5,4,3,2,1,0], YAMA_S = [3,5,2,7,4,6,1];
+  const RAHU_S = [7,1,6,4,5,2,3], GULIKA_S = [6,5,4,3,2,1,0];
   const slotDur = total / 8;
   const segments = [
     { s: pct(sr + RAHU_S[wd] * slotDur), e: pct(sr + (RAHU_S[wd]+1) * slotDur), color: '#ef4444' },
     { s: pct(sr + GULIKA_S[wd] * slotDur), e: pct(sr + (GULIKA_S[wd]+1) * slotDur), color: '#f59e0b' },
-    { s: pct(sr + (YAMA_S[wd] < 8 ? YAMA_S[wd] : 7) * slotDur), e: pct(sr + ((YAMA_S[wd] < 8 ? YAMA_S[wd] : 7)+1) * slotDur), color: '#8b5cf6' },
+    { s: pct(sr + YAMAGANDA_SLOTS[wd] * slotDur), e: pct(sr + (YAMAGANDA_SLOTS[wd]+1) * slotDur), color: '#8b5cf6' },
   ];
   const nowPct = pct(nowMins);
   bar.innerHTML =
