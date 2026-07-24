@@ -51,8 +51,11 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
   Part 3 incidentally cleared saraswati-ashtakam/radha-ashtakam)
   - [x] 4a: 12 Chalisas (shiv, durga, ganesh, vishnu, lakshmi, saraswati, krishna, ram,
     shani, sai, kali, surya) — commit `e97694a`. Verified placeholder-free via grep.
-  - [ ] 4b: 2 remaining Chalisas (bhairav, vaishno-devi) + 6 Ashtakams (mahishasura-mardini,
-    hanuman, krishna, guru, ayyappa, venkateswara)
+  - [x] 4b: 2 remaining Chalisas (bhairav, vaishno-devi) + 6 Ashtakams (mahishasura-mardini,
+    hanuman, krishna, guru, ayyappa, venkateswara) — commit `d8d07a6`. Found and rewrote 2
+    entries whose old transliteration was mismatched filler text (not just truncated), and
+    fixed 2 small transcription slips while verifying. All Chalisas + Ashtakams now fully
+    transliterated (verified via grep, zero placeholders remain in both files).
   - [ ] 4c: 12 Stotrams
   - [ ] 4d: 10 Namavali lists
 
