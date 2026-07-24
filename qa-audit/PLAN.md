@@ -1009,18 +1009,27 @@ device, not a text-entry oracle, matching its own instructional copy).
 
 ### Issue #31: `transliteration` field is truncated with a literal placeholder string across most/all Chalisa, Stotram, and Ashtakam entries, and several Namavali lists — the complete text exists in Devanagari but the transliteration was never fully authored — `/devotional/chalisa/*`, `/stotram/*`, `/ashtakam/*`, `/namavali/*`
 
-**PARTIALLY FIXED (commit `9a8bdd1`) — large content-authoring task, intentionally not fully closed
-in one batch.** Completed and verse-count-verified this pass: Hanuman Chalisa (40/40 chaupai
-lines), Shiva Ashtakam, Ganesha Ashtakam, Lakshmi Ashtakam (8/8 verses each). **44 entries remain
-affected**: 14 Chalisas, 8 Ashtakams (mahishasura-mardini, hanuman, krishna, guru, saraswati,
-radha, ayyappa, venkateswara), 12 Stotrams (including `vishnu-sahasranama`/`lalita-sahasranama`,
-which also still leak the placeholder into `meaningHi`), and all 10 checked Namavali lists (not in
-scope for this pass). **New issue found while scoping (not fixed):** `saraswati-ashtakam` and
-`radha-ashtakam`'s existing non-placeholder transliteration text doesn't match their own `lyricsHi`
-at all — appears sourced from a different textual variant — flagging as its own data-quality issue
-rather than folding into a mechanical transliteration completion; also a minor pre-existing
-phalashruti-verse mismatch noted in the 3 completed Ashtakams (2 lines each, untouched, low
-priority). Remaining scope should be triaged as its own project per the original audit note.
+**FIXED — verified (Round 3, Part 4).** Closed out across all 4 categories over 4 sub-batches:
+- Part 4a (commit `e97694a`): 12 Chalisas.
+- Part 4b (commit `d8d07a6`): final 2 Chalisas (bhairav, vaishno-devi) + 6 Ashtakams
+  (mahishasura-mardini, hanuman, krishna, guru, ayyappa, venkateswara). Found 2 of these had
+  transliteration that was mismatched filler text, not just truncated — rewrote from source.
+- Part 4c (commit `3ed22f9`): 12 Stotrams. Fixed 5 incidental content-accuracy bugs found while
+  verifying (verses that didn't match their own `lyricsHi`). `vishnu-sahasranama-stotram`/
+  `lalita-sahasranama-stotram`: confirmed their `lyricsHi` is itself intentionally abridged
+  (dhyanam+phalashruti only, pointing readers to a Namavali entry) — transliterated everything
+  actually present, nothing fabricated. See new Issue #38 (that Namavali cross-reference is
+  broken — no such entry exists).
+- Part 4d (commit `cb08f13`): all 10 Namavali (108-name) lists, all verified 108/108 names
+  1:1 against `lyricsHi`. See new Issue #39 below (5 more intra-list duplicate names found,
+  plus one namavali's atypical content) — not fixed, logged only.
+
+All originally-flagged and prior-pass-completed entries (Hanuman Chalisa, Shiva/Ganesha/Lakshmi
+Ashtakam from commit `9a8bdd1`; Saraswati/Radha Ashtakam re-sourced under Issue #36) plus all 42
+entries above are now fully transliterated — 48/48 project-wide. Repo-wide placeholder search
+(`grep -rn "\.\.\." src/lib/devotional/*.ts`) confirms zero remaining matches outside the 2
+intentionally-abridged Sahasranama entries (Issue #38). `npm run build` passes throughout (400
+pages).
 - Severity: content
 - Description: All 15 Chalisa entries, all 15 Stotram entries, ~10 of 11 Ashtakam entries, and 5+
   of 10 checked Namavali lists have a `transliteration` field that cuts off mid-text with a literal
@@ -1207,6 +1216,30 @@ the actual Nimbarka verses about Radha's bond with Krishna). Verified line-by-li
 - Fix prompt: not yet scoped — would need either the transliteration or the Devanagari lyrics
   re-sourced so both fields describe the same underlying verse text (per CLAUDE.md's "Sourcing
   long/sacred texts accurately" section), then the full transliteration written out to match.
+
+### Issue #39 (new, found during Round 3 Part 4d): 5 more duplicate-name pairs found across Namavali lists, plus one atypical namavali's content
+
+- Severity: content (minor — same class as the already-fixed padding issue, smaller scale)
+- Description: CLAUDE.md documents a 2026-07-16 fix that removed 31 duplicate-name slots across
+  Ganesh/Durga/Lakshmi/Saraswati/Shani namavali lists (verified 108 unique entries at the time).
+  While transliterating these same 5 lists in this round, 5 NEW duplicate pairs were spotted
+  (not caught by the 2026-07-16 pass, or reintroduced since): Durga #14/#17 both `निर्गुणा`
+  (Nirguna); Lakshmi #23/#36 both `दीप्ता` (Dipta); Saraswati #2/#44 both `महाभद्रा`
+  (Mahabhadra) and #41/#89 both `वाग्देवी` (Vagdevi — 2 pairs in this one list); Rama #11/#49
+  both `जितामित्रः` (Jitamitrah — not one of the 5 lists fixed in 2026-07, a newly-found one);
+  Shani #28/#91 both `नित्यः` (Nityah). Separately, `hanuman-ashtottara-shatanamavali`'s names
+  ~77-104 shift into Bhima/Mahabharata-specific epithets (Pandu-putra, Kichaka-mardana,
+  Duryodhana-nihanta) rather than typical Hanuman epithets — plausibly a genuine textual
+  tradition conflating Hanuman and Bhima as both sons of Vayu, but atypical enough to flag for a
+  source check rather than assume correct.
+- Evidence: found incidentally while writing/verifying transliterations against `lyricsHi` in
+  Round 3 Part 4d — not independently re-verified against an external source in this pass (only
+  the transliteration work was in scope, `lyricsHi` itself wasn't part of this batch's mandate).
+- Fix prompt: not yet scoped — for the 5 duplicate pairs, cross-check each against
+  drikpanchang.com (the source used for the 2026-07-16 fix) and replace one of each pair with a
+  genuine distinct name, same approach as the prior fix. For the Hanuman/Bhima content, verify
+  against an authoritative Hanuman Ashtottara Shatanamavali source whether the Bhima-epithet
+  section is a legitimate textual variant or a data-entry error before touching it.
 
 ### Issue #38 (new, found during Round 3 Part 4c): `vishnu-sahasranama-stotram` and `lalita-sahasranama-stotram`'s `meaning`/`meaningHi` claim the full 1000-name list "is available under the Namavali category" — no such entry exists
 

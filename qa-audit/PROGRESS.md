@@ -65,7 +65,14 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
     Namavali category" but no such entry exists in `namavali.ts` (confirmed via grep — only
     10 Ashtottara Shatanamavali/108-name lists exist, no Vishnu/Lalita Sahasranama) — a
     broken promise to the reader, not fixed inline (out of this batch's scope).
-  - [ ] 4d: 10 Namavali lists
+  - [x] 4d: 10 Namavali lists — commit `cb08f13`. All 10 verified 108/108 names 1:1 against
+    `lyricsHi`. New Issue #39 logged (not fixed): 5 more duplicate-name pairs found across
+    Durga/Lakshmi/Saraswati(×2)/Rama/Shani lists, plus an atypical Bhima-epithet section in
+    the Hanuman list worth a source check.
+
+**Issue #31 FULLY CLOSED — 48/48 devotional entries across Chalisa/Stotram/Ashtakam/Namavali now
+fully transliterated.** 2 new issues logged during this work (#38, #39), neither fixed per the
+no-scope-creep rule.
 
 ## FIX PHASE COMPLETE — all 34 original issues + 3 fix-phase-discovered issues triaged (2026-07-23)
 
