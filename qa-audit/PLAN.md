@@ -1186,6 +1186,17 @@ future issue if it's ever found to misfire in practice; not confirmed as a live 
 - Fix prompt: see consolidated fix approach above. Proceeding to Part 1.5 to apply it.
 
 ### Issue #36: Saraswati Ashtakam and Radha Ashtakam's transliteration text doesn't match their own Devanagari `lyricsHi` — appears sourced from a different textual variant entirely
+
+**FIXED — verified (Round 3, commit `5506f36`).** Root cause: `lyricsHi` was correct verbatim
+Devanagari for both entries (confirmed word-for-word against sanskritdocuments.org — Sarasvati
+Ashtakam 2 at `doc_devii/sarasvatyaShTakam2.html`, Nimbarkacharya's Radhashtakam at
+`doc_devii/rAdhAShTakam3.html`); it was `transliteration` that romanized an unrelated text
+entirely. Rewrote `transliteration` verse-by-verse to match the verified `lyricsHi` (8 verses +
+phalashruti each, consistent with this file's other Ashtakam entries); also corrected
+`meaning`/`meaningHi` for both, which had been written from the same wrong source text (e.g.
+Radha Ashtakam's old meaning mentioned "lotus-petal eyes"/"moon-like face," phrases absent from
+the actual Nimbarka verses about Radha's bond with Krishna). Verified line-by-line, spot-checked
+≥4 verses per Ashtakam plus the phalashruti. `npm run build` passes (401 pages).
 - Severity: content
 - Description: found while scoping Issue #31. `saraswati-ashtakam`'s `lyricsHi` verse 1 is "अमला
   विश्ववन्द्या सा कमलाकरमालिनी..." but the entry's existing (non-truncated-placeholder)

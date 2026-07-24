@@ -44,7 +44,9 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
   (zero-crossing) detection in planetaryEvents.ts. Verified Mars/Jupiter/Saturn stations
   now detected against published ephemeris dates; Mercury unaffected. Commit `c329528`.
   FIXED-verified.
-- [ ] Part 3: Re-source Issue #36 (Ashtakam text mismatch)
+- [x] Part 3: Re-source Issue #36 — confirmed lyricsHi correct for both entries via
+  sanskritdocuments.org, rewrote transliteration (+ meaning/meaningHi) to match. Commit
+  `5506f36`. FIXED-verified.
 - [ ] Part 4: Continue Issue #31 (devotional transliteration, ~44 of 48 remaining)
 
 ## FIX PHASE COMPLETE — all 34 original issues + 3 fix-phase-discovered issues triaged (2026-07-23)
