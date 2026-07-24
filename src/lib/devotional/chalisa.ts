@@ -225,16 +225,75 @@ Ram Lakhan Sita sahit, hriday basahu sur bhoop.`,
 तुम मेरी मनोकामना, पूर्ण करो जगदीश॥
 मगसिर छठि हेमन्त ॠतु, संवत चौसठ जान।
 स्तुति चालीसा शिवहि, पूर्ण कीन कल्याण॥`,
-    transliteration: `Jai Ganesh Girija suvan, Mangal mool sujaan,
-Kahat Ayodhyadas tum, dehu abhay varadaan.
+    transliteration: `Jai Ganesh Girija suvan, mangal mool sujaan,
+Kahat Ayodhyadas tum, dehu abhay vardaan.
 
 Jai Girija pati deen dayala, sada karat santan pratipala,
-Bhaal chandrama sohat neeke, kanan kundal naagphani ke.
+Bhaal chandrama sohat neeke, kaanan kundal naagphani ke.
 
-... (40 chaupais recounting Shiva's forms, his role in the churning of the ocean, Tripurasura's destruction, Bhagiratha's penance, and his compassion) ...
+Ang gaur shir gang bahaaye, mundmaal tan kshaar lagaaye,
+Vastra khaal baaghambar sohe, chhavi ko dekh naag muni mohe.
 
-Nitt nem kar praat hi, paath karo chaalees,
-Tum meri manokamna, pooran karo Jagdish.`,
+Maina maatu ki have dulaari, baam ang sohat chhavi nyaari,
+Kar trishul sohat chhavi bhaari, karat sada shatrun kshaykaari.
+
+Nandi Ganesh sohain tahan kaise, sagar madhya kamal hain jaise,
+Kartik shyaam aur ganraau, ya chhavi ko kahi sakat na kaau.
+
+Devan jabahin jaay pukaara, tab hi dukh prabhu aap nivaara,
+Kiya upadrav Tarak bhaari, devan sab mili tumahin juhaari.
+
+Turat Shadaanan aap pathaayau, lav nimesh mahan maari giraayau,
+Aap Jalandhar asur sanhaara, suyash tumhaar vidit sansaara.
+
+Tripurasur san yuddh machaai, sabahin kripa kar leen bachaai,
+Kiyau tapahin Bhageerath bhaari, purab pratigya taasu Puraari.
+
+Daanin mahan tum sam kou naahi, sevak stuti karat sadaahi,
+Ved naam mahima tav gaai, akath anaadi bhed nahin paai.
+
+Pragat udadhi manthan mein jwaala, jarat suraasur bhaye vihaala,
+Keenh daya tahan kari sahaai, Neelkanth tab naam kahaai.
+
+Poojan Ramchandra jab keenha, jeet ke Lank Vibhishan deenha,
+Sahas kamal mein ho rahe dhaari, keenh pareeksha tabahin Puraari.
+
+Ek kamal prabhu raakheu joi, kamal nayan poojan chahan soi,
+Kathin bhakti dekhi prabhu Shankar, bhaye prasann diye ichchhit var.
+
+Jai jai jai anant avinaashi, karat kripa sab ke ghatvaasi,
+Dusht sakal nit mohi sataaven, bhram mam man nit uthi dhaaven.
+
+Traahi traahi main naath pukaaro, yahi avasar mohi aan ubaaro,
+Lai trishul shatruhin tum maaro, sankat se mohi aan ubaaro.
+
+Maat-pita bhraata sab koi, sankat mein poochhat nahin koi,
+Swami ek hai aas tumhaari, aay harahu ab sankat bhaari.
+
+Dhan nirdhan ko det sada hi, jo koi jaanche so phal paahi,
+Astuti kehi vidhi karaun tumhaari, kshamahu naath ab chook hamaari.
+
+Shankar ho sankat ke naashan, mangal kaaran vighn vinaashan,
+Yogi yati muni dhyaan lagaaven, Sharad Naarad sheesh navaaven.
+
+Namo namo jai namo Shivaay, sur Brahmaadik paar na paay,
+Jo yah paath kare man laai, ta par hot hain Shambhu sahaai.
+
+Rinniyaan jo koi ho adhikaari, paath kare so paavan haari,
+Putraheen kar ichchha joi, nishchay Shiv prasaad tehi hoi.
+
+Pandit trayodashi ko laave, dhyaan poorvak hom karaave,
+Trayodashi vrat karai hamesha, taake tan nahin rahai kalesha.
+
+Dhoop deep naivedya chadhaave, Shankar sammukh paath sunaave,
+Janam janam ke paap nasaave, ant dhaam Shivpur mein paave.
+
+Kahain Ayodhyadas aas tumhaari, jaani sakal dukh harahu hamaari.
+
+Nitt nem kar praat hi, paath karo chaalisa,
+Tum meri manokaamna, poorn karo Jagdish.
+Magsir chhathi hemant ritu, sanvat chausath jaan,
+Stuti chaalisa Shivahi, poorn keen kalyaan.`,
     meaning: 'Composed by Pandit Ayodhyadas, the Shiv Chalisa venerates Shiva as Girija-pati (Parvati\'s consort), describing his ash-smeared form, the crescent moon and Ganga on his head, and recounting his mythological deeds — from swallowing poison during the churning of the ocean to destroying Tripurasura and blessing Bhagiratha and Vibhishana.', meaningHi: 'पंडित अयोध्यादास द्वारा रचित, शिव चालीसा शिव को गिरिजा-पति (पार्वती के पति) के रूप में वंदना करती है, उनके भस्म-लिप्त स्वरूप, सिर पर अर्धचंद्र और गंगा का वर्णन करते हुए, तथा समुद्र मंथन के दौरान विष पीने से लेकर त्रिपुरासुर के विनाश और भगीरथ व विभीषण को आशीर्वाद देने तक उनके पौराणिक कार्यों का वर्णन करते हुए।',
     benefits: 'Recited every Monday and during Shravan month, Maha Shivaratri, and before undertaking any difficult task, seeking Shiva\'s protection from obstacles and enemies.', benefitsHi: 'प्रत्येक सोमवार तथा श्रावण मास, महाशिवरात्रि के दौरान, और किसी भी कठिन कार्य को करने से पहले, बाधाओं और शत्रुओं से शिव की सुरक्षा की कामना करते हुए पाठ किया जाता है।',
   },
@@ -311,12 +370,69 @@ Tum meri manokamna, pooran karo Jagdish.`,
 शरणागत रक्षा करे, भक्त रहे निशंक।
 मैं आया तेरी शरण में, मातु लीजिये अंक॥`,
     transliteration: `Namo namo Durge sukh karni, namo namo Ambe dukh harni,
-Nirankar hai jyoti tumhari, tihoon lok phaili ujiyari.
+Niraakaar hai jyoti tumhaari, tihoon lok phaili ujiyaari.
 
-... (40 chaupais describing Durga's cosmic forms, her deeds in protecting Prahlad, destroying Mahishasura, and her ten forms including Kali, Bagalamukhi, and Matangi) ...
+Shashi lalaat mukh mahaavishaala, netra laal bhrikuti vikaraala,
+Roop maatu ko adhik suhaave, darash karat jan ati sukh paave.
 
-Devidas sharan nij jani, karo kripa he matu,
-Jaise tum Prahlad bachayo, trast haro sukh datu.`,
+Tum sansaar shakti lay keena, paalan hetu ann dhan deena,
+Annapoorna hui jag paala, tum hi aadi sundari baala.
+
+Pralaykaal sab naashan haari, tum Gauri Shivshankar pyaari,
+Shiv yogi tumhare gun gaaven, Brahma Vishnu tumhen nit dhyaaven.
+
+Roop Saraswati ko tum dhaara, de subuddhi rishi-munin ubaara,
+Dharaa roop Narsingh ko amba, pragat bhain phaadkar khamba.
+
+Raksha kar Prahlaad bachaayo, Hiranyaaksh ko swarg pathaayo,
+Lakshmi roop dharo jag maahin, Shri Narayan ang samaahin.
+
+Ksheersindhu mein karat vilaasa, dayaasindhu deeje man aasa,
+Hinglaaj mein tumhin Bhavaani, mahima amit na jaat bakhaani.
+
+Maatangi aru Dhoomaavati maata, Bhuvaneshwari Bagla sukh daata,
+Shri Bhairav Taara jag taarini, Chhinnabhaal bhav dukh nivaarini.
+
+Kehari vaahan soh Bhavaani, laangur veer chalat agavaani,
+Kar mein khappar-khadag viraaje, jaako dekh kaal dar bhaaje.
+
+Sohai astra aur trishoola, jaate uthat shatru hiy shoola,
+Nagar koti mein tumhin viraajat, tihoonlok mein danka baajat.
+
+Shumbh Nishumbh daanav tum maare, Raktabeej shankhan sanhaare,
+Mahishasur nrip ati abhimaani, jehi agh bhaar mahi akulaani.
+
+Roop karaal Kaalika dhaara, sen sahit tum tihi sanhaara,
+Pari gaadh santan par jab jab, bhai sahaay maatu tum tab tab.
+
+Amarpuri aru Baasav loka, tab mahima sab rahen ashoka,
+Jwaala mein hai jyoti tumhaari, tumhen sada poojen nar-naari.
+
+Prem bhakti se jo yash gaave, dukh daaridra nikat nahin aaven,
+Dhyaave tumhen jo nar man laai, janm-maran taako chhuti jaai.
+
+Jogi sur muni kahat pukaari, yog na ho bin shakti tumhaari,
+Shankar aachaaraj tap keeno, kaam aru krodh jeeti sab leeno.
+
+Nishidin dhyaan dharo Shankar ko, kaahu kaal nahin sumiro tumko,
+Shakti roop ko maram na paayo, shakti gai tab man pachhitaayo.
+
+Sharanaagat hui keerti bakhaani, jai jai jai Jagdamb Bhavaani,
+Bhai prasann aadi Jagdamba, dai shakti nahin keen vilamba.
+
+Moko maatu kasht ati ghero, tum bin kaun harai dukh mero,
+Aasha trishna nipat sataave, moh madaadik sab vinashaave.
+
+Shatru naash keeje maharaani, sumiraun ikchit tumhen Bhavaani,
+Karo kripa he maatu dayaala, riddhi-siddhi de karahu nihaala.
+
+Jab lagi jiyaun daya phal paaun, tumharo yash main sada sunaaun,
+Durga chaalisa jo nit gaave, sab sukh bhog paramapad paave.
+
+Devidas sharan nij jaani, karahu kripa Jagdamb Bhavaani.
+
+Sharanaagat raksha kare, bhakt rahe nishank,
+Main aaya teri sharan mein, maatu leejiye ank.`,
     meaning: 'Composed by Pandit Anand Ram Sharma, the Durga Chalisa hails the Goddess as the eternal light behind creation, protector who rescued Prahlad, destroyer of Mahishasura, and the source of Lakshmi and Saraswati\'s power. It lists many of her forms including Mahakali, Bagalamukhi, and Bhairavi.', meaningHi: 'पंडित आनंद राम शर्मा द्वारा रचित, दुर्गा चालीसा देवी को सृष्टि के पीछे के शाश्वत प्रकाश, प्रह्लाद की रक्षा करने वाली रक्षक, महिषासुर की संहारक, तथा लक्ष्मी और सरस्वती की शक्ति के स्रोत के रूप में महिमामंडित करती है। इसमें महाकाली, बगलामुखी और भैरवी सहित उनके कई रूपों की सूची है।',
     benefits: 'Recited daily during Navratri and Fridays, and whenever seeking removal of poverty, fear and obstacles through the Divine Mother\'s grace.', benefitsHi: 'नवरात्रि के दौरान प्रतिदिन और शुक्रवार को, तथा जब भी दिव्य माता की कृपा से दरिद्रता, भय और बाधाओं के निवारण की कामना हो, पाठ किया जाता है।',
   },
@@ -399,10 +515,64 @@ Vighn haran mangal karan, jai jai Girija lal.
 Jai jai jai Ganpati Ganrajoo, mangal bharan karan shubh kajoo,
 Jai gajbadan sadan sukhdata, vishwa vinayak buddhi vidhata.
 
-... (40 chaupais narrating Ganesha's birth story, Shani's gaze causing loss of his head, and its replacement with an elephant's head) ...
+Vakratund shuchi shund suhaavan, tilak tripund bhaal man bhaavan,
+Raajat mani muktan ur maala, swarn mukut shir nayan vishaala.
 
-Sharada Ganpati Gauri pad, prem sahit dhari dhyan,
-Sundar kavi is chalisa ko, gaaven sunen sujaan.`,
+Pustak paani kuthaar trishoolam, modak bhog sugandhit phoolam,
+Sundar peetaambar tan saajit, charan paaduka muni man raajit.
+
+Dhani Shiv suvan Shadaanan bhraata, Gauri laalan vishwa-vikhyaata,
+Riddhi-Siddhi tav chanvar sudhaare, Mooshak vaahan sohat dwaare.
+
+Kahaun janm shubh katha tumhaari, ati shuchi paavan mangalkaari,
+Ek samay Giriraj Kumaari, putra hetu tap keenha bhaari.
+
+Bhayo yagya jab poorn anoopa, tab pahunchyo tum dhari dwij roopa,
+Atithi jaani kai Gauri sukhaari, bahuvidhi seva kari tumhaari.
+
+Ati prasann havai tum var deenha, maatu putra hit jo tap keenha,
+Milahi putra tuhi, buddhi vishaala, bina garbh dhaaran yahi kaala.
+
+Gannaayak gun gyaan nidhaana, poojit pratham roop bhagwaana,
+As kahi antardhaan roop havai, paalna par baalak swaroop havai.
+
+Bani shishu rudan jabahin tum thaana, lakhi mukh sukh nahin Gauri samaana,
+Sakal magan, sukh mangal gaavahin, naabh te suran, suman varshaavahin.
+
+Shambhu, Uma, bahudaan lutaavahin, sur munijan, sut dekhan aavahin,
+Lakhi ati aanand mangal saaja, dekhan bhi aaye Shani Raaja.
+
+Nij avagun guni Shani man maahin, baalak, dekhan chaahat naahin,
+Girija kachhu man bhed badhaayo, utsav mor, na Shani tuhi bhaayo.
+
+Kahat lage Shani, man sakuchaai, ka karihaun, shishu mohi dikhaai,
+Nahin vishwaas, Uma ur bhayaoo, Shani son baalak dekhan kahyaoo.
+
+Padatahin Shani drig kon prakaasha, baalak sir udi gayo akaasha,
+Girija giri vikal havai dharani, so dukh dasha gayo nahin varani.
+
+Haahaakaar machyau Kailaasha, Shani keenho lakhi sut ko naasha,
+Turat Garud chadhi Vishnu sidhaayo, kaati chakra so gaj sir laaye.
+
+Baalak ke dhad oopar dhaaryo, praan mantra padhi Shankar daaryo,
+Naam Ganesh Shambhu tab keenhe, pratham poojya buddhi nidhi, var deenhe.
+
+Buddhi pareeksha jab Shiv keenha, prithvi kar pradakshina leenha,
+Chale Shadaanan, bharami bhulaai, rache baith tum buddhi upaai.
+
+Charan maatu-pitu ke dhar leenhen, tinke saat pradakshin keenhen,
+Dhani Ganesh kahi Shiv hiye harashe, nabh te suran suman bahu barse.
+
+Tumhari mahima buddhi badaai, Shesh sahasmukh sake na gaai,
+Main matiheen maleen dukhaari, karahoon kaun vidhi vinay tumhaari.
+
+Bhajat Ramsundar prabhudaasa, jag Prayaag, Kakra, Durvaasa,
+Ab prabhu daya deena par keeje, apni shakti bhakti kuchh deeje.
+
+Shri Ganesh yah chaalisa, paath karai kar dhyaan,
+Nit nav mangal grih basai, lahe jagat sanmaan.
+Sambandh apne sahasra dash, rishi panchami dinesh,
+Pooran chaalisa bhayo, mangal moorti Ganesh.`,
     meaning: 'This chalisa narrates the story of Ganesha\'s birth to Parvati, the incident where Shani\'s gaze caused his original head to vanish, and Vishnu\'s solution of giving him an elephant\'s head — establishing him as Vighnaharta (remover of obstacles) and the deity worshipped first before any undertaking.', meaningHi: 'यह चालीसा पार्वती से गणेश के जन्म की कथा, उस घटना का वर्णन करती है जिसमें शनि की दृष्टि से उनका मूल सिर लुप्त हो गया था, और विष्णु द्वारा उन्हें हाथी का सिर देने के समाधान का — जिससे उन्हें विघ्नहर्ता (बाधाओं के निवारक) और किसी भी कार्य से पहले पूजे जाने वाले देवता के रूप में स्थापित किया गया।',
     benefits: 'Recited before starting any new venture, on Wednesdays, and throughout the ten days of Ganesh Chaturthi for wisdom, prosperity and removal of obstacles.', benefitsHi: 'किसी भी नए कार्य को आरंभ करने से पहले, बुधवार को, और गणेश चतुर्थी के दस दिनों के दौरान बुद्धि, समृद्धि और बाधाओं के निवारण के लिए पाठ किया जाता है।',
   },
@@ -480,16 +650,71 @@ Sundar kavi is chalisa ko, gaaven sunen sujaan.`,
 ॥ दोहा ॥
 भक्त हृदय में वास करें, पूर्ण कीजिये काज।
 शंख चक्र और गदा पद्म, हे विष्णु महाराज॥`,
-    transliteration: `Vishnu sunao jagat sukh, gavat Ved Puran,
-Sharanagat rakshak sada, kripasindhu Bhagwan.
+    transliteration: `Vishnu sunie vinay, sevak ki chit laay,
+Keerat kuchh varnan karoon, deeje gyaan bataay.
 
-Namo Vishnu Bhagwan Kharari, kripa karo Govind Murari,
-Tum ho sab jag ke adhara, tum bin kaun kare nistara.
+Namo Vishnu Bhagwan Kharaari, kasht nashaavan akhil bihaari,
+Prabal jagat mein shakti tumhaari, tribhuvan phail rahi ujiyaari.
 
-... (chaupais narrating the Dashavatara — the ten incarnations of Vishnu — and his protection of devotees) ...
+Sundar roop manohar soorat, saral swabhaav mohini moorat,
+Tan par peetaambar ati sohat, baijanti maala man mohat.
 
-Sumirat Vishnu kripanidhi, mitat sakal santap,
-Bhaktidas sharanagati, harahu janam ke paap.`,
+Shankh chakra kar gada biraaje, dekhat daitya asur dal bhaaje,
+Satya dharma mad lobh na gaaje, kaam krodh mad lobh na chhaaje.
+
+Santabhakt sajjan manranjan, danuj asur dushtan dal ganjan,
+Sukh upajaay kasht sab bhanjan, dosh mitaay karat jan sajjan.
+
+Paap kaat bhav sindhu utaaran, kasht naashkar bhakt ubaaran,
+Karat anek roop prabhu dhaaran, keval aap bhakti ke kaaran.
+
+Dharani dhenu ban tumahin pukaara, tab tum roop Raam ka dhaara,
+Bhaar utaar asur dal maara, Raavan aadik ko sanhaara.
+
+Aap Varaah roop banaaya, Hiranyaaksh ko maar giraaya,
+Dhar Matsya tan sindhu banaaya, chaudah ratnan ko nikalaaya.
+
+Amilakh asuran dwand machaaya, roop mohini aap dikhaaya,
+Devan ko amrit paan karaaya, asuran ko chhavi se bahalaaya.
+
+Koorm roop dhar sindhu majhaaya, Mandraachal giri turat uthaaya,
+Shankar ka tum phand chhudaaya, Bhasmaasur ko roop dikhaaya.
+
+Vedan ko jab asur dubaaya, kar prabandh unhen dhundhwaaya,
+Mohit banakar khalahi nachaaya, usahi kar se bhasm karaaya.
+
+Asur Jalandhar ati baldaai, Shankar se un keenh ladaai,
+Haar paar Shiv sakal banaai, keen Sati se chhal khal jaai.
+
+Sumiran keen tumhen Shivraani, batlaai sab vipat kahaani,
+Tab tum bane muneeshwar gyaani, Vrinda ki sab surati bhulaani.
+
+Dekhat teen danuj shaitaani, Vrinda aay tumhen laptaani,
+Ho sparsh dharm kshati maani, hana asur ur Shiv shaitaani.
+
+Tumne Dhruv Prahlaad ubaare, Hiranaakush aadik khal maare,
+Ganika aur Ajaamil taare, bahut bhakt bhav sindhu utaare.
+
+Harahu sakal santaap hamaare, kripa karahu Hari sirjan haare,
+Dekhahun main nij darash tumhaare, deen bandhu bhaktan hitkaare.
+
+Chahat aapka sevak darshan, karahu daya apni Madhusoodan,
+Jaanoon nahin yogya jab poojan, hoy yagya stuti anumodan.
+
+Sheeldaya santosh sulakshan, vidit nahin vratbodh vilakshan,
+Karahun aapka kis vidhi poojan, kumati vilok hot dukh bheeshan.
+
+Karahun pranaam kaun vidhi sumiran, kaun bhaanti main karahu samarpan,
+Sur muni karat sada sevakaai, harshit rahat param gati paai.
+
+Deen dukhin par sada sahaai, nij jan jaan lev apnaai,
+Paap dosh santaap nashaao, bhav bandhan se mukt karaao.
+
+Sut sampati de sukh upjaao, nij charanan ka daas banaao,
+Nigam sada ye vinay sunaave, padhai sunai so jan sukh paave.
+
+Bhakt hriday mein vaas karen, poorn keejiye kaaj,
+Shankh chakra aur gada padma, he Vishnu Maharaj.`,
     meaning: 'This chalisa venerates Vishnu, the preserver of the universe, reclining on Shesha in the Kshira Sagar (ocean of milk), and recounts his Dashavatara — the ten incarnations from Matsya to Kalki — through which he protects dharma in every age.', meaningHi: 'यह चालीसा ब्रह्मांड के पालनकर्ता विष्णु की वंदना करती है, जो क्षीर सागर में शेषनाग पर शयन करते हैं, और उनके दशावतार — मत्स्य से लेकर कल्कि तक के दस अवतार — का वर्णन करती है, जिनके माध्यम से वे प्रत्येक युग में धर्म की रक्षा करते हैं।',
     benefits: 'Recited on Thursdays and Ekadashi, and by devotees seeking protection, prosperity and liberation through surrender to Vishnu.', benefitsHi: 'गुरुवार और एकादशी को, तथा विष्णु के प्रति समर्पण के माध्यम से सुरक्षा, समृद्धि और मुक्ति चाहने वाले भक्तों द्वारा पाठ किया जाता है।',
   },
@@ -572,16 +797,75 @@ Bhaktidas sharanagati, harahu janam ke paap.`,
 जयति जयति जय लक्ष्मी, करो शत्रु को नाश॥
 रामदास धरि ध्यान नित, विनय करत कर जोर।
 मातु लक्ष्मी दास पर, करहु दया की कोर॥`,
-    transliteration: `Matu Lakshmi kari kripa, karo hriday mein vaas,
-Manokamna siddh kar, pooran karo hamari aas.
+    transliteration: `Maatu Lakshmi kari kripa, karo hriday mein vaas,
+Manokaamna siddh kari, paravahu meri aas.
 
-Jai jai janani jagat ki mata, jai jai Lakshmi vishwavidhata,
-Sindhu suta jag janani tum hi, namo namo jai palan kartri.
+Yahi mor ardaas, haath jod vinati karoon,
+Sab vidhi karo suvaas, jai janani Jagdambika.
 
-... (chaupais recounting Lakshmi's birth from the ocean churning, her many divine forms including Sita, Durga and Saraswati) ...
+Sindhu suta main sumirau tohi, gyaan, buddhi, vidya do mohi,
+Tum samaan nahin koi upkaari, sab vidhi puravahu aas hamaari.
 
-Kamala Chalisa jo padhe, kar ke man se dhyan,
-Nishchay hi dhan dhanya ko, paave kripa nidhaan.`,
+Jai jai jagat janani Jagdamba, sabki tum hi ho avalamba,
+Tum hi ho sab ghat ghat vaasi, vinati yahi hamaari khaasi.
+
+Jagjanani jai Sindhu Kumaari, deenan ki tum ho hitkaari,
+Vinavaun nitya tumahin Maharaani, kripa karo jag janani Bhavaani.
+
+Kehi vidhi stuti karaun tihaari, sudhi leeje apraadh bisaari,
+Kripa drishti chitvavo mam ori, jagjanani vinati sun mori.
+
+Gyaan buddhi jai sukh ki daata, sankat haro hamaari maata,
+Ksheersindhu jab Vishnu mathaayo, chaudah ratna sindhu mein paayo.
+
+Chaudah ratna mein tum sukhraasi, seva kiyo prabhu bani daasi,
+Jab jab janm jahaan prabhu leenha, roop badal tahan seva keenha.
+
+Swayam Vishnu jab nar tanu dhaara, leenheu Avadhpuri avataara,
+Tab tum pragat Janakpur maahin, seva kiyo hriday pulkaahin.
+
+Apnaaya tohi antaryaami, vishwa vidit tribhuvan ki swaami,
+Tum sam prabal shakti nahin aani, kahan lau mahima kahaun bakhaani.
+
+Man kram vachan karai sevakaai, man ichchhit vaanchhit phal paai,
+Taji chhal kapat aur chaturaai, poojahin vividh bhaanti manlaai.
+
+Aur haal main kahaun bujhaai, jo yah paath karai man laai,
+Taako koi kasht na hoi, man ichchhit paavai phal soi.
+
+Traahi traahi jai dukh nivaarini, trividh taap bhav bandhan haarini,
+Jo chaalisa padhai padhaave, dhyaan lagaakar sunai sunaave.
+
+Taako koi na rog sataave, putra aadi dhan sampati paave,
+Putraheen aru sampati heena, andh badhir kodhi ati deena.
+
+Vipra bolaay kai paath karaave, shanka dil mein kabhi na laave,
+Paath karaave din chaalisa, ta par kripa karain Gaurisa.
+
+Sukh sampati bahut si paave, kami nahin kaahu ki aave,
+Baarah maas karai jo pooja, tehi sam dhanya aur nahin dooja.
+
+Pratidin paath karai man maahi, un sam koi jag mein kahun naahin,
+Bahuvidhi kya main karaun badaai, ley pareeksha dhyaan lagaai.
+
+Kari vishwaas karai vrat nema, hoy siddh upajai ur prema,
+Jai jai jai Lakshmi Bhavaani, sab mein vyaapit ho gun khaani.
+
+Tumharo tej prabal jag maahin, tum sam kou dayaalu kahun naahin,
+Mohi anaath ki sudhi ab leeje, sankat kaati bhakti mohi deeje.
+
+Bhool chook kari kshama hamaari, darshan dajai dasha nihaari,
+Bin darshan vyaakul adhikaari, tumahi achhat dukh sahate bhaari.
+
+Nahin mohin gyaan buddhi hai tan mein, sab jaanat ho apne man mein,
+Roop chaturbhuj karke dhaaran, kasht mor ab karahu nivaaran.
+
+Kehi prakaar main karaun badaai, gyaan buddhi mohi nahin adhikaai.
+
+Traahi traahi dukh haarini, haro vegi sab traas,
+Jayati jayati jai Lakshmi, karo shatru ko naash.
+Ramdas dhari dhyaan nit, vinay karat kar jor,
+Maatu Lakshmi daas par, karahu daya ki kor.`,
     meaning: 'This chalisa venerates Lakshmi, daughter of the ocean (born during Samudra Manthan), consort of Vishnu, describing her various forms as Sita, Durga and Saraswati, and her role as the giver of wealth, grain and prosperity to any home she resides in.', meaningHi: 'यह चालीसा समुद्र-पुत्री (समुद्र मंथन के दौरान जन्मी) लक्ष्मी, विष्णु की पत्नी, की वंदना करती है, उनके सीता, दुर्गा और सरस्वती के रूप में विभिन्न रूपों का वर्णन करते हुए, तथा वे जिस भी घर में निवास करती हैं वहां धन, अन्न और समृद्धि प्रदान करने में उनकी भूमिका का वर्णन करते हुए।',
     benefits: 'Recited on Fridays, during Diwali and Sharad Purnima, and whenever seeking financial stability and abundance.', benefitsHi: 'शुक्रवार को, दिवाली और शरद पूर्णिमा के दौरान, तथा जब भी वित्तीय स्थिरता और प्रचुरता की कामना हो, पाठ किया जाता है।',
   },
@@ -662,16 +946,74 @@ Nishchay hi dhan dhanya ko, paave kripa nidhaan.`,
 डूबन ते रक्षा करहु, परूं न मैं भव-कूप॥
 बल बुद्धि विद्या देहुं मोहि, सुनहु सरस्वति मातु।
 अधम रामसागरहिं तुम, आश्रय देउ पुनातु॥`,
-    transliteration: `Jai Sharde buddhi pradayini, gyan vivek vidhan,
-Var do matu Saraswati, banu suyash ki khan.
+    transliteration: `Janak janani pad kamal raj, nij mastak par dhaari,
+Bandaun maatu Saraswati, buddhi bal de daataari.
+Poorn jagat mein vyaapt tav, mahima amit anantu,
+Ramsaagar ke paap ko, maatu tuhi ab hantu.
 
-Jai jai jai Jagdamb Bhavani, gyan buddhi vidya ki khani,
-Chandravadani veenapani, sphatik maal hans vimani.
+Jai Shri sakal buddhi balraasi, jai sarvagya amar avinaashi,
+Jai jai jai veenaakar dhaari, karati sada suhans savaari.
 
-... (chaupais praising Saraswati's role as the goddess of knowledge, music and wisdom, invoked at the start of education) ...
+Roop chaturbhuj dhaari maata, sakal vishwa andar vikhyaata,
+Jag mein paap buddhi jab hoti, tab hi dharm ki phiki jyoti.
 
-Matu Saraswati chalisa, padhe sune chit laay,
-Buddhi vidya vivek dhan, tako mile sadaay.`,
+Tab hi maatu ka nij avataari, paap heen karati mahataari,
+Valmiki ji the hatyaare, tav prasaad jaanai sansaara.
+
+Ramcharit jo rache banaai, aadi kavi ki padvi paai,
+Kaalidaas jo bhaye vikhyaata, teri kripa drishti se maata.
+
+Tulsi Soor aadi vidwaana, bhaye aur jo gyaani naana,
+Tinh na aur raheu avalamba, keval kripa aapki amba.
+
+Karahu kripa soi maatu Bhavaani, dukhit deen nij daasahi jaani,
+Putra karahin apraadh bahoota, tehi na dharai chit maata.
+
+Raakhu laaj janani ab meri, vinay karaun bhaanti bahu teri,
+Main anaath teri avalamba, kripa karau jai jai Jagdamba.
+
+Madhukaitabh jo ati balvaana, baahuyuddh Vishnu se thaana,
+Samar hazaar paanch mein ghora, phir bhi mukh unse nahin mora.
+
+Maatu sahaay keenh tehi kaala, buddhi vipreet bhai khalhaala,
+Tehi te mrityu bhai khal keri, puravahu maatu manorath meri.
+
+Chand Mund jo the vikhyaata, kshan mahu sanhaare un maata,
+Raktabeej se samarath paapi, surmuni hriday dhara sab kaanpi.
+
+Kaateu sir jimi kadli khamba, baarbaar binvaun Jagdamba,
+Jagprasiddh jo Shumbh-Nishumbha, kshan mein baandhe taahi tu amba.
+
+Bharatmaatu buddhi phereu jaai, Ramchandra banvaas karaai,
+Ehividhi Raavan vadh tu keenha, sur narmuni sabko sukh deenha.
+
+Ko samarath tav yash gun gaana, nigam anaadi anant bakhaana,
+Vishnu Rudra Aj sakahin na maari, jinki ho tum rakshaakaari.
+
+Rakt-dantika aur Shataakshi, naam apaar hai daanav bhakshi,
+Durgam kaaj dhara par keenha, Durga naam sakal jag leenha.
+
+Durg aadi harni tu maata, kripa karahu jab jab sukhdaata,
+Nrip kopit jo maaran chaahe, kaanan mein ghere mrig naahe.
+
+Saagar madhya pot ke bhanje, ati toofaan nahin kou sange,
+Bhoot pret baadha ya dukh mein, ho daridra athva sankat mein.
+
+Naam jape mangal sab hoi, sanshay isamein karai na koi,
+Putraheen jo aatur bhaai, sabai chhaandi poojen ehi maai.
+
+Karai paath nit yah chaalisa, hoy putra sundar gun eesha,
+Dhoopaadik naivedya chadhaave, sankat rahit avashya ho jaave.
+
+Bhakti maatu ki karai hamesha, nikat na aavai taahi kalesha,
+Bandi paath karen shat baara, bandi paash door ho saara.
+
+Karahu kripa bhavmukti Bhavaani, mo kahan daas sada nij jaani.
+
+Maata Surya kaanti tav, andhkaar mam roop,
+Dooban te raksha karahu, paroon na main bhav-koop.
+Bal buddhi vidya dehun mohi, sunahu Saraswati maatu,
+Adham Ramsaagarahin tum, aashray deu punaatu.`,
     meaning: 'This chalisa venerates Saraswati as the source of all knowledge, wisdom and the arts — seated on a lotus, holding a veena and book, riding a swan, and invoked at the beginning of a child\'s education and during Basant Panchami.', meaningHi: 'यह चालीसा सरस्वती को समस्त ज्ञान, बुद्धि और कला के स्रोत के रूप में वंदना करती है — कमल पर विराजमान, वीणा और पुस्तक धारण किए, हंस की सवारी करते हुए, और बच्चे की शिक्षा के आरंभ में तथा बसंत पंचमी के दौरान आह्वानित।',
     benefits: 'Recited before exams, at the start of learning, on Basant Panchami, and by students, writers, musicians and artists seeking clarity and skill.', benefitsHi: 'परीक्षाओं से पहले, अध्ययन के आरंभ में, बसंत पंचमी को, और स्पष्टता व कौशल चाहने वाले विद्यार्थियों, लेखकों, संगीतकारों और कलाकारों द्वारा पाठ किया जाता है।',
   },
@@ -715,15 +1057,36 @@ Buddhi vidya vivek dhan, tako mile sadaay.`,
 ॥ दोहा ॥
 कृष्ण चालीसा जो पढ़े, प्रेम सहित सुख पाय।
 गोपाल कृपा करहु सदा, चरणन शीश नवाय॥`,
-    transliteration: `Bansi shobhit kar madhur, Nand lala Maharaj,
-Jai Yashoda ke pran dhan, rakho meri laaj.
+    transliteration: `Bansi shobhit kar madhur, neel jalad tan shyaam,
+Arun adhar janu bimb phal, nayan kamal abhiraam.
+Poorn indra, aravind mukh, pitaambar shubh saaj,
+Jai manmohan madan chhavi, Krishnachandra Maharaj.
 
 Jai Yadunandan jai jagvandan, jai Vasudev Devaki nandan,
-Jai Yashoda sut Nand dulare, jai prabhu bhaktan ke rakhwaare.
+Jai Yashoda sut Nand dulaare, jai prabhu bhaktan ke rakhwaare.
 
-... (chaupais recounting Krishna's childhood pastimes, Govardhan hill, the Gita's teaching, and his protection of devotees) ...
+Peetaambar tan kunj bihaari, Nand ke laala Girdhar Muraari,
+Mor mukut makraakrit kundal, arun adhar sohe dhuni mangal.
 
-Krishna Chalisa jo padhe, prem sahit sukh paay,
+Kar mein murali adhar viraaje, chhavi dekhat bahu dukh bhaaje,
+Gopin sang raas rachaaven, sur muni sab man mohit paaven.
+
+Kaaliy dah mein kood ke paithe, Kaaliy naag sheesh par naithe,
+Govardhan giri liyo uthaai, Indra krodh se liyo bachaai.
+
+Pootana Kans dusht sanhaare, Kans maama ko naash karaare,
+Mathura Gokul Dwaarka vaasi, baal sakha Sudama ke daasi.
+
+Geeta gyaan Arjun ko deena, Bhagwad roop viraat dikheena,
+Karma yog bhakti updesha, jag ko diyo amar sandesha.
+
+Draupadi ki laaj bachaai, Sudarshan chakra chalaai bhaai,
+Radha sang prem anoopa, naam amar hai Shyaam saroopa.
+
+Jo nar tumharo dhyaan lagaave, so nishchay bhav paar ho jaave,
+Sumiran karat Krishna sukhdaai, pal mein hare sakal dukhdaai.
+
+Krishna chaalisa jo padhe, prem sahit sukh paay,
 Gopal kripa karahu sada, charanan sheesh navaay.`,
     meaning: 'This chalisa celebrates Krishna\'s life — from his birth to Devaki and Vasudeva, his childhood in Gokul and Vrindavan (lifting Govardhan hill, subduing the Kaliya serpent), his friendship with Sudama, protecting Draupadi, and imparting the Bhagavad Gita to Arjuna.', meaningHi: 'यह चालीसा कृष्ण के जीवन का उत्सव मनाती है — देवकी और वसुदेव से उनके जन्म से लेकर, गोकुल और वृंदावन में उनके बचपन (गोवर्धन पर्वत उठाना, कालिया सर्प को वश में करना), सुदामा के साथ उनकी मित्रता, द्रौपदी की रक्षा करने, और अर्जुन को भगवद्गीता का उपदेश देने तक।',
     benefits: 'Recited daily by Krishna devotees, especially on Janmashtami and Wednesdays, seeking his protection and divine love (prema-bhakti).', benefitsHi: 'कृष्ण भक्तों द्वारा प्रतिदिन, विशेष रूप से जन्माष्टमी और बुधवार को, उनकी सुरक्षा और दिव्य प्रेम (प्रेम-भक्ति) की कामना करते हुए पाठ किया जाता है।',
@@ -809,16 +1172,79 @@ Gopal kripa karahu sada, charanan sheesh navaay.`,
 हरिदास हरि कृपा से, अवसि भक्ति को पाय॥
 राम चालीसा जो पढ़े, राम चरण चित लाय।
 जो इच्छा मन में करै, सकल सिद्ध हो जाय॥`,
-    transliteration: `Shri Raghunath kripalu hain, bhaktan hit avatar,
-Sumirat siddhi hot sab, harahu sakal sansar.
+    transliteration: `Shri Raghuveer bhakt hitkaari, suni leeje prabhu araj hamaari,
+Nishidin dhyaan dharai jo koi, ta sam bhakt aur nahin hoi.
 
-Jai Ram sukhdham susheela, Shankar man bhavan shubh sheela,
-Jai Avadhesh Dashrath ke jaaye, munivar siddh sakal sukhdaye.
+Dhyaan dharen Shivji man maanhi, Brahma, Indra paar nahin paahi,
+Doot tumhaar veer Hanumaana, jaasu prabhaav tihoon pur jaana.
 
-... (chaupais narrating Rama's marriage to Sita, exile, the abduction of Sita, alliance with Hanuman and Sugriva, the war with Ravana, and his return to Ayodhya) ...
+Jai, jai, jai Raghunaath kripaala, sada karo santan pratipaala,
+Tuv bhujdand prachand kripaala, Raavan maari suran pratipaala.
 
-Ram Chalisa jo padhe, hriday dhare vishwas,
-Bhav sagar se paar ho, pooran hoy sab aas.`,
+Tum anaath ke naath gosaaein, deenan ke ho sada sahaai,
+Brahmaadik tav paar na paaven, sada eesh tumharo yash gaaven.
+
+Chaariu bhed Bharat hain saakhi, tum bhaktan ki lajja raakhi,
+Gun gaavat Sharad man maahin, surpati taako paar na paahin.
+
+Naam tumhaar let jo koi, ta sam dhanya aur nahin hoi,
+Ram naam hai aparampaara, chaarihu vedan jaahi pukaara.
+
+Ganpati naam tumhaaro leenho, tinko pratham poojya tum keenho,
+Shesh ratat nit naam tumhaara, mahi ko bhaar sheesh par dhaara.
+
+Phool samaan rahat so bhaara, paavat kou na tumharo paara,
+Bharat naam tumhaaro ur dhaaro, taason kabahoon na ran mein haaro.
+
+Naam Shatrughan hriday prakaasha, sumirat hot shatru kar naasha,
+Lakhan tumhaare aagyaakaari, sada karat santan rakhvaari.
+
+Taate ran jeete nahin koi, yuddh jure Yamahoon kin hoi,
+Mahalakshmi dhar avataara, sab vidhi karat paap ko chhaara.
+
+Sita Ram punita gaayo, Bhuvaneshwari prabhaav dikhaayo,
+Ghat son prakat bhai so aai, jaako dekhat chandra lajaai.
+
+Jo tumhare nit paanv palotat, navo niddhi charanan mein lotat,
+Siddhi athaarah mangalkaari, so tum par jaave balihaari.
+
+Aurahu jo anek prabhutaai, so Sitaapati tumahin banaai,
+Ichchha te kotin sansaara, rachat na laagat pal ki baara.
+
+Jo tumhare charanan chit laavai, taaki mukti avasi ho jaavai,
+Jai jai jai prabhu jyoti swaroopa, nirgun brahm akhand anoopa.
+
+Satya satya jai satyavrat swaami, satya sanaatan antaryaami,
+Satya bhajan tumharo jo gaavai, so nishchay chaaron phal paavai.
+
+Satya shapath Gauripati keenhi, tumne bhaktihin sab siddhi deenhi,
+Sunahu Ram tum taat hamaare, tumahin Bharat kul poojya prachaare.
+
+Tumahin dev kul dev hamaare, tum guru dev praan ke pyaare,
+Jo kuchh ho so tumahin raaja, jai jai jai prabhu raakho laaja.
+
+Ram aatma poshan haare, jai jai jai Dashrath ke pyaare,
+Gyaan hriday do gyaan swaroopa, namo namo jai jagpati bhoopa.
+
+Dhanya dhanya tum dhanya prataapa, naam tumhaar harat santaapa,
+Satya shuddh devan mukh gaaya, baji dundubhi shankh bajaaya.
+
+Satya satya tum satya sanaatan, tum hi ho hamre tan-man dhan,
+Yaako paath kare jo koi, gyaan prakat taake ur hoi.
+
+Aavaagaman mitai tihi kera, satya vachan maane Shiv mera,
+Aur aas man mein jo hoi, manvaanchhit phal paave soi.
+
+Teenhoon kaal dhyaan jo lyaavai, tulsi dal aru phool chadhaavai,
+Saag patra so bhog lagaavai, so nar sakal siddhata paavai.
+
+Ant samay Raghubar pur jaai, jahaan janm Hari bhakt kahaai,
+Shri Haridaas kahai aru gaavai, so Baikunth dhaam ko paavai.
+
+Saat divas jo nem kar, paath kare chit laay,
+Haridaas Hari kripa se, avasi bhakti ko paay.
+Ram chaalisa jo padhe, Ram charan chit laay,
+Jo ichchha man mein karai, sakal siddh ho jaay.`,
     meaning: 'This chalisa narrates the full story of Rama — his birth in Ayodhya, marriage to Sita, fourteen years of exile, the abduction of Sita by Ravana, his alliance with Hanuman and Sugriva, the war in Lanka, and his triumphant return as the ideal king (Ram Rajya).', meaningHi: 'यह चालीसा राम की संपूर्ण कथा का वर्णन करती है — अयोध्या में उनका जन्म, सीता से विवाह, चौदह वर्षों का वनवास, रावण द्वारा सीता का हरण, हनुमान और सुग्रीव के साथ उनका गठबंधन, लंका का युद्ध, और आदर्श राजा (राम राज्य) के रूप में उनकी विजयी वापसी।',
     benefits: 'Recited during Ram Navami, Diwali, and daily by devotees seeking righteousness, courage and the removal of hardship through faith in Rama.', benefitsHi: 'राम नवमी, दिवाली के दौरान, और राम में आस्था के माध्यम से धार्मिकता, साहस और कठिनाई के निवारण की कामना करने वाले भक्तों द्वारा प्रतिदिन पाठ किया जाता है।',
   },
@@ -899,15 +1325,72 @@ Bhav sagar se paar ho, pooran hoy sab aas.`,
 पाठ शनिश्चर देव को, कीन्हों विमल तैयार।
 करत पाठ चालीस दिन, हो भवसागर पार॥`,
     transliteration: `Jai Ganesh Girija suvan, mangal karan kripal,
-Deenan ke dukh door kari, kije nath nihal.
+Deenan ke dukh door kari, keeje naath nihaal.
+Jai jai Shri Shanidev prabhu, sunahu vinay Maharaj,
+Karahu kripa he Ravi tanay, raakhahu jan ki laaj.
 
-Jayati jayati Shanidev dayala, karat sada bhaktan pratipala,
-Chaar bhuja tanu Krishna sharira, dhanush baan gada var dhara.
+Jayati jayati Shanidev dayaala, karat sada bhaktan pratipaala,
+Chaari bhuja, tanu shyaam viraaje, maathe ratan mukut chhavi chhaaje.
 
-... (chaupais narrating Shani's birth to Surya and Chhaya, his rejection by Surya, and his role as the impartial judge of karma) ...
+Param vishaal manohar bhaala, tedhi drishti bhrikuti vikaraala,
+Kundal shravan chamaacham chamke, hiye maal muktan mani damke.
 
-Shani Chalisa bhakti se, padhe jo nar naari,
-Shani ki kripa use mile, door hoy dukhbhari.`,
+Kar mein gada trishul kuthaara, pal bich karain arihin sanhaara,
+Pingal, Krishno, Chhaaya, nandan, Yam, Konasth, Raudra, dukh bhanjan.
+
+Sauri, Mand, Shani, dashnaama, Bhaanu putra poojahin sab kaama,
+Ja par prabhu prasann hai jaahi, rankahun raav karain kshan maahi.
+
+Parvatahoo trin hoi nihaarat, trinahoo ko parvat kari daarat,
+Raaj milat van Raamahin deenho, Kaikeihoon ki mati hari leenho.
+
+Banahoon mein mrig kapat dikhaai, maatu Janaki gayi churaai,
+Lakhanahin shakti vikal karidaara, machiga dal mein haahaakaara.
+
+Raavan ki gati mati bauraai, Ramchandra son bair badhaai,
+Diyo keet kari kanchan Lanka, baji bajarang veer ki danka.
+
+Nrip Vikram par tuhi pagu dhaara, chitra mayoor nigali gai haara,
+Haar naulaakha laagyo chori, haath pair daravaayo tori.
+
+Bhaari dasha nikrisht dikhaayo, telihin ghar kolhoo chalvaayo,
+Vinay raag deepak mahan keenho, tab prasann prabhu hai sukh deenho.
+
+Harishchandra nrip naari bikaani, aapahoon bhare dom ghar paani,
+Taise Nal par dasha siraani, bhoonji-meen kood gai paani.
+
+Shri Shankarahi gahyo jab jaai, Parvati ko Sati karaai,
+Tanik vilokat hi kari reesa, nabh udi gayo Gaurisut seesa.
+
+Pandav par bhai dasha tumhaari, bachi Draupadi hoti ughaari,
+Kaurav ke bhi gati mati maaryo, yuddh Mahabharat kari daaryo.
+
+Ravi kahan mukh mahan dhari tatkaala, lekar koodi paryo paataala,
+Shesh dev-lakhi vinati laai, Ravi ko mukh te diyo chhudaai.
+
+Vaahan prabhu ke saat sujaana, hay digj gardabh mrig swaana,
+Jambuk sinh aadi nakh dhaari, so phal jyotish kahat pukaari.
+
+Gaj vaahan Lakshmi grih aaven, hay te sukh sampati upjaave,
+Gardabh haani karai bahu kaaja, sinh siddhkar raaj samaaja.
+
+Jambuk buddhi nasht kar daarai, mrig de kasht praan sanhaarai,
+Jab aavahin prabhu swaan savaari, chori aadi hoy dar bhaari.
+
+Taisahi chaari charan yah naama, swarn lauh chaandi aru taama,
+Lauh charan par jab prabhu aaven, dhan jan sampati nasht karaave.
+
+Samta taamra rajat shubhkaari, swarn sarvasukh mangal kaari,
+Jo yah Shani charitra nit gaave, kabahun na dasha nikrisht sataave.
+
+Adbhut naath dikhaaven leela, karain shatru ke nashi bali dheela,
+Jo pandit suyogya bulvaai, vidhivat Shani grah shaanti karaai.
+
+Peepal jal Shani divas chadhaavat, deep daan dai bahu sukh paavat,
+Kahat Ramsundar prabhu daasa, Shani sumirat sukh hot prakaasha.
+
+Paath Shanishchar dev ko, keenho vimal taiyaar,
+Karat paath chaalis din, ho bhavsaagar paar.`,
     meaning: 'This chalisa venerates Shani (Saturn), son of Surya and Chhaya, describing his dark form and his role as the impartial giver of karmic results (Karmaphaladata) who tested even great kings like Vikramaditya and Harishchandra.', meaningHi: 'यह चालीसा सूर्य और छाया के पुत्र शनि की वंदना करती है, उनके श्याम स्वरूप और विक्रमादित्य तथा हरिश्चंद्र जैसे महान राजाओं की भी परीक्षा लेने वाले कर्मफलदाता (कर्म के परिणामों के निष्पक्ष दाता) के रूप में उनकी भूमिका का वर्णन करते हुए।',
     benefits: 'Recited on Saturdays, during Shani Jayanti, and by those undergoing Sadhesati or Dhaiya to seek relief from Shani\'s afflictions.', benefitsHi: 'शनिवार को, शनि जयंती के दौरान, और साढ़े साती या ढैय्या से गुजर रहे लोगों द्वारा शनि के दुष्प्रभावों से राहत पाने के लिए पाठ किया जाता है।',
   },
@@ -1070,16 +1553,158 @@ Shani ki kripa use mile, door hoy dukhbhari.`,
 
 काश निर्भय तुमको भी, साक्षात् साई मिल जाता। वर्षों से उजड़ा चमन अपना, फिर से आज खिल जाता॥
 गर पकड़ता मैं चरण श्री के, नहीं छोड़ता उम्रभर। मना लेता मैं जरूर उनको, गर रूठते साई मुझ पर॥`,
-    transliteration: `Sai Baba Shirdi wale, sankat haro hamar,
-Prem sahit jo sumire, paave bhav se paar.
+    transliteration: `Pahle Sai ke charanon mein, apna sheesh namaaoon main, kaise Shirdi Sai aaye, saara haal sunaaoon main,
+Kaun hai maata, pita kaun hai, ye na kisi ne bhi jaana, kahaan janm Sai ne dhaara, prashn paheli raha bana.
 
-Jai jai Sai Bhole Bhandari, Sadguru Sai karuna dhari,
-Shirdi dham base Bhagwana, sabke tum ho antaryami jaana.
+Koi kahe Ayodhya ke, ye Ramchandra Bhagwan hain, koi kahta Sai Baba, Pavan putra Hanuman hain,
+Koi kahta Mangal Moorti, Shri Gajanand hain Sai, koi kahta Gokul Mohan, Devaki Nandan hain Sai.
 
-... (chaupais describing Sai Baba's life at Shirdi, his message of universal harmony between faiths, and his compassion for devotees) ...
+Shankar samjhe bhakt kai to, Baba ko bhajate rahte, koi kah avataar Dutt ka, pooja Sai ki karate,
+Kuchh bhi maano unko tum, par Sai hain sachche Bhagwan, bade dayaalu deenbandhu, kitanon ko diya jeevan daan.
 
-Sai Chalisa jo padhe, prem sahit man laay,
-Sab sankat kat jaay, Sai kripa barsaay.`,
+Kai varsh pahle ki ghatana, tumhen sunaaoonga main baat, kisi bhaagyashaali ki, Shirdi mein aai thi baaraat,
+Aaya saath usi ke tha, baalak ek bahut sundar, aaya, aakar vahin bas gaya, paavan Shirdi kiya nagar.
+
+Kai dinon tak bhatakta, bhiksha maang usne dar-dar, aur dikhaai aisi leela, jag mein jo ho gai amar,
+Jaise-jaise amar umar badhi, badhati hi vaise gai shaan, ghar-ghar hone laga nagar mein, Sai Baba ka gungaan.
+
+Dig-diganta mein laga goonjne, phir to Sainji ka naam, deen-dukhi ki raksha karna, yahi raha Baba ka kaam,
+Baba ke charanon mein jaakar, jo kahta main hoon nirdhan, daya usi par hoti unaki, khul jaate dukh ke bandhan.
+
+Kabhi kisi ne maangi bhiksha, do Baba mujhko santaan, evam astu tab kahkar Sai, dete the usko vardaan,
+Swayam dukhi Baba ho jaate, deen-dukhi jan ka lakh haal, antahkaran Shri Sai ka, saagar jaisa raha vishaal.
+
+Bhakt ek Madraasi aaya, ghar ka bahut bada dhanvaan, maal khazaana behad usaka, keval nahin rahi santaan,
+Laga manaane Sainaath ko, Baba mujh par daya karo, jhanjhaa se jhankrit naiya ko, tumhin meri paar karo.
+
+Kuldeepak ke bina andhera, chhaaya hua ghar mein mere, isaliye aaya hoon Baba, hokar sharanaagat tere,
+Kuldeepak ke abhaav mein, vyarth hai daulat ki maaya, aaj bhikhaari banakar Baba, sharan tumhaari main aaya.
+
+De do mujhko putra-daan, main rini rahoonga jeevan bhar, aur kisi ki aasha na mujhko, sirf bharosa hai tum par,
+Anunay-vinay bahut ki usne, charanon mein dhar ke sheesh, tab prasann hokar Baba ne, diya bhakt ko yah aasheesh.
+
+"Allah bhala karega tera," putra janm ho tere ghar, kripa rahegi tujh par usaki, aur tere us baalak par,
+Ab tak nahin kisi ne paaya, Sai ki kripa ka paar, putra ratn de Madraasi ko, dhanya kiya usaka sansaar.
+
+Tan-man se jo bhaje usi ka, jag mein hota hai uddhaar, saanch ko aanch nahin hain koi, sada jhooth ki hoti haar,
+Main hoon sada sahaare usake, sada rahoonga usaka daas, Sai jaisa prabhu mila hai, itani hi kam hai kya aas.
+
+Mera bhi din tha ek aisa, milati nahin mujhe roti, tan par kapda door raha tha, shesh rahi nanhi si langoti,
+Sarita sanmukh hone par bhi, main pyaasa ka pyaasa tha, durdin mera mere oopar, daavaagni barsaata tha.
+
+Dharati ke atirikt jagat mein, mera kuchh avalamb na tha, bana bhikhaari main duniya mein, dar-dar thokar khaata tha,
+Aise mein ek mitra mila jo, param bhakt Sai ka tha, janjaalon se mukt magar, jagati mein vah bhi mujhsa tha.
+
+Baba ke darshan ki khaatir, mil donon ne kiya vichaar, Sai jaise daya moorti ke, darshan ko ho gaye taiyaar,
+Paavan Shirdi nagar mein jaakar, dekh matvaali moorati, dhanya janm ho gaya ki hamne, jab dekhi Sai ki soorati.
+
+Jab se kiye hain darshan hamne, dukh saara kaafoor ho gaya, sankat saare mitai aur, vipadaaon ka ant ho gaya,
+Maan aur sammaan mila, bhiksha mein hamko Baba se, pratibimbit ho uthe jagat mein, hum Sai ki aabha se.
+
+Baba ne sanmaan diya hai, maan diya is jeevan mein, isaka hi sambal le main, hansta jaaoonga jeevan mein,
+Sai ki leela ka mere, man par aisa asar hua, lagata jagati ke kan-kan mein, jaise ho vah bhara hua.
+
+"Kaashiram" Baba ka bhakt, Shirdi mein rahta tha, main Sai ka Sai mera, vah duniya se kahta tha,
+Seekar swayam vastra bechata, graam-nagar baazaaron mein, jhankrit usaki hriday tantri thi, Sai ki jhankaaron mein.
+
+Stabdh nisha thi, the soy, rajani aanchal mein chaand sitaare, nahin soojhata raha haath ko, haath timir ke maare,
+Vastra bechkar laut raha tha, haay! haat se Kaashi, vichitra bada sanyog ki us din, aata tha ekaaki.
+
+Gher raah mein khade ho gaye, use kutil anyaayi, maaro kaato looto isaki hi, dhwani padi sunaai,
+Loot peetkar use vahaan se, kutil gaye champat ho, aaghaaton mein marmaahat ho, usane di sangya kho.
+
+Bahut der tak pada rah vah, vahin usi haalat mein, jaane kab kuchh hosh ho utha, vahin usaki palak mein,
+Anjaane hi usake munh se, nikal pada tha Sai, jisaki pratidhwani Shirdi mein, Baba ko padi sunaai.
+
+Kshubdh ho utha maanas unaka, Baba gaye vikal ho, lagata jaise ghatana saari, ghati unhin ke sanmukh ho,
+Unmaadi se idhar-udhar tab, Baba lage bhatakane, sanmukh cheezen jo bhi aai, unko lagane patakane.
+
+Aur dhadhakte angaaron mein, Baba ne apna kar daala, hue sashankit sabhi vahaan, lakh taandav-nritya niraala,
+Samajh gaye sab log, ki koi bhakt pada sankat mein, kshubhit khade the sabhi vahaan, par pade hue vismay mein.
+
+Use bachaane ki hi khaatir, Baba aaj vikal hai, usaki hi peeda se peedit, unaki antahsthal hai,
+Itane mein hi vividh ne apni, vichitrata dikhlaai, lakh kar jisako janata ki, shraddha sarita laharaai.
+
+Lekar sangyaaheen bhakt ko, gaadi ek vahaan aai, sanmukh apne dekh bhakt ko, Sai ki aankhen bhar aai,
+Shaant, dheer, gambheer, sindhu sa, Baba ka antahsthal, aaj na jaane kyon rah-rahkar, ho jaata tha chanchal.
+
+Aaj daya ki moorti swayam tha, bana hua upchaari, aur bhakt ke liye aaj tha, dev bana pratihaari,
+Aaj bhakti ki visham pareeksha mein, saphal hua tha Kaashi, usake hi darshan ki khaatir the, umde nagar-nivaasi.
+
+Jab bhi aur jahaan bhi koi, bhakt pade sankat mein, usaki raksha karne Baba, aate hain palbhar mein,
+Yug-yug ka hai satya yah, nahin koi nai kahaani, aapatgrast bhakt jab hota, jaate khud antaryaami.
+
+Bhed-bhaav se pare pujaari, maanavata ke the Sai, jitane pyaare Hindu-Muslim, utane hi the Sikh Isaai,
+Bhed-bhaav mandir-masjid ka, tod-phod Baba ne daala, raah Rahim sabhi unake the, Krishna Karim Allataala.
+
+Ghante ki pratidhwani se goonja, masjid ka kona-kona, mile paraspar Hindu-Muslim, pyaar badha din-din doona,
+Chamatkaar tha kitana sundar, parichay is kaaya ne di, aur neem kaduvaahat mein bhi, mithaas Baba ne bhar di.
+
+Sab ko sneh diya Sai ne, sabako santul pyaar kiya, jo kuchh jisane bhi chaaha, Baba ne usako vahi diya,
+Aise snehsheel bhaajan ka, naam sada jo japa kare, parvat jaisa dukh na kyon ho, palbhar mein vah door tare.
+
+Sai jaisa daata ham, are nahin dekha koi, jisake keval darshan se hi, saari vipada door gai,
+Tan mein Sai, man mein Sai, Sai-Sai bhaja karo, apne tan ki sudhi-budhi khokar, sudhi usaki tum kiya karo.
+
+Jab too apni sudhi taj, Baba ki sudhi kiya karega, aur raat-din Baba-Baba, hi too rata karega,
+To Baba ko are! vivash ho, sudhi teri leni hi hogi, teri har ichchha Baba ko, poori hi karani hogi.
+
+Jangal, jangal bhatak na paagal, aur dhoondhne Baba ko, ek jagah keval Shirdi mein, too paayega Baba ko,
+Dhanya jagat mein praani hai vah, jisane Baba ko paaya, dukh mein, sukh mein prahar aath ho, Sai ka hi gun gaaya.
+
+Gire sankaton ke parvat, chaahe bijli hi toot pade, Sai ka le naam sada tum, sanmukh sab ke raho ade,
+Is boodhe ki sun karaamat, tum ho jaaoge hairaan, dang rah gaye sunkar jisako, jaane kitane chatur sujaan.
+
+Ek baar Shirdi mein saadhu, dhongi tha koi aaya, bholi-bhaali nagar-nivaasi, janata ko tha bharamaaya,
+Jadi-bootiyaan unhen dikhaakar, karane laga vah bhaashan, kahane laga suno shrotaagan, ghar mera hai Vrindaavan.
+
+Aushadhi mere paas ek hai, aur ajab isamein shakti, isake sevan karane se hi, ho jaati dukh se mukti,
+Agar mukt hona chaaho, tum sankat se beemaari se, to hai mera namra nivedan, har nar se, har naari se.
+
+Lo khareed tum isako, isaki sevan vidhiyaan hain nyaari, yadyapi tuchchh vastu hai yah, gun usake hain ati bhaari,
+Jo hai santati heen yahaan yadi, meri aushadhi ko khaaye, putra-ratn ho praapt, are vah munh maanga phal paaye.
+
+Aushadhi meri jo na khareede, jeevan bhar pachhtaaega, mujh jaisa praani shaayad hi, are yahaan aa paaega,
+Duniya do dinon ka mela hai, mauj shauk tum bhi kar lo, agar isase milata hai, sab kuchh, tum bhi isako le lo.
+
+Hairaani badhati janata ki, lakh isaki kaarastaani, pramudit vah bhi man-hi-man tha, lakh logon ki naadaani,
+Khabar sunaane Baba ko yah, gaya daudkar sevak ek, sunkar bhrikuti tani aur, vismaran ho gaya sabhi vivek.
+
+Hukm diya sevak ko, satvar pakad dusht ko laao, ya Shirdi ki seema se, kapati ko door bhagaao,
+Mere rahte bholi-bhaali, Shirdi ki janata ko, kaun neech aisa jo, saahas karata hai chhalane ko.
+
+Palbhar mein aise dhongi, kapati neech lootere ko, mahaanaash ke mahaagart mein pahuncha, doon jeevan bhar ko,
+Tanik mila aabhaas madaari, kroor, kutil anyaayi ko, kaal naachata hai ab sir par, gussa aaya Sai ko.
+
+Palbhar mein sab khel band kar, bhaaga sir par rakhkar pair, soch raha tha man hi man, Bhagwan nahin hai ab khair,
+Sach hai Sai jaisa daani, mil na sakega jag mein, ansh Ish ka Sai Baba, unhen na kuchh bhi mushkil jag mein.
+
+Sneh, sheel, saujanya aadi ka, aabhooshan dhaaran kar, badhata is duniya mein jo bhi, maanav seva ke path par,
+Vahi jeet leta hai jagati ke, jan jan ka antahsthal, usaki ek udaasi hi, jag ko kar deti hai vihval.
+
+Jab-jab jag mein bhaar paap ka, badh-badh hi jaata hai, use mitaane ki hi khaatir, avataari hi aata hai,
+Paap aur anyaay sabhi kuchh, is jagati ka har ke, door bhaga deta duniya ke, daanav ko kshan bhar ke.
+
+Sneh sudha ki dhaar barasane, lagati hai is duniya mein, gale paraspar milane lagate, hain jan-jan aapas mein,
+Aise avataari Sai, mrityulok mein aakar, samata ka yah paath padhaaya, sabako apna aap mitaakar.
+
+Naam Dwaarka Masjid ka, rakha Shirdi mein Sai ne, daap, taap, santaap mitaaya, jo kuchh aaya Sai ne,
+Sada yaad mein mast Ram ki, baithe rahte the Sai, pahar aath hi Ram naam ko, bhajate rahte the Sai.
+
+Sookhi-rookhi taazi baasi, chaahe ya hove pakvaan, sauda pyaar ke bhookhe Sai ki, khaatir the sabhi samaan,
+Sneh aur shraddha se apani, jan jo kuchh de jaate the, bade chaav se us bhojan ko, Baba paavan karate the.
+
+Kabhi-kabhi man bahalaane ko, Baba baag mein jaate the, pramudit man mein nirakh prakriti, chhata ko ve hote the,
+Rang-birange pushp baag ke, mand-mand hil-dul karake, beehad veeraane man mein bhi, sneh salil bhar jaate the.
+
+Aisi samadhur bela mein bhi, dukh aapaat, vipada ke maare, apne man ki vyatha sunaane, jan rahte Baba ko ghere,
+Sunakar jinaki karunkatha ko, nayan kamal bhar aate the, de vibhooti har vyatha, shaanti, unake ur mein bhar dete the.
+
+Jaane kya adbhut shakti, us vibhooti mein hoti thi, jo dhaaran karate mastak par, dukh saara har leti thi,
+Dhanya manuj ve saakshaat darshan, jo Baba Sai ke paaye, dhanya kamal kar unake jinase, charan-kamal ve parasaaye.
+
+Kaash nirbhay tumako bhi, saakshaat Sai mil jaata, varshon se ujada chaman apna, phir se aaj khil jaata,
+Gar pakadata main charan Shri ke, nahin chhodata umrabhar, mana leta main zaroor unako, gar rootthate Sai mujh par.`,
     meaning: 'This chalisa venerates Shirdi Sai Baba, who lived at the Dwarkamai mosque-temple, taught "Sabka Malik Ek" (one God for all), and is revered by Hindus and Muslims alike for his miracles and compassion toward devotees.', meaningHi: 'यह चालीसा शिरडी साईं बाबा की वंदना करती है, जो द्वारकामाई मस्जिद-मंदिर में रहते थे, "सबका मालिक एक" (सभी के लिए एक ईश्वर) का उपदेश देते थे, और अपने चमत्कारों तथा भक्तों के प्रति करुणा के लिए हिंदुओं और मुसलमानों दोनों द्वारा पूजनीय हैं।',
     benefits: 'Recited on Thursdays and during Sai Baba\'s Punyatithi (Ramnavami-linked Urus festival), by devotees seeking peace of mind and resolution of hardship.', benefitsHi: 'गुरुवार को और साईं बाबा की पुण्यतिथि (रामनवमी से जुड़े उरुस उत्सव) के दौरान, मानसिक शांति और कठिनाइयों के समाधान की कामना करने वाले भक्तों द्वारा पाठ किया जाता है।',
   },
@@ -1180,16 +1805,94 @@ Sab sankat kat jaay, Sai kripa barsaay.`,
 ॥ दोहा ॥
 जय तारा, जय दक्षिणा, कलावती सुखमूल।
 शरणागत भक्त है, रहहु सदा अनुकूल॥`,
-    transliteration: `Jai jai Kali Mahakali, kar do bhav se paar,
-Dusht sanharak shakti ho, haro sakal sansar.
+    transliteration: `Jai Kaali Jagdamb jai, harani ogh agh punj,
+Vaas karahu nij daas ke, nishadin hriday nikunj.
+Jayati Kapaali Kaalika, Kankaali sukh daani,
+Kripa karahu vardaayini, nij sevak anumaani.
 
-Jai jai Kali kalimal harni, bhaktan ke dukh dwandwa nivarani,
-Shyamvarna tanu ghor swaroopa, mundmal gal shobhit roopa.
+Jai jai jai Kaali Kankaali, jai Kapaalini, jayati Karaali,
+Shankar priya, Aparna, amba, jai Kapardini, jai Jagdamba.
 
-... (chaupais describing Kali's fierce form, her destruction of Shumbha-Nishumbha and Raktabija, and her residence at Dakshineswar) ...
+Aarya, Hala, Ambika, Maaya, Kaatyaayani Uma jagjaaya,
+Girija Gauri Durga Chandi, Daakshaayani Shaambhavi prachandi.
 
-Kali Chalisa bhakti se, padhe jo man laay,
-Sab bhay sankat door hon, maa karuna barsaay.`,
+Parvati Mangala Bhavaani, vishwakaarini Sati Mridaani,
+Sarvamangala Shail Nandini, Hemvati tum jagat vandini.
+
+Brahmachaarini Kaalraatri jai, Mahaaraatri jai Mohraatri jai,
+Tum Trimoorti Rohini Kaalika, Kooshmaanda Kaartika Chandika.
+
+Taara Bhuvaneshwari ananya, tumhin Chhinnamasta shuchidhanya,
+Dhoomaavati Shodashi maata, Bagla Maatangi vikhyaata.
+
+Tum Bhairavi maatu tum Kamala, Raktadantika keerati amala,
+Shaakambhari Kaushiki Bheema, mahaatma ag jag ki seema.
+
+Chandraghantika tum Saavitri, Brahmavaadini maan Gaayatri,
+Rudraani tum Krishna Pingala, Agnijwaala tum Sarvamangala.
+
+Meghasvana tapasvini Yogini, sahasraakshi tum agjag Bhogini,
+Jalodari Saraswati Daakini, Tridasheshwari ajay Laakini.
+
+Pushti tushti dhriti smriti Shiv dooti, Kaamaakshi lajja aahooti,
+Mahodari Kaamaakshi haarini, Vinaayaki shruti maha Shaakini.
+
+Aja Karmamohi Brahmaani, Dhaatri Vaaraahi Sharvaani,
+Skand maatu tum sinh vaahini, maatu Subhadra rahahu daahini.
+
+Naam roop gun amit tumhaare, Shesh Sharada baranat haare,
+Tanu chhavi shyaamvarn tav maata, naam Kaalika jag vikhyaata.
+
+Ashtaadash tab bhuja manohar, tinamahan astra viraajat sundar,
+Shankh chakra aroo gada suhaavan, parigh bhushandi ghanta paavan.
+
+Shool bajra dhanubaan uthaae, nishichar kul sab maari giraae,
+Shumbh Nishumbh daitya sanhaare, Raktabeej ke praan nikaare.
+
+Chaunsath Yogini naachat sanga, madyapaan keenhaiu ran ganga,
+Kati kinkini madhur noopur dhuni, daityavansh kaanpat jehi suni-suni.
+
+Kar khappar trishul bhaykaari, ahai sada santan sukhkaari,
+Shav aaroodh nritya tum saaja, bajat mridang bheri ke baaja.
+
+Rakt paan aridal ko keenha, praan tajeu jo tumhin na cheenha,
+Laplapaati jivha tav maata, bhaktan sukh dushtan dukh daata.
+
+Lasat bhaal sendoor ko teeko, bikhare kesh roop ati neeko,
+Mundmaal gal atishay sohat, bhujaamal kinkan manmohan.
+
+Pralay nritya tum karahu Bhavaani, Jagdamba kahi Ved bakhaani,
+Tum mashaan vaasini karaala, bhajat turat kaatahu bhavjaala.
+
+Baavan Shakti Peeth tav sundar, jahaan biraajat vividh roop dhar,
+Vindhyavaasini kahoon badaai, kahan Kaalika roop suhaai.
+
+Shaakambhari bani kahan jwaala, Mahishasur Mardini karaala,
+Kaamaakhya tav naam manohar, pujavahin manokaamana drutatar.
+
+Chand Mund vadh chhin mahan kareu, devan ke ur aanand bhareu,
+Sarva vyaapini tum maan Taara, aridal dalan lehu avataara.
+
+Khalbal machat sunat hunkaari, agjag vyaapak deh tumhaari,
+Tum viraat roopa gunkhaani, vishwa swaroopa tum Maharaani.
+
+Utpatti sthiti lay tumhare kaaran, karahu daas ke dosh nivaaran,
+Maan ur vaas karahoo tum amba, sada deen jan ki avalamba.
+
+Tumhaaro dhyaan dharai jo koi, ta kahan bheeti katahun nahin hoi,
+Vishwaroop tum aadi Bhavaani, mahima Ved Puraan bakhaani.
+
+Ati apaar tav naam prabhaava, japat na rahan ranch dukh daava,
+Mahaakaalika jai Kalyaani, jayati sada sevak sukhdaani.
+
+Tum anant audaarya vibhooshan, keejie kripa kshamiye sab dooshan,
+Daas jaani nij daya dikhaavahu, sut anumaanit sahit apnaavahu.
+
+Janani tum sevak prati paali, karahu kripa sab vidhi maan Kaali,
+Paath karai chaalisa joi, taapar kripa tumhaari hoi.
+
+Jai Taara, jai Dakshina, kalaavati sukhmool,
+Sharanaagat bhakt hai, rahahu sada anukool.`,
     meaning: 'This chalisa venerates Kali in her fierce protective form — dark-complexioned, garlanded with skulls, wielding sword and skull-bowl — as the destroyer of the demons Shumbha-Nishumbha and Raktabija, and as the compassionate mother worshipped at Dakshineswar.', meaningHi: 'यह चालीसा काली को उनके उग्र रक्षात्मक रूप में वंदना करती है — श्याम वर्ण, खोपड़ियों की माला पहने, तलवार और कपाल-पात्र धारण किए — शुंभ-निशुंभ और रक्तबीज राक्षसों की संहारक के रूप में, तथा दक्षिणेश्वर में पूजी जाने वाली करुणामयी मां के रूप में।',
     benefits: 'Recited during Kali Puja, Navratri, and by devotees seeking protection from fear, negative influences and enemies.', benefitsHi: 'काली पूजा, नवरात्रि के दौरान, और भय, नकारात्मक प्रभावों तथा शत्रुओं से सुरक्षा चाहने वाले भक्तों द्वारा पाठ किया जाता है।',
   },
@@ -1267,16 +1970,71 @@ Sab bhay sankat door hon, maa karuna barsaay.`,
 ॥ दोहा ॥
 भानु चालीसा प्रेम युत, गावहिं जे नर नित्य।
 सुख सम्पत्ति लहि बिबिध, होंहिं सदा कृतकृत्य॥`,
-    transliteration: `Namo namo Surya Narayan, tej roop Bhagwan,
-Kripa karo he Bhaskar, do vidya bal gyan.
+    transliteration: `Kanak badan kundal makar, mukta maala ang,
+Padmaasan sthit dhyaaie, shankh chakra ke sang.
 
-Jai jai jai Bhaskar Bhagwana, sahas kiran tum tej mahana,
-Sapt ashwan rath par savara, Arun sarathi sang tumhara.
+Jai savita jai jayati divaakar, sahasraanshu! saptaashwa timirhar,
+Bhanu! patang! mareechi! bhaaskar!, savita hans! sunoor vibhaakar.
 
-... (chaupais praising Surya's twelve names, his role in sustaining life, and his worship during Chhath Puja) ...
+Vivasvaan! aaditya! vikartan, Maartand hariroop virochan,
+Ambarmani! khag! ravi kahlaate, Ved Hiranyagarbh kah gaate.
 
-Surya Chalisa jo padhe, nitya prati bhakti sujaan,
-Aarogya tej bal pavahi, badhe yash aur maan.`,
+Sahasraanshu pradyotan, kahikahi, munigan hot prasann modalahi,
+Arun sadrish saarathi manohar, haankat hay saata chadhi rath par.
+
+Mandal ki mahima ati nyaari, tej roop keri balihaari,
+Uchchaihshravaa sadrish hay jote, dekhi Purandar lajjit hote.
+
+Mitra mareechi Bhanu Arun Bhaaskar, savita Surya Arka khag kalikar,
+Poosha ravi Aaditya naam lai, Hiranyagarbhaay namah kahikai.
+
+Dwaadas naam prem son gaaven, mastak baarah baar navaaven,
+Chaar padaarath jan so paave, dukh daaridra agh punj nasaave.
+
+Namaskaar ko chamatkaar yah, vidhi Harihar ko kripaasaar yah,
+Sevai Bhanu tumahin man laai, ashtasiddhi navnidhi tehin paai.
+
+Baarah naam uchchaaran karate, sahas janam ke paatak tarate,
+Upaakhyaan jo karate tavajan, ripu son jamalahate sotehi chhan.
+
+Dhan sut jut parivaar badhtu hai, prabal moh ko phand katatu hai,
+Arka sheesh ko raksha karate, ravi lalaat par nitya biharate.
+
+Surya netra par nitya viraajat, karn des par dinkar chhaajat,
+Bhanu naasika vaaskarahunit, bhaaskar karat sada mukhko hit.
+
+Onth rahain parjanya hamaare, rasna beech teekshan bas pyaare,
+Kanth suvarn ret ki shobha, tigma tejasah kaandhe lobha.
+
+Poosha baahoo mitra peethahin par, twashta varun rahat suushnakar,
+Yugal haath par raksha kaaran, Bhaanumaan ursharm suudarchan.
+
+Basat naabhi Aaditya manohar, katimanh, rahat man mudabhar,
+Jangha gopati savita baasa, gupt divaakar karat hulaasa.
+
+Vivasvaan pad ki rakhvaari, baahar basate nit tam haari,
+Sahasraanshu sarvaang samhaarai, raksha kavach vichitra vichaare.
+
+As jojan apne man maahin, bhay jagbeech karahun tehi naahin,
+Dadru kushtha tehin kabahu na vyaapai, jojan yaako man manh jaapai.
+
+Andhkaar jag ka jo harta, nav prakaash se aanand bharta,
+Grah gan grasi na mitaavat jaahi, koti baar main pranavaun taahi.
+
+Mand sadrish sut jag mein jaake, Dharmaraaj sam adbhut baanke,
+Dhanya-dhanya tum dinmani deva, kiya karat surmuni nar seva.
+
+Bhakti bhaavyut poorn niyam son, door hatatso bhavake bhram son,
+Param dhanya son nar tandhaari, hain prasann jehi par tam haari.
+
+Arun Maagh mahan Surya Phaalgun, Madhu Vedaang naam ravi udayan,
+Bhanu uday Baisaakh ginaave, Jyeshth Indra Aashaadh ravi gaave.
+
+Yam Bhaadon Aashwin himreta, Kaatik hot divaakar neta,
+Agahan bhinna Vishnu hain Poosahin, Purush naam ravi hain malmaasahin.
+
+Bhanu chaalisa prem yut, gaavahin je nar nitya,
+Sukh sampati lahi bibidh, honhin sada kritkritya.`,
     meaning: 'This chalisa venerates Surya, the sun god, describing his twelve names (Mitra, Ravi, Surya, Bhanu, Divakar and others), his chariot of seven horses, and his role as the giver of health, energy and life to all living beings.', meaningHi: 'यह चालीसा सूर्य देव की वंदना करती है, उनके बारह नामों (मित्र, रवि, सूर्य, भानु, दिवाकर और अन्य), सात घोड़ों वाले उनके रथ, तथा सभी जीवित प्राणियों को स्वास्थ्य, ऊर्जा और जीवन प्रदान करने में उनकी भूमिका का वर्णन करते हुए।',
     benefits: 'Recited at sunrise, during Chhath Puja and Ratha Saptami, and by those seeking good health, vitality and success.', benefitsHi: 'सूर्योदय के समय, छठ पूजा और रथ सप्तमी के दौरान, तथा अच्छे स्वास्थ्य, ऊर्जा और सफलता चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
