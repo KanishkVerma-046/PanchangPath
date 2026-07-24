@@ -1219,7 +1219,8 @@ the actual Nimbarka verses about Radha's bond with Krishna). Verified line-by-li
 
 ### Issue #39 (new, found during Round 3 Part 4d): 5 more duplicate-name pairs found across Namavali lists, plus one atypical namavali's content
 
-**INVESTIGATED — all 6 items verified-correct, no code change (commit pending).** Cross-checked
+**INVESTIGATED — all 6 items verified-correct, no code change needed (Round 4, commit `37a0550`).**
+Cross-checked
 each pair against a credible external source (curl + tag-strip per CLAUDE.md's sourcing method,
 not WebFetch):
 - **Durga #14/#17 निर्गुणा** — verified correct. vignanam.org's devanagari edition of this exact
@@ -1285,6 +1286,18 @@ clean, no changes to commit to `src/`.
 
 ### Issue #38 (new, found during Round 3 Part 4c): `vishnu-sahasranama-stotram` and `lalita-sahasranama-stotram`'s `meaning`/`meaningHi` claim the full 1000-name list "is available under the Namavali category" — no such entry exists
 
+**FIXED — verified (Round 4, commit `439c9bc`).** Turned out to be circular: the Namavali index
+page (`src/pages/devotional/namavali/index.astro`) also had a "1000-NAME SAHASRANAMAVALI" section
+linking back to these same 2 stotram pages, itself promising "full 1000-name text under Stotram
+Collection" — which isn't there either (only dhyana verse + phalashruti). Took the cheap/safe fix
+over full-content authoring: reworded both stotram entries' `meaning`/`meaningHi` to describe the
+dhyana+phalashruti presentation on its own terms (no longer pointing at a nonexistent Namavali
+entry), and reworded the Namavali index section/captions to accurately describe what's actually on
+the linked stotram pages. No dead/false cross-reference remains in either direction. Confirmed no
+Header.astro nav-sync or `getStaticPaths` route referenced a Vishnu/Lalita namavali slug (ruling
+out the simpler "route exists, data missing" scenario). `npm run build` passes (400 pages). Full
+verbatim, sourced 1000-name Namavali entries for Vishnu/Lalita remain a legitimate larger follow-up
+if wanted later — not done here, correctly deferred rather than rushed.
 - Severity: content (broken promise to the reader, not a crash)
 - Description: both entries' `lyricsHi` is intentionally abridged to the dhyanam + phalashruti
   (with its own Devanagari "..." placeholder standing in for the 1000-name list), and `meaning`/

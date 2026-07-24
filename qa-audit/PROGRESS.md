@@ -30,6 +30,20 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
 - [x] Fix-Batch 4a: astro-core/muhurta/panchang-i18n minors — #7, #8, #10, #11, #14, #15, #16, #17 all FIXED-verified. New Issue #37 found (Mars/Jupiter/Saturn retrograde detection gap). Commits: `c706c32`, `972cc77`, `91d7f83`, `4d25cd6`, `8767f10`.
 - [x] Fix-Batch 4b: festivals/horoscope-match/pancha-pakshi/rashifal/header minors — 10 of 11 FIXED-verified (#18, #19, #22, #23, #27, #28, #29, #32, #33, #34); #26 investigated, left as-is (no credible source either way, correctly not guessed). Commits: `1798910`, `bfcd768`, `3b38a08`, `b73fad1`, `f68af4e`, `38f5f92`.
 
+## Round 4 Progress (2026-07-24)
+
+- [x] Issue #38 — fixed circular broken cross-reference (Vishnu/Lalita Sahasranama
+  Stotram ↔ Namavali index both pointed at content that doesn't exist on the other
+  side). Reworded copy on both ends rather than authoring full 1000-name Namavali
+  entries. Commit `439c9bc`. FIXED-verified.
+- [x] Issue #39 — investigated all 5 duplicate-name pairs + the Hanuman Bhima-epithet
+  section against credible sources (drikpanchang.com, sanskritdocuments.org,
+  stotranidhi.com, vignanam.org, hindunidhi.com per CLAUDE.md's curl+strip method).
+  All 6 confirmed genuine features of the authentic source texts — no code change
+  made. 3 more incidental duplicate pairs found (Lakshmi #50/102, Saraswati #33/56,
+  Hanuman #17/56), also confirmed present in source, left untouched (out of scope).
+  Commit `37a0550`. INVESTIGATED — verified-correct, no fix needed.
+
 ## Round 3 Progress (2026-07-24)
 
 - [x] Part 1: Scoped Issue #35/#13 — confirmed exactly 3 of 9 muhurta pages
