@@ -36,7 +36,10 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
   (griha-pravesh, vivah, shubha-dates) share the fixed-6AM-snapshot bug class,
   all cascading risk; consolidated fix approach + shared-helper decision
   written into PLAN.md. No code changed.
-- [ ] Part 1.5: Fix the scoped #35/#13 issue
+- [x] Part 1.5: Fix the scoped #35/#13 issue — hoisted shared `sunRashiVoidCheck()`
+  dual-endpoint helper into `muhurta.ts`, wired into griha-pravesh/vivah/shubha-dates.
+  Verified 2026-08-17 (Simha Sankranti) now correctly drops out of Griha Pravesh
+  results (score 12→2); sanity dates unaffected. Commit `00f18ae`. FIXED-verified.
 - [ ] Part 2: Fix Issue #37 (retrograde threshold)
 - [ ] Part 3: Re-source Issue #36 (Ashtakam text mismatch)
 - [ ] Part 4: Continue Issue #31 (devotional transliteration, ~44 of 48 remaining)

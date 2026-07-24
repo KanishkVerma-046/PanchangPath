@@ -1133,7 +1133,14 @@ links all resolve correctly.
 
 ### Issue #35 (merged with #13's residual): Muhurta scoring's fixed 6 AM daily snapshot can miss a same-day Sankranti crossing — `/muhurta/griha-pravesh`, `/muhurta/vivah`, `/muhurta/shubha-dates`
 
-**SCOPED (Round 3, Part 1) — investigation complete, not yet fixed.** Confirmed exactly 3 of 9
+**FIXED — verified (Round 3, commit `00f18ae`).** Hoisted a shared `sunRashiVoidCheck()`
+dual-endpoint (start-of-day + end-of-day) helper into `muhurta.ts`; all 3 affected files now
+import it instead of computing a single 6 AM snapshot. Verified: 2026-08-17 (actual Simha
+Sankranti 2026, ~7:30 AM IST) now correctly drops Griha Pravesh's score from 12/"Excellent" to
+2 (below the results threshold); 2026-09-01 (solidly mid-Chaturmas) still correctly excluded
+(unchanged behavior); 2026-07-24 (outside both void periods) unaffected. `npm run build` passes.
+
+Scoping detail below retained for reference. Confirmed exactly 3 of 9
 muhurta pages share this bug class; all 3 are cascading risk (feed a multi-day ranked date list,
 not a single lookup), so this is upgraded from "narrow residual" to "worth fixing across all 3
 files together":
