@@ -601,7 +601,15 @@ export function computeUpcomingEvents(today: Date, daysAhead = 365): PlanetaryEv
         const speed0 = angDiff(s0[planet] as number, s1[planet] as number);
         const speed1 = angDiff(s1[planet] as number, s2[planet] as number);
 
-        if (speed0 > 0.002 && speed1 < -0.002) {
+        // Candidate-detection gate: a station is a sign change in daily angular velocity
+        // (speed0/speed1 straddle zero), not a fixed magnitude cutoff. A fixed 0.002°/day
+        // threshold worked for fast movers (Mercury/Venus) but was too tight for Mars/
+        // Jupiter/Saturn, whose velocity near the true station point can be much smaller
+        // (e.g. ~0.0005°/day) — those planets' stations never crossed the old gate at all.
+        // Sign-change detection is robust across all five RETRO_PLANETS regardless of how
+        // slowly each one moves near its station; the exact station moment is still found
+        // by the same zero-crossing interpolation as before (Issue #7).
+        if (speed0 > 0 && speed1 < 0) {
           // Retrograde starts — interpolate the actual station moment (velocity zero-crossing).
           // speed0 is the velocity over [jd-1, jd] (≈ velocity at jd-0.5); speed1 is the velocity
           // over [jd, jd+1] (≈ velocity at jd+0.5). Linear-interpolate between those two samples,
@@ -609,7 +617,7 @@ export function computeUpcomingEvents(today: Date, daysAhead = 365): PlanetaryEv
           const frac = speed0 / (speed0 - speed1);
           const stationJD = (jd - 0.5) + frac;
           events.push(retrogradeEvent(planet as string, true, stationJD, today));
-        } else if (speed0 < -0.002 && speed1 > 0.002) {
+        } else if (speed0 < 0 && speed1 > 0) {
           // Direct motion resumes — same interpolation
           const frac = speed0 / (speed0 - speed1);
           const stationJD = (jd - 0.5) + frac;
