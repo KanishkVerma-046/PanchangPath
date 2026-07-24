@@ -1219,6 +1219,48 @@ the actual Nimbarka verses about Radha's bond with Krishna). Verified line-by-li
 
 ### Issue #39 (new, found during Round 3 Part 4d): 5 more duplicate-name pairs found across Namavali lists, plus one atypical namavali's content
 
+**INVESTIGATED — all 6 items verified-correct, no code change (commit pending).** Cross-checked
+each pair against a credible external source (curl + tag-strip per CLAUDE.md's sourcing method,
+not WebFetch):
+- **Durga #14/#17 निर्गुणा** — verified correct. vignanam.org's devanagari edition of this exact
+  stotram (opening "दुर्गा शिवा महालक्ष्मीर्महागौरी च चण्डिका") shows निर्गुणा appearing twice
+  verbatim in the source shloka itself (end of verse 2's भूमिजा निर्गुणाऽऽधारशक्तिश्चानीश्वरी
+  तथा, then verse 3 opens निर्गुणा निरहङ्कारा...) — a real repeated epithet in the text, not a
+  transcription error.
+- **Lakshmi #23/#36 दीप्ता** — verified correct after resolving a source conflict. drikpanchang.com
+  and vedicfeed.com both show "Dipa"/"दीपा" at #23 (differing from #36's "Dipta"), but two more
+  rigorously curated sources — sanskritdocuments.org's checksum-numbered edition (every 9th name
+  numbered inline, e.g. "... १८", "... २७", "... ३६" — all of which land on the exact same names as
+  this site's numbering) and stotranidhi.com's IAST edition — both confirm "dīptāyai" at position
+  23 AND again at position 36. Sided with the two checksum-verified sources; left unchanged.
+- **Saraswati #2/#44 महाभद्रा and #41/#89 वाग्देवी** — verified correct. drikpanchang.com's
+  108-name Saraswati page matches this site's list name-for-name at all 108 positions, including
+  both of these duplicate pairs (and a third, previously-unflagged duplicate at #33/#56 वैष्णवी,
+  also present in the source — out of this issue's scope, left untouched, noted for the record).
+- **Rama #11/#49 जितामित्रः** — verified correct. drikpanchang.com's 108-name Rama page matches
+  this site's list name-for-name at all 108 positions, including this duplicate.
+- **Shani #28/#91 नित्यः** — verified correct. drikpanchang.com's 108-name Shani Dev page matches
+  this site's list name-for-name at all 108 positions, including this duplicate.
+- **Hanuman's Bhima/Mahabharata-epithet section (~#78-104)** — verified as a genuine, legitimate
+  textual tradition, not a data-entry mix-up. hindunidhi.com's "श्रीहनुमदष्टोत्तरशतनामस्तोत्रम्"
+  (colophon: "इति श्रीपद्मोत्तरखण्डतः श्रीहनुमदष्टोत्तरशतनामस्तोत्रं सम्पूर्णम्" — from the Padma
+  Purana's Uttara Khanda) matches this site's Hanuman list word-for-word, including the
+  Kunti-garbha-samutpanna/Bhima/Pandu-putra/Kichaka-mardana/Duryodhana-nihanta/Jarasandha-
+  vimardana/Draupadi-prana-vallabha run and the previously-unflagged मुख्यप्राणः duplicate at
+  #17/#56 (also present in the source, out of scope, noted for the record). This is a real
+  Puranic Hanuman stotra that deliberately links Hanuman to Bhima (both being sons of Vayu), not
+  content spliced in from a Bhima-specific text.
+
+Net result: all 6 items are verified-correct per source; none needed a name swap. Re-verified
+unique-name counts (not all reach 108/108 — see note below on out-of-scope duplicates found
+incidentally): Durga 107/108 unique (1 legitimate repeat), Lakshmi 106/108 unique (2 legitimate
+repeats — Dipta pair; a 3rd pair, Devi at #50/#102, is unmentioned/out-of-scope and untouched),
+Saraswati 105/108 unique (3 legitimate repeats — Mahabhadra, Vagdevi, and the out-of-scope
+Vaishnavi pair), Rama 107/108 unique (1 legitimate repeat), Shani 107/108 unique (1 legitimate
+repeat), Hanuman 107/108 unique (1 legitimate repeat — Mukhyapranah, out-of-scope). `lyricsHi`/
+`transliteration` remain 1:1 line-matched in all 6 (no edits were made). `npm run build` re-run
+clean, no changes to commit to `src/`.
+
 - Severity: content (minor — same class as the already-fixed padding issue, smaller scale)
 - Description: CLAUDE.md documents a 2026-07-16 fix that removed 31 duplicate-name slots across
   Ganesh/Durga/Lakshmi/Saraswati/Shani namavali lists (verified 108 unique entries at the time).
