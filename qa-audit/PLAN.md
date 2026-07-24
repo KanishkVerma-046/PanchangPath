@@ -1198,6 +1198,18 @@ future issue if it's ever found to misfire in practice; not confirmed as a live 
   long/sacred texts accurately" section), then the full transliteration written out to match.
 
 ### Issue #37: Mars/Jupiter/Saturn retrograde/direct stations are never detected by the Planetary Events scanner — only Mercury/Venus ever produce retrograde events — `src/lib/planetaryEvents.ts`
+
+**FIXED — verified (Round 3, commit `c329528`).** Replaced the fixed `0.002°/day` magnitude gate
+with pure sign-change detection (`speed0 > 0 && speed1 < 0` / vice versa) in the candidate-scan
+loop — smaller and more robust than per-planet calibrated thresholds, correct regardless of how
+slowly a planet moves near its station. Verified against published ephemeris dates: Mars
+retrograde/direct 2027-01-10/2027-04-01 (exact), Jupiter retrograde 2025-11-11 (exact)/direct
+2026-03-11 (1 day off), Saturn retrograde 2025-07-13 (exact)/direct 2025-11-28 (1 day off) — all
+within existing project tolerance. Mercury re-verified unaffected (station times still match to
+the hour). `/events`/`/events/[id]` and the homepage feed are the only real consumers of this
+code (both now show all 5 planets); `KundaliWidget`/`jyotish/kundali`/`janma-kundali`/
+`planetary-positions` use a separate, already-correct `isRetrograde()` sign check in
+`astro-core.ts` and were unaffected either way. `npm run build` passes (401 pages).
 - Severity: minor/content (silent gap, not a crash — the site just never shows these events)
 - Description: found while fixing Issue #7. The retrograde-station day-by-day scan uses a fixed
   `speed0/speed1 > 0.002°/day` threshold to detect a sign change in velocity, but Mars/Jupiter/

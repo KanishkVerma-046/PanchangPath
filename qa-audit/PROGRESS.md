@@ -40,7 +40,10 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
   dual-endpoint helper into `muhurta.ts`, wired into griha-pravesh/vivah/shubha-dates.
   Verified 2026-08-17 (Simha Sankranti) now correctly drops out of Griha Pravesh
   results (score 12→2); sanity dates unaffected. Commit `00f18ae`. FIXED-verified.
-- [ ] Part 2: Fix Issue #37 (retrograde threshold)
+- [x] Part 2: Fix Issue #37 — replaced fixed 0.002°/day magnitude gate with sign-change
+  (zero-crossing) detection in planetaryEvents.ts. Verified Mars/Jupiter/Saturn stations
+  now detected against published ephemeris dates; Mercury unaffected. Commit `c329528`.
+  FIXED-verified.
 - [ ] Part 3: Re-source Issue #36 (Ashtakam text mismatch)
 - [ ] Part 4: Continue Issue #31 (devotional transliteration, ~44 of 48 remaining)
 
