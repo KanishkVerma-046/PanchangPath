@@ -19,7 +19,15 @@ export const NAMAVALIS: DevotionalItem[] = [
 ९१. मृडः ९२. पशुपतिः ९३. देवः ९४. महादेवः ९५. अव्ययः ९६. हरिः ९७. पूषदन्तभित् ९८. अव्यग्रः ९९. दक्षाध्वरहरः १००. हरः
 १०१. भगनेत्रभित् १०२. अव्यक्तः १०३. सहस्राक्षः १०४. सहस्रपात् १०५. अपवर्गप्रदः १०६. अनन्तः १०७. तारकः १०८. परमेश्वरः`,
     transliteration: `1. Shivah 2. Maheshwarah 3. Shambhuh 4. Pinaki 5. Shashishekharah 6. Vamadevah 7. Virupakshah 8. Kapardi 9. Neelalohitah 10. Shankarah
-11. Shoolapanih 12. Khatwangi 13. Vishnuvallabhah 14. Shipivishtah 15. Ambikanathah ... (continuing through all 108 names)
+11. Shoolapanih 12. Khatwangi 13. Vishnuvallabhah 14. Shipivishtah 15. Ambikanathah 16. Shrikanthah 17. Bhaktavatsalah 18. Bhavah 19. Sharvah 20. Trilokeshah
+21. Shitikanthah 22. Shivapriyah 23. Ugrah 24. Kapali 25. Kamarih 26. Andhakasurasudanah 27. Gangadharah 28. Lalatakshah 29. Kalakalah 30. Kripanidhih
+31. Bhimah 32. Parashuhastah 33. Mrigapanih 34. Jatadharah 35. Kailasavasi 36. Kavachi 37. Kathorah 38. Tripurantakah 39. Vrishankah 40. Vrishabharudhah
+41. Bhasmoddhulitavigrahah 42. Samapriyah 43. Svaramayah 44. Trayimurtih 45. Anishwarah 46. Sarvajnah 47. Paramatma 48. Somasuryagnilochanah 49. Havih 50. Yajnamayah
+51. Somah 52. Panchavaktrah 53. Sadashivah 54. Vishweshwarah 55. Virabhadrah 56. Gananathah 57. Prajapatih 58. Hiranyaretah 59. Durdharshah 60. Girishah
+61. Girishah 62. Anaghah 63. Bhujangabhushanah 64. Bhargah 65. Giridhanva 66. Giripriyah 67. Krittivasah 68. Puraratih 69. Bhagavan 70. Pramathadhipah
+71. Mrityunjayah 72. Sukshmatanuh 73. Jagadvyapi 74. Jagadguruh 75. Vyomakeshah 76. Mahasenajanakah 77. Charuvikramah 78. Rudrah 79. Bhutapatih 80. Sthanuh
+81. Ahirbudhnyah 82. Digambarah 83. Ashtamurtih 84. Anekatma 85. Sattvikah 86. Shuddhavigrahah 87. Shashwatah 88. Khandaparashuh 89. Ajah 90. Pashavimochakah
+91. Mridah 92. Pashupatih 93. Devah 94. Mahadevah 95. Avyayah 96. Harih 97. Pushadantabhit 98. Avyagrah 99. Dakshadhvaraharah 100. Harah
 101. Bhaganetrabhit 102. Avyaktah 103. Sahasrakshah 104. Sahasrapat 105. Apavargapradah 106. Anantah 107. Tarakah 108. Parameshwarah.`,
     meaning: 'This is a list of 108 names (Ashtottara Shatanamavali) of Lord Shiva, each describing a different aspect of his form and nature — from Shambhu (the auspicious one) and Nataraja-like Vamadeva, to Mrityunjaya (conqueror of death) and Parameshwara (the supreme lord).', meaningHi: 'यह भगवान शिव के 108 नामों (अष्टोत्तरशतनामावली) की सूची है, जिनमें से प्रत्येक नाम उनके स्वरूप और स्वभाव के एक अलग पक्ष का वर्णन करता है — शंभु (मंगलकारी) और नटराज जैसे वामदेव से लेकर, मृत्युंजय (मृत्यु पर विजयी) और परमेश्वर (सर्वोच्च प्रभु) तक।',
     benefits: 'Recited or used for Archana (offering a flower or bilva leaf with each name) during Shiva puja, especially on Mondays, Pradosh and Maha Shivaratri. Each name may be prefixed with "Om" and suffixed with "Namah" when performing archana.', benefitsHi: 'शिव पूजा के दौरान, विशेष रूप से सोमवार, प्रदोष और महाशिवरात्रि को, प्रत्येक नाम के साथ फूल या बिल्व पत्र अर्पित करते हुए अर्चना के लिए पाठ या उपयोग किया जाता है। अर्चना करते समय प्रत्येक नाम के आगे "ॐ" और अंत में "नमः" जोड़ा जा सकता है।',
@@ -41,9 +49,17 @@ export const NAMAVALIS: DevotionalItem[] = [
 ८१. भवात्मजः ८२. महतः ८३. मङ्गलदायी ८४. महेशः ८५. महितः ८६. सत्यधर्मी ८७. सदाधारः ८८. सत्यः ८९. सत्यपराक्रमः ९०. शुभाङ्गः
 ९१. शुभ्रदन्तः ९२. शुभदः ९३. शुभविग्रहः ९४. पञ्चपातकनाशी ९५. पार्वतीप्रियनन्दनः ९६. विश्वेशः ९७. विबुधाराध्यपदः ९८. वीरवराग्रगः ९९. कुमारगुरुवन्द्यः १००. कुञ्जरासुरभञ्जनः
 १०१. वल्लभावल्लभः १०२. वराभयकराम्बुजः १०३. सुधाकलशहस्तः १०४. सुधाकरकलाधरः १०५. पञ्चहस्तः १०६. प्रधानेशः १०७. पुरातनः १०८. वरसिद्धिविनायकः`,
-    transliteration: `1. Gajananah 2. Ganadhyakshah 3. Vighnarajah 4. Vinayakah 5. Dvaimaturah 6. Dvimukhah 7. Pramukhah 8. Sumukhah 9. Kritih 10. Supradipah
-... (continuing through all 108 names of Ganesha) ...
-101. Umaputrah 102. Skandagrajah 103. Ibhavaktrah 104. Brahmachari 105. Kumaraguruh 106. Jishnuh 107. Ganadhishah 108. Kalyanaguruh.`,
+    transliteration: `1. Gajananah 2. Ganadhyakshah 3. Vighnarajah 4. Vinayakah 5. Dvaimaturah 6. Sumukhah 7. Pramukhah 8. Sanmukhah 9. Kritih 10. Jnanadipah
+11. Sukhanidhih 12. Suradhyakshah 13. Suraribhidah 14. Mahaganapatih 15. Manyah 16. Mahanmanyah 17. Mridatmajah 18. Puranah 19. Purushah 20. Pusha
+21. Pushkari 22. Punyakritah 23. Agraganyah 24. Agrapujyah 25. Agragami 26. Mantrakritah 27. Chamikaraprabhah 28. Sarvah 29. Sarvopasyah 30. Sarvakarta
+31. Sarvaneta 32. Sarvasiddhipradah 33. Sarvasiddhah 34. Sarvavandyah 35. Mahakalah 36. Mahabalah 37. Herambah 38. Lambajatharah 39. Hrasvagrivah 40. Mahodarah
+41. Madotkatah 42. Mahaveerah 43. Mantri 44. Mangaladah 45. Prathamacharyah 46. Prajnah 47. Pramodah 48. Modakapriyah 49. Dhritiman 50. Matiman
+51. Kami 52. Kapitthapanasapriyah 53. Brahmachari 54. Brahmarupi 55. Brahmavidah 56. Brahmavanditah 57. Jishnuh 58. Vishnupriyah 59. Bhaktajivitah 60. Jitamanmathah
+61. Aishvaryadah 62. Guhajyayasah 63. Siddhasevitah 64. Vighnakarta 65. Vighnaharta 66. Vishwaneta 67. Virajah 68. Svarajah 69. Shripatih 70. Vakpatih
+71. Shriman 72. Shringari 73. Shritavatsalah 74. Shivapriyah 75. Shighrakari 76. Shashwatah 77. Shivanandanah 78. Baloddhatah 79. Bhaktanidhih 80. Bhavagamyah
+81. Bhavatmajah 82. Mahatah 83. Mangaladayi 84. Maheshah 85. Mahitah 86. Satyadharmi 87. Sadadharah 88. Satyah 89. Satyaparakramah 90. Shubhangah
+91. Shubhradantah 92. Shubhadah 93. Shubhavigrahah 94. Panchapatakanashi 95. Parvatipriyanandanah 96. Vishweshah 97. Vibudharadhyapadah 98. Viravaragragah 99. Kumaraguruvandyah 100. Kunjarasurabhanjanah
+101. Vallabhavallabhah 102. Varabhayakarambujah 103. Sudhakalashahastah 104. Sudhakarakaladharah 105. Panchahastah 106. Pradhaneshah 107. Puratanah 108. Varasiddhivinayakah.`,
     meaning: 'This is a list of 108 names of Lord Ganesha, describing his elephant face, mouse vehicle, role as remover of obstacles (Vighnaraja), and his identity as Siddhivinayaka — the giver of success and spiritual accomplishment.', meaningHi: 'यह भगवान गणेश के 108 नामों की सूची है, जो उनके गजमुख, मूषक वाहन, विघ्नों को दूर करने वाले (विघ्नराज) की भूमिका, और सिद्धि तथा आध्यात्मिक उपलब्धि प्रदान करने वाले सिद्धिविनायक के रूप में उनकी पहचान का वर्णन करती है।',
     benefits: 'Recited or used for Archana with durva grass or red flowers before beginning any new undertaking, and throughout Ganesh Chaturthi, believed to remove obstacles and bring auspicious outcomes.', benefitsHi: 'किसी भी नए कार्य को आरंभ करने से पहले और गणेश चतुर्थी के दौरान दूर्वा घास या लाल फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो बाधाओं को दूर करने और शुभ परिणाम लाने वाला माना जाता है।',
   },
@@ -64,9 +80,17 @@ export const NAMAVALIS: DevotionalItem[] = [
 ८१. तपस्विनी ८२. ज्ञानरूपा ८३. निराकारा ८४. भक्ताभीष्टफलप्रदा ८५. भूतात्मिका ८६. भूतमाता ८७. भूतेशा ८८. भूतधारिणी ८९. स्वधानारीमध्यगता ९०. षडाधारादिवर्तिनी
 ९१. मोहदा ९२. अंशुभवा ९३. शुभ्रा ९४. सूक्ष्मा ९५. मात्रा ९६. निरालसा ९७. निम्नगा ९८. नीलसङ्काशा ९९. नित्यानन्दा १००. हरा
 १०१. परा १०२. सर्वज्ञानप्रदा १०३. अनन्ता १०४. सत्या १०५. दुर्लभरूपिणी १०६. सरस्वती १०७. सर्वगता १०८. सर्वाभीष्टप्रदायिनी`,
-    transliteration: `1. Durga 2. Shiva 3. Mahalakshmi 4. Mahagauri 5. Chandi 6. Chandika 7. Chamunda 8. Vaishnavi 9. Varahi 10. Lakshmi
-... (continuing through all 108 names of Durga, including her nine forms — Navadurga — and ten Mahavidyas) ...
-101. Dhumavati 102. Chhinnamasta 103. Swaha 104. Tara 105. Kali 106. Sarvashaktiswarupini 107. Maheshwari 108. Jagadamba.`,
+    transliteration: `1. Durga 2. Shiva 3. Mahalakshmi 4. Mahagauri 5. Chandika 6. Sarvajna 7. Sarvalokeshi 8. Sarvakarmaphalaprada 9. Sarvatirthamayi 10. Punya
+11. Devayonih 12. Ayonija 13. Bhumija 14. Nirguna 15. Adharashaktih 16. Anishwari 17. Nirguna 18. Nirahankara 19. Sarvagarvavimardini 20. Sarvalokapriya
+21. Vani 22. Sarvavidyadhidevata 23. Parvati 24. Devamata 25. Vanisha 26. Vindhyavasini 27. Tejovati 28. Mahamata 29. Kotisuryasamaprabha 30. Devata
+31. Vahnirupa 32. Sadaujasah 33. Varnarupini 34. Gunashraya 35. Gunamayi 36. Gunatrayavivarjita 37. Karmajnanaprada 38. Kanta 39. Sarvasanharakarini 40. Dharmajnana
+41. Dharmanishtha 42. Sarvakarmavivarjita 43. Kamakshi 44. Kamasanhartri 45. Kamakrodhavivarjita 46. Shankari 47. Shambhavi 48. Shanta 49. Chandrasuryagnilochana 50. Sujaya
+51. Jayabhumishtha 52. Jahnavi 53. Janapujita 54. Shastra 55. Shastramaya 56. Nitya 57. Shubha 58. Chandrardhamastaka 59. Bharati 60. Bhramari
+61. Kalpa 62. Karali 63. Krishnapingala 64. Brahmi 65. Narayani 66. Raudri 67. Chandramritaparishruta 68. Jyeshtha 69. Indira 70. Mahamaya
+71. Jagatsrishtyadikarini 72. Brahmandakotisansthana 73. Kamini 74. Kamalalaya 75. Katyayani 76. Kalatita 77. Kalasanharakarini 78. Yoganishtha 79. Yogigamya 80. Yogidhyeya
+81. Tapasvini 82. Jnanarupa 83. Nirakara 84. Bhaktabhishtaphalaprada 85. Bhutatmika 86. Bhutamata 87. Bhutesha 88. Bhutadharini 89. Svadhanarimadhyagata 90. Shadadharadivartini
+91. Mohada 92. Anshubhava 93. Shubhra 94. Sukshma 95. Matra 96. Niralasa 97. Nimnaga 98. Nilasankasha 99. Nityananda 100. Hara
+101. Para 102. Sarvajnanaprada 103. Ananta 104. Satya 105. Durlabharupini 106. Saraswati 107. Sarvagata 108. Sarvabhishtapradayini.`,
     meaning: 'This is a list of 108 names of Goddess Durga, encompassing her many forms — Chandika, Kali, Kaushiki, Kaatyayani, the Navadurgas and Mahavidyas — describing her power to destroy evil and protect the universe.', meaningHi: 'यह देवी दुर्गा के 108 नामों की सूची है, जो उनके अनेक रूपों — चंडिका, काली, कौशिकी, कात्यायनी, नवदुर्गा और महाविद्याओं — को समाहित करती है, जो बुराई का नाश करने और ब्रह्मांड की रक्षा करने की उनकी शक्ति का वर्णन करती है।',
     benefits: 'Recited or used for Archana with red hibiscus (japa) flowers during Navratri, Durga Puja and Fridays, invoking the Divine Mother\'s protection and grace.', benefitsHi: 'नवरात्रि, दुर्गा पूजा और शुक्रवार के दिन लाल गुड़हल (जपा) के फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो दिव्य माता की सुरक्षा और कृपा का आह्वान करता है।',
   },
@@ -87,9 +111,17 @@ export const NAMAVALIS: DevotionalItem[] = [
 ८१. वसुन्धरा ८२. उदाराङ्गा ८३. हरिणी ८४. हेममालिनी ८५. धनधान्यकरी ८६. सिद्धिः ८७. स्त्रैणसौम्या ८८. शुभप्रदा ८९. नृपवेश्मगतानन्दा ९०. वरलक्ष्मी
 ९१. वसुप्रदा ९२. शुभा ९३. हिरण्यप्राकारा ९४. समुद्रतनया ९५. जया ९६. मङ्गला देवी ९७. विष्णुवक्षःस्थलस्थिता ९८. विष्णुपत्नी ९९. प्रसन्नाक्षी १००. नारायणसमाश्रिता
 १०१. दारिद्र्यध्वंसिनी १०२. देवी १०३. सर्वोपद्रववारिणी १०४. नवदुर्गा १०५. महाकाली १०६. ब्रह्माविष्णुशिवात्मिका १०७. त्रिकालज्ञानसम्पन्ना १०८. भुवनेश्वरी`,
-    transliteration: `1. Prakritih 2. Vikritih 3. Vidya 4. Sarvabhutahitaprada 5. Shraddha 6. Vibhutih 7. Surabhih 8. Paramatmika 9. Vachya 10. Padmalaya
-... (continuing through all 108 names of Lakshmi, drawn from the traditional Lakshmi Ashtottara Shatanamavali) ...
-101. Mahakali 102. Brahmavishnushivatmika 103. Trikalajnanasampanna 104. Bhuvaneshwari 105. Lakshmivilasini 106. Siddhih 107. Mahalakshmih 108. Maheshwari.`,
+    transliteration: `1. Prakritih 2. Vikritih 3. Vidya 4. Sarvabhutahitaprada 5. Shraddha 6. Vibhutih 7. Surabhih 8. Paramatmika 9. Vak 10. Padmalaya
+11. Padma 12. Shuchih 13. Svaha 14. Svadha 15. Sudha 16. Dhanya 17. Hiranmayi 18. Lakshmi 19. Nityapushta 20. Vibhavari
+21. Aditi 22. Diti 23. Dipta 24. Vasudha 25. Vasudharini 26. Kamala 27. Kanta 28. Kshama 29. Kshirodasambhava 30. Anugrahapara
+31. Buddhih 32. Anagha 33. Harivallabha 34. Ashoka 35. Amrita 36. Dipta 37. Lokashokavinashini 38. Dharmanilaya 39. Karuna 40. Lokamata
+41. Padmapriya 42. Padmahasta 43. Padmakshi 44. Padmasundari 45. Padmodbhava 46. Padmamukhi 47. Padmanabhapriya 48. Rama 49. Padmamaladhara 50. Devi
+51. Padmini 52. Padmagandhini 53. Punyagandha 54. Suprasanna 55. Prasadabhimukhi 56. Prabha 57. Chandravadana 58. Chandra 59. Chandrasahodari 60. Chaturbhuja
+61. Chandrarupa 62. Indira 63. Indushitala 64. Ahladajanani 65. Pushtih 66. Shiva 67. Shivakari 68. Sati 69. Vimala 70. Vishwajanani
+71. Tushtih 72. Daridryanashini 73. Pritipushkarini 74. Shanta 75. Shuklamalyambara 76. Shrih 77. Bhaskari 78. Bilvanilaya 79. Vararoha 80. Yashasvini
+81. Vasundhara 82. Udaranga 83. Harini 84. Hemamalini 85. Dhanadhanyakari 86. Siddhih 87. Strainasaumya 88. Shubhaprada 89. Nripaveshmagatananda 90. Varalakshmi
+91. Vasuprada 92. Shubha 93. Hiranyaprakara 94. Samudratanaya 95. Jaya 96. Mangala Devi 97. Vishnuvakshahsthalasthita 98. Vishnupatni 99. Prasannakshi 100. Narayanasamashrita
+101. Daridryadhvansini 102. Devi 103. Sarvopadravavarini 104. Navadurga 105. Mahakali 106. Brahmavishnushivatmika 107. Trikalajnanasampanna 108. Bhuvaneshwari.`,
     meaning: 'This is a list of 108 names of Goddess Lakshmi, describing her many forms and attributes — as the giver of prosperity, purity, fame, contentment (Tushti), forgiveness (Kshama) and auspiciousness — traditionally used for archana during Sri Sukta recitation.', meaningHi: 'यह देवी लक्ष्मी के 108 नामों की सूची है, जो उनके अनेक रूपों और गुणों का वर्णन करती है — समृद्धि, पवित्रता, यश, संतोष (तुष्टि), क्षमा और मंगलकारीता की दाता के रूप में — जिसे परंपरागत रूप से श्री सूक्त पाठ के दौरान अर्चना के लिए उपयोग किया जाता है।',
     benefits: 'Recited or used for Archana with lotus flowers on Fridays, during Diwali and Varalakshmi Vratam, invoking wealth, prosperity and well-being.', benefitsHi: 'शुक्रवार, दिवाली और वरलक्ष्मी व्रतम के दौरान कमल के फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो धन, समृद्धि और कल्याण का आह्वान करता है।',
   },
@@ -110,9 +142,17 @@ export const NAMAVALIS: DevotionalItem[] = [
 ८१. मुण्डकायप्रहरणा ८२. धूम्रलोचनमर्दना ८३. सर्वदेवस्तुता ८४. सौम्या ८५. सुरासुरनमस्कृता ८६. कालरात्री ८७. कलाधारा ८८. रूपसौभाग्यदायिनी ८९. वाग्देवी ९०. वरारोहा
 ९१. वाराही ९२. वारिजासना ९३. चित्राम्बरा ९४. चित्रगन्धा ९५. चित्रमाल्यविभूषिता ९६. कान्ता ९७. कामप्रदा ९८. वन्द्या ९९. विद्याधरसुपूजिता १००. श्वेतानना
 १०१. नीलभुजा १०२. चतुर्वर्गफलप्रदा १०३. चतुराननसाम्राज्या १०४. रक्तमध्या १०५. निरञ्जना १०६. हंसासना १०७. नीलजङ्घा १०८. ब्रह्मविष्णुशिवात्मिका`,
-    transliteration: `1. Saraswati 2. Mahabhadra 3. Mahamaya 4. Varaprada 5. Shriprada 6. Padmanilaya 7. Padmakshi 8. Padmavaktraga 9. Shivanuja 10. Pustakadhrik
-... (continuing through all 108 names of Saraswati) ...
-101. Vedamata 102. Vedavidya 103. Sarvada 104. Sarvadaivata 105. Vagdevata 106. Vagishwari 107. Chaturvargaphalaprada 108. Sarveshwari.`,
+    transliteration: `1. Saraswati 2. Mahabhadra 3. Mahamaya 4. Varaprada 5. Shriprada 6. Padmanilaya 7. Padmakshi 8. Padmavaktraka 9. Shivanuja 10. Pustakabhritah
+11. Jnanamudra 12. Rama 13. Para 14. Kamarupa 15. Mahavidya 16. Mahapatakanashini 17. Mahashraya 18. Malini 19. Mahabhoga 20. Mahabhuja
+21. Mahabhaga 22. Mahotsaha 23. Divyanga 24. Suravandita 25. Mahakali 26. Mahapasha 27. Mahakara 28. Mahankusha 29. Pita 30. Vimala
+31. Vishwa 32. Vidyunmala 33. Vaishnavi 34. Chandrika 35. Chandravadana 36. Chandralekhavibhushita 37. Savitri 38. Surasa 39. Devi 40. Divyalankarabhushita
+41. Vagdevi 42. Vasuda 43. Tivra 44. Mahabhadra 45. Mahabala 46. Bhogada 47. Bharati 48. Bhama 49. Govinda 50. Gomati
+51. Shiva 52. Jatila 53. Vindhyavasa 54. Vindhyachalavirajita 55. Chandika 56. Vaishnavi 57. Brahmi 58. Brahmajnanaikasadhana 59. Saudamini 60. Sudhamurtih
+61. Subhadra 62. Surapujita 63. Suvasini 64. Sunasa 65. Vinidra 66. Padmalochana 67. Vidyarupa 68. Vishalakshi 69. Brahmajaya 70. Mahaphala
+71. Trayimurtih 72. Trikalajna 73. Triguna 74. Shastrarupini 75. Shumbhasurapramathini 76. Shubhada 77. Svaratmika 78. Raktabijanihantri 79. Chamunda 80. Ambika
+81. Mundakayapraharana 82. Dhumralochanamardana 83. Sarvadevastuta 84. Saumya 85. Surasuranamaskrita 86. Kalaratri 87. Kaladhara 88. Rupasaubhagyadayini 89. Vagdevi 90. Vararoha
+91. Varahi 92. Varijasana 93. Chitrambara 94. Chitragandha 95. Chitramalyavibhushita 96. Kanta 97. Kamaprada 98. Vandya 99. Vidyadharasupujita 100. Shvetanana
+101. Nilabhuja 102. Chaturvargaphalaprada 103. Chaturananasamrajya 104. Raktamadhya 105. Niranjana 106. Hansasana 107. Nilajangha 108. Brahmavishnushivatmika.`,
     meaning: 'This is a list of 108 names of Goddess Saraswati, describing her as the mother of the Vedas (Vedamata), giver of speech (Vagdevi), and embodiment of knowledge, music and the arts in her many forms.', meaningHi: 'यह देवी सरस्वती के 108 नामों की सूची है, जो उन्हें वेदों की माता (वेदमाता), वाणी की दाता (वाग्देवी), और अपने अनेक रूपों में ज्ञान, संगीत तथा कला के अवतार के रूप में वर्णित करती है।',
     benefits: 'Recited or used for Archana with white flowers during Basant Panchami and Navratri, and by students seeking clarity of intellect and academic success.', benefitsHi: 'बसंत पंचमी और नवरात्रि के दौरान श्वेत फूलों से अर्चना के लिए, तथा बुद्धि की स्पष्टता और शैक्षणिक सफलता चाहने वाले विद्यार्थियों द्वारा पाठ या उपयोग किया जाता है।',
   },
@@ -133,9 +173,17 @@ export const NAMAVALIS: DevotionalItem[] = [
 ८१. सुभद्रापूर्वजः ८२. जिष्णुः ८३. भीष्ममुक्तिप्रदायकः ८४. जगद्गुरुः ८५. जगन्नाथः ८६. वेणुनादविशारदः ८७. वृषभासुरविध्वंसी ८८. बाणासुरकरान्तकः ८९. युधिष्ठिरप्रतिष्ठाता ९०. बर्हिबर्हावतंसकः
 ९१. पार्थसारथिः ९२. अव्यक्तः ९३. गीतामृतमहोदधिः ९४. कालीयफणिमाणिक्यरञ्जितश्रीपदाम्बुजः ९५. दामोदरः ९६. यज्ञभोक्ता ९७. दानवेन्द्रविनाशकः ९८. नारायणः ९९. परब्रह्म १००. पन्नगाशनवाहनः
 १०१. जलक्रीडासमासक्तगोपीवस्त्रापहारकः १०२. पुण्यश्लोकः १०३. तीर्थपादः १०४. वेदवेद्यः १०५. दयानिधिः १०६. सर्वतीर्थात्मकः १०७. सर्वग्रहरूपी १०८. परात्परः`,
-    transliteration: `1. Krishnah 2. Kamalanathah 3. Vasudevah 4. Sanatanah 5. Vasudevatmajah 6. Punyah 7. Leelamanushavigrahah 8. Shrivatsakaustubhadharah 9. Yashodavatsalah 10. Harih
-... (continuing through all 108 names of Krishna) ...
-101. Parabrahma 102. Pannagashanavahanah 103. Jalakreedasamasaktagopivastrapaharakah 104. Punyashlokah 105. Tirthakarah 106. Vedavedyah 107. Dayanidhih 108. Sarvatirthatmakah.`,
+    transliteration: `1. Shri Krishnah 2. Kamalanathah 3. Vasudevah 4. Sanatanah 5. Vasudevatmajah 6. Punyah 7. Lilamanushavigrahah 8. Shrivatsakaustubhadharah 9. Yashodavatsalah 10. Harih
+11. Chaturbhujattachakrasigadashankhadyayudhah 12. Devakinandanah 13. Shrishah 14. Nandagopapriyatmajah 15. Yamunavegasanhari 16. Balabhadrapriyanujah 17. Putanajivitaharah 18. Shakatasurabhanjanah 19. Nandavrajajanandi 20. Sacchidanandavigrahah
+21. Navanitaviliptangah 22. Navanitanatah 23. Anaghah 24. Navanitanavahari 25. Muchukundaprasadakah 26. Shodashastrisahasreshah 27. Tribhangi 28. Madhurakritih 29. Shukavagamritabdhindu 30. Govindah
+31. Yoginampatih 32. Vatsavatacharah 33. Anantah 34. Dhenukasurabhanjanah 35. Trinikritatrinavartah 36. Yamalarjunabhanjanah 37. Uttalatalabheta 38. Gopagopishwarah 39. Yogi 40. Kotisuryasamaprabhah
+41. Ilapatih 42. Paranjyotishah 43. Yadavendrah 44. Yadudvahah 45. Vanamali 46. Pitavasi 47. Parijatapaharakah 48. Govardhanachaloddharta 49. Gopalah 50. Sarvapalakah
+51. Ajah 52. Niranjanah 53. Kamajanakah 54. Kanjalochanah 55. Madhughnah 56. Madhuranathah 57. Dvarakanayakah 58. Bali 59. Brindavanantasanchari 60. Tulasidamabhushanah
+61. Syamantakamaniharta 62. Naranarayanatmakah 63. Kubjakrishnambaradharah 64. Mayi 65. Paramapurushah 66. Mushtikasurachanuramallayuddhavisharadah 67. Sansaravairi 68. Kansarih 69. Murarih 70. Narakantakah
+71. Anadibrahmachari 72. Krishnavyasanakarshakah 73. Shishupalashirachchheta 74. Duryodhanakulantakah 75. Vidurakruraravaradah 76. Vishwarupapradarshakah 77. Satyavachah 78. Satyasankalpah 79. Satyabhamaratah 80. Jayi
+81. Subhadrapurvajah 82. Jishnuh 83. Bhishmamuktipradayakah 84. Jagadguruh 85. Jagannathah 86. Venunadavisharadah 87. Vrishabhasuravidhvansi 88. Banasurakarantakah 89. Yudhishthirapratishthata 90. Barhibarhavatansakah
+91. Parthasarathih 92. Avyaktah 93. Gitamritamahodadhih 94. Kaliyaphanimanikyaranjitashripadambujah 95. Damodarah 96. Yajnabhokta 97. Danavendravinashakah 98. Narayanah 99. Parabrahma 100. Pannagashanavahanah
+101. Jalakridasamasaktagopivastrapaharakah 102. Punyashlokah 103. Tirthapadah 104. Vedavedyah 105. Dayanidhih 106. Sarvatirthatmakah 107. Sarvagraharupi 108. Paratparah.`,
     meaning: 'This is a list of 108 names of Lord Krishna, describing his childhood pastimes in Vrindavan, his role in the Mahabharata, his relationship with the Gopis and Radha, and his identity as the Supreme Being (Parabrahma) who imparted the Bhagavad Gita.', meaningHi: 'यह भगवान कृष्ण के 108 नामों की सूची है, जो वृंदावन में उनकी बाल-लीलाओं, महाभारत में उनकी भूमिका, गोपियों और राधा के साथ उनके संबंध, तथा भगवद्गीता का उपदेश देने वाले परब्रह्म के रूप में उनकी पहचान का वर्णन करती है।',
     benefits: 'Recited or used for Archana with tulsi (basil) leaves during Janmashtami and Wednesdays, cultivating devotional love (bhakti) for Krishna.', benefitsHi: 'जन्माष्टमी और बुधवार के दिन तुलसी पत्तों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो कृष्ण के प्रति भक्ति-प्रेम (भक्ति) को विकसित करता है।',
   },
@@ -157,8 +205,16 @@ export const NAMAVALIS: DevotionalItem[] = [
 ९१. धनुर्धरः ९२. सर्वयज्ञाधिपः ९३. यज्वी ९४. जरामरणवर्जितः ९५. विभीषणप्रतिष्ठाता ९६. सर्वावगुणवर्जितः ९७. परमात्मा ९८. परं ब्रह्म ९९. सच्चिदानन्दविग्रहः १००. परं ज्योतिः
 १०१. परं धाम १०२. पराकाशः १०३. परात्परः १०४. परेशः १०५. पारगः १०६. पारः १०७. सर्वदेवात्मकः १०८. परम्`,
     transliteration: `1. Shri Ramah 2. Ramabhadrah 3. Ramachandrah 4. Shashwatah 5. Rajivalochanah 6. Shriman 7. Rajendrah 8. Raghupungavah 9. Janakivallabhah 10. Jaitrah
-... (continuing through all 108 names of Rama) ...
-101. Sugriveipsitarajyadah 102. Sarvakamapradah 103. Sharanagatavatsalah 104. Adbhutaroopapradarshakah 105. Ramayanakathanayakah 106. Ayodhyapatih 107. Suryavamsharatnah 108. Maryadapurushottamah.`,
+11. Jitamitrah 12. Janardanah 13. Vishwamitrapriyah 14. Dantah 15. Sharanatranatatparah 16. Valipramathanah 17. Vagmi 18. Satyavachah 19. Satyavikramah 20. Satyavratah
+21. Vratadharah 22. Sada Hanumadashritah 23. Kausaleyah 24. Kharadhvansi 25. Viradhavadhapanditah 26. Vibhishanaparitrata 27. Harakodandakhandanah 28. Saptatalaprabhetta 29. Dashagrivashiroharah 30. Jamadagnyamahadarpadalanah
+31. Tatakantakah 32. Vedantasarah 33. Vedatma 34. Bhavarogasya Bheshajam 35. Dushanatrishirohanta 36. Trimurtih 37. Trigunatmakah 38. Trivikramah 39. Trilokatma 40. Punyacharitrakirtanah
+41. Trilokarakshakah 42. Dhanvi 43. Dandakaranyakartanah 44. Ahalyashapashamanah 45. Pitribhaktah 46. Varapradah 47. Jitendriyah 48. Jitakrodhah 49. Jitamitrah 50. Jagadguruh
+51. Rikshavanarasanghati 52. Chitrakutasamashrayah 53. Jayantatranavaradah 54. Sumitraputrasevitah 55. Sarvadevadhidevah 56. Mritavanarajivanah 57. Mayamarichahanta 58. Mahadevah 59. Mahabhujah 60. Sarvadevastutah
+61. Saumyah 62. Brahmanyah 63. Munisanstutah 64. Mahayogi 65. Mahodarah 66. Sugrivepsitarajyadah 67. Sarvapunyadhikaphalah 68. Smritasarvaghanashanah 69. Adipurushah 70. Paramapurushah
+71. Mahapurushah 72. Punyodayah 73. Dayasarah 74. Puranapurushottamah 75. Smitavaktrah 76. Mitabhashi 77. Purvabhashi 78. Raghavah 79. Anantagunagambhirah 80. Dhirodattagunottamah
+81. Mayamanushacharitrah 82. Mahadevadipujitah 83. Setukritah 84. Jitavarashih 85. Sarvatirthamayah 86. Harih 87. Shyamangah 88. Sundarah 89. Shurah 90. Pitavasasah
+91. Dhanurdharah 92. Sarvayajnadhipah 93. Yajvi 94. Jaramaranavarjitah 95. Vibhishanapratishthata 96. Sarvavagunavarjitah 97. Paramatma 98. Param Brahma 99. Sacchidanandavigrahah 100. Param Jyotih
+101. Param Dhama 102. Parakashah 103. Paratparah 104. Pareshah 105. Paragah 106. Parah 107. Sarvadevatmakah 108. Param.`,
     meaning: 'This is a list of 108 names of Lord Rama, describing his birth as the ideal king (Maryada Purushottam), his exile, his alliance with Hanuman and Sugriva, his war with Ravana, and his role as the seventh avatar of Vishnu.', meaningHi: 'यह भगवान राम के 108 नामों की सूची है, जो आदर्श राजा (मर्यादा पुरुषोत्तम) के रूप में उनके जन्म, उनके वनवास, हनुमान और सुग्रीव के साथ उनके गठबंधन, रावण के साथ उनके युद्ध, और विष्णु के सातवें अवतार के रूप में उनकी भूमिका का वर्णन करती है।',
     benefits: 'Recited or used for Archana with lotus or tulsi during Ram Navami and daily prayer, invoking righteousness, courage and devotion.', benefitsHi: 'राम नवमी और दैनिक प्रार्थना के दौरान कमल या तुलसी से अर्चना के लिए पाठ या उपयोग किया जाता है, जो धार्मिकता, साहस और भक्ति का आह्वान करता है।',
   },
@@ -179,9 +235,17 @@ export const NAMAVALIS: DevotionalItem[] = [
 ८१. हिडिम्बासुरमर्दनः ८२. धर्मानुजः ८३. पाण्डुपुत्रः ८४. धनञ्जयसहायवान् ८५. बलासुरवधोद्युक्तः ८६. तद्ग्रामपरिरक्षकः ८७. नित्यं भिक्षाहाररतः ८८. कुलालगृहमध्यगः ८९. पाञ्चाल्युद्वाहसञ्जातसम्मोदः ९०. बहुकान्तिमान्
 ९१. विराटनगरे गूढचरः ९२. कीचकमर्दनः ९३. दुर्योधननिहन्ता ९४. जरासन्धविमर्दनः ९५. सौगन्धिकापहर्ता ९६. द्रौपदीप्राणवल्लभः ९७. पूर्णबोधः ९८. व्यासशिष्यः ९९. यतिरूपः १००. महामतिः
 १०१. दुर्वादिगजसिंहस्य तर्कशास्त्रस्य खण्डनः १०२. बौद्धागमविभेत्ता १०३. साङ्ख्यशास्त्रस्य दूषकः १०४. द्वैतशास्त्रप्रणेता १०५. वेदव्यासमतानुगः १०६. पूर्णानन्दः १०७. पूर्णसत्वः १०८. पूर्णवैराग्यसागरः`,
-    transliteration: `1. Hanuman 2. Anjanisutah 3. Vayuputrah 4. Mahabalah 5. Ramesthah 6. Phalgunasakhah 7. Pingakshah 8. Amitavikramah 9. Udadhikramanah 10. Sitanveshanapanditah
-... (continuing through all 108 names of Hanuman) ...
-101. Kalyanadayakah 102. Dayasagarah 103. Siddhivinayakah 104. Mahaveerah 105. Sankatamochanahanuman 106. Ramadootah 107. Bhaktarakshakah 108. Mahabalaparakrami.`,
+    transliteration: `1. Hanuman 2. Anjanaputrah 3. Vayusunuh 4. Mahabalah 5. Ramadutah 6. Harishreshthah 7. Suri 8. Kesarinandanah 9. Suryashreshthah 10. Mahakayah
+11. Vajri 12. Vajrapraharavan 13. Mahasattvah 14. Maharupah 15. Brahmanyah 16. Brahmanapriyah 17. Mukhyapranah 18. Mahabhimah 19. Purnaprajnah 20. Mahaguruh
+21. Brahmachari 22. Vrikshadharah 23. Punyah 24. Shriramakinkarah 25. Sitashokavinashi 26. Simhikapranashakah 27. Mainakagarvabhangah 28. Chhayagrahanivarakah 29. Lankamokshapradah 30. Devah
+31. Sitamarganatatparah 32. Ramangulipradata 33. Sitaharshavivardhanah 34. Maharupadharah 35. Divyah 36. Ashokavananashakah 37. Mantriputraharah 38. Virah 39. Panchasenagramardanah 40. Dashakanthasutaghnah
+41. Brahmastravashagah 42. Avyayah 43. Dashasyasallaparah 44. Lankapuravidahakah 45. Tirnabdhih 46. Kapirajah 47. Kapiyuthapraranjakah 48. Chudamanipradata 49. Shrivashyah 50. Priyadarshakah
+51. Kaupinakundaladharah 52. Kanakangadabhushanah 53. Sarvashastrasusampannah 54. Sarvajnah 55. Jnanadottamah 56. Mukhyapranah 57. Mahavegah 58. Shabdashastravisharadah 59. Buddhiman 60. Sarvalokeshah
+61. Sureshah 62. Lokaranjakah 63. Lokanathah 64. Mahadarpah 65. Sarvabhutabhayapahah 66. Ramavahanarupah 67. Sanjivachalabhedakah 68. Kapinam Pranadata 69. Lakshmanapranarakshakah 70. Ramapadasamipasthah
+71. Lohitasyah 72. Mahahanuh 73. Ramasandeshakarta 74. Bharatanandavardhanah 75. Ramabhishekalolah 76. Ramakaryadhurandharah 77. Kuntigarbhasamutpannah 78. Bhimah 79. Bhimaparakramah 80. Lakshagrihadvinirmuktah
+81. Hidimbasuramardanah 82. Dharmanujah 83. Panduputrah 84. Dhananjayasahayavan 85. Balasuravadhodyuktah 86. Tadgramaparirakshakah 87. Nityam Bhikshahararatah 88. Kulalagrihamadhyagah 89. Panchalyudvahasanjatasammodah 90. Bahukantiman
+91. Viratanagare Gudhacharah 92. Kichakamardanah 93. Duryodhananihanta 94. Jarasandhavimardanah 95. Saugandhikapaharta 96. Draupadipranavallabhah 97. Purnabodhah 98. Vyasashishyah 99. Yatirupah 100. Mahamatih
+101. Durvadigajasinhasya Tarkashastrasya Khandanah 102. Bauddhagamavibhetta 103. Sankhyashastrasya Dushakah 104. Dvaitashastrapraneta 105. Vedavyasamatanugah 106. Purnanandah 107. Purnasatvah 108. Purnavairagyasagarah.`,
     meaning: 'This is a list of 108 names of Hanuman, describing his birth, strength, devotion to Rama, his crossing of the ocean, and his role as Sankatmochan (remover of troubles) and eternal (Chiranjeevi) protector of devotees.', meaningHi: 'यह हनुमान जी के 108 नामों की सूची है, जो उनके जन्म, शक्ति, राम के प्रति भक्ति, समुद्र पार करने, और संकटमोचन (संकटों को दूर करने वाले) तथा भक्तों के चिरंजीवी रक्षक के रूप में उनकी भूमिका का वर्णन करती है।',
     benefits: 'Recited or used for Archana with sindoor or red flowers on Tuesdays and Saturdays, invoking courage, protection and freedom from fear.', benefitsHi: 'मंगलवार और शनिवार के दिन सिंदूर या लाल फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो साहस, सुरक्षा और भय से मुक्ति का आह्वान करता है।',
   },
@@ -202,9 +266,17 @@ export const NAMAVALIS: DevotionalItem[] = [
 ८१. अमरेशः ८२. परं ज्योतिः ८३. अहस्करः ८४. रविः ८५. हरिः ८६. परमात्मा ८७. तरुणः ८८. वरेण्यः ८९. ग्रहाणां पतिः ९०. भास्करः
 ९१. आदिमध्यान्तरहितः ९२. सौख्यप्रदः ९३. सकलजगतां पतिः ९४. सूर्यः ९५. कविः ९६. नारायणः ९७. परेशः ९८. तेजोरूपः ९९. श्रीं हिरण्यगर्भः १००. ह्रीं सम्पत्करः
 १०१. ऐं इष्टार्थदः १०२. अनुप्रसन्नः १०३. श्रीमान् १०४. श्रेयसः १०५. भक्तकोटिसौख्यप्रदायी १०६. निखिलागमवेद्यः १०७. नित्यानन्दः १०८. श्री सूर्य नारायणः`,
-    transliteration: `1. Suryah 2. Aryama 3. Bhagah 4. Tvashta 5. Pusha 6. Arkah 7. Savita 8. Ravih 9. Gabhastiman 10. Ajah
-... (continuing through all 108 names of Surya, drawn from traditional Aditya Ashtottara texts) ...
-101. Ekaki 102. Bhagavan 103. Hiranyagarbhah 104. Kalachakrapravartakah 105. Saptasansthanasansthitah 106. Prakasharupah 107. Sarvaduritanashakah 108. Arogyakarakah.`,
+    transliteration: `1. Arunah 2. Sharanyah 3. Karunarasasindhuh 4. Asamanabalah 5. Artarakshakah 6. Adityah 7. Adibhutah 8. Akhilagamavedi 9. Achyutah 10. Akhilajnah
+11. Anantah 12. Inah 13. Vishwarupah 14. Ijyah 15. Indrah 16. Bhanuh 17. Indiramandiraptah 18. Vandaniyah 19. Ishah 20. Suprasannah
+21. Sushilah 22. Suvarchasah 23. Vasupradah 24. Vasuh 25. Vasudevah 26. Ujjwalah 27. Ugrarupah 28. Urdhvagah 29. Vivasvan 30. Udyatkiranajalah
+31. Hrishikeshah 32. Urjasvalah 33. Virah 34. Nirjarah 35. Jayah 36. Urudvayabhavarupayuktasarathih 37. Rishivandyah 38. Rugghanta 39. Rikshachakracharah 40. Rijusvabhavachittah
+41. Nityastutyah 42. Rrikaramatrikavarnarupah 43. Ujjwalatejasah 44. Rrikshadhinathamitrah 45. Pushkarakshah 46. Luptadantah 47. Shantah 48. Kantidah 49. Ghanah 50. Kanatkanakabhushah
+51. Khadyotah 52. Lunitakhiladaityah 53. Satyanandasvarupi 54. Apavargapradah 55. Artasharanyah 56. Ekaki 57. Bhagavan 58. Srishtisthityantakari 59. Gunatma 60. Ghrinibhritah
+61. Brihatah 62. Brahma 63. Aishvaryadah 64. Sharvah 65. Haridashvah 66. Shaurih 67. Dashadiksamprakashah 68. Bhaktavashyah 69. Ojaskarah 70. Jayi
+71. Jagadanandahetuh 72. Janmamrityujaravyadhivarjitah 73. Auchchyasthanasamarudharathasthah 74. Asurarih 75. Kamaniyakarah 76. Abjavallabhah 77. Antarbahih Prakashah 78. Achintyah 79. Atmarupi 80. Achyutah
+81. Amareshah 82. Param Jyotih 83. Ahaskarah 84. Ravih 85. Harih 86. Paramatma 87. Tarunah 88. Varenyah 89. Grahanam Patih 90. Bhaskarah
+91. Adimadhyantarahitah 92. Saukhyapradah 93. Sakalajagatam Patih 94. Suryah 95. Kavih 96. Narayanah 97. Pareshah 98. Tejorupah 99. Shrim Hiranyagarbhah 100. Hrim Sampatkarah
+101. Aim Ishtarthadah 102. Anuprasannah 103. Shriman 104. Shreyasah 105. Bhaktakotisaukhyapradayi 106. Nikhilagamavedyah 107. Nityanandah 108. Shri Surya Narayanah.`,
     meaning: 'This is a list of 108 names of Surya, the Sun God, describing his twelve principal forms (the Dvadasha Adityas embedded within the list — Mitra, Ravi, Surya, Bhanu and others) and his role as source of light, health and the cycle of time.', meaningHi: 'यह सूर्य देव के 108 नामों की सूची है, जो उनके बारह प्रमुख रूपों (सूची में सम्मिलित द्वादश आदित्य — मित्र, रवि, सूर्य, भानु और अन्य) तथा प्रकाश, स्वास्थ्य और काल-चक्र के स्रोत के रूप में उनकी भूमिका का वर्णन करती है।',
     benefits: 'Recited or used for Archana with red flowers at sunrise, during Chhath Puja and Ratha Saptami, invoking health, vitality and success.', benefitsHi: 'सूर्योदय के समय, छठ पूजा और रथ सप्तमी के दौरान लाल फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो स्वास्थ्य, ऊर्जा और सफलता का आह्वान करता है।',
   },
@@ -225,9 +297,17 @@ export const NAMAVALIS: DevotionalItem[] = [
 ८१. अशेषजनवन्द्यः ८२. विशेषफलदायी ८३. वशीकृतजनेशः ८४. पशूनां पतिः ८५. खेचरः ८६. खगेशः ८७. घननीलाम्बरः ८८. काठिन्यमानसः ८९. आर्यगणस्तुत्यः ९०. नीलच्छत्रः
 ९१. नित्यः ९२. निर्गुणः ९३. गुणात्मा ९४. निरामयः ९५. निन्द्यः ९६. वन्दनीयः ९७. धीरः ९८. दिव्यदेहः ९९. दीनार्तिहरणः १००. दैन्यनाशकरः
 १०१. आर्यजनगण्यः १०२. क्रूरः १०३. क्रूरचेष्टः १०४. कामक्रोधकरः १०५. कलत्रपुत्रशत्रुत्वकारणः १०६. परिपोषितभक्तः १०७. परभीतिहरः १०८. भक्तसङ्घमनोऽभीष्टफलदः`,
-    transliteration: `1. Shanaishcharah 2. Shantah 3. Sarvabheeshtapradayakah 4. Sharanyah 5. Varenyah 6. Sarveshah 7. Saumyah 8. Suravanditah 9. Mandah 10. Suryaputrah
-... (continuing through all 108 names of Shani) ...
-101. Maharaudrah 102. Sarvasantapaharakah 103. Nishthurah 104. Nyayakarakah 105. Prajapalakah 106. Sarvajanapriyah 107. Saurashtranathah 108. Neelachchhatrah.`,
+    transliteration: `1. Shanaishcharah 2. Shantah 3. Sarvabhishtapradayi 4. Sharanyah 5. Varenyah 6. Sarveshah 7. Saumyah 8. Suravandyah 9. Suralokavihari 10. Sukhasanopavishtah
+11. Sundarah 12. Ghanah 13. Ghanarupah 14. Ghanabharanadhari 15. Ghanasaravilepah 16. Khadyotah 17. Mandah 18. Mandacheshtah 19. Mahaniyagunatma 20. Martyapavanapadah
+21. Maheshah 22. Chhayaputrah 23. Sharvah 24. Sharatunidhari 25. Charasthirasvabhavah 26. Chanchalah 27. Nilavarnah 28. Nityah 29. Nilanjananibhah 30. Nilambaravibhushah
+31. Nishchalah 32. Vedyah 33. Vidhirupah 34. Virodhadharabhumih 35. Bhedaspadasvabhavah 36. Vajradehah 37. Vairagyadah 38. Virah 39. Vitarogabhayah 40. Vipatparampareshah
+41. Vishwavandyah 42. Gridhnavahah 43. Gudhah 44. Kurmangah 45. Kurupi 46. Kutsitah 47. Gunadhyah 48. Gocharah 49. Avidyamulanashah 50. Vidyavidyasvarupi
+51. Ayushyakaranah 52. Apaduddharta 53. Vishnubhaktah 54. Vashi 55. Vividhagamavedi 56. Vidhistutyah 57. Vandyah 58. Virupakshah 59. Varishthah 60. Garishthah
+61. Vajrankushadharah 62. Varadabhayahastah 63. Vamanah 64. Jyeshthapatnisametah 65. Shreshthah 66. Mitabhashi 67. Kashtaughanashakaryah 68. Pushtidah 69. Stutyah 70. Stotragamyah
+71. Bhaktivashyah 72. Bhanuh 73. Bhanuputrah 74. Bhavyah 75. Pavanah 76. Dhanurmandalasansthah 77. Dhanadah 78. Dhanushman 79. Tanuprakashadehah 80. Tamasah
+81. Asheshajanavandyah 82. Visheshaphaladayi 83. Vashikritajaneshah 84. Pashunam Patih 85. Khecharah 86. Khageshah 87. Ghananilambarah 88. Kathinyamanasah 89. Aryaganastutyah 90. Nilachchhatrah
+91. Nityah 92. Nirgunah 93. Gunatma 94. Niramayah 95. Nindyah 96. Vandaniyah 97. Dhirah 98. Divyadehah 99. Dinartiharanah 100. Dainyanashakarah
+101. Aryajanaganyah 102. Krurah 103. Kruracheshtah 104. Kamakrodhakarah 105. Kalatraputrashatrutvakaranah 106. Pariposhitabhaktah 107. Parabhitiharah 108. Bhaktasanghamano'bhishtaphaladah.`,
     meaning: 'This is a list of 108 names of Shani (Saturn), describing him as the impartial judge of karma (Nyayadhish), son of Surya, associated with discipline, delay, and justice, and as the one who tests and ultimately rewards perseverance.', meaningHi: 'यह शनि (शनि ग्रह) के 108 नामों की सूची है, जो उन्हें कर्म के निष्पक्ष न्यायाधीश (न्यायाधीश), सूर्यपुत्र, अनुशासन, विलंब और न्याय से जुड़े, तथा दृढ़ता की परीक्षा लेकर अंततः पुरस्कृत करने वाले के रूप में वर्णित करती है।',
     benefits: 'Recited or used for Archana with black sesame or blue flowers on Saturdays, during Shani Jayanti and Sadhesati, invoking relief from hardship and karmic justice.', benefitsHi: 'शनिवार, शनि जयंती और साढ़े साती के दौरान काले तिल या नीले फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो कठिनाई से राहत और कर्मिक न्याय का आह्वान करता है।',
   },
