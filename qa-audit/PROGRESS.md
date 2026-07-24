@@ -47,7 +47,14 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
 - [x] Part 3: Re-source Issue #36 — confirmed lyricsHi correct for both entries via
   sanskritdocuments.org, rewrote transliteration (+ meaning/meaningHi) to match. Commit
   `5506f36`. FIXED-verified.
-- [ ] Part 4: Continue Issue #31 (devotional transliteration, ~44 of 48 remaining)
+- [ ] Part 4: Continue Issue #31 (devotional transliteration, 42 of ~48 remaining after
+  Part 3 incidentally cleared saraswati-ashtakam/radha-ashtakam)
+  - [x] 4a: 12 Chalisas (shiv, durga, ganesh, vishnu, lakshmi, saraswati, krishna, ram,
+    shani, sai, kali, surya) — commit `e97694a`. Verified placeholder-free via grep.
+  - [ ] 4b: 2 remaining Chalisas (bhairav, vaishno-devi) + 6 Ashtakams (mahishasura-mardini,
+    hanuman, krishna, guru, ayyappa, venkateswara)
+  - [ ] 4c: 12 Stotrams
+  - [ ] 4d: 10 Namavali lists
 
 ## FIX PHASE COMPLETE — all 34 original issues + 3 fix-phase-discovered issues triaged (2026-07-23)
 
