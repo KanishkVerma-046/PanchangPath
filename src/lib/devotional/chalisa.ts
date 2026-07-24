@@ -2108,16 +2108,67 @@ Sukh sampati lahi bibidh, honhin sada kritkritya.`,
 ॥ दोहा ॥
 जय भैरव जय भूतपति, जय जय जय सुखकंद।
 करहु कृपा नित दास पे, देहुं सदा आनन्द॥`,
-    transliteration: `Jai Kal Bhairav devta, Shiv avatar mahan,
-Bhaktan ke bhay door kari, do raksha vardaan.
+    transliteration: `Shri Bhairav sankat haran, mangal karan kripalu,
+Karahu daya nij das pe, nishidin deendayalu.
 
-Jai jai jai Bhairav bhayhari, kripa karahu ab mohi ubari,
-Shiv swaroop Bhairav avatara, Mahakal tum bhakt ubara.
+Jai damarudhar nayan vishala, shyam varn, vapu maha karala,
+Jai trishuldhar jai damarudhar, Kashi kotwal, sankathar.
 
-... (chaupais describing Bhairav as guardian deity of Kashi, his dog vehicle, and his power over fear and evil spirits) ...
+Jai Girijasut paramkripala, sankatharan harahu bhramjala,
+Jayati Batuk Bhairav bhayahari, jayati Kaal Bhairav baldhari.
 
-Bhairav Chalisa jo padhe, bhay bhram hoy vinash,
-Raksha ho sab vipad se, pooran ho sab aas.`,
+Ashtaroop tumhare sab gaaven, sakal ek te ek sivaave,
+Shivswaroop Shiv ke anugami, Ganadhish tum sabke swami.
+
+Jatajoot par mukut suhaave, Bhalchandra ati shobha paave,
+Kati kardhani ghungru baaje, darshan karat sakal bhay bhaje.
+
+Kar trishul damaru ati sundar, morpankh ko chanwar manohar,
+Khappar khadga liye balwana, roop chaturbhuj nath bakhana.
+
+Vaahan shwaan sada sukhrasi, tum anant prabhu tum avinashi,
+Jai jai jai Bhairav bhay bhanjan, jai kripalu bhaktan manranjan.
+
+Nayan vishal lal ati bhari, raktavarn tum ahahu Purari,
+Ban ban ban bolat dinrati, Shiv kahan bhajahu asur arati.
+
+Ekroop tum Shambhu kahaave, dooje Bhairav roop banaave,
+Sevak tumahin prabhu swami, sab jag ke tum antaryami.
+
+Raktavarn vapu ahahi tumhara, shyamvarn kahun hoi prachara,
+Shwetvarn puni kaha bakhani, teeni varn tumhare gunkhani.
+
+Teeni nayan prabhu param suhaavahin, suranar muni sab dhyan lagaavahin,
+Vyaghra charmadhar tum jag swami, Pretnath tum poorn akami.
+
+Chakranath Nakulesh prachanda, nimish digambar keerati chanda,
+Krodhvats bhootesh kaaladhar, chakratund dashbahu vyaaladhar.
+
+Ahahin koti prabhu naam tumhare, japat sada metat dukh bhare,
+Chaunsath yogini naachahin sanga, krodhwaan tum ati ranranga.
+
+Bhootnath tum param punita, tum bhavishya tum ahahu ateeta,
+Vartmaan tumharo shuchi roopa, kaaljayi tum param anoopa.
+
+Ailaadi ko sankat taaryo, saad bhakt ko kaaraj saaryo,
+Kaliputra kahaavahu natha, tav charanan naavahun nit matha.
+
+Shri Krodhesh kripa vistaarahu, deen jaani mohi paar utaarahu,
+Bhavsagar boodhat dinraati, hohu kripalu dusht araati.
+
+Sevak jaani kripa prabhu keeje, mohin bhagati apni ab deeje,
+Karahun sada Bhairav ki seva, tum saman doojo ko deva.
+
+Ashwanath tum param manohar, dushtan kahan prabhu ahahu bhayankar,
+Tumharo das jahan jo hoi, taakahan sankat parai na koi.
+
+Harahu nath tum jan ki peera, tum saman prabhu ko balveera,
+Sab apraadh kshama kari deeje, deen jaani aapun mohin keeje.
+
+Jo yah paath kare Chalisa, taapai kripa karahu Jagdisha.
+
+Jai Bhairav jai Bhootpati, jai jai jai sukhkand,
+Karahu kripa nit das pe, dehun sada anand.`,
     meaning: 'This chalisa venerates Kaal Bhairav, the fierce form of Shiva who serves as guardian (Kotwal) of Kashi (Varanasi), rides a dog, wields a sword and trident, and protects devotees from fear, evil spirits and negative tantric influences.', meaningHi: 'यह चालीसा काल भैरव की वंदना करती है, जो शिव के उग्र रूप हैं और काशी (वाराणसी) के रक्षक (कोतवाल) के रूप में सेवा करते हैं, कुत्ते की सवारी करते हैं, तलवार और त्रिशूल धारण करते हैं, तथा भक्तों को भय, दुष्ट आत्माओं और नकारात्मक तांत्रिक प्रभावों से बचाते हैं।',
     benefits: 'Recited on Sundays and during Bhairav Ashtami, especially by those seeking protection from fear, black magic or malevolent forces.', benefitsHi: 'रविवार को और भैरव अष्टमी के दौरान, विशेष रूप से भय, काला जादू या दुष्ट शक्तियों से सुरक्षा चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
@@ -2195,16 +2246,71 @@ Raksha ho sab vipad se, pooran ho sab aas.`,
 ॥ दोहा ॥
 कलियुग में महिमा तेरी, है माँ अपरम्पार।
 धर्म की हानि हो रही, प्रगट हो अवतार॥`,
-    transliteration: `Jai jai Vaishno Devi Mata, Trikuta parvat vaas,
-Bhaktan ko darshan diyo, pooran karo sab aas.
+    transliteration: `Garud vaahini Vaishnavi, Trikuta parvat dhaam,
+Kali, Lakshmi, Saraswati, Shakti tumhein pranaam.
 
-Jai jai Vaishno jagat ki mata, Trikuta parvat tera gaata,
-Mahakali Mahalakshmi roopa, Mahasaraswati teen swaroopa.
+Namoh namoh Vaishno vardaani, kali kaal me shubh kalyaani,
+Mani parvat par jyoti tumhaari, pindi roop mein ho avataari.
 
-... (chaupais describing the pilgrimage route from Katra through Banganga, Ardhkuwari and Bhairon Ghati to the sacred cave shrine) ...
+Devi devta ansh diyo hai, Ratnakar ghar janma liyo hai,
+Kari tapasya Ram ko paaun, Treta ki shakti kahlaaun.
 
-Vaishno Chalisa bhakti se, padhe jo shraddha bhaay,
-Maa ke darshan payenge, manvanchhit phal paay.`,
+Kaha Ram mani parvat jaao, Kaliyug ki devi kahlaao,
+Vishnu roop se Kalki bankar, loonga shakti roop badalkar.
+
+Tab tak Trikuta ghaati jaao, gufa andheri jaakar paao,
+Kali-Lakshmi-Saraswati maan, karengi shoshan-Parvati maan.
+
+Brahma, Vishnu, Shankar dwaare, Hanumat Bhairon praheri pyaare,
+Riddhi, Siddhi chanwar dulaaven, Kaliyug-vaasi poojat aaven.
+
+Paan supaari dhwaja naariyal, charanamrit charanon ka nirmal,
+Diya phalit var maan muskaai, karan tapasya parvat aai.
+
+Kali kaalki bhadki jwala, ik din apna roop nikala,
+Kanya ban Nagrota aai, yogi Bhairon diya dikhai.
+
+Roop dekh sundar lalchaaya, peeche-peeche bhaaga aaya,
+Kanyaon ke saath mili maan, Kaul-Kandholi tabhi chali maan.
+
+Deva maai darshan deena, pavan roop ho gai praveena,
+Navratron mein leela rachaai, bhakt Shridhar ke ghar aai.
+
+Yogin ko bhandara deena, sabne ruchikar bhojan keena,
+Maans, madira Bhairon maangi, roop pavan kar ichchha tyaagi.
+
+Baan maarkar Ganga nikaali, parvat bhaagi ho matwaali,
+Charan rakhe aa ek shila jab, charan-paaduka naam pada tab.
+
+Peeche Bhairon tha balkaari, chhoti gufa mein jaay padhaari,
+Nau maah tak kiya nivaasa, chali phodkar kiya prakaasha.
+
+Aadya Shakti-Brahm kumaari, kahlaai maan aad kunwaari,
+Gufa dwaar pahunchi muskaai, Langur veer ne agya paai.
+
+Bhaaga-bhaaga Bhairon aaya, raksha hit nij shastra chalaaya,
+Pada sheesh ja parvat oopar, kiya kshama ja diya use var.
+
+Apne sang mein pujvaaungi, Bhairon ghaati banwaaungi,
+Pahle mera darshan hoga, peeche tera sumran hoga.
+
+Baith gai maan pindi hokar, charanon mein bahta jal jhar-jhar,
+Chaunsath yogini-bhairo baravan, saptrishi aa karte sumran.
+
+Ghanta dhwani parvat par baaje, gufa nirali sundar laage,
+Bhakt Shridhar poojan keena, bhakti seva ka var leena.
+
+Sevak Dhyaanu tumko dhyaaya, dhwaja va chola aan chadhaaya,
+Singh sada dar pahra deta, panja sher ka dukh har leta.
+
+Jambu dweep maharaj manaaya, sar sone ka chhatra chadhaaya,
+Heere ki moorat sang pyaari, jage akhand ik jot tumhaari.
+
+Ashwin Chaitra navraate aaun, pindi raani darshan paaun,
+Sevak 'Sharma' sharan tihaari, haro Vaishno vipat hamaari.
+
+Kaliyug mein mahima teri, hai maan aparampaar,
+Dharma ki haani ho rahi, pragat ho avataar.`,
     meaning: 'This chalisa venerates Mata Vaishno Devi, who resides on the Trikuta mountains near Katra, embodying Mahakali, Mahalakshmi and Mahasaraswati, and describes the sacred pilgrimage route through Banganga, Ardhkuwari and Bhairon Ghati to her cave shrine.', meaningHi: 'यह चालीसा माता वैष्णो देवी की वंदना करती है, जो कटरा के निकट त्रिकुटा पर्वतों पर निवास करती हैं, महाकाली, महालक्ष्मी और महासरस्वती का अवतार हैं, तथा बाणगंगा, अर्धकुंवारी और भैरों घाटी से होकर उनके गुफा मंदिर तक जाने वाले पवित्र तीर्थ मार्ग का वर्णन करती है।',
     benefits: 'Recited before and during the Vaishno Devi pilgrimage (yatra), and during Navratri, by devotees seeking the Mother\'s blessings and fulfillment of wishes.', benefitsHi: 'वैष्णो देवी तीर्थयात्रा (यात्रा) से पहले और उसके दौरान, तथा नवरात्रि के दौरान, माता के आशीर्वाद और इच्छाओं की पूर्ति चाहने वाले भक्तों द्वारा पाठ किया जाता है।',
   },

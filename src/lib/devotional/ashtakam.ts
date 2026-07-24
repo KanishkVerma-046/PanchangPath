@@ -336,8 +336,104 @@ Girivara-vindhya-shiro'dhinivasini Vishnu-vilasini jishnu-nute,
 Bhagavati he shitikanthakutumbini bhurikutumbini bhurikrite
 Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
 
-... (21 rhythmically intense verses celebrating Durga's destruction of the buffalo demon Mahishasura, attributed to the poet-devotee tradition of Adi Shankaracharya) ...
+Suravara-varshini durdhara-dharshini durmukha-marshini harsharate
+Tribhuvana-poshini shankara-toshini kalmasha-moshini ghorarate,
+Danuja-niroshini diti-suta-roshini durmada-shoshini sindhusute
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
 
+Ayi jagadamba madamba kadamba-vana-priya-vasini hasarate
+Shikhari-shiromani-tunga-himalaya-shringa-nijalaya-madhyagate,
+Madhu-madhure madhu-kaitabha-ganjini kaitabha-bhanjini rasarate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi shatakhanda vikhandita-runda vitundita-shunda gajadhipate
+Ripu-gaja-ganda vidarana-chanda parakrama-shunda mrigadhipate,
+Nija-bhuja-danda nipatita-khanda vipatita-munda-bhatadhipate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi rana-durmada shatru-vadhodita durdhara-nirjara shaktibhrite
+Chatura-vichara-dhurina mahashiva dootakrita pramathadhipate,
+Durita-dureeha-durashaya-durmati-danava-dootakritantamate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi sharanagata-vairivadhuvara veeravara-bhayadayakare
+Tribhuvana mastaka shoola-virodhi-shirodhikritamala shoolakare,
+Dumidumitamara dundubhinada maho mukhareekrita tigmakare
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi nija-hunkriti-matra nirakrita dhoomravilochana dhoomrashate
+Samara-vishoshita shonita-beeja samudbhava-shonita beejalate,
+Shiva shiva shumbha nishumbha mahahava tarpita bhoota pishacharate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Dhanuranusanga rana-kshana-sanga parisphurad-anga natatkatake
+Kanaka-pishanga-prishatka-nishanga-rasadbhata shringa hatavatuke,
+Krita-chaturanga bala-kshiti-ranga ghatad-bahuranga ratad-batuke
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Suralalana tatatheyi tatheyi kritabhinayodara nrityarate
+Krita kukuthah kukutho gadadadikatala kutoohala ganarate,
+Dhudhukuta dhukkuta dhindhimita dhwani dheera mridanga ninadarate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Jaya jaya japya jaye jaya shabdapara-stuti tatpara vishwanute
+Bhana bhana bhinjimi bhinkrita-noopura sinjita-mohita bhootapate,
+Natita-natardha natee-nata-nayaka natita-natya suganarate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi sumanah sumanah sumanah sumanah sumanohara kantiyute
+Shrita rajani rajani rajani rajani rajanikara vaktravrite,
+Sunayana vibhramara bhramara bhramara bhramara bhramaradhipate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Sahita mahahava mallama tallika mallita rallaka mallarate
+Virachita vallika pallika mallika bhillika bhillika varga vrite,
+Sitakrita phulla-samullasitaruna tallaja pallava sallalite
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Avirala-ganda-galanmada-medura matta-matangaja rajapate
+Tribhuvana-bhooshana-bhoota-kalanidhi roopa-payonidhi rajasute,
+Ayi sudateejana lalasamanasa mohana-manmatha rajasute
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Kamaladalamala komalakanti kalakalitamala bhalalate
+Sakala-vilasa-kalanilaya krama-keli-chalat-kalahansakule,
+Alikula sankula kuvalaya mandala mauli-miladbakulali kule
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Karamuralee-rava-veejita-koojita lajjita-kokila manjumate
+Milita pulinda manohara gunjita ranjitashaila nikunjagate,
+Nijaguna-bhoota mahashabareegana sadguna-sambhrita kelitale
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Katitata-peeta dukoola-vichitra mayookha-tiraskrita chandraruche
+Pranata-surasura mauli-mani-sphurad-anshu-lasannakha chandraruche,
+Jita-kanakachala mauli-padorjita nirbhara-kunjara kumbhakuche
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Vijita sahasrakaraika sahasrakaraika sahasrakaraikanute
+Krita suratarakasangara-tarakasangara-tarakasoonusute,
+Suratha-samadhi samana-samadhi samadhi-samadhi sujatarate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Padakamalam karunanilaye varivasyati yo'nudinam sa shive
+Ayi kamale kamalanilaye kamalanilayah sa katham na bhavet,
+Tava padameva paramapadamityanusheelayato mama kim na shive
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Kanakalasatkala sindhujalairanusinchinute gunarangabhuvam
+Bhajati sa kim na shacheekuchakumbha tateeparirambha sukhanubhavam,
+Tava charanam sharanam karavani natamaravani nivasi shivam
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Tava vimalendukulam vadanendumalam sakalam nanu koolayate
+Kimu puruhoota pureendumukhee sumukheebhirasau vimukheekriyate,
+Mama tu matam shivanamadhane bhavati kripaya kimuta kriyate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi mayi deenadayalutaya kripayaiva twaya bhavitavyamume
+Ayi jagato janani kripayasi yathasi tathanubhitasirate,
+Yaduchitamatra bhavatyurari kurutaadurutapamapakuru te
 Jaya jaya he Mahishasuramardini ramyakapardini shailasute.`,
     meaning: 'One of the most rhythmically celebrated Sanskrit hymns, this stotram glorifies Durga as the daughter of the mountain (Girinandini) who destroys the buffalo demon Mahishasura, praising her beauty, valor, and role as protector of the three worlds.', meaningHi: 'सबसे लयबद्ध रूप से प्रसिद्ध संस्कृत स्तोत्रों में से एक, यह स्तोत्र दुर्गा को पर्वत-पुत्री (गिरिनंदिनी) के रूप में महिमामंडित करता है जो महिषासुर राक्षस का विनाश करती हैं, उनके सौंदर्य, वीरता, और तीनों लोकों की रक्षक के रूप में उनकी भूमिका की स्तुति करते हुए।',
     benefits: 'Recited during Navratri, especially on Ashtami and Navami, for courage, protection and victory over difficulties, often sung for its powerful rhythmic quality.', benefitsHi: 'नवरात्रि के दौरान, विशेष रूप से अष्टमी और नवमी को, साहस, सुरक्षा और कठिनाइयों पर विजय के लिए पाठ किया जाता है, अक्सर इसकी शक्तिशाली लयबद्ध गुणवत्ता के लिए गाया जाता है।',
@@ -396,10 +492,43 @@ Tahi son tras bhayo jag ko, yah sankat kahu son jaat na taro.
 Devan aani kari vinati tab, chhadi diyo ravi kasht nivaro,
 Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
 
-... (8 verses in Awadhi recounting Hanuman's childhood feat of swallowing the sun, his exile with Sugriva, and his crossing of the ocean to find Sita) ...
+Bali ki tras kapees basai giri, jaat mahaprabhu panth niharo,
+Chaunki maha muni saap diyo tab, chahiy kaun bichar bicharo.
+Kai dwij roop livaay mahaprabhu, so tum das ke sok nivaro,
+Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
+
+Angad ke sang len gaye siy khoj, kapees yah bain uncharo,
+Jeevat na bachihau ham so ju, bina sudhi laae ihan pagu dharo.
+Heri thake tat sindhu sabai tab, laay Siya-sudhi pran ubaro,
+Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
+
+Ravan tras dai siy ko sab, rakshasi son kahi sok nivaro,
+Tahi samay Hanuman mahaprabhu, jaay maha rajneechar maro.
+Chahat Seey asok son aagi su, dai prabhu mudrika sok nivaro,
+Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
+
+Baan lagyo ur Lachhiman ke tab, pran taje sut Ravan maro,
+Lai grih baidya Sushen samet tabai, giri Dron su beer uparo.
+Aani sajeevan hath dai tab, Lachhiman ke tum pran ubaro,
+Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
+
+Ravan judh ajaan kiyo tab, naag ki phans sabai sir daro,
+Shri Raghunath samet sabai dal, moh bhayo yah sankat bharo.
+Aani khages tabai Hanuman ju, bandhan kaati sutras nivaro,
+Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
+
+Bandhu samet jabai Ahiravan, lai Raghunath patal sidharo,
+Debihin pooji bhali bidhi son, bali deu sabai mili mantra bicharo.
+Jaay sahaay bhayo tab hi, Ahiravan sainya samet sanharo,
+Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
+
+Kaaj kiyo bad devan ke tum beer, mahaprabhu dekhi bicharo,
+Kaun so sankat mor gareeb ko, jo tumson nahin jaat hai taro.
+Begi haro Hanuman mahaprabhu, jo kuchh sankat hoy hamaro,
+Ko nahi janat hai jag mein kapi, sankatmochan naam tiharo.
 
 Lal deh lali lase, aru dhari lal langoor,
-Bajra deh danav dalan, jai jai jai kapi soor.`,
+Bajra deh danav dalan, jai jai kapi soor.`,
     meaning: 'This ashtakam, composed in a folk style similar to the Hanuman Chalisa, recounts key episodes of Hanuman\'s life — swallowing the sun as an infant, his exile due to a sage\'s curse, his search for Sita, and his role as "Sankatmochan" (remover of troubles).', meaningHi: 'हनुमान चालीसा के समान लोक-शैली में रचित यह अष्टकम हनुमान जी के जीवन की प्रमुख घटनाओं — शिशु रूप में सूर्य को निगलना, एक ऋषि के श्राप के कारण उनका वनवास, सीता की खोज, और "संकटमोचन" (संकटों को दूर करने वाले) के रूप में उनकी भूमिका — का वर्णन करता है।',
     benefits: 'Recited alongside the Hanuman Chalisa on Tuesdays and Saturdays, especially by those in difficulty, seeking Hanuman\'s protective intervention.', benefitsHi: 'मंगलवार और शनिवार को हनुमान चालीसा के साथ पाठ किया जाता है, विशेष रूप से कठिनाई में पड़े लोगों द्वारा, जो हनुमान के सुरक्षात्मक हस्तक्षेप की कामना करते हैं।',
   },
@@ -458,11 +587,44 @@ Krishna-Damodaram Vasudevam Harim,
 Shridharam Madhavam Gopika-vallabham
 Janaki-nayakam Ramachandram bhaje.
 
-... (8 verses composed by Adi Shankaracharya, listing dozens of Krishna and Rama's names in rhythmic sequence) ...
+Achyutam Keshavam Satyabhamadhavam
+Madhavam Shridharam Radhikaradhitam,
+Indiramandiram chetasa sundaram
+Devakinandanam Nandajam sandadhe.
+
+Vishnave jishnave shankhine chakrine
+Rukminiragine Janakijanaye,
+Vallavivallabhayarchitayatmane
+Kamsavidhwansine vamshine te namah.
+
+Krishna Govinda he Rama Narayana
+Shripate Vasudevajita Shrinidhe,
+Achyutananta he Madhavadhokshaja
+Dwarakanayaka Draupadirakshaka.
+
+Rakshasakshobhitah Seetaya shobhito
+Dandakaranyabhoopunyatakaranam,
+Lakshmanenanvito vanaraih sevito
+'gastyasampoojito Raghavah patu mam.
+
+Dhenukaristaha'nishtakriddweshinam
+Keshiha Kamsahridvanshikavadakah,
+Pootanakopakah Soorajakhelano
+Balagopalakah patu mam sarvada.
+
+Vidyududyotavatprasphuradvasasam
+Pravridambhodavatprollasadvigraham,
+Vanyaya malaya shobhitorahsthalam
+Lohitanghridwayam varijaksham bhaje.
+
+Kunchitaih kuntalairbhrajamananam
+Ratnamaulim lasatkundalam gandayoh,
+Harakeyoorakam kankanaprojjwalam
+Kinkinimanjulam shyamalam tam bhaje.
 
 Achyutasyashtakam yah pathed ishtadam
 Prematah pratyaham purushah saspriham,
-Vrittatah sundaram kartrivishvambharam
+Vrittatah sundaram vedya-vishvambharam
 Tasya vashyo harirjayate satvaram.`,
     meaning: 'Composed by Adi Shankaracharya, this ashtakam is a rapid, rhythmic recitation of dozens of names of Krishna and Rama together — Achyuta, Keshava, Damodara, Vasudeva, Madhava, Govinda — reflecting the underlying unity of Vishnu\'s incarnations.', meaningHi: 'आदि शंकराचार्य द्वारा रचित, यह अष्टकम कृष्ण और राम के दर्जनों नामों — अच्युत, केशव, दामोदर, वासुदेव, माधव, गोविंद — का तीव्र, लयबद्ध पाठ है, जो विष्णु के अवतारों की अंतर्निहित एकता को दर्शाता है।',
     benefits: 'Recited during Janmashtami and by devotees seeking to feel Krishna\'s closeness (his name is said to make Hari come "under the devotee\'s control" through love).', benefitsHi: 'जन्माष्टमी के दौरान और उन भक्तों द्वारा पाठ किया जाता है जो कृष्ण की निकटता का अनुभव करना चाहते हैं (कहा जाता है कि उनका नाम प्रेम के माध्यम से हरि को "भक्त के वश में" कर देता है)।',
@@ -522,7 +684,40 @@ Yashashcharu chitram dhanam merutulyam,
 Manaschenna lagnam guror-anghri-padme
 Tatah kim tatah kim tatah kim tatah kim.
 
-... (8 verses composed by Adi Shankaracharya, contrasting worldly success — beauty, wealth, fame, family — with the emptiness of a mind not fixed on the Guru's feet) ...
+Kalatram dhanam putrapautradi sarvam
+Griham bandhavah sarvametaddhi jatam,
+Manaschenna lagnam guror-anghri-padme
+Tatah kim tatah kim tatah kim tatah kim.
+
+Shadangadi-vedo mukhe shastravidya
+Kavitvadi gadyam supadyam karoti,
+Manaschenna lagnam guror-anghri-padme
+Tatah kim tatah kim tatah kim tatah kim.
+
+Videsheshu manyah swadesheshu dhanyah
+Sadacharavritteshu matto na chanyah,
+Manaschenna lagnam guror-anghri-padme
+Tatah kim tatah kim tatah kim tatah kim.
+
+Kshamamandale bhoopa-bhoopala-brindaih
+Sada sevitam yasya padaravindam,
+Manaschenna lagnam guror-anghri-padme
+Tatah kim tatah kim tatah kim tatah kim.
+
+Yasho me gatam dikshu danapratapa-
+jjagadvastu sarvam kare yatprasadat,
+Manaschenna lagnam guror-anghri-padme
+Tatah kim tatah kim tatah kim tatah kim.
+
+Na bhoge na yoge na va vajirajau
+Na kantamukhe naiva vitteshu chittam,
+Manaschenna lagnam guror-anghri-padme
+Tatah kim tatah kim tatah kim tatah kim.
+
+Aranye na va swasya gehe na karye
+Na dehe mano vartate me twanarghye,
+Manaschenna lagnam guror-anghri-padme
+Tatah kim tatah kim tatah kim tatah kim.
 
 Guror-ashtakam yah pathet punyadehi
 Yatirbhoopatir-brahmachari cha gehi,
@@ -731,10 +926,34 @@ Sakhee-moortayo yugma-sevanukoolah.`,
     transliteration: `Lokaveeram mahapoojyam sarvarakshakaram vibhum,
 Parvati-hridayanandam Shastaram pranamamyaham.
 
-... (8 verses honoring Lord Ayyappa/Shasta, son of Shiva and Vishnu, seated on a lotus with serpent ornaments, and worshipped as guardian of Sabarimala) ...
+Viprapoojyam vishwavandyam Vishnu-Shambhoh priyam sutam,
+Kshipraprasadaniratam Shastaram pranamamyaham.
 
-Ashtakam Shastru-devasya yah pathed bhakti-poorvakam,
-Sarvarishta-vinirmuktah Shastru-sayujyam apnuyat.`,
+Mattamatanga-gamanam karunyamritapooritam,
+Sarvavighnaharam devam Shastaram pranamamyaham.
+
+Asmatkuleshwaram devamasmacchatruvinashanam,
+Asmadishtapradataram Shastaram pranamamyaham.
+
+Pandyeshavamshatilakam Kerale kelivigraham,
+Artatranaparam devam Shastaram pranamamyaham.
+
+Tryambakapuradheesham ganadhipasamanvitam,
+Gajaroodhamaham vande Shastaram pranamamyaham.
+
+Shivaveerya-samudbhootam Shrinivasa-tanoodbhavam,
+Shikhivahanujam vande Shastaram pranamamyaham.
+
+Yasya Dhanvantarirmata pita devo Maheshwarah,
+Tam Shastaramaham vande maharoganivaranam.
+
+Bhootanatha-dayananda sarvabhootadayapara,
+Raksha raksha mahabaho Shastre tubhyam namo namah.
+
+Ashyama komalavishalatanum vichitram
+Vaso vasanamarunotpaladamahastam,
+Uttungaratnamakutam kutilagrakesham
+Shastaramishtavaradam sharanam prapadye.`,
     meaning: 'This ashtakam venerates Ayyappa (also called Shasta), son of Shiva and Mohini (an incarnation of Vishnu), lord of Sabarimala and Ponnambalamedu, praising his form seated in meditation, his wisdom of the Vedas, and his role as protector of devotees.', meaningHi: 'यह अष्टकम अयप्पा (जिन्हें शास्ता भी कहा जाता है) की वंदना करता है, जो शिव और मोहिनी (विष्णु का एक अवतार) के पुत्र, सबरीमाला और पोन्नंबलमेडु के स्वामी हैं, ध्यानमग्न बैठी उनकी मुद्रा, वेदों में उनकी विद्वता, और भक्तों के रक्षक के रूप में उनकी भूमिका की स्तुति करते हुए।',
     benefits: 'Recited daily by Ayyappa devotees during the Mandala-Makaravilakku pilgrimage season and as part of the 41-day vratam preceding the Sabarimala yatra.', benefitsHi: 'अयप्पा भक्तों द्वारा मंडल-मकरविलक्कु तीर्थयात्रा के मौसम में प्रतिदिन, तथा सबरीमाला यात्रा से पूर्व के 41-दिवसीय व्रतम के भाग के रूप में पाठ किया जाता है।',
   },
@@ -789,15 +1008,50 @@ Sarvarishta-vinirmuktah Shastru-sayujyam apnuyat.`,
 
 कल्याणाद्भुतगात्राय कामितार्थप्रदायिने।
 श्रीमद्वेङ्कटनाथाय श्रीनिवासाय ते नमः॥`,
-    transliteration: `Shri Sheshashaila Garudachala Venkatadri
-Narayanadri vrishabhadri vrishadri mukhyam,
-Aakhyam tvadeeya-vasateranisham vadanti
-Shri Venkatachalapate tava suprabhatam.
+    transliteration: `Venkatesho Vasudevah Pradyumno'mitavikramah,
+Sankarshano'niruddhashcha Sheshadripatireva cha.
 
-... (verses in the Venkateswara Suprabhatam / Ashtakam tradition, waking Lord Balaji at Tirumala and praising his form, his ornaments and his residence) ...
+Janardanah Padmanabho Venkatachalavasinah,
+Srishtikarta Jagannatho Madhavo Bhaktavatsalah.
 
-Venkateshashtakam punyam yah pathet prataruthitah,
-Kotijanmarjitam papam tatkshanadeva nashyati.`,
+Govindo Gopatih Krishnah Keshavo Garudadhwajah,
+Varaho Vamanashchaiva Narayana Adhokshajah.
+
+Shridharah Pundarikakshah sarvadevastuto Harih,
+Shrinrisimho Mahasimhah Sootrakarah puratanah.
+
+Ramanatho Maheebharta Bhoodharah Purushottamah,
+Cholaputrapriyah shanto Brahmadeenam varapradah.
+
+Shrinidhih sarvabhootanam bhayakridbhayanashanah,
+Shriramo Ramabhadrashcha bhavabandhaikamochakah.
+
+Bhootavaso Girivasah Shrinivasah Shriyah patih,
+Achyutananta Govindo Vishnurvenkatanayakah.
+
+Sarvadevaikasharanam sarvadevaikadaivatam,
+Samastadevakavacham sarvadevashikhamanih.
+
+Iteedam keertitam yasya Vishnoramitatejasah,
+Trikale yah pathennityam papam tasya na vidyate.
+
+Rajadware pathedghore sangrame ripusankate,
+Bhootasarpapishachadibhayam nasti kadachana.
+
+Aputro labhate putran nirdhano dhanavan bhavet,
+Rogarto muchyate rogadbaddho muchyeta bandhanat.
+
+Yadyadishtatamam loke tattatprapnotyasanshayah,
+Aishwaryam rajasammanam bhuktimuktiphalapradam.
+
+Vishnorlokaikasopanam sarvaduhkhaikanashanam,
+Sarvaishwaryapradam nrinam sarvamangalakarakam.
+
+Mayavi paramanandam tyaktva Vaikunthamuttamam,
+Swamipushkarinitire Ramaya saha modate.
+
+Kalyanadbhutagatraya kamitarthapradayine,
+Shrimadvenkatanathaya Shrinivasaya te namah.`,
     meaning: 'This ashtakam, in the tradition of the famous Venkateswara Suprabhatam, praises Lord Venkateswara (Balaji) of Tirumala, describing the seven hills of his abode, his ornaments, and his role as protector who removes fear and grants prosperity.', meaningHi: 'प्रसिद्ध वेंकटेश्वर सुप्रभातम की परंपरा में रचित यह अष्टकम तिरुमला के भगवान वेंकटेश्वर (बालाजी) की स्तुति करता है, उनके निवास के सात पहाड़ों, उनके आभूषणों, तथा भय दूर करने और समृद्धि प्रदान करने वाले रक्षक के रूप में उनकी भूमिका का वर्णन करते हुए।',
     benefits: 'Recited at dawn (as an awakening hymn) and during pilgrimage to Tirumala Tirupati, believed to remove sins accumulated over many lifetimes.', benefitsHi: 'प्रातःकाल (जागरण स्तोत्र के रूप में) और तिरुमला तिरुपति की तीर्थयात्रा के दौरान पाठ किया जाता है, जिसे कई जन्मों के संचित पापों को दूर करने वाला माना जाता है।',
   },
