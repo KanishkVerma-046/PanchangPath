@@ -1131,22 +1131,52 @@ links all resolve correctly.
 
 ## Fix-phase-discovered issues (found while fixing, not part of the original 16-batch audit)
 
-### Issue #35: Muhurta scoring's fixed daily snapshot time can miss a Sankranti crossing that happens later the same day — `/muhurta/griha-pravesh`, `/muhurta/vivah`, likely other muhurta finders
+### Issue #35 (merged with #13's residual): Muhurta scoring's fixed 6 AM daily snapshot can miss a same-day Sankranti crossing — `/muhurta/griha-pravesh`, `/muhurta/vivah`, `/muhurta/shubha-dates`
+
+**SCOPED (Round 3, Part 1) — investigation complete, not yet fixed.** Confirmed exactly 3 of 9
+muhurta pages share this bug class; all 3 are cascading risk (feed a multi-day ranked date list,
+not a single lookup), so this is upgraded from "narrow residual" to "worth fixing across all 3
+files together":
+
+| Page | Has fixed-snapshot gate? | Gate(s) affected | Risk | Evidence |
+|---|---|---|---|---|
+| `griha-pravesh.astro` | Yes | Kharmas (rashi 8/11), Chaturmas (rashi 4-6) | Cascading — feeds `while(cur<=toD)` multi-date scan | L115 `toJD(y,m,d,6-loc.tz)`; gates L150/153 |
+| `vivah.astro` | Yes | Kharmas (rashi 8/11) | Cascading — same scan pattern | L117 `toJD(y,m,d,6-loc.tz)`; gate L169 |
+| `shubha-dates.astro` | Yes | Kharmas only, shared across all 4 `?activity=` variants | Cascading — explicit ranked multi-month list | L131 `toJD(y,m,d,6-loc.tz)`; gate L165 |
+| `choghadiya.astro`/`hora.astro`/`rahu-kala.astro`/`lagna.astro`/`abhijit.astro` | Snapshot exists but not rashi-gated | N/A | N/A — weekday-slot/sunrise-sunset math only, bug class doesn't apply | — |
+| `panchaka.astro` | Snapshot feeds a *Moon*-nakshatra gate (Panchaka), not Sun-rashi/Sankranti | Related principle, different mechanism, more frequent boundary (~daily) | Out of scope for this issue — flagged separately below | L176 `toJD(...,6-loc.tz)` → L178-180 |
+| `src/lib/muhurta.ts` | No date/JD computation lives here at all | N/A | — all 3 affected pages independently duplicate their own scoring/snapshot logic | — |
+
+**Consolidated fix approach (applies to all 3 affected files identically):** each of
+`griha-pravesh.astro`, `vivah.astro`, `shubha-dates.astro` computes `sunRashiIdx` once from a
+fixed `toJD(y,m,d,6-loc.tz)` anchor, then gates scoring on it. Replace with a dual-endpoint check:
+compute `sunRashiIdx` at local sunrise (`toJD(y,m,d,0-loc.tz)` anchor, same pattern already used in
+`lagna.astro`) AND again near end-of-civil-day (`h = 23.99-loc.tz`), then treat a candidate date as
+"inside Kharmas/Chaturmas" if **either** endpoint's `sunRashiIdx` falls in the void range (OR the
+two checks, don't average) — strictly conservative, a date only clears the gate if the Sun stays in
+a good sign for the entire civil day. Reuses each file's existing `toJD`/`sunTrueLongitude`/
+`lahiriAyanamsha` calls (called twice per candidate date instead of once), no new astronomy needed.
+**Open decision, needs a call before Part 1.5 proceeds:** since all 3 files duplicate this exact
+scoring shape independently (no shared helper in `muhurta.ts`), fix it 3× inline, or hoist a shared
+`sunRashiSpansSankranti(y,m,d,loc)` helper into `muhurta.ts` (which already holds these pages'
+shared criteria tables) and have all 3 import it — the latter avoids re-diverging a 4th time later,
+consistent with the site's own recurring "duplicated table silently drifts" lesson (Issues #1/#3/#11/#15).
+
+**New related-but-separate observation (not part of this issue, not queued):** `panchaka.astro`'s
+Moon-nakshatra (Panchaka) gate has the same daily-snapshot-staleness principle but a much more
+frequent boundary (~daily Moon-nakshatra changes vs. ~monthly Sun-rashi changes) — worth its own
+future issue if it's ever found to misfire in practice; not confirmed as a live bug, not touched.
+
 - Severity: minor (latent, narrow window — surfaced as a residual on Issue #13's fix)
-- Description: `griha-pravesh.astro`/`vivah.astro` (and likely sibling muhurta finders using the
-  same pattern) evaluate Sun/Moon position once per candidate date at a fixed IST-equivalent 6 AM
-  snapshot. On a day where a Sankranti (Sun rashi change) actually occurs later that same day, the
-  snapshot evaluates the OLD rashi, so the gate that depends on the new rashi (Kharmas/Chaturmas)
-  doesn't fire until the following day.
+- Description: `griha-pravesh.astro`/`vivah.astro`/`shubha-dates.astro` evaluate Sun position once
+  per candidate date at a fixed IST-equivalent 6 AM snapshot. On a day where a Sankranti (Sun rashi
+  change) actually occurs later that same day, the snapshot evaluates the OLD rashi, so the gate
+  that depends on the new rashi (Kharmas/Chaturmas) doesn't fire until the following day.
 - Evidence: found while verifying Issue #13's Chaturmas gate — 2026-08-17 (actual Simha Sankranti
   2026, ~7:30 AM IST per the Issue #6 fix) still scored 12/Excellent on Griha Pravesh because the
-  6 AM snapshot is ~90 min before the crossing. The pre-existing Kharmas gate in both files likely
+  6 AM snapshot is ~90 min before the crossing. The pre-existing Kharmas gate in all 3 files likely
   has the same blind spot on its own transition days each year.
-- Fix prompt: not yet scoped — would need each muhurta finder to evaluate Sun/Moon position at
-  actual local sunrise (or check both start-of-day and end-of-day rashi) rather than a fixed
-  6 AM IST snapshot, for any gate keyed to a Sankranti-style boundary. Worth a dedicated look
-  across all muhurta finders that use this snapshot pattern before fixing, rather than patching
-  one file at a time.
+- Fix prompt: see consolidated fix approach above. Proceeding to Part 1.5 to apply it.
 
 ### Issue #36: Saraswati Ashtakam and Radha Ashtakam's transliteration text doesn't match their own Devanagari `lyricsHi` — appears sourced from a different textual variant entirely
 - Severity: content

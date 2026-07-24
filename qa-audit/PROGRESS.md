@@ -30,6 +30,17 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
 - [x] Fix-Batch 4a: astro-core/muhurta/panchang-i18n minors — #7, #8, #10, #11, #14, #15, #16, #17 all FIXED-verified. New Issue #37 found (Mars/Jupiter/Saturn retrograde detection gap). Commits: `c706c32`, `972cc77`, `91d7f83`, `4d25cd6`, `8767f10`.
 - [x] Fix-Batch 4b: festivals/horoscope-match/pancha-pakshi/rashifal/header minors — 10 of 11 FIXED-verified (#18, #19, #22, #23, #27, #28, #29, #32, #33, #34); #26 investigated, left as-is (no credible source either way, correctly not guessed). Commits: `1798910`, `bfcd768`, `3b38a08`, `b73fad1`, `f68af4e`, `38f5f92`.
 
+## Round 3 Progress (2026-07-24)
+
+- [x] Part 1: Scoped Issue #35/#13 — confirmed exactly 3 of 9 muhurta pages
+  (griha-pravesh, vivah, shubha-dates) share the fixed-6AM-snapshot bug class,
+  all cascading risk; consolidated fix approach + shared-helper decision
+  written into PLAN.md. No code changed.
+- [ ] Part 1.5: Fix the scoped #35/#13 issue
+- [ ] Part 2: Fix Issue #37 (retrograde threshold)
+- [ ] Part 3: Re-source Issue #36 (Ashtakam text mismatch)
+- [ ] Part 4: Continue Issue #31 (devotional transliteration, ~44 of 48 remaining)
+
 ## FIX PHASE COMPLETE — all 34 original issues + 3 fix-phase-discovered issues triaged (2026-07-23)
 
 Final tally: 32 of 34 original issues FIXED-verified, 1 (#13) fixed with a narrow documented
