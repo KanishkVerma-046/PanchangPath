@@ -69,7 +69,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <script>
 import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
-import { MUHURTA_CRITERIA } from '../../lib/muhurta';
+import { MUHURTA_CRITERIA, sunRashiVoidCheck, KHARMAS_RASHIS } from '../../lib/muhurta';
 
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
@@ -138,7 +138,6 @@ function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number
   const tithiIdx=Math.floor(elong/12)%30;
   const nakIdx=Math.floor(moonSid/(360/27))%27;
   const yogaIdx=Math.floor(n360(sunSid+moonSid)/(360/27))%27;
-  const sunRashiIdx=Math.floor(sunSid/30)%12;
   const wd=new Date(y,m-1,d).getDay();
   const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunLon));
   const dec=Math.asin(sinDec);
@@ -148,10 +147,10 @@ function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number
   const srMins=(noon-ha/15)*60+loc.tz*60, ssMins=(noon+ha/15)*60+loc.tz*60;
   const dur=(ssMins-srMins)/8;
   const rahuStart=srMins+RAHU_SLOTS[wd]*dur, rahuEnd=rahuStart+dur;
-  return {tithiIdx,nakIdx,yogaIdx,wd,sunRashiIdx,rahuStart,rahuEnd,paksha:tithiIdx<15?'S':'K'};
+  return {tithiIdx,nakIdx,yogaIdx,wd,rahuStart,rahuEnd,paksha:tithiIdx<15?'S':'K'};
 }
 
-function scoreDay(res:ReturnType<typeof calcDay>,activity:Activity){
+function scoreDay(res:ReturnType<typeof calcDay>,activity:Activity,y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number}){
   const c=CRITERIA[activity];
   let score=0; const notes:string[]=[],bad:string[]=[];
   if(c.varas.includes(res.wd)){score+=3;notes.push(VARA_NAMES[res.wd]);}
@@ -162,7 +161,10 @@ function scoreDay(res:ReturnType<typeof calcDay>,activity:Activity){
   if(c.avoidTithis.includes(res.tithiIdx)){score-=3;bad.push(TITHI_NAMES[res.tithiIdx]+(isHindi?' (वर्जित)':' (avoid)'));}
   else if(c.tithis.includes(res.tithiIdx)){score+=3;notes.push(TITHI_NAMES[res.tithiIdx]);}
   if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push(isHindi?'शुभ योग':'Auspicious yoga');}
-  if(res.sunRashiIdx===8||res.sunRashiIdx===11){score-=4;bad.push(isHindi?'खरमास':'Kharmas month');}
+  // Dual-endpoint (start-of-day + end-of-day) Sun-rashi check (Issue #35/#13) so a same-day
+  // Sankranti crossing can't slip past a fixed 6 AM snapshot.
+  const kharmas=sunRashiVoidCheck(y,m,d,loc.tz,KHARMAS_RASHIS);
+  if(kharmas.isVoid){score-=4;bad.push(isHindi?'खरमास':'Kharmas month');}
   return {score,notes,bad};
 }
 
@@ -248,7 +250,7 @@ function findDates(scroll=true){
   while(cur<=toD){
     const y=cur.getFullYear(),m=cur.getMonth()+1,d=cur.getDate();
     const res=calcDay(y,m,d,loc);
-    const {score,notes,bad}=scoreDay(res,currentActivity);
+    const {score,notes,bad}=scoreDay(res,currentActivity,y,m,d,loc);
     if(score>=4) results.push({date:new Date(cur),score,notes,bad,res});
     cur.setDate(cur.getDate()+1);
   }

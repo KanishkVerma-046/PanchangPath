@@ -71,7 +71,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <script>
 import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
-import { MUHURTA_CRITERIA } from '../../lib/muhurta';
+import { MUHURTA_CRITERIA, sunRashiVoidCheck, KHARMAS_RASHIS, CHATURMAS_RASHIS } from '../../lib/muhurta';
 
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
@@ -122,7 +122,6 @@ function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number
   const tithiIdx=Math.floor(elong/12)%30;
   const nakIdx=Math.floor(moonSid/(360/27))%27;
   const yogaIdx=Math.floor(n360(sunSid+moonSid)/(360/27))%27;
-  const sunRashiIdx=Math.floor(sunSid/30)%12;
   const date=new Date(y,m-1,d);
   const wd=date.getDay();
   const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunLon));
@@ -133,10 +132,10 @@ function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number
   const srMins=(noon-ha/15)*60+loc.tz*60, ssMins=(noon+ha/15)*60+loc.tz*60;
   const dur=(ssMins-srMins)/8;
   const rahuStart=srMins+RAHU_SLOTS[wd]*dur, rahuEnd=rahuStart+dur;
-  return {tithiIdx,nakIdx,yogaIdx,wd,sunRashiIdx,rahuStart,rahuEnd,paksha:tithiIdx<15?'S':'K'};
+  return {tithiIdx,nakIdx,yogaIdx,wd,rahuStart,rahuEnd,paksha:tithiIdx<15?'S':'K'};
 }
 
-function scoreGP(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;sunRashiIdx:number;rahuStart:number;rahuEnd:number;paksha:string}){
+function scoreGP(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;rahuStart:number;rahuEnd:number;paksha:string},y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number}){
   let score=0;
   const notes:string[]=[], bad:string[]=[];
   if(GP_GOOD_VARAS.includes(res.wd)){score+=3;notes.push(VARA_NAMES[res.wd]+' (good weekday)');}
@@ -147,10 +146,12 @@ function scoreGP(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;sun
   if(GP_AVOID_TITHIS.includes(res.tithiIdx)){score-=3;bad.push(TITHI_NAMES[res.tithiIdx]+' Rikta tithi (avoid)');}
   else if(GP_GOOD_TITHIS.includes(res.tithiIdx)){score+=3;notes.push((res.paksha==='S'?'Shukla ':'')+TITHI_NAMES[res.tithiIdx]);}
   if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push('Auspicious yoga');}
-  if(res.sunRashiIdx===8||res.sunRashiIdx===11){score-=4;bad.push('Kharmas month');}
-  // Chaturmas: Sun in Simha(4)/Kanya(5)/Tula(6) — traditionally void for Griha Pravesh (Issue #13).
-  // Computed from the site's own sidereal Sun longitude per-date, not a hardcoded date range.
-  if(res.sunRashiIdx>=4&&res.sunRashiIdx<=6){score-=10;bad.push('Chaturmas ('+RASHI_NAMES[res.sunRashiIdx]+')');}
+  // Kharmas/Chaturmas: dual-endpoint (start-of-day + end-of-day) Sun-rashi check (Issue #35/#13) —
+  // a same-day Sankranti crossing no longer slips past a fixed 6 AM snapshot.
+  const kharmas=sunRashiVoidCheck(y,m,d,loc.tz,KHARMAS_RASHIS);
+  if(kharmas.isVoid){score-=4;bad.push('Kharmas month');}
+  const chaturmas=sunRashiVoidCheck(y,m,d,loc.tz,CHATURMAS_RASHIS);
+  if(chaturmas.isVoid){score-=10;bad.push('Chaturmas ('+RASHI_NAMES[chaturmas.rashiIdx]+')');}
   return {score,notes,bad};
 }
 
@@ -200,7 +201,7 @@ function findGPDates(scroll=true){
   while(cur<=toD){
     const y=cur.getFullYear(),m=cur.getMonth()+1,d=cur.getDate();
     const res=calcDay(y,m,d,loc);
-    const {score,notes,bad}=scoreGP(res);
+    const {score,notes,bad}=scoreGP(res,y,m,d,loc);
     if(score>=5) results.push({date:new Date(cur),score,notes,bad,res});
     cur.setDate(cur.getDate()+1);
   }

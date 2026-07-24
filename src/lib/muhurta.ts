@@ -1,5 +1,7 @@
 // Muhurta tools — data, types, and server-side scoring functions
 
+import { sunTrueLongitude, lahiriAyanamsha } from './panchang';
+
 export type ChoghadiyaType = 'Amrit' | 'Shubh' | 'Labh' | 'Char' | 'Udveg' | 'Kaal' | 'Rog';
 export type Quality = 'best' | 'good' | 'neutral' | 'bad';
 
@@ -245,3 +247,57 @@ export const GOWRI_NIGHT: GowriType[][] = [
   ['Rogam','Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham'],   // Fri
   ['Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham','Charam'],  // Sat (source anomaly: Rogam missing, Charam repeats)
 ];
+
+// ── Sun-rashi void-period check (Issue #35/#13) ──────────────────────────────
+//
+// griha-pravesh.astro/vivah.astro/shubha-dates.astro each gate Kharmas (and, for Griha Pravesh,
+// Chaturmas) exclusion on the Sun's sidereal rashi computed from a single fixed 6 AM local
+// snapshot. If a Sankranti (Sun rashi change) happens later the same civil day, that snapshot
+// still sees the OLD rashi, so the gate doesn't fire until the following day — letting a
+// genuinely void date score "Excellent" (confirmed for Griha Pravesh's Chaturmas gate on the
+// 2026-08-17 Simha Sankranti, which crosses ~7:30 AM IST, after the 6 AM snapshot).
+//
+// Fix: check the Sun's sidereal rashi at TWO endpoints of the local civil day — 00:00 and
+// 23:59:24 (23.99h) local time — and treat the date as "inside" the void set if EITHER endpoint's
+// rashi is a member. This is a strict OR, not an average: a date only clears the gate if the Sun
+// stays outside the void rashis for the ENTIRE civil day. Strictly conservative relative to the
+// old single-snapshot behavior (it can only newly exclude dates, never newly admit one that the
+// old code excluded). Reuses the same toJD/sunTrueLongitude/lahiriAyanamsha calls each of the 3
+// files already had inline — just evaluated twice per candidate date instead of once.
+
+function voidCheckJD(y: number, m: number, d: number, h: number): number {
+  let yy = y, mm = m;
+  if (mm <= 2) { yy--; mm += 12; }
+  const A = Math.floor(yy / 100), B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (yy + 4716)) + Math.floor(30.6001 * (mm + 1)) + d + h / 24 + B - 1524.5;
+}
+const voidNorm360 = (a: number) => ((a % 360) + 360) % 360;
+
+/** Sun's sidereal (Lahiri) rashi index (0=Mesha … 11=Meena) at a given local civil hour on (y,m,d), for a location's tz offset (hours east of UTC). */
+export function sunRashiIdxAt(y: number, m: number, d: number, localHour: number, tzOffset: number): number {
+  const jd = voidCheckJD(y, m, d, localHour - tzOffset);
+  const sunSid = voidNorm360(sunTrueLongitude(jd) - lahiriAyanamsha(jd));
+  return Math.floor(sunSid / 30) % 12;
+}
+
+/**
+ * Dual-endpoint void-rashi check for a candidate civil date. Returns `isVoid: true` if the Sun's
+ * sidereal rashi is a member of `voidRashis` at EITHER local 00:00 or local 23:59 that day (OR,
+ * not average) — i.e. the Sun spends at least part of the civil day in a void sign, even if a
+ * Sankranti out of it happens later. `rashiIdx` is whichever endpoint triggered (start preferred),
+ * or the start-of-day rashi if neither did — for building a human-readable "Kharmas (Dhanu)"-style
+ * message; callers that don't need naming can ignore it.
+ */
+export function sunRashiVoidCheck(
+  y: number, m: number, d: number, tzOffset: number, voidRashis: number[]
+): { isVoid: boolean; rashiIdx: number } {
+  const startRashi = sunRashiIdxAt(y, m, d, 0, tzOffset);
+  const endRashi = sunRashiIdxAt(y, m, d, 23.99, tzOffset);
+  if (voidRashis.includes(startRashi)) return { isVoid: true, rashiIdx: startRashi };
+  if (voidRashis.includes(endRashi)) return { isVoid: true, rashiIdx: endRashi };
+  return { isVoid: false, rashiIdx: startRashi };
+}
+
+// Shared void-rashi sets so all 3 call sites reference the same definition.
+export const KHARMAS_RASHIS = [8, 11];       // Dhanu (Sagittarius), Meena (Pisces)
+export const CHATURMAS_RASHIS = [4, 5, 6];   // Simha, Kanya, Tula
