@@ -564,17 +564,33 @@ Guror-uktavakye mano yasya lagnam.`,
 ॥ फलश्रुति ॥
 सरस्वत्यष्टकं नित्यं सकृत् प्रातर्जपेन्नरः।
 अज्ञैर्विमुच्यते सोऽयं प्राज्ञैरिष्टश्च लभ्यते॥`,
-    transliteration: `Namami satatam tam cha Saraswatim mahabhagam,
-Veenapustaka-dharinim brahmasutam jagatpujyam.
+    transliteration: `Amala vishwavandya sa kamalakara-malini,
+Vimalabhra-nibha vo'vyat kamala ya Saraswati.
 
-Sarvajnana-pradam devim sarvakavya-prakashinim,
-Sarvabuddhi-pradam vande Saraswatim varapradam.
+Varna-samsthanga-rupa ya swarna-ratna-vibhooshita,
+Nirnaya bharati shwetavarna vo'vyat Saraswati.
 
-... (8 verses praising Saraswati as bestower of all knowledge, poetry, logic and the arts) ...
+Varadabhaya-rudraksha-vara-pustaka-dharini,
+Sarasa sa sarojastha sara vo'vyat Saraswati.
 
-Idam stotram pathennityam yah shraddhabhakti-samyutah,
-Vidyavan buddhiman bhooyat sarvashastra-vishardah.`,
-    meaning: 'This ashtakam praises Saraswati as the source of all knowledge — Vedanta, grammar, poetry, logic, music and the sciences — describing her white radiance, her veena and book, and her role as bestower of wisdom to sincere seekers.', meaningHi: 'यह अष्टकम सरस्वती को समस्त ज्ञान — वेदांत, व्याकरण, काव्य, तर्कशास्त्र, संगीत और विज्ञान — के स्रोत के रूप में स्तुति करता है, उनकी श्वेत आभा, वीणा और पुस्तक, तथा निष्ठावान साधकों को बुद्धि प्रदान करने में उनकी भूमिका का वर्णन करते हुए।',
+Sundari sumukhi padma-mandira madhura cha sa,
+Kundabhasa sada vo'vyad-vandita ya Saraswati.
+
+Rudraksha-lipita kumbha-mudra-dhrita-karambuja,
+Bhadrartha-dayini savyad-bhadrabjakshi Saraswati.
+
+Rakta-kausheya-ratnadhya vyakta-bhashana-bhooshana,
+Bhakta-hrit-padma-samstha sa shakta vo'vyat Saraswati.
+
+Chaturmukhasya jaya ya chaturveda-swaroopini,
+Chaturbhuja cha sa vo'vyach-chaturvarga Saraswati.
+
+Sarvaloka-prapoojya ya parva-chandra-nibhanana,
+Sarva-jihvagra-samstha sa sada vo'vyat Saraswati.
+
+Saraswatyashtakam nityam sakrit pratar-japennarah,
+Ajnair-vimuchyate so'yam prajnair-ishtashcha labhyate.`,
+    meaning: 'This ashtakam invokes Saraswati under her many epithets — Bharati, Kamala, Sarasa — praying that she who is pure, worshipped by the whole world, fair as a spotless cloud, adorned with gold, jewels and a rudraksha rosary, seated on a lotus and holding a book, and who is the consort of four-faced Brahma and the embodiment of the four Vedas, may protect the devotee; its closing verse promises that one who recites it daily is freed from ignorance and attains what the wise seek.', meaningHi: 'यह अष्टकम सरस्वती को उनके अनेक नामों — भारती, कमला, सरसा — से संबोधित करते हुए प्रार्थना करता है कि जो शुद्ध हैं, समस्त विश्व द्वारा पूजित हैं, निर्मल मेघ के समान गौर वर्ण हैं, स्वर्ण, रत्न और रुद्राक्ष माला से सुशोभित हैं, कमल पर विराजमान हैं और पुस्तक धारण करती हैं, तथा चतुर्मुख ब्रह्मा की पत्नी और चारों वेदों की स्वरूपा हैं — वे भक्त की रक्षा करें; अंतिम श्लोक में वचन दिया गया है कि जो नित्य इसका पाठ करता है वह अज्ञान से मुक्त होकर वही प्राप्त करता है जो ज्ञानी चाहते हैं।',
     benefits: 'Recited by students and scholars, especially before exams and during Basant Panchami, for intellectual clarity and mastery of learning.', benefitsHi: 'विद्यार्थियों और विद्वानों द्वारा, विशेष रूप से परीक्षाओं से पहले और बसंत पंचमी के दौरान, बौद्धिक स्पष्टता और अध्ययन में निपुणता के लिए पाठ किया जाता है।',
   },
   {
@@ -628,16 +644,51 @@ Vidyavan buddhiman bhooyat sarvashastra-vishardah.`,
 पठेयुः सदैवं हि दामोदरस्य।
 सुतिष्ठन्ति वृन्दावने कृष्णधाम्नि
 सखीमूर्तयो युग्मसेवानुकूलाः॥`,
-    transliteration: `Kachidvihaaravati vaarijapatra-netra
-Poornendu-vimba-vadana dinakoti-kantih,
-Anandachandana-vilepita-sarvagatra
-Radha paratparatara paripaatu vishwam.
+    transliteration: `Namaste shriyai Radhikayai parayai
+Namaste namaste Mukunda-priyayai,
+Sadananda-roope praseeda twamantah-
+Prakashe sphuranti Mukundena sardham.
 
-... (8 verses describing Radha's beauty, her inseparable divine love for Krishna, and her role as the supreme feminine principle in Vaishnava tradition) ...
+Swavasopaharam Yashodasutam va
+Swadadhyadi-chauram samaradhayanteem,
+Swadamnodare ya babandhashu neevya
+Prapadye nu Damodara-preyaseem tam.
 
-Radhashtakam pathedyastu premabhakti-parayanah,
-Radha-Krishna-prasadena kritartho jayate narah.`,
-    meaning: 'This ashtakam praises Radha as the embodiment of supreme divine love (prema), inseparable from Krishna, describing her lotus-petal eyes, moon-like face, and her role as the highest object of devotion in Gaudiya and Vaishnava traditions.', meaningHi: 'यह अष्टकम राधा को सर्वोच्च दिव्य प्रेम (प्रेम) के अवतार के रूप में स्तुति करता है, जो कृष्ण से अविभाज्य हैं, उनकी कमल-पंखुड़ी जैसी आंखों, चंद्रमा-सम मुख, तथा गौड़ीय एवं वैष्णव परंपराओं में भक्ति के सर्वोच्च आधार के रूप में उनकी भूमिका का वर्णन करते हुए।',
+Duraradhyam-aradhya Krishnam vashe tam
+Mahapremapoorena Radhabhidha-bhooh,
+Swayam namakeertya harau prema yachchhat
+Prapannaya me Krishnaroope samaksham.
+
+Mukundastvaya prema-dorena baddhah
+Patango yatha twam-anubhramyamanah,
+Upakreedayan hardam-evanugachchhan
+Kripa vartate karayato mayeeshtim.
+
+Vrajanteem swa-vrindavane nityakalam
+Mukundena sakam vidhayankamalam,
+Samamokshyamana-anukampa-katakshaih
+Shriyam chintaye sachchidananda-roopam.
+
+Mukundanuragena romanchitangair-
+Aham vepyamanam tanu-sweda-bindum,
+Mahahardavrishtya kripapanga-drishtya
+Samalokayanteem kada mam vichakshe.
+
+Yad-ankavaloke mahalalasaugham
+Mukundah karoti swayam dhyeyapadah,
+Padam Radhike te sada darshayantar-
+Hridistham namantam kirad-rochisham mam.
+
+Sada Radhikanama jihvagratah syat
+Sada Radhikaroopam-akshyagra astam,
+Shrutau Radhikakeertir-antahswabhave
+Guna Radhikayah shriya etad eehe.
+
+Idam twashtakam Radhikayah priyayah
+Patheyuh sadaivam hi Damodarasya,
+Sutishthanti Vrindavane Krishnadhamni
+Sakhee-moortayo yugma-sevanukoolah.`,
+    meaning: 'This ashtakam by Nimbarkacharya offers repeated salutations to Radhika as the most beloved of Krishna (Mukunda), ever blissful and inseparably shining within him; it meditates on her binding Krishna with the rope of the butter-theft (the Damodara-lila), the all-consuming divine love (prema) that ties him to her like a moth circling a flame, and the devotee\'s longing to always keep her name on his tongue, her form before his eyes, and her glory in his ears.', meaningHi: 'निम्बार्काचार्य द्वारा रचित यह अष्टकम राधिका को श्रीकृष्ण (मुकुन्द) की परम प्रिया, सदा आनंदमयी और उनके भीतर सदा प्रकाशित रूप में बार-बार प्रणाम करता है; यह दामोदर-लीला (माखन-चोरी में रस्सी से बाँधे जाने) में उनकी भूमिका, कृष्ण को पतंगे के समान अपनी ओर खींचने वाले सर्वग्रासी दिव्य प्रेम, तथा भक्त की इस लालसा का वर्णन करता है कि राधिका का नाम सदा उसकी जिह्वा पर, उनका रूप सदा उसकी आंखों के सामने, और उनकी महिमा सदा उसके कानों में बनी रहे।',
     benefits: 'Recited by Radha-Krishna devotees, especially during Radhashtami and in Vrindavan temples, to cultivate devotional love (bhakti).', benefitsHi: 'राधा-कृष्ण भक्तों द्वारा, विशेष रूप से राधाष्टमी के दौरान और वृंदावन के मंदिरों में, भक्ति-प्रेम विकसित करने के लिए पाठ किया जाता है।',
   },
   {
