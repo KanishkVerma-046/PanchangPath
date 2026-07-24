@@ -56,7 +56,15 @@ Resume point for the fix phase: check the last unchecked fix-batch below.
     entries whose old transliteration was mismatched filler text (not just truncated), and
     fixed 2 small transcription slips while verifying. All Chalisas + Ashtakams now fully
     transliterated (verified via grep, zero placeholders remain in both files).
-  - [ ] 4c: 12 Stotrams
+  - [x] 4c: 12 Stotrams — commit `3ed22f9`. Also fixed 5 content-accuracy bugs found while
+    transliterating (verses that didn't actually match their own lyricsHi — not just the
+    placeholder issue). `vishnu-sahasranama-stotram`/`lalita-sahasranama-stotram`: their
+    lyricsHi is itself intentionally abridged (dhyanam+phalashruti only); transliteration
+    now matches everything present, nothing fabricated. New Issue #38 logged: these 2
+    entries' `meaning`/`meaningHi` claims the full 1000-name list "is available under the
+    Namavali category" but no such entry exists in `namavali.ts` (confirmed via grep — only
+    10 Ashtottara Shatanamavali/108-name lists exist, no Vishnu/Lalita Sahasranama) — a
+    broken promise to the reader, not fixed inline (out of this batch's scope).
   - [ ] 4d: 10 Namavali lists
 
 ## FIX PHASE COMPLETE — all 34 original issues + 3 fix-phase-discovered issues triaged (2026-07-23)

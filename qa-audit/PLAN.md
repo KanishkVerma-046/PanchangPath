@@ -1208,6 +1208,25 @@ the actual Nimbarka verses about Radha's bond with Krishna). Verified line-by-li
   re-sourced so both fields describe the same underlying verse text (per CLAUDE.md's "Sourcing
   long/sacred texts accurately" section), then the full transliteration written out to match.
 
+### Issue #38 (new, found during Round 3 Part 4c): `vishnu-sahasranama-stotram` and `lalita-sahasranama-stotram`'s `meaning`/`meaningHi` claim the full 1000-name list "is available under the Namavali category" — no such entry exists
+
+- Severity: content (broken promise to the reader, not a crash)
+- Description: both entries' `lyricsHi` is intentionally abridged to the dhyanam + phalashruti
+  (with its own Devanagari "..." placeholder standing in for the 1000-name list), and `meaning`/
+  `meaningHi` explicitly tell the reader the complete name list is under the Namavali category
+  instead. But `src/lib/devotional/namavali.ts` only has 10 entries, all Ashtottara Shatanamavali
+  (108-name lists) for Shiva/Ganesh/Durga/Lakshmi/Saraswati/Krishna/Rama/Hanuman/Surya/Shani — no
+  Vishnu or Lalita entry exists at all, let alone a 1000-name Sahasranama-length one.
+- Evidence: `grep -n "slug:" src/lib/devotional/namavali.ts` returns exactly 10 slugs, none for
+  Vishnu or Lalita.
+- Fix prompt: not yet scoped — either (a) author a `vishnu-sahasranama-namavali` and
+  `lalita-sahasranama-namavali` entry (1000 names each, a much larger content task than a 108-name
+  Ashtottara list) and add them to `namavali.ts`/wire into the category's index+detail pages, or
+  (b) correct the `meaning`/`meaningHi` copy on both Stotram entries to stop pointing at a
+  category that doesn't have them (e.g. just describe the abridged dhyanam+phalashruti presentation
+  without the false cross-reference). (b) is far cheaper; (a) is the "complete" fix. Flag for the
+  user to decide which, given the scale difference.
+
 ### Issue #37: Mars/Jupiter/Saturn retrograde/direct stations are never detected by the Planetary Events scanner — only Mercury/Venus ever produce retrograde events — `src/lib/planetaryEvents.ts`
 
 **FIXED — verified (Round 3, commit `c329528`).** Replaced the fixed `0.002°/day` magnitude gate
