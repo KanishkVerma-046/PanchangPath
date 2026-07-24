@@ -35,10 +35,15 @@ Vande Vishnum bhavabhayaharam sarvalokaikanatham.
 Vishwam Vishnur vashatkaro bhootabhavyabhavatprabhuh,
 Bhootakrid bhootabhrid bhaavo bhootatma bhootabhavanah.
 
+Pootatma paramatma cha muktanam parama gatih,
+Avyayah purushah sakshi kshetrajno'kshara eva cha.
+
 ... (the 1000 names of Vishnu continue in sequence) ...
 
 Iti idam kirtaniyasya Keshavasya mahatmanah,
-Namnam sahasram divyanam asheshena prakirtitam.`,
+Namnam sahasram divyanam asheshena prakirtitam.
+Ya idam shrinuyannityam yashchapi parikirtayet,
+Na ashubham prapnuyat kinchit so'mutreha cha manavah.`,
     meaning: 'Composed by sage Veda Vyasa and found in the Mahabharata (Anushasana Parva), recited to Yudhishthira by Bhishma on his deathbed, this stotram lists 1000 names of Vishnu describing his cosmic form, his role as sustainer of the universe, and his infinite attributes. This page presents the dhyana (meditation) verse and phalashruti (benefits) — the complete 1000-name list is available under the Namavali category.', meaningHi: 'ऋषि वेद व्यास द्वारा रचित और महाभारत (अनुशासन पर्व) में पाया जाने वाला, यह स्तोत्र भीष्म द्वारा अपनी मृत्युशय्या पर युधिष्ठिर को सुनाया गया है, जो विष्णु के 1000 नामों को सूचीबद्ध करता है, उनके ब्रह्मांडीय स्वरूप, ब्रह्मांड के पालनकर्ता के रूप में उनकी भूमिका, और उनके अनंत गुणों का वर्णन करते हुए। यह पृष्ठ ध्यान (मनन) श्लोक और फलश्रुति (लाभ) प्रस्तुत करता है — संपूर्ण 1000-नाम सूची नामावली श्रेणी के अंतर्गत उपलब्ध है।',
     benefits: 'Considered one of the most powerful stotras in Hindu tradition, recited daily for peace, prosperity and spiritual merit, and especially on Ekadashi and Vaikuntha Ekadashi. Believed to remove all sins and grant liberation.', benefitsHi: 'हिंदू परंपरा के सबसे शक्तिशाली स्तोत्रों में से एक माना जाता है, शांति, समृद्धि और आध्यात्मिक पुण्य के लिए प्रतिदिन, और विशेष रूप से एकादशी और वैकुंठ एकादशी को पाठ किया जाता है। इसे सभी पापों को दूर करने और मुक्ति प्रदान करने वाला माना जाता है।',
   },
@@ -74,10 +79,13 @@ Saumyam ratnaghatastharaktacharanam dhyayet param ambikam.
 Shrimata Shrimaharajni Shrimatsimhasaneshwari,
 Chidagnikundasambhuta devakaryasamudyata.
 
+Udyadbhanusahasrabha chaturbahusamanvita,
+Ragasvarupapashadhya krodhakarankushojjwala.
+
 ... (the 1000 names of Lalita continue in sequence) ...
 
-Ya idam paramam guhyam namnam sahasrakam pathet,
-Labhate paramam siddhim param shantim tathaiva cha.`,
+Yo bhakto Lalitadevyah sa nityam kirtayed idam,
+Nanyatha priyate devi kalpakotishatairapi.`,
     meaning: 'Found in the Brahmanda Purana as part of the sacred dialogue between Hayagriva and Agastya, this stotram describes 1000 names of Devi Lalita Tripurasundari, the supreme form of the Divine Mother in Shakta tradition, seated on the Sri Chakra. This page presents the dhyana verse and phalashruti — the full 1000-name list appears under the Namavali category.', meaningHi: 'ब्रह्मांड पुराण में हयग्रीव और अगस्त्य के बीच पवित्र संवाद के भाग के रूप में पाया जाने वाला, यह स्तोत्र देवी ललिता त्रिपुरसुंदरी, शाक्त परंपरा में दिव्य माता के सर्वोच्च रूप, जो श्री चक्र पर विराजमान हैं, के 1000 नामों का वर्णन करता है। यह पृष्ठ ध्यान श्लोक और फलश्रुति प्रस्तुत करता है — संपूर्ण 1000-नाम सूची नामावली श्रेणी के अंतर्गत दिखाई देती है।',
     benefits: 'Recited by Shakta and Sri Vidya practitioners daily, and especially during Navratri and on Fridays, for spiritual elevation, protection and fulfillment of desires.', benefitsHi: 'शाक्त और श्री विद्या साधकों द्वारा प्रतिदिन, और विशेष रूप से नवरात्रि के दौरान तथा शुक्रवार को, आध्यात्मिक उन्नति, सुरक्षा और इच्छाओं की पूर्ति के लिए पाठ किया जाता है।',
   },
@@ -181,8 +189,14 @@ Labhate paramam siddhim param shantim tathaiva cha.`,
 निशिचरपतिसंक्षयं विदित्वा सुरगणमध्यगतो वचस्त्वरेति॥
 
 ॥ इति आदित्यहृदयम् मन्त्रस्य ॥`,
-    transliteration: `Tato yuddhaparishrantam samare chintaya sthitam,
+    transliteration: `Tato yuddha-parishrantam samare chintaya sthitam,
 Ravanam chagrato drishtva yuddhaya samupasthitam.
+
+Daivataishcha samagamya drashtum abhyagato ranam,
+Upagamyabravid Ramam Agastyo bhagavan rishih.
+
+Rama Rama mahabaho shrinu guhyam sanatanam,
+Yena sarvan arin vatsa samare vijayishyasi.
 
 Aditya-hridayam punyam sarva-shatru-vinashanam,
 Jayavaham japennityam akshayyam paramam shivam.
@@ -190,10 +204,83 @@ Jayavaham japennityam akshayyam paramam shivam.
 Sarva-mangala-mangalyam sarva-papa-pranashanam,
 Chinta-shoka-prashamanam ayur-vardhanam uttamam.
 
-... (31 verses given by sage Agastya to Rama before his battle with Ravana) ...
+Rashmimantam samudyantam devasura-namaskritam,
+Pujayasva Vivasvantam Bhaskaram bhuvaneshwaram.
+
+Sarva-devatmako hyesha tejasvi rashmibhavanah,
+Esha devasura-ganaan lokan pati gabhastibhih.
+
+Esha Brahma cha Vishnushcha Shivah Skandah Prajapatih,
+Mahendro Dhanadah Kalo Yamah Somo hyapam patih.
+
+Pitaro Vasavah Sadhyah hyashvinau maruto manuh,
+Vayurvahnih prajaprana ritukarta prabhakarah.
+
+Adityah Savita Suryah Khagah Pusha gabhastiman,
+Suvarnasadrisho Bhanurhiranyareta Divakarah.
+
+Haridashvah sahasrarchih saptasaptirmarichiman,
+Timironmathanah Shambhustvashta Martanda Anshuman.
+
+Hiranyagarbhah Shishirastapano Bhaskaro Ravih,
+Agnigarbho'diteh putrah Shankhah shishiranashanah.
+
+Vyomanathastamobhedi rig-yajuh-sama-paragah,
+Ghanavrishtirapam mitro vindhyavithiplavangamah.
+
+Atapi mandali mrityuh pingalah sarvatapanah,
+Kavirvishvo mahatejah raktah sarvabhavodbhavah.
+
+Nakshatra-graha-taranam adhipo vishvabhavanah,
+Tejasamapi tejasvi dwadashatman namo'stu te.
+
+Namah purvaya giraye pashchimayadraye namah,
+Jyotirgananam pataye dinadhipataye namah.
+
+Jayaya jayabhadraya haryashvaya namo namah,
+Namo namah sahasramsho Adityaya namo namah.
+
+Nama ugraya viraya sarangaya namo namah,
+Namah padmaprabodhaya Martandaya namo namah.
+
+Brahmeshanachyuteshaya Suryayaditya-varchase,
+Bhasvate sarvabhakshaya raudraya vapushe namah.
+
+Tamoghnaya himaghnaya shatrughnayamitatmane,
+Kritaghnaghnaya devaya jyotisham pataye namah.
+
+Taptachamikarabhaya vahnaye vishvakarmane,
+Namastamo'bhinighnaya ruchaye lokasakshine.
+
+Nashayatyesha vai bhutam tadeva srijati prabhuh,
+Payatyesha tapatyesha varshatyesha gabhastibhih.
+
+Esha supteshu jagarti bhuteshu parinishthitah,
+Esha evagnihotram cha phalam chaivagnihotrinam.
+
+Vedashcha kratavashchaiva kratunam phalameva cha,
+Yani krityani lokeshu sarva esha ravih prabhuh.
+
+Enamapatsu krichchhreshu kantareshu bhayeshu cha,
+Kirtayan purushah kaschinnavasidati Raghava.
+
+Pujayasvainam ekagro devadevam jagatpatim,
+Etat trigunitam japtva yuddheshu vijayishyasi.
+
+Asmin kshane mahabaho Ravanam tvam vadhishyasi,
+Evamuktva tadagastyo jagama cha yathagatam.
 
 Etachchhrutva mahateja nashtashoko'bhavat tada,
-Dharayamasa supreeto Raghavah prayatatmavan.`,
+Dharayamasa supreeto Raghavah prayatatmavan.
+
+Adityam prekshya japtva tu param harshamavaptavan,
+Trirachamya shuchirbhutva dhanuradaya viryavan.
+
+Ravanam prekshya hrishtatma yuddhaya samupagamat,
+Sarvayatnena mahata vadhe tasya dhrito'bhavat.
+
+Atha ravir avadan nirikshya Ramam muditamanah paramam prahrishyamanah,
+Nishicharapati-sankshayam viditva suraganamadhyagato vachastvareti.`,
     meaning: 'Found in the Yuddha Kanda of the Valmiki Ramayana, this stotram was given by sage Agastya to Rama on the battlefield before his final duel with Ravana. It venerates Surya as the embodiment of all gods (Brahma, Vishnu, Shiva) and a source of victory, strength and removal of sorrow.', meaningHi: 'वाल्मीकि रामायण के युद्ध कांड में पाया जाने वाला, यह स्तोत्र ऋषि अगस्त्य द्वारा रावण के साथ अपने अंतिम द्वंद्व से पहले युद्धभूमि पर राम को दिया गया था। यह सूर्य को सभी देवताओं (ब्रह्मा, विष्णु, शिव) के अवतार, तथा विजय, शक्ति और दुख के निवारण के स्रोत के रूप में वंदना करता है।',
     benefits: 'Recited at sunrise for courage, victory over difficulties, and removal of fatigue, worry and fear — especially before facing a major challenge or competition.', benefitsHi: 'सूर्योदय के समय साहस, कठिनाइयों पर विजय, तथा थकान, चिंता और भय के निवारण के लिए पाठ किया जाता है — विशेष रूप से किसी बड़ी चुनौती या प्रतिस्पर्धा का सामना करने से पहले।',
   },
@@ -282,12 +369,75 @@ Gale'valambya lambitam bhujangatunga-malikam,
 Damaddamaddamaddaman ninadavaddamarvayam
 Chakara chandatandavam tanotu nah Shivah shivam.
 
-... (17 verses composed by Ravana in praise of Shiva's cosmic dance) ...
+Jatakatahasambhrama-bhramannilimpanirjhari-
+Vilolavichivallari-virajamanamurdhani,
+Dhagaddhagaddhagajjwalal-lalatapattapavake
+Kishorachandrashekhare ratih pratikshanam mama.
+
+Dharadharendra-nandini-vilasabandhu-bandhura-
+Sphuraddiganta-santati-pramodamanamanase,
+Kripakataksha-dhoranee-niruddha-durdharapadi
+Kvachiddigambare mano vinodametu vastuni.
+
+Jatabhujanga-pingala-sphuratphanamaniprabha-
+Kadambakunkumadrava-praliptadigvadhumukhe,
+Madandhasindhura-sphurattvaguttariyamedure
+Mano vinodamadbhutam bibhartu bhutabhartari.
+
+Sahasralochana-prabhrityashesha-lekhashekhara-
+Prasunadhulidhoranee-vidhusarangripithabhuh,
+Bhujangarajamalaya nibaddhajatajutakah
+Shriyai chiraya jayatam chakorabandhushekharah.
+
+Lalatachatvara-jvaladdhananjaya-sphulingabha-
+Nipitapanchasayakam namannilimpanayakam,
+Sudhamayukhalekhaya virajamanashekharam
+Mahakapali sampade shiro jatalamastu nah.
+
+Karalabhalapattika-dhagaddhagaddhagajjwalad-
+Dhananjayahutikrita-prachandapanchasayake,
+Dharadharendranandini-kuchagrachitrapatraka-
+Prakalpanaikashilpini trilochane ratirmama.
+
+Navinamegha-mandali-niruddhadurdharasphurat-
+Kuhunishithinitamah-prabandhabaddhakandharah,
+Nilimpanirjharidharastanotu krittisindhurah
+Kalanidhanabandhurah shriyam jagaddhurandharah.
+
+Praphullanilapankaja-prapanchakalimaprabha-
+Valambikanthakandali-ruchiprabaddhakandharam,
+Smarachchhidam purachchhidam bhavachchhidam makhachchhidam
+Gajachchhidandhakachchhidam tamantakachchhidam bhaje.
+
+Akharvasarva-mangalakala-kadambamanjari-
+Rasapravaha-madhuri-vijrimbhanamadhuvratam,
+Smarantakam purantakam bhavantakam makhantakam
+Gajantakandhakantakam tamantakantakam bhaje.
+
+Jayatvadabhra-vibhrama-bhramadbhujangamashvasa-
+Dvinirgamatkrama-sphuratkaralabhalahavyavat,
+Dhimiddhimiddhimidhwvanan-mridangatunga-mangala-
+Dhwvanikrama-pravartita-prachandatandavah Shivah.
+
+Drishadvichitratalpayor-bhujangamauktikasrajor-
+Varishtharatnaloshthayoh suhridvipakshapakshayoh,
+Trinaravindachakshushoh prajamahimahendrayoh
+Samapravrittikah kada sadashivam bhajamyaham.
+
+Kada nilimpanirjhari-nikunjakotare vasan
+Vimuktadurmatih sada shirahsthamanjalim vahan,
+Vilolalolalochano lalamabhalalagnakah
+Shiveti mantramuchcharan kada sukhi bhavamyaham.
 
 Idam hi nityam evamuktam uttamottamam stavam
 Pathan smaran bruvan naro vishuddhim eti santatam,
 Hare gurau subhaktim ashu yati nanyatha gatim
-Vimohanam hi dehinam sushankarasya chintanam.`,
+Vimohanam hi dehinam sushankarasya chintanam.
+
+Pujavasanasamaye dashavaktragitam
+Yah shambhupujanaparam pathati pradoshe,
+Tasya sthiram rathagajendraturangayuktam Lakshmim
+Sadaiva sumukhim pradadati Shambhuh.`,
     meaning: 'Composed by Ravana as a devotional offering to Shiva, this stotram describes his cosmic dance of destruction and creation (Tandava), his matted hair flowing with the Ganga, the crescent moon on his crown, and his union with Parvati. It is considered one of the most rhythmically powerful Sanskrit compositions.', meaningHi: 'रावण द्वारा शिव को भक्ति भेंट के रूप में रचित, यह स्तोत्र उनके सृजन और संहार के ब्रह्मांडीय नृत्य (तांडव), गंगा से बहती उनकी जटाओं, उनके मुकुट पर अर्धचंद्र, और पार्वती के साथ उनके मिलन का वर्णन करता है। इसे सबसे लयबद्ध रूप से शक्तिशाली संस्कृत रचनाओं में से एक माना जाता है।',
     benefits: 'Recited during Maha Shivaratri and by dancers and musicians for its rhythmic power; believed to grant devotion, remove delusion, and instill fearlessness.', benefitsHi: 'महाशिवरात्रि के दौरान तथा नर्तकों और संगीतकारों द्वारा इसकी लयबद्ध शक्ति के लिए पाठ किया जाता है; इसे भक्ति प्रदान करने, मोह दूर करने, और निर्भयता स्थापित करने वाला माना जाता है।',
   },
@@ -408,9 +558,102 @@ Bhringangeneva mukulabharanam tamalam,
 Angikritakhilavibhutirapangaleela
 Mangalyadastu mama mangaladevatayah.
 
-... (21 verses composed by Adi Shankaracharya, invoking a shower of golden fruits for a poor Brahmin woman) ...
+Mugdha muhurvidadhati vadane murareh
+Premmatrapa-pranahitani gatagatani,
+Mala drishormadhukariva mahotpale ya
+Sa me shriyam dishatu sagarasambhavayah.
 
-Stuvanti ye stutibhiramoobhiranvaham
+Vishvamarendrapada-vibhramadanadaksha
+Ananda-heturadhikam Muravidvisho'pi,
+Ishannishidatu mayi kshanamikshanardham
+Indivarodara-sahodaramindirayah.
+
+Amilitaksham adhigamya muda Mukunda-
+Anandakandam animesham anangatantram,
+Akekarasthita-kaninika-pakshmanetram
+Bhutyai bhavenmama bhujangashayanganayah.
+
+Bahvantare madhujitah shrita kaustubhe ya
+Haravaliva harinilamayi vibhati,
+Kamaprada bhagavato'pi kataksha-mala
+Kalyanam avahatu me kamalalayayah.
+
+Kalambudali-lalitorasi Kaitabhare-
+Dharadhare sphurati ya tadidanganeva,
+Matuh samastajagatam mahaniyamurtir
+Bhadrani me dishatu Bhargavanandanayah.
+
+Praptam padam prathamatah kila yat prabhavat
+Mangalyabhaji Madhumathini Manmathena,
+Mayyapatettadiha manthara-mikshanardham
+Mandalasancha makaralaya-kanyakayah.
+
+Dadyad dayanupavano dravinambudharam
+Asminnakinchana vihangashishau vishanne,
+Dushkarma-gharmam apaniya chiraya duram
+Narayana-pranayini nayanambuvahah.
+
+Ishtavishishtamatayo'pi yaya dayardra
+Drishtya trivishtapapadam sulabham labhante,
+Drishtih prahrishta-kamalodara-diptirishtam
+Pushtim krishishta mama pushkaravishtarayah.
+
+Girdevateti Garudadhvajabhaminiti
+Shakambhariti Shashishekhara-vallabheti,
+Srishti-sthiti-pralaya-kelishu samsthitayai
+Tasyai namastribhuvanaikagurostarunyai.
+
+Shrutyai namo'stu namastribhuvanaika-phala-
+Prasutyai ratyai namo'stu ramaniya gunashrayayai,
+Shaktyai namo'stu shatapatra niketanayai
+Pushtyai namo'stu Purushottama-vallabhayai.
+
+Namo'stu nalika-nibhananayai
+Namo'stu dugdhodadhi-janmabhutyai,
+Namo'stu somamrita-sodarayai
+Namo'stu Narayana-vallabhayai.
+
+Namo'stu hemambujapithikayai
+Namo'stu bhumandalanayikayai,
+Namo'stu devadidayaparayai
+Namo'stu Sharngayudhavallabhayai.
+
+Namo'stu Devyai Bhrigunandanayai
+Namo'stu Vishnoh urasi sthitayai,
+Namo'stu Lakshmyai kamalalayayai
+Namo'stu Damodaravallabhayai.
+
+Namo'stu Kantyai kamalekshanayai
+Namo'stu Bhutyai bhuvanaprasutyai,
+Namo'stu devadibhirarchitayai
+Namo'stu Nandatmajavallabhayai.
+
+Sampatkarani sakalendriya-nandanani
+Samrajyadana vibhavani saroruhakshi,
+Tvad-vandanani duritaharanodyatani
+Mameva mataranisham kalayantu nanyat.
+
+Yatkataksha-samupasanavidhih
+Sevakasya sakalarthasampadah,
+Santanoti vachanangamanasaih
+Tvam Murari-hridayeshwarim bhaje.
+
+Sarasija-nilaye sarojahaste
+Dhavalataramshuka-gandha-malyashobhe,
+Bhagavati Harivallabhe manojne
+Tribhuvana-bhutikari prasida mahyam.
+
+Digghastibhih kanakakumbhamukhavasrishta-
+Svarvahini-vimalacharu-jalaplutangim,
+Pratarnamami jagatam jananimashesha-
+Lokadhirajagrihinim amritabdhiputrim.
+
+Kamale Kamalakshavallabhe tvam
+Karunapura-tarangitairapangaih,
+Avalokaya mamakinchananam
+Prathamam patramakritrimam dayayah.
+
+Stuvanti ye stutibhiramibhiranvaham
 Trayimayim tribhuvanamataram ramam,
 Gunadhika gurutarabhagyabhagino
 Bhavanti te bhuvi budhabhavitashayah.`,
@@ -509,14 +752,44 @@ Samvatsarena siddhim cha labhate natra sanshayah.`,
 वेदपुराणेतिहास सुपूजित, वैदिकमार्ग प्रदर्शयुते।
 जय जय हे मधुसूदन कामिनि, धनलक्ष्मि रूपेण पालय माम्॥`,
     transliteration: `Sumanasa-vandita sundari Madhavi, Chandra sahodari hemamaye,
-Munigana-vandita moksha-pradayini, manjulabhashini vedanute.
+Munigana-mandita moksha-pradayini, manjulabhashini vedanute.
 Pankajavasini deva-supujita, sadguna-varshini shantiyute,
-Jaya jaya he Madhusudana-kamini, Adi-Lakshmi paripalaya mam.
+Jaya jaya he Madhusudana-kamini, Adi-Lakshmi sada palaya mam.
 
-... (verses honoring the eight forms of Lakshmi: Adi, Dhanya, Dhairya, Gaja, Santana, Vijaya, Vidya, and Dhana Lakshmi) ...
+Ahikali kalmashanashini kamini, vaidikarupini vedamaye,
+Ksheerasamudbhava mangalarupini, mantranivasini mantranute.
+Mangaladayini ambujavasini, devaganashrita padayute,
+Jaya jaya he Madhusudana-kamini, Dhanya-Lakshmi sada palaya mam.
 
-Dhanadhanyakari shubhayuktamaye, Harini tanotu kripa jagati,
-Jaya jaya he Madhusudana-kamini, Dhana-Lakshmi paripalaya mam.`,
+Jayavaravarnini Vaishnavi Bhargavi, mantrasvarupini mantramaye,
+Suraganapujita shighraphalaprada, jnanavikasini shastranute.
+Bhavabhayaharini papavimochani, sadhujanashrita padayute,
+Jaya jaya he Madhusudana-kamini, Dhairya-Lakshmi sada palaya mam.
+
+Jaya jaya durgatinashini kamini, sarvaphalaprada shastramaye,
+Rathagajaturagapadati samavrita, parijanamandita lokanute.
+Harihara brahma supujita sevita, tapanivarini padayute,
+Jaya jaya he Madhusudana-kamini, Gaja-Lakshmi rupena palaya mam.
+
+Ahikhaga vahini mohini chakrini, ragavivardhini jnanamaye,
+Gunaganavaridhi lokahitaishini, svarasaptabhushita gananute.
+Sakala surasura devamunishvara, manavavandita padayute,
+Jaya jaya he Madhusudana-kamini, Santana-Lakshmi tvam palaya mam.
+
+Jaya Kamalasani sadgatidayini, jnanavikasini ganamaye,
+Anudinamarchita kunkumadhusara, bhushitavasita vadyanute.
+Kanakadharastuti vaibhava vandita, Shankaradeshika manya pade,
+Jaya jaya he Madhusudana-kamini, Vijaya-Lakshmi sada palaya mam.
+
+Pranata sureshvari Bharati Bhargavi, shokavinashini ratnamaye,
+Manimayabhushita karnavibhushana, shantisamavrita hasyamukhe.
+Navanidhidayini kalimalaharini, kamitaphalaprada hastayute,
+Jaya jaya he Madhusudana-kamini, Vidya-Lakshmi sada palaya mam.
+
+Dhimidhimi dhindhimi dhindhimi-dhindhimi, dundubhinada supurnamaye,
+Ghumaghuma ghunghuma ghunghuma ghunghuma, shankhaninada suvadyanute.
+Vedapuranetihasa supujita, vaidikamarga pradarshayute,
+Jaya jaya he Madhusudana-kamini, Dhana-Lakshmi rupena palaya mam.`,
     meaning: 'This stotram venerates the eight forms (Ashta Lakshmi) of the Goddess of prosperity: Adi Lakshmi (primal), Dhana Lakshmi (wealth), Dhanya Lakshmi (grain), Gaja Lakshmi (elephants/royal power), Santana Lakshmi (progeny), Vijaya Lakshmi (victory), Vidya Lakshmi (knowledge) and Dhairya Lakshmi (courage) — together representing all forms of abundance.', meaningHi: 'यह स्तोत्र समृद्धि की देवी के आठ रूपों (अष्ट लक्ष्मी) की वंदना करता है: आदि लक्ष्मी (आदिम), धन लक्ष्मी (धन), धान्य लक्ष्मी (अन्न), गज लक्ष्मी (हाथी/राजसी शक्ति), संतान लक्ष्मी (संतान), विजय लक्ष्मी (विजय), विद्या लक्ष्मी (ज्ञान) और धैर्य लक्ष्मी (साहस) — जो मिलकर प्रचुरता के सभी रूपों का प्रतिनिधित्व करती हैं।',
     benefits: 'Recited on Fridays and during Diwali for complete prosperity — material, intellectual and spiritual — and often sung in temples dedicated to Ashta Lakshmi.', benefitsHi: 'शुक्रवार को और दिवाली के दौरान संपूर्ण समृद्धि — भौतिक, बौद्धिक और आध्यात्मिक — के लिए पाठ किया जाता है, और अक्सर अष्ट लक्ष्मी को समर्पित मंदिरों में गाया जाता है।',
   },
@@ -659,22 +932,133 @@ Jaya jaya he Madhusudana-kamini, Dhana-Lakshmi paripalaya mam.`,
 लभते परमं रूपं शिवेन सह मोदते॥
 
 ॥ इति देव्याः कवचं सम्पूर्णम् ॥`,
-    transliteration: `Om Namashchandikayai.
+    transliteration: `Om asya Shri Chandikavachasya Brahma rishih, Anushtup chhandah,
+Chamunda devata, Anganyasoktamataro bijam, Digbandhadevatastattvam,
+Shri Jagadambapriyartham Saptashatipathangatvena jape viniyogah.
+
+Om Namashchandikayai.
 
 Markandeya uvacha: Om yadguhyam paramam loke sarvarakshakaram nrinam,
 Yanna kasyachidakhyatam tanme broohi pitamaha.
+
+Brahmovacha: Asti guhyatamam vipra sarvabhutopakarakam,
+Devyastu kavacham punyam tachchhrinushva mahamune.
 
 Prathamam Shailaputri cha dwitiyam Brahmacharini,
 Tritiyam Chandraghanteti Kooshmandeti chaturthakam,
 Panchamam Skandamateti shashtham Katyayaniti cha,
 Saptamam Kalaratriti Mahagauriti chashtamam,
-Navamam Siddhidatri cha navadurgah prakirtitah.
+Navamam Siddhidatri cha navadurgah prakirtitah,
+Uktanyetani namani brahmanaiva mahatmana.
 
-... (protective invocation of the Goddess over every part of the body) ...
+Agnina dahyamanastu shatrumadhye gato rane,
+Vishame durgame chaiva bhayartah sharanam gatah.
+Na teshaam jayate kinchidashubham ranasankate,
+Napadam tasya pashyami shokaduhkhabhayam na hi.
+Yaistu bhaktya smrita nunam teshaam vriddhih prajayate,
+Ye tvam smaranti deveshi rakshase tanna samshayah.
+
+Pretasamstha tu Chamunda Varahi mahishasana,
+Aindri gajasamarudha Vaishnavi garudasana.
+Maheshwari vrisharudha Kaumari shikhivahana,
+Lakshmih padmasana devi padmahasta haripriya.
+Shvetarupadhara devi Ishwari vrishavahana,
+Brahmi hamsasamarudha sarvabharanabhushita.
+
+Ityeta matarah sarvah sarvayogasamanvitah,
+Nanabharanashobhadhya nanaratnopashobhitah.
+Drishyante rathamarudha devyah krodhasamakulah,
+Shankham chakram gadam shaktim halam cha musalayudham.
+Khetakam tomaram chaiva parashum pashameva cha,
+Kuntayudham trishulam cha sharngamayudhamuttamam.
+Daityanam dehanashaya bhaktanamabhayaya cha,
+Dharayantyayudhaneetthum devanam cha hitaya vai.
+
+Namaste'stu maharaudre mahaghoraparakrame,
+Mahabale mahotsahe mahabhayavinashini.
+Trahi mam devi dushprekshye shatrunam bhayavardhini,
+Prachyam rakshatu mamaindri agneyyamagnidevata.
+Dakshine'vatu Varahi nairrityam khadgadharini,
+Pratichyam Varuni raksheda vayavyam mrigavahini.
+Udichyam patu Kaumari aishanyam shuladharini,
+Urdhvam Brahmani me rakshedadhastad Vaishnavi tatha.
+Evam dasha disho rakshechchamunda shavavahana.
+
+Jaya me chagratah patu Vijaya patu prishthatah,
+Ajita vamaparshve tu dakshine chaparajita.
+Shikhamudyotini raksheduma murdhni vyavasthita,
+Maladhari lalate cha bhruvau raksheda yashasvini.
+Trinetra cha bhruvormadhye Yamaghanta cha nasike,
+Shankhini chakshushormadhye shrotrayordvaravasini.
+Kapolau Kalika rakshetkarnamule tu Shankari,
+Nasikayam Sugandha cha uttaroshthe cha Charchika.
+Adhare chamritakala jihvayam cha Sarasvati,
+Dantan rakshatu Kaumari kanthadeshe tu Chandika.
+Ghantikam Chitraghanta cha Mahamaya cha taluke,
+Kamakshi chibukam raksheda vacham me Sarvamangala.
+Grivayam Bhadrakali cha prishthavamshe Dhanurdhari,
+Nilagriva bahihkanthe nalikam Nalakubari.
+Skandhayoh Khadgini raksheda bahu me Vajradharini,
+Hastayordandini raksheda-mbika changulishu cha.
+Nakhanchhuleshwari rakshetkukshau raksheta Kuleshwari,
+Stanau rakshenmahadevi manah shokavinashini.
+Hridaye Lalita devi udare Shuladharini,
+Nabhau cha Kamini raksheda guhyam Guhyeshwari tatha.
+Putana Kamika medhram gude Mahishavahini,
+Katyam Bhagavati raksheja januni Vindhyavasini.
+Jangha Mahabala rakshetsarvakamapradayini,
+Gulphayornarasimhi cha padaprishthe tu Taijasi.
+Padangulishu Shri raksheta padadhastalavasini,
+Nakhan damshtrakarali cha keshanchaivordhvakeshini.
+Romakupeshu Kauberi tvacham Vagishwari tatha,
+Raktamajjavasamamsanyasthimedamsi Parvati.
+Antrani Kalaratrishcha pittam cha Mukuteshwari,
+Padmavati padmakoshe kaphe Chudamanistatha.
+Jvalamukhi nakhajvalam Abhedya sarvasandhishu,
+Shukram Brahmani me rakshechchhayam Chhatreshwari tatha.
+Ahankaram mano buddhim rakshenme Dharmadharini,
+Pranapanau tatha vyanam udanam cha samanakam.
+Vajrahasta cha me rakshetpranam Kalyanashobhana,
+Rase rupe cha gandhe cha shabde sparshe cha Yogini.
+Sattvam rajastamashchaiva rakshennarayani sada,
+Ayu rakshatu Varahi dharmam rakshatu Vaishnavi.
+Yashah kirtim cha lakshmim cha dhanam vidyam cha Chakrini,
+Gotramindrani me rakshetpashunme raksha Chandike.
+Putran rakshenmahalakshmirbharyam rakshatu Bhairavi,
+Panthanam supatha rakshenmargam Kshemakari tatha.
+Rajadware Mahalakshmirvijaya sarvatah sthita,
+Rakshahinam tu yatsthanam varjitam kavachena tu.
+Tatsarvam raksha me devi Jayanti papanashini.
+
+Padamekam na gachchhettu yadichchhechchhubhamatmanah,
+Kavachenavrito nityam yatra yatraiva gachchhati.
+Tatra tatrarthalabhashcha vijayah sarvakamikah,
+Yam yam chintayate kamam tam tam prapnoti nishchitam.
+Paramaishvaryam atulam prapsyate bhutale puman,
+Nirbhayo jayate martyah sangrameshvaparajitah.
+Trailokye tu bhavetpujyah kavachenavritah puman.
 
 Idam tu Devyah kavacham devanamapi durlabham,
-Yah pathet prayato nityam trisandhyam shraddhayanvitah,
-Na tasya jayate vyadhih sarvatra vijayi bhavet.`,
+Yah pathet prayato nityam trisandhyam shraddhayanvitah.
+Daivi kala bhavettasya trailokyeshvaparajitah,
+Jivedvarshashatam sagram apamrityuvivarjitah.
+Nashyanti vyadhayah sarve lutavisphotakadayah,
+Sthavaram jangamam chaiva kritrimam chapi yadvisham.
+Abhicharani sarvani mantrayantrani bhutale,
+Bhucharah khecharashchaiva jalajashchopadeshikah.
+Sahaja kulaja mala Dakini Shakini tatha,
+Antariksachara ghora Dakinyashcha mahabalah.
+Grahabhutapishachashcha yaksha-gandharva-rakshasah,
+Brahmarakshasa-vetalah Kooshmanda bhairavadayah.
+Nashyanti darshanattasya kavache hridi samsthite,
+Manonnatirbhaved rajnastejovriddhikaram param.
+Yashasa vardhate so'pi kirtimanditabhutale,
+Japetsaptashatim Chandim kritva tu kavacham pura.
+Yavadbhumandalam dhatte sashailavanakananam,
+Tavattishthati medinyam santatih putrapautriki.
+Dehante paramam sthanam yatsurairapi durlabham,
+Prapnoti purusho nityam Mahamayaprasadatah,
+Labhate paramam rupam Shivena saha modate.`,
     meaning: 'The Devi Kavach ("armor of the Goddess") is a protective hymn from the Durga Saptashati in which the nine forms of Durga (Navadurga) are invoked to guard every part of the devotee\'s body from head to toe, providing complete spiritual and physical protection.', meaningHi: 'देवी कवच ("देवी का कवच") दुर्गा सप्तशती से लिया गया एक रक्षात्मक स्तोत्र है जिसमें दुर्गा के नौ रूपों (नवदुर्गा) का आह्वान भक्त के शरीर के हर अंग की सिर से पैर तक रक्षा करने के लिए किया जाता है, जो संपूर्ण आध्यात्मिक और शारीरिक सुरक्षा प्रदान करता है।',
     benefits: 'Recited before reading the Durga Saptashati, during Navratri, and by those seeking protection from illness, enemies and danger.', benefitsHi: 'दुर्गा सप्तशती पढ़ने से पहले, नवरात्रि के दौरान, और बीमारी, शत्रुओं और खतरे से सुरक्षा चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
@@ -823,16 +1207,135 @@ Na tasya jayate vyadhih sarvatra vijayi bhavet.`,
 सहस्रनाम तत्तुल्यं रामनाम वरानने॥
 
 ॥ इति श्रीबुधकौशिकमुनिविरचितं श्रीरामरक्षास्तोत्रं सम्पूर्णम् ॥`,
-    transliteration: `Om asya Shri Ramarakshastotramantrasya Budhakaushik rishih,
-Shri Sitaramachandro devata, Anushtup chhandah.
+    transliteration: `Asya Shri Ramarakshastotramantrasya Budhakaushik rishih,
+Shri Sitaramachandro devata, Anushtup chhandah,
+Sita shaktih, Shrimad Hanuman kilakam,
+Shri Sitaramachandra-preetyarthe jape viniyogah.
+
+Dhyayedajanubahum dhritasharadhanusham baddhapadmasanastham,
+Pitam vaso vasanam navakamaladala-spardhinetram prasannam.
+Vamankarudha-Sita-mukhakamala-milallochanam niradabham,
+Nanalankaradiptam dadhatamurujatamandanam Ramachandram.
 
 Charitam Raghunathasya shatakoti-pravistaram,
 Ekaikam-aksharam pumsam mahapataka-nashanam.
 
-Rama Ramabhadraya Ramachandraya vedhase,
+Dhyatva nilotpalashyamam Ramam rajivalochanam,
+Janakilakshmanopetam jatamukutamanditam.
+Sasitunadhanurbanapanim naktancharantakam,
+Svalilaya jagattratumavirbhutamajam vibhum.
+
+Ramarakshaam pathetprajnah papaghnim sarvakamadam,
+Shiro me Raghavah patu bhalam Dasharathatmajah.
+
+Kausalyeyo drishau patu Vishvamitrapriyah shruti,
+Ghranam patu Makhatrata mukham Saumitrivatsalah.
+
+Jihvam Vidyanidhih patu kantham Bharatavanditah,
+Skandhau Divyayudhah patu bhujau Bhagneshakarmukah.
+
+Karau Sitapatih patu hridayam Jamadagnyajit,
+Madhyam patu Kharadhwamsi nabhim Jambavadashrayah.
+
+Sugriveshah kati patu sakthini Hanumatprabhuh,
+Uru Raghuttamah patu Rakshahkulavinashakrit.
+
+Januni Setukritpatu janghe Dashamukhantakah,
+Padau Bibhishanashreedah patu Ramo'khilam vapuh.
+
+Etam Ramabalopetam raksham yah sukriti pathet,
+Sa chirayuh sukhi putri vijayi vinayi bhavet.
+
+Patala-bhutala-vyoma-charinashchhadmacharinah,
+Na drashtumapi shaktaste rakshitam Ramanamabhih.
+
+Rameti Ramabhadreti Ramachandreti va smaran,
+Naro na lipyate papaih bhuktim muktim cha vindati.
+
+Jagajjetraikamantrena Ramanamnabhirakshitam,
+Yah kanthe dharayettasya karasthah sarvasiddhayah.
+
+Vajrapanjaranamedam yo Ramakavacham smaret,
+Avyahatajnah sarvatra labhate jayamangalam.
+
+Adishtavan yatha svapne Ramarakshamimam Harah,
+Tatha likhitavan pratah prabuddho Budhakaushikah.
+
+Aramah kalpavrikshanam viramah sakalapadam,
+Abhiramastrilokanam Ramah Shriman sa nah prabhuh.
+
+Tarunau rupasampannau sukumarau mahabalau,
+Pundarikavishalakshau chirakrishnajinambarau.
+
+Phalamulashinau dantau tapasau brahmacharinau,
+Putrau Dasharathasyaitau bhratarau Ramalakshmanau.
+
+Sharanyau sarvasatvanam shreshthau sarvadhanushmatam,
+Rakshahkulanihantarau trayetam no Raghuttamau.
+
+Attasajjadhanusha vishusprishavakshaya shuganishanga sanginau,
+Rakshanaya mama Ramalakshmanavagratah pathi sadaiva gachchhatam.
+
+Sannaddhah kavachi khadgi chapabanadharo yuva,
+Gachchhan manoratho'smakam Ramah patu salakshmanah.
+
+Ramo Dasharathih shuro Lakshmananucharo bali,
+Kakutsthah purushah purnah Kausalyeyo Raghuttamah.
+
+Vedantavedyo yajnyeshah puranapurushottamah,
+Janakivallabhah Shrimanaprameyaparakramah.
+
+Ityetani japennityam madbhaktah shraddhayanvitah,
+Ashvamedhadhikam punyam samprapnoti na samshayah.
+
+Ramam durvadalashyamam padmaksham pitavasasam,
+Stuvanti namabhirdivyair na te samsarino narah.
+
+Ramam Lakshmana-purvajam Raghuvaram Sitapatim sundaram,
+Kakutstham karunarnavam gunanidhim viprapriyam dharmikam,
+Rajendram satyasandham Dasharatha-tanayam shyamalam shantamurtim,
+Vande lokabhiramam raghukulatilakam Raghavam Ravanarim.
+
+Ramaya Ramabhadraya Ramachandraya vedhase,
 Raghunathaya nathaya Sitayah pataye namah.
 
-... (a complete protective armor of about 38 verses composed by sage Budhakaushika) ...
+Shri Rama Rama Raghunandana Rama Rama,
+Shri Rama Rama Bharatagraja Rama Rama,
+Shri Rama Rama Ranakarkasha Rama Rama,
+Shri Rama Rama sharanam bhava Rama Rama.
+
+Shri Ramachandracharanau manasa smarami,
+Shri Ramachandracharanau vachasa grinami,
+Shri Ramachandracharanau shirasa namami,
+Shri Ramachandracharanau sharanam prapadye.
+
+Mata Ramo matpita Ramachandrah,
+Svami Ramo matsakha Ramachandrah,
+Sarvasvam me Ramachandro dayaluh,
+Nanyam jane naiva jane na jane.
+
+Dakshine Lakshmano yasya vame cha Janakatmaja,
+Purato Marutiryasya tam vande Raghunandanam.
+
+Lokabhiramam ranarangadhiram rajivanetram raghuvamshanatham,
+Karunyarupam karunakarantam Shri Ramachandram sharanam prapadye.
+
+Manojavam marutatulyavegam jitendriyam buddhimatam varishtham,
+Vatatmajam vanarayuthamukhyam Shri Ramadutam sharanam prapadye.
+
+Kujantam Rama-Rameti madhuram madhuraksharam,
+Aruhya kavitashakham vande Valmikikokilam.
+
+Apadamapahartaram dataram sarvasampadam,
+Lokabhiramam Shri Ramam bhuyo bhuyo namamyaham.
+
+Bharjanam bhavabijanamarjanam sukhasampadam,
+Tarjanam yamadutanam Rama Rameti garjanam.
+
+Ramo rajamanih sada vijayate Ramam Ramesham bhaje,
+Ramenabhihata nishacharachamuh Ramaya tasmai namah,
+Ramannasti parayanam parataram Ramasya daso'smyaham,
+Rame chittalayah sada bhavatu me bho Rama mamuddhara.
 
 Rama Rameti Rameti rame Rame manorame,
 Sahasranama tattulyam Ramanama varanane.`,
@@ -896,17 +1399,53 @@ Sahasranama tattulyam Ramanama varanane.`,
 ते प्रयान्ति कालभैरवादि सेवितं प्रभुं हरम्॥
 
 ॥ इति शिवरहस्यान्तर्गते कालभैरवाष्टकं सम्पूर्णम् ॥`,
-    transliteration: `Devaraja-sevyamana-pavana-anghri-pankajam
+    transliteration: `Shivarahasyantargate Mahadevakhye Shivaparvatisamvade.
+Ishvara uvacha:
+
+Devaraja-sevyamana-pavana-anghri-pankajam
 Vyala-yajnya-sootram-indu-shekharam kripakaram,
 Naradadi-yogi-vrinda-vanditam digambaram
 Kashika-puradhinatha-Kalabhairavam bhaje.
 
-... (8 verses composed by Adi Shankaracharya in praise of Kala Bhairav, guardian of Kashi) ...
+Bhuktimuktidayakam prashastacharuvigraham
+Nitantabhaktavatsalam samastalokapalakam,
+Nikvananmanojnahemakinkinilasatkatim
+Kashikapuradhinatha-Kalabhairavam bhaje.
+
+Bhanukotibhasvaram bhavabdhitarakam param
+Nilakanthanipsitarthadayakam trilochanam,
+Kalakalamambujakshakandharaharam shivam
+Kashikapuradhinatha-Kalabhairavam bhaje.
+
+Shulatankapashadandapanimadikaranam
+Shyamakayamadidevamaksharam niramayam,
+Bhimavakrimabhruvam vichitratandavapriyam
+Kashikapuradhinatha-Kalabhairavam bhaje.
+
+Ratnapadukaprabhaviramapadayugmakam
+Nityamadvitiyamishtadaivatam niranjanam,
+Mrityudarpanashanam karalam damshtrabhishanam
+Kashikapuradhinatha-Kalabhairavam bhaje.
+
+Dharmasetupalanam adharmamarganashanam
+Karmapashamochanam sukarmadayakam prabhum,
+Suvarnavarnakeshapashashobhitanganirmalam
+Kashikapuradhinatha-Kalabhairavam bhaje.
+
+Attahasabhinnapadmajandakotisantatim
+Drishtipatanashtapapajalamugrashasanam,
+Ashtasiddhidayakam kapalamalikadharam
+Kashikapuradhinatha-Kalabhairavam bhaje.
+
+Bhutasanghanayakam vishalakirtidayakam
+Kashivasalokapunyapapashodhanaprabhum,
+Nitimargakovidam puratanam jagatprabhum
+Kashikapuradhinatha-Kalabhairavam bhaje.
 
 Kalabhairavashtakam pathanti ye manoharam
-Jnanamuktisadhanam vichitra-punya-vardhanam,
-Shoka-moha-dainya-lobha-kopa-tapa-nashanam
-Te prayanti Kalabhairava-anghri-sannidhim dhruvam.`,
+Jnanamuktisadhanam pavitrapunyavardhanam,
+Shokamohadainyalobhakopatapanashanam
+Te prayanti Kalabhairavadi sevitam prabhum haram.`,
     meaning: 'Composed by Adi Shankaracharya, this ashtakam praises Kala Bhairav, the fierce guardian deity of Kashi (Varanasi), describing his cosmic power, his serpent sacred thread, and his role in granting liberation and knowledge while removing sorrow, delusion, greed and anger.', meaningHi: 'आदि शंकराचार्य द्वारा रचित, यह अष्टकम काशी (वाराणसी) के उग्र रक्षक देवता काल भैरव की स्तुति करता है, उनकी ब्रह्मांडीय शक्ति, उनके सर्प यज्ञोपवीत, तथा दुख, मोह, लोभ और क्रोध को दूर करते हुए मुक्ति और ज्ञान प्रदान करने में उनकी भूमिका का वर्णन करते हुए।',
     benefits: 'Recited on Sundays, during Bhairav Ashtami, and by those seeking freedom from fear, negative influences and obstacles in their spiritual path.', benefitsHi: 'रविवार को, भैरव अष्टमी के दौरान, और अपने आध्यात्मिक पथ में भय, नकारात्मक प्रभावों और बाधाओं से मुक्ति चाहने वाले लोगों द्वारा पाठ किया जाता है।',
   },
@@ -950,16 +1489,38 @@ Te prayanti Kalabhairava-anghri-sannidhim dhruvam.`,
 
 त्वयाऽवलोकितास्तेऽपि नाशं यान्ति समूलतः।
 प्रसादं कुरु मे सौरे प्रणत्वाहित्वमर्थितः॥`,
-    transliteration: `Namah Krishnaya Nilaya Shitikanthanibhaya cha,
-Namo Nirmamsadehaya Dirghashmashrujatayaya cha.
+    transliteration: `Namah Krishnaya Nilaya shikhikhandanibhaya cha,
+Namo Nilamadhukaya nilotpalanibhaya cha.
 
-Namo Vishalanetraya Shushkodarabhayanaka,
-Namah Pushkalagatraya Sthularomne'tha vai namah.
+Namo nirmamsadehaya dirghashrutijataya cha,
+Namo vishalanetraya shushkodarabhayanaka.
 
-... (21 verses saluting Shani in his various forms — dark-complexioned, fierce, vulture-mounted, witness of all karma) ...
+Namah paurushagatraya sthularomaya te namah,
+Namo nityam kshudhartaya nityatriptaya te namah.
 
-Prayatnena maya proktam stotrametat samahitah,
-Yah pathet prayato nityam Shanitushtikaram shubham.`,
+Namo ghoraya raudraya bhishanaya karaline,
+Namo dirghaya shushkaya kaladamshtra namo'stu te.
+
+Namaste ghorarupaya durnirikshyaya te namah,
+Namaste sarvabhakshaya valimukha namo'stu te.
+
+Suryaputra namaste'stu bhasvarobhayadayine,
+Adhodrishte namaste'stu samvartaka namo'stu te.
+
+Namo mandagate tubhyam nishprabhaya namonamah,
+Tapasa jnanadehaya nityayogarataya cha.
+
+Jnanachakshurnamaste'stu Kashyapatmajasunave,
+Tushto dadasi rajyam tvam kruddho harasi tatkshanat.
+
+Devasuramanushyashcha siddhavidyadharoragah,
+Tvayavalokitassaure dainyamashu vrajanti te.
+
+Brahma Shakroyamashchaiva munayah saptatarakah,
+Rajyabhrashtah patantiha tava drishtyavalokitah.
+
+Tvayavalokitaste'pi nasham yanti samulatah,
+Prasadam kuru me saure pranatvahitvamarthitah.`,
     meaning: 'This stotram, attributed to sage Dasharatha (father of Rama, who is said to have propitiated Shani), salutes the many fierce forms of Shani — dark-complexioned, gaunt, vulture-mounted, holding a trident — describing him as the impartial witness of all karma.', meaningHi: 'ऋषि दशरथ (राम के पिता, जिन्होंने कहा जाता है कि शनि को प्रसन्न किया था) को समर्पित यह स्तोत्र शनि के अनेक उग्र रूपों — श्याम वर्ण, कृशकाय, गिद्ध-वाहन, त्रिशूल धारण किए — को नमन करता है, उन्हें सभी कर्मों के निष्पक्ष साक्षी के रूप में वर्णित करते हुए।',
     benefits: 'Recited on Saturdays, during Sadhesati and Dhaiya (Shani\'s planetary transits), for pacifying malefic Saturn influences and gaining his protective grace.', benefitsHi: 'शनिवार को, साढ़े साती और ढैय्या (शनि के ग्रहीय गोचर) के दौरान, अशुभ शनि प्रभावों को शांत करने और उनकी रक्षात्मक कृपा प्राप्त करने के लिए पाठ किया जाता है।',
   },
@@ -1090,7 +1651,26 @@ Tamo'rim sarvapapaghnam pranato'smi Divakaram.
 Dadhishankha-tusharabham ksheerodarnava-sambhavam,
 Namami Shashinam Somam Shambhormukuta-bhushanam.
 
-... (nine verses each honoring one of the nine grahas — Surya, Chandra, Mangal, Budh, Guru, Shukra, Shani, Rahu and Ketu) ...
+Dharanigarbhasambhutam vidyutkantisamaprabham,
+Kumaram shaktihastam tam Mangalam pranamamyaham.
+
+Priyangukalikashyamam rupenapratimam Budham,
+Saumyam saumyagunopetam tam Budham pranamamyaham.
+
+Devanam cha rishinam cha gurum kanchanasannibham,
+Buddhibhutam trilokesham tam namami Brihaspatim.
+
+Himakundamrinalabham daityanam paramam gurum,
+Sarvashastrapravaktaram Bhargavam pranamamyaham.
+
+Nilanjanasamabhasam raviputram yamagrajam,
+Chhayamartandasambhutam tam namami Shanaishcharam.
+
+Ardhakayam mahaviryam Chandradityavimardanam,
+Simhikagarbhasambhutam tam Rahum pranamamyaham.
+
+Palashapushpasankasham tarakagrahamastakam,
+Raudram raudratmakam ghoram tam Ketum pranamamyaham.
 
 Iti Vyasa-mukhodgeetam yah pathet susamahitah,
 Diva va yadi va ratrau vighnashantirbhavishyati.`,
@@ -1275,10 +1855,101 @@ Chandram hiranmayim Lakshmim jatavedo ma avaha.
 Tam ma avaha jatavedo Lakshmim anapagaminim,
 Yasyam hiranyam vindeyam gam ashvam purushan aham.
 
-... (a 15-16 verse Vedic hymn from the Rigveda Khila, invoking Lakshmi in her forms as gold, prosperity, fame and abundance) ...
+Ashvapurvam rathamadhyam hastinadaprabodhinim,
+Shriyam devimupahvaye Shrirma devirjushatam.
+
+Kam so'smitam hiranyaprakaramardram jvalantim triptam tarpayantim,
+Padme sthitam padmavarnam tamihopahvaye shriyam.
+
+Chandram prabhasam yashasa jvalantim shriyam loke devajushtamudaram,
+Tam padminimeem sharanamaham prapadye'lakshmirme nashyatam tvam vrine.
+
+Adityavarne tapaso'dhijato vanaspatistava vriksho'tha bilvah,
+Tasya phalani tapasa nudantu mayantarayashcha bahya alakshmih.
+
+Upaitu mam devasakhah kirtishcha manina saha,
+Praadurbhuto'smi rashtre'smin kirtimriddhim dadatu me.
+
+Kshutpipasamalam jyeshthamalakshmim nashayamyaham,
+Abhutimasamriddhim cha sarvam nirnuda me grihat.
 
 Gandhadvaram duradharsham nityapushtam karishinim,
-Ishwarim sarvabhutanam tamihopahvaye Shriyam.`,
+Ishwarim sarvabhutanam tamihopahvaye Shriyam.
+
+Manasah kamamakutim vachah satyamashimahi,
+Pashunam rupamannasya mayi shrih shrayatam yashah.
+
+Kardamena prajabhuta mayi sambhava Kardama,
+Shriyam vasaya me kule mataram padmamalinim.
+
+Apah srijantu snigdhani Chiklita vasa me grihe,
+Ni cha devim mataram shriyam vasaya me kule.
+
+Ardram pushkarinim pushtim pingalam padmamalinim,
+Chandram hiranmayim Lakshmim jatavedo ma avaha.
+
+Ardram yah karinim yashtim suvarnam hemamalinim,
+Suryam hiranmayim Lakshmim jatavedo ma avaha.
+
+Tam ma avaha jatavedo Lakshmim anapagaminim,
+Yasyam hiranyam prabhutam gavo dasyo'shvanvindeyam purushanaham.
+
+Yah shuchih prayato bhutva juhuyadajya manvaham,
+Shriyah panchadasharcham cha Shrikamah satatam japet.
+
+Anandah Kardamashchaiva Chiklita iti vishrutah,
+Rishayah te trayah putrah svayam Shridevi devata.
+
+Padmasane padma uru padmakshi padmasambhave,
+Tvam mam bhajasva padmakshi yena saukhyam labhamyaham.
+
+Ashvadayi godayi dhanadayi mahadhane,
+Dhanam me jushatam devi sarvakamartha siddhaye.
+
+Putrapautra dhanam dhanyam hastyashvadigave ratham,
+Prajanam bhavasi mata ayushmantam karotu mam.
+
+Chandrabham Lakshmimishanam Suryabham shriyamishvarim,
+Chandra Suryagni sarvabham Shri-Mahalakshmimupasmahe.
+
+Dhanamagnirdhanam vayurdhanam suryo dhanam vasuh,
+Dhanamindro Brihaspatirvarunam dhanamashnute.
+
+Vainateya somam piba somam pibatu vritraha,
+Somam dhanasya somino mahyam dadatu sominah.
+
+Na krodho na cha matsaryam na lobho nashubha matih,
+Bhavanti kritapunyanam bhaktanam Shrisuktam japetsada.
+
+Varshantu te vibhavari divo abhrasya vidyutah,
+Rohantu sarvabijanyava brahma dvisho jahi.
+
+Padmapriye padmini padmahaste padmalaye padmadalayatakshi,
+Vishvapriye Vishnu mano'nukule tvatpadapadmam mayi sannidhatsva.
+
+Ya sa padmasanastha vipulakatitati padmapatrayataakshi,
+Gambhira vartanabhih stanabhara namita shubhra vastrottariya,
+Lakshmirdivyairgajendrairmanigana khachitaissnapita hemakumbhaih,
+Nityam sa padmahasta mama vasatu grihe sarvamangalyayukta.
+
+Lakshmim Ksheerasamudrarajatanayam Shrirangadhameshvarim,
+Dasibhutasamasta devavanitam lokaika dipankuram,
+Shrimanmandakatakshalabdha vibhava Brahmendragangadharam,
+Tvam trailokya kutumbinim sarasijam vande Mukundapriyam.
+
+Siddhalakshmirmokshalakshmirjayalakshmissarasvati,
+Shrilakshmirvaralakshmishcha prasanna mama sarvada.
+
+Varankushau pashamabhitimudram karairvahantim kamalasanastham,
+Balarka koti pratibham trinetram bhajehamadyam jagadishvarim tam.
+
+Sarvamangalamangalye shive sarvartha sadhike,
+Sharanye tryambake devi Narayani namo'stu te.
+
+Om Mahadevyai cha vidmahe Vishnupatni cha dhimahi,
+Tanno Lakshmih prachodayat.
+
+Om Shantih Shantih Shantih.`,
     meaning: 'The Shri Suktam is an ancient Vedic hymn (khila appended to the Rigveda) invoking Shri/Lakshmi as the golden goddess of prosperity, fame and abundance, describing her in symbolic forms including gold, cattle, the Bilva tree, and the elephant that bathes her.', meaningHi: 'श्री सूक्तम एक प्राचीन वैदिक स्तोत्र है (ऋग्वेद से जुड़ा खिल) जो श्री/लक्ष्मी को समृद्धि, यश और प्रचुरता की स्वर्णिम देवी के रूप में आह्वान करता है, उन्हें सोना, गाय, बिल्व वृक्ष, और उन्हें स्नान कराने वाले हाथी सहित प्रतीकात्मक रूपों में वर्णित करते हुए।',
     benefits: 'Recited during Lakshmi Puja, Diwali, and Vedic yajnas for prosperity; considered one of the most authoritative and ancient hymns dedicated to wealth and abundance.', benefitsHi: 'लक्ष्मी पूजा, दिवाली, और वैदिक यज्ञों के दौरान समृद्धि के लिए पाठ किया जाता है; इसे धन और प्रचुरता को समर्पित सबसे आधिकारिक और प्राचीन स्तोत्रों में से एक माना जाता है।',
   },
