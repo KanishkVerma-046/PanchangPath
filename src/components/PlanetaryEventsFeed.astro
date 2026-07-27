@@ -73,7 +73,7 @@ function typeClass(type: string): string {
     </div>
 
     <!-- Event list -->
-    <div class="pef-list" role="list">
+    <ul class="pef-list" role="list">
       {displayed.map((ev, idx) => {
         const countdown = formatCountdownLabel(ev.daysAway);
         const datetime  = formatEventDateTime(ev);
@@ -81,48 +81,49 @@ function typeClass(type: string): string {
         const isSoon    = ev.daysAway <= 7;
 
         return (
-          <a
-            href={`/events/${ev.id}`}
-            class={`pef-row ${isToday ? 'pef-today' : ''}`}
-            role="listitem"
-            data-event-id={ev.id}
-          >
-            <!-- Timeline connector -->
-            <div class="pef-timeline">
-              <div class="pef-dot-wrap">
-                <span class="pef-icon" style={`color:${ev.badgeColor}`} aria-hidden="true">
-                  {ev.icon}
-                </span>
-              </div>
-              {idx < displayed.length - 1 && <div class="pef-line" aria-hidden="true"></div>}
-            </div>
-
-            <!-- Content -->
-            <div class="pef-content">
-              <div class="pef-meta">
-                <span class={`pef-tag ${typeClass(ev.type)}`} data-hi={typeLabelHi(ev.type)}>
-                  {typeLabel(ev.type)}
-                </span>
-                <span class={`pef-countdown ${isToday ? 'pef-now' : isSoon ? 'pef-soon' : ''}`}>
-                  {isToday && <span class="pef-pulse" aria-hidden="true"></span>}
-                  <span class="pef-countdown-text">{countdown}</span>
-                </span>
+          <li class="pef-row-li">
+            <a
+              href={`/events/${ev.id}`}
+              class={`pef-row ${isToday ? 'pef-today' : ''}`}
+              data-event-id={ev.id}
+            >
+              <!-- Timeline connector -->
+              <div class="pef-timeline">
+                <div class="pef-dot-wrap">
+                  <span class="pef-icon" style={`color:${ev.badgeColor}`} aria-hidden="true">
+                    {ev.icon}
+                  </span>
+                </div>
+                {idx < displayed.length - 1 && <div class="pef-line" aria-hidden="true"></div>}
               </div>
 
-              <p class="pef-name">
-                <span class="en-text">{ev.title}</span>
-                <span class="hi-text">{ev.titleHi}</span>
-              </p>
-              <p class="pef-datetime">{datetime}</p>
-              <p class="pef-desc" data-hi={ev.descriptionHi}>{ev.description}</p>
-            </div>
+              <!-- Content -->
+              <div class="pef-content">
+                <div class="pef-meta">
+                  <span class={`pef-tag ${typeClass(ev.type)}`} data-hi={typeLabelHi(ev.type)}>
+                    {typeLabel(ev.type)}
+                  </span>
+                  <span class={`pef-countdown ${isToday ? 'pef-now' : isSoon ? 'pef-soon' : ''}`}>
+                    {isToday && <span class="pef-pulse" aria-hidden="true"></span>}
+                    <span class="pef-countdown-text">{countdown}</span>
+                  </span>
+                </div>
 
-            <!-- Arrow -->
-            <span class="pef-arrow" aria-hidden="true">›</span>
-          </a>
+                <p class="pef-name">
+                  <span class="en-text">{ev.title}</span>
+                  <span class="hi-text">{ev.titleHi}</span>
+                </p>
+                <p class="pef-datetime">{datetime}</p>
+                <p class="pef-desc" data-hi={ev.descriptionHi}>{ev.description}</p>
+              </div>
+
+              <!-- Arrow -->
+              <span class="pef-arrow" aria-hidden="true">›</span>
+            </a>
+          </li>
         );
       })}
-    </div>
+    </ul>
 
     <!-- Footer link -->
     <a href="/events" class="pef-view-all">
@@ -240,11 +241,15 @@ function typeClass(type: string): string {
   display: flex;
   flex-direction: column;
   gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
   border: 1px solid var(--color-hairline);
   border-radius: 12px;
   box-shadow: var(--shadow-elevation);
   overflow: hidden;
 }
+.pef-row-li { list-style: none; }
 
 /* ── Row ── */
 .pef-row {
@@ -267,7 +272,7 @@ function typeClass(type: string): string {
 @media (prefers-reduced-motion: reduce) {
   .pef-row { opacity: 1; translate: 0 0; transition: background 0.15s; }
 }
-.pef-row:last-child { border-bottom: none; }
+.pef-row-li:last-child .pef-row { border-bottom: none; }
 .pef-row:hover { background: var(--color-canvas-soft); }
 .pef-row.pef-today { background: rgba(255, 153, 51, 0.05); }
 .pef-row.pef-today:hover { background: rgba(255, 153, 51, 0.09); }
