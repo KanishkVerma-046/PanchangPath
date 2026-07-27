@@ -4,7 +4,7 @@
   --color-ink: #2B1608;
   --color-on-primary: #ffffff;
   --color-body-text: #5A4636;
-  --color-mute: #8C7660;
+  --color-mute: #755F4D;
   --color-hairline: #E8D9BE;
   --color-hairline-strong: #C9AE7E;
   --color-canvas: #FFFBF3;
@@ -26,7 +26,7 @@
   --color-gold: #C8922A;
   --color-gold-soft: #FBF0D9;
   --color-gold-deep: #97690F;
-  --color-data-label: #C8922A;
+  --color-data-label: #805D1A;
   --color-data-value: #2B2B2B;
   --color-auspicious: #16803D;
   --color-auspicious-soft: #DCF3E3;
@@ -188,7 +188,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-canvas-soft-2); color: var(--color-body-text);
 }
 .badge-saffron { background: var(--color-saffron-soft); color: var(--color-saffron-deep); border-color: rgba(181,57,10,0.3); }
-.badge-auspicious { background: var(--color-auspicious-soft); color: #15803d; border-color: rgba(34,197,94,0.3); }
+.badge-auspicious { background: var(--color-auspicious-soft); color: #147839; border-color: rgba(34,197,94,0.3); }
 .badge-inauspicious { background: var(--color-inauspicious-soft); color: #b91c1c; border-color: rgba(239,68,68,0.3); }
 
 .divider { height: 1px; background: var(--color-hairline); border: none; margin: 0; }
