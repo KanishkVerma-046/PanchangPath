@@ -62,13 +62,13 @@ function typeClass(type: string): string {
       <div>
         <p class="caption-mono" data-hi="आगामी" style="color:var(--color-mute);margin:0 0 6px;">Upcoming</p>
         <h2 class="pef-title">
-          <span class="en-text">Planetary Events</span>
-          <span class="hi-text">ग्रह घटनाएँ</span>
+          <span class="en-text">Planetary Events</span>&nbsp;
+          <span class="hi-text" style="display:none">ग्रह घटनाएँ</span>
         </h2>
       </div>
       <a href="/events" class="pef-more-link">
-        <span class="en-text">All events →</span>
-        <span class="hi-text">सभी घटनाएँ →</span>
+        <span class="en-text">All events →</span>&nbsp;
+        <span class="hi-text" style="display:none">सभी घटनाएँ →</span>
       </a>
     </div>
 
@@ -110,8 +110,8 @@ function typeClass(type: string): string {
                 </div>
 
                 <p class="pef-name">
-                  <span class="en-text">{ev.title}</span>
-                  <span class="hi-text">{ev.titleHi}</span>
+                  <span class="en-text">{ev.title}</span>&nbsp;
+                  <span class="hi-text" style="display:none">{ev.titleHi}</span>
                 </p>
                 <p class="pef-datetime">{datetime}</p>
                 <p class="pef-desc" data-hi={ev.descriptionHi}>{ev.description}</p>

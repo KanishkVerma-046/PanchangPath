@@ -59,12 +59,12 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
               <tr class="kw-row" data-planet={g.id} title={`Click for details — ${g.name}`}>
                 <td>
                   <PlanetIcon name={g.id} size={14} class="kw-sym" />
-                  <span class="en-text">{g.name}</span>
-                  <span class="hi-text">{g.nameHi}</span>
+                  <span class="en-text">{g.name}</span>&nbsp;
+                  <span class="hi-text" style="display:none">{g.nameHi}</span>
                 </td>
                 <td>
-                  <span class="en-text">{g.signName}</span>
-                  <span class="hi-text">{g.signNameHi}</span>
+                  <span class="en-text">{g.signName}</span>&nbsp;
+                  <span class="hi-text" style="display:none">{g.signNameHi}</span>
                 </td>
                 <td class="kw-deg-cell">{g.deg}°{String(g.min).padStart(2,'0')}'</td>
                 <td>

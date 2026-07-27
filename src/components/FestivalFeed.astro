@@ -18,13 +18,13 @@ const { festivals, today } = Astro.props;
       <div>
         <p class="caption-mono" data-hi="आने वाले" style="color:var(--color-mute);margin:0 0 6px;">Coming up</p>
         <h2 class="ff-title">
-          <span class="en-text">Festivals &amp; Vrats</span>
-          <span class="hi-text">त्योहार &amp; व्रत</span>
+          <span class="en-text">Festivals &amp; Vrats</span>&nbsp;
+          <span class="hi-text" style="display:none">त्योहार &amp; व्रत</span>
         </h2>
       </div>
       <a href="/festivals" class="ff-more-link">
-        <span class="en-text">Full calendar →</span>
-        <span class="hi-text">पूरा कैलेंडर →</span>
+        <span class="en-text">Full calendar →</span>&nbsp;
+        <span class="hi-text" style="display:none">पूरा कैलेंडर →</span>
       </a>
     </div>
 
@@ -83,8 +83,8 @@ const { festivals, today } = Astro.props;
           <div class="ff-see-all-inner">
             <span class="ff-see-all-icon">📅</span>
             <p class="ff-see-all-text">
-              <span class="en-text">View Full Calendar</span>
-              <span class="hi-text">पूरा कैलेंडर</span>
+              <span class="en-text">View Full Calendar</span>&nbsp;
+              <span class="hi-text" style="display:none">पूरा कैलेंडर</span>
             </p>
             <span class="ff-see-all-arrow">→</span>
           </div>
