@@ -30,11 +30,11 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
         <h1 style="font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0;" id="cal-title">{monthName}</h1>
         <div style="display:flex;align-items:center;gap:8px;">
-          <button id="prev-month" class="btn-secondary" style="height:32px;width:32px;padding:0;display:flex;align-items:center;justify-content:center;">
+          <button id="prev-month" aria-label="Previous month" class="btn-secondary" style="height:44px;width:44px;padding:0;display:flex;align-items:center;justify-content:center;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
           <button id="today-btn" class="btn-secondary" style="height:32px;font-size:13px;">Today</button>
-          <button id="next-month" class="btn-secondary" style="height:32px;width:32px;padding:0;display:flex;align-items:center;justify-content:center;">
+          <button id="next-month" aria-label="Next month" class="btn-secondary" style="height:44px;width:44px;padding:0;display:flex;align-items:center;justify-content:center;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
@@ -65,7 +65,7 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;" id="cal-grid">
         <!-- Filled by JS + static fallback below -->
         {Array.from({ length: firstDay }, (_, i) => (
-          <div key={`e-${i}`} style="min-height:100px;border-radius:8px;"></div>
+          <div style="min-height:100px;border-radius:8px;"></div>
         ))}
         {Array.from({ length: daysInMonth }, (_, i) => {
           const d = i + 1;
