@@ -1,5 +1,5 @@
 ---
-import { RASHIS, getDailyPrediction } from '../lib/rashifal';
+import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction } from '../lib/rashifal';
 import RashiIcon from './icons/RashiIcon.astro';
 
 interface Props { today: Date; }
@@ -24,10 +24,10 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
       <div class="rf-header-right">
         <!-- Period tabs -->
         <div class="rf-period-tabs" role="tablist" aria-label="Rashifal period">
-          <a href="/rashifal?period=daily" class="rf-tab rf-tab-active" data-hi="दैनिक">Daily</a>
-          <a href="/rashifal?period=weekly" class="rf-tab" data-hi="साप्ताहिक">Weekly</a>
-          <a href="/rashifal?period=monthly" class="rf-tab" data-hi="मासिक">Monthly</a>
-          <a href="/rashifal?period=yearly" class="rf-tab" data-hi="वार्षिक">Yearly</a>
+          <a href="/rashifal?period=daily" id="rf-tab-daily" class="rf-tab rf-tab-active" role="tab" aria-selected="true" aria-controls="rashifal-grid" tabindex="0" data-period="daily" data-hi="दैनिक">Daily</a>
+          <a href="/rashifal?period=weekly" id="rf-tab-weekly" class="rf-tab" role="tab" aria-selected="false" aria-controls="rashifal-grid" tabindex="-1" data-period="weekly" data-hi="साप्ताहिक">Weekly</a>
+          <a href="/rashifal?period=monthly" id="rf-tab-monthly" class="rf-tab" role="tab" aria-selected="false" aria-controls="rashifal-grid" tabindex="-1" data-period="monthly" data-hi="मासिक">Monthly</a>
+          <a href="/rashifal?period=yearly" id="rf-tab-yearly" class="rf-tab" role="tab" aria-selected="false" aria-controls="rashifal-grid" tabindex="-1" data-period="yearly" data-hi="वार्षिक">Yearly</a>
         </div>
         <a href="/rashifal" class="rf-more-link">
           <span class="en-text">All Rashis →</span>
@@ -37,13 +37,19 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
     </div>
 
     <!-- 12-rashi grid: 4-col on desktop, horizontal scroll on mobile -->
-    <div class="rf-grid" id="rashifal-grid">
+    <div class="rf-grid" id="rashifal-grid" role="tabpanel" aria-labelledby="rf-tab-daily" tabindex="0">
       {RASHIS.map((rashi, idx) => {
-        const prediction = getDailyPrediction(rashi, today);
-        const isTruncated = prediction.length > 130;
-        const short = isTruncated ? prediction.slice(0, 130).trim() + '…' : prediction;
+        const predictions = {
+          daily: getDailyPrediction(rashi, today),
+          weekly: getWeeklyPrediction(rashi, today),
+          monthly: getMonthlyPrediction(rashi, today),
+          yearly: getYearlyPrediction(rashi, today),
+        };
+        const daily = predictions.daily;
+        const isTruncated = daily.length > 130;
+        const short = isTruncated ? daily.slice(0, 130).trim() + '…' : daily;
         return (
-          <div class="rf-card animate-in" style={`animation-delay:${idx * 40}ms`}>
+          <div class="rf-card animate-in" style={`animation-delay:${idx * 40}ms`} data-predictions={JSON.stringify(predictions)}>
             <!-- Icon strip (links to full rashi page) -->
             <a href={`/rashifal/${rashi.id}`} class="rf-card-thumb-link" aria-label={`${rashi.name} — full prediction`}>
               <div class="rf-card-thumb" style={`background:${rashi.gradient}`}>
@@ -62,14 +68,11 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
                 <span class="rf-lord-badge en-text">{rashi.lord}</span>
                 <span class="rf-lord-badge hi-text" style="display:none;">{rashi.lordHi}</span>
               </div>
-              <p class="rf-prediction rf-prediction-short">{short}</p>
-              {isTruncated && <p class="rf-prediction rf-prediction-full" hidden>{prediction}</p>}
-              {isTruncated && (
-                <button class="rf-expand-btn" type="button" aria-expanded="false">
-                  <span class="rf-expand-label">Read more</span>
-                  <svg class="rf-expand-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
-              )}
+              <p class="rf-prediction rf-prediction-text">{short}</p>
+              <button class="rf-expand-btn" type="button" aria-expanded="false" hidden={!isTruncated}>
+                <span class="rf-expand-label">Read more</span>
+                <svg class="rf-expand-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
             </div>
           </div>
         );
@@ -152,12 +155,10 @@ let rfIsHindi = localStorage.getItem('pp-lang') === 'hi';
 document.getElementById('rashifal-grid')?.addEventListener('click', (e) => {
   const btn = (e.target as Element).closest<HTMLElement>('.rf-expand-btn');
   if (!btn) return;
-  const card = btn.closest('.rf-card');
-  const short = card?.querySelector<HTMLElement>('.rf-prediction-short');
-  const full = card?.querySelector<HTMLElement>('.rf-prediction-full');
+  const card = btn.closest<HTMLElement>('.rf-card');
+  const textEl = card?.querySelector<HTMLElement>('.rf-prediction-text');
   const wasExpanded = btn.getAttribute('aria-expanded') === 'true';
-  if (short) short.hidden = !wasExpanded;
-  if (full) full.hidden = wasExpanded;
+  if (textEl) textEl.textContent = (wasExpanded ? card?.dataset.shortText : card?.dataset.fullText) ?? '';
   btn.setAttribute('aria-expanded', String(!wasExpanded));
   btn.classList.toggle('expanded', !wasExpanded);
   const label = btn.querySelector<HTMLElement>('.rf-expand-label');
@@ -167,6 +168,71 @@ document.getElementById('rashifal-grid')?.addEventListener('click', (e) => {
       : (wasExpanded ? 'Read more' : 'Read less');
   }
 });
+
+// ─── Period tabs (real in-place tab widget, not page navigation) ───────────
+// APG "Tabs with Automatic Activation": arrow keys move focus AND switch the
+// panel; each tab keeps aria-controls pointing at the one panel (#rashifal-grid)
+// whose prediction text swaps per rashi card rather than swapping DOM panels.
+type Period = 'daily' | 'weekly' | 'monthly' | 'yearly';
+const periodTabs = Array.from(document.querySelectorAll<HTMLAnchorElement>('.rf-tab'));
+const periodGrid = document.getElementById('rashifal-grid');
+
+function renderCardPrediction(card: HTMLElement, period: Period) {
+  let predictions: Partial<Record<Period, string>> = {};
+  try { predictions = JSON.parse(card.dataset.predictions ?? '{}'); } catch { /* malformed data, fall back to empty */ }
+  const text = predictions[period] ?? predictions.daily ?? '';
+  const truncated = text.length > 130;
+  const short = truncated ? text.slice(0, 130).trim() + '…' : text;
+  card.dataset.shortText = short;
+  card.dataset.fullText = text;
+  const textEl = card.querySelector<HTMLElement>('.rf-prediction-text');
+  if (textEl) textEl.textContent = short;
+  const btn = card.querySelector<HTMLElement>('.rf-expand-btn');
+  if (btn) {
+    btn.hidden = !truncated;
+    btn.setAttribute('aria-expanded', 'false');
+    btn.classList.remove('expanded');
+    const label = btn.querySelector<HTMLElement>('.rf-expand-label');
+    if (label) label.textContent = rfIsHindi ? 'और पढ़ें' : 'Read more';
+  }
+}
+
+function setActivePeriod(period: Period, opts: { focusTab?: boolean } = {}) {
+  const targetTab = periodTabs.find(t => t.dataset.period === period);
+  if (!targetTab) return;
+  periodTabs.forEach(t => {
+    const active = t === targetTab;
+    t.classList.toggle('rf-tab-active', active);
+    t.setAttribute('aria-selected', String(active));
+    t.tabIndex = active ? 0 : -1;
+  });
+  periodGrid?.setAttribute('aria-labelledby', targetTab.id);
+  document.querySelectorAll<HTMLElement>('#rashifal-grid .rf-card').forEach(card => renderCardPrediction(card, period));
+  if (opts.focusTab) targetTab.focus();
+}
+
+periodTabs.forEach(tab => {
+  tab.addEventListener('click', (e) => {
+    e.preventDefault();
+    setActivePeriod((tab.dataset.period as Period) ?? 'daily');
+  });
+  tab.addEventListener('keydown', (e) => {
+    const key = (e as KeyboardEvent).key;
+    if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(key)) return;
+    e.preventDefault();
+    const idx = periodTabs.indexOf(tab);
+    let nextIdx = idx;
+    if (key === 'ArrowLeft') nextIdx = (idx - 1 + periodTabs.length) % periodTabs.length;
+    else if (key === 'ArrowRight') nextIdx = (idx + 1) % periodTabs.length;
+    else if (key === 'Home') nextIdx = 0;
+    else if (key === 'End') nextIdx = periodTabs.length - 1;
+    setActivePeriod((periodTabs[nextIdx].dataset.period as Period) ?? 'daily', { focusTab: true });
+  });
+});
+
+// Seed dataset.shortText/fullText for the initially-rendered (daily) period
+// so the expand/collapse handler above has data to read from immediately.
+document.querySelectorAll<HTMLElement>('#rashifal-grid .rf-card').forEach(card => renderCardPrediction(card, 'daily'));
 
 // ─── Name-to-Rashi lookup ─────────────────────────────────────────────────
 // Uses the shared, canonically-derived getRashiByNameLetter() from lib/rashifal.ts instead of a
