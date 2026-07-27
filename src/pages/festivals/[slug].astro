@@ -58,7 +58,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <span>{f.name}</span>
         </div>
         <h1 class="fd-heading en-text">{f.name}</h1>
-        <h1 class="fd-heading hi-text">{f.nameHi}</h1>
+        <h1 class="fd-heading hi-text" style="display:none">{f.nameHi}</h1>
         <div class="fd-hero-badges">
           <span class={`fd-type-badge fd-type-${f.type}`} data-hi={f.type === 'major' ? '✦ प्रमुख त्योहार' : f.type === 'vrat' ? '🙏 व्रत' : '🌏 क्षेत्रीय त्योहार'}>
             {f.type === 'major' ? '✦ Major Festival' : f.type === 'vrat' ? '🙏 Vrat / Fast' : '🌏 Regional Festival'}
@@ -86,7 +86,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <div class="fd-date-col">
             <p class="fd-label" data-hi="दिनांक">Date</p>
             <p class="fd-value en-text">{dateLabel}</p>
-            <p class="fd-value hi-text">
+            <p class="fd-value hi-text" style="display:none">
               {fd.toLocaleDateString('hi-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}
             </p>
           </div>
@@ -124,7 +124,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
             </div>
             <div class="fd-fact-row">
               <dt data-hi="संस्कृत नाम">Sanskrit Name</dt>
-              <dd class="hi-text">{f.nameHi}</dd>
+              <dd class="hi-text" style="display:none">{f.nameHi}</dd>
             </div>
             <div class="fd-fact-row">
               <dt data-hi={`दिनांक (${f.date.slice(0,4)})`}>Date ({f.date.slice(0,4)})</dt>
@@ -174,7 +174,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <div class="fd-nav-meta">
             <span class="fd-nav-label" data-hi="पिछला">Previous</span>
             <span class="fd-nav-name en-text">{prev.name}</span>
-            <span class="fd-nav-name hi-text">{prev.nameHi}</span>
+            <span class="fd-nav-name hi-text" style="display:none">{prev.nameHi}</span>
           </div>
         </a>
       )}
@@ -184,7 +184,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <div class="fd-nav-meta">
             <span class="fd-nav-label" data-hi="अगला">Next</span>
             <span class="fd-nav-name en-text">{next.name}</span>
-            <span class="fd-nav-name hi-text">{next.nameHi}</span>
+            <span class="fd-nav-name hi-text" style="display:none">{next.nameHi}</span>
           </div>
           <span class="fd-nav-arrow">→</span>
         </a>

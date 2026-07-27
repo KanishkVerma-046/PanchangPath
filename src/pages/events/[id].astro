@@ -103,7 +103,7 @@ function heroBg(type: string): string {
         </div>
         <div class="ed-hero-text">
           <h1 class="ed-heading en-text">{ev.title}</h1>
-          <h1 class="ed-heading hi-text">{ev.titleHi}</h1>
+          <h1 class="ed-heading hi-text" style="display:none">{ev.titleHi}</h1>
           <div class="ed-hero-meta">
             <span class={`ed-tag ${typeClass(ev.type)}`} data-hi={typeLabelHi(ev.type)}>{typeLabel(ev.type)}</span>
             <span id="ed-hero-countdown" class={`ed-countdown ${isToday ? 'ed-now' : ''}`} style={isPast ? 'display:none' : ''}>

@@ -107,15 +107,15 @@ const GOWRI_NIGHT = [
 let isHindi = false;
 const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
 const trQ = (q:string) => isHindi ? (QUALITY_HI[q]||q) : q;
-const GOWRI_DATA: Record<string,{q:string;bg:string;fg:string;suitable:string}> = {
-  Amrutham: {q:'Best',    bg:'#DCF3E3',fg:'#16803D',suitable:'All auspicious activities'},
-  Sudham:   {q:'Good',    bg:'#FBF0D9',fg:'#97690F',suitable:'Religious & spiritual work'},
-  Uthamam:  {q:'Good',    bg:'#FBE4D2',fg:'#B5390A',suitable:'Education, new ventures'},
-  Labham:   {q:'Good',    bg:'#FBE4D2',fg:'#7F2700',suitable:'Business and financial work'},
-  Dhanam:   {q:'Neutral', bg:'#F5E7C8',fg:'#8C7660',suitable:'Wealth activities — OK'},
-  Charam:   {q:'Neutral', bg:'#E8D9BE',fg:'#5A4636',suitable:'Travel and movement'},
-  Rogam:    {q:'Avoid',   bg:'#FBE0DE',fg:'#C81E1E',suitable:'Avoid all auspicious activities'},
-  Visha:    {q:'Avoid',   bg:'#E8D9BE',fg:'#3A2712',suitable:'Avoid — inauspicious'},
+const GOWRI_DATA: Record<string,{q:string;bg:string;fg:string;suitable:string;suitableHi:string}> = {
+  Amrutham: {q:'Best',    bg:'#DCF3E3',fg:'#16803D',suitable:'All auspicious activities', suitableHi:'सभी शुभ कार्य'},
+  Sudham:   {q:'Good',    bg:'#FBF0D9',fg:'#97690F',suitable:'Religious & spiritual work', suitableHi:'धार्मिक व आध्यात्मिक कार्य'},
+  Uthamam:  {q:'Good',    bg:'#FBE4D2',fg:'#B5390A',suitable:'Education, new ventures', suitableHi:'शिक्षा, नए उद्यम'},
+  Labham:   {q:'Good',    bg:'#FBE4D2',fg:'#7F2700',suitable:'Business and financial work', suitableHi:'व्यापार व वित्तीय कार्य'},
+  Dhanam:   {q:'Neutral', bg:'#F5E7C8',fg:'#8C7660',suitable:'Wealth activities — OK', suitableHi:'धन संबंधी कार्य — ठीक है'},
+  Charam:   {q:'Neutral', bg:'#E8D9BE',fg:'#5A4636',suitable:'Travel and movement', suitableHi:'यात्रा व आवागमन'},
+  Rogam:    {q:'Avoid',   bg:'#FBE0DE',fg:'#C81E1E',suitable:'Avoid all auspicious activities', suitableHi:'सभी शुभ कार्यों से बचें'},
+  Visha:    {q:'Avoid',   bg:'#E8D9BE',fg:'#3A2712',suitable:'Avoid — inauspicious', suitableHi:'बचें — अशुभ'},
 };
 
 function toJD(y:number,m:number,d:number,h=0){
@@ -153,7 +153,7 @@ window.addEventListener('locationchange',(e:Event)=>{
 });
 
 function makeGowriSlot(name:string,s:number,e:number,isCurrent:boolean){
-  const d=GOWRI_DATA[name]||{q:'—',bg:'#f3f4f6',fg:'#374151',suitable:''};
+  const d=GOWRI_DATA[name]||{q:'—',bg:'#f3f4f6',fg:'#374151',suitable:'',suitableHi:''};
   const bg=isCurrent?'var(--color-ink)':d.bg;
   const fg=isCurrent?'var(--color-on-primary)':d.fg;
   return `<div style="background:${bg};border-radius:10px;padding:12px 14px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
@@ -233,9 +233,9 @@ function renderInfoGrid(){
   const infoGrid=document.getElementById('pk-info-grid');
   if(!infoGrid) return;
   infoGrid.innerHTML=[
-    {title:'What is Panchaka?',titleHi:'पंचक क्या है?',text:'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.'},
-    {title:'What to avoid in Panchaka?',titleHi:'पंचक में क्या टालें?',text:'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.'},
-  ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?i.titleHi:i.title}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${i.text}</p></div>`).join('');
+    {title:'What is Panchaka?',titleHi:'पंचक क्या है?',text:'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.',textHi:'पंचक का अर्थ है "पांच का समूह।" यह तब होता है जब चंद्रमा अंतिम 5 नक्षत्रों से गुजरता है: धनिष्ठा (उत्तरार्ध), शतभिषा, पूर्वाभाद्रपद, उत्तराभाद्रपद और रेवती — जो कुंभ और मीन राशियों में फैले हैं। अवधि: प्रत्येक माह लगभग 5 दिन।'},
+    {title:'What to avoid in Panchaka?',titleHi:'पंचक में क्या टालें?',text:'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.',textHi:'मृत्यु पंचक: अंतिम संस्कार से बचें। अग्नि पंचक: अग्नि संबंधी कार्यों से बचें। राज पंचक: दक्षिण दिशा की यात्रा से बचें। चोर पंचक: कीमती वस्तुओं की सुरक्षा करें। रोग पंचक: स्वास्थ्य जोखिमों से बचें। सामान्य दैनिक कार्य प्रायः प्रभावित नहीं होते।'},
+  ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?i.titleHi:i.title}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${isHindi?i.textHi:i.text}</p></div>`).join('');
 }
 renderInfoGrid();
 
@@ -249,7 +249,7 @@ function renderGowriLegend(){
         <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${name}</span>
         <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'||d.q==='Good'?d.fg:'#dc2626'};">${trQ(d.q)}</span>
       </div>
-      <p style="font-size:11px;color:var(--color-body-text);margin:0;">${d.suitable}</p>
+      <p style="font-size:11px;color:var(--color-body-text);margin:0;">${isHindi?d.suitableHi:d.suitable}</p>
     </div>
   `).join('');
 }

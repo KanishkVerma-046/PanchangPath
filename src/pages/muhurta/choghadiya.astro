@@ -100,14 +100,14 @@ const NIGHT_CHOG = [
 let isHindi = false;
 const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
 const trQ = (q:string) => isHindi ? QUALITY_HI[q] : q;
-const CHOG_DATA: Record<string,{hi:string;q:string;planet:string;bg:string;fg:string;suitable:string}> = {
-  Amrit: {hi:'अमृत',q:'Best',planet:'Moon',bg:'#DCF3E3',fg:'#16803D',suitable:'All activities · Travel · Business · Marriage · Medicine'},
-  Shubh: {hi:'शुभ',q:'Good',planet:'Jupiter',bg:'#FBF0D9',fg:'#97690F',suitable:'Marriage · Religious ceremonies · Education · Ventures'},
-  Labh:  {hi:'लाभ',q:'Good',planet:'Mercury',bg:'#FBE4D2',fg:'#B5390A',suitable:'Business · Trade · Financial dealings · Accounts'},
-  Char:  {hi:'चर',q:'Neutral',planet:'Venus',bg:'#F5E7C8',fg:'#8C7660',suitable:'Travel · Movement · Shopping'},
-  Udveg: {hi:'उद्वेग',q:'Avoid',planet:'Sun',bg:'#FBE0DE',fg:'#C81E1E',suitable:'Avoid — Government work only'},
-  Kaal:  {hi:'काल',q:'Avoid',planet:'Saturn',bg:'#E8D9BE',fg:'#3A2712',suitable:'Avoid all auspicious activities'},
-  Rog:   {hi:'रोग',q:'Avoid',planet:'Mars',bg:'#FBE4D2',fg:'#7F2700',suitable:'Avoid — especially surgery & medicine'},
+const CHOG_DATA: Record<string,{hi:string;q:string;planet:string;bg:string;fg:string;suitable:string;suitableHi:string}> = {
+  Amrit: {hi:'अमृत',q:'Best',planet:'Moon',bg:'#DCF3E3',fg:'#16803D',suitable:'All activities · Travel · Business · Marriage · Medicine',suitableHi:'सभी कार्य · यात्रा · व्यापार · विवाह · चिकित्सा'},
+  Shubh: {hi:'शुभ',q:'Good',planet:'Jupiter',bg:'#FBF0D9',fg:'#97690F',suitable:'Marriage · Religious ceremonies · Education · Ventures',suitableHi:'विवाह · धार्मिक अनुष्ठान · शिक्षा · नए उद्यम'},
+  Labh:  {hi:'लाभ',q:'Good',planet:'Mercury',bg:'#FBE4D2',fg:'#B5390A',suitable:'Business · Trade · Financial dealings · Accounts',suitableHi:'व्यापार · वाणिज्य · वित्तीय लेन-देन · लेखा-जोखा'},
+  Char:  {hi:'चर',q:'Neutral',planet:'Venus',bg:'#F5E7C8',fg:'#8C7660',suitable:'Travel · Movement · Shopping',suitableHi:'यात्रा · आवागमन · खरीदारी'},
+  Udveg: {hi:'उद्वेग',q:'Avoid',planet:'Sun',bg:'#FBE0DE',fg:'#C81E1E',suitable:'Avoid — Government work only',suitableHi:'बचें — केवल सरकारी कार्य'},
+  Kaal:  {hi:'काल',q:'Avoid',planet:'Saturn',bg:'#E8D9BE',fg:'#3A2712',suitable:'Avoid all auspicious activities',suitableHi:'सभी शुभ कार्यों से बचें'},
+  Rog:   {hi:'रोग',q:'Avoid',planet:'Mars',bg:'#FBE4D2',fg:'#7F2700',suitable:'Avoid — especially surgery & medicine',suitableHi:'बचें — विशेष रूप से शल्य चिकित्सा व औषधि'},
 };
 
 function toJD(y:number,m:number,d:number,h=0){
@@ -223,7 +223,7 @@ function renderLegend(){
         <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626'};">${trQ(d.q)}</span>
       </div>
       <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">${isHindi?'ग्रह':'Planet'}: ${d.planet}</p>
-      <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${d.suitable}</p>
+      <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${isHindi?d.suitableHi:d.suitable}</p>
     </div>
   `).join('');
 }

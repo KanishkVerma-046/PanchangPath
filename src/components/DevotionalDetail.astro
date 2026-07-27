@@ -88,7 +88,7 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
         <span>{item.title}</span>
       </div>
       <h1 class="dv-heading en-text">{item.title}</h1>
-      <h1 class="dv-heading hi-text">{item.titleHi}</h1>
+      <h1 class="dv-heading hi-text" style="display:none">{item.titleHi}</h1>
       {item.deity && (
         <span class="dv-deity-badge">✦ {item.deity}</span>
       )}
@@ -158,6 +158,7 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
         <div class="dv-nav-meta">
           <span class="dv-nav-label" data-hi="पिछला">Previous</span>
           <span class="dv-nav-name en-text">{prev.title}</span>
+          <span class="dv-nav-name hi-text" style="display:none">{prev.titleHi}</span>
         </div>
       </a>
     ) : <div></div>}
@@ -166,6 +167,7 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
         <div class="dv-nav-meta">
           <span class="dv-nav-label" data-hi="अगला">Next</span>
           <span class="dv-nav-name en-text">{next.title}</span>
+          <span class="dv-nav-name hi-text" style="display:none">{next.titleHi}</span>
         </div>
         <span class="dv-nav-arrow">→</span>
       </a>
@@ -202,6 +204,8 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
       if (!el.dataset.en) el.dataset.en = el.textContent || '';
       el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
     });
+    document.querySelectorAll<HTMLElement>('.en-text').forEach(el => { el.style.display = hindi ? 'none' : ''; });
+    document.querySelectorAll<HTMLElement>('.hi-text').forEach(el => { el.style.display = hindi ? '' : 'none'; });
     updateToggleBtnText();
   }
   document.addEventListener('langchange', (e: Event) => {

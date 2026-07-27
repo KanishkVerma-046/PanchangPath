@@ -48,7 +48,7 @@ const DESC_HI: Record<string, string> = {
               <span class="dv-cat-icon" style={`background:${c.gradient}`}>{c.icon}</span>
               <div class="dv-cat-body">
                 <h3 class="dv-cat-title">{c.label}</h3>
-                <p class="dv-cat-title-hi hi-text">{c.labelHi}</p>
+                <p class="dv-cat-title-hi hi-text" style="display:none">{c.labelHi}</p>
                 <p class="dv-cat-desc" data-hi={DESC_HI[c.id]}>{c.description}</p>
               </div>
             </a>
@@ -57,7 +57,7 @@ const DESC_HI: Record<string, string> = {
               <span class="dv-cat-icon" style={`background:${c.gradient}`}>{c.icon}</span>
               <div class="dv-cat-body">
                 <h3 class="dv-cat-title">{c.label}</h3>
-                <p class="dv-cat-title-hi hi-text">{c.labelHi}</p>
+                <p class="dv-cat-title-hi hi-text" style="display:none">{c.labelHi}</p>
                 <p class="dv-cat-desc" data-hi={DESC_HI[c.id]}>{c.description}</p>
                 <span class="dv-soon-badge" data-hi="जल्द आ रहा है">Coming Soon</span>
               </div>
@@ -75,6 +75,8 @@ const DESC_HI: Record<string, string> = {
       if (!el.dataset.en) el.dataset.en = el.textContent || '';
       el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
     });
+    document.querySelectorAll<HTMLElement>('.en-text').forEach(el => { el.style.display = hindi ? 'none' : ''; });
+    document.querySelectorAll<HTMLElement>('.hi-text').forEach(el => { el.style.display = hindi ? '' : 'none'; });
   }
   document.addEventListener('langchange', (e: Event) => {
     applyPageLang((e as CustomEvent).detail.langCode === 'hi');
