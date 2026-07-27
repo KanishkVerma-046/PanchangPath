@@ -12,7 +12,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     <div class="header-container">
 
       <!-- LEFT: Logo -->
-      <a href="/" class="logo-link" aria-label="PanchangPath Home">
+      <a href="/" class="logo-link" aria-label="PanchangPath पंचांग पथ - Home">
         <span class="logo-om">🕉️</span>
         <span class="logo-text-group">
           <span class="logo-text">PanchangPath</span>
@@ -226,10 +226,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
 </header>
 
 <!-- Overlay for mobile drawer -->
-<div id="drawer-overlay" class="drawer-overlay" aria-hidden="true"></div>
+<div id="drawer-overlay" class="drawer-overlay" aria-hidden="true" inert></div>
 
 <!-- Mobile slide-out drawer -->
-<aside id="mobile-drawer" class="mobile-drawer" aria-label="Mobile navigation" aria-hidden="true">
+<aside id="mobile-drawer" class="mobile-drawer" aria-label="Mobile navigation" aria-hidden="true" inert>
   <div class="drawer-header">
     <a href="/" class="logo-link">
       <span class="logo-om">🕉️</span>
@@ -1027,6 +1027,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
   function openDrawer() {
     drawer?.classList.add('open');
     overlay?.classList.add('open');
+    drawer?.setAttribute('aria-hidden', 'false');
+    overlay?.setAttribute('aria-hidden', 'false');
+    drawer?.removeAttribute('inert');
+    overlay?.removeAttribute('inert');
     hamburger?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
     if (hamburgerIcon) hamburgerIcon.style.display = 'none';
@@ -1035,6 +1039,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
   function closeDrawer() {
     drawer?.classList.remove('open');
     overlay?.classList.remove('open');
+    drawer?.setAttribute('aria-hidden', 'true');
+    overlay?.setAttribute('aria-hidden', 'true');
+    drawer?.setAttribute('inert', '');
+    overlay?.setAttribute('inert', '');
     hamburger?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
     if (hamburgerIcon) hamburgerIcon.style.display = 'block';
