@@ -126,6 +126,15 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-heading);
 }
 
+/* Devanagari reads smaller than Latin text at the same pixel size - bump it
+   up slightly wherever it's actually shown. Covers both Hindi patterns used
+   site-wide: static .hi-text/.en-text sibling pairs (toggled via display),
+   and [data-hi] elements whose textContent is swapped in place by
+   Header.astro's applyHeaderLang(), which also sets lang="hi" then. */
+.hi-text, [lang="hi"] {
+  font-size: 1.1em;
+}
+
 .gradient-mesh {
   background:
     radial-gradient(ellipse at 20% 50%, rgba(181,57,10,0.10) 0%, transparent 60%),

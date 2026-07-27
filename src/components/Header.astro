@@ -1008,6 +1008,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
       if (!el.dataset.en) el.dataset.en = el.textContent || '';
       el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+      el.lang = hindi ? 'hi' : 'en';
     });
     if (searchInput) searchInput.placeholder = hindi ? 'पंचांग, त्योहार, मुहूर्त खोजें…' : 'Search panchang, festivals, muhurta…';
     if (drawerSearchInput) drawerSearchInput.placeholder = hindi ? 'खोजें…' : 'Search…';
