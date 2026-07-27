@@ -17,17 +17,17 @@ import Layout from '../../layouts/Layout.astro';
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <div><label for="f-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label for="f-time" class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label for="f-city" class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
         <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <div style="border-top:1px solid var(--color-hairline);padding-top:22px;margin-bottom:32px;">
         <p data-hi="त्वरित खोज — अपना नक्षत्र जानें" style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Quick Lookup — Know Your Nakshatra</p>
         <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;">
-          <div><label class="fld-label" data-hi="जन्म नक्षत्र">Birth Nakshatra</label><select id="f-nak" class="input" style="height:38px;min-width:220px;"></select></div>
-          <div><label class="fld-label" data-hi="स्थान (सूर्योदय हेतु)">Place (for sunrise)</label><select id="f-city2" class="input" style="height:38px;min-width:150px;"></select></div>
+          <div><label for="f-nak" class="fld-label" data-hi="जन्म नक्षत्र">Birth Nakshatra</label><select id="f-nak" class="input" style="height:38px;min-width:220px;"></select></div>
+          <div><label for="f-city2" class="fld-label" data-hi="स्थान (सूर्योदय हेतु)">Place (for sunrise)</label><select id="f-city2" class="input" style="height:38px;min-width:150px;"></select></div>
           <button id="f-calc-nak" class="btn-primary" data-hi="मेरा पक्षी जानें" style="height:38px;padding:0 20px;">Find My Bird</button>
         </div>
       </div>

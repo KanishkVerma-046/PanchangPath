@@ -20,15 +20,15 @@ import Layout from '../../layouts/Layout.astro';
         <h2 data-hi="गृह प्रवेश तिथियां खोजें" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 20px;">Search Griha Pravesh Dates</h2>
         <div class="finder-form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
           <div>
-            <label data-hi="प्रारंभ तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
+            <label for="gp-from" data-hi="प्रारंभ तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
             <input type="date" id="gp-from" class="input" style="height:38px;" />
           </div>
           <div>
-            <label data-hi="अंतिम तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
+            <label for="gp-to" data-hi="अंतिम तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
             <input type="date" id="gp-to" class="input" style="height:38px;" />
           </div>
           <div>
-            <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+            <label for="gp-city" data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
             <select id="gp-city" class="input" style="height:38px;"></select>
           </div>
         </div>

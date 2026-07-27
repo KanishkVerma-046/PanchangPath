@@ -17,9 +17,9 @@ import Layout from '../../layouts/Layout.astro';
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label"><span data-hi="जन्म समय">Time of Birth</span> <span style="font-size:10px;color:var(--color-mute);" data-hi="(वैकल्पिक, संधि दिनों में सहायक)">(optional, helps on cusp days)</span></label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label"><span data-hi="जन्म स्थान">Place of Birth</span> <span style="font-size:10px;color:var(--color-mute);" data-hi="(वैकल्पिक)">(optional)</span></label><select id="f-city" class="input" style="height:38px;min-width:140px;"></select></div>
+        <div><label for="f-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label for="f-time" class="fld-label"><span data-hi="जन्म समय">Time of Birth</span> <span style="font-size:10px;color:var(--color-mute);" data-hi="(वैकल्पिक, संधि दिनों में सहायक)">(optional, helps on cusp days)</span></label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label for="f-city" class="fld-label"><span data-hi="जन्म स्थान">Place of Birth</span> <span style="font-size:10px;color:var(--color-mute);" data-hi="(वैकल्पिक)">(optional)</span></label><select id="f-city" class="input" style="height:38px;min-width:140px;"></select></div>
         <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 

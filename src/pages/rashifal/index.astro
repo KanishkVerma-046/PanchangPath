@@ -109,7 +109,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             In Vedic tradition, your Janma Rashi is linked to the first syllable of your birth name.
           </p>
           <div style="display:flex;gap:6px;">
-            <input type="text" id="name-input-full" class="tool-input" placeholder="First name…" maxlength="40" />
+            <input type="text" id="name-input-full" aria-label="First name" class="tool-input" placeholder="First name…" maxlength="40" />
             <button class="tool-btn" id="name-btn-full" data-hi="खोजें">Find</button>
           </div>
           <p id="name-res-full" class="tool-result" hidden></p>
@@ -126,7 +126,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             Discover your Surya (Sun) Rashi based on Vedic sidereal calculations using your date of birth.
           </p>
           <div style="display:flex;gap:6px;">
-            <input type="date" id="dob-input-full" class="tool-input" />
+            <input type="date" id="dob-input-full" aria-label="Date of birth" class="tool-input" />
             <button class="tool-btn" id="dob-btn-full" data-hi="खोजें">Find</button>
           </div>
           <p id="dob-res-full" class="tool-result" hidden></p>

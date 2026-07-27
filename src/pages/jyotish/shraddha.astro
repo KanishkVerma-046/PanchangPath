@@ -22,21 +22,21 @@ import Layout from '../../layouts/Layout.astro';
       </div>
 
       <div id="form-date" style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label" data-hi="मृत्यु तिथि">Date of Passing</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label" data-hi="समय (अनुमानित)">Time (approx)</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label for="f-date" class="fld-label" data-hi="मृत्यु तिथि">Date of Passing</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label for="f-time" class="fld-label" data-hi="समय (अनुमानित)">Time (approx)</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
         <button id="f-calc" class="btn-primary" data-hi="तिथि जानें" style="height:38px;padding:0 20px;">Find Tithi</button>
       </div>
 
       <div id="form-tithi" style="display:none;margin-bottom:32px;">
         <p data-hi="यदि आप मृत्यु तिथि की तिथि पहले से जानते हैं, तो नीचे सीधे चुनें।" style="font-size:13px;color:var(--color-mute);margin:0 0 14px;">If you already know the Tithi of the death anniversary, select it directly below.</p>
         <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;">
-          <div><label class="fld-label" data-hi="पक्ष">Paksha</label>
+          <div><label for="t-paksha" class="fld-label" data-hi="पक्ष">Paksha</label>
             <select id="t-paksha" class="input" style="height:38px;min-width:140px;">
               <option value="Shukla" data-hi="शुक्ल (बढ़ता चंद्रमा)">Shukla (Waxing)</option>
               <option value="Krishna" data-hi="कृष्ण (घटता चंद्रमा)">Krishna (Waning)</option>
             </select>
           </div>
-          <div><label class="fld-label" data-hi="तिथि">Tithi</label>
+          <div><label for="t-tithi" class="fld-label" data-hi="तिथि">Tithi</label>
             <select id="t-tithi" class="input" style="height:38px;min-width:200px;">
               <option value="Pratipada">1 - Pratipada</option>
               <option value="Dwitiya">2 - Dwitiya</option>

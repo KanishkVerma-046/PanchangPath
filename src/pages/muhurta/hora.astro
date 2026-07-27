@@ -19,11 +19,11 @@ import Layout from '../../layouts/Layout.astro';
       <!-- Controls -->
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label data-hi="दिनांक" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
+          <label for="hora-date" data-hi="दिनांक" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Date</label>
           <input type="date" id="hora-date" class="input" style="height:38px;" />
         </div>
         <div>
-          <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+          <label for="hora-city" data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
           <select id="hora-city" class="input" style="height:38px;min-width:160px;"></select>
         </div>
         <button id="hora-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>

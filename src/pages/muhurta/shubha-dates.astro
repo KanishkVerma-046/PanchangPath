@@ -35,15 +35,15 @@ import Layout from '../../layouts/Layout.astro';
 
         <div class="finder-form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
           <div>
-            <label data-hi="प्रारंभ तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
+            <label for="sd-from" data-hi="प्रारंभ तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
             <input type="date" id="sd-from" class="input" style="height:38px;" />
           </div>
           <div>
-            <label data-hi="अंतिम तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
+            <label for="sd-to" data-hi="अंतिम तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
             <input type="date" id="sd-to" class="input" style="height:38px;" />
           </div>
           <div>
-            <label data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+            <label for="sd-city" data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
             <select id="sd-city" class="input" style="height:38px;"></select>
           </div>
         </div>

@@ -26,20 +26,20 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
       <!-- Birth Details form -->
       <div id="form-birth" style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
-        <div><label class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
+        <div><label for="f-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label for="f-time" class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
+        <div><label for="f-city" class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
         <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
       <!-- Quick Select form -->
       <div id="form-quick" style="display:none;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
         <div>
-          <label class="fld-label" data-hi="लग्न (उदय राशि)">Lagna (Ascendant Sign)</label>
+          <label for="q-lagna" class="fld-label" data-hi="लग्न (उदय राशि)">Lagna (Ascendant Sign)</label>
           <select id="q-lagna" class="input" style="height:38px;min-width:160px;"></select>
         </div>
         <div>
-          <label class="fld-label" data-hi="चंद्र राशि">Moon Rashi (Moon Sign)</label>
+          <label for="q-moon" class="fld-label" data-hi="चंद्र राशि">Moon Rashi (Moon Sign)</label>
           <select id="q-moon" class="input" style="height:38px;min-width:160px;"></select>
         </div>
         <button id="q-calc" class="btn-primary" data-hi="रुद्राक्ष जानें" style="height:38px;padding:0 20px;">Find Rudraksha</button>

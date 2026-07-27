@@ -110,6 +110,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             <input
               type="text"
               id="name-input"
+              aria-label="First name"
               class="rf-input"
               placeholder="Enter first name…"
               data-hi-placeholder="पहला नाम दर्ज करें…"
@@ -131,7 +132,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             <span class="hi-text" style="display:none;">जन्म तिथि से राशि जानें</span>
           </p>
           <div class="rf-finder-input-row">
-            <input type="date" id="dob-input" class="rf-input" />
+            <input type="date" id="dob-input" aria-label="Date of birth" class="rf-input" />
             <button class="rf-find-btn" id="dob-find-btn" data-hi="खोजें">Find</button>
           </div>
           <p class="rf-finder-result" id="dob-result" hidden></p>
