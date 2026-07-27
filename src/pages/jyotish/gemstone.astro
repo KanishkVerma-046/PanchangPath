@@ -39,7 +39,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="रत्न चिकित्सा के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Gemstone Therapy</h2>
         <p data-hi="ज्योतिष में, नौ ग्रहों में से प्रत्येक एक मुख्य रत्न से जुड़ा होता है। सही रत्न पहनने से उस ग्रह की ऊर्जा मजबूत होने की मान्यता है। सबसे सामान्यतः अनुशंसित रत्न लग्न स्वामी का होता है, जो समग्र जीवनशक्ति और जीवन-दिशा का समर्थन करता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">In Jyotish, each of the nine grahas is associated with a primary gemstone. Wearing the right stone is believed to strengthen the energy of its planet. The most commonly recommended stone is that of the Lagna lord, which supports overall vitality and life direction.</p>
-        <p data-hi="ध्यान दें: रत्न चयन अत्यंत व्यक्तिगत है। मजबूत अशुभ स्थितियों में सावधानी बरतनी चाहिए। नीलम जैसा शक्तिशाली रत्न पहनने से पहले किसी योग्य ज्योतिषी से परामर्श अवश्य लें।" style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">Note: Gemstone selection is highly individual. Strong malefic placements may call for caution. Please consult a qualified astrologer before wearing a powerful stone such as Blue Sapphire (Neelam).</p>
+        <p data-hi="ध्यान दें: रत्न चयन अत्यंत व्यक्तिगत है। मजबूत अशुभ स्थितियों में सावधानी बरतनी चाहिए। नीलम जैसा शक्तिशाली रत्न पहनने से पहले किसी योग्य ज्योतिषी से परामर्श अवश्य लें।" style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0;">Note: Gemstone selection is highly individual. Strong malefic placements may call for caution. Please consult a qualified astrologer before wearing a powerful stone such as Blue Sapphire (Neelam).</p>
       </div>
     </div>
   </section>
@@ -90,7 +90,7 @@ function gemCard(planet,big,roleLabel){
         <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${roleLabel} · ${planet} (${g.p})</p>
       </div>
     </div>
-    <p style="font-size:12.5px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${tr(g.desc,g.descHi)}</p>
+    <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${tr(g.desc,g.descHi)}</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12px;">
       ${[[tr('Metal','धातु'),tr(g.metal,g.metalHi)],[tr('Finger','उंगली'),tr(g.finger,g.fingerHi)],[tr('Day','दिन'),tr(g.day,g.dayHi)],[tr('Substitute','विकल्प'),tr(g.sub,g.subHi)]].map(r=>
         `<div><span style="color:var(--color-mute);">${r[0]}: </span><span style="color:var(--color-ink);font-weight:600;">${r[1]}</span></div>`).join('')}

@@ -118,7 +118,7 @@ function render(){
     sigEl.innerHTML=PLANETS.map(([k,full,desc])=>{
       const name=hindiActive?PLANETS_HI[k][0]:full;
       const text=hindiActive?PLANETS_HI[k][1]:desc;
-      return `<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${name}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${text}</p></div>`;
+      return `<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${name}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">${text}</p></div>`;
     }).join('');
   }
 }

@@ -64,7 +64,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
       <div class="card" style="padding:28px;">
         <h2 data-hi="रुद्राक्ष के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rudraksha</h2>
         <p data-hi="रुद्राक्ष (रुद्र + अक्ष, 'शिव के आंसू') एलियोकार्पस गणित्रस वृक्ष के बीज हैं, जो अपने आध्यात्मिक और उपचारात्मक गुणों के लिए प्रसिद्ध हैं। हर दाने में प्राकृतिक धारियां होती हैं जिन्हें मुखी कहा जाता है; मुखियों की संख्या इसे किसी विशेष देवता और शासक ग्रह से जोड़ती है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Rudraksha (rudra + aksha, "tears of Shiva") are seeds of the Elaeocarpus ganitrus tree, prized for their spiritual and healing properties. Each bead has natural clefts called mukhis; the number of mukhis links it to a specific deity and ruling planet.</p>
-        <p data-hi="5-मुखी सबसे सामान्य और सर्वमान्य रूप से सुरक्षित दाना है। नीलम ऊर्जा (7-मुखी / शनि) और 14-मुखी (शिव / शनि-राहु) हमेशा किसी ज्योतिषी से परामर्श के बाद ही पहनना चाहिए, क्योंकि शनि ऊर्जा कुंडली के सकारात्मक और नकारात्मक दोनों पैटर्न को बढ़ाती है।" style="font-size:13px;color:var(--color-mute);line-height:1.7;margin:0;">The 5-mukhi is the most common and universally safe bead. Blue Sapphire energy (7-mukhi / Saturn) and 14-mukhi (Shiva / Saturn-Rahu) should always be worn after consulting a Jyotishi, as Saturn energy amplifies both positive and negative chart patterns.</p>
+        <p data-hi="5-मुखी सबसे सामान्य और सर्वमान्य रूप से सुरक्षित दाना है। नीलम ऊर्जा (7-मुखी / शनि) और 14-मुखी (शिव / शनि-राहु) हमेशा किसी ज्योतिषी से परामर्श के बाद ही पहनना चाहिए, क्योंकि शनि ऊर्जा कुंडली के सकारात्मक और नकारात्मक दोनों पैटर्न को बढ़ाती है।" style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0;">The 5-mukhi is the most common and universally safe bead. Blue Sapphire energy (7-mukhi / Saturn) and 14-mukhi (Shiva / Saturn-Rahu) should always be worn after consulting a Jyotishi, as Saturn energy amplifies both positive and negative chart patterns.</p>
       </div>
     </div>
   </section>
@@ -130,7 +130,7 @@ function rudCard(r,label,big){
         <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${label} &middot; ${planetLabel(r.planet,r.color)}</p>
       </div>
     </div>
-    <p style="font-size:12.5px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${r.b}</p>
+    <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${r.b}</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;font-size:12px;">
       ${[[tr('Deity','देवता'),tr(r.deity,DEITY_HI[r.deity]||r.deity)],[tr('Mantra','मंत्र'),r.mantra],[tr('Metal','धातु'),tr(r.metal,METAL_HI[r.metal]||r.metal)],[tr('Wear on','पहनें'),tr(r.wear,WEAR_HI[r.wear]||r.wear)],[tr('Auspicious Day','शुभ दिन'),tr(r.day,DAY_HI[r.day]||r.day)]].map(x=>`<div><span style="color:var(--color-mute);">${x[0]}: </span><span style="color:var(--color-ink);font-weight:600;">${x[1]}</span></div>`).join('')}
     </div>

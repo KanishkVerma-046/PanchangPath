@@ -270,7 +270,7 @@ function calculate(){
     document.getElementById('yoga-list').innerHTML=yogas.map(y=>
       `<div style="padding:10px 12px;border-radius:8px;background:${y.badge==='auspicious'?'var(--color-auspicious-soft)':y.badge==='caution'?'var(--color-inauspicious-soft)':'var(--color-canvas-soft)'};">
         <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">${y.name}</p>
-        <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.5;">${y.desc}</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${y.desc}</p>
       </div>`
     ).join('');
 

@@ -223,7 +223,7 @@ function renderLegend(){
         <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626'};">${trQ(d.q)}</span>
       </div>
       <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">${isHindi?'ग्रह':'Planet'}: ${d.planet}</p>
-      <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${isHindi?d.suitableHi:d.suitable}</p>
+      <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${isHindi?d.suitableHi:d.suitable}</p>
     </div>
   `).join('');
 }

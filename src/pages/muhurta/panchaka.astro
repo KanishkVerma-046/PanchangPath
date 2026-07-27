@@ -235,7 +235,7 @@ function renderInfoGrid(){
   infoGrid.innerHTML=[
     {title:'What is Panchaka?',titleHi:'पंचक क्या है?',text:'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.',textHi:'पंचक का अर्थ है "पांच का समूह।" यह तब होता है जब चंद्रमा अंतिम 5 नक्षत्रों से गुजरता है: धनिष्ठा (उत्तरार्ध), शतभिषा, पूर्वाभाद्रपद, उत्तराभाद्रपद और रेवती — जो कुंभ और मीन राशियों में फैले हैं। अवधि: प्रत्येक माह लगभग 5 दिन।'},
     {title:'What to avoid in Panchaka?',titleHi:'पंचक में क्या टालें?',text:'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.',textHi:'मृत्यु पंचक: अंतिम संस्कार से बचें। अग्नि पंचक: अग्नि संबंधी कार्यों से बचें। राज पंचक: दक्षिण दिशा की यात्रा से बचें। चोर पंचक: कीमती वस्तुओं की सुरक्षा करें। रोग पंचक: स्वास्थ्य जोखिमों से बचें। सामान्य दैनिक कार्य प्रायः प्रभावित नहीं होते।'},
-  ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?i.titleHi:i.title}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${isHindi?i.textHi:i.text}</p></div>`).join('');
+  ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?i.titleHi:i.title}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">${isHindi?i.textHi:i.text}</p></div>`).join('');
 }
 renderInfoGrid();
 

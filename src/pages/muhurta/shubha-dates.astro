@@ -224,7 +224,7 @@ function updateTabs(){
       {label:isHindi?'शुभ नक्षत्र':'Good Nakshatras',text:crit.naks.map(i=>NAK_NAMES[i]).join(', ')},
       {label:isHindi?'शुभ तिथियां':'Good Tithis',text:crit.tithis.map(i=>TITHI_NAMES[i]).join(', ')},
       {label:isHindi?'शुभ वार':'Good Weekdays',text:crit.varas.map(i=>VARA_NAMES[i]).join(', ')},
-    ].map(c=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">${c.label}</p><p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">${c.text}</p></div>`).join('');
+    ].map(c=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">${c.label}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${c.text}</p></div>`).join('');
   }
 }
 
