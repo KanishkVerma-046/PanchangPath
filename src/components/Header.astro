@@ -720,7 +720,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     text-decoration: none;
     transition: background 0.1s, color 0.1s;
   }
-  .dd-link:hover { background: var(--color-canvas-soft-2); color: var(--color-ink); }
+  .dd-link:hover, .dd-link:focus-visible { background: var(--color-canvas-soft-2); color: var(--color-ink); text-decoration: underline; }
   .dd-divider { height: 1px; background: var(--color-hairline); margin: 4px 8px; }
   .dd-link-accent { color: var(--color-saffron-deep) !important; font-weight: 600 !important; }
   .dd-link-accent:hover { background: var(--color-saffron-soft) !important; }
@@ -861,7 +861,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     text-decoration: none;
     transition: color 0.12s, background 0.12s;
   }
-  .drawer-link:hover { color: var(--color-saffron-deep); background: var(--color-saffron-soft); }
+  .drawer-link:hover, .drawer-link:focus-visible { color: var(--color-saffron-deep); background: var(--color-saffron-soft); text-decoration: underline; }
 
   .drawer-controls {
     display: flex;
