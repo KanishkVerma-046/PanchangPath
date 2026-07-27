@@ -47,14 +47,14 @@ import Layout from '../../layouts/Layout.astro';
         <h3 data-hi="विवाह मुहूर्त मानदंड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Vivah Muhurat Criteria</h3>
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">
           {[
-            {label:'Auspicious Nakshatras',labelHi:'शुभ नक्षत्र',desc:'Rohini, Mrigashira, Magha, Uttara Phalguni, Hasta, Swati, Anuradha, Mula, Uttara Ashadha, Uttara Bhadrapada, Revati'},
-            {label:'Auspicious Tithis',labelHi:'शुभ तिथियां',desc:'Dwitiya, Tritiya, Panchami, Saptami, Dashami, Ekadashi, Dwadashi, Trayodashi in Shukla Paksha'},
-            {label:'Auspicious Varas',labelHi:'शुभ वार',desc:'Monday, Wednesday, Thursday, Friday — these weekdays are ruled by Moon, Mercury, Jupiter, and Venus respectively.'},
-            {label:'Avoided periods',labelHi:'त्याज्य अवधियां',desc:'Panchaka, Kharmas (sun in Sagittarius/Pisces), Adhika Masa, eclipse periods, Rikta tithis (Chaturthi, Navami, Chaturdashi), Purnima, Amavasya.'},
+            {label:'Auspicious Nakshatras',labelHi:'शुभ नक्षत्र',desc:'Rohini, Mrigashira, Magha, Uttara Phalguni, Hasta, Swati, Anuradha, Mula, Uttara Ashadha, Uttara Bhadrapada, Revati',descHi:'रोहिणी, मृगशिरा, मघा, उत्तर फाल्गुनी, हस्त, स्वाति, अनुराधा, मूल, उत्तराषाढ़ा, उत्तर भाद्रपदा, रेवती'},
+            {label:'Auspicious Tithis',labelHi:'शुभ तिथियां',desc:'Dwitiya, Tritiya, Panchami, Saptami, Dashami, Ekadashi, Dwadashi, Trayodashi in Shukla Paksha',descHi:'शुक्ल पक्ष में द्वितीया, तृतीया, पंचमी, सप्तमी, दशमी, एकादशी, द्वादशी, त्रयोदशी'},
+            {label:'Auspicious Varas',labelHi:'शुभ वार',desc:'Monday, Wednesday, Thursday, Friday — these weekdays are ruled by Moon, Mercury, Jupiter, and Venus respectively.',descHi:'सोमवार, बुधवार, गुरुवार, शुक्रवार — इन वारों पर क्रमशः चंद्र, बुध, गुरु और शुक्र का आधिपत्य है।'},
+            {label:'Avoided periods',labelHi:'त्याज्य अवधियां',desc:'Panchaka, Kharmas (sun in Sagittarius/Pisces), Adhika Masa, eclipse periods, Rikta tithis (Chaturthi, Navami, Chaturdashi), Purnima, Amavasya.',descHi:'पंचक, खरमास (सूर्य धनु/मीन राशि में), अधिक मास, ग्रहण काल, रिक्ता तिथियां (चतुर्थी, नवमी, चतुर्दशी), पूर्णिमा, अमावस्या।'},
           ].map(c => (
             <div class="card" style="padding:14px;">
               <p data-hi={c.labelHi} style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">{c.label}</p>
-              <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">{c.desc}</p>
+              <p data-hi={c.descHi} style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">{c.desc}</p>
             </div>
           ))}
         </div>

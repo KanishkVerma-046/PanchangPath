@@ -48,14 +48,14 @@ import Layout from '../../layouts/Layout.astro';
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;">
         {[
-          {label:'Good Nakshatras',labelHi:'शुभ नक्षत्र',desc:'Rohini, Mrigashira, Punarvasu, Pushya, Uttara Phalguni, Hasta, Chitra, Swati, Anuradha, Uttara Ashadha, Shravana, Dhanishtha, Revati'},
-          {label:'Good Tithis',labelHi:'शुभ तिथियां',desc:'Dwitiya, Tritiya, Panchami, Saptami, Dashami, Ekadashi, Dwadashi, Trayodashi. Avoid Rikta tithis (4th, 9th, 14th) and Amavasya.'},
-          {label:'Good Weekdays',labelHi:'शुभ वार',desc:'Monday, Wednesday, Thursday, Friday. Avoid Sunday (Ravi Vara) for most auspicious activities.'},
-          {label:'Months to Avoid',labelHi:'त्याज्य महीने',desc:'Kharmas (Sun in Sagittarius or Pisces), Adhika Masa, Shraadh Paksha (Krishna Paksha of Ashwin). These periods weaken any Muhurta.'},
+          {label:'Good Nakshatras',labelHi:'शुभ नक्षत्र',desc:'Rohini, Mrigashira, Punarvasu, Pushya, Uttara Phalguni, Hasta, Chitra, Swati, Anuradha, Uttara Ashadha, Shravana, Dhanishtha, Revati',descHi:'रोहिणी, मृगशिरा, पुनर्वसु, पुष्य, उत्तर फाल्गुनी, हस्त, चित्रा, स्वाति, अनुराधा, उत्तराषाढ़ा, श्रावण, धनिष्ठा, रेवती'},
+          {label:'Good Tithis',labelHi:'शुभ तिथियां',desc:'Dwitiya, Tritiya, Panchami, Saptami, Dashami, Ekadashi, Dwadashi, Trayodashi. Avoid Rikta tithis (4th, 9th, 14th) and Amavasya.',descHi:'द्वितीया, तृतीया, पंचमी, सप्तमी, दशमी, एकादशी, द्वादशी, त्रयोदशी। रिक्ता तिथियों (4, 9, 14) और अमावस्या से बचें।'},
+          {label:'Good Weekdays',labelHi:'शुभ वार',desc:'Monday, Wednesday, Thursday, Friday. Avoid Sunday (Ravi Vara) for most auspicious activities.',descHi:'सोमवार, बुधवार, गुरुवार, शुक्रवार। अधिकांश शुभ कार्यों के लिए रविवार से बचें।'},
+          {label:'Months to Avoid',labelHi:'त्याज्य महीने',desc:'Kharmas (Sun in Sagittarius or Pisces), Adhika Masa, Shraadh Paksha (Krishna Paksha of Ashwin). These periods weaken any Muhurta.',descHi:'खरमास (सूर्य धनु या मीन राशि में), अधिक मास, श्राद्ध पक्ष (आश्विन का कृष्ण पक्ष)। ये अवधियां किसी भी मुहूर्त को कमज़ोर करती हैं।'},
         ].map(c => (
           <div class="card" style="padding:14px;">
             <p data-hi={c.labelHi} style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">{c.label}</p>
-            <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">{c.desc}</p>
+            <p data-hi={c.descHi} style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.5;">{c.desc}</p>
           </div>
         ))}
       </div>

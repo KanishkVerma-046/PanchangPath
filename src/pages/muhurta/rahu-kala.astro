@@ -166,9 +166,9 @@ function calculate(){
   const cards=document.getElementById('kalam-cards');
   if(cards){
     const kalamList=[
-      {name:'Rahu Kala',nameHi:'राहु काल',lord:'Rahu',color:'#dc2626',bg:'#fee2e2',slot:rahu,active:inRahu,desc:'Most inauspicious — ruled by Rahu (shadow planet). Never start new work.'},
-      {name:'Gulika Kala',nameHi:'गुलिक काल',lord:'Saturn\'s son',color:'#b45309',bg:'#fef3c7',slot:gulika,active:inGulika,desc:'Inauspicious — ruled by Mandi (Saturn\'s son). Avoid auspicious activities.'},
-      {name:'Yamaganda',nameHi:'यमगण्ड',lord:'Yama',color:'#374151',bg:'#f3f4f6',slot:yamag,active:inYamag,desc:'Inauspicious — ruled by Yama. Avoid new ventures and travel.'},
+      {name:'Rahu Kala',nameHi:'राहु काल',lord:'Rahu',color:'#dc2626',bg:'#fee2e2',slot:rahu,active:inRahu,desc:'Most inauspicious — ruled by Rahu (shadow planet). Never start new work.',descHi:'सबसे अशुभ — राहु (छाया ग्रह) द्वारा शासित। कभी भी नया कार्य आरंभ न करें।'},
+      {name:'Gulika Kala',nameHi:'गुलिक काल',lord:'Saturn\'s son',color:'#b45309',bg:'#fef3c7',slot:gulika,active:inGulika,desc:'Inauspicious — ruled by Mandi (Saturn\'s son). Avoid auspicious activities.',descHi:'अशुभ — मांदी (शनि पुत्र) द्वारा शासित। शुभ कार्यों से बचें।'},
+      {name:'Yamaganda',nameHi:'यमगण्ड',lord:'Yama',color:'#374151',bg:'#f3f4f6',slot:yamag,active:inYamag,desc:'Inauspicious — ruled by Yama. Avoid new ventures and travel.',descHi:'अशुभ — यम द्वारा शासित। नए उद्यम और यात्रा से बचें।'},
     ];
     cards.innerHTML=kalamList.map(k=>`
       <div class="card" style="padding:20px;border:2px solid ${k.active?k.color:'var(--color-hairline)'};">
@@ -182,7 +182,7 @@ function calculate(){
         <div style="background:${k.bg};border-radius:8px;padding:12px;margin-bottom:10px;">
           <p style="font-size:20px;font-weight:700;color:${k.color};margin:0;font-family:var(--font-mono);">${fmtMins(k.slot.start)} – ${fmtMins(k.slot.end)}</p>
         </div>
-        <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.5;">${k.desc}</p>
+        <p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.5;">${isHindi?k.descHi:k.desc}</p>
       </div>
     `).join('');
   }
@@ -209,10 +209,10 @@ function renderInfo(){
   const info=document.getElementById('kalam-info');
   if(!info) return;
   info.innerHTML=[
-    {name:'What is Rahu Kala?',nameHi:'राहु काल क्या है?',text:'Rahu is the north lunar node — a shadow planet in Jyotish. During Rahu Kala (~90 min/day), Rahu\'s malefic influence is strongest. Auspicious activities started during this time are believed to be obstructed.'},
-    {name:'What to avoid?',nameHi:'क्या टालें?',text:'Do not start new work, travel, sign contracts, or conduct ceremonies during Rahu Kala, Gulika Kala, or Yamaganda. Routine activities already in progress are unaffected.'},
-    {name:'Remedies',nameHi:'उपाय',text:'If you must work during Rahu Kala, pray to Lord Ganesha or chant "Om Rahave Namah" 108 times before starting. Alternatively, begin the work a minute before Rahu Kala starts.'},
-  ].map(item=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?item.nameHi:item.name}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${item.text}</p></div>`).join('');
+    {name:'What is Rahu Kala?',nameHi:'राहु काल क्या है?',text:'Rahu is the north lunar node — a shadow planet in Jyotish. During Rahu Kala (~90 min/day), Rahu\'s malefic influence is strongest. Auspicious activities started during this time are believed to be obstructed.',textHi:'राहु उत्तरी चंद्र नोड है — ज्योतिष में एक छाया ग्रह। राहु काल (~90 मिनट/दिन) के दौरान राहु का अशुभ प्रभाव सबसे प्रबल होता है। इस दौरान शुरू किए गए शुभ कार्यों में बाधा आने की मान्यता है।'},
+    {name:'What to avoid?',nameHi:'क्या टालें?',text:'Do not start new work, travel, sign contracts, or conduct ceremonies during Rahu Kala, Gulika Kala, or Yamaganda. Routine activities already in progress are unaffected.',textHi:'राहु काल, गुलिक काल, या यमगण्ड के दौरान नया कार्य आरंभ न करें, यात्रा न करें, अनुबंध पर हस्ताक्षर न करें, या समारोह आयोजित न करें। पहले से चल रहे नियमित कार्य प्रभावित नहीं होते।'},
+    {name:'Remedies',nameHi:'उपाय',text:'If you must work during Rahu Kala, pray to Lord Ganesha or chant "Om Rahave Namah" 108 times before starting. Alternatively, begin the work a minute before Rahu Kala starts.',textHi:'यदि राहु काल के दौरान कार्य करना आवश्यक हो, तो आरंभ करने से पहले भगवान गणेश की प्रार्थना करें या "ॐ राहवे नमः" का 108 बार जप करें। वैकल्पिक रूप से, राहु काल शुरू होने से एक मिनट पहले कार्य आरंभ करें।'},
+  ].map(item=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?item.nameHi:item.name}</p><p style="font-size:12px;color:var(--color-body-text);margin:0;line-height:1.6;">${isHindi?item.textHi:item.text}</p></div>`).join('');
 }
 renderInfo();
 
