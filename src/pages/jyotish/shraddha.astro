@@ -22,10 +22,11 @@ import Layout from '../../layouts/Layout.astro';
       </div>
 
       <div id="form-date" style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label for="f-date" class="fld-label" data-hi="मृत्यु तिथि">Date of Passing</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label for="f-date" class="fld-label" data-hi="मृत्यु तिथि">Date of Passing</label><input type="date" id="f-date" lang="en-GB" class="input" style="height:38px;" /></div>
         <div><label for="f-time" class="fld-label" data-hi="समय (अनुमानित)">Time (approx)</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
         <button id="f-calc" class="btn-primary" data-hi="तिथि जानें" style="height:38px;padding:0 20px;">Find Tithi</button>
       </div>
+      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-24px 0 20px;" hidden></p>
 
       <div id="form-tithi" style="display:none;margin-bottom:32px;">
         <p data-hi="यदि आप मृत्यु तिथि की तिथि पहले से जानते हैं, तो नीचे सीधे चुनें।" style="font-size:13px;color:var(--color-mute);margin:0 0 14px;">If you already know the Tithi of the death anniversary, select it directly below.</p>
@@ -100,6 +101,11 @@ import { TITHI_ICONS } from '../../lib/icons/tithi';
 import { sunTrueLongitude, moonLongitude, lahiriAyanamsha, sunriseUTC } from '../../lib/panchang';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
+const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WD_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const MO_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 function tithiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${TITHI_ICONS[id]}</svg>`;}
 const NAME_TO_NUM={Pratipada:1,Dwitiya:2,Tritiya:3,Chaturthi:4,Panchami:5,Shashthi:6,Saptami:7,Ashtami:8,Navami:9,Dashami:10,Ekadashi:11,Dwadashi:12,Trayodashi:13,Chaturdashi:14,Purnima:15,Amavasya:15};
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
@@ -246,6 +252,8 @@ function calculate(){
     const dateStr=document.getElementById('f-date').value;
     const timeStr=document.getElementById('f-time').value||'12:00';
     const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
+    const de=document.getElementById('date-echo');
+    if(de){de.textContent=tr('Date of passing: ','मृत्यु तिथि: ')+formatLongDate(y,m,d);de.hidden=false;}
     const jd=toJD(y,m,d,(hh+mm/60)-5.5);
     const diff=n360(moonLongitude(jd)-sunTrueLongitude(jd));
     const tithiNum=Math.floor(diff/12)+1; // 1..30

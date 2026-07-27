@@ -126,7 +126,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             Discover your Surya (Sun) Rashi based on Vedic sidereal calculations using your date of birth.
           </p>
           <div style="display:flex;gap:6px;">
-            <input type="date" id="dob-input-full" aria-label="Date of birth" class="tool-input" />
+            <input type="date" id="dob-input-full" lang="en-GB" aria-label="Date of birth" class="tool-input" />
             <button class="tool-btn" id="dob-btn-full" data-hi="खोजें">Find</button>
           </div>
           <p id="dob-res-full" class="tool-result" hidden></p>
@@ -196,11 +196,29 @@ function findByDate(ds: string): string {
   if (md >= 213 && md <= 313) return "Kumbha";
   return "Meena";
 }
-function showRes(el: HTMLElement, rashi: string) {
+// Parsed-date echo: a native <input type="date"> always yields an unambiguous
+// YYYY-MM-DD value, but the picker's visually-displayed segment order is
+// locale-dependent (commonly mm/dd/yyyy for non-India locales), so an
+// India-first visitor typing day-first can land in the wrong segment. Echoing
+// the parsed date back in unambiguous long form lets them catch a misparse.
+const WD_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WD_HI = ['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const MO_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MO_HI = ['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+function formatLongDate(dateStr: string, hindi: boolean): string {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const wd = new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay();
+  return hindi ? `${WD_HI[wd]}, ${d} ${MO_HI[m - 1]} ${y}` : `${WD_EN[wd]}, ${d} ${MO_EN[m - 1]} ${y}`;
+}
+
+function showRes(el: HTMLElement, rashi: string, dateStr?: string) {
   const slug = RASHI_SLUG[rashi] ?? rashi.toLowerCase();
   const label = isHindi ? 'आपकी राशि: ' : 'Your Rashi: ';
   const linkText = isHindi ? 'भविष्यवाणी देखें →' : 'View prediction →';
-  el.innerHTML = `${label}<strong>${rashi} (${RASHI_HI[rashi] ?? ''})</strong> — <a href="/rashifal/${slug}" style="color:var(--color-saffron-deep);font-weight:600;">${linkText}</a>`;
+  const dateEcho = dateStr
+    ? `<br/><span style="font-size:12px;color:var(--color-mute);">${isHindi ? 'दर्ज तिथि' : 'Date entered'}: ${formatLongDate(dateStr, isHindi)}</span>`
+    : '';
+  el.innerHTML = `${label}<strong>${rashi} (${RASHI_HI[rashi] ?? ''})</strong> — <a href="/rashifal/${slug}" style="color:var(--color-saffron-deep);font-weight:600;">${linkText}</a>${dateEcho}`;
   el.hidden = false;
 }
 
@@ -221,7 +239,7 @@ document.getElementById('dob-btn-full')?.addEventListener('click', () => {
     res.hidden = false;
     return;
   }
-  showRes(res, findByDate(val));
+  showRes(res, findByDate(val), val);
 });
 document.getElementById('name-input-full')?.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') document.getElementById('name-btn-full')?.click(); });
 document.getElementById('dob-input-full')?.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter') document.getElementById('dob-btn-full')?.click(); });

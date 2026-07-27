@@ -20,18 +20,20 @@ import Layout from '../../layouts/Layout.astro';
         <div class="card" style="padding:20px;">
           <h3 data-hi="👦 वर / लड़का" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">👦 Boy / Groom</h3>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <div><label for="b-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="b-date" class="input" style="height:38px;" /></div>
+            <div><label for="b-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="b-date" lang="en-GB" class="input" style="height:38px;" /></div>
             <div><label for="b-time" class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="b-time" class="input" style="height:38px;" /></div>
             <div><label for="b-city" class="fld-label" data-hi="स्थान">Place</label><select id="b-city" class="input" style="height:38px;"></select></div>
           </div>
+          <p id="b-date-echo" style="font-size:11.5px;color:var(--color-mute);margin:8px 0 0;" hidden></p>
         </div>
         <div class="card" style="padding:20px;">
           <h3 data-hi="👧 वधू / लड़की" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">👧 Girl / Bride</h3>
           <div style="display:flex;flex-direction:column;gap:12px;">
-            <div><label for="g-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="g-date" class="input" style="height:38px;" /></div>
+            <div><label for="g-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="g-date" lang="en-GB" class="input" style="height:38px;" /></div>
             <div><label for="g-time" class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="g-time" class="input" style="height:38px;" /></div>
             <div><label for="g-city" class="fld-label" data-hi="स्थान">Place</label><select id="g-city" class="input" style="height:38px;"></select></div>
           </div>
+          <p id="g-date-echo" style="font-size:11.5px;color:var(--color-mute);margin:8px 0 0;" hidden></p>
         </div>
       </div>
       <div style="text-align:center;margin-bottom:32px;">
@@ -70,6 +72,12 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
 import { moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
+const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WD_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const MO_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
+function echoDate(elId,dateStr){const el=document.getElementById(elId);if(!el||!dateStr)return;const[y,m,d]=dateStr.split('-').map(Number);el.textContent=tr('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);el.hidden=false;}
 const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
 function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;">${RASHI_ICONS[id]}</svg>`;}
 const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
@@ -121,6 +129,8 @@ function calculate(){
     const gLoc=LOCS.find(l=>l.name===document.getElementById('g-city').value)||LOCS[0];
     const b=moonNakRashi(document.getElementById('b-date').value,document.getElementById('b-time').value,bLoc);
     const g=moonNakRashi(document.getElementById('g-date').value,document.getElementById('g-time').value,gLoc);
+    echoDate('b-date-echo',document.getElementById('b-date').value);
+    echoDate('g-date-echo',document.getElementById('g-date').value);
 
     const kutas=[
       [tr('Varna','वर्ण'),kVarna(b,g),tr('Spiritual / ego compatibility','आध्यात्मिक / अहं अनुकूलता')],

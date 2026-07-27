@@ -17,11 +17,12 @@ import Layout from '../../layouts/Layout.astro';
   <section style="padding:28px 0 56px;">
     <div class="container">
       <div style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label for="f-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label for="f-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" lang="en-GB" class="input" style="height:38px;" /></div>
         <div><label for="f-time" class="fld-label"><span data-hi="जन्म समय">Time of Birth</span> <span style="font-size:10px;color:var(--color-mute);" data-hi="(वैकल्पिक, संधि दिनों में सहायक)">(optional, helps on cusp days)</span></label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
         <div><label for="f-city" class="fld-label"><span data-hi="जन्म स्थान">Place of Birth</span> <span style="font-size:10px;color:var(--color-mute);" data-hi="(वैकल्पिक)">(optional)</span></label><select id="f-city" class="input" style="height:38px;min-width:140px;"></select></div>
         <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
+      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
 
       <div id="result" style="display:none;">
         <!-- Side-by-side sign cards -->
@@ -63,6 +64,11 @@ import { RASHI_ICONS } from '../../lib/icons/rashi';
 import { sunTrueLongitude as sunLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
+const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WD_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const MO_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${RASHI_ICONS[id]}</svg>`;}
 const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
@@ -148,6 +154,8 @@ function calculate(){
     const tz=loc?loc.tz:0;
     const[y,m,d]=dateStr.split('-').map(Number);
     const[hh,mm]=timeStr.split(':').map(Number);
+    const de=document.getElementById('date-echo');
+    if(de){de.textContent=tr('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);de.hidden=false;}
     const wIdx=westernSign(m,d);
     const jd=toJD(y,m,d,(hh+mm/60)-tz);
     const vIdx=Math.floor(n360(sunLon(jd)-ayanamsha(jd))/30);

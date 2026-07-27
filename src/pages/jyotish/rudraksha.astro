@@ -26,11 +26,12 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
       <!-- Birth Details form -->
       <div id="form-birth" style="display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
-        <div><label for="f-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" class="input" style="height:38px;" /></div>
+        <div><label for="f-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label><input type="date" id="f-date" lang="en-GB" class="input" style="height:38px;" /></div>
         <div><label for="f-time" class="fld-label" data-hi="जन्म समय">Time of Birth</label><input type="time" id="f-time" class="input" style="height:38px;" /></div>
         <div><label for="f-city" class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
         <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
+      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
 
       <!-- Quick Select form -->
       <div id="form-quick" style="display:none;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:32px;">
@@ -84,6 +85,11 @@ import { moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../li
 import { calcLagna } from '../../lib/astro-core';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
+const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WD_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const MO_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 const DAY_HI={Sunday:'रविवार',Monday:'सोमवार',Tuesday:'मंगलवार',Wednesday:'बुधवार',Thursday:'गुरुवार',Friday:'शुक्रवार',Saturday:'शनिवार',Any:'कोई भी'};
 const METAL_HI={Gold:'सोना',Silver:'चांदी',Copper:'तांबा','Gold/Silver':'सोना/चांदी'};
 const WEAR_HI={'Right hand / neck':'दायां हाथ / गले में','Left hand / neck':'बायां हाथ / गले में','Right hand':'दायां हाथ','Any finger / neck':'कोई भी उंगली / गले में','Neck':'गले में','Neck (after consultation)':'गले में (परामर्श के बाद)'};
@@ -190,6 +196,8 @@ function calculate(){
     const timeStr=document.getElementById('f-time').value||'12:00';
     const loc=LOCS.find(l=>l.name===document.getElementById('f-city').value)||LOCS[0];
     const[y,m,d]=dateStr.split('-').map(Number);const[hh,mm]=timeStr.split(':').map(Number);
+    const de=document.getElementById('date-echo');
+    if(de){de.textContent=tr('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);de.hidden=false;}
     const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
     const ay=ayanamsha(jd);
     const lagnaSign=Math.floor(n360(calcLagna(jd,loc.lat,loc.lng)-ay)/30);

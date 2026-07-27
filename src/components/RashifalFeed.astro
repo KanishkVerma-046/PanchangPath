@@ -132,7 +132,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
             <span class="hi-text" style="display:none;">जन्म तिथि से राशि जानें</span>
           </p>
           <div class="rf-finder-input-row">
-            <input type="date" id="dob-input" aria-label="Date of birth" class="rf-input" />
+            <input type="date" id="dob-input" lang="en-GB" aria-label="Date of birth" class="rf-input" />
             <button class="rf-find-btn" id="dob-find-btn" data-hi="खोजें">Find</button>
           </div>
           <p class="rf-finder-result" id="dob-result" hidden></p>
@@ -269,12 +269,33 @@ function findByDate(dateStr: string): string {
   return "Meena";
 }
 
-function showResult(el: HTMLElement, rashi: string) {
+// ─── Parsed-date echo ────────────────────────────────────────────────────────
+// A native <input type="date"> always yields an unambiguous YYYY-MM-DD value
+// regardless of how the picker's segments are visually ordered, but the visual
+// order itself is locale-dependent (Chromium/Windows commonly show mm/dd/yyyy
+// for non-India locales). An India-first visitor who types digits in the
+// day-first order they expect can end up filling the wrong segment. Echoing
+// the parsed date back in unambiguous long form lets them catch a misparse
+// immediately instead of silently getting the wrong Rashi.
+const WD_EN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WD_HI = ['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const MO_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MO_HI = ['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+function formatLongDate(dateStr: string, hindi: boolean): string {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const wd = new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay();
+  return hindi ? `${WD_HI[wd]}, ${d} ${MO_HI[m - 1]} ${y}` : `${WD_EN[wd]}, ${d} ${MO_EN[m - 1]} ${y}`;
+}
+
+function showResult(el: HTMLElement, rashi: string, dateStr?: string) {
   const hi = RASHI_HI[rashi] ?? '';
   const id = RASHI_ID[rashi] ?? rashi.toLowerCase();
   const label = rfIsHindi ? 'आपकी राशि है' : 'Your Rashi is';
   const linkText = rfIsHindi ? 'भविष्यवाणी देखें →' : 'View prediction →';
-  el.innerHTML = `${label} <strong>${rashi} (${hi})</strong>. <a href="/rashifal/${id}" style="color:var(--color-saffron-deep);text-decoration:none;font-weight:600;">${linkText}</a>`;
+  const dateEcho = dateStr
+    ? `<br/><span style="font-size:12px;color:var(--color-mute);">${rfIsHindi ? 'दर्ज तिथि' : 'Date entered'}: ${formatLongDate(dateStr, rfIsHindi)}</span>`
+    : '';
+  el.innerHTML = `${label} <strong>${rashi} (${hi})</strong>. <a href="/rashifal/${id}" style="color:var(--color-saffron-deep);text-decoration:none;font-weight:600;">${linkText}</a>${dateEcho}`;
   el.hidden = false;
 }
 
@@ -292,7 +313,7 @@ document.getElementById('dob-find-btn')?.addEventListener('click', () => {
   const result = document.getElementById('dob-result') as HTMLElement;
   if (!val) { result.textContent = rfIsHindi ? 'कृपया एक तिथि चुनें।' : 'Please select a date.'; result.hidden = false; return; }
   const rashi = findByDate(val);
-  showResult(result, rashi);
+  showResult(result, rashi, val);
 });
 
 document.getElementById('name-input')?.addEventListener('keydown', (e) => {

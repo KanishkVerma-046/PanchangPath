@@ -25,7 +25,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
         </div>
         <div>
           <label for="f-date" class="fld-label" data-hi="जन्म तिथि">Date of Birth</label>
-          <input type="date" id="f-date" class="input" style="height:38px;" />
+          <input type="date" id="f-date" lang="en-GB" class="input" style="height:38px;" />
         </div>
         <div>
           <label for="f-time" class="fld-label" data-hi="जन्म समय">Time of Birth</label>
@@ -37,6 +37,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
         </div>
         <button id="f-calc" class="btn-primary" data-hi="कुंडली बनाएं" style="height:38px;padding:0 20px;">Generate Kundali</button>
       </div>
+      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
 
       <!-- Chart style selector -->
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:28px;">
@@ -107,6 +108,11 @@ function planetIconSvg(id,size){return `<svg width="${size}" height="${size}" vi
 let currentStyle = 'north';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function t(en, hi) { return LANG_HI ? hi : en; }
+const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WD_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const MO_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return t(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
@@ -228,6 +234,8 @@ function calculate(){
     const name=document.getElementById('f-name').value.trim();
     const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
     const[y,m,d]=dateStr.split('-').map(Number);
+    const de=document.getElementById('date-echo');
+    if(de){de.textContent=t('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);de.hidden=false;}
     const[hh,mm]=timeStr.split(':').map(Number);
     const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
     const L=allTropicalLons(jd);const ay=L.ayanamsha;
