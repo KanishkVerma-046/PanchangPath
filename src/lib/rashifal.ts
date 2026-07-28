@@ -1071,11 +1071,12 @@ export function getRashiById(id: string): Rashi | undefined {
   return RASHIS.find(r => r.id === id);
 }
 
-export function getDailyPrediction(rashi: Rashi, date: Date): string {
+export function getDailyPrediction(rashi: Rashi, date: Date, hindi = false): string {
   const start = new Date(date.getFullYear(), 0, 0);
   const diff = date.getTime() - start.getTime();
   const dayOfYear = Math.floor(diff / 86400000);
-  return rashi.predictions.daily[dayOfYear % rashi.predictions.daily.length];
+  const arr = (hindi && rashi.predictionsHi) ? rashi.predictionsHi.daily : rashi.predictions.daily;
+  return arr[dayOfYear % arr.length];
 }
 
 function getISOWeek(date: Date): number {
@@ -1086,17 +1087,20 @@ function getISOWeek(date: Date): number {
   return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
 }
 
-export function getWeeklyPrediction(rashi: Rashi, date: Date): string {
+export function getWeeklyPrediction(rashi: Rashi, date: Date, hindi = false): string {
   const week = getISOWeek(date);
-  return rashi.predictions.weekly[week % rashi.predictions.weekly.length];
+  const arr = (hindi && rashi.predictionsHi) ? rashi.predictionsHi.weekly : rashi.predictions.weekly;
+  return arr[week % arr.length];
 }
 
-export function getMonthlyPrediction(rashi: Rashi, date: Date): string {
-  return rashi.predictions.monthly[date.getMonth() % rashi.predictions.monthly.length];
+export function getMonthlyPrediction(rashi: Rashi, date: Date, hindi = false): string {
+  const arr = (hindi && rashi.predictionsHi) ? rashi.predictionsHi.monthly : rashi.predictions.monthly;
+  return arr[date.getMonth() % arr.length];
 }
 
-export function getYearlyPrediction(rashi: Rashi, date: Date): string {
-  return rashi.predictions.yearly[date.getFullYear() % rashi.predictions.yearly.length];
+export function getYearlyPrediction(rashi: Rashi, date: Date, hindi = false): string {
+  const arr = (hindi && rashi.predictionsHi) ? rashi.predictionsHi.yearly : rashi.predictions.yearly;
+  return arr[date.getFullYear() % arr.length];
 }
 
 // Built directly from each rashi's canonical `nameLetters` array above (RASHIS, in Mesha->Meena order).

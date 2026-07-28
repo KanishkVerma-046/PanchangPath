@@ -23,18 +23,10 @@ const daily = getDailyPrediction(rashi, today);
 const weekly = getWeeklyPrediction(rashi, today);
 const monthly = getMonthlyPrediction(rashi, today);
 const yearly = getYearlyPrediction(rashi, today);
-
-// TEMPORARY STAGING PREVIEW — pilot Hindi translation for Mesha's daily[0]/weekly[0],
-// forced to display regardless of today's date-based index, purely so it can be
-// reviewed rendered on the live site. NOT approved/final; not part of the 288-batch.
-// Revert this block once the pilot review is resolved either way.
-const PILOT_DAILY_HI = 'आपका राशि स्वामी मंगल आज असाधारण शक्ति के साथ आपकी महत्वाकांक्षाओं को प्रज्वलित करता है। एक व्यावसायिक अवसर जो चुपचाप आकार ले रहा था, अब पूरी तरह सामने आता है — अपने स्वाभाविक साहस के साथ इसका सामना करें। रिश्ते तब फलते-फूलते हैं जब आप जल्दबाज़ी की बजाय आत्मीयता के साथ आगे बढ़ते हैं। अतिरिक्त ऊर्जा को शाम के व्यायाम में लगाएं — इससे अधिकतम लाभ मिलेगा।';
-const PILOT_WEEKLY_HI = 'यह सप्ताह मंगल द्वारा आपकी महत्वाकांक्षाओं को सार्थक और मापने योग्य तरीकों से ऊर्जावान बनाते हुए आगे बढ़ता है। सप्ताह की शुरुआत में, एक व्यावसायिक मामला जो रुका हुआ था, निर्णायक रूप से आगे बढ़ना शुरू करता है — बिना किसी हिचकिचाहट के आगे बढ़ें। सप्ताह के मध्य में वित्तीय स्थिति में स्वागत योग्य प्रगति आती है, संभवतः किसी नए स्रोत या लंबित समाधान के माध्यम से। बुधवार के आसपास रिश्तों पर ध्यान देने की आवश्यकता है; एक दिल से की गई बातचीत वह ठीक कर देती है जो अकेले तर्क से संभव नहीं था। सप्ताहांत रचनात्मक कार्य, पारिवारिक समय और सोच-समझकर आराम करने के लिए आदर्श है। यह सप्ताह ठोस प्रगति और नए आत्मविश्वास का है।';
-const isPilotRashi = rashi.id === 'mesha';
-const dailyDisplay = isPilotRashi ? rashi.predictions.daily[0] : daily;
-const weeklyDisplay = isPilotRashi ? rashi.predictions.weekly[0] : weekly;
-const dailyHiPreview = isPilotRashi ? PILOT_DAILY_HI : undefined;
-const weeklyHiPreview = isPilotRashi ? PILOT_WEEKLY_HI : undefined;
+const dailyHi = getDailyPrediction(rashi, today, true);
+const weeklyHi = getWeeklyPrediction(rashi, today, true);
+const monthlyHi = getMonthlyPrediction(rashi, today, true);
+const yearlyHi = getYearlyPrediction(rashi, today, true);
 
 const allRashis = RASHIS;
 const currentIdx = allRashis.findIndex(r => r.id === rashi.id);
@@ -123,7 +115,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   <p data-hi={dateLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={dailyHiPreview}>{dailyDisplay}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={dailyHi}>{daily}</p>
             </div>
           </div>
 
@@ -137,7 +129,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   <p data-hi="वर्तमान सप्ताह का अवलोकन" style="font-size:13px;color:var(--color-body-text);margin:0;">Current week's overview</p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={weeklyHiPreview}>{weeklyDisplay}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={weeklyHi}>{weekly}</p>
             </div>
           </div>
 
@@ -153,7 +145,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   </p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{monthly}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={monthlyHi}>{monthly}</p>
             </div>
           </div>
 
@@ -167,7 +159,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   <p data-hi={`${today.getFullYear()} अवलोकन`} style="font-size:13px;color:var(--color-body-text);margin:0;">{today.getFullYear()} Overview</p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{yearly}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={yearlyHi}>{yearly}</p>
             </div>
           </div>
 

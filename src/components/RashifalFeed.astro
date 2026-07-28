@@ -42,12 +42,12 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
     <div class="rf-grid" id="rashifal-grid" role="tabpanel" aria-labelledby="rf-tab-daily" tabindex="0">
       {RASHIS.map((rashi, idx) => {
         const predictions = {
-          daily: getDailyPrediction(rashi, today),
-          weekly: getWeeklyPrediction(rashi, today),
-          monthly: getMonthlyPrediction(rashi, today),
-          yearly: getYearlyPrediction(rashi, today),
+          daily: { en: getDailyPrediction(rashi, today), hi: getDailyPrediction(rashi, today, true) },
+          weekly: { en: getWeeklyPrediction(rashi, today), hi: getWeeklyPrediction(rashi, today, true) },
+          monthly: { en: getMonthlyPrediction(rashi, today), hi: getMonthlyPrediction(rashi, today, true) },
+          yearly: { en: getYearlyPrediction(rashi, today), hi: getYearlyPrediction(rashi, today, true) },
         };
-        const daily = predictions.daily;
+        const daily = predictions.daily.en;
         const isTruncated = daily.length > 130;
         const short = isTruncated ? daily.slice(0, 130).trim() + '…' : daily;
         return (
@@ -181,9 +181,10 @@ const periodTabs = Array.from(document.querySelectorAll<HTMLAnchorElement>('.rf-
 const periodGrid = document.getElementById('rashifal-grid');
 
 function renderCardPrediction(card: HTMLElement, period: Period) {
-  let predictions: Partial<Record<Period, string>> = {};
+  let predictions: Partial<Record<Period, {en: string; hi: string}>> = {};
   try { predictions = JSON.parse(card.dataset.predictions ?? '{}'); } catch { /* malformed data, fall back to empty */ }
-  const text = predictions[period] ?? predictions.daily ?? '';
+  const entry = predictions[period] ?? predictions.daily ?? { en: '', hi: '' };
+  const text = (rfIsHindi ? entry.hi : entry.en) || entry.en || '';
   const truncated = text.length > 130;
   const short = truncated ? text.slice(0, 130).trim() + '…' : text;
   card.dataset.shortText = short;
@@ -200,9 +201,12 @@ function renderCardPrediction(card: HTMLElement, period: Period) {
   }
 }
 
+let currentPeriod: Period = 'daily';
+
 function setActivePeriod(period: Period, opts: { focusTab?: boolean } = {}) {
   const targetTab = periodTabs.find(t => t.dataset.period === period);
   if (!targetTab) return;
+  currentPeriod = period;
   periodTabs.forEach(t => {
     const active = t === targetTab;
     t.classList.toggle('rf-tab-active', active);
@@ -342,6 +346,7 @@ document.addEventListener('langchange', (e: Event) => {
   const nameInput = document.getElementById('name-input') as HTMLInputElement | null;
   if (nameInput) nameInput.placeholder = rfIsHindi ? (nameInput.dataset.hiPlaceholder || '') : 'Enter first name…';
   rfApplyExpandLabels();
+  document.querySelectorAll<HTMLElement>('#rashifal-grid .rf-card').forEach(card => renderCardPrediction(card, currentPeriod));
 });
 rfApplyExpandLabels();
 </script>
