@@ -6,6 +6,7 @@ import {
 } from '../../lib/panchang-i18n';
 import { calculatePanchang, getHinduCalendarInfo } from '../../lib/panchang';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
+import { formatDateHi } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   return REGIONS.map(r => ({ params: { region: r.slug } }));
@@ -42,9 +43,8 @@ const dayOfYear = Math.floor(
 const yearInfo = regionDef.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat, dayOfYear);
 
 // Date label
-const dateLabel = today.toLocaleDateString('en-IN', {
-  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-});
+const dateLabel = formatDateHi(today, false, { weekday: 'long' });
+const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
 
 const TRADITION_COLORS: Record<string, string> = {
   bn: '#e8622a', as: '#d4800f', ta: '#0f766e', ml: '#065f46',
@@ -87,7 +87,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
             <span class="rp-month-big">{monthName}</span>
             <span class="rp-year-tag">{yearInfo.displayLabel}</span>
           </div>
-          <p class="rp-greg-date">{varName} · {dateLabel}</p>
+          <p class="rp-greg-date" data-hi={`${varName} · ${dateLabelHi}`}>{varName} · {dateLabel}</p>
           <p class="rp-city-note">
             📍 Calculated for {regionDef.defaultCity}
             <span style="color:var(--color-mute);font-size:11px;"> ({regionDef.defaultLat.toFixed(2)}°, {regionDef.defaultLng.toFixed(2)}°)</span>

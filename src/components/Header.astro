@@ -1012,6 +1012,10 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     });
     if (searchInput) searchInput.placeholder = hindi ? 'पंचांग, त्योहार, मुहूर्त खोजें…' : 'Search panchang, festivals, muhurta…';
     if (drawerSearchInput) drawerSearchInput.placeholder = hindi ? 'खोजें…' : 'Search…';
+    const clockLink = document.getElementById('clock-link');
+    if (clockLink) clockLink.title = hindi ? 'आज का पंचांग' : "Today's Panchang";
+    const statusStrip = document.getElementById('status-strip');
+    if (statusStrip) statusStrip.title = hindi ? 'आज का पंचांग' : "Today's Panchang";
   }
   document.addEventListener('langchange', (e: Event) => {
     const evt = e as CustomEvent;

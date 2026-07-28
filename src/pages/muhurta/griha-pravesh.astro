@@ -72,6 +72,7 @@ import Layout from '../../layouts/Layout.astro';
 <script>
 import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
 import { MUHURTA_CRITERIA, sunRashiVoidCheck, KHARMAS_RASHIS, CHATURMAS_RASHIS } from '../../lib/muhurta';
+import { formatDateHi } from '../../lib/date-i18n';
 
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
@@ -225,7 +226,7 @@ function findGPDates(scroll=true){
       return `<div class="card" style="padding:18px;${isTop?'background:var(--color-ink);':''}">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
           <div>
-            <p style="font-size:16px;font-weight:700;color:${tc};margin:0;">${r.date.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</p>
+            <p style="font-size:16px;font-weight:700;color:${tc};margin:0;">${formatDateHi(r.date, isHindi, { weekday: 'long' })}</p>
             <p style="font-size:11px;color:${mut};margin:3px 0 0;font-family:var(--font-mono);">${NAK_NAMES[r.res.nakIdx]} · ${TITHI_NAMES[r.res.tithiIdx]} · Score: ${r.score}/12</p>
           </div>
           <span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;background:${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 85%)':lc+'18'};color:${isTop?'var(--color-on-primary)':lc};border:1px solid ${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 80%)':lc+'44'};">${label}</span>

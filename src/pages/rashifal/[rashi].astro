@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction, type Rashi } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
+import { formatDateHi, formatMonthYearHi } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   return RASHIS.map(r => ({ params: { rashi: r.id }, props: { rashi: r } }));
@@ -12,10 +13,10 @@ interface Props { rashi: Rashi; }
 const { rashi } = Astro.props;
 
 const today = new Date();
-const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-const dateLabelHi = today.toLocaleDateString('hi-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-const monthYearLabel = today.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
-const monthYearLabelHi = today.toLocaleDateString('hi-IN', { month: 'long', year: 'numeric' });
+const dateLabel = formatDateHi(today, false, { weekday: 'long' });
+const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
+const monthYearLabel = formatMonthYearHi(today, false);
+const monthYearLabelHi = formatMonthYearHi(today, true);
 const ELEMENT_HI: Record<string, string> = { Fire: 'अग्नि', Earth: 'पृथ्वी', Air: 'वायु', Water: 'जल' };
 const QUALITY_HI: Record<string, string> = { Cardinal: 'चर', Fixed: 'स्थिर', Mutable: 'द्विस्वभाव' };
 const daily = getDailyPrediction(rashi, today);

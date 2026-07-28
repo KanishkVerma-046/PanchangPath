@@ -9,6 +9,7 @@ import {
   daysUntil,
   formatCountdown,
 } from '../../lib/festivals';
+import { formatDateHi } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   return FESTIVALS_2025_2027.map(f => ({
@@ -24,7 +25,8 @@ const countdown = formatCountdown(days);
 const icon      = getFestivalIcon(f);
 const gradient  = getFestivalGradient(f);
 const fd        = new Date(f.date);
-const dateLabel = fd.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const dateLabel = formatDateHi(fd, false, { weekday: 'long' });
+const dateLabelHi = formatDateHi(fd, true, { weekday: 'long' });
 const isToday   = days === 0;
 const isPast    = days < 0;
 
@@ -87,7 +89,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
             <p class="fd-label" data-hi="दिनांक">Date</p>
             <p class="fd-value en-text">{dateLabel}</p>
             <p class="fd-value hi-text" style="display:none">
-              {fd.toLocaleDateString('hi-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}
+              {dateLabelHi}
             </p>
           </div>
           <div class="fd-date-sep"></div>

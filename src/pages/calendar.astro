@@ -116,6 +116,7 @@ const WEEKDAYS_HI = ['रवि', 'सोम', 'मंगल', 'बुध', 'ग
 <script>
 import { julianDay, sunTrueLongitude, moonLongitude, lahiriAyanamsha, TITHIS, NAKSHATRAS } from '../lib/panchang';
 import { FESTIVALS_2025_2027 } from '../lib/festivals';
+import { formatDateHi } from '../lib/date-i18n';
 
 // Gregorian month names in Hindi — duplicated from the frontmatter copy above since a
 // <script> block and the Astro frontmatter run in separate JS scopes.
@@ -220,14 +221,17 @@ function renderCalendar(d: Date) {
   }
 }
 
+let openPanelDate: string | null = null;
+
 function showPanel(dateStr: string, feasts: {name:string,nameHi:string,type:string}[], p: {tithi:string,tithiHi:string,nakshatra:string,nakshatraHi:string}) {
   const panel = document.getElementById('day-panel');
   const panelDate = document.getElementById('panel-date');
   const panelContent = document.getElementById('panel-content');
   const panelLink = document.getElementById('panel-link') as HTMLAnchorElement;
   if (!panel || !panelDate || !panelContent) return;
+  openPanelDate = dateStr;
   const d = new Date(dateStr + 'T12:00:00');
-  panelDate.textContent = d.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  panelDate.textContent = formatDateHi(d, currentLang === 'hi', { weekday: 'long' });
   panelLink.href = `/?date=${dateStr}`;
   const enDisp = currentLang === 'hi' ? 'none' : 'inline';
   const hiDisp = currentLang === 'hi' ? 'inline' : 'none';
@@ -251,6 +255,7 @@ function showPanel(dateStr: string, feasts: {name:string,nameHi:string,type:stri
 document.getElementById('close-panel')?.addEventListener('click', () => {
   const p = document.getElementById('day-panel');
   if (p) p.style.display = 'none';
+  openPanelDate = null;
 });
 
 document.getElementById('prev-month')?.addEventListener('click', () => {
@@ -274,5 +279,9 @@ document.addEventListener('langchange', (e: Event) => {
   currentLang = hindi ? 'hi' : 'en';
   document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
   document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
+  if (openPanelDate) {
+    const panelDate = document.getElementById('panel-date');
+    if (panelDate) panelDate.textContent = formatDateHi(new Date(openPanelDate + 'T12:00:00'), hindi, { weekday: 'long' });
+  }
 });
 </script>

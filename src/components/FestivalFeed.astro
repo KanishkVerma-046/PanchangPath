@@ -1,6 +1,7 @@
 ---
 import type { Festival } from '../lib/festivals';
 import { getFestivalIcon, getFestivalGradient, getFestivalSlug, daysUntil, formatCountdown } from '../lib/festivals';
+import { formatDateHi } from '../lib/date-i18n';
 
 interface Props {
   festivals: Festival[];
@@ -37,7 +38,8 @@ const { festivals, today } = Astro.props;
         const icon      = getFestivalIcon(f);
         const gradient  = getFestivalGradient(f);
         const fd        = new Date(f.date);
-        const dateLabel = fd.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+        const dateLabel = formatDateHi(fd, false, { weekday: 'short', month: 'short' });
+        const dateLabelHi = formatDateHi(fd, true, { weekday: 'short', month: 'short' });
         const isToday   = days === 0;
 
         return (
@@ -67,7 +69,7 @@ const { festivals, today } = Astro.props;
                 <p class="ff-name hi-text" style="display:none">{f.nameHi}</p>
 
                 <!-- Date -->
-                <p class="ff-date">{dateLabel}</p>
+                <p class="ff-date" data-hi={dateLabelHi}>{dateLabel}</p>
 
                 <!-- Description -->
                 <p class="ff-desc" data-hi={f.descriptionHi}>{f.description}</p>

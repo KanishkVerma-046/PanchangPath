@@ -697,7 +697,7 @@ export function computeUpcomingEvents(today: Date, daysAhead = 365): PlanetaryEv
 
 // ── Formatting helpers ────────────────────────────────────────────────────
 
-export function formatEventDateTime(e: PlanetaryEvent, tzOffsetHours = 5.5): string {
+export function formatEventDateTime(e: PlanetaryEvent, tzOffsetHours = 5.5, hindi = false): string {
   const d = new Date(e.dateISO + 'T00:00:00Z');
   // When the tz-adjusted time rolls past midnight (or before it), shift the displayed
   // date by the same number of days — otherwise the date string and time string can
@@ -706,7 +706,9 @@ export function formatEventDateTime(e: PlanetaryEvent, tzOffsetHours = 5.5): str
   const dayOffset = Math.floor(rawMins / 1440);
   const totalMins = ((rawMins % 1440) + 1440) % 1440;
   if (dayOffset !== 0) d.setUTCDate(d.getUTCDate() + dayOffset);
-  const dateStr = d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  const dateStr = hindi
+    ? `${WEEKDAY_HI_SHORT[d.getDay()]}, ${d.getDate()} ${MONTH_HI_SHORT[d.getMonth()]} ${d.getFullYear()}`
+    : d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
   const h = Math.floor(totalMins / 60);
   const m = totalMins % 60;
   const ap = h < 12 ? 'AM' : 'PM';

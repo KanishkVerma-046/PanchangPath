@@ -109,6 +109,7 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
 </style>
 
 <script>
+import { formatDateHi } from '../lib/date-i18n';
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
   {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
@@ -190,7 +191,11 @@ const daySeq=DAY_CHOG[wd];
 const nowMins=now.getHours()*60+now.getMinutes();
 
 const label=document.getElementById('quick-date-label');
-if(label) label.textContent=now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'short'});
+if(label) {
+  label.textContent = formatDateHi(now, false, { weekday: 'long', month: 'short' });
+  label.dataset.en = label.textContent;
+  label.dataset.hi = formatDateHi(now, true, { weekday: 'long', month: 'short' });
+}
 
 function renderQuickChog(){
   const grid=document.getElementById('quick-chog');

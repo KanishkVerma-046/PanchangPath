@@ -1,6 +1,7 @@
 ---
 import type { BlogPost } from '../lib/blog';
 import { estimateReadingTime } from '../lib/blog';
+import { formatDateHi } from '../lib/date-i18n';
 
 interface Props {
   post: BlogPost;
@@ -9,6 +10,9 @@ interface Props {
 }
 
 const { post, prev, next } = Astro.props;
+
+const publishDateLabel = formatDateHi(new Date(post.publishDate), false);
+const publishDateLabelHi = formatDateHi(new Date(post.publishDate), true);
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -40,7 +44,7 @@ const jsonLd = {
     </div>
     <h1 class="bl-heading" data-hi={post.titleHi}>{post.title}</h1>
     <p class="bl-hero-meta">
-      {new Date(post.publishDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+      <span data-hi={publishDateLabelHi}>{publishDateLabel}</span>
       {' · '}{estimateReadingTime(post.contentHtml)} <span data-hi="मिनट में पढ़ें">min read</span>
     </p>
   </div>

@@ -143,7 +143,9 @@ const DASHA_ORDER=['Ketu','Venus','Sun','Moon','Mars','Rahu','Jupiter','Saturn',
 const DASHA_YRS={Ketu:7,Venus:20,Sun:6,Moon:10,Mars:7,Rahu:18,Jupiter:16,Saturn:19,Mercury:17};
 // nakshatra index → dasha lord (repeating 9-cycle over 27 nakshatras)
 function nakDashaLord(nakIdx){return DASHA_ORDER[nakIdx%9];}
-function fmtDt(ms){const d=new Date(ms);return d.toLocaleDateString('en-IN',{year:'numeric',month:'short'});}
+const MO_EN_SHORT=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MO_HI_SHORT=['जन','फर','मार्च','अप्रैल','मई','जून','जुल','अग','सित','अक्टू','नव','दिस'];
+function fmtDt(ms){const d=new Date(ms);return tr(`${MO_EN_SHORT[d.getMonth()]} ${d.getFullYear()}`,`${MO_HI_SHORT[d.getMonth()]} ${d.getFullYear()}`);}
 
 function fmtDMS(lon){const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);return deg+'\xb0'+String(mn).padStart(2,'0')+"'";}
 function nakInfo(sid){const sz=360/27;const idx=Math.floor(sid/sz);const pada=Math.floor((sid%sz)/(sz/4))+1;return{name:NAKS[idx],idx,pada,frac:(sid%sz)/sz};}

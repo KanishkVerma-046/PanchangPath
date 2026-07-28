@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { FESTIVALS_2025_2027, daysUntil } from '../lib/festivals';
+import { formatDateHi } from '../lib/date-i18n';
 
 const today = new Date();
 const festivalYears = FESTIVALS_2025_2027.map(f => +f.date.slice(0, 4));
@@ -71,7 +72,7 @@ function typeLabelHi(type: string) {
                   <!-- Date box -->
                   <div style="width:52px;flex-shrink:0;text-align:center;background:var(--color-canvas-soft-2);border-radius:8px;padding:8px 4px;">
                     <p style="font-size:20px;font-weight:700;line-height:1;color:var(--color-ink);margin:0;">{fd.getDate()}</p>
-                    <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;font-family:var(--font-mono);text-transform:uppercase;">{fd.toLocaleDateString('en-IN',{month:'short'})}</p>
+                    <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;font-family:var(--font-mono);text-transform:uppercase;" data-hi={formatDateHi(fd, true, { month: 'short', day: false, year: false })}>{formatDateHi(fd, false, { month: 'short', day: false, year: false })}</p>
                   </div>
                   <!-- Info -->
                   <div style="flex:1;min-width:0;">
@@ -119,7 +120,7 @@ function typeLabelHi(type: string) {
                 <!-- Date box -->
                 <div style="width:52px;flex-shrink:0;text-align:center;background:var(--color-canvas-soft-2);border-radius:8px;padding:8px 4px;">
                   <p style="font-size:20px;font-weight:700;line-height:1;color:var(--color-ink);margin:0;">{fd.getDate()}</p>
-                  <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;font-family:var(--font-mono);text-transform:uppercase;">{fd.toLocaleDateString('en-IN',{month:'short'})}</p>
+                  <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;font-family:var(--font-mono);text-transform:uppercase;" data-hi={formatDateHi(fd, true, { month: 'short', day: false, year: false })}>{formatDateHi(fd, false, { month: 'short', day: false, year: false })}</p>
                 </div>
                 <!-- Info -->
                 <div style="flex:1;min-width:0;">

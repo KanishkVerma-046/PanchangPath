@@ -12,6 +12,7 @@ import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
 import { computeUpcomingEvents } from '../lib/planetaryEvents';
 import { getDefaultLocation } from '../lib/locations';
+import { formatDateHi } from '../lib/date-i18n';
 
 const today = new Date();
 const loc = getDefaultLocation(); // New Delhi, will be overridden client-side
@@ -21,8 +22,9 @@ const todayFestivals = getTodayFestivals(today);
 const upcoming = getUpcomingFestivals(today, 8);
 const planetaryEvents = computeUpcomingEvents(today, 180);
 
-const dateStr = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-const dateStrHi = today.toLocaleDateString('hi-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const dateStr = formatDateHi(today, false, { weekday: 'long' });
+const dateStrHi = formatDateHi(today, true, { weekday: 'long' });
+const panchangDateLabel = formatDateHi(today, false, { month: 'short' });
 ---
 
 <Layout
@@ -102,7 +104,7 @@ const dateStrHi = today.toLocaleDateString('hi-IN', { weekday: 'long', day: 'num
           <div class="live-pulse"></div>
           <div class="live-pulse-dot"></div>
         </div>
-        <span class="caption-mono" style="color:var(--color-mute);"><span class="en-text">Panchang for</span><span class="hi-text" style="display:none">पंचांग</span> <span id="panchang-date-label">{today.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })}</span></span>
+        <span class="caption-mono" style="color:var(--color-mute);"><span class="en-text">Panchang for</span><span class="hi-text" style="display:none">पंचांग</span> <span id="panchang-date-label">{panchangDateLabel}</span></span>
       </div>
 
       <!-- 5 Panchang elements -->
@@ -339,6 +341,7 @@ import {
   SAMVATSARA_NAMES_HI,
   YAMAGANDA_SLOTS,
 } from '../lib/panchang';
+import { formatDateHi } from '../lib/date-i18n';
 
 // ── Global display state ──
 let timeFormat: '12h' | '24h' | '24p' = '12h';
@@ -482,10 +485,11 @@ function setText(id: string, val: string) {
   if (el) el.textContent = val;
 }
 
-// Shared long-date formatter for #date-display — 'hi-IN' renders full Devanagari
-// weekday/month names, matching the pattern already used in rashifal/[rashi].astro.
+// Shared long-date formatter for #date-display — uses the centralized
+// site-wide Hindi day/month-name convention (src/lib/date-i18n.ts), Arabic
+// numerals throughout (matches jyotish/horoscope-match.astro's convention).
 function formatDateDisplay(date: Date, hindi: boolean): string {
-  return date.toLocaleDateString(hindi ? 'hi-IN' : 'en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  return formatDateHi(date, hindi, { weekday: 'long' });
 }
 
 const PLANET_LORD_HI: Record<string, string> = {
@@ -581,7 +585,7 @@ function updateSummaryCard(p: ReturnType<typeof calcPanchang>, date: Date, loc: 
 
   // Header
   setText('ps-city', loc.name); setText('ps-city-hi', loc.nameHi ?? loc.name);
-  setText('ps-date', date.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' }));
+  setText('ps-date', formatDateHi(date, isHindi, { weekday: 'long' }));
 
   // Vikrama / Shaka
   setText('ps-vs-year', String(cal.vsYear));
@@ -718,7 +722,7 @@ function renderWithLoc(loc: Location, date: Date) {
     const cal = getHinduCalInfo(date, p.sunSidereal, p.moonSidereal, p.tithiPaksha);
     const tithiStr = cal.amantaMonth.name + " " + p.tithi.paksha + " " + p.tithi.name;
     const vsStr = "VS " + cal.vsYear;
-    const weekStr = date.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+    const weekStr = formatDateHi(date, isHindi, { weekday: 'long' });
     (window as any).updateVedicClock({
       srMins: p.srMins,
       ssMins: p.ssMins,
@@ -733,7 +737,7 @@ function renderWithLoc(loc: Location, date: Date) {
   }
   // Update date label
   setText('date-display', formatDateDisplay(date, isHindi));
-  setText('panchang-date-label', date.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }));
+  setText('panchang-date-label', formatDateHi(date, isHindi, { month: 'short' }));
   const locDisplay = document.getElementById('loc-display');
   if (locDisplay) locDisplay.textContent = loc.name;
   const locDisplayHi = document.getElementById('loc-display-hi');

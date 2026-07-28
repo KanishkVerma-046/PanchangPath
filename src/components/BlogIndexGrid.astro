@@ -1,6 +1,7 @@
 ---
 import type { BlogPost } from '../lib/blog';
 import { sortedByNewest, estimateReadingTime } from '../lib/blog';
+import { formatDateHi } from '../lib/date-i18n';
 
 interface Props {
   posts: BlogPost[];
@@ -33,7 +34,7 @@ const sorted = sortedByNewest(posts);
               <h3 class="bl-idx-title" data-hi={post.titleHi}>{post.title}</h3>
               <p class="bl-idx-desc" data-hi={post.descriptionHi}>{post.description}</p>
               <p class="bl-idx-meta">
-                {new Date(post.publishDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
+                <span data-hi={formatDateHi(new Date(post.publishDate), true)}>{formatDateHi(new Date(post.publishDate), false)}</span>
                 {' · '}{estimateReadingTime(post.contentHtml)} <span data-hi="मिनट में पढ़ें">min read</span>
               </p>
             </div>

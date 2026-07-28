@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime } from '../../lib/planetaryEvents';
 import type { EventType } from '../../lib/planetaryEvents';
+import { formatMonthYearHi } from '../../lib/date-i18n';
 
 const today = new Date();
 const allEvents = computeUpcomingEvents(today, 365);
@@ -58,7 +59,12 @@ function typeClass(type: string): string {
 
 function monthLabel(key: string): string {
   const d = new Date(key + '-01T00:00:00Z');
-  return d.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+  return formatMonthYearHi(d, false);
+}
+
+function monthLabelHi(key: string): string {
+  const d = new Date(key + '-01T00:00:00Z');
+  return formatMonthYearHi(d, true);
 }
 ---
 
@@ -102,11 +108,12 @@ function monthLabel(key: string): string {
   <div class="ev-wrapper">
     {Object.entries(byMonth).map(([monthKey, evs]) => (
       <section class="ev-month-section">
-        <h2 class="ev-month-label">{monthLabel(monthKey)}</h2>
+        <h2 class="ev-month-label"><span class="en-text">{monthLabel(monthKey)}</span><span class="hi-text" style="display:none">{monthLabelHi(monthKey)}</span></h2>
         <div class="ev-month-list">
           {evs.map(ev => {
             const countdown = formatCountdownLabel(ev.daysAway);
-            const datetime  = formatEventDateTime(ev);
+            const datetime  = formatEventDateTime(ev, 5.5, false);
+            const datetimeHi = formatEventDateTime(ev, 5.5, true);
             const isToday   = ev.daysAway === 0;
             const isSoon    = ev.daysAway <= 7 && !isToday;
             return (
@@ -124,7 +131,7 @@ function monthLabel(key: string): string {
                   </div>
                   <p class="ev-name en-text">{ev.title}</p>
                   <p class="ev-name hi-text" style="display:none">{ev.titleHi}</p>
-                  <p class="ev-dt">{datetime}</p>
+                  <p class="ev-dt"><span class="en-text">{datetime}</span><span class="hi-text" style="display:none">{datetimeHi}</span></p>
                   <p class="ev-blurb" data-hi={ev.descriptionHi}>{ev.description}</p>
                 </div>
                 <span class="ev-arrow" aria-hidden="true">›</span>

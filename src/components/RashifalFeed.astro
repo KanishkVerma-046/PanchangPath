@@ -1,11 +1,13 @@
 ---
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction } from '../lib/rashifal';
 import RashiIcon from './icons/RashiIcon.astro';
+import { formatDateHi } from '../lib/date-i18n';
 
 interface Props { today: Date; }
 const { today } = Astro.props;
 
-const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+const dateLabel = formatDateHi(today, false, { weekday: 'long' });
+const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
 ---
 
 <section class="rf-section">
@@ -19,7 +21,7 @@ const dateLabel = today.toLocaleDateString('en-IN', { weekday: 'long', day: 'num
           <span class="en-text">Today's Rashifal</span>
           <span class="hi-text" style="display:none;">आज का राशिफल</span>
         </h2>
-        <p class="rf-date-label">{dateLabel}</p>
+        <p class="rf-date-label" data-hi={dateLabelHi}>{dateLabel}</p>
       </div>
       <div class="rf-header-right">
         <!-- Period tabs -->

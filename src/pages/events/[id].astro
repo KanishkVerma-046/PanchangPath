@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime } from '../../lib/planetaryEvents';
+import { formatDateHi } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   const today  = new Date();
@@ -18,6 +19,11 @@ const countdown = formatCountdownLabel(ev.daysAway);
 const datetime  = formatEventDateTime(ev);
 const isToday   = ev.daysAway === 0;
 const isPast    = ev.daysAway < 0;
+const evDateObj = new Date(ev.dateISO + 'T00:00:00Z');
+const evDateLong = formatDateHi(evDateObj, false, { weekday: 'long' });
+const evDateLongHi = formatDateHi(evDateObj, true, { weekday: 'long' });
+const evDateShort = formatDateHi(evDateObj, false, { month: 'short' });
+const evDateShortHi = formatDateHi(evDateObj, true, { month: 'short' });
 
 function typeLabel(type: string): string {
   switch (type) {
@@ -127,8 +133,8 @@ function heroBg(type: string): string {
         <div class="ed-date-card">
           <div class="ed-date-col">
             <p class="ed-label" data-hi="दिनांक">Date</p>
-            <p class="ed-value">
-              {new Date(ev.dateISO + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+            <p class="ed-value" data-hi={evDateLongHi}>
+              {evDateLong}
             </p>
           </div>
           <div class="ed-sep"></div>
@@ -203,7 +209,7 @@ function heroBg(type: string): string {
             </div>
             <div class="ed-fact-row">
               <dt data-hi="दिनांक">Date</dt>
-              <dd>{new Date(ev.dateISO + 'T00:00:00Z').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</dd>
+              <dd data-hi={evDateShortHi}>{evDateShort}</dd>
             </div>
             <div class="ed-fact-row">
               <dt data-hi="समय (IST)">Time (IST)</dt>
