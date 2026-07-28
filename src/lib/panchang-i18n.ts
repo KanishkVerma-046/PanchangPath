@@ -8,8 +8,10 @@ export interface RegionDef {
   name: string;         // English
   nativeName: string;   // Own script
   calendarName: string; // e.g. "Bengali Panjika"
+  calendarNameHi: string;
   script: string;
   defaultCity: string;
+  defaultCityHi: string;
   defaultLat: number;
   defaultLng: number;
   defaultTzOffset: number;
@@ -24,7 +26,9 @@ export interface RegionDef {
   varas: string[];           // 7 (Sun…Sat)
   paksha: [string, string];  // [Shukla label, Krishna label]
   description: string;
+  descriptionHi: string;
   specialNote: string;
+  specialNoteHi: string;
   getYear(sunSidereal: number, gregYear: number, vsYear: number, ssYear: number, dayOfYear: number): {
     num: number;
     name?: string;
@@ -82,8 +86,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Bengali',
     nativeName: 'বাংলা',
     calendarName: 'Bengali Panjika',
+    calendarNameHi: 'बंगाली पंजिका',
     script: 'Bengali',
     defaultCity: 'Kolkata',
+    defaultCityHi: 'कोलकाता',
     defaultLat: 22.5726,
     defaultLng: 88.3639,
     defaultTzOffset: 5.5,
@@ -113,7 +119,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'],
     paksha: ['শুক্লপক্ষ','কৃষ্ণপক্ষ'],
     description: 'The Bengali Panjika follows a solar calendar (Bangabda), with the year beginning when the Sun enters Mesha (Aries) in mid-April.',
+    descriptionHi: 'बंगाली पंजिका एक सौर कैलेंडर (बंगाब्द) का पालन करती है, जिसमें वर्ष मध्य अप्रैल में सूर्य के मेष राशि में प्रवेश करने पर शुरू होता है।',
     specialNote: 'Poila Boishakh (Baishakh 1) marks the Bengali New Year, celebrated across West Bengal and Bangladesh.',
+    specialNoteHi: 'पोइला बोइशाख (बैशाख 1) बंगाली नववर्ष का प्रतीक है, जो पश्चिम बंगाल और बांग्लादेश में मनाया जाता है।',
     getYear(sunSidereal, gregYear, vsYear, ssYear, dayOfYear) {
       // Bangabda year increments at Poila Boishakh (Mesha Sankranti, ~April 14 — day-of-year
       // ~104). sunRashiIdx alone can't disambiguate this (Poush, the month straddling the
@@ -132,8 +140,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Assamese',
     nativeName: 'অসমীয়া',
     calendarName: 'Assamese Panjika',
+    calendarNameHi: 'असमिया पंजिका',
     script: 'Assamese',
     defaultCity: 'Guwahati',
+    defaultCityHi: 'गुवाहाटी',
     defaultLat: 26.1445,
     defaultLng: 91.7362,
     defaultTzOffset: 5.5,
@@ -163,7 +173,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['দেওবাৰ','সোমবাৰ','মঙ্গলবাৰ','বুধবাৰ','বৃহস্পতিবাৰ','শুক্ৰবাৰ','শনিবাৰ'],
     paksha: ['শুক্লপক্ষ','কৃষ্ণপক্ষ'],
     description: 'The Assamese Panjika follows a solar calendar with the new year (Rongali Bihu) beginning when the Sun enters Mesha.',
+    descriptionHi: 'असमिया पंजिका एक सौर कैलेंडर का पालन करती है, जिसमें नववर्ष (रंगाली बिहू) सूर्य के मेष राशि में प्रवेश करने पर शुरू होता है।',
     specialNote: 'Rongali Bihu (Bohag Bihu) marks the Assamese New Year in mid-April, when the Sun enters the Mesha rashi.',
+    specialNoteHi: 'रंगाली बिहू (बोहाग बिहू) मध्य अप्रैल में असमिया नववर्ष का प्रतीक है, जब सूर्य मेष राशि में प्रवेश करता है।',
     getYear(sunSidereal, gregYear, vsYear, ssYear, dayOfYear) {
       // Same rollover as Bangabda for Assamese Panjika purposes (Rongali/Bohag Bihu ≈
       // Mesha Sankranti, day-of-year ~104) — see Issue #17 fix note in the Bengali block above.
@@ -179,8 +191,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Tamil',
     nativeName: 'தமிழ்',
     calendarName: 'Tamil Panchangam',
+    calendarNameHi: 'तमिल पंचांगम',
     script: 'Tamil',
     defaultCity: 'Chennai',
+    defaultCityHi: 'चेन्नई',
     defaultLat: 13.0827,
     defaultLng: 80.2707,
     defaultTzOffset: 5.5,
@@ -210,7 +224,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['ஞாயிறு','திங்கள்','செவ்வாய்','புதன்','வியாழன்','வெள்ளி','சனி'],
     paksha: ['சுக்ல பக்ஷம்','கிருஷ்ண பக்ஷம்'],
     description: 'The Tamil Panchangam follows a solar calendar (Sauramanam), with months corresponding to the Sun\'s transit through each Rashi. The year begins with Chithirai when the Sun enters Mesha.',
+    descriptionHi: 'तमिल पंचांगम एक सौर कैलेंडर (सौरमानम) का पालन करता है, जिसमें महीने सूर्य के प्रत्येक राशि से गोचर के अनुरूप होते हैं। वर्ष चित्तिरई से शुरू होता है जब सूर्य मेष राशि में प्रवेश करता है।',
     specialNote: 'Tamil New Year (Puthandu) falls on Chithirai 1 when the Sun enters the Mesha rashi, usually around April 14.',
+    specialNoteHi: 'तमिल नववर्ष (पुथांडु) चित्तिरई 1 को पड़ता है जब सूर्य मेष राशि में प्रवेश करता है, आमतौर पर 14 अप्रैल के आसपास।',
     getYear(sunSidereal, gregYear, vsYear) {
       // Offset verified against drikpanchang.com: VS2081=Pingala, VS2082=Kalayukti,
       // VS2083=Siddharthi (see Issue #16 fix) — SAMVATSARA_60[(vsYear + 9) % 60].
@@ -227,8 +243,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Malayalam',
     nativeName: 'മലയാളം',
     calendarName: 'Malayalam Panchangam',
+    calendarNameHi: 'मलयालम पंचांगम',
     script: 'Malayalam',
     defaultCity: 'Thiruvananthapuram',
+    defaultCityHi: 'तिरुवनंतपुरम',
     defaultLat: 8.5241,
     defaultLng: 76.9366,
     defaultTzOffset: 5.5,
@@ -258,7 +276,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['ഞായർ','തിങ്കൾ','ചൊവ്വ','ബുധൻ','വ്യാഴം','വെള്ളി','ശനി'],
     paksha: ['ശുക്ലപക്ഷം','കൃഷ്ണപക്ഷം'],
     description: 'The Malayalam Panchangam follows the Kolla Varsham solar calendar, with the year beginning when the Sun enters Simha (Leo). The first month is Chingam.',
+    descriptionHi: 'मलयालम पंचांगम कोल्ल वर्षम सौर कैलेंडर का पालन करता है, जिसमें वर्ष सूर्य के सिंह राशि में प्रवेश करने पर शुरू होता है। पहला महीना चिंगम है।',
     specialNote: 'Vishu (Malayalam New Year in the astronomical sense) falls when the Sun enters Medam (Mesha/Aries). Onam is celebrated in Chingam.',
+    specialNoteHi: 'विशु (खगोलीय अर्थ में मलयालम नववर्ष) तब पड़ता है जब सूर्य मेदम (मेष) राशि में प्रवेश करता है। ओणम चिंगम माह में मनाया जाता है।',
     getYear(sunSidereal, gregYear) {
       // Kolla Varsham: year increments when Sun enters Simha (120°)
       const sunRashiIdx = Math.floor(sunSidereal / 30);
@@ -274,8 +294,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Marathi',
     nativeName: 'मराठी',
     calendarName: 'Marathi Panchang',
+    calendarNameHi: 'मराठी पंचांग',
     script: 'Devanagari',
     defaultCity: 'Mumbai',
+    defaultCityHi: 'मुंबई',
     defaultLat: 19.0760,
     defaultLng: 72.8777,
     defaultTzOffset: 5.5,
@@ -305,7 +327,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['रविवार','सोमवार','मंगळवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'],
     paksha: ['शुक्ल पक्ष','कृष्ण पक्ष'],
     description: 'The Marathi Panchang follows the Amanta lunar calendar (Vikram Samvat), with the new year (Gudi Padwa) on Chaitra Shukla Pratipada.',
+    descriptionHi: 'मराठी पंचांग अमांत चंद्र कैलेंडर (विक्रम संवत) का पालन करता है, जिसमें नववर्ष (गुड़ी पड़वा) चैत्र शुक्ल प्रतिपदा को होता है।',
     specialNote: 'Gudi Padwa marks the Marathi New Year. Ganesh Chaturthi (Bhadrapada Shukla Chaturthi) is the most celebrated festival.',
+    specialNoteHi: 'गुड़ी पड़वा मराठी नववर्ष का प्रतीक है। गणेश चतुर्थी (भाद्रपद शुक्ल चतुर्थी) सबसे अधिक मनाया जाने वाला त्योहार है।',
     getYear(sunSidereal, gregYear, vsYear) {
       // Offset verified against drikpanchang.com (see Issue #16 fix note in the Tamil block above).
       const samvatsara = SAMVATSARA_60[(vsYear + 9) % 60];
@@ -320,8 +344,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Gujarati',
     nativeName: 'ગુજરાતી',
     calendarName: 'Gujarati Panchang',
+    calendarNameHi: 'गुजराती पंचांग',
     script: 'Gujarati',
     defaultCity: 'Ahmedabad',
+    defaultCityHi: 'अहमदाबाद',
     defaultLat: 23.0225,
     defaultLng: 72.5714,
     defaultTzOffset: 5.5,
@@ -351,7 +377,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['રવિવાર','સોમવાર','મંગળવાર','બુધવાર','ગુરુવાર','શુક્રવાર','શનિવાર'],
     paksha: ['સુદ','વદ'],
     description: 'The Gujarati Panchang uses colloquial names for tithis (Ekam, Bij, Trij…) and starts the new year (Bestu Varas) on the day after Diwali.',
+    descriptionHi: 'गुजराती पंचांग तिथियों के लिए बोलचाल के नाम (एकम, बीज, त्रीज…) उपयोग करता है और नववर्ष (बेस्तु वरस) दिवाली के अगले दिन शुरू होता है।',
     specialNote: 'Bestu Varas (Gujarati New Year) falls on Kartika Shukla Pratipada — the day after Diwali. Diwali itself marks the end of the Gujarati year.',
+    specialNoteHi: 'बेस्तु वरस (गुजराती नववर्ष) कार्तिक शुक्ल प्रतिपदा को पड़ता है — दिवाली के अगले दिन। दिवाली स्वयं गुजराती वर्ष के अंत का प्रतीक है।',
     getYear(sunSidereal, gregYear, vsYear) {
       return { num: vsYear, era: 'વિક્રમ સંવત', displayLabel: `સં. ${vsYear}` };
     },
@@ -364,8 +392,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Kannada',
     nativeName: 'ಕನ್ನಡ',
     calendarName: 'Kannada Panchangam',
+    calendarNameHi: 'कन्नड़ पंचांगम',
     script: 'Kannada',
     defaultCity: 'Bengaluru',
+    defaultCityHi: 'बेंगलुरू',
     defaultLat: 12.9716,
     defaultLng: 77.5946,
     defaultTzOffset: 5.5,
@@ -395,7 +425,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['ಭಾನುವಾರ','ಸೋಮವಾರ','ಮಂಗಳವಾರ','ಬುಧವಾರ','ಗುರುವಾರ','ಶುಕ್ರವಾರ','ಶನಿವಾರ'],
     paksha: ['ಶುಕ್ಲ ಪಕ್ಷ','ಕೃಷ್ಣ ಪಕ್ಷ'],
     description: 'The Kannada Panchangam uses the Amanta lunar calendar with Shalivahana Saka year. Yugadi (New Year) falls on Chaitra Shukla Pratipada.',
+    descriptionHi: 'कन्नड़ पंचांगम शालिवाहन शक वर्ष के साथ अमांत चंद्र कैलेंडर का उपयोग करता है। युगादि (नववर्ष) चैत्र शुक्ल प्रतिपदा को पड़ता है।',
     specialNote: 'Ugadi (Yugadi) is the Kannada New Year. Holigondamare (Holi) and Gowri-Ganesha are major festivals.',
+    specialNoteHi: 'उगादि (युगादि) कन्नड़ नववर्ष है। होलिगोंडमारे (होली) और गौरी-गणेश प्रमुख त्योहार हैं।',
     getYear(sunSidereal, gregYear, vsYear, ssYear) {
       // Shaka-era Samvatsara names are keyed off ssYear, not vsYear — they genuinely differ
       // from the Vikram-era name for the same Gregorian year (Issue #16). Offset verified
@@ -412,8 +444,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Telugu',
     nativeName: 'తెలుగు',
     calendarName: 'Telugu Panchangam',
+    calendarNameHi: 'तेलुगु पंचांगम',
     script: 'Telugu',
     defaultCity: 'Hyderabad',
+    defaultCityHi: 'हैदराबाद',
     defaultLat: 17.3850,
     defaultLng: 78.4867,
     defaultTzOffset: 5.5,
@@ -443,7 +477,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['ఆదివారం','సోమవారం','మంగళవారం','బుధవారం','గురువారం','శుక్రవారం','శనివారం'],
     paksha: ['శుక్ల పక్షం','కృష్ణ పక్షం'],
     description: 'The Telugu Panchangam follows the Amanta lunar calendar with colloquial tithi names (Padyami, Vidiya…). Ugadi marks the Telugu New Year.',
+    descriptionHi: 'तेलुगु पंचांगम बोलचाल के तिथि नामों (पाड्यमी, विदिया…) के साथ अमांत चंद्र कैलेंडर का पालन करता है। उगादि तेलुगु नववर्ष का प्रतीक है।',
     specialNote: 'Ugadi (Telugu New Year) falls on Chaitra Shukla Pratipada. The Panchangam reading on Ugadi day is a sacred tradition.',
+    specialNoteHi: 'उगादि (तेलुगु नववर्ष) चैत्र शुक्ल प्रतिपदा को पड़ता है। उगादि के दिन पंचांगम पठन एक पवित्र परंपरा है।',
     getYear(sunSidereal, gregYear, vsYear, ssYear) {
       // Shaka-era Samvatsara names are keyed off ssYear, not vsYear (see Kannada block above).
       const samvatsara = SAMVATSARA_60[(ssYear + 11) % 60];
@@ -458,8 +494,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Odia',
     nativeName: 'ଓଡ଼ିଆ',
     calendarName: 'Odia Panji',
+    calendarNameHi: 'ओड़िया पंजी',
     script: 'Odia',
     defaultCity: 'Bhubaneswar',
+    defaultCityHi: 'भुवनेश्वर',
     defaultLat: 20.2961,
     defaultLng: 85.8245,
     defaultTzOffset: 5.5,
@@ -489,7 +527,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['ରବିବାର','ସୋମବାର','ମଙ୍ଗଳବାର','ବୁଧବାର','ଗୁରୁବାର','ଶୁକ୍ରବାର','ଶନିବାର'],
     paksha: ['ଶୁକ୍ଳ ପକ୍ଷ','କୃଷ୍ଣ ପକ୍ଷ'],
     description: 'The Odia Panji follows a lunar calendar (Vikram Samvat) with the new year (Pana Sankranti) on Mesha Sankranti in mid-April.',
+    descriptionHi: 'ओड़िया पंजी एक चंद्र कैलेंडर (विक्रम संवत) का पालन करती है, जिसमें नववर्ष (पण सक्रांति) मध्य अप्रैल में मेष सक्रांति पर होता है।',
     specialNote: 'The Rath Yatra of Puri (Ashadha Shukla Dwitiya) is the most sacred Odia festival. Pana Sankranti marks the Odia New Year.',
+    specialNoteHi: 'पुरी की रथ यात्रा (आषाढ़ शुक्ल द्वितीया) सबसे पवित्र ओड़िया त्योहार है। पण सक्रांति ओड़िया नववर्ष का प्रतीक है।',
     getYear(sunSidereal, gregYear, vsYear) {
       return { num: vsYear, era: 'ଵିକ୍ରମ ସମ୍ବତ', displayLabel: `ସମ୍ବତ ${vsYear}` };
     },
@@ -502,8 +542,10 @@ export const REGIONS: RegionDef[] = [
     name: 'Nepali',
     nativeName: 'नेपाली',
     calendarName: 'Nepali Patro',
+    calendarNameHi: 'नेपाली पात्रो',
     script: 'Devanagari',
     defaultCity: 'Kathmandu',
+    defaultCityHi: 'काठमांडू',
     defaultLat: 27.7172,
     defaultLng: 85.3240,
     defaultTzOffset: 5.75,
@@ -533,7 +575,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['आइतवार','सोमवार','मंगलवार','बुधवार','बिहिवार','शुक्रवार','शनिवार'],
     paksha: ['शुक्ल पक्ष','कृष्ण पक्ष'],
     description: 'The Nepali Patro follows the Bikram Sambat solar calendar. The year begins with Baisakh when the Sun enters Mesha (Aries).',
+    descriptionHi: 'नेपाली पात्रो बिक्रम सम्वत सौर कैलेंडर का पालन करता है। वर्ष बैशाख से शुरू होता है जब सूर्य मेष राशि में प्रवेश करता है।',
     specialNote: 'Bikram Sambat is Nepal\'s official national calendar. Naya Barsha (New Year) starts on Baisakh 1, usually around April 14.',
+    specialNoteHi: 'बिक्रम सम्वत नेपाल का आधिकारिक राष्ट्रीय कैलेंडर है। नया वर्ष (नववर्ष) बैशाख 1 से शुरू होता है, आमतौर पर 14 अप्रैल के आसपास।',
     getYear(sunSidereal, gregYear, vsYear) {
       return { num: vsYear, era: 'विक्रम सम्वत', displayLabel: `वि.सं. ${vsYear}` };
     },
@@ -546,8 +590,10 @@ export const REGIONS: RegionDef[] = [
     name: 'ISKCON',
     nativeName: 'वैष्णव',
     calendarName: 'ISKCON Vaishnava Panchang',
+    calendarNameHi: 'इस्कॉन वैष्णव पंचांग',
     script: 'Devanagari / English',
     defaultCity: 'Vrindavan',
+    defaultCityHi: 'वृंदावन',
     defaultLat: 27.5789,
     defaultLng: 77.6964,
     defaultTzOffset: 5.5,
@@ -564,7 +610,9 @@ export const REGIONS: RegionDef[] = [
     varas: ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
     paksha: ['Shukla Paksha','Krishna Paksha'],
     description: 'The ISKCON Vaishnava Panchang highlights Ekadashi fasting days, appearance and disappearance days of Vaishnava acharyas, and the sacred Damodara (Kartika) month.',
+    descriptionHi: 'इस्कॉन वैष्णव पंचांग एकादशी व्रत के दिनों, वैष्णव आचार्यों के प्राकट्य और तिरोभाव दिवसों, और पवित्र दामोदर (कार्तिक) माह को उजागर करता है।',
     specialNote: 'Each month is named after a form of Lord Vishnu. Kartika (Damodara) month is especially sacred. Ekadashi is observed twice monthly.',
+    specialNoteHi: 'प्रत्येक माह का नाम भगवान विष्णु के किसी रूप पर रखा गया है। कार्तिक (दामोदर) माह विशेष रूप से पवित्र है। एकादशी माह में दो बार मनाई जाती है।',
     getYear(sunSidereal, gregYear) {
       // Gaurabda: years since Chaitanya Mahaprabhu\'s birth (1486 CE)
       // After Gaura Purnima (~Feb/March), year increments

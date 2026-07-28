@@ -86,7 +86,7 @@ const curYear = today.getFullYear();
               <div class="reg-card-head">
                 <div>
                   <p class="reg-native" style={`color:${TRADITION_COLORS[r.code]};`}>{r.nativeName}</p>
-                  <h2 class="reg-title">{r.calendarName}</h2>
+                  <h2 class="reg-title" data-hi={r.calendarNameHi}>{r.calendarName}</h2>
                 </div>
                 <span class="reg-script-badge">{r.script}</span>
               </div>
@@ -104,7 +104,7 @@ const curYear = today.getFullYear();
               </div>
 
               <!-- Cities covered -->
-              <p class="reg-city">📍 {r.defaultCity} &amp; region</p>
+              <p class="reg-city" data-hi={`📍 ${r.defaultCityHi} और आसपास`}>📍 {r.defaultCity} &amp; region</p>
             </div>
 
             <!-- Hover arrow -->

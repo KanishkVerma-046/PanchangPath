@@ -72,7 +72,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
         <span style="color:var(--color-hairline);">/</span>
         <a href="/panchang/regional" data-hi="क्षेत्रीय पंचांग" style="color:var(--color-mute);text-decoration:none;">Regional Panchang</a>
         <span style="color:var(--color-hairline);">/</span>
-        <span style="color:var(--color-body-text);">{regionDef.calendarName}</span>
+        <span style="color:var(--color-body-text);" data-hi={regionDef.calendarNameHi}>{regionDef.calendarName}</span>
       </div>
 
       <div class="rp-hero">
@@ -80,7 +80,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
         <div>
           <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px;">
             <span class="rp-native-big" style={`color:${accent};`}>{regionDef.nativeName}</span>
-            <span class="rp-calendar-name">{regionDef.calendarName}</span>
+            <span class="rp-calendar-name" data-hi={regionDef.calendarNameHi}>{regionDef.calendarName}</span>
           </div>
           <!-- Date in regional calendar -->
           <div class="rp-date-display">
@@ -89,7 +89,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
           </div>
           <p class="rp-greg-date" data-hi={`${varName} · ${dateLabelHi}`}>{varName} · {dateLabel}</p>
           <p class="rp-city-note">
-            📍 Calculated for {regionDef.defaultCity}
+            <span data-hi={`📍 ${regionDef.defaultCityHi} के लिए गणना`}>📍 Calculated for {regionDef.defaultCity}</span>
             <span style="color:var(--color-mute);font-size:11px;"> ({regionDef.defaultLat.toFixed(2)}°, {regionDef.defaultLng.toFixed(2)}°)</span>
           </p>
         </div>
@@ -271,8 +271,8 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
 
           <!-- Tradition info card -->
           <div class="rp-info-card" style={`border-top:4px solid ${accent};`}>
-            <h3 class="rp-info-title">{regionDef.calendarName}</h3>
-            <p class="rp-info-body">{regionDef.description}</p>
+            <h3 class="rp-info-title" data-hi={regionDef.calendarNameHi}>{regionDef.calendarName}</h3>
+            <p class="rp-info-body" data-hi={regionDef.descriptionHi}>{regionDef.description}</p>
             <div class="rp-info-row">
               <span class="rp-info-key" data-hi="लिपि">Script</span>
               <span class="rp-info-val">{regionDef.script}</span>
@@ -294,7 +294,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
           <!-- Special note -->
           <div class="rp-note-card">
             <p class="rp-note-icon">💡</p>
-            <p class="rp-note-body">{regionDef.specialNote}</p>
+            <p class="rp-note-body" data-hi={regionDef.specialNoteHi}>{regionDef.specialNote}</p>
           </div>
 
           <!-- Month names list -->
@@ -322,7 +322,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
               {REGIONS.filter(r => r.slug !== slug).slice(0, 5).map(r => (
                 <a href={`/panchang/${r.slug}`} class="rp-other-link">
                   <span class="rp-other-native" style={`color:${TRADITION_COLORS[r.code]};`}>{r.nativeName}</span>
-                  <span class="rp-other-name">{r.calendarName}</span>
+                  <span class="rp-other-name" data-hi={r.calendarNameHi}>{r.calendarName}</span>
                 </a>
               ))}
             </div>
