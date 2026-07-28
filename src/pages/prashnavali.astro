@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { PRASHNAVALI_ANSWERS } from '../lib/rashifal';
+import { PRASHNAVALI_ANSWERS, PRASHNAVALI_ANSWERS_HI } from '../lib/rashifal';
 
 const answerCount = PRASHNAVALI_ANSWERS.length;
 ---
@@ -96,7 +96,7 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
 
 </Layout>
 
-<script define:vars={{ answers: PRASHNAVALI_ANSWERS }}>
+<script define:vars={{ answers: PRASHNAVALI_ANSWERS, answersHi: PRASHNAVALI_ANSWERS_HI }}>
 let revealed = false;
 let numberMode = false;
 let isHindi = false;
@@ -121,9 +121,14 @@ function getIndicatorHtml(text, n) {
     : `<span style="display:inline-flex;align-items:center;gap:6px;padding:5px 16px;background:#fff7ed;border-radius:20px;font-size:12px;font-weight:600;color:#c2410c;letter-spacing:0.04em;">&#9650; ${cautionLabel}</span>`;
 }
 
-function showAnswer(text, n) {
-  oracleAnswer.textContent = text;
-  indicator.innerHTML = getIndicatorHtml(text, n);
+let lastAnswerIdx = -1;
+
+function showAnswer(idx, n) {
+  lastAnswerIdx = idx;
+  oracleAnswer.textContent = isHindi ? answersHi[idx] : answers[idx];
+  // Sentiment classification always runs against the English source text so it
+  // stays consistent regardless of which language is currently displayed.
+  indicator.innerHTML = getIndicatorHtml(answers[idx], n);
   oracleWrap.style.display = 'none';
   numSection.style.display = 'none';
   instructions.style.display = 'none';
@@ -138,7 +143,7 @@ function revealAnswer() {
   setTimeout(() => {
     const idx = Math.floor(Math.random() * answers.length);
     oracleBtn.classList.remove('pv-pulse');
-    showAnswer(answers[idx], idx + 1);
+    showAnswer(idx, idx + 1);
   }, 600);
 }
 
@@ -163,7 +168,7 @@ for (let i = 1; i <= answers.length; i++) {
   const btn = document.createElement('button');
   btn.className = 'pv-num-btn';
   btn.textContent = String(i);
-  btn.addEventListener('click', () => { if (!revealed) showAnswer(answers[i - 1], i); });
+  btn.addEventListener('click', () => { if (!revealed) showAnswer(i - 1, i); });
   numGrid.appendChild(btn);
 }
 
@@ -200,6 +205,9 @@ function applyPageLang(hindi) {
   });
   document.querySelectorAll('.en-text').forEach(el => { el.style.display = hindi ? 'none' : ''; });
   document.querySelectorAll('.hi-text').forEach(el => { el.style.display = hindi ? '' : 'none'; });
+  if (revealed && lastAnswerIdx >= 0) {
+    oracleAnswer.textContent = hindi ? answersHi[lastAnswerIdx] : answers[lastAnswerIdx];
+  }
 }
 document.addEventListener('langchange', (e) => {
   applyPageLang(e.detail.langCode === 'hi');
