@@ -10,6 +10,11 @@ const month = today.getMonth(); // 0-indexed
 const firstDay = new Date(year, month, 1).getDay();
 const daysInMonth = new Date(year, month + 1, 0).getDate();
 const monthName = today.toLocaleDateString('en-IN', { month: 'long', year: 'numeric' });
+// Gregorian month names in Hindi (matches the MONTH_HI convention already used in
+// lib/planetaryEvents.ts / jyotish/kundali.astro — no shared export exists to import,
+// so this local copy mirrors those exact strings).
+const MONTHS_HI = ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
+const monthNameHi = `${MONTHS_HI[month]} ${year}`;
 
 // Festival lookup map
 const festMap: Record<string, typeof FESTIVALS_2025_2027[0][]> = {};
@@ -19,6 +24,8 @@ for (const f of FESTIVALS_2025_2027) {
 }
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+// Short Hindi weekday labels, matching WEEKDAY_HI_SHORT in lib/planetaryEvents.ts.
+const WEEKDAYS_HI = ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'];
 ---
 
 <Layout title="Monthly Panchang Calendar — PanchangPath" description="Monthly Panchang calendar view with Tithi, Nakshatra, and festival highlights for every day.">
@@ -26,14 +33,14 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">Monthly View</p>
+      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;"><span class="en-text">Monthly View</span><span class="hi-text" style="display:none">मासिक दृश्य</span></p>
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-        <h1 style="font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0;" id="cal-title">{monthName}</h1>
+        <h1 style="font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0;" id="cal-title"><span class="en-text" id="cal-title-en">{monthName}</span><span class="hi-text" id="cal-title-hi" style="display:none">{monthNameHi}</span></h1>
         <div style="display:flex;align-items:center;gap:8px;">
           <button id="prev-month" aria-label="Previous month" class="btn-secondary" style="height:44px;width:44px;padding:0;display:flex;align-items:center;justify-content:center;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
-          <button id="today-btn" class="btn-secondary" style="height:32px;font-size:13px;">Today</button>
+          <button id="today-btn" class="btn-secondary" style="height:32px;font-size:13px;"><span class="en-text">Today</span><span class="hi-text" style="display:none">आज</span></button>
           <button id="next-month" aria-label="Next month" class="btn-secondary" style="height:44px;width:44px;padding:0;display:flex;align-items:center;justify-content:center;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
@@ -45,10 +52,10 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   <!-- Legend -->
   <div style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:10px 0;">
     <div class="container" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-saffron-deep);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Major festival</span></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-link);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Vrat</span></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-auspicious);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Regional</span></div>
-      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--color-ink);display:inline-block;"></span><span style="font-size:12px;color:var(--color-body-text);">Today</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-saffron-deep);display:inline-block;"></span><span class="en-text" style="font-size:12px;color:var(--color-body-text);">Major festival</span><span class="hi-text" style="font-size:12px;color:var(--color-body-text);display:none">प्रमुख त्योहार</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-link);display:inline-block;"></span><span class="en-text" style="font-size:12px;color:var(--color-body-text);">Vrat</span><span class="hi-text" style="font-size:12px;color:var(--color-body-text);display:none">व्रत</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:50%;background:var(--color-auspicious);display:inline-block;"></span><span class="en-text" style="font-size:12px;color:var(--color-body-text);">Regional</span><span class="hi-text" style="font-size:12px;color:var(--color-body-text);display:none">क्षेत्रीय</span></div>
+      <div style="display:flex;align-items:center;gap:6px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--color-ink);display:inline-block;"></span><span class="en-text" style="font-size:12px;color:var(--color-body-text);">Today</span><span class="hi-text" style="font-size:12px;color:var(--color-body-text);display:none">आज</span></div>
     </div>
   </div>
 
@@ -59,7 +66,7 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
       <!-- Weekday headers -->
       <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-bottom:4px;" id="cal-header">
         {WEEKDAYS.map((w, i) => (
-          <div style={`text-align:center;padding:8px 4px;font-size:11px;font-weight:500;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:${i===0?'var(--color-inauspicious)':i===6?'var(--color-link)':'var(--color-mute)'};`}>{w}</div>
+          <div style={`text-align:center;padding:8px 4px;font-size:11px;font-weight:500;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;color:${i===0?'var(--color-inauspicious)':i===6?'var(--color-link)':'var(--color-mute)'};`}><span class="en-text">{w}</span><span class="hi-text" style="display:none">{WEEKDAYS_HI[i]}</span></div>
         ))}
       </div>
       <!-- Day cells -->
@@ -85,7 +92,7 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
                 <p class={`hi-text cal-fest`} style={`font-size:10px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${isToday?'rgba(255,255,255,0.8)':f.type==='major'?'var(--color-saffron-deep)':f.type==='vrat'?'var(--color-link)':'var(--color-auspicious)'};display:none;`}>{f.nameHi}</p>
               ))}
               <!-- Panchang info populated by JS -->
-              <p class="cal-tithi" style={`font-size:9px;font-family:var(--font-mono);margin:4px 0 0;color:${isToday?'rgba(255,255,255,0.6)':'var(--color-mute)'};`}></p>
+              <p class="cal-tithi" style={`font-size:9px;font-family:var(--font-mono);margin:4px 0 0;color:${isToday?'rgba(255,255,255,0.6)':'var(--color-mute)'};`}><span class="en-text"></span><span class="hi-text" style="display:none"></span></p>
             </div>
           );
         })}
@@ -101,17 +108,18 @@ const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     </div>
     <div id="panel-content" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;"></div>
     <div style="margin-top:16px;">
-      <a id="panel-link" href="/" class="btn-primary" style="width:100%;justify-content:center;">View Full Panchang →</a>
+      <a id="panel-link" href="/" class="btn-primary" style="width:100%;justify-content:center;"><span class="en-text">View Full Panchang →</span><span class="hi-text" style="display:none">पूर्ण पंचांग देखें →</span></a>
     </div>
   </div>
 </Layout>
 
 <script>
-import { julianDay, sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../lib/panchang';
+import { julianDay, sunTrueLongitude, moonLongitude, lahiriAyanamsha, TITHIS, NAKSHATRAS } from '../lib/panchang';
 import { FESTIVALS_2025_2027 } from '../lib/festivals';
 
-const NAKSHATRAS = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const TITHIS = ['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+// Gregorian month names in Hindi — duplicated from the frontmatter copy above since a
+// <script> block and the Astro frontmatter run in separate JS scopes.
+const MONTHS_HI = ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
 const norm = (a: number) => ((a % 360) + 360) % 360;
 // This page isn't location-aware yet (no city picker) — default to IST, matching
 // getDefaultLocation() in lib/locations.ts, rather than the previous literal UTC hour (Issue #4).
@@ -127,7 +135,15 @@ function quickPanchang(date: Date) {
   const tithiIdx = Math.floor(elong/12)%30;
   const nakIdx = Math.floor(moonSid/(360/27))%27;
   const paksha = tithiIdx < 15 ? 'S' : 'K';
-  return { tithi: paksha + ' ' + TITHIS[tithiIdx], nakshatra: NAKSHATRAS[nakIdx] };
+  const pakshaHi = tithiIdx < 15 ? 'श' : 'क';
+  const t = TITHIS[tithiIdx];
+  const nak = NAKSHATRAS[nakIdx];
+  return {
+    tithi: paksha + ' ' + t.name,
+    tithiHi: pakshaHi + ' ' + t.nameHi,
+    nakshatra: nak.name,
+    nakshatraHi: nak.nameHi,
+  };
 }
 
 // Populate Tithi on calendar cells
@@ -136,7 +152,12 @@ document.querySelectorAll('.cal-cell').forEach(cell => {
   if (!dateStr) return;
   const p = quickPanchang(new Date(dateStr + 'T06:00:00'));
   const tithiEl = cell.querySelector('.cal-tithi');
-  if (tithiEl) tithiEl.textContent = p.tithi;
+  if (tithiEl) {
+    const enEl = tithiEl.querySelector('.en-text');
+    const hiEl = tithiEl.querySelector('.hi-text');
+    if (enEl) enEl.textContent = p.tithi;
+    if (hiEl) hiEl.textContent = p.tithiHi;
+  }
 });
 
 // Month navigation
@@ -160,8 +181,11 @@ function renderCalendar(d: Date) {
   const daysInMonth = new Date(yr, mo+1, 0).getDate();
   const today = new Date();
   const monthName = d.toLocaleDateString('en-IN', { month:'long', year:'numeric' });
-  const calTitle = document.getElementById('cal-title');
-  if (calTitle) calTitle.textContent = monthName;
+  const monthNameHi = `${MONTHS_HI[mo]} ${yr}`;
+  const calTitleEn = document.getElementById('cal-title-en');
+  const calTitleHi = document.getElementById('cal-title-hi');
+  if (calTitleEn) calTitleEn.textContent = monthName;
+  if (calTitleHi) calTitleHi.textContent = monthNameHi;
   const grid = document.getElementById('cal-grid');
   if (!grid) return;
   grid.innerHTML = '';
@@ -188,15 +212,15 @@ function renderCalendar(d: Date) {
     cell.innerHTML = `
       <p style="font-size:16px;font-weight:${isToday?'700':'600'};margin:0 0 4px;line-height:1;color:${dayColor};">${day}</p>
       ${feasts.slice(0,1).map(f => `<p class="en-text" style="font-size:9px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${festColor(f.type)};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:${currentLang==='hi'?'none':'block'};">${f.name}</p><p class="hi-text" style="font-size:9px;font-weight:500;margin:2px 0 0;line-height:1.3;color:${festColor(f.type)};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:${currentLang==='hi'?'block':'none'};">${f.nameHi}</p>`).join('')}
-      <p style="font-size:9px;font-family:var(--font-mono);margin:4px 0 0;color:${muteColor};white-space:nowrap;overflow:hidden;">${p.tithi}</p>
-      <p style="font-size:9px;font-family:var(--font-mono);margin:1px 0 0;color:${muteColor};white-space:nowrap;overflow:hidden;">${p.nakshatra}</p>
+      <p style="font-size:9px;font-family:var(--font-mono);margin:4px 0 0;color:${muteColor};white-space:nowrap;overflow:hidden;"><span class="en-text" style="display:${currentLang==='hi'?'none':'inline'};">${p.tithi}</span><span class="hi-text" style="display:${currentLang==='hi'?'inline':'none'};">${p.tithiHi}</span></p>
+      <p style="font-size:9px;font-family:var(--font-mono);margin:1px 0 0;color:${muteColor};white-space:nowrap;overflow:hidden;"><span class="en-text" style="display:${currentLang==='hi'?'none':'inline'};">${p.nakshatra}</span><span class="hi-text" style="display:${currentLang==='hi'?'inline':'none'};">${p.nakshatraHi}</span></p>
     `;
     cell.addEventListener('click', () => showPanel(dateStr, feasts, p));
     grid.appendChild(cell);
   }
 }
 
-function showPanel(dateStr: string, feasts: {name:string,nameHi:string,type:string}[], p: {tithi:string,nakshatra:string}) {
+function showPanel(dateStr: string, feasts: {name:string,nameHi:string,type:string}[], p: {tithi:string,tithiHi:string,nakshatra:string,nakshatraHi:string}) {
   const panel = document.getElementById('day-panel');
   const panelDate = document.getElementById('panel-date');
   const panelContent = document.getElementById('panel-content');
@@ -205,18 +229,20 @@ function showPanel(dateStr: string, feasts: {name:string,nameHi:string,type:stri
   const d = new Date(dateStr + 'T12:00:00');
   panelDate.textContent = d.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
   panelLink.href = `/?date=${dateStr}`;
+  const enDisp = currentLang === 'hi' ? 'none' : 'inline';
+  const hiDisp = currentLang === 'hi' ? 'inline' : 'none';
   panelContent.innerHTML = `
     <div style="background:var(--color-canvas-soft-2);border-radius:8px;padding:12px;">
-      <p style="font-size:10px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Tithi</p>
-      <p style="font-size:14px;font-weight:600;color:var(--color-data-value);margin:0;">${p.tithi}</p>
+      <p style="font-size:10px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;"><span class="en-text" style="display:${enDisp};">Tithi</span><span class="hi-text" style="display:${hiDisp};">तिथि</span></p>
+      <p style="font-size:14px;font-weight:600;color:var(--color-data-value);margin:0;"><span class="en-text" style="display:${enDisp};">${p.tithi}</span><span class="hi-text" style="display:${hiDisp};">${p.tithiHi}</span></p>
     </div>
     <div style="background:var(--color-canvas-soft-2);border-radius:8px;padding:12px;">
-      <p style="font-size:10px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Nakshatra</p>
-      <p style="font-size:14px;font-weight:600;color:var(--color-data-value);margin:0;">${p.nakshatra}</p>
+      <p style="font-size:10px;color:var(--color-data-label);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;"><span class="en-text" style="display:${enDisp};">Nakshatra</span><span class="hi-text" style="display:${hiDisp};">नक्षत्र</span></p>
+      <p style="font-size:14px;font-weight:600;color:var(--color-data-value);margin:0;"><span class="en-text" style="display:${enDisp};">${p.nakshatra}</span><span class="hi-text" style="display:${hiDisp};">${p.nakshatraHi}</span></p>
     </div>
     ${feasts.map(f => `<div style="background:var(--color-saffron-soft);border-radius:8px;padding:12px;grid-column:span 2;">
-      <p style="font-size:10px;color:var(--color-saffron-deep);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;">Festival</p>
-      <p style="font-size:14px;font-weight:600;color:var(--color-saffron-deep);margin:0;">${f.name}</p>
+      <p style="font-size:10px;color:var(--color-saffron-deep);margin:0 0 4px;font-family:var(--font-mono);text-transform:uppercase;"><span class="en-text" style="display:${enDisp};">Festival</span><span class="hi-text" style="display:${hiDisp};">त्योहार</span></p>
+      <p style="font-size:14px;font-weight:600;color:var(--color-saffron-deep);margin:0;"><span class="en-text" style="display:${enDisp};">${f.name}</span><span class="hi-text" style="display:${hiDisp};">${f.nameHi}</span></p>
     </div>`).join('')}
   `;
   panel.style.display = 'block';
