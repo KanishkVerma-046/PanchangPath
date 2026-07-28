@@ -9,12 +9,22 @@ export interface Rashi {
   lord: string;
   lordHi: string;
   luckyColor: string;
+  luckyColorHi: string;
   luckyColorHex: string;
   luckyNumbers: number[];
   luckyDay: string;
   gradient: string;
   nameLetters: string[];
   predictions: {
+    daily: string[];
+    weekly: string[];
+    monthly: string[];
+    yearly: string[];
+  };
+  // Hindi translations, same order/length as `predictions` so date-based index
+  // selection (getDailyPrediction etc.) picks the matching variant in both languages.
+  // Optional during the translation rollout — see getStaticPaths batch commits.
+  predictionsHi?: {
     daily: string[];
     weekly: string[];
     monthly: string[];
@@ -34,6 +44,7 @@ export const RASHIS: Rashi[] = [
     lord: "Mars",
     lordHi: "मंगल",
     luckyColor: "Red",
+    luckyColorHi: "लाल",
     luckyColorHex: "#dc2626",
     luckyNumbers: [1, 8, 17],
     luckyDay: "Tuesday",
@@ -85,6 +96,7 @@ export const RASHIS: Rashi[] = [
     lord: "Venus",
     lordHi: "शुक्र",
     luckyColor: "White",
+    luckyColorHi: "सफ़ेद",
     luckyColorHex: "#10b981",
     luckyNumbers: [2, 6, 15],
     luckyDay: "Friday",
@@ -136,6 +148,7 @@ export const RASHIS: Rashi[] = [
     lord: "Mercury",
     lordHi: "बुध",
     luckyColor: "Yellow",
+    luckyColorHi: "पीला",
     luckyColorHex: "#d97706",
     luckyNumbers: [3, 5, 14],
     luckyDay: "Wednesday",
@@ -187,6 +200,7 @@ export const RASHIS: Rashi[] = [
     lord: "Moon",
     lordHi: "चन्द्र",
     luckyColor: "White",
+    luckyColorHi: "सफ़ेद",
     luckyColorHex: "#6366f1",
     luckyNumbers: [2, 7, 11],
     luckyDay: "Monday",
@@ -238,6 +252,7 @@ export const RASHIS: Rashi[] = [
     lord: "Sun",
     lordHi: "सूर्य",
     luckyColor: "Gold",
+    luckyColorHi: "सुनहरा",
     luckyColorHex: "#f59e0b",
     luckyNumbers: [1, 5, 9],
     luckyDay: "Sunday",
@@ -289,6 +304,7 @@ export const RASHIS: Rashi[] = [
     lord: "Mercury",
     lordHi: "बुध",
     luckyColor: "Green",
+    luckyColorHi: "हरा",
     luckyColorHex: "#16a34a",
     luckyNumbers: [3, 6, 15],
     luckyDay: "Wednesday",
@@ -340,6 +356,7 @@ export const RASHIS: Rashi[] = [
     lord: "Venus",
     lordHi: "शुक्र",
     luckyColor: "White",
+    luckyColorHi: "सफ़ेद",
     luckyColorHex: "#ec4899",
     luckyNumbers: [2, 7, 15],
     luckyDay: "Friday",
@@ -391,6 +408,7 @@ export const RASHIS: Rashi[] = [
     lord: "Mars",
     lordHi: "मंगल",
     luckyColor: "Red",
+    luckyColorHi: "लाल",
     luckyColorHex: "#b91c1c",
     luckyNumbers: [1, 4, 8],
     luckyDay: "Tuesday",
@@ -442,6 +460,7 @@ export const RASHIS: Rashi[] = [
     lord: "Jupiter",
     lordHi: "गुरु",
     luckyColor: "Yellow",
+    luckyColorHi: "पीला",
     luckyColorHex: "#7c3aed",
     luckyNumbers: [3, 9, 12],
     luckyDay: "Thursday",
@@ -493,6 +512,7 @@ export const RASHIS: Rashi[] = [
     lord: "Saturn",
     lordHi: "शनि",
     luckyColor: "Black",
+    luckyColorHi: "काला",
     luckyColorHex: "#374151",
     luckyNumbers: [1, 4, 10],
     luckyDay: "Saturday",
@@ -544,6 +564,7 @@ export const RASHIS: Rashi[] = [
     lord: "Saturn",
     lordHi: "शनि",
     luckyColor: "Blue",
+    luckyColorHi: "नीला",
     luckyColorHex: "#0284c7",
     luckyNumbers: [4, 7, 11],
     luckyDay: "Saturday",
@@ -595,6 +616,7 @@ export const RASHIS: Rashi[] = [
     lord: "Jupiter",
     lordHi: "गुरु",
     luckyColor: "Sea Green",
+    luckyColorHi: "समुद्री हरा",
     luckyColorHex: "#0d9488",
     luckyNumbers: [3, 7, 12],
     luckyDay: "Thursday",

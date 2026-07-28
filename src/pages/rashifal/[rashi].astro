@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction, type Rashi } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
-import { formatDateHi, formatMonthYearHi } from '../../lib/date-i18n';
+import { formatDateHi, formatMonthYearHi, WD_EN_LONG, WD_HI_LONG } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   return RASHIS.map(r => ({ params: { rashi: r.id }, props: { rashi: r } }));
@@ -23,6 +23,18 @@ const daily = getDailyPrediction(rashi, today);
 const weekly = getWeeklyPrediction(rashi, today);
 const monthly = getMonthlyPrediction(rashi, today);
 const yearly = getYearlyPrediction(rashi, today);
+
+// TEMPORARY STAGING PREVIEW — pilot Hindi translation for Mesha's daily[0]/weekly[0],
+// forced to display regardless of today's date-based index, purely so it can be
+// reviewed rendered on the live site. NOT approved/final; not part of the 288-batch.
+// Revert this block once the pilot review is resolved either way.
+const PILOT_DAILY_HI = 'आपका राशि स्वामी मंगल आज असाधारण शक्ति के साथ आपकी महत्वाकांक्षाओं को प्रज्वलित करता है। एक व्यावसायिक अवसर जो चुपचाप आकार ले रहा था, अब पूरी तरह सामने आता है — अपने स्वाभाविक साहस के साथ इसका सामना करें। रिश्ते तब फलते-फूलते हैं जब आप जल्दबाज़ी की बजाय आत्मीयता के साथ आगे बढ़ते हैं। अतिरिक्त ऊर्जा को शाम के व्यायाम में लगाएं — इससे अधिकतम लाभ मिलेगा।';
+const PILOT_WEEKLY_HI = 'यह सप्ताह मंगल द्वारा आपकी महत्वाकांक्षाओं को सार्थक और मापने योग्य तरीकों से ऊर्जावान बनाते हुए आगे बढ़ता है। सप्ताह की शुरुआत में, एक व्यावसायिक मामला जो रुका हुआ था, निर्णायक रूप से आगे बढ़ना शुरू करता है — बिना किसी हिचकिचाहट के आगे बढ़ें। सप्ताह के मध्य में वित्तीय स्थिति में स्वागत योग्य प्रगति आती है, संभवतः किसी नए स्रोत या लंबित समाधान के माध्यम से। बुधवार के आसपास रिश्तों पर ध्यान देने की आवश्यकता है; एक दिल से की गई बातचीत वह ठीक कर देती है जो अकेले तर्क से संभव नहीं था। सप्ताहांत रचनात्मक कार्य, पारिवारिक समय और सोच-समझकर आराम करने के लिए आदर्श है। यह सप्ताह ठोस प्रगति और नए आत्मविश्वास का है।';
+const isPilotRashi = rashi.id === 'mesha';
+const dailyDisplay = isPilotRashi ? rashi.predictions.daily[0] : daily;
+const weeklyDisplay = isPilotRashi ? rashi.predictions.weekly[0] : weekly;
+const dailyHiPreview = isPilotRashi ? PILOT_DAILY_HI : undefined;
+const weeklyHiPreview = isPilotRashi ? PILOT_WEEKLY_HI : undefined;
 
 const allRashis = RASHIS;
 const currentIdx = allRashis.findIndex(r => r.id === rashi.id);
@@ -65,10 +77,13 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
             {rashi.element} · {rashi.quality}
           </p>
           <h1 style="font-size:40px;font-weight:700;letter-spacing:-1.5px;color:#fff;margin:0 0 4px;">
-            {rashi.name}
-            <span style="font-size:22px;opacity:0.8;font-weight:400;margin-left:8px;">({rashi.english})</span>
+            <span class="en-text">{rashi.name} <span style="font-size:22px;opacity:0.8;font-weight:400;margin-left:8px;">({rashi.english})</span></span>
+            <span class="hi-text" style="display:none">{rashi.nameHi}</span>
           </h1>
-          <p style="font-size:20px;color:rgba(255,255,255,0.85);margin:0;font-weight:500;">{rashi.nameHi}</p>
+          <p style="font-size:20px;color:rgba(255,255,255,0.85);margin:0;font-weight:500;">
+            <span class="en-text">{rashi.nameHi}</span>
+            <span class="hi-text" style="display:none">{rashi.name} <span style="opacity:0.8;">({rashi.english})</span></span>
+          </p>
         </div>
         <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
           <a href={`/rashifal/${prevRashi.id}`} class="rashi-nav-btn" title={`${prevRashi.name} Rashifal`}>
@@ -108,7 +123,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   <p data-hi={dateLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{daily}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={dailyHiPreview}>{dailyDisplay}</p>
             </div>
           </div>
 
@@ -122,7 +137,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                   <p data-hi="वर्तमान सप्ताह का अवलोकन" style="font-size:13px;color:var(--color-body-text);margin:0;">Current week's overview</p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;">{weekly}</p>
+              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={weeklyHiPreview}>{weeklyDisplay}</p>
             </div>
           </div>
 
@@ -189,7 +204,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                 <span class="rd-info-label" data-hi="भाग्यशाली रंग">Lucky Color</span>
                 <span class="rd-info-val" style="display:flex;align-items:center;gap:6px;">
                   <span style={`width:12px;height:12px;border-radius:50%;background:${rashi.luckyColorHex};flex-shrink:0;`}></span>
-                  {rashi.luckyColor}
+                  <span data-hi={rashi.luckyColorHi}>{rashi.luckyColor}</span>
                 </span>
               </div>
               <div class="rd-info-item">
@@ -198,12 +213,12 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               </div>
               <div class="rd-info-item">
                 <span class="rd-info-label" data-hi="भाग्यशाली दिन">Lucky Day</span>
-                <span class="rd-info-val">{rashi.luckyDay}</span>
+                <span class="rd-info-val" data-hi={WD_HI_LONG[WD_EN_LONG.indexOf(rashi.luckyDay)]}>{rashi.luckyDay}</span>
               </div>
               <div class="rd-info-item">
                 <span class="rd-info-label" data-hi="प्रतीक">Symbol</span>
                 <span class="rd-info-val" style="display:flex;align-items:center;gap:5px;">
-                  <RashiIcon name={rashi.id} size={14} /> {rashi.english}
+                  <RashiIcon name={rashi.id} size={14} /> <span data-hi={rashi.nameHi}>{rashi.english}</span>
                 </span>
               </div>
               <div class="rd-info-item">
