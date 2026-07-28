@@ -166,16 +166,16 @@ function calculate(){
   const cards=document.getElementById('kalam-cards');
   if(cards){
     const kalamList=[
-      {name:'Rahu Kala',nameHi:'राहु काल',lord:'Rahu',color:'#dc2626',bg:'#fee2e2',slot:rahu,active:inRahu,desc:'Most inauspicious — ruled by Rahu (shadow planet). Never start new work.',descHi:'सबसे अशुभ — राहु (छाया ग्रह) द्वारा शासित। कभी भी नया कार्य आरंभ न करें।'},
-      {name:'Gulika Kala',nameHi:'गुलिक काल',lord:'Saturn\'s son',color:'#b45309',bg:'#fef3c7',slot:gulika,active:inGulika,desc:'Inauspicious — ruled by Mandi (Saturn\'s son). Avoid auspicious activities.',descHi:'अशुभ — मांदी (शनि पुत्र) द्वारा शासित। शुभ कार्यों से बचें।'},
-      {name:'Yamaganda',nameHi:'यमगण्ड',lord:'Yama',color:'#374151',bg:'#f3f4f6',slot:yamag,active:inYamag,desc:'Inauspicious — ruled by Yama. Avoid new ventures and travel.',descHi:'अशुभ — यम द्वारा शासित। नए उद्यम और यात्रा से बचें।'},
+      {name:'Rahu Kala',nameHi:'राहु काल',lord:'Rahu',lordHi:'राहु',color:'#dc2626',bg:'#fee2e2',slot:rahu,active:inRahu,desc:'Most inauspicious — ruled by Rahu (shadow planet). Never start new work.',descHi:'सबसे अशुभ — राहु (छाया ग्रह) द्वारा शासित। कभी भी नया कार्य आरंभ न करें।'},
+      {name:'Gulika Kala',nameHi:'गुलिक काल',lord:'Saturn\'s son',lordHi:'शनि पुत्र (मांदी)',color:'#b45309',bg:'#fef3c7',slot:gulika,active:inGulika,desc:'Inauspicious — ruled by Mandi (Saturn\'s son). Avoid auspicious activities.',descHi:'अशुभ — मांदी (शनि पुत्र) द्वारा शासित। शुभ कार्यों से बचें।'},
+      {name:'Yamaganda',nameHi:'यमगण्ड',lord:'Yama',lordHi:'यम',color:'#374151',bg:'#f3f4f6',slot:yamag,active:inYamag,desc:'Inauspicious — ruled by Yama. Avoid new ventures and travel.',descHi:'अशुभ — यम द्वारा शासित। नए उद्यम और यात्रा से बचें।'},
     ];
     cards.innerHTML=kalamList.map(k=>`
       <div class="card" style="padding:20px;border:2px solid ${k.active?k.color:'var(--color-hairline)'};">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
           <div>
             <p style="font-size:15px;font-weight:700;color:${k.color};margin:0 0 2px;">${k.name}</p>
-            <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${k.nameHi} · ${isHindi?'स्वामी':'Lord'}: ${k.lord}</p>
+            <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${k.nameHi} · ${isHindi?'स्वामी':'Lord'}: ${isHindi?k.lordHi:k.lord}</p>
           </div>
           ${k.active?`<span style="background:${k.color};color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;">${isHindi?'सक्रिय':'ACTIVE'}</span>`:''}
         </div>

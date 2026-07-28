@@ -108,6 +108,8 @@ const MO_HI=['जनवरी','फरवरी','मार्च','अप्र
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 function tithiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${TITHI_ICONS[id]}</svg>`;}
 const NAME_TO_NUM={Pratipada:1,Dwitiya:2,Tritiya:3,Chaturthi:4,Panchami:5,Shashthi:6,Saptami:7,Ashtami:8,Navami:9,Dashami:10,Ekadashi:11,Dwadashi:12,Trayodashi:13,Chaturdashi:14,Purnima:15,Amavasya:15};
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_HI=['जन','फर','मार्च','अप्रैल','मई','जून','जुल','अग','सित','अक्टू','नव','दिस'];
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima/Amavasya'];
@@ -216,7 +218,6 @@ function computePitruPaksha(year){
     cursor.setUTCDate(cursor.getUTCDate()+1);
   }
 
-  const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const schedule=[];
   for(let k=0;k<NUM_B-1;k++){
     const t=15+k;
@@ -232,15 +233,16 @@ function computePitruPaksha(year){
         if(gap<bestGap){bestGap=gap;chosen=day;}
       }
     }
-    schedule.push({date:`${MONTHS[chosen.m-1]} ${chosen.d}`,tithi:PP_TITHI_NAME[t],note:PP_TITHI_NOTE[t],t});
+    schedule.push({date:`${MONTHS[chosen.m-1]} ${chosen.d}`,m:chosen.m,d:chosen.d,tithi:PP_TITHI_NAME[t],note:PP_TITHI_NOTE[t],t});
   }
   return schedule;
 }
+function fmtSched(p){return tr(`${MONTHS[p.m-1]} ${p.d}`,`${MONTHS_HI[p.m-1]} ${p.d}`);}
 const ppYear=new Date().getFullYear();
 const PP_SCHEDULE=computePitruPaksha(ppYear);
 function renderPPHeadings(){
   document.getElementById('pp-heading').textContent=tr(`Pitru Paksha ${ppYear} Schedule`,`पितृ पक्ष ${ppYear} अनुसूची`);
-  document.getElementById('pp-subheading').textContent=tr(`Krishna Paksha of Ashwin \xb7 ${PP_SCHEDULE[0].date} – ${PP_SCHEDULE[PP_SCHEDULE.length-1].date} ${ppYear}`,`अश्विन कृष्ण पक्ष \xb7 ${PP_SCHEDULE[0].date} – ${PP_SCHEDULE[PP_SCHEDULE.length-1].date} ${ppYear}`);
+  document.getElementById('pp-subheading').textContent=tr(`Krishna Paksha of Ashwin \xb7 ${fmtSched(PP_SCHEDULE[0])} – ${fmtSched(PP_SCHEDULE[PP_SCHEDULE.length-1])} ${ppYear}`,`अश्विन कृष्ण पक्ष \xb7 ${fmtSched(PP_SCHEDULE[0])} – ${fmtSched(PP_SCHEDULE[PP_SCHEDULE.length-1])} ${ppYear}`);
 }
 renderPPHeadings();
 
@@ -275,9 +277,9 @@ function calculate(){
 
     document.getElementById('shraddha-day').innerHTML=
       `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">${tr('When to perform the annual Shraddha','वार्षिक श्राद्ध कब करें')}</h3>
-       <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">${tr(`Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. This year, this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b>.`,`पितृ पक्ष के दौरान <b>${shraddhaTithi}</b> तिथि पर श्राद्ध करें। इस वर्ष यह लगभग <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b> को पड़ता है।`)}</p>
+       <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">${tr(`Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. This year, this falls on approximately <b style="color:var(--color-saffron-deep);">${fmtSched(ppDay)}, ${ppYear}</b>.`,`पितृ पक्ष के दौरान <b>${shraddhaTithi}</b> तिथि पर श्राद्ध करें। इस वर्ष यह लगभग <b style="color:var(--color-saffron-deep);">${fmtSched(ppDay)}, ${ppYear}</b> को पड़ता है।`)}</p>
        <p style="font-size:13px;color:var(--color-mute);margin:0;">${tr(ppDay.note,PP_TITHI_NOTE_HI[ppDay.t])}</p>
-       <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">${tr(`If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}).`,`यदि मृत्यु की सटीक तिथि अज्ञात है, तो सर्व पितृ अमावस्या (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}) पर करें।`)}</p>`;
+       <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">${tr(`If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (${fmtSched(PP_SCHEDULE[PP_SCHEDULE.length-1])}, ${ppYear}).`,`यदि मृत्यु की सटीक तिथि अज्ञात है, तो सर्व पितृ अमावस्या (${fmtSched(PP_SCHEDULE[PP_SCHEDULE.length-1])}, ${ppYear}) पर करें।`)}</p>`;
 
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
@@ -285,7 +287,7 @@ function calculate(){
 }
 function renderPPTable(){
   document.getElementById('pp-table').innerHTML=`<tr><th>${tr('Date','दिनांक')} (${ppYear})</th><th>${tr('Tithi','तिथि')}</th><th>${tr('Who is honoured','किसका सम्मान')}</th></tr>`+
-    PP_SCHEDULE.map(p=>`<tr><td style="font-weight:600;color:var(--color-ink);">${p.date}</td><td>${p.tithi}</td><td style="font-size:12px;color:var(--color-mute);">${tr(p.note,PP_TITHI_NOTE_HI[p.t])}</td></tr>`).join('');
+    PP_SCHEDULE.map(p=>`<tr><td style="font-weight:600;color:var(--color-ink);">${fmtSched(p)}</td><td>${p.tithi}</td><td style="font-size:12px;color:var(--color-mute);">${tr(p.note,PP_TITHI_NOTE_HI[p.t])}</td></tr>`).join('');
 }
 renderPPTable();
 function showShraddhaResult(paksha,tName){
@@ -296,9 +298,9 @@ function showShraddhaResult(paksha,tName){
   document.getElementById('t-meta').textContent=tr(`${paksha} Paksha · Tithi entered directly`,`${paksha} पक्ष \xb7 तिथि सीधे दर्ज की गई`);
   document.getElementById('shraddha-day').innerHTML=
     `<h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">${tr('When to perform the annual Shraddha','वार्षिक श्राद्ध कब करें')}</h3>
-     <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">${tr(`Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. This year this falls on approximately <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b>.`,`पितृ पक्ष के दौरान <b>${shraddhaTithi}</b> तिथि पर श्राद्ध करें। इस वर्ष यह लगभग <b style="color:var(--color-saffron-deep);">${ppDay.date}, ${ppYear}</b> को पड़ता है।`)}</p>
+     <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 12px;">${tr(`Perform Shraddha on the <b>${shraddhaTithi}</b> tithi during Pitru Paksha. This year this falls on approximately <b style="color:var(--color-saffron-deep);">${fmtSched(ppDay)}, ${ppYear}</b>.`,`पितृ पक्ष के दौरान <b>${shraddhaTithi}</b> तिथि पर श्राद्ध करें। इस वर्ष यह लगभग <b style="color:var(--color-saffron-deep);">${fmtSched(ppDay)}, ${ppYear}</b> को पड़ता है।`)}</p>
      <p style="font-size:13px;color:var(--color-mute);margin:0;">${tr(ppDay.note,PP_TITHI_NOTE_HI[ppDay.t])}</p>
-     <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">${tr(`If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}).`,`यदि मृत्यु की सटीक तिथि अज्ञात है, तो सर्व पितृ अमावस्या (${PP_SCHEDULE[PP_SCHEDULE.length-1].date}, ${ppYear}) पर करें।`)}</p>`;
+     <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;">${tr(`If the exact tithi of death is unknown, observe on Sarva Pitru Amavasya (${fmtSched(PP_SCHEDULE[PP_SCHEDULE.length-1])}, ${ppYear}).`,`यदि मृत्यु की सटीक तिथि अज्ञात है, तो सर्व पितृ अमावस्या (${fmtSched(PP_SCHEDULE[PP_SCHEDULE.length-1])}, ${ppYear}) पर करें।`)}</p>`;
   document.getElementById('result').style.display='block';
   document.getElementById('err').style.display='none';
 }

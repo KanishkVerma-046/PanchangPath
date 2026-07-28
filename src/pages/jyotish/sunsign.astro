@@ -90,6 +90,9 @@ const W_SIGNS=[
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
+const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
+const SIGN_NAME_HI={};W_SIGNS.forEach(s=>{SIGN_NAME_HI[s.name]=s.h;});
+function trComp(comp){return comp.split(', ').map(n=>SIGN_NAME_HI[n]||n).join(', ');}
 
 // Solar personality — how the Sun expresses through each Vedic sign
 const SOLAR_TRAITS=[
@@ -141,7 +144,7 @@ function signCard(s,id,label,subname,showTraits){
     <h2 style="font-size:24px;font-weight:700;color:var(--color-ink);margin:0 0 2px;">${s.name}</h2>
     <p style="font-size:13px;color:var(--color-mute);margin:0 0 14px;">${subname}</p>
     <div style="display:flex;flex-direction:column;gap:7px;text-align:left;max-width:240px;margin:0 auto;">
-      ${[[tr('Dates','तिथियां'),fmtRange(s)],[tr('Element','तत्व'),tr(s.el,EL_HI[s.el])],[tr('Quality','गुण'),tr(s.quality,QUAL_HI[s.quality])],[tr('Ruler','स्वामी'),s.ruler],[tr('Compatible','अनुकूल'),s.comp]].map(r=>`<div style="display:flex;justify-content:space-between;gap:8px;font-size:12.5px;"><span style="color:var(--color-mute);">${r[0]}</span><span style="color:var(--color-ink);font-weight:600;text-align:right;">${r[1]}</span></div>`).join('')}
+      ${[[tr('Dates','तिथियां'),fmtRange(s)],[tr('Element','तत्व'),tr(s.el,EL_HI[s.el])],[tr('Quality','गुण'),tr(s.quality,QUAL_HI[s.quality])],[tr('Ruler','स्वामी'),tr(s.ruler,PLANET_HI[s.ruler])],[tr('Compatible','अनुकूल'),tr(s.comp,trComp(s.comp))]].map(r=>`<div style="display:flex;justify-content:space-between;gap:8px;font-size:12.5px;"><span style="color:var(--color-mute);">${r[0]}</span><span style="color:var(--color-ink);font-weight:600;text-align:right;">${r[1]}</span></div>`).join('')}
     </div>`;
 }
 

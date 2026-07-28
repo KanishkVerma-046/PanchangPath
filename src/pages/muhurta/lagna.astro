@@ -65,6 +65,9 @@ const RASHI_NAMES = ['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula
 const RASHI_HI = ['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const RASHI_EN = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const RASHI_LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
+const PLANET_HI = {Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
+const EN_TO_RASHI_SANSKRIT = {};RASHI_EN.forEach((n,i)=>{EN_TO_RASHI_SANSKRIT[n]=RASHI_NAMES[i];});
+function trSigns(list){return list.replace(/\b(Aries|Taurus|Gemini|Cancer|Leo|Virgo|Libra|Scorpio|Sagittarius|Capricorn|Aquarius|Pisces)\b/g,n=>EN_TO_RASHI_SANSKRIT[n]||n);}
 const RASHI_QUALITY: Record<number,string> = {
   1:'Good', 2:'Best', 3:'Good', 4:'Avoid (Lagna Lord = Moon — ok for water activity)',
   5:'Good', 6:'Good', 7:'Best', 8:'Avoid', 9:'Good', 10:'Avoid', 11:'Good', 12:'Avoid',
@@ -152,7 +155,7 @@ function calculate(){
       <div>
         <p style="font-size:12px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">${isHindi?'वर्तमान लग्न':'Current Lagna'}</p>
         <p style="font-size:18px;font-weight:700;color:var(--color-ink);margin:0;">${RASHI_NAMES[currentRashi]} <span style="font-weight:400;font-size:14px;color:var(--color-mute);">${RASHI_EN[currentRashi]}</span></p>
-        <p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">${isHindi?'स्वामी':'Lord'}: ${RASHI_LORDS[currentRashi]}</p>
+        <p style="font-size:12px;color:var(--color-mute);margin:4px 0 0;">${isHindi?'स्वामी':'Lord'}: ${isHindi?PLANET_HI[RASHI_LORDS[currentRashi]]:RASHI_LORDS[currentRashi]}</p>
       </div>
     </div>`;
   } else if(curEl){ curEl.innerHTML=''; }
@@ -186,8 +189,8 @@ function renderGuide(){
     {activity:'Business Start',activityHi:'व्यापार शुरुआत',lagnas:'Gemini, Virgo, Libra, Aquarius, Sagittarius'},
     {activity:'Travel / Yatra',activityHi:'यात्रा',lagnas:'Aries, Gemini, Libra, Sagittarius, Aquarius'},
     {activity:'Vehicle Purchase',activityHi:'वाहन खरीद',lagnas:'Taurus, Gemini, Libra, Sagittarius'},
-    {activity:'Surgery / Medical',activityHi:'शल्य चिकित्सा',lagnas:'Aries, Scorpio — avoid Cancer, Capricorn'},
-  ].map(g=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${isHindi?g.activityHi:g.activity}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${g.lagnas}</p></div>`).join('');
+    {activity:'Surgery / Medical',activityHi:'शल्य चिकित्सा',lagnas:'Aries, Scorpio — avoid Cancer, Capricorn',lagnasHi:'Mesha, Vrishchika — Karka, Makara से बचें'},
+  ].map(g=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${isHindi?g.activityHi:g.activity}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${isHindi&&g.lagnasHi?g.lagnasHi:trSigns(g.lagnas)}</p></div>`).join('');
 }
 renderGuide();
 

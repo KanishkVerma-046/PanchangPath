@@ -105,7 +105,7 @@ function calculate(){
     const dt=jdToDate(jd1000);
     const ageMs=jd1000-jdBirth;const ageYears=ageMs/365.25;
 
-    document.getElementById('big-date').textContent=`${dt.getDate()} ${MON[dt.getMonth()]} ${dt.getFullYear()}`;
+    document.getElementById('big-date').textContent=`${dt.getDate()} ${tr(MON[dt.getMonth()],MO_HI[dt.getMonth()])} ${dt.getFullYear()}`;
     document.getElementById('big-meta').textContent=tr(`at ${jdToHHMM(jd1000)} \xb7 Approx. ${Math.floor(ageYears)} years, ${Math.round((ageYears%1)*12)} months after birth`,`${jdToHHMM(jd1000)} बजे \xb7 जन्म के लगभग ${Math.floor(ageYears)} वर्ष, ${Math.round((ageYears%1)*12)} माह बाद`);
 
     const todayJD=toJD(new Date().getFullYear(),new Date().getMonth()+1,new Date().getDate(),12);

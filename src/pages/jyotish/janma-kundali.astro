@@ -122,6 +122,7 @@ const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpi
 const RASHI_LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const PLANETS=[['surya','Sun','Sy'],['chandra','Moon','Ch'],['mangal','Mars','Ma'],['budha','Mercury','Bu'],['guru','Jupiter','Gu'],['shukra','Venus','Sk'],['shani','Saturn','Sa'],['rahu','Rahu','Ra'],['ketu','Ketu','Ke']];
+const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि',Rahu:'राहु',Ketu:'केतु'};
 
 // Dignity data
 const EXALT={surya:0,chandra:1,mangal:9,budha:5,guru:3,shukra:11,shani:6};
@@ -210,7 +211,7 @@ function calculate(){
     const moonNak=nakInfo(sid.chandra);
     const sumItems=[
       [tr('Lagna (Ascendant)','लग्न (उदय राशि)'),RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
-      [tr('Lagna Lord','लग्न स्वामी'),lagnaLord],
+      [tr('Lagna Lord','लग्न स्वामी'),tr(lagnaLord,PLANET_HI[lagnaLord])],
       [tr('Lagna Degree','लग्न अंश'),fmtDMS(lagna)],
       [tr('Moon Rashi','चंद्र राशि'),RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
       [tr('Sun Rashi','सूर्य राशि'),RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')'],
@@ -232,7 +233,7 @@ function calculate(){
       if(k==='rahu'||k==='ketu')motion=tr('Vakri (always)','वक्री (सदैव)');
       else if(k!=='surya'&&k!=='chandra'){const c=n360(L[k]-ay),nx=n360(Lp[k]-Lp.ayanamsha);let df=nx-c;if(df>180)df-=360;if(df<-180)df+=360;motion=df<0?tr('Vakri','वक्री'):tr('Margi','मार्गी');}
       const dig=dignity(k,sign);
-      pRows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${full}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td style="text-align:center;">${house+1}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${(motion.startsWith('Vakri')||motion.startsWith('वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td><td class="${dig.cls}">${dig.label}</td></tr>`;
+      pRows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${tr(full,PLANET_HI[full])}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td style="text-align:center;">${house+1}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${(motion.startsWith('Vakri')||motion.startsWith('वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td><td class="${dig.cls}">${dig.label}</td></tr>`;
     });
     document.getElementById('planet-table').innerHTML=pRows;
 
@@ -245,7 +246,7 @@ function calculate(){
       const lordSign=lordKey?Math.floor(sid[lordKey]/30):-1;
       const lordHouse=lordKey?((lordSign-lagnaSign+12)%12):-1;
       const lordPos=lordKey?'H'+(lordHouse+1)+' ('+RASHI[lordSign]+')':'—';
-      hRows+=`<tr><td style="font-weight:600;color:var(--color-ink);">H${h+1}</td><td>${RASHI[sign]}</td><td>${lord}</td><td>${lordPos}</td><td style="font-size:12px;color:var(--color-mute);">${tr(HOUSE_SIG[h],HOUSE_SIG_HI[h])}</td></tr>`;
+      hRows+=`<tr><td style="font-weight:600;color:var(--color-ink);">H${h+1}</td><td>${RASHI[sign]}</td><td>${tr(lord,PLANET_HI[lord])}</td><td>${lordPos}</td><td style="font-size:12px;color:var(--color-mute);">${tr(HOUSE_SIG[h],HOUSE_SIG_HI[h])}</td></tr>`;
     }
     document.getElementById('house-table').innerHTML=hRows;
 
@@ -295,8 +296,8 @@ function calculate(){
     document.getElementById('dasha-balance').innerHTML=
       `<div style="padding:10px 14px;background:var(--color-canvas-soft);border-radius:8px;">
         <p style="font-size:11px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);">${tr('BIRTH DASHA BALANCE','जन्म दशा शेष')}</p>
-        <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">${dashaLord} — ${remaining.toFixed(1)} ${tr('yrs remaining','वर्ष शेष')}</p>
-        <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">${tr('Janma Nakshatra','जन्म नक्षत्र')}: ${NAKS[nakIdx]} (${(moonNakFull.frac*100).toFixed(0)}% ${tr('elapsed in','व्यतीत,')} ${dashaLord} ${tr('dasha','दशा')})</p>
+        <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">${tr(dashaLord,PLANET_HI[dashaLord])} — ${remaining.toFixed(1)} ${tr('yrs remaining','वर्ष शेष')}</p>
+        <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">${tr('Janma Nakshatra','जन्म नक्षत्र')}: ${NAKS[nakIdx]} (${(moonNakFull.frac*100).toFixed(0)}% ${tr('elapsed in','व्यतीत,')} ${tr(dashaLord,PLANET_HI[dashaLord])} ${tr('dasha','दशा')})</p>
       </div>`;
 
     const msPerYr=365.25*24*3600*1000;
@@ -312,7 +313,7 @@ function calculate(){
       const st=t,en=t+yrs*msPerYr;
       const isActive=now>=st&&now<en;
       const from=i===0?tr('Birth','जन्म'):fmtDt(st);
-      dRows+=`<tr class="${isActive?'dasha-active':''}"><td style="font-weight:${isActive?700:400};color:${isActive?'var(--color-ink)':'var(--color-body-text)'};">${lord}${isActive?' ◀':''}</td><td>${yrs}</td><td>${from}</td><td>${fmtDt(en)}</td></tr>`;
+      dRows+=`<tr class="${isActive?'dasha-active':''}"><td style="font-weight:${isActive?700:400};color:${isActive?'var(--color-ink)':'var(--color-body-text)'};">${tr(lord,PLANET_HI[lord])}${isActive?' ◀':''}</td><td>${yrs}</td><td>${from}</td><td>${fmtDt(en)}</td></tr>`;
       t=en;
     }
     document.getElementById('dasha-table').innerHTML=dRows;

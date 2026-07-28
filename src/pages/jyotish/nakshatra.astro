@@ -92,6 +92,10 @@ const MO_EN=['January','February','March','April','May','June','July','August','
 const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 const YONI_HI={Horse:'घोड़ा',Elephant:'हाथी',Sheep:'भेड़',Serpent:'सर्प',Dog:'कुत्ता',Cat:'बिल्ली',Rat:'चूहा',Cow:'गाय',Buffalo:'भैंस',Tiger:'बाघ',Monkey:'बंदर',Mongoose:'नेवला',Lion:'सिंह',Deer:'हिरण'};
+const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि',Rahu:'राहु',Ketu:'केतु'};
+const GANA_HI={Deva:'देव',Manushya:'मनुष्य',Rakshasa:'राक्षस'};
+const NADI_HI={Adi:'आदि',Madhya:'मध्य',Antya:'अंत्य'};
+const VARNA_HI={Brahmin:'ब्राह्मण',Kshatriya:'क्षत्रिय',Vaishya:'वैश्य',Shudra:'शूद्र',Mleccha:'म्लेच्छ'};
 const NAKS_ID=['ashwini','bharani','krittika','rohini','mrigashira','ardra','punarvasu','pushya','ashlesha','magha','purva-phalguni','uttara-phalguni','hasta','chitra','swati','vishakha','anuradha','jyeshtha','mula','purva-ashadha','uttara-ashadha','shravana','dhanishta','shatabhisha','purva-bhadrapada','uttara-bhadrapada','revati'];
 function nakIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${NAKSHATRA_ICONS[id]}</svg>`;}
 const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
@@ -174,14 +178,14 @@ function calculate(){
     const nk=NAKS[idx];
     document.getElementById('n-icon').innerHTML=nakIconSvg(NAKS_ID[idx],44);
     document.getElementById('n-name').textContent=nk.n+' \xb7 '+nk.h;
-    document.getElementById('n-meta').textContent=tr('Pada','पद')+' '+pada+' \xb7 '+tr('Ruled by','स्वामी')+' '+nk.lord+' \xb7 '+tr('Deity','देवता')+': '+nk.deity;
+    document.getElementById('n-meta').textContent=tr('Pada','पद')+' '+pada+' \xb7 '+tr('Ruled by','स्वामी')+' '+tr(nk.lord,PLANET_HI[nk.lord])+' \xb7 '+tr('Deity','देवता')+': '+nk.deity;
     document.getElementById('trait-title').textContent=nk.n+' — '+tr('Personality Profile','व्यक्तित्व प्रोफाइल');
     document.getElementById('trait-text').textContent=tr(nk.traits,NAKS_TRAITS_HI[idx]);
     document.getElementById('n-badges').innerHTML=
-      `<span class="badge badge-saffron">${nk.gana} ${tr('Gana','गण')}</span><span class="badge">${nk.nadi} ${tr('Nadi','नाड़ी')}</span><span class="badge">${tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)} ${tr('Yoni','योनि')}</span><span class="badge">${tr('Syllable','अक्षर')}: ${nk.p[pada-1]}</span>`;
+      `<span class="badge badge-saffron">${tr(nk.gana,GANA_HI[nk.gana])} ${tr('Gana','गण')}</span><span class="badge">${tr(nk.nadi,NADI_HI[nk.nadi])} ${tr('Nadi','नाड़ी')}</span><span class="badge">${tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)} ${tr('Yoni','योनि')}</span><span class="badge">${tr('Syllable','अक्षर')}: ${nk.p[pada-1]}</span>`;
     document.getElementById('attr-list').innerHTML=[
-      [tr('Nakshatra','नक्षत्र'),`${nk.n} (#${idx+1})`],[tr('Pada','पद'),String(pada)],[tr('Lord','स्वामी'),nk.lord],[tr('Deity','देवता'),nk.deity],
-      [tr('Symbol','प्रतीक'),nk.sym],[tr('Yoni (Animal)','योनि (पशु)'),tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)],[tr('Gana','गण'),nk.gana],[tr('Nadi','नाड़ी'),nk.nadi],[tr('Varna','वर्ण'),nk.varna],[tr('Ayanamsha','अयनांश'),`${ay.toFixed(3)}° ${tr('Lahiri','लाहिड़ी')}`]
+      [tr('Nakshatra','नक्षत्र'),`${nk.n} (#${idx+1})`],[tr('Pada','पद'),String(pada)],[tr('Lord','स्वामी'),tr(nk.lord,PLANET_HI[nk.lord])],[tr('Deity','देवता'),nk.deity],
+      [tr('Symbol','प्रतीक'),nk.sym],[tr('Yoni (Animal)','योनि (पशु)'),tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)],[tr('Gana','गण'),tr(nk.gana,GANA_HI[nk.gana])],[tr('Nadi','नाड़ी'),tr(nk.nadi,NADI_HI[nk.nadi])],[tr('Varna','वर्ण'),tr(nk.varna,VARNA_HI[nk.varna])],[tr('Ayanamsha','अयनांश'),`${ay.toFixed(3)}° ${tr('Lahiri','लाहिड़ी')}`]
     ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
     document.getElementById('pada-list').innerHTML=nk.p.map((s,i)=>
       `<div style="display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:7px;background:${i===pada-1?'var(--color-saffron-soft)':'var(--color-canvas-soft-2)'};">
@@ -203,8 +207,8 @@ function renderAllNaks(){
         </div>
         <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${i+1}</span>
       </div>
-      <p style="font-size:11px;color:var(--color-mute);margin:0;">${nk.h} · ${nk.lord}</p>
-      <p style="font-size:10.5px;color:var(--color-body-text);margin:4px 0 0;">${nk.gana} · ${tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)}</p>
+      <p style="font-size:11px;color:var(--color-mute);margin:0;">${nk.h} · ${tr(nk.lord,PLANET_HI[nk.lord])}</p>
+      <p style="font-size:10.5px;color:var(--color-body-text);margin:4px 0 0;">${tr(nk.gana,GANA_HI[nk.gana])} · ${tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)}</p>
     </div>`).join('');
 }
 renderAllNaks();

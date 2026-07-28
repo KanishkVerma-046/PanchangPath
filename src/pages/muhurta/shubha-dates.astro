@@ -123,6 +123,7 @@ const PANCHAKA_NAKS = [22,23,24,25,26];
 const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
 const VARA_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const VARA_NAMES_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
 const RAHU_SLOTS=[7,1,6,4,5,2,3];
 
 function toJD(y:number,m:number,d:number,h=0){
@@ -160,8 +161,9 @@ function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number
 function scoreDay(res:ReturnType<typeof calcDay>,activity:Activity,y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number}){
   const c=CRITERIA[activity];
   let score=0; const notes:string[]=[],bad:string[]=[];
-  if(c.varas.includes(res.wd)){score+=3;notes.push(VARA_NAMES[res.wd]);}
-  else bad.push(VARA_NAMES[res.wd]+(isHindi?' (उपयुक्त नहीं)':' (not ideal)'));
+  const varaName=isHindi?VARA_NAMES_HI[res.wd]:VARA_NAMES[res.wd];
+  if(c.varas.includes(res.wd)){score+=3;notes.push(varaName);}
+  else bad.push(varaName+(isHindi?' (उपयुक्त नहीं)':' (not ideal)'));
   if(c.avoidNaks.includes(res.nakIdx)){score-=3;bad.push(NAK_NAMES[res.nakIdx]+(isHindi?' (वर्जित)':' (avoid)'));}
   else if(c.naks.includes(res.nakIdx)){score+=4;notes.push(NAK_NAMES[res.nakIdx]);}
   else if(PANCHAKA_NAKS.includes(res.nakIdx)){score-=1;bad.push(isHindi?'पंचक':'Panchaka');}
@@ -224,7 +226,7 @@ function updateTabs(){
       {label:isHindi?'विवरण':'Description',text:isHindi?crit.descHi:crit.desc},
       {label:isHindi?'शुभ नक्षत्र':'Good Nakshatras',text:crit.naks.map(i=>NAK_NAMES[i]).join(', ')},
       {label:isHindi?'शुभ तिथियां':'Good Tithis',text:crit.tithis.map(i=>TITHI_NAMES[i]).join(', ')},
-      {label:isHindi?'शुभ वार':'Good Weekdays',text:crit.varas.map(i=>VARA_NAMES[i]).join(', ')},
+      {label:isHindi?'शुभ वार':'Good Weekdays',text:crit.varas.map(i=>isHindi?VARA_NAMES_HI[i]:VARA_NAMES[i]).join(', ')},
     ].map(c=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">${c.label}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${c.text}</p></div>`).join('');
   }
 }

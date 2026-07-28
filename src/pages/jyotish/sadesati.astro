@@ -71,6 +71,8 @@ function saturnSign(jd){return Math.floor(n360(planetLongitude('saturn',jd)-lahi
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MON_HI=['जन','फर','मार्च','अप्रैल','मई','जून','जुल','अग','सित','अक्टू','नव','दिस'];
+function monName(idx){return LANG_HI?MON_HI[idx]:MON[idx];}
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
@@ -126,14 +128,14 @@ function calculate(){
       const e=jdToYMD(active.end);
       bg='var(--color-warning-soft)';
       html=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${shaniIconSvg(40,'#b45309')}</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">${tr('In Sadesati','साढ़े साती में')}</h2>
-        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr(`Currently in the <b>${phaseName}</b> phase. Saturn is in ${RASHI[ssNow]}, your Moon is in ${RASHI[moonSign]}.`,`वर्तमान में <b>${phaseName}</b> चरण में। शनि ${RASHI[ssNow]} में है, आपका चंद्रमा ${RASHI[moonSign]} में है।`)}<br>${tr(`This Sadesati ends around <b>${MON[e.m-1]} ${e.y}</b>.`,`यह साढ़े साती लगभग <b>${MON[e.m-1]} ${e.y}</b> में समाप्त होती है।`)}</p>`;
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr(`Currently in the <b>${phaseName}</b> phase. Saturn is in ${RASHI[ssNow]}, your Moon is in ${RASHI[moonSign]}.`,`वर्तमान में <b>${phaseName}</b> चरण में। शनि ${RASHI[ssNow]} में है, आपका चंद्रमा ${RASHI[moonSign]} में है।`)}<br>${tr(`This Sadesati ends around <b>${monName(e.m-1)} ${e.y}</b>.`,`यह साढ़े साती लगभग <b>${monName(e.m-1)} ${e.y}</b> में समाप्त होती है।`)}</p>`;
     }else{
       // find next
       let next=periods.find(p=>p.start>todayJD);
       bg='var(--color-auspicious-soft)';
       const ns=next?jdToYMD(next.start):null;
       html=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${shaniIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">${tr('Not in Sadesati','साढ़े साती में नहीं')}</h2>
-        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Your Moon sign is '+RASHI[moonSign]+'.','आपकी चंद्र राशि '+RASHI[moonSign]+' है।')} ${ns?tr(`Your next Sadesati begins around <b>${MON[ns.m-1]} ${ns.y}</b>.`,`आपकी अगली साढ़े साती लगभग <b>${MON[ns.m-1]} ${ns.y}</b> में शुरू होगी।`):tr('No upcoming Sadesati within the scanned range.','जांचे गए समय में कोई आगामी साढ़े साती नहीं है।')}</p>`;
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Your Moon sign is '+RASHI[moonSign]+'.','आपकी चंद्र राशि '+RASHI[moonSign]+' है।')} ${ns?tr(`Your next Sadesati begins around <b>${monName(ns.m-1)} ${ns.y}</b>.`,`आपकी अगली साढ़े साती लगभग <b>${monName(ns.m-1)} ${ns.y}</b> में शुरू होगी।`):tr('No upcoming Sadesati within the scanned range.','जांचे गए समय में कोई आगामी साढ़े साती नहीं है।')}</p>`;
     }
     document.getElementById('ss-banner').style.background=bg;
     document.getElementById('ss-banner').innerHTML=html;
@@ -145,7 +147,7 @@ function calculate(){
       return `<div class="card" style="padding:14px 18px;display:flex;align-items:center;gap:14px;${isActive?'border-left:3px solid var(--color-warning);':''}">
         <span style="font-size:22px;">${isActive?'🔸':isPast?'✓':'○'}</span>
         <div style="flex:1;">
-          <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${MON[s.m-1]} ${s.y} – ${MON[e.m-1]} ${e.y}</p>
+          <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;">${monName(s.m-1)} ${s.y} – ${monName(e.m-1)} ${e.y}</p>
           <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">${tr('Age','आयु')} ${ageS}–${ageE} · ${isActive?tr('Currently active','वर्तमान में सक्रिय'):isPast?tr('Completed','पूर्ण'):tr('Upcoming','आगामी')}</p>
         </div>
         <span class="badge ${isActive?'badge-saffron':''}">${tr('Cycle','चक्र')} ${i+1}</span>
@@ -164,7 +166,7 @@ function calculate(){
       let dateStr='';
       if(subBds&&subBds.length>i+1){
         const s=jdToYMD(subBds[i]),e=jdToYMD(subBds[i+1]);
-        dateStr='<p style="font-size:11px;color:var(--color-saffron-deep);font-family:var(--font-mono);margin:2px 0 5px;font-weight:600;">'+MON[s.m-1]+' '+s.y+' – '+MON[e.m-1]+' '+e.y+'</p>';
+        dateStr='<p style="font-size:11px;color:var(--color-saffron-deep);font-family:var(--font-mono);margin:2px 0 5px;font-weight:600;">'+monName(s.m-1)+' '+s.y+' – '+monName(e.m-1)+' '+e.y+'</p>';
       }
       const isCurrentPhase=active&&saturnSign(todayJD)===setSigns[i];
       return '<div style="padding:14px;border-radius:8px;background:var(--color-canvas-soft-2);'+(isCurrentPhase?'border:2px solid var(--color-warning);':'')+'"><p style="font-size:12px;font-weight:700;color:var(--color-saffron-deep);margin:0 0 1px;">'+p[0]+(isCurrentPhase?' • '+tr('CURRENT','वर्तमान'):'')+' </p>'+dateStr+'<p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">'+p[1]+'</p><p style="font-size:12px;color:var(--color-body-text);line-height:1.5;margin:0;">'+p[2]+'</p></div>';

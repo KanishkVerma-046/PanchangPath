@@ -122,6 +122,7 @@ const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpi
 const RASHI_LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const PLANETS=[['surya','Sun','Sy'],['chandra','Moon','Ch'],['mangal','Mars','Ma'],['budha','Mercury','Bu'],['guru','Jupiter','Gu'],['shukra','Venus','Sk'],['shani','Saturn','Sa'],['rahu','Rahu','Ra'],['ketu','Ketu','Ke']];
+const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि',Rahu:'राहु',Ketu:'केतु'};
 function fmtDMS(lon){const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);return deg+'\xb0'+String(mn).padStart(2,'0')+"'";}
 function nakInfo(sid){const idx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;return{name:NAKS[idx],pada};}
 
@@ -268,7 +269,7 @@ function calculate(){
     const moonNak=nakInfo(sid.chandra);
     document.getElementById('summary-list').innerHTML=[
       [t('Lagna (Asc)','लग्न'),RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
-      [t('Lagna Lord','लग्न स्वामी'),RASHI_LORD[lagnaSign]],
+      [t('Lagna Lord','लग्न स्वामी'),t(RASHI_LORD[lagnaSign],PLANET_HI[RASHI_LORD[lagnaSign]])],
       [t('Moon Rashi','चंद्र राशि'),RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
       [t('Sun Rashi','सूर्य राशि'),RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')'],
       [t('Nakshatra','नक्षत्र'),moonNak.name+' ('+t('Pada','पद')+' '+moonNak.pada+')'],
@@ -284,15 +285,15 @@ function calculate(){
       else if(k!=='surya'&&k!=='chandra'){const cur=n360(L[k]-ay);const nxt=n360(Lp[k]-Lp.ayanamsha);let diff=nxt-cur;if(diff>180)diff-=360;if(diff<-180)diff+=360;motion=diff<0?t('Vakri','वक्री'):t('Margi','मार्गी');}
       let degInSign=s%30;if(k==='rahu')degInSign=30-(s%30);
       if(k!=='ketu'&&degInSign>akDeg){akDeg=degInSign;akName=full;}
-      rows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${full}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${(motion===t('Vakri','वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td></tr>`;
+      rows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${t(full,PLANET_HI[full])}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${(motion===t('Vakri','वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td></tr>`;
     });
     document.getElementById('planet-table').innerHTML=rows;
 
     document.getElementById('interp').innerHTML=[
-      [t('Lagna (Ascendant)','लग्न (उदय राशि)'),t('Your rising sign is <b>'+RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')</b>, ruled by '+RASHI_LORD[lagnaSign]+'. The Lagna shapes your physical body, temperament and how others first perceive you.','आपकी उदय राशि <b>'+RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')</b> है, जिसका स्वामी '+RASHI_LORD[lagnaSign]+' है। लग्न आपके शारीरिक स्वरूप, स्वभाव और दूसरों की आप पर पहली धारणा को आकार देता है।')],
+      [t('Lagna (Ascendant)','लग्न (उदय राशि)'),t('Your rising sign is <b>'+RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')</b>, ruled by '+RASHI_LORD[lagnaSign]+'. The Lagna shapes your physical body, temperament and how others first perceive you.','आपकी उदय राशि <b>'+RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')</b> है, जिसका स्वामी '+PLANET_HI[RASHI_LORD[lagnaSign]]+' है। लग्न आपके शारीरिक स्वरूप, स्वभाव और दूसरों की आप पर पहली धारणा को आकार देता है।')],
       [t('Moon Sign (Rashi)','चंद्र राशि'),t('Your Moon is in <b>'+RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')</b> in '+moonNak.name+' nakshatra. This is your emotional core and the rashi used for daily Rashifal and most muhurta decisions.','आपका चंद्रमा <b>'+RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')</b> राशि में '+moonNak.name+' नक्षत्र में है। यही आपका भावनात्मक केंद्र है और दैनिक राशिफल व अधिकांश मुहूर्त निर्णयों में इसी राशि का उपयोग होता है।')],
       [t('Sun Sign','सूर्य राशि'),t('Your Sun is in <b>'+RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')</b>, representing your soul, vitality, ego and your relationship with authority and the father.','आपका सूर्य <b>'+RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')</b> राशि में है, जो आपकी आत्मा, जीवनशक्ति, अहं तथा अधिकार व पिता के साथ आपके संबंध को दर्शाता है।')],
-      [t('Atmakaraka','आत्मकारक'),t('<b>'+akName+'</b> holds the highest degree in its sign and is your Atmakaraka — the soul planet of the Jaimini system, signifying your deepest desires and the main lesson of this lifetime.','<b>'+akName+'</b> अपनी राशि में सबसे अधिक अंश पर है और आपका आत्मकारक है — जैमिनी पद्धति का आत्मा-ग्रह, जो आपकी गहनतम इच्छाओं और इस जीवन के मुख्य पाठ को दर्शाता है।')],
+      [t('Atmakaraka','आत्मकारक'),t('<b>'+akName+'</b> holds the highest degree in its sign and is your Atmakaraka — the soul planet of the Jaimini system, signifying your deepest desires and the main lesson of this lifetime.','<b>'+PLANET_HI[akName]+'</b> अपनी राशि में सबसे अधिक अंश पर है और आपका आत्मकारक है — जैमिनी पद्धति का आत्मा-ग्रह, जो आपकी गहनतम इच्छाओं और इस जीवन के मुख्य पाठ को दर्शाता है।')],
     ].map(i=>`<div><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">${i[0]}</p><p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0;">${i[1]}</p></div>`).join('');
 
     document.getElementById('result').style.display='block';

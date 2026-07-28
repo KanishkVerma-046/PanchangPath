@@ -99,6 +99,11 @@ const PLANET_NAME=['Sun','Moon','Mars','Mercury','Jupiter','Venus','Saturn'];
 const PLT_FRIEND=[[2,2,2,1,2,0,0],[2,2,1,2,1,1,1],[2,2,2,0,2,1,1],[2,0,1,2,1,2,1],[2,2,2,0,2,0,1],[0,0,1,2,1,2,2],[0,0,0,2,1,2,2]]; // [row=from][col=to]; row2(Mars)->col1(Moon)=2 friend, row6(Saturn)->col2(Mars)=0 enemy (asymmetric per classical Naisargika Maitri, verified against prokerala.com/vedicka.com 2026-07-23)
 const VARNA_RANK=[3,2,1,4,3,2,1,4,3,2,1,4]; // by rashi: Brahmin4 Ksh3 Vaishya2 Shudra1
 const VARNA_NAME=['','Shudra','Vaishya','Kshatriya','Brahmin'];
+const VARNA_NAME_HI=['','शूद्र','वैश्य','क्षत्रिय','ब्राह्मण'];
+const GANA_NAME_HI={Deva:'देव',Manushya:'मनुष्य',Rakshasa:'राक्षस'};
+const NADI_NAME_HI={Adi:'आदि',Madhya:'मध्य',Antya:'अंत्य'};
+const YONI_NAME_HI={Horse:'घोड़ा',Elephant:'हाथी',Sheep:'भेड़',Serpent:'सर्प',Dog:'कुत्ता',Cat:'बिल्ली',Rat:'चूहा',Cow:'गाय',Buffalo:'भैंस',Tiger:'बाघ',Deer:'हिरण',Monkey:'बंदर',Mongoose:'नेवला',Lion:'सिंह'};
+const PLANET_NAME_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 // Yoni bitter-enemy pairs (0 pts)
 const YONI_ENEMY=[[5,6],[7,9],[1,13],[0,8],[4,10],[3,12],[11,2]];
 
@@ -113,15 +118,15 @@ function moonNakRashi(dateStr,timeStr,loc){
   return{nak:Math.floor(sid/(360/27)),rashi:Math.floor(sid/30)};
 }
 
-function kVarna(b,g){const pt=VARNA_RANK[b.rashi]>=VARNA_RANK[g.rashi]?1:0;return{pt,max:1,bd:VARNA_NAME[VARNA_RANK[b.rashi]],gd:VARNA_NAME[VARNA_RANK[g.rashi]]};}
+function kVarna(b,g){const pt=VARNA_RANK[b.rashi]>=VARNA_RANK[g.rashi]?1:0;return{pt,max:1,bd:tr(VARNA_NAME[VARNA_RANK[b.rashi]],VARNA_NAME_HI[VARNA_RANK[b.rashi]]),gd:tr(VARNA_NAME[VARNA_RANK[g.rashi]],VARNA_NAME_HI[VARNA_RANK[g.rashi]])};}
 function kVashya(b,g){const bv=VASHYA[b.rashi],gv=VASHYA[g.rashi];let pt;if(bv===gv)pt=2;else if(Math.abs(bv-gv)===1)pt=1;else if((bv===0&&gv===2)||(gv===0&&bv===2))pt=1;else pt=0.5;return{pt,max:2,bd:String(bv),gd:String(gv)};}
 function kTara(b,g){let good=0;[[b.nak,g.nak],[g.nak,b.nak]].forEach(([s,t])=>{let c=((t-s+27)%27)+1;let tara=c%9;if(tara===0)tara=9;if(![3,5,7].includes(tara))good++;});const pt=good*1.5;return{pt,max:3,bd:NAKS[b.nak],gd:NAKS[g.nak]};}
-function kYoni(b,g){const by=YONI[b.nak],gy=YONI[g.nak];let pt;if(by===gy)pt=4;else if(YONI_ENEMY.some(p=>(p[0]===by&&p[1]===gy)||(p[1]===by&&p[0]===gy)))pt=0;else pt=3;return{pt,max:4,bd:YONI_NAME[by],gd:YONI_NAME[gy]};}
-function kMaitri(b,g){const bl=RASHI_LORD[b.rashi],gl=RASHI_LORD[g.rashi];if(bl===gl)return{pt:5,max:5,bd:PLANET_NAME[bl],gd:PLANET_NAME[gl]};const r1=PLT_FRIEND[bl][gl],r2=PLT_FRIEND[gl][bl];const s=r1+r2;let pt;if(s===4)pt=5;else if(s===3)pt=4;else if(s===2)pt=3;else if(s===1)pt=0.5;else pt=0;return{pt,max:5,bd:PLANET_NAME[bl],gd:PLANET_NAME[gl]};}
+function kYoni(b,g){const by=YONI[b.nak],gy=YONI[g.nak];let pt;if(by===gy)pt=4;else if(YONI_ENEMY.some(p=>(p[0]===by&&p[1]===gy)||(p[1]===by&&p[0]===gy)))pt=0;else pt=3;return{pt,max:4,bd:tr(YONI_NAME[by],YONI_NAME_HI[YONI_NAME[by]]),gd:tr(YONI_NAME[gy],YONI_NAME_HI[YONI_NAME[gy]])};}
+function kMaitri(b,g){const bl=RASHI_LORD[b.rashi],gl=RASHI_LORD[g.rashi];if(bl===gl)return{pt:5,max:5,bd:tr(PLANET_NAME[bl],PLANET_NAME_HI[PLANET_NAME[bl]]),gd:tr(PLANET_NAME[gl],PLANET_NAME_HI[PLANET_NAME[gl]])};const r1=PLT_FRIEND[bl][gl],r2=PLT_FRIEND[gl][bl];const s=r1+r2;let pt;if(s===4)pt=5;else if(s===3)pt=4;else if(s===2)pt=3;else if(s===1)pt=0.5;else pt=0;return{pt,max:5,bd:tr(PLANET_NAME[bl],PLANET_NAME_HI[PLANET_NAME[bl]]),gd:tr(PLANET_NAME[gl],PLANET_NAME_HI[PLANET_NAME[gl]])};}
 const GANA_TABLE=[[6,5,0],[5,6,1],[0,0,6]]; // [boy gana][girl gana]; classical Gana Kuta table (Deva=0,Manushya=1,Rakshasa=2), verified 2026-07-23
-function kGana(b,g){const bg=GANA[b.nak],gg=GANA[g.nak];const pt=GANA_TABLE[bg][gg];return{pt,max:6,bd:GANA_NAME[bg],gd:GANA_NAME[gg]};}
+function kGana(b,g){const bg=GANA[b.nak],gg=GANA[g.nak];const pt=GANA_TABLE[bg][gg];return{pt,max:6,bd:tr(GANA_NAME[bg],GANA_NAME_HI[GANA_NAME[bg]]),gd:tr(GANA_NAME[gg],GANA_NAME_HI[GANA_NAME[gg]])};}
 function kBhakoot(b,g){const d1=((g.rashi-b.rashi+12)%12)+1;const d2=((b.rashi-g.rashi+12)%12)+1;const set=[d1,d2].sort((x,y)=>x-y).join('-');const bad=['6-8','2-12','5-9'];const pt=bad.includes(set)?0:7;return{pt,max:7,bd:RASHI[b.rashi],gd:RASHI[g.rashi]};}
-function kNadi(b,g){const pt=NADI[b.nak]===NADI[g.nak]?0:8;return{pt,max:8,bd:NADI_NAME[NADI[b.nak]],gd:NADI_NAME[NADI[g.nak]]};}
+function kNadi(b,g){const pt=NADI[b.nak]===NADI[g.nak]?0:8;return{pt,max:8,bd:tr(NADI_NAME[NADI[b.nak]],NADI_NAME_HI[NADI_NAME[NADI[b.nak]]]),gd:tr(NADI_NAME[NADI[g.nak]],NADI_NAME_HI[NADI_NAME[NADI[g.nak]]])};}
 
 function calculate(){
   try{

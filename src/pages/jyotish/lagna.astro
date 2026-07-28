@@ -129,6 +129,7 @@ const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarv
 const PLANETS=[['surya','Su'],['chandra','Mo'],['mangal','Ma'],['budha','Me'],['guru','Ju'],['shukra','Ve'],['shani','Sa'],['rahu','Ra'],['ketu','Ke']];
 const HOUSES=['Self, body, personality','Wealth, family, speech','Courage, siblings, effort','Home, mother, happiness','Children, intellect, romance','Enemies, health, debts','Marriage, partnership','Longevity, transformation','Fortune, dharma, father','Career, status, karma','Gains, friends, desires','Loss, expenses, moksha'];
 const HOUSES_HI=['स्वयं, शरीर, व्यक्तित्व','धन, परिवार, वाणी','साहस, भाई-बहन, प्रयास','घर, मां, सुख','संतान, बुद्धि, प्रेम','शत्रु, स्वास्थ्य, ऋण','विवाह, साझेदारी','आयु, परिवर्तन','भाग्य, धर्म, पिता','करियर, प्रतिष्ठा, कर्म','लाभ, मित्र, इच्छाएं','हानि, व्यय, मोक्ष'];
+const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
@@ -177,7 +178,7 @@ function calculate(){
       [tr('Ascendant','लग्न'),`${RASHI[lagnaSign]} (${RASHI_EN[lagnaSign]})`],
       [tr('Lagna Degree','लग्न अंश'),`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
       [tr('Lagna Nakshatra','लग्न नक्षत्र'),`${NAKS[nakIdx]} (${tr('Pada','पद')} ${pada})`],
-      [tr('Lagna Lord','लग्नेश'),lordPlanet],
+      [tr('Lagna Lord','लग्नेश'),tr(lordPlanet,PLANET_HI[lordPlanet])],
       [tr('Lord placed in','स्वामी स्थित है'),`${tr('House','भाव')} ${lordHouse} (${RASHI[lordSign]})`],
       [tr('Ayanamsha','अयनांश'),`${ay.toFixed(3)}° ${tr('Lahiri','लाहिड़ी')}`],
     ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');

@@ -34,14 +34,14 @@ import Layout from '../../layouts/Layout.astro';
       <!-- What is section -->
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;">
         {[
-          { title:'Abhijit Muhurat', titleHi:'अभिजित मुहूर्त', icon:'☀️', text:'Named after the Nakshatra Abhijit (Vega), this is the 8th Muhurta of the day — centered on true solar noon, spanning half a Muhurta (day length ÷ 30) on each side. It is considered so auspicious that it can override most other restrictions. Works on all days except Wednesday (when Abhijit is weak).' },
-          { title:'Do Ghati Muhurat', titleHi:'दो घटी मुहूर्त', icon:'⏱️', text:'Two Ghatis (48 minutes) spanning solar noon. 1 Ghati = 24 minutes. This is the core of Abhijit — the most concentrated auspicious window of the day. Ideal for starting important ceremonies that could not find another Muhurta.' },
-          { title:'Brahma Muhurta', titleHi:'ब्रह्म मुहूर्त', icon:'🌅', text:'The "Creator\'s Hour" — 1 hour 36 minutes before sunrise (specifically 3 Muhurtas: 96 min before sunrise to 48 min before sunrise). Best for spiritual practice, meditation, study, and early morning rituals. Associated with clarity, memory, and divine connection.' },
+          { title:'Abhijit Muhurat', titleHi:'अभिजित मुहूर्त', icon:'☀️', text:'Named after the Nakshatra Abhijit (Vega), this is the 8th Muhurta of the day — centered on true solar noon, spanning half a Muhurta (day length ÷ 30) on each side. It is considered so auspicious that it can override most other restrictions. Works on all days except Wednesday (when Abhijit is weak).', textHi:'नक्षत्र अभिजित (वेगा) के नाम पर रखा गया, यह दिन का 8वां मुहूर्त है — सही सौर मध्याह्न पर केंद्रित, जो प्रत्येक ओर आधा मुहूर्त (दिन की लंबाई ÷ 30) फैला होता है। यह इतना शुभ माना जाता है कि यह अधिकांश अन्य बाधाओं को निष्प्रभावी कर सकता है। बुधवार को छोड़कर सभी दिनों में कार्य करता है (जब अभिजित कमजोर होता है)।' },
+          { title:'Do Ghati Muhurat', titleHi:'दो घटी मुहूर्त', icon:'⏱️', text:'Two Ghatis (48 minutes) spanning solar noon. 1 Ghati = 24 minutes. This is the core of Abhijit — the most concentrated auspicious window of the day. Ideal for starting important ceremonies that could not find another Muhurta.', textHi:'सौर मध्याह्न के चारों ओर फैली दो घटी (48 मिनट)। 1 घटी = 24 मिनट। यह अभिजित का मूल है — दिन की सबसे सघन शुभ अवधि। महत्वपूर्ण समारोहों के लिए आदर्श जिन्हें कोई अन्य मुहूर्त नहीं मिल पाया।' },
+          { title:'Brahma Muhurta', titleHi:'ब्रह्म मुहूर्त', icon:'🌅', text:'The "Creator\'s Hour" — 1 hour 36 minutes before sunrise (specifically 3 Muhurtas: 96 min before sunrise to 48 min before sunrise). Best for spiritual practice, meditation, study, and early morning rituals. Associated with clarity, memory, and divine connection.', textHi:'‘सृष्टिकर्ता का समय’ — सूर्योदय से 1 घंटा 36 मिनट पहले (विशेष रूप से 3 मुहूर्त: सूर्योदय से 96 मिनट पहले से 48 मिनट पहले तक)। आध्यात्मिक साधना, ध्यान, अध्ययन और प्रातःकालीन अनुष्ठानों के लिए सर्वोत्तम। स्पष्टता, स्मरण शक्ति और दिव्य संबंध से जुड़ा हुआ।' },
         ].map(item => (
           <div class="card" style="padding:20px;">
             <div style="font-size:24px;margin-bottom:10px;">{item.icon}</div>
             <p data-hi={item.titleHi} style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">{item.title}</p>
-            <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">{item.text}</p>
+            <p data-hi={item.textHi} style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">{item.text}</p>
           </div>
         ))}
       </div>

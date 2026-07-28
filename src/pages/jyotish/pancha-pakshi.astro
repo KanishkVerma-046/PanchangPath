@@ -142,7 +142,7 @@ function calculate(){
     const wd=now.getDay();const dayBird=DAY_BIRD[wd];
     const nowMins=now.getHours()*60+now.getMinutes();
     const isToday=dateStr===new Date().toISOString().split('T')[0];
-    document.getElementById('period-sub').textContent=`${now.toDateString()} · ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${BIRDS[dayBird]} · ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
+    document.getElementById('period-sub').textContent=`${formatLongDate(now.getFullYear(),now.getMonth()+1,now.getDate())} · ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[dayBird],BIRDS_HI[dayBird])} · ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
 
     function makePeriods(startMins,dur,nightOffset){
       let html='';
@@ -190,7 +190,7 @@ function calculateByNak(){
     const dayDur=(ssMins-srMins)/5;const nightDur=(srNextMins-ssMins)/5;
     const wd=now.getDay();const dayBird=DAY_BIRD[wd];
     const nowMins=now.getHours()*60+now.getMinutes();
-    document.getElementById('period-sub').textContent=`${now.toDateString()} \xb7 ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${BIRDS[dayBird]} \xb7 ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
+    document.getElementById('period-sub').textContent=`${formatLongDate(now.getFullYear(),now.getMonth()+1,now.getDate())} \xb7 ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[dayBird],BIRDS_HI[dayBird])} \xb7 ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
     function makePeriods2(startMins,dur,nightOffset){
       let html='';
       for(let i=0;i<5;i++){

@@ -102,6 +102,7 @@ const GOOD_YOGAS = [1,2,3,4,6,7,10,11,13,15,19,20,21,22,23,24,25];
 const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
 const VARA_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const VARA_NAMES_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
 // Rahu slots
 const RAHU_SLOTS=[7,1,6,4,5,2,3];
 
@@ -152,27 +153,28 @@ function scoreVivah(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;
   let score=0;
   const notes:string[]=[];
   const bad:string[]=[];
+  const varaName=isHindi?VARA_NAMES_HI[res.wd]:VARA_NAMES[res.wd];
   // Vara
-  if(VIVAH_GOOD_VARAS.includes(res.wd)){score+=3;notes.push(VARA_NAMES[res.wd]+' (good weekday)');}
-  else bad.push(VARA_NAMES[res.wd]+' (unfavourable day)');
+  if(VIVAH_GOOD_VARAS.includes(res.wd)){score+=3;notes.push(varaName+(isHindi?' (शुभ वार)':' (good weekday)'));}
+  else bad.push(varaName+(isHindi?' (प्रतिकूल वार)':' (unfavourable day)'));
   // Nakshatra
-  if(VIVAH_GOOD_NAKS.includes(res.nakIdx)){score+=4;notes.push(NAK_NAMES[res.nakIdx]+' (vivah nakshatra)');}
-  else if(PANCHAKA_NAKS.includes(res.nakIdx)){score-=3;bad.push('Panchaka ('+NAK_NAMES[res.nakIdx]+')');}
-  else bad.push(NAK_NAMES[res.nakIdx]+' (not ideal)');
+  if(VIVAH_GOOD_NAKS.includes(res.nakIdx)){score+=4;notes.push(NAK_NAMES[res.nakIdx]+(isHindi?' (विवाह नक्षत्र)':' (vivah nakshatra)'));}
+  else if(PANCHAKA_NAKS.includes(res.nakIdx)){score-=3;bad.push((isHindi?'पंचक (':'Panchaka (')+NAK_NAMES[res.nakIdx]+')');}
+  else bad.push(NAK_NAMES[res.nakIdx]+(isHindi?' (उपयुक्त नहीं)':' (not ideal)'));
   // Tithi
-  if(VIVAH_AVOID_TITHIS.includes(res.tithiIdx)){score-=4;bad.push(TITHI_NAMES[res.tithiIdx]+' (avoid)');}
-  else if(VIVAH_GOOD_TITHIS.includes(res.tithiIdx)&&res.paksha==='S'){score+=3;notes.push('Shukla '+TITHI_NAMES[res.tithiIdx]);}
+  if(VIVAH_AVOID_TITHIS.includes(res.tithiIdx)){score-=4;bad.push(TITHI_NAMES[res.tithiIdx]+(isHindi?' (वर्जित)':' (avoid)'));}
+  else if(VIVAH_GOOD_TITHIS.includes(res.tithiIdx)&&res.paksha==='S'){score+=3;notes.push((isHindi?'शुक्ल ':'Shukla ')+TITHI_NAMES[res.tithiIdx]);}
   else if(VIVAH_GOOD_TITHIS.includes(res.tithiIdx)){score+=1;notes.push(TITHI_NAMES[res.tithiIdx]);}
   // Yoga
-  if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push('Good yoga');}
+  if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push(isHindi?'शुभ योग':'Good yoga');}
   // Kharmas: Sun in Sagittarius (8) or Pisces (11) — dual-endpoint (start-of-day + end-of-day)
   // Sun-rashi check (Issue #35/#13) so a same-day Sankranti crossing can't slip past a fixed
   // 6 AM snapshot.
   const kharmas=sunRashiVoidCheck(y,m,d,loc.tz,KHARMAS_RASHIS);
-  if(kharmas.isVoid){score-=5;bad.push('Kharmas (Sun in '+(kharmas.rashiIdx===8?'Dhanu':'Meena')+')');}
+  if(kharmas.isVoid){score-=5;bad.push((isHindi?'खरमास (सूर्य ':'Kharmas (Sun in ')+(kharmas.rashiIdx===8?'Dhanu':'Meena')+')');}
   // Venus combust (Shukra Ast) — hard gate: no Vivah Muhurat exists on a combust-Venus date,
   // regardless of how favourable everything else scores (Issue #12).
-  if(res.venusCombust){bad.push('Venus combust (Shukra Ast) — voids Vivah Muhurat');score=-99;}
+  if(res.venusCombust){bad.push(isHindi?'शुक्र अस्त — विवाह मुहूर्त निष्प्रभावी':'Venus combust (Shukra Ast) — voids Vivah Muhurat');score=-99;}
   // Rahu Kala note (informational)
   return {score,notes,bad};
 }

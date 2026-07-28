@@ -131,6 +131,9 @@ const QUAL_HI={Movable:'चर',Fixed:'स्थिर',Dual:'द्विस्
 const DAY_HI={Sunday:'रविवार',Monday:'सोमवार',Tuesday:'मंगलवार',Wednesday:'बुधवार',Thursday:'गुरुवार',Friday:'शुक्रवार',Saturday:'शनिवार'};
 const COLOR_HI=['लाल, नारंगी','सफेद, क्रीम','हरा, पीला','चांदी, मोती','सोना, नारंगी','ग्रे, गहरा हरा','सफेद, हल्का नीला','लाल, मैरून','पीला, नारंगी','काला, गहरा नीला','आसमानी नीला, बैंगनी','समुद्री हरा, लैवेंडर'];
 const GEM_HI=['लाल मूंगा','हीरा / मोती','पन्ना','मोती','माणिक्य','पन्ना','हीरा','लाल मूंगा','पुखराज','नीलम','नीलम','पुखराज'];
+const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
+const SIGN_EN_TO_HI={};RASHI_EN.forEach((n,i)=>{SIGN_EN_TO_HI[n]=RASHI_HI[i];});
+function trCompat(list){return list.split(', ').map(n=>SIGN_EN_TO_HI[n]||n).join(', ');}
 
 const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
@@ -155,10 +158,10 @@ function calculate(){
     document.getElementById('r-name').textContent=`${RASHI[idx]} · ${RASHI_HI[idx]}`;
     document.getElementById('r-en').textContent=RASHI_EN[idx];
     document.getElementById('r-badges').innerHTML=
-      `<span class="badge badge-saffron">${tr(ELEM[idx],EL_HI[ELEM[idx]])}</span><span class="badge">${tr(QUAL[idx],QUAL_HI[QUAL[idx]])}</span><span class="badge">${tr('Lord','स्वामी')}: ${LORD[idx]}</span>`;
+      `<span class="badge badge-saffron">${tr(ELEM[idx],EL_HI[ELEM[idx]])}</span><span class="badge">${tr(QUAL[idx],QUAL_HI[QUAL[idx]])}</span><span class="badge">${tr('Lord','स्वामी')}: ${tr(LORD[idx],PLANET_HI[LORD[idx]])}</span>`;
     document.getElementById('detail-list').innerHTML=[
       [tr('Rashi','राशि'),`${RASHI[idx]} (${RASHI_EN[idx]})`],
-      [tr('Ruling Planet','स्वामी ग्रह'),LORD[idx]],
+      [tr('Ruling Planet','स्वामी ग्रह'),tr(LORD[idx],PLANET_HI[LORD[idx]])],
       [tr('Element','तत्व'),tr(ELEM[idx],EL_HI[ELEM[idx]])],
       [tr('Quality','गुण'),tr(QUAL[idx],QUAL_HI[QUAL[idx]])],
       [tr('Moon Degree','चंद्र अंश'),`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
@@ -172,8 +175,8 @@ function calculate(){
       [tr('Lucky Day','शुभ दिन'),tr(DAY[idx],DAY_HI[DAY[idx]]),'📅'],
       [tr('Lucky Gemstone','शुभ रत्न'),tr(GEM[idx],GEM_HI[idx]),'💎'],
       [tr('Lucky Number','शुभ अंक'),NUM[idx],'🔢'],
-      [tr('Compatible Rashis','अनुकूल राशियां'),COMPAT[idx],'❤️'],
-      [tr('Ruling Planet','स्वामी ग्रह'),LORD[idx],'🪐'],
+      [tr('Compatible Rashis','अनुकूल राशियां'),tr(COMPAT[idx],trCompat(COMPAT[idx])),'❤️'],
+      [tr('Ruling Planet','स्वामी ग्रह'),tr(LORD[idx],PLANET_HI[LORD[idx]]),'🪐'],
     ].map(r=>`<div style="padding:12px 14px;background:var(--color-canvas-soft);border-radius:8px;"><p style="font-size:10px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">${r[0]}</p><p style="font-size:13.5px;font-weight:600;color:var(--color-ink);margin:0;">${r[2]} ${r[1]}</p></div>`).join('');
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
