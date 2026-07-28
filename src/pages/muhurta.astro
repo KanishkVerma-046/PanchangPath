@@ -50,8 +50,8 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
         ].map(t => (
           <a href={t.href} class="card" style="padding:20px;text-decoration:none;display:block;transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
             <div style="font-size:24px;margin-bottom:10px;">{t.icon}</div>
-            <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;">{t.title}</p>
-            <p style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 8px;">{t.titleHi}</p>
+            <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;" data-hi={t.titleHi}>{t.title}</p>
+            <p style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 8px;" data-hi={t.title}>{t.titleHi}</p>
             <p data-hi={t.descHi} style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">{t.desc}</p>
           </a>
         ))}
@@ -71,8 +71,8 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
           <a href={t.href} class="card" style="padding:20px;text-decoration:none;display:block;position:relative;transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
             {t.badge && <span data-hi={t.badgeHi} style="position:absolute;top:12px;right:12px;font-size:9px;font-weight:700;padding:2px 8px;background:var(--color-saffron-soft);color:var(--color-saffron-deep);border-radius:100px;border:1px solid rgba(255,153,51,0.3);">{t.badge}</span>}
             <div style="font-size:24px;margin-bottom:10px;">{t.icon}</div>
-            <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;">{t.title}</p>
-            <p style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 8px;">{t.titleHi}</p>
+            <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;" data-hi={t.titleHi}>{t.title}</p>
+            <p style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 8px;" data-hi={t.title}>{t.titleHi}</p>
             <p data-hi={t.descHi} style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">{t.desc}</p>
           </a>
         ))}

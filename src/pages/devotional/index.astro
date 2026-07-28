@@ -47,8 +47,8 @@ const DESC_HI: Record<string, string> = {
             <a href={c.url} class="dv-cat-card card">
               <span class="dv-cat-icon" style={`background:${c.gradient}`}>{c.icon}</span>
               <div class="dv-cat-body">
-                <h3 class="dv-cat-title">{c.label}</h3>
-                <p class="dv-cat-title-hi hi-text" style="display:none">{c.labelHi}</p>
+                <h3 class="dv-cat-title"><span class="en-text">{c.label}</span><span class="hi-text" style="display:none">{c.labelHi}</span></h3>
+                <p class="dv-cat-title-hi"><span class="en-text">{c.labelHi}</span><span class="hi-text" style="display:none">{c.label}</span></p>
                 <p class="dv-cat-desc" data-hi={DESC_HI[c.id]}>{c.description}</p>
               </div>
             </a>
@@ -56,8 +56,8 @@ const DESC_HI: Record<string, string> = {
             <div class="dv-cat-card dv-cat-soon card">
               <span class="dv-cat-icon" style={`background:${c.gradient}`}>{c.icon}</span>
               <div class="dv-cat-body">
-                <h3 class="dv-cat-title">{c.label}</h3>
-                <p class="dv-cat-title-hi hi-text" style="display:none">{c.labelHi}</p>
+                <h3 class="dv-cat-title"><span class="en-text">{c.label}</span><span class="hi-text" style="display:none">{c.labelHi}</span></h3>
+                <p class="dv-cat-title-hi"><span class="en-text">{c.labelHi}</span><span class="hi-text" style="display:none">{c.label}</span></p>
                 <p class="dv-cat-desc" data-hi={DESC_HI[c.id]}>{c.description}</p>
                 <span class="dv-soon-badge" data-hi="जल्द आ रहा है">Coming Soon</span>
               </div>
