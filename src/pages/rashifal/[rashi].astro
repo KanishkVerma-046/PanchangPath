@@ -52,7 +52,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
         <span style="margin:0 6px;">›</span>
         <a href="/rashifal" data-hi="राशिफल" style="color:var(--color-mute);text-decoration:none;">Rashifal</a>
         <span style="margin:0 6px;">›</span>
-        <span style="color:var(--color-ink);">{rashi.name}</span>
+        <span style="color:var(--color-ink);" data-hi={rashi.nameHi}>{rashi.name}</span>
       </nav>
     </div>
   </div>
@@ -79,10 +79,12 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
         </div>
         <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
           <a href={`/rashifal/${prevRashi.id}`} class="rashi-nav-btn" title={`${prevRashi.name} Rashifal`}>
-            ← <RashiIcon name={prevRashi.id} color="#fff" size={14} /> {prevRashi.name}
+            ← <RashiIcon name={prevRashi.id} color="#fff" size={14} />
+            <span class="en-text">{prevRashi.name}</span><span class="hi-text" style="display:none">{prevRashi.nameHi}</span>
           </a>
           <a href={`/rashifal/${nextRashi.id}`} class="rashi-nav-btn" title={`${nextRashi.name} Rashifal`}>
-            {nextRashi.name} <RashiIcon name={nextRashi.id} color="#fff" size={14} /> →
+            <span class="en-text">{nextRashi.name}</span><span class="hi-text" style="display:none">{nextRashi.nameHi}</span>
+            <RashiIcon name={nextRashi.id} color="#fff" size={14} /> →
           </a>
         </div>
       </div>
@@ -178,7 +180,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
         <aside class="rd-sidebar">
           <!-- Rashi details -->
           <div class="card" style="padding:20px;margin-bottom:12px;">
-            <p class="caption-mono" data-hi={`${rashi.name} · अवलोकन`} style="color:var(--color-mute);margin:0 0 16px;">{rashi.name} · Overview</p>
+            <p class="caption-mono" data-hi={`${rashi.nameHi} · अवलोकन`} style="color:var(--color-mute);margin:0 0 16px;">{rashi.name} · Overview</p>
             <div class="rd-info-grid">
               <div class="rd-info-item">
                 <span class="rd-info-label" data-hi="स्वामी ग्रह">Ruling Planet</span>

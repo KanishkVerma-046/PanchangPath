@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
-import { formatDateHi } from '../../lib/date-i18n';
+import { formatDateHi, WD_EN_LONG, WD_HI_LONG } from '../../lib/date-i18n';
 
 const today = new Date();
 const dateLabel = formatDateHi(today, false, { weekday: 'long' });
@@ -46,6 +46,10 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
           const weekly = getWeeklyPrediction(rashi, today);
           const monthly = getMonthlyPrediction(rashi, today);
           const yearly = getYearlyPrediction(rashi, today);
+          const dailyHi = getDailyPrediction(rashi, today, true);
+          const weeklyHi = getWeeklyPrediction(rashi, today, true);
+          const monthlyHi = getMonthlyPrediction(rashi, today, true);
+          const yearlyHi = getYearlyPrediction(rashi, today, true);
           return (
             <div class="rfi-card animate-in" style={`animation-delay:${idx * 35}ms`} data-rashi={rashi.id}>
               <!-- Colored header strip -->
@@ -61,19 +65,23 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
 
               <!-- Prediction content area — all periods pre-rendered, toggled by JS -->
               <div class="rfi-body">
-                <p class="rfi-text" data-for="daily">{daily}</p>
-                <p class="rfi-text" data-for="weekly" hidden>{weekly}</p>
-                <p class="rfi-text" data-for="monthly" hidden>{monthly}</p>
-                <p class="rfi-text" data-for="yearly" hidden>{yearly}</p>
+                <p class="rfi-text" data-for="daily" data-lang="en">{daily}</p>
+                <p class="rfi-text" data-for="daily" data-lang="hi" style="display:none">{dailyHi}</p>
+                <p class="rfi-text" data-for="weekly" data-lang="en" style="display:none">{weekly}</p>
+                <p class="rfi-text" data-for="weekly" data-lang="hi" style="display:none">{weeklyHi}</p>
+                <p class="rfi-text" data-for="monthly" data-lang="en" style="display:none">{monthly}</p>
+                <p class="rfi-text" data-for="monthly" data-lang="hi" style="display:none">{monthlyHi}</p>
+                <p class="rfi-text" data-for="yearly" data-lang="en" style="display:none">{yearly}</p>
+                <p class="rfi-text" data-for="yearly" data-lang="hi" style="display:none">{yearlyHi}</p>
 
                 <div class="rfi-footer">
                   <div class="rfi-lucky">
                     <span class="rfi-lucky-item">
                       <span class="rfi-lucky-dot" style={`background:${rashi.luckyColorHex}`}></span>
-                      {rashi.luckyColor}
+                      <span data-hi={rashi.luckyColorHi}>{rashi.luckyColor}</span>
                     </span>
                     <span class="rfi-lucky-item">🔢 {rashi.luckyNumbers.join(', ')}</span>
-                    <span class="rfi-lucky-item">📅 {rashi.luckyDay}</span>
+                    <span class="rfi-lucky-item">📅 <span data-hi={WD_HI_LONG[WD_EN_LONG.indexOf(rashi.luckyDay)]}>{rashi.luckyDay}</span></span>
                   </div>
                   <a href={`/rashifal/${rashi.id}`} class="rfi-detail-link" data-hi="पूर्ण भविष्यवाणी →">
                     Full prediction →
@@ -146,14 +154,22 @@ import { getRashiByNameLetter } from '../../lib/rashifal';
 let activePeriod = 'daily';
 let isHindi = false;
 
+// Each .rfi-text carries both a period (data-for) and a language (data-lang);
+// visibility requires both to match the active period AND active language —
+// driven from one place so setPeriod() and applyPageLang() can't disagree.
+function updateRfiVisibility() {
+  const lang = isHindi ? 'hi' : 'en';
+  document.querySelectorAll<HTMLElement>('.rfi-text').forEach(el => {
+    el.style.display = (el.dataset.for === activePeriod && el.dataset.lang === lang) ? '' : 'none';
+  });
+}
+
 function setPeriod(period: string) {
   activePeriod = period;
   document.querySelectorAll<HTMLButtonElement>('.period-btn').forEach(b => {
     b.classList.toggle('active', b.dataset.period === period);
   });
-  document.querySelectorAll<HTMLElement>('.rfi-text').forEach(el => {
-    el.hidden = el.dataset.for !== activePeriod;
-  });
+  updateRfiVisibility();
 }
 
 document.querySelectorAll<HTMLButtonElement>('.period-btn').forEach(btn => {
@@ -258,6 +274,7 @@ function applyPageLang(hindi: boolean) {
   });
   document.querySelectorAll<HTMLElement>('.en-text').forEach(el => { el.style.display = hindi ? 'none' : ''; });
   document.querySelectorAll<HTMLElement>('.hi-text').forEach(el => { el.style.display = hindi ? '' : 'none'; });
+  updateRfiVisibility();
   const nameInput = document.getElementById('name-input-full') as HTMLInputElement | null;
   if (nameInput) nameInput.placeholder = hindi ? 'पहला नाम…' : 'First name…';
 }
