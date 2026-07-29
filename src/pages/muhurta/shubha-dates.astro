@@ -73,17 +73,17 @@ import { MUHURTA_CRITERIA, sunRashiVoidCheck, KHARMAS_RASHIS } from '../../lib/m
 import { formatDateHi } from '../../lib/date-i18n';
 
 const LOCS = [
-  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
-  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
-  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
-  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
-  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
-  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
-  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
-  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
-  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
-  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
-  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
+  {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',nameHi:'मुंबई',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',nameHi:'बेंगलुरू',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',nameHi:'चेन्नई',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',nameHi:'कोलकाता',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',nameHi:'हैदराबाद',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',nameHi:'जयपुर',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',nameHi:'वाराणसी',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',nameHi:'दुबई',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',nameHi:'न्यूयॉर्क',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',nameHi:'लंदन',lat:51.5074,lng:-0.1278,tz:1},
 ];
 
 type Activity = 'vehicle'|'property'|'business'|'general';
@@ -121,7 +121,9 @@ const CRITERIA: Record<Activity,{label:string;naks:number[];tithis:number[];vara
 const GOOD_YOGAS = [1,2,3,4,6,7,10,11,13,15,19,20,21,22,23,24,25];
 const PANCHAKA_NAKS = [22,23,24,25,26];
 const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAK_NAMES_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
 const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+const TITHI_NAMES_HI=['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा','प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','अमावस्या'];
 const VARA_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const VARA_NAMES_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
 const RAHU_SLOTS=[7,1,6,4,5,2,3];
@@ -164,11 +166,13 @@ function scoreDay(res:ReturnType<typeof calcDay>,activity:Activity,y:number,m:nu
   const varaName=isHindi?VARA_NAMES_HI[res.wd]:VARA_NAMES[res.wd];
   if(c.varas.includes(res.wd)){score+=3;notes.push(varaName);}
   else bad.push(varaName+(isHindi?' (उपयुक्त नहीं)':' (not ideal)'));
-  if(c.avoidNaks.includes(res.nakIdx)){score-=3;bad.push(NAK_NAMES[res.nakIdx]+(isHindi?' (वर्जित)':' (avoid)'));}
-  else if(c.naks.includes(res.nakIdx)){score+=4;notes.push(NAK_NAMES[res.nakIdx]);}
+  const nakName=isHindi?NAK_NAMES_HI[res.nakIdx]:NAK_NAMES[res.nakIdx];
+  const tithiName=isHindi?TITHI_NAMES_HI[res.tithiIdx]:TITHI_NAMES[res.tithiIdx];
+  if(c.avoidNaks.includes(res.nakIdx)){score-=3;bad.push(nakName+(isHindi?' (वर्जित)':' (avoid)'));}
+  else if(c.naks.includes(res.nakIdx)){score+=4;notes.push(nakName);}
   else if(PANCHAKA_NAKS.includes(res.nakIdx)){score-=1;bad.push(isHindi?'पंचक':'Panchaka');}
-  if(c.avoidTithis.includes(res.tithiIdx)){score-=3;bad.push(TITHI_NAMES[res.tithiIdx]+(isHindi?' (वर्जित)':' (avoid)'));}
-  else if(c.tithis.includes(res.tithiIdx)){score+=3;notes.push(TITHI_NAMES[res.tithiIdx]);}
+  if(c.avoidTithis.includes(res.tithiIdx)){score-=3;bad.push(tithiName+(isHindi?' (वर्जित)':' (avoid)'));}
+  else if(c.tithis.includes(res.tithiIdx)){score+=3;notes.push(tithiName);}
   if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push(isHindi?'शुभ योग':'Auspicious yoga');}
   // Dual-endpoint (start-of-day + end-of-day) Sun-rashi check (Issue #35/#13) so a same-day
   // Sankranti crossing can't slip past a fixed 6 AM snapshot.
@@ -186,7 +190,12 @@ let currentActivity:Activity='vehicle';
 
 // Init UI
 const sel=document.getElementById('sd-city') as HTMLSelectElement;
-sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(isHindi?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 
 // Pre-fill from the header's location picker (same "today, my location" scope as the homepage)
 function applyHeaderLoc(loc:any){
@@ -194,9 +203,9 @@ function applyHeaderLoc(loc:any){
   const norm=(s:string)=>s.trim().toLowerCase();
   let match=LOCS.find(l=>norm(l.name)===norm(loc.name));
   if(!match){
-    match={name:loc.name,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
+    match={name:loc.name,nameHi:loc.nameHi,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
     LOCS.unshift(match);
-    sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+    renderCityOptions();
   }
   sel.value=match.name;
 }
@@ -224,8 +233,8 @@ function updateTabs(){
   if(critEl){
     critEl.innerHTML=[
       {label:isHindi?'विवरण':'Description',text:isHindi?crit.descHi:crit.desc},
-      {label:isHindi?'शुभ नक्षत्र':'Good Nakshatras',text:crit.naks.map(i=>NAK_NAMES[i]).join(', ')},
-      {label:isHindi?'शुभ तिथियां':'Good Tithis',text:crit.tithis.map(i=>TITHI_NAMES[i]).join(', ')},
+      {label:isHindi?'शुभ नक्षत्र':'Good Nakshatras',text:crit.naks.map(i=>isHindi?NAK_NAMES_HI[i]:NAK_NAMES[i]).join(', ')},
+      {label:isHindi?'शुभ तिथियां':'Good Tithis',text:crit.tithis.map(i=>isHindi?TITHI_NAMES_HI[i]:TITHI_NAMES[i]).join(', ')},
       {label:isHindi?'शुभ वार':'Good Weekdays',text:crit.varas.map(i=>isHindi?VARA_NAMES_HI[i]:VARA_NAMES[i]).join(', ')},
     ].map(c=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">${c.label}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${c.text}</p></div>`).join('');
   }
@@ -285,7 +294,7 @@ function findDates(scroll=true){
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
           <div>
             <p style="font-size:16px;font-weight:700;color:${tc};margin:0;">${formatDateHi(r.date, isHindi, { weekday: 'long', month: 'short' })}</p>
-            <p style="font-size:11px;color:${mut};margin:3px 0 0;font-family:var(--font-mono);">${NAK_NAMES[r.res.nakIdx]} · ${TITHI_NAMES[r.res.tithiIdx]}</p>
+            <p style="font-size:11px;color:${mut};margin:3px 0 0;font-family:var(--font-mono);">${isHindi?NAK_NAMES_HI[r.res.nakIdx]:NAK_NAMES[r.res.nakIdx]} · ${isHindi?TITHI_NAMES_HI[r.res.tithiIdx]:TITHI_NAMES[r.res.tithiIdx]}</p>
           </div>
           <span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;background:${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 85%)':lc+'18'};color:${isTop?'var(--color-on-primary)':lc};border:1px solid ${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 80%)':lc+'44'};">${label}</span>
         </div>
@@ -305,6 +314,7 @@ document.getElementById('sd-find')?.addEventListener('click',()=>findDates(true)
 
 function applyPageLang(hindi: boolean) {
   isHindi = hindi;
+  renderCityOptions();
   document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);

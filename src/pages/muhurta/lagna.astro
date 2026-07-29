@@ -46,18 +46,18 @@ import { calcLagna } from '../../lib/astro-core';
 import { lahiriAyanamsha } from '../../lib/panchang';
 
 const LOCS = [
-  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
-  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
-  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
-  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
-  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
-  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
-  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
-  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
-  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
-  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
-  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
-  {name:'Singapore',lat:1.3521,lng:103.8198,tz:8},
+  {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',nameHi:'मुंबई',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',nameHi:'बेंगलुरू',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',nameHi:'चेन्नई',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',nameHi:'कोलकाता',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',nameHi:'हैदराबाद',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',nameHi:'जयपुर',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',nameHi:'वाराणसी',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',nameHi:'दुबई',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',nameHi:'न्यूयॉर्क',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',nameHi:'लंदन',lat:51.5074,lng:-0.1278,tz:1},
+  {name:'Singapore',nameHi:'सिंगापुर',lat:1.3521,lng:103.8198,tz:8},
 ];
 
 let isHindi = false;
@@ -67,7 +67,11 @@ const RASHI_EN = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scor
 const RASHI_LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const PLANET_HI = {Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 const EN_TO_RASHI_SANSKRIT = {};RASHI_EN.forEach((n,i)=>{EN_TO_RASHI_SANSKRIT[n]=RASHI_NAMES[i];});
-function trSigns(list){return list.replace(/\b(Aries|Taurus|Gemini|Cancer|Leo|Virgo|Libra|Scorpio|Sagittarius|Capricorn|Aquarius|Pisces)\b/g,n=>EN_TO_RASHI_SANSKRIT[n]||n);}
+const EN_TO_RASHI_HI = {};RASHI_EN.forEach((n,i)=>{EN_TO_RASHI_HI[n]=RASHI_HI[i];});
+function trSigns(list){
+  const map=isHindi?EN_TO_RASHI_HI:EN_TO_RASHI_SANSKRIT;
+  return list.replace(/\b(Aries|Taurus|Gemini|Cancer|Leo|Virgo|Libra|Scorpio|Sagittarius|Capricorn|Aquarius|Pisces)\b/g,n=>map[n]||n);
+}
 const RASHI_QUALITY: Record<number,string> = {
   1:'Good', 2:'Best', 3:'Good', 4:'Avoid (Lagna Lord = Moon — ok for water activity)',
   5:'Good', 6:'Good', 7:'Best', 8:'Avoid', 9:'Good', 10:'Avoid', 11:'Good', 12:'Avoid',
@@ -94,7 +98,12 @@ function fmtMins(m:number){
 }
 
 const sel=document.getElementById('lg-city') as HTMLSelectElement;
-sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(isHindi?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 const dateInput=document.getElementById('lg-date') as HTMLInputElement;
 dateInput.value=new Date().toISOString().split('T')[0];
 
@@ -104,9 +113,9 @@ function applyHeaderLoc(loc:any){
   const norm=(s:string)=>s.trim().toLowerCase();
   let match=LOCS.find(l=>norm(l.name)===norm(loc.name));
   if(!match){
-    match={name:loc.name,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
+    match={name:loc.name,nameHi:loc.nameHi,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
     LOCS.unshift(match);
-    sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+    renderCityOptions();
   }
   sel.value=match.name;
 }
@@ -189,7 +198,7 @@ function renderGuide(){
     {activity:'Business Start',activityHi:'व्यापार शुरुआत',lagnas:'Gemini, Virgo, Libra, Aquarius, Sagittarius'},
     {activity:'Travel / Yatra',activityHi:'यात्रा',lagnas:'Aries, Gemini, Libra, Sagittarius, Aquarius'},
     {activity:'Vehicle Purchase',activityHi:'वाहन खरीद',lagnas:'Taurus, Gemini, Libra, Sagittarius'},
-    {activity:'Surgery / Medical',activityHi:'शल्य चिकित्सा',lagnas:'Aries, Scorpio — avoid Cancer, Capricorn',lagnasHi:'Mesha, Vrishchika — Karka, Makara से बचें'},
+    {activity:'Surgery / Medical',activityHi:'शल्य चिकित्सा',lagnas:'Aries, Scorpio — avoid Cancer, Capricorn',lagnasHi:'मेष, वृश्चिक — कर्क, मकर से बचें'},
   ].map(g=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${isHindi?g.activityHi:g.activity}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${isHindi&&g.lagnasHi?g.lagnasHi:trSigns(g.lagnas)}</p></div>`).join('');
 }
 renderGuide();
@@ -199,6 +208,7 @@ calculate();
 
 function applyPageLang(hindi: boolean) {
   isHindi = hindi;
+  renderCityOptions();
   document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);

@@ -57,18 +57,18 @@ import Layout from '../../layouts/Layout.astro';
 import { sunriseUTC } from '../../lib/panchang';
 
 const LOCS = [
-  {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
-  {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
-  {name:'Bengaluru',lat:12.9716,lng:77.5946,tz:5.5},
-  {name:'Chennai',lat:13.0827,lng:80.2707,tz:5.5},
-  {name:'Kolkata',lat:22.5726,lng:88.3639,tz:5.5},
-  {name:'Hyderabad',lat:17.385,lng:78.4867,tz:5.5},
-  {name:'Jaipur',lat:26.9124,lng:75.7873,tz:5.5},
-  {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
-  {name:'Dubai',lat:25.2048,lng:55.2708,tz:4},
-  {name:'New York',lat:40.7128,lng:-74.006,tz:-4},
-  {name:'London',lat:51.5074,lng:-0.1278,tz:1},
-  {name:'Singapore',lat:1.3521,lng:103.8198,tz:8},
+  {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',nameHi:'मुंबई',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',nameHi:'बेंगलुरू',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',nameHi:'चेन्नई',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',nameHi:'कोलकाता',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',nameHi:'हैदराबाद',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',nameHi:'जयपुर',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',nameHi:'वाराणसी',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',nameHi:'दुबई',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',nameHi:'न्यूयॉर्क',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',nameHi:'लंदन',lat:51.5074,lng:-0.1278,tz:1},
+  {name:'Singapore',nameHi:'सिंगापुर',lat:1.3521,lng:103.8198,tz:8},
 ];
 
 // Chaldean sequence: Sun→Venus→Mercury→Moon→Saturn→Jupiter→Mars
@@ -102,7 +102,12 @@ function fmtMins(m:number){
 }
 
 const sel=document.getElementById('hora-city') as HTMLSelectElement;
-sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(isHindi?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 const dateInput=document.getElementById('hora-date') as HTMLInputElement;
 dateInput.value=new Date().toISOString().split('T')[0];
 
@@ -112,9 +117,9 @@ function applyHeaderLoc(loc:any){
   const norm=(s:string)=>s.trim().toLowerCase();
   let match=LOCS.find(l=>norm(l.name)===norm(loc.name));
   if(!match){
-    match={name:loc.name,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
+    match={name:loc.name,nameHi:loc.nameHi,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
     LOCS.unshift(match);
-    sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+    renderCityOptions();
   }
   sel.value=match.name;
 }
@@ -207,6 +212,7 @@ calculate();
 
 function applyPageLang(hindi: boolean) {
   isHindi = hindi;
+  renderCityOptions();
   document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
