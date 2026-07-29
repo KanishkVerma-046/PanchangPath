@@ -65,7 +65,7 @@ const curYear = today.getFullYear();
             onmouseout="this.style.borderColor='var(--color-hairline)';this.style.color='var(--color-ink)'"
           >
             <span style={`font-size:16px;font-family:sans-serif;color:${TRADITION_COLORS[r.code]};`}>{r.nativeName[0]}</span>
-            {r.name}
+            <span data-hi={r.nameHi}>{r.name}</span>
           </a>
         ))}
       </div>

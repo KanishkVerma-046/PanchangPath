@@ -6,6 +6,7 @@ export interface RegionDef {
   code: RegionCode;
   slug: string;
   name: string;         // English
+  nameHi: string;
   nativeName: string;   // Own script
   calendarName: string; // e.g. "Bengali Panjika"
   calendarNameHi: string;
@@ -84,6 +85,7 @@ export const REGIONS: RegionDef[] = [
     code: 'bn',
     slug: 'bengali',
     name: 'Bengali',
+    nameHi: 'बंगाली',
     nativeName: 'বাংলা',
     calendarName: 'Bengali Panjika',
     calendarNameHi: 'बंगाली पंजिका',
@@ -138,6 +140,7 @@ export const REGIONS: RegionDef[] = [
     code: 'as',
     slug: 'assamese',
     name: 'Assamese',
+    nameHi: 'असमिया',
     nativeName: 'অসমীয়া',
     calendarName: 'Assamese Panjika',
     calendarNameHi: 'असमिया पंजिका',
@@ -189,6 +192,7 @@ export const REGIONS: RegionDef[] = [
     code: 'ta',
     slug: 'tamil',
     name: 'Tamil',
+    nameHi: 'तमिल',
     nativeName: 'தமிழ்',
     calendarName: 'Tamil Panchangam',
     calendarNameHi: 'तमिल पंचांगम',
@@ -241,6 +245,7 @@ export const REGIONS: RegionDef[] = [
     code: 'ml',
     slug: 'malayalam',
     name: 'Malayalam',
+    nameHi: 'मलयालम',
     nativeName: 'മലയാളം',
     calendarName: 'Malayalam Panchangam',
     calendarNameHi: 'मलयालम पंचांगम',
@@ -292,6 +297,7 @@ export const REGIONS: RegionDef[] = [
     code: 'mr',
     slug: 'marathi',
     name: 'Marathi',
+    nameHi: 'मराठी',
     nativeName: 'मराठी',
     calendarName: 'Marathi Panchang',
     calendarNameHi: 'मराठी पंचांग',
@@ -342,6 +348,7 @@ export const REGIONS: RegionDef[] = [
     code: 'gu',
     slug: 'gujarati',
     name: 'Gujarati',
+    nameHi: 'गुजराती',
     nativeName: 'ગુજરાતી',
     calendarName: 'Gujarati Panchang',
     calendarNameHi: 'गुजराती पंचांग',
@@ -390,6 +397,7 @@ export const REGIONS: RegionDef[] = [
     code: 'kn',
     slug: 'kannada',
     name: 'Kannada',
+    nameHi: 'कन्नड़',
     nativeName: 'ಕನ್ನಡ',
     calendarName: 'Kannada Panchangam',
     calendarNameHi: 'कन्नड़ पंचांगम',
@@ -442,6 +450,7 @@ export const REGIONS: RegionDef[] = [
     code: 'te',
     slug: 'telugu',
     name: 'Telugu',
+    nameHi: 'तेलुगु',
     nativeName: 'తెలుగు',
     calendarName: 'Telugu Panchangam',
     calendarNameHi: 'तेलुगु पंचांगम',
@@ -492,6 +501,7 @@ export const REGIONS: RegionDef[] = [
     code: 'or',
     slug: 'odia',
     name: 'Odia',
+    nameHi: 'ओड़िया',
     nativeName: 'ଓଡ଼ିଆ',
     calendarName: 'Odia Panji',
     calendarNameHi: 'ओड़िया पंजी',
@@ -540,6 +550,7 @@ export const REGIONS: RegionDef[] = [
     code: 'ne',
     slug: 'nepali',
     name: 'Nepali',
+    nameHi: 'नेपाली',
     nativeName: 'नेपाली',
     calendarName: 'Nepali Patro',
     calendarNameHi: 'नेपाली पात्रो',
@@ -588,6 +599,7 @@ export const REGIONS: RegionDef[] = [
     code: 'iskcon',
     slug: 'iskcon',
     name: 'ISKCON',
+    nameHi: 'इस्कॉन',
     nativeName: 'वैष्णव',
     calendarName: 'ISKCON Vaishnava Panchang',
     calendarNameHi: 'इस्कॉन वैष्णव पंचांग',

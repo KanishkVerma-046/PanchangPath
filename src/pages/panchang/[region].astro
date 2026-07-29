@@ -15,6 +15,12 @@ export function getStaticPaths() {
 const { region: slug } = Astro.params;
 const regionDef = getRegionBySlug(slug!)!;
 
+const SCRIPT_HI: Record<string, string> = {
+  'Devanagari': 'देवनागरी',
+  'Devanagari / English': 'देवनागरी / अंग्रेज़ी',
+};
+const scriptHi = SCRIPT_HI[regionDef.script] ?? regionDef.nameHi;
+
 // Compute Panchang for this tradition's default city
 const today = new Date();
 const p = calculatePanchang(today, regionDef.defaultLat, regionDef.defaultLng, regionDef.defaultTzOffset);
@@ -251,7 +257,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
 
           <!-- ── All nakshatra names ─────────────────────────────────── -->
           <details class="rp-naksha-details">
-            <summary class="rp-naksha-summary">
+            <summary class="rp-naksha-summary" data-hi={`${regionDef.nameHi} में 27 नक्षत्र · ${scriptHi}`}>
               27 Nakshatras in {regionDef.name} · <span style={`color:${accent};`}>{regionDef.script}</span>
             </summary>
             <div class="rp-naksha-grid">
@@ -275,7 +281,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
             <p class="rp-info-body" data-hi={regionDef.descriptionHi}>{regionDef.description}</p>
             <div class="rp-info-row">
               <span class="rp-info-key" data-hi="लिपि">Script</span>
-              <span class="rp-info-val">{regionDef.script}</span>
+              <span class="rp-info-val" data-hi={scriptHi}>{regionDef.script}</span>
             </div>
             <div class="rp-info-row">
               <span class="rp-info-key" data-hi="कैलेंडर">Calendar</span>
@@ -299,7 +305,7 @@ const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
 
           <!-- Month names list -->
           <div class="rp-months-card">
-            <h3 class="rp-months-title" data-hi={`${regionDef.name} में 12 महीने`}>12 Months in {regionDef.name}</h3>
+            <h3 class="rp-months-title" data-hi={`${regionDef.nameHi} में 12 महीने`}>12 Months in {regionDef.name}</h3>
             <div class="rp-months-list">
               {regionDef.months.map((m, i) => (
                 <div class={`rp-month-item ${m === monthName ? 'rp-month-current' : ''}`}
