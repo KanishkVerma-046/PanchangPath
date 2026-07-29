@@ -1010,8 +1010,17 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
       el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
       el.lang = hindi ? 'hi' : 'en';
     });
-    if (searchInput) searchInput.placeholder = hindi ? 'पंचांग, त्योहार, मुहूर्त खोजें…' : 'Search panchang, festivals, muhurta…';
-    if (drawerSearchInput) drawerSearchInput.placeholder = hindi ? 'खोजें…' : 'Search…';
+    // Looked up directly (not via the outer searchInput/drawerSearchInput consts
+    // declared further down this script) because LanguagePicker.astro's replay
+    // shim can invoke this function synchronously, from inside the addEventListener
+    // call below, for returning visitors with a saved Hindi preference — i.e.
+    // before those consts have been initialized. Referencing them here would
+    // throw "Cannot access ... before initialization" (TDZ) and abort this
+    // function partway through, silently skipping everything after it.
+    const si = document.getElementById('search-input') as HTMLInputElement | null;
+    if (si) si.placeholder = hindi ? 'पंचांग, त्योहार, मुहूर्त खोजें…' : 'Search panchang, festivals, muhurta…';
+    const dsi = document.getElementById('drawer-search-input') as HTMLInputElement | null;
+    if (dsi) dsi.placeholder = hindi ? 'खोजें…' : 'Search…';
     const clockLink = document.getElementById('clock-link');
     if (clockLink) clockLink.title = hindi ? 'आज का पंचांग' : "Today's Panchang";
     const statusStrip = document.getElementById('status-strip');
