@@ -70,7 +70,7 @@ const MO_EN=['January','February','March','April','May','June','July','August','
 const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${RASHI_ICONS[id]}</svg>`;}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;const toR=d=>d*Math.PI/180;
 
@@ -89,6 +89,8 @@ const W_SIGNS=[
 {name:'Pisces',h:'मीन',sym:'♓',from:[2,19],to:[3,20],el:'Water',ruler:'Jupiter',quality:'Mutable',comp:'Cancer, Scorpio, Capricorn'}];
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
 const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 const SIGN_NAME_HI={};W_SIGNS.forEach(s=>{SIGN_NAME_HI[s.name]=s.h;});
@@ -125,7 +127,12 @@ const SOLAR_TRAITS_HI=[
 ];
 
 const sel=document.getElementById('f-city');
-sel.innerHTML='<option value="0">None (use date only)</option>'+LOCS.map((l,i)=>`<option value="${i+1}">${l.name}</option>`).join('');
+function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML='<option value="0">'+(LANG_HI?'कोई नहीं (केवल तिथि उपयोग करें)':'None (use date only)')+'</option>'+LOCS.map((l,i)=>`<option value="${i+1}">${LANG_HI?(l.nameHi||l.name):l.name}</option>`).join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
@@ -168,9 +175,9 @@ function calculate(){
 
     document.getElementById('diff-note').textContent=vIdx===wIdx
       ?tr('Your Western and Vedic Sun signs are both '+W_SIGNS[wIdx].name+'. This happens when the Sun is far enough into the sign that the ~24\xb0 ayanamsha shift does not push it into the previous sign.','आपकी पश्चिमी और वैदिक दोनों सूर्य राशियां '+W_SIGNS[wIdx].name+' हैं। ऐसा तब होता है जब सूर्य राशि में इतना आगे होता है कि ~24° अयनांश शिफ्ट उसे पिछली राशि में नहीं धकेलता।')
-      :tr('Your Western Sun sign is '+W_SIGNS[wIdx].name+', but your Vedic Sun sign is '+RASHI[vIdx]+' ('+W_SIGNS[vIdx].name+'). The difference comes from the ayanamsha — the ~24\xb0 precession gap between the tropical and sidereal zodiacs.','आपकी पश्चिमी सूर्य राशि '+W_SIGNS[wIdx].name+' है, लेकिन आपकी वैदिक सूर्य राशि '+RASHI[vIdx]+' ('+W_SIGNS[vIdx].name+') है। यह अंतर अयनांश के कारण है — सायन और निरयण राशिचक्रों के बीच लगभग 24° का अयन-गति अंतर।');
+      :tr('Your Western Sun sign is '+W_SIGNS[wIdx].name+', but your Vedic Sun sign is '+RASHI[vIdx]+' ('+W_SIGNS[vIdx].name+'). The difference comes from the ayanamsha — the ~24\xb0 precession gap between the tropical and sidereal zodiacs.','आपकी पश्चिमी सूर्य राशि '+W_SIGNS[wIdx].name+' है, लेकिन आपकी वैदिक सूर्य राशि '+trRashi(vIdx)+' ('+W_SIGNS[vIdx].name+') है। यह अंतर अयनांश के कारण है — सायन और निरयण राशिचक्रों के बीच लगभग 24° का अयन-गति अंतर।');
 
-    document.getElementById('trait-title').textContent=RASHI[vIdx]+' ('+W_SIGNS[vIdx].name+') '+tr('Sun','सूर्य');
+    document.getElementById('trait-title').textContent=trRashi(vIdx)+' ('+W_SIGNS[vIdx].name+') '+tr('Sun','सूर्य');
     document.getElementById('trait-text').textContent=tr(SOLAR_TRAITS[vIdx],SOLAR_TRAITS_HI[vIdx]);
 
     document.getElementById('result').style.display='block';
@@ -182,6 +189,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

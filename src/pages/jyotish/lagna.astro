@@ -91,7 +91,7 @@ const MO_HI=['जनवरी','फरवरी','मार्च','अप्र
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
 function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${RASHI_ICONS[id]}</svg>`;}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 
@@ -122,16 +122,25 @@ const LAGNA_TRAITS_HI=[
 'स्वतंत्र, आदर्शवादी और अपने समय से आगे, कुम्भ लग्न शनि और राहु द्वारा सह-शासित है, जो एक मानवतावादी, अपरंपरागत दृष्टिकोण देता है। आप व्यक्तिगत अहंकार से अधिक समुदाय और प्रगति को महत्व देते हैं, और अक्सर स्वयं से बड़े उद्देश्यों की ओर आकर्षित महसूस करते हैं। मौलिकता आपकी पहचान है।',
 'सहानुभूतिपूर्ण, कल्पनाशील और आध्यात्मिक रूप से जुड़ा, मीन लग्न गुरु द्वारा शासित है और व्यक्तित्व को एक कोमल, सीमाहीन गुण देता है। करुणा स्वाभाविक रूप से प्रवाहित होती है। कला, आस्था और सेवा आपकी सबसे स्वाभाविक अभिव्यक्तियां हैं, और आध्यात्मिक जगत भौतिक जगत से अधिक वास्तविक प्रतीत होता है।'];
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const SYM=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAKS_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
+function trNak(i){return tr(NAKS[i],NAKS_HI[i]);}
 const PLANETS=[['surya','Su'],['chandra','Mo'],['mangal','Ma'],['budha','Me'],['guru','Ju'],['shukra','Ve'],['shani','Sa'],['rahu','Ra'],['ketu','Ke']];
 const HOUSES=['Self, body, personality','Wealth, family, speech','Courage, siblings, effort','Home, mother, happiness','Children, intellect, romance','Enemies, health, debts','Marriage, partnership','Longevity, transformation','Fortune, dharma, father','Career, status, karma','Gains, friends, desires','Loss, expenses, moksha'];
 const HOUSES_HI=['स्वयं, शरीर, व्यक्तित्व','धन, परिवार, वाणी','साहस, भाई-बहन, प्रयास','घर, मां, सुख','संतान, बुद्धि, प्रेम','शत्रु, स्वास्थ्य, ऋण','विवाह, साझेदारी','आयु, परिवर्तन','भाग्य, धर्म, पिता','करियर, प्रतिष्ठा, कर्म','लाभ, मित्र, इच्छाएं','हानि, व्यय, मोक्ष'];
 const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 
-const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+const sel=document.getElementById('f-city');function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
@@ -171,26 +180,26 @@ function calculate(){
     PLANETS.forEach(([k,ab])=>{const sg=Math.floor(sid[k]/30);pbh[((sg-lagnaSign)+12)%12].push(ab);});
 
     document.getElementById('l-sym').innerHTML=rashiIconSvg(RASHI_ID[lagnaSign],48);
-    document.getElementById('l-name').textContent=`${RASHI[lagnaSign]} Lagna · ${RASHI_EN[lagnaSign]}`;
-    document.getElementById('l-meta').textContent=`${Math.floor(deg)}°${String(Math.floor((deg%1)*60)).padStart(2,'0')}' · ${NAKS[nakIdx]} Pada ${pada}`;
+    document.getElementById('l-name').textContent=`${trRashi(lagnaSign)} ${tr('Lagna','लग्न')} · ${RASHI_EN[lagnaSign]}`;
+    document.getElementById('l-meta').textContent=`${Math.floor(deg)}°${String(Math.floor((deg%1)*60)).padStart(2,'0')}' · ${trNak(nakIdx)} ${tr('Pada','पद')} ${pada}`;
     document.getElementById('chart-box').innerHTML=drawChart(signOfHouse,pbh);
     document.getElementById('detail-list').innerHTML=[
-      [tr('Ascendant','लग्न'),`${RASHI[lagnaSign]} (${RASHI_EN[lagnaSign]})`],
+      [tr('Ascendant','लग्न'),`${trRashi(lagnaSign)} (${RASHI_EN[lagnaSign]})`],
       [tr('Lagna Degree','लग्न अंश'),`${Math.floor(deg)}° ${String(Math.floor((deg%1)*60)).padStart(2,'0')}'`],
-      [tr('Lagna Nakshatra','लग्न नक्षत्र'),`${NAKS[nakIdx]} (${tr('Pada','पद')} ${pada})`],
+      [tr('Lagna Nakshatra','लग्न नक्षत्र'),`${trNak(nakIdx)} (${tr('Pada','पद')} ${pada})`],
       [tr('Lagna Lord','लग्नेश'),tr(lordPlanet,PLANET_HI[lordPlanet])],
-      [tr('Lord placed in','स्वामी स्थित है'),`${tr('House','भाव')} ${lordHouse} (${RASHI[lordSign]})`],
+      [tr('Lord placed in','स्वामी स्थित है'),`${tr('House','भाव')} ${lordHouse} (${trRashi(lordSign)})`],
       [tr('Ayanamsha','अयनांश'),`${ay.toFixed(3)}° ${tr('Lahiri','लाहिड़ी')}`],
     ].map(r=>`<div class="dl-row"><span>${r[0]}</span><span>${r[1]}</span></div>`).join('');
     document.getElementById('house-list').innerHTML=signOfHouse.map((sg,h)=>
       `<div style="padding:8px 10px;border-radius:7px;background:var(--color-canvas-soft-2);">
         <div style="display:flex;justify-content:space-between;align-items:baseline;">
           <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${tr('House','भाव')} ${h+1}</span>
-          <span style="font-size:10px;color:var(--color-saffron-deep);font-weight:600;">${RASHI[sg]}</span>
+          <span style="font-size:10px;color:var(--color-saffron-deep);font-weight:600;">${trRashi(sg)}</span>
         </div>
         <p style="font-size:10.5px;color:var(--color-mute);margin:2px 0 0;line-height:1.4;">${tr(HOUSES[h],HOUSES_HI[h])}</p>
       </div>`).join('');
-    document.getElementById('trait-title').textContent=RASHI[lagnaSign]+' '+tr('Lagna \xb7 Rising Sign','लग्न · उदय राशि');
+    document.getElementById('trait-title').textContent=trRashi(lagnaSign)+' '+tr('Lagna \xb7 Rising Sign','लग्न · उदय राशि');
     document.getElementById('trait-text').textContent=tr(LAGNA_TRAITS[lagnaSign],LAGNA_TRAITS_HI[lagnaSign]);
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
@@ -201,6 +210,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

@@ -98,7 +98,7 @@ const NADI_HI={Adi:'आदि',Madhya:'मध्य',Antya:'अंत्य'};
 const VARNA_HI={Brahmin:'ब्राह्मण',Kshatriya:'क्षत्रिय',Vaishya:'वैश्य',Shudra:'शूद्र',Mleccha:'म्लेच्छ'};
 const NAKS_ID=['ashwini','bharani','krittika','rohini','mrigashira','ardra','punarvasu','pushya','ashlesha','magha','purva-phalguni','uttara-phalguni','hasta','chitra','swati','vishakha','anuradha','jyeshtha','mula','purva-ashadha','uttara-ashadha','shravana','dhanishta','shatabhisha','purva-bhadrapada','uttara-bhadrapada','revati'];
 function nakIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${NAKSHATRA_ICONS[id]}</svg>`;}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 const toR=d=>d*Math.PI/180;
@@ -159,7 +159,12 @@ const NAKS_TRAITS_HI=[
 'विवेकपूर्ण, धैर्यवान और गहराई से करुणामय, आप असाधारण आंतरिक शक्ति और आध्यात्मिक सहनशक्ति वाले गहन विचारक हैं। एक शांत योद्धा जो निःस्वार्थ भाव से सेवा करता है, आपकी शक्ति सतह के नीचे बढ़ती है और जीवन को उन तरीकों से प्रभावित करती है जो शायद ही दिखाई देते हैं।',
 'दयालु, पालन-पोषण करने वाले और गहराई से आध्यात्मिक, आप एक सार्वभौमिक प्रेम और सहानुभूति का उपहार वहन करते हैं। कलात्मक, कल्पनाशील और कोमल, आप एक सेतु-निर्माता हैं जो चक्रों को पूर्ण करता है और आत्माओं को कोमलता से संक्रमणों व दहलीजों के पार मार्गदर्शन करता है।'];
 
-const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+const sel=document.getElementById('f-city');function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
@@ -217,6 +222,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

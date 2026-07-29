@@ -103,11 +103,13 @@ function planetLabel(planetStr,color){
   const svg=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-2px;">${PLANET_ICONS[PLANET_ID[planetStr]]}</svg>`;
   return `${svg} ${label}`;
 }
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;const toR=d=>d*Math.PI/180;const toD=r=>r*180/Math.PI;
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 
@@ -151,9 +153,9 @@ function showResults(lagnaSign,moonSign){
   lastLagnaSign=lagnaSign;lastMoonSign=moonSign;
   const lagnaLord=LORD[lagnaSign],moonLord=LORD[moonSign];
   document.getElementById('birth-info').innerHTML=[
-    [tr('Lagna (Ascendant)','लग्न (उदय राशि)'),RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
+    [tr('Lagna (Ascendant)','लग्न (उदय राशि)'),trRashi(lagnaSign)+' ('+RASHI_EN[lagnaSign]+')'],
     [tr('Lagna Lord','लग्नेश'),trPlanet(lagnaLord)],
-    [tr('Moon Rashi','चंद्र राशि'),RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
+    [tr('Moon Rashi','चंद्र राशि'),trRashi(moonSign)+' ('+RASHI_EN[moonSign]+')'],
     [tr('Moon Lord','चंद्रेश'),trPlanet(moonLord)],
   ].map(r=>`<div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">${r[0]}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`).join('');
 
@@ -168,15 +170,27 @@ function showResults(lagnaSign,moonSign){
 }
 
 // City dropdown
-const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+const sel=document.getElementById('f-city');function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
 // Rashi dropdowns for quick mode
-const rashiOptions=RASHI.map((r,i)=>`<option value="${i}">${r} (${RASHI_EN[i]})</option>`).join('');
-document.getElementById('q-lagna').innerHTML=rashiOptions;
-document.getElementById('q-moon').innerHTML=rashiOptions;
-document.getElementById('q-moon').value='3'; // default Moon to Karka
+function renderRashiOptions(){
+  const lagnaSel=document.getElementById('q-lagna');
+  const moonSel=document.getElementById('q-moon');
+  const lagnaSelected=lagnaSel.value, moonSelected=moonSel.value;
+  const rashiOptions=RASHI.map((r,i)=>`<option value="${i}">${trRashi(i)} (${RASHI_EN[i]})</option>`).join('');
+  lagnaSel.innerHTML=rashiOptions;
+  moonSel.innerHTML=rashiOptions;
+  if(lagnaSelected) lagnaSel.value=lagnaSelected;
+  moonSel.value=moonSelected||'3'; // default Moon to Karka
+}
+renderRashiOptions();
 
 // Mode switching
 document.getElementById('mode-birth').addEventListener('click',()=>{
@@ -238,6 +252,8 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
+  renderRashiOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

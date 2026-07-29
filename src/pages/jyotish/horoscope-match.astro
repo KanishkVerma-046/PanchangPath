@@ -80,13 +80,17 @@ function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay
 function echoDate(elId,dateStr){const el=document.getElementById(elId);if(!el||!dateStr)return;const[y,m,d]=dateStr.split('-').map(Number);el.textContent=tr('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);el.hidden=false;}
 const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
 function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;">${RASHI_ICONS[id]}</svg>`;}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 const toR=d=>d*Math.PI/180;
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAKS_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
+function trNak(i){return tr(NAKS[i],NAKS_HI[i]);}
 const GANA=[0,1,2,1,0,1,0,0,2,2,1,1,0,2,0,2,0,2,2,1,1,0,2,2,1,1,0]; // 0 Deva,1 Manushya,2 Rakshasa
 const GANA_NAME=['Deva','Manushya','Rakshasa'];
 const NADI=[0,1,2,2,1,0,0,1,2,2,1,0,0,1,2,2,1,0,0,1,2,2,1,0,0,1,2]; // 0 Adi,1 Madhya,2 Antya — standard Ashtakoot grouping (repeating 9-nakshatra cycle: Adi,Madhya,Antya,Antya,Madhya,Adi,Adi,Madhya,Antya)
@@ -107,7 +111,15 @@ const PLANET_NAME_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'�
 // Yoni bitter-enemy pairs (0 pts)
 const YONI_ENEMY=[[5,6],[7,9],[1,13],[0,8],[4,10],[3,12],[11,2]];
 
-['b-city','g-city'].forEach(id=>document.getElementById(id).innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join(''));
+function renderCityOptions(){
+  ['b-city','g-city'].forEach(id=>{
+    const el=document.getElementById(id);
+    const selected=el.value;
+    el.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+    if(selected) el.value=selected;
+  });
+}
+renderCityOptions();
 document.getElementById('b-date').value='1995-06-15';document.getElementById('b-time').value='10:30';
 document.getElementById('g-date').value='1997-09-20';document.getElementById('g-time').value='14:15';
 
@@ -120,12 +132,12 @@ function moonNakRashi(dateStr,timeStr,loc){
 
 function kVarna(b,g){const pt=VARNA_RANK[b.rashi]>=VARNA_RANK[g.rashi]?1:0;return{pt,max:1,bd:tr(VARNA_NAME[VARNA_RANK[b.rashi]],VARNA_NAME_HI[VARNA_RANK[b.rashi]]),gd:tr(VARNA_NAME[VARNA_RANK[g.rashi]],VARNA_NAME_HI[VARNA_RANK[g.rashi]])};}
 function kVashya(b,g){const bv=VASHYA[b.rashi],gv=VASHYA[g.rashi];let pt;if(bv===gv)pt=2;else if(Math.abs(bv-gv)===1)pt=1;else if((bv===0&&gv===2)||(gv===0&&bv===2))pt=1;else pt=0.5;return{pt,max:2,bd:String(bv),gd:String(gv)};}
-function kTara(b,g){let good=0;[[b.nak,g.nak],[g.nak,b.nak]].forEach(([s,t])=>{let c=((t-s+27)%27)+1;let tara=c%9;if(tara===0)tara=9;if(![3,5,7].includes(tara))good++;});const pt=good*1.5;return{pt,max:3,bd:NAKS[b.nak],gd:NAKS[g.nak]};}
+function kTara(b,g){let good=0;[[b.nak,g.nak],[g.nak,b.nak]].forEach(([s,t])=>{let c=((t-s+27)%27)+1;let tara=c%9;if(tara===0)tara=9;if(![3,5,7].includes(tara))good++;});const pt=good*1.5;return{pt,max:3,bd:trNak(b.nak),gd:trNak(g.nak)};}
 function kYoni(b,g){const by=YONI[b.nak],gy=YONI[g.nak];let pt;if(by===gy)pt=4;else if(YONI_ENEMY.some(p=>(p[0]===by&&p[1]===gy)||(p[1]===by&&p[0]===gy)))pt=0;else pt=3;return{pt,max:4,bd:tr(YONI_NAME[by],YONI_NAME_HI[YONI_NAME[by]]),gd:tr(YONI_NAME[gy],YONI_NAME_HI[YONI_NAME[gy]])};}
 function kMaitri(b,g){const bl=RASHI_LORD[b.rashi],gl=RASHI_LORD[g.rashi];if(bl===gl)return{pt:5,max:5,bd:tr(PLANET_NAME[bl],PLANET_NAME_HI[PLANET_NAME[bl]]),gd:tr(PLANET_NAME[gl],PLANET_NAME_HI[PLANET_NAME[gl]])};const r1=PLT_FRIEND[bl][gl],r2=PLT_FRIEND[gl][bl];const s=r1+r2;let pt;if(s===4)pt=5;else if(s===3)pt=4;else if(s===2)pt=3;else if(s===1)pt=0.5;else pt=0;return{pt,max:5,bd:tr(PLANET_NAME[bl],PLANET_NAME_HI[PLANET_NAME[bl]]),gd:tr(PLANET_NAME[gl],PLANET_NAME_HI[PLANET_NAME[gl]])};}
 const GANA_TABLE=[[6,5,0],[5,6,1],[0,0,6]]; // [boy gana][girl gana]; classical Gana Kuta table (Deva=0,Manushya=1,Rakshasa=2), verified 2026-07-23
 function kGana(b,g){const bg=GANA[b.nak],gg=GANA[g.nak];const pt=GANA_TABLE[bg][gg];return{pt,max:6,bd:tr(GANA_NAME[bg],GANA_NAME_HI[GANA_NAME[bg]]),gd:tr(GANA_NAME[gg],GANA_NAME_HI[GANA_NAME[gg]])};}
-function kBhakoot(b,g){const d1=((g.rashi-b.rashi+12)%12)+1;const d2=((b.rashi-g.rashi+12)%12)+1;const set=[d1,d2].sort((x,y)=>x-y).join('-');const bad=['6-8','2-12','5-9'];const pt=bad.includes(set)?0:7;return{pt,max:7,bd:RASHI[b.rashi],gd:RASHI[g.rashi]};}
+function kBhakoot(b,g){const d1=((g.rashi-b.rashi+12)%12)+1;const d2=((b.rashi-g.rashi+12)%12)+1;const set=[d1,d2].sort((x,y)=>x-y).join('-');const bad=['6-8','2-12','5-9'];const pt=bad.includes(set)?0:7;return{pt,max:7,bd:trRashi(b.rashi),gd:trRashi(g.rashi)};}
 function kNadi(b,g){const pt=NADI[b.nak]===NADI[g.nak]?0:8;return{pt,max:8,bd:tr(NADI_NAME[NADI[b.nak]],NADI_NAME_HI[NADI_NAME[NADI[b.nak]]]),gd:tr(NADI_NAME[NADI[g.nak]],NADI_NAME_HI[NADI_NAME[NADI[g.nak]]])};}
 
 function calculate(){
@@ -155,7 +167,7 @@ function calculate(){
     document.getElementById('score-banner').innerHTML=
       `<p class="caption-mono" style="color:${color};margin:0 0 6px;">${tr('GUNA MILAN SCORE','गुण मिलान स्कोर')}</p>
        <div style="font-size:48px;font-weight:700;color:${color};line-height:1;">${total% 1===0?total:total.toFixed(1)} <span style="font-size:22px;color:var(--color-mute);">/ ${max}</span></div>
-       <p style="font-size:13px;color:var(--color-body-text);margin:10px 0 0;">${tr('Boy','वर')}: ${NAKS[b.nak]} / ${rashiIconSvg(RASHI_ID[b.rashi],15)} ${RASHI[b.rashi]} &nbsp;·&nbsp; ${tr('Girl','वधू')}: ${NAKS[g.nak]} / ${rashiIconSvg(RASHI_ID[g.rashi],15)} ${RASHI[g.rashi]}</p>`;
+       <p style="font-size:13px;color:var(--color-body-text);margin:10px 0 0;">${tr('Boy','वर')}: ${trNak(b.nak)} / ${rashiIconSvg(RASHI_ID[b.rashi],15)} ${trRashi(b.rashi)} &nbsp;·&nbsp; ${tr('Girl','वधू')}: ${trNak(g.nak)} / ${rashiIconSvg(RASHI_ID[g.rashi],15)} ${trRashi(g.rashi)}</p>`;
 
     let rows=`<tr><th>${tr('Kuta','कूट')}</th><th>${tr('Boy','वर')}</th><th>${tr('Girl','वधू')}</th><th>${tr('Points','अंक')}</th><th>${tr('Significance','महत्व')}</th></tr>`;
     kutas.forEach(([name,k,sig])=>{
@@ -186,6 +198,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

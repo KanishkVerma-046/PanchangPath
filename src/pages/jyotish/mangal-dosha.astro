@@ -85,17 +85,24 @@ const MO_EN=['January','February','March','April','May','June','July','August','
 const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 function mangalIconSvg(size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${MANGAL_SVG}</svg>`;}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 function angDiff(a,b){const d=n360(a-b);return d>180?360-d:d;}
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const DOSHA_HOUSES=[1,2,4,7,8,12];
 function getHouse(planetSign,refSign){return ((planetSign-refSign+12)%12)+1;}
 
-const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+const sel=document.getElementById('f-city');function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
@@ -123,7 +130,7 @@ function calculate(){
     let doshaCount=0;
     const rows=refs.map(([label,sign])=>{
       const h=getHouse(marsSign,sign);const isDosha=DOSHA_HOUSES.includes(h);if(isDosha)doshaCount++;
-      return `<tr><td style="color:var(--color-ink);font-weight:600;">${tr('From '+label,label+' से')}</td><td>${RASHI[sign]}</td><td>${tr('House','भाव')} ${h}</td><td><span style="color:${isDosha?'#dc2626':'#15803d'};font-weight:600;">${isDosha?tr('Dosha','दोष'):tr('Clear','शुद्ध')}</span></td></tr>`;
+      return `<tr><td style="color:var(--color-ink);font-weight:600;">${tr('From '+label,label+' से')}</td><td>${trRashi(sign)}</td><td>${tr('House','भाव')} ${h}</td><td><span style="color:${isDosha?'#dc2626':'#15803d'};font-weight:600;">${isDosha?tr('Dosha','दोष'):tr('Clear','शुद्ध')}</span></td></tr>`;
     });
     document.getElementById('pos-table').innerHTML=`<tr><th>${tr('Reference','संदर्भ')}</th><th>${tr('Sign','राशि')}</th><th>${tr('Mars House','मंगल भाव')}</th><th>${tr('Status','स्थिति')}</th></tr>`+rows.join('');
 
@@ -139,23 +146,23 @@ function calculate(){
     const bg=present?(severity==='High'?'var(--color-inauspicious-soft)':'var(--color-warning-soft)'):'var(--color-auspicious-soft)';
     document.getElementById('dosha-banner').style.background=bg;
     document.getElementById('dosha-banner').innerHTML=present
-      ?`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,sevColor)}</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">${tr('Mangal Dosha Present','मंगल दोष उपस्थित')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Severity','तीव्रता')}: <b style="color:${sevColor};">${severity}</b> · ${tr('Mars in','मंगल')} ${RASHI[marsSign]} · ${tr('Dosha from '+doshaCount+' of 3 references',doshaCount+' में से 3 संदर्भों से दोष')}</p>`
-      :`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">${tr('No Mangal Dosha','मंगल दोष नहीं है')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Mars in '+RASHI[marsSign]+' does not fall in a dosha house from your Lagna, Moon or Venus.','आपके लग्न, चंद्रमा या शुक्र से '+RASHI[marsSign]+' में मंगल किसी दोष भाव में नहीं आता।')}</p>`;
+      ?`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,sevColor)}</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">${tr('Mangal Dosha Present','मंगल दोष उपस्थित')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Severity','तीव्रता')}: <b style="color:${sevColor};">${severity}</b> · ${tr('Mars in','मंगल')} ${trRashi(marsSign)} · ${tr('Dosha from '+doshaCount+' of 3 references',doshaCount+' में से 3 संदर्भों से दोष')}</p>`
+      :`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">${tr('No Mangal Dosha','मंगल दोष नहीं है')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Mars in '+trRashi(marsSign)+' does not fall in a dosha house from your Lagna, Moon or Venus.','आपके लग्न, चंद्रमा या शुक्र से '+trRashi(marsSign)+' में मंगल किसी दोष भाव में नहीं आता।')}</p>`;
 
     let meaning;
     if(!present){meaning=tr(`Your Mars is favourably placed and does not create Mangal Dosha. There are no Manglik-related concerns for marriage from this analysis.`,`आपका मंगल अनुकूल स्थिति में है और मंगल दोष उत्पन्न नहीं करता। इस विश्लेषण के अनुसार विवाह हेतु कोई मांगलिक संबंधी चिंता नहीं है।`);}
     else{meaning=tr(`Mars falls in a dosha-causing house from ${doshaCount} reference point${doshaCount>1?'s':''}. `,`मंगल ${doshaCount} संदर्भ बिंदु${doshaCount>1?'ओं':''} से दोष उत्पन्न करने वाले भाव में स्थित है। `);
-      if(ownExalt)meaning+=tr(`However, Mars is in ${RASHI[marsSign]} (own/exalted sign), which significantly reduces the dosha. `,`हालांकि, मंगल ${RASHI[marsSign]} (स्वराशि/उच्च राशि) में है, जो दोष को काफी कम कर देता है। `);
-      else if(weakSigns)meaning+=tr(`However, Mars in ${RASHI[marsSign]} is considered weak, lessening the effect. `,`हालांकि, ${RASHI[marsSign]} में मंगल कमजोर माना जाता है, जिससे प्रभाव कम हो जाता है। `);
+      if(ownExalt)meaning+=tr(`However, Mars is in ${trRashi(marsSign)} (own/exalted sign), which significantly reduces the dosha. `,`हालांकि, मंगल ${trRashi(marsSign)} (स्वराशि/उच्च राशि) में है, जो दोष को काफी कम कर देता है। `);
+      else if(weakSigns)meaning+=tr(`However, Mars in ${trRashi(marsSign)} is considered weak, lessening the effect. `,`हालांकि, ${trRashi(marsSign)} में मंगल कमजोर माना जाता है, जिससे प्रभाव कम हो जाता है। `);
       meaning+=tr(`Traditionally this calls for matching with a partner who is also Manglik, or applying the cancellation rules below. Mangal Dosha is one factor among many — a full chart reading gives the complete picture.`,`परंपरागत रूप से इसके लिए ऐसे साथी से मिलान आवश्यक है जो स्वयं भी मांगलिक हो, या नीचे दिए निवारण नियमों को लागू करना चाहिए। मंगल दोष कई कारकों में से एक है — पूर्ण कुंडली विश्लेषण से संपूर्ण चित्र मिलता है।`);}
     document.getElementById('meaning').textContent=meaning;
 
     // Dynamic cancellation analysis
     const cancels=[
-      {rule:tr('Mars in own sign (Mesha or Vrishchika)','मंगल स्वराशि में (मेष या वृश्चिक)'),applies:[0,7].includes(marsSign),strength:tr('Strong','प्रबल'),note:[0,7].includes(marsSign)?tr('Mars in '+RASHI[marsSign]+' — natural dignity greatly reduces the dosha','मंगल '+RASHI[marsSign]+' में — स्वाभाविक गरिमा दोष को काफी कम करती है'):tr('Mars in '+RASHI[marsSign]+' — not in own sign','मंगल '+RASHI[marsSign]+' में — स्वराशि में नहीं')},
+      {rule:tr('Mars in own sign (Mesha or Vrishchika)','मंगल स्वराशि में (मेष या वृश्चिक)'),applies:[0,7].includes(marsSign),strength:tr('Strong','प्रबल'),note:[0,7].includes(marsSign)?tr('Mars in '+trRashi(marsSign)+' — natural dignity greatly reduces the dosha','मंगल '+trRashi(marsSign)+' में — स्वाभाविक गरिमा दोष को काफी कम करती है'):tr('Mars in '+trRashi(marsSign)+' — not in own sign','मंगल '+trRashi(marsSign)+' में — स्वराशि में नहीं')},
       {rule:tr('Mars exalted (Makara)','मंगल उच्च राशि में (मकर)'),applies:marsSign===9,strength:tr('Full','पूर्ण'),note:marsSign===9?tr('Mars is exalted in Makara — dosha is effectively cancelled','मंगल मकर में उच्च का है — दोष प्रभावी रूप से निष्प्रभावी हो जाता है'):tr('Mars is not exalted (exaltation: Makara)','मंगल उच्च का नहीं है (उच्च राशि: मकर)')},
-      {rule:tr('Cancer or Leo Lagna (Yogakaraka)','कर्क या सिंह लग्न (योगकारक)'),applies:[3,4].includes(lagnaSign),strength:tr('Full','पूर्ण'),note:[3,4].includes(lagnaSign)?tr('For '+RASHI[lagnaSign]+' Lagna, Mars is a benefic yogakaraka — dosha does not apply',RASHI[lagnaSign]+' लग्न के लिए, मंगल एक शुभ योगकारक है — दोष लागू नहीं होता'):tr('Lagna is '+RASHI[lagnaSign]+' — Mars is not yogakaraka','लग्न '+RASHI[lagnaSign]+' है — मंगल योगकारक नहीं है')},
-      {rule:tr('Mars in weakening sign (Karka, Simha, Kumbha, Meena)','मंगल कमजोर राशि में (कर्क, सिंह, कुम्भ, मीन)'),applies:[3,4,10,11].includes(marsSign),strength:tr('Partial','आंशिक'),note:[3,4,10,11].includes(marsSign)?tr('Mars in '+RASHI[marsSign]+' is considered weak — dosha impact is reduced','मंगल '+RASHI[marsSign]+' में कमजोर माना जाता है — दोष प्रभाव कम हो जाता है'):tr('Mars in '+RASHI[marsSign]+' is not in a weakening sign','मंगल '+RASHI[marsSign]+' में कमजोर राशि में नहीं है')},
+      {rule:tr('Cancer or Leo Lagna (Yogakaraka)','कर्क या सिंह लग्न (योगकारक)'),applies:[3,4].includes(lagnaSign),strength:tr('Full','पूर्ण'),note:[3,4].includes(lagnaSign)?tr('For '+trRashi(lagnaSign)+' Lagna, Mars is a benefic yogakaraka — dosha does not apply',trRashi(lagnaSign)+' लग्न के लिए, मंगल एक शुभ योगकारक है — दोष लागू नहीं होता'):tr('Lagna is '+trRashi(lagnaSign)+' — Mars is not yogakaraka','लग्न '+trRashi(lagnaSign)+' है — मंगल योगकारक नहीं है')},
+      {rule:tr('Mars in weakening sign (Karka, Simha, Kumbha, Meena)','मंगल कमजोर राशि में (कर्क, सिंह, कुम्भ, मीन)'),applies:[3,4,10,11].includes(marsSign),strength:tr('Partial','आंशिक'),note:[3,4,10,11].includes(marsSign)?tr('Mars in '+trRashi(marsSign)+' is considered weak — dosha impact is reduced','मंगल '+trRashi(marsSign)+' में कमजोर माना जाता है — दोष प्रभाव कम हो जाता है'):tr('Mars in '+trRashi(marsSign)+' is not in a weakening sign','मंगल '+trRashi(marsSign)+' में कमजोर राशि में नहीं है')},
       {rule:tr('Jupiter conjunct Mars (within 10\xb0)','गुरु मंगल की युति में (10° के भीतर)'),applies:dGuruMars<10,strength:tr('Strong','प्रबल'),note:tr('Jupiter is '+dGuruMars.toFixed(1)+'\xb0 from Mars — '+(dGuruMars<10?'Guru’s proximity greatly pacifies the fiery Mars energy':'not in close conjunction'),'गुरु मंगल से '+dGuruMars.toFixed(1)+'° दूर है — '+(dGuruMars<10?'गुरु की निकटता उग्र मंगल ऊर्जा को काफी शांत करती है':'निकट युति में नहीं'))},
       {rule:tr('Moon conjunct Mars (within 10\xb0)','चंद्रमा मंगल की युति में (10° के भीतर)'),applies:dMoonMars<10,strength:tr('Moderate','मध्यम'),note:tr('Moon is '+dMoonMars.toFixed(1)+'\xb0 from Mars — '+(dMoonMars<10?'Moon’s nurturing energy softens Mars':'not in close conjunction'),'चंद्रमा मंगल से '+dMoonMars.toFixed(1)+'° दूर है — '+(dMoonMars<10?'चंद्रमा की पोषक ऊर्जा मंगल को नरम करती है':'निकट युति में नहीं'))},
     ];
@@ -181,6 +188,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

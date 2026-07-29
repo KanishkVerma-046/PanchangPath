@@ -113,14 +113,18 @@ const WD_HI=['रविवार','सोमवार','मंगलवार','
 const MO_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const RASHI_LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAKS_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
+function trNak(i){return tr(NAKS[i],NAKS_HI[i]);}
 const PLANETS=[['surya','Sun','Sy'],['chandra','Moon','Ch'],['mangal','Mars','Ma'],['budha','Mercury','Bu'],['guru','Jupiter','Gu'],['shukra','Venus','Sk'],['shani','Saturn','Sa'],['rahu','Rahu','Ra'],['ketu','Ketu','Ke']];
 const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि',Rahu:'राहु',Ketu:'केतु'};
 
@@ -168,7 +172,12 @@ function drawNorthChart(signOfHouse,planetsByHouse){
 
 // Setup
 const sel=document.getElementById('f-city');
-sel.innerHTML=LOCS.map(l=>`<option value="${l.name}">${l.name}</option>`).join('');
+function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 const today=new Date();
 document.getElementById('f-date').value=today.toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
@@ -204,18 +213,18 @@ function calculate(){
     // ── Chart ──
     document.getElementById('chart-box').innerHTML=drawNorthChart(signOfHouse,planetsByHouse);
     document.getElementById('chart-title').textContent=(name?name+"'s ":'')+tr('Lagna Chart (D-1)','लग्न चार्ट (डी-1)');
-    document.getElementById('chart-sub').textContent=RASHI[lagnaSign]+' Lagna \xb7 '+dateStr+' '+timeStr+' \xb7 '+cityName;
+    document.getElementById('chart-sub').textContent=trRashi(lagnaSign)+' '+tr('Lagna','लग्न')+' \xb7 '+dateStr+' '+timeStr+' \xb7 '+(LANG_HI?(loc.nameHi||loc.name):loc.name);
 
     // ── Birth Summary ──
     const moonSign=Math.floor(sid.chandra/30),sunSign=Math.floor(sid.surya/30);
     const moonNak=nakInfo(sid.chandra);
     const sumItems=[
-      [tr('Lagna (Ascendant)','लग्न (उदय राशि)'),RASHI[lagnaSign]+' ('+RASHI_EN[lagnaSign]+')'],
+      [tr('Lagna (Ascendant)','लग्न (उदय राशि)'),trRashi(lagnaSign)+' ('+RASHI_EN[lagnaSign]+')'],
       [tr('Lagna Lord','लग्न स्वामी'),tr(lagnaLord,PLANET_HI[lagnaLord])],
       [tr('Lagna Degree','लग्न अंश'),fmtDMS(lagna)],
-      [tr('Moon Rashi','चंद्र राशि'),RASHI[moonSign]+' ('+RASHI_EN[moonSign]+')'],
-      [tr('Sun Rashi','सूर्य राशि'),RASHI[sunSign]+' ('+RASHI_EN[sunSign]+')'],
-      [tr('Janma Nakshatra','जन्म नक्षत्र'),moonNak.name+' '+tr('pada','पद')+' '+moonNak.pada],
+      [tr('Moon Rashi','चंद्र राशि'),trRashi(moonSign)+' ('+RASHI_EN[moonSign]+')'],
+      [tr('Sun Rashi','सूर्य राशि'),trRashi(sunSign)+' ('+RASHI_EN[sunSign]+')'],
+      [tr('Janma Nakshatra','जन्म नक्षत्र'),trNak(moonNak.idx)+' '+tr('pada','पद')+' '+moonNak.pada],
       [tr('Paksha','पक्ष'),sid.chandra>sid.surya&&sid.chandra-sid.surya<180?tr('Shukla (Waxing)','शुक्ल (बढ़ता चंद्रमा)'):tr('Krishna (Waning)','कृष्ण (घटता चंद्रमा)')],
       [tr('Ayanamsha','अयनांश'),ay.toFixed(3)+'\xb0 Lahiri'],
     ];
@@ -233,7 +242,7 @@ function calculate(){
       if(k==='rahu'||k==='ketu')motion=tr('Vakri (always)','वक्री (सदैव)');
       else if(k!=='surya'&&k!=='chandra'){const c=n360(L[k]-ay),nx=n360(Lp[k]-Lp.ayanamsha);let df=nx-c;if(df>180)df-=360;if(df<-180)df+=360;motion=df<0?tr('Vakri','वक्री'):tr('Margi','मार्गी');}
       const dig=dignity(k,sign);
-      pRows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${tr(full,PLANET_HI[full])}</td><td>${RASHI[sign]}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td style="text-align:center;">${house+1}</td><td>${nk.name}</td><td>${nk.pada}</td><td style="color:${(motion.startsWith('Vakri')||motion.startsWith('वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td><td class="${dig.cls}">${dig.label}</td></tr>`;
+      pRows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${tr(full,PLANET_HI[full])}</td><td>${trRashi(sign)}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td style="text-align:center;">${house+1}</td><td>${trNak(nk.idx)}</td><td>${nk.pada}</td><td style="color:${(motion.startsWith('Vakri')||motion.startsWith('वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td><td class="${dig.cls}">${dig.label}</td></tr>`;
     });
     document.getElementById('planet-table').innerHTML=pRows;
 
@@ -245,8 +254,8 @@ function calculate(){
       const lordKey={Sun:'surya',Moon:'chandra',Mars:'mangal',Mercury:'budha',Jupiter:'guru',Venus:'shukra',Saturn:'shani'}[lord];
       const lordSign=lordKey?Math.floor(sid[lordKey]/30):-1;
       const lordHouse=lordKey?((lordSign-lagnaSign+12)%12):-1;
-      const lordPos=lordKey?'H'+(lordHouse+1)+' ('+RASHI[lordSign]+')':'—';
-      hRows+=`<tr><td style="font-weight:600;color:var(--color-ink);">H${h+1}</td><td>${RASHI[sign]}</td><td>${tr(lord,PLANET_HI[lord])}</td><td>${lordPos}</td><td style="font-size:12px;color:var(--color-mute);">${tr(HOUSE_SIG[h],HOUSE_SIG_HI[h])}</td></tr>`;
+      const lordPos=lordKey?'H'+(lordHouse+1)+' ('+trRashi(lordSign)+')':'—';
+      hRows+=`<tr><td style="font-weight:600;color:var(--color-ink);">H${h+1}</td><td>${trRashi(sign)}</td><td>${tr(lord,PLANET_HI[lord])}</td><td>${lordPos}</td><td style="font-size:12px;color:var(--color-mute);">${tr(HOUSE_SIG[h],HOUSE_SIG_HI[h])}</td></tr>`;
     }
     document.getElementById('house-table').innerHTML=hRows;
 
@@ -297,7 +306,7 @@ function calculate(){
       `<div style="padding:10px 14px;background:var(--color-canvas-soft);border-radius:8px;">
         <p style="font-size:11px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);">${tr('BIRTH DASHA BALANCE','जन्म दशा शेष')}</p>
         <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">${tr(dashaLord,PLANET_HI[dashaLord])} — ${remaining.toFixed(1)} ${tr('yrs remaining','वर्ष शेष')}</p>
-        <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">${tr('Janma Nakshatra','जन्म नक्षत्र')}: ${NAKS[nakIdx]} (${(moonNakFull.frac*100).toFixed(0)}% ${tr('elapsed in','व्यतीत,')} ${tr(dashaLord,PLANET_HI[dashaLord])} ${tr('dasha','दशा')})</p>
+        <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">${tr('Janma Nakshatra','जन्म नक्षत्र')}: ${trNak(nakIdx)} (${(moonNakFull.frac*100).toFixed(0)}% ${tr('elapsed in','व्यतीत,')} ${tr(dashaLord,PLANET_HI[dashaLord])} ${tr('dasha','दशा')})</p>
       </div>`;
 
     const msPerYr=365.25*24*3600*1000;
@@ -330,6 +339,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

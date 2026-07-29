@@ -65,16 +65,23 @@ const MO_HI=['जनवरी','फरवरी','मार्च','अप्र
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 function shaniIconSvg(size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${SHANI_SVG}</svg>`;}
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 const n360=a=>((a%360)+360)%360;
 function saturnSign(jd){return Math.floor(n360(planetLongitude('saturn',jd)-lahiriAyanamsha(jd))/30);}
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MON_HI=['जन','फर','मार्च','अप्रैल','मई','जून','जुल','अग','सित','अक्टू','नव','दिस'];
 function monName(idx){return LANG_HI?MON_HI[idx]:MON[idx];}
 
-const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+const sel=document.getElementById('f-city');function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
@@ -128,14 +135,14 @@ function calculate(){
       const e=jdToYMD(active.end);
       bg='var(--color-warning-soft)';
       html=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${shaniIconSvg(40,'#b45309')}</div><h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">${tr('In Sadesati','साढ़े साती में')}</h2>
-        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr(`Currently in the <b>${phaseName}</b> phase. Saturn is in ${RASHI[ssNow]}, your Moon is in ${RASHI[moonSign]}.`,`वर्तमान में <b>${phaseName}</b> चरण में। शनि ${RASHI[ssNow]} में है, आपका चंद्रमा ${RASHI[moonSign]} में है।`)}<br>${tr(`This Sadesati ends around <b>${monName(e.m-1)} ${e.y}</b>.`,`यह साढ़े साती लगभग <b>${monName(e.m-1)} ${e.y}</b> में समाप्त होती है।`)}</p>`;
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr(`Currently in the <b>${phaseName}</b> phase. Saturn is in ${trRashi(ssNow)}, your Moon is in ${trRashi(moonSign)}.`,`वर्तमान में <b>${phaseName}</b> चरण में। शनि ${trRashi(ssNow)} में है, आपका चंद्रमा ${trRashi(moonSign)} में है।`)}<br>${tr(`This Sadesati ends around <b>${monName(e.m-1)} ${e.y}</b>.`,`यह साढ़े साती लगभग <b>${monName(e.m-1)} ${e.y}</b> में समाप्त होती है।`)}</p>`;
     }else{
       // find next
       let next=periods.find(p=>p.start>todayJD);
       bg='var(--color-auspicious-soft)';
       const ns=next?jdToYMD(next.start):null;
       html=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${shaniIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">${tr('Not in Sadesati','साढ़े साती में नहीं')}</h2>
-        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Your Moon sign is '+RASHI[moonSign]+'.','आपकी चंद्र राशि '+RASHI[moonSign]+' है।')} ${ns?tr(`Your next Sadesati begins around <b>${monName(ns.m-1)} ${ns.y}</b>.`,`आपकी अगली साढ़े साती लगभग <b>${monName(ns.m-1)} ${ns.y}</b> में शुरू होगी।`):tr('No upcoming Sadesati within the scanned range.','जांचे गए समय में कोई आगामी साढ़े साती नहीं है।')}</p>`;
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Your Moon sign is '+trRashi(moonSign)+'.','आपकी चंद्र राशि '+trRashi(moonSign)+' है।')} ${ns?tr(`Your next Sadesati begins around <b>${monName(ns.m-1)} ${ns.y}</b>.`,`आपकी अगली साढ़े साती लगभग <b>${monName(ns.m-1)} ${ns.y}</b> में शुरू होगी।`):tr('No upcoming Sadesati within the scanned range.','जांचे गए समय में कोई आगामी साढ़े साती नहीं है।')}</p>`;
     }
     document.getElementById('ss-banner').style.background=bg;
     document.getElementById('ss-banner').innerHTML=html;
@@ -158,9 +165,9 @@ function calculate(){
     const refPeriod=active||periods.find(p=>p.start>todayJD)||(periods.length?periods[periods.length-1]:null);
     const subBds=refPeriod?findSubPhases(refPeriod.start,refPeriod.end,setSigns):null;
     const phaseData=[
-      [tr('Rising','उदय'),tr('12th House','बारहवां भाव')+' ('+RASHI[setSigns[0]]+')',tr('Saturn enters the sign before your Moon. Mental restlessness, unexpected expenses, confusion and health concerns arise. A time to let go of the old and prepare inwardly for transformation.','शनि आपके चंद्रमा से पहले की राशि में प्रवेश करता है। मानसिक बेचैनी, अप्रत्याशित खर्च, भ्रम और स्वास्थ्य संबंधी चिंताएं उत्पन्न होती हैं। यह पुराने को छोड़ने और परिवर्तन के लिए आंतरिक रूप से तैयार होने का समय है।')],
-      [tr('Peak','शिखर'),tr('1st House — Janma Shani','पहला भाव — जन्म शनि')+' ('+RASHI[setSigns[1]]+')',tr('The most intense 2.5-year phase. Core life pillars are tested: career, health, relationships and self-image. Humility and discipline are the keys to endurance and growth.','सबसे तीव्र 2.5 वर्ष का चरण। जीवन के मूल स्तंभ परखे जाते हैं: करियर, स्वास्थ्य, रिश्ते और आत्म-छवि। विनम्रता और अनुशासन ही सहनशक्ति और विकास की कुंजी हैं।')],
-      [tr('Setting','अस्त'),tr('2nd House','दूसरा भाव')+' ('+RASHI[setSigns[2]]+')',tr('Saturn moves past your Moon. Pressure eases gradually. Focus shifts to family, finances and speech. The hard lessons of the first two phases crystallise into lasting wisdom.','शनि आपके चंद्रमा को पार कर जाता है। दबाव धीरे-धीरे कम होता है। ध्यान परिवार, वित्त और वाणी पर केंद्रित हो जाता है। पहले दो चरणों के कठिन सबक स्थायी ज्ञान में परिणत होते हैं।')],
+      [tr('Rising','उदय'),tr('12th House','बारहवां भाव')+' ('+trRashi(setSigns[0])+')',tr('Saturn enters the sign before your Moon. Mental restlessness, unexpected expenses, confusion and health concerns arise. A time to let go of the old and prepare inwardly for transformation.','शनि आपके चंद्रमा से पहले की राशि में प्रवेश करता है। मानसिक बेचैनी, अप्रत्याशित खर्च, भ्रम और स्वास्थ्य संबंधी चिंताएं उत्पन्न होती हैं। यह पुराने को छोड़ने और परिवर्तन के लिए आंतरिक रूप से तैयार होने का समय है।')],
+      [tr('Peak','शिखर'),tr('1st House — Janma Shani','पहला भाव — जन्म शनि')+' ('+trRashi(setSigns[1])+')',tr('The most intense 2.5-year phase. Core life pillars are tested: career, health, relationships and self-image. Humility and discipline are the keys to endurance and growth.','सबसे तीव्र 2.5 वर्ष का चरण। जीवन के मूल स्तंभ परखे जाते हैं: करियर, स्वास्थ्य, रिश्ते और आत्म-छवि। विनम्रता और अनुशासन ही सहनशक्ति और विकास की कुंजी हैं।')],
+      [tr('Setting','अस्त'),tr('2nd House','दूसरा भाव')+' ('+trRashi(setSigns[2])+')',tr('Saturn moves past your Moon. Pressure eases gradually. Focus shifts to family, finances and speech. The hard lessons of the first two phases crystallise into lasting wisdom.','शनि आपके चंद्रमा को पार कर जाता है। दबाव धीरे-धीरे कम होता है। ध्यान परिवार, वित्त और वाणी पर केंद्रित हो जाता है। पहले दो चरणों के कठिन सबक स्थायी ज्ञान में परिणत होते हैं।')],
     ];
     document.getElementById('phases').innerHTML=phaseData.map((p,i)=>{
       let dateStr='';
@@ -181,6 +188,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

@@ -63,14 +63,16 @@ const WD_HI=['रविवार','सोमवार','मंगलवार','
 const MO_EN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 const toR=d=>d*Math.PI/180;
 const toD=r=>r*180/Math.PI;
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 // Trikona (1,5,9) lords are most benefic for a Lagna; we recommend Lagna lord + 5th + 9th lords
 const GEMS={
@@ -82,7 +84,12 @@ Jupiter:{p:'Guru',stone:'Yellow Sapphire',h:'पुखराज',sub:'Yellow Top
 Venus:{p:'Shukra',stone:'Diamond',h:'हीरा',sub:'White Sapphire / Zircon',subHi:'व्हाइट सफायर / जिरकॉन',metal:'White Gold/Platinum',metalHi:'व्हाइट गोल्ड/प्लेटिनम',finger:'Middle',fingerHi:'मध्यमा',day:'Friday',dayHi:'शुक्रवार',color:'#a78bfa',desc:'Attracts love, luxury, beauty, and material comforts.',descHi:'प्रेम, वैभव, सौंदर्य और भौतिक सुख-सुविधाएं आकर्षित करता है।'},
 Saturn:{p:'Shani',stone:'Blue Sapphire',h:'नीलम',sub:'Amethyst / Blue Spinel',subHi:'एमेथिस्ट / ब्लू स्पिनल',metal:'Gold/Silver',metalHi:'सोना/चांदी',finger:'Middle',fingerHi:'मध्यमा',day:'Saturday',dayHi:'शनिवार',color:'#3b82f6',desc:'Removes obstacles, brings discipline, longevity, and career stability.',descHi:'बाधाएं दूर करता है, अनुशासन, दीर्घायु और करियर स्थिरता लाता है।'}};
 
-const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+const sel=document.getElementById('f-city');function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
@@ -118,9 +125,9 @@ function calculate(){
     const sunSign=Math.floor(n360(sunLon(jd)-ay)/30);
 
     document.getElementById('birth-info').innerHTML=[
-      [tr('Lagna (Asc)','लग्न'),`${RASHI[lagnaSign]} (${RASHI_EN[lagnaSign]})`],
-      [tr('Moon Rashi','चंद्र राशि'),`${RASHI[moonSign]} (${RASHI_EN[moonSign]})`],
-      [tr('Sun Rashi','सूर्य राशि'),`${RASHI[sunSign]} (${RASHI_EN[sunSign]})`],
+      [tr('Lagna (Asc)','लग्न'),`${trRashi(lagnaSign)} (${RASHI_EN[lagnaSign]})`],
+      [tr('Moon Rashi','चंद्र राशि'),`${trRashi(moonSign)} (${RASHI_EN[moonSign]})`],
+      [tr('Sun Rashi','सूर्य राशि'),`${trRashi(sunSign)} (${RASHI_EN[sunSign]})`],
     ].map(r=>`<div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">${r[0]}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`).join('');
 
     const lagnaLord=LORD[lagnaSign];
@@ -143,6 +150,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;

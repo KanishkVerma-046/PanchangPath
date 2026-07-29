@@ -67,11 +67,13 @@ const MO_EN=['January','February','March','April','May','June','July','August','
 const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 function planetIconSvg(id,size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;}
-const LOCS=LOCATIONS.map(l=>({name:l.name,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
+const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const KALASARPA_TYPES=['Ananta','Kulika','Vasuki','Shankhapala','Padma','Mahapadma','Takshaka','Karkotak','Shankhachud','Ghatak','Vishadhar','Sheshanaga'];
 const KS_EFFECTS=[
 {a:'Early life brings persistent career and financial struggles requiring extraordinary effort. Delays test patience deeply, yet those who persevere achieve remarkable success. Many great public figures carry this yoga.',v:'Intense ambition and drive for leadership arise, but relationships and health may suffer. True transformation comes through selfless service and the cultivation of humility.'},
@@ -102,7 +104,12 @@ const KS_EFFECTS_HI=[
 const PLANETS=[['surya','Sun'],['chandra','Moon'],['mangal','Mars'],['budha','Mercury'],['guru','Jupiter'],['shukra','Venus'],['shani','Saturn']];
 const PLANET_HI={Sun:'सूर्य',Moon:'चंद्र',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 
-const sel=document.getElementById('f-city');sel.innerHTML=LOCS.map(l=>`<option>${l.name}</option>`).join('');
+const sel=document.getElementById('f-city');function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
@@ -127,12 +134,12 @@ function calculate(){
       const dR=Math.min(n360(p-rahu),n360(rahu-p));
       const dK=Math.min(n360(p-ketu),n360(ketu-p));
       if(dR<2||dK<2)conjunct=true;
-      return `<tr><td style="color:var(--color-ink);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg(k,15)} ${tr(full,PLANET_HI[full])}</span></td><td>${RASHI[Math.floor(p/30)]}</td><td>${(p%30).toFixed(1)}°</td><td>${inArc?tr('Rahu → Ketu side','राहु → केतु ओर'):tr('Ketu → Rahu side','केतु → राहु ओर')}</td></tr>`;
+      return `<tr><td style="color:var(--color-ink);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg(k,15)} ${tr(full,PLANET_HI[full])}</span></td><td>${trRashi(Math.floor(p/30))}</td><td>${(p%30).toFixed(1)}°</td><td>${inArc?tr('Rahu → Ketu side','राहु → केतु ओर'):tr('Ketu → Rahu side','केतु → राहु ओर')}</td></tr>`;
     });
     document.getElementById('pos-table').innerHTML=
       `<tr><th>${tr('Planet','ग्रह')}</th><th>${tr('Sign','राशि')}</th><th>${tr('Degree','अंश')}</th><th>${tr('Hemisphere','दिशा')}</th></tr>`+rows.join('')+
-      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('rahu',15,'var(--color-saffron-deep)')} ${tr('Rahu','राहु')}</span></td><td>${RASHI[Math.floor(rahu/30)]}</td><td>${(rahu%30).toFixed(1)}°</td><td>—</td></tr>`+
-      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('ketu',15,'var(--color-saffron-deep)')} ${tr('Ketu','केतु')}</span></td><td>${RASHI[Math.floor(ketu/30)]}</td><td>${(ketu%30).toFixed(1)}°</td><td>—</td></tr>`;
+      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('rahu',15,'var(--color-saffron-deep)')} ${tr('Rahu','राहु')}</span></td><td>${trRashi(Math.floor(rahu/30))}</td><td>${(rahu%30).toFixed(1)}°</td><td>—</td></tr>`+
+      `<tr><td style="color:var(--color-saffron-deep);font-weight:600;"><span style="display:flex;align-items:center;gap:6px;">${planetIconSvg('ketu',15,'var(--color-saffron-deep)')} ${tr('Ketu','केतु')}</span></td><td>${trRashi(Math.floor(ketu/30))}</td><td>${(ketu%30).toFixed(1)}°</td><td>—</td></tr>`;
 
     const present=(countInArc===7||countInArc===0);
     const isAnuloma=countInArc===7; // planets go Rahu→Ketu (forward)
@@ -152,7 +159,7 @@ function calculate(){
       html=nodeIcons('#b45309')+'<h2 style="font-size:24px;font-weight:700;color:#b45309;margin:0 0 6px;">'+tr('Partial '+type+' Kalasarpa','आंशिक '+type+' कालसर्प')+'</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+tr('All planets are on one side, but one is very close to Rahu/Ketu — this partially breaks the yoga. Direction: ','सभी ग्रह एक ओर हैं, लेकिन एक राहु/केतु के बहुत निकट है — इससे योग आंशिक रूप से टूटता है। दिशा: ')+'<b>'+direction+'</b>.</p>';
     }else if(present){
       bg='var(--color-inauspicious-soft)';
-      html=nodeIcons('#dc2626')+'<h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">'+tr(type+' Kalasarpa Yoga Present',type+' कालसर्प योग उपस्थित')+'</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+tr('All 7 planets fall between Rahu ('+RASHI[rahuSign]+') and Ketu ('+RASHI[Math.floor(ketu/30)]+'). Direction: ','सभी 7 ग्रह राहु ('+RASHI[rahuSign]+') और केतु ('+RASHI[Math.floor(ketu/30)]+') के बीच स्थित हैं। दिशा: ')+'<b>'+direction+'</b>.</p>';
+      html=nodeIcons('#dc2626')+'<h2 style="font-size:24px;font-weight:700;color:#dc2626;margin:0 0 6px;">'+tr(type+' Kalasarpa Yoga Present',type+' कालसर्प योग उपस्थित')+'</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">'+tr('All 7 planets fall between Rahu ('+trRashi(rahuSign)+') and Ketu ('+trRashi(Math.floor(ketu/30))+'). Direction: ','सभी 7 ग्रह राहु ('+trRashi(rahuSign)+') और केतु ('+trRashi(Math.floor(ketu/30))+') के बीच स्थित हैं। दिशा: ')+'<b>'+direction+'</b>.</p>';
     }else{
       bg='var(--color-auspicious-soft)';
       const outside=Math.min(countInArc,7-countInArc);
@@ -180,6 +187,7 @@ calculate();
 
 function applyPageLang(hindi) {
   LANG_HI = hindi;
+  renderCityOptions();
   document.querySelectorAll('[data-hi]').forEach(el => {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? el.dataset.hi : el.dataset.en;
