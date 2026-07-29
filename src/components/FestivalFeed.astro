@@ -1,6 +1,6 @@
 ---
 import type { Festival } from '../lib/festivals';
-import { getFestivalIcon, getFestivalGradient, getFestivalSlug, daysUntil, formatCountdown } from '../lib/festivals';
+import { getFestivalIcon, getFestivalGradient, getFestivalSlug, daysUntil, formatCountdown, formatCountdownHi } from '../lib/festivals';
 import { formatDateHi } from '../lib/date-i18n';
 
 interface Props {
@@ -34,6 +34,7 @@ const { festivals, today } = Astro.props;
       {festivals.map(f => {
         const days      = daysUntil(today, f.date);
         const countdown = formatCountdown(days);
+        const countdownHi = formatCountdownHi(days);
         const slug      = getFestivalSlug(f);
         const icon      = getFestivalIcon(f);
         const gradient  = getFestivalGradient(f);
@@ -57,7 +58,8 @@ const { festivals, today } = Astro.props;
                 <div class="ff-badges">
                   <span class={`ff-countdown ${isToday ? 'ff-countdown-today' : days <= 7 ? 'ff-countdown-soon' : ''}`}>
                     {isToday && <span class="ff-dot" aria-hidden="true"></span>}
-                    {countdown}
+                    <span class="en-text">{countdown}</span>
+                    <span class="hi-text" style="display:none">{countdownHi}</span>
                   </span>
                   <span class={`ff-type ff-type-${f.type}`} data-hi={f.type === 'major' ? '✦ प्रमुख' : f.type === 'vrat' ? 'व्रत' : 'क्षेत्रीय'}>
                     {f.type === 'major' ? '✦ Major' : f.type === 'vrat' ? 'Vrat' : 'Regional'}

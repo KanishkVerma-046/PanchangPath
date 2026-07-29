@@ -225,3 +225,9 @@ export function formatCountdown(days: number): string {
   if (days === 1) return 'Tomorrow';
   return `${days} Days`;
 }
+
+export function formatCountdownHi(days: number): string {
+  if (days === 0) return 'आज';
+  if (days === 1) return 'कल';
+  return `${days} दिन`;
+}

@@ -77,6 +77,7 @@ function typeClass(type: string): string {
       {displayed.map((ev, idx) => {
         const countdown = formatCountdownLabel(ev.daysAway);
         const datetime  = formatEventDateTime(ev);
+        const datetimeHi = formatEventDateTime(ev, 5.5, true);
         const isToday   = ev.daysAway === 0;
         const isSoon    = ev.daysAway <= 7;
 
@@ -113,7 +114,10 @@ function typeClass(type: string): string {
                   <span class="en-text">{ev.title}</span>&nbsp;
                   <span class="hi-text" style="display:none">{ev.titleHi}</span>
                 </p>
-                <p class="pef-datetime">{datetime}</p>
+                <p class="pef-datetime">
+                  <span class="en-text">{datetime}</span>
+                  <span class="hi-text" style="display:none">{datetimeHi}</span>
+                </p>
                 <p class="pef-desc" data-hi={ev.descriptionHi}>{ev.description}</p>
               </div>
 

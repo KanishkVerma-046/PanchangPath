@@ -886,7 +886,13 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
 </style>
 
 <script>
-  import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../lib/panchang';
+  import { sunTrueLongitude, moonLongitude, lahiriAyanamsha, TITHIS, NAKSHATRAS } from '../lib/panchang';
+  import { formatDateHi } from '../lib/date-i18n';
+
+  // Tracks the header's current language so the live clock/status strip
+  // (updated on a setInterval, independent of applyHeaderLang's [data-hi]
+  // pass) can render Hindi content too.
+  let isHindi = false;
 
   // ── Live clock ──
   function updateClock() {
@@ -900,9 +906,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     const s = String(now.getSeconds()).padStart(2, '0');
     timeEl.textContent = `${h}:${m}:${s}`;
 
-    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    dateEl.textContent = formatDateHi(now, isHindi, { weekday: 'short', month: 'short' });
   }
   let lastClockSecond = -1;
   function clockTick() {
@@ -931,18 +935,6 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + hour / 24 + B - 1524.5;
   }
 
-  const STRIP_TITHIS = [
-    'Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami',
-    'Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima',
-    'Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami',
-    'Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya',
-  ];
-  const STRIP_NAKSHATRAS = [
-    'Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha',
-    'Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula',
-    'Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati',
-  ];
-
   function updateStatusStrip() {
     const loc = (window as any).__initLoc || { lat: 28.6139, lng: 77.2090, tzOffset: 5.5, name: 'New Delhi' };
     const now = new Date();
@@ -955,14 +947,23 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     const elongation = stripNorm360(moonLon - sunLon);
     const tithiIdx = Math.floor(elongation / 12) % 30;
     const paksha = tithiIdx < 15 ? 'Shukla' : 'Krishna';
+    const pakshaHi = tithiIdx < 15 ? 'शुक्ल' : 'कृष्ण';
     const nakIdx = Math.floor(moonSidereal / (360 / 27)) % 27;
 
     const tithiEl = document.getElementById('status-tithi');
     const nakEl = document.getElementById('status-nakshatra');
     const cityEl = document.getElementById('status-city');
-    if (tithiEl) tithiEl.textContent = `${paksha} ${STRIP_TITHIS[tithiIdx]}`;
-    if (nakEl) nakEl.textContent = `${STRIP_NAKSHATRAS[nakIdx]} Nakshatra`;
-    if (cityEl) cityEl.textContent = loc.name;
+    if (tithiEl) {
+      tithiEl.textContent = isHindi
+        ? `${pakshaHi} ${TITHIS[tithiIdx].nameHi}`
+        : `${paksha} ${TITHIS[tithiIdx].name}`;
+    }
+    if (nakEl) {
+      nakEl.textContent = isHindi
+        ? `${NAKSHATRAS[nakIdx].nameHi} नक्षत्र`
+        : `${NAKSHATRAS[nakIdx].name} Nakshatra`;
+    }
+    if (cityEl) cityEl.textContent = isHindi ? (loc.nameHi || loc.name) : loc.name;
   }
   updateStatusStrip();
   setInterval(updateStatusStrip, 60000);
@@ -1005,6 +1006,9 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
   // and swaps the search placeholder. Runs on every page since Header.astro
   // is included everywhere.
   function applyHeaderLang(hindi: boolean) {
+    isHindi = hindi;
+    updateClock();
+    updateStatusStrip();
     document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
       if (!el.dataset.en) el.dataset.en = el.textContent || '';
       el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);

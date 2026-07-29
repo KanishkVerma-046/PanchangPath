@@ -127,8 +127,9 @@ function getTzInfo(ianaTimezone) {
 function updateInfoCard(loc) {
   const tzInfo = getTzInfo(loc.tz || 'UTC');
 
-  lpSet('lp-pill-name', loc.name);
-  lpSet('lp-city', loc.name + (loc.state ? ', ' + loc.state : ''));
+  const displayName = lpIsHindi ? (loc.nameHi || loc.name) : loc.name;
+  lpSet('lp-pill-name', displayName);
+  lpSet('lp-city', displayName + (loc.state ? ', ' + loc.state : ''));
   lpSet('lp-country', loc.country || 'Custom');
   lpSet('lp-lat', fmtCoord(loc.lat, 'N', 'S'));
   lpSet('lp-lng', fmtCoord(loc.lng, 'E', 'W'));
@@ -203,9 +204,10 @@ function renderCityList(cities) {
     groups[country].forEach(c => {
       const latStr = Math.abs(c.lat).toFixed(2) + (c.lat >= 0 ? '°N' : '°S');
       const lngStr = Math.abs(c.lng).toFixed(2) + (c.lng >= 0 ? '°E' : '°W');
+      const cName = lpIsHindi ? (c.nameHi || c.name) : c.name;
       html += '<button class="lp-city-row" data-idx="' + allCities.indexOf(c) + '" role="option">' +
         '<div class="lp-city-main">' +
-          '<span class="lp-city-name">' + c.name + (c.state ? ', ' + c.state : '') + '</span>' +
+          '<span class="lp-city-name">' + cName + (c.state ? ', ' + c.state : '') + '</span>' +
           '<span class="lp-city-tz caption-mono">' + c.tz + '</span>' +
         '</div>' +
         '<span class="lp-city-coord">' + latStr + ' ' + lngStr + '</span>' +
