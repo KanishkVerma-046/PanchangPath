@@ -53,7 +53,11 @@ const DESC_HI: Record<string, string> = {
           <div>
             <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;"><span class="en-text">{item.title}</span><span class="hi-text" style="display:none">{item.titleHi}</span></h3>
             <p style="font-size:13px;color:var(--color-mute);margin:0;font-family:var(--font-sans);"><span class="en-text">{item.titleHi}</span><span class="hi-text" style="display:none">{item.title}</span></p>
-            {item.deity && <p style="font-size:11.5px;color:var(--color-saffron-deep);margin:4px 0 0;font-weight:600;">{item.deity}</p>}
+            {item.deity && (
+              <p style="font-size:11.5px;color:var(--color-saffron-deep);margin:4px 0 0;font-weight:600;">
+                <span class="en-text">{item.deity}</span><span class="hi-text" style="display:none">{item.deityHi ?? item.deity}</span>
+              </p>
+            )}
           </div>
         </a>
       ))}

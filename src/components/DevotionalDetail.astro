@@ -85,12 +85,14 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
         <span aria-hidden="true">›</span>
         <a href={category.url} data-hi={category.labelHi}>{category.label}</a>
         <span aria-hidden="true">›</span>
-        <span>{item.title}</span>
+        <span class="en-text">{item.title}</span><span class="hi-text" style="display:none">{item.titleHi}</span>
       </div>
       <h1 class="dv-heading en-text">{item.title}</h1>
       <h1 class="dv-heading hi-text" style="display:none">{item.titleHi}</h1>
       {item.deity && (
-        <span class="dv-deity-badge">✦ {item.deity}</span>
+        <span class="dv-deity-badge">
+          ✦ <span class="en-text">{item.deity}</span><span class="hi-text" style="display:none">{item.deityHi ?? item.deity}</span>
+        </span>
       )}
     </div>
   </div>
