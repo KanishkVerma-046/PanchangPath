@@ -47,8 +47,12 @@ function toJD(y:number,m:number,d:number,h=0){
   return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
 }
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAKS_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
+function trRashi(i:number){return hindiActive?RASHI_HI[i]:RASHI[i];}
+function trNak(i:number){return hindiActive?NAKS_HI[i]:NAKS[i];}
 const PLANETS=[
   ['surya','Surya (Sun)','Soul, vitality, self-confidence, authority, father, government service, and overall health.'],
   ['chandra','Chandra (Moon)','Mind, emotions, intuition, mother, and the emotional core used for daily Rashifal and Muhurta decisions.'],
@@ -78,7 +82,7 @@ function fmtDMS(lon:number){
 function nakInfo(sid:number){
   const idx=Math.floor(sid/(360/27))%27;
   const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;
-  return {name:NAKS[idx],pada};
+  return {name:NAKS[idx],idx,pada};
 }
 
 let hindiActive=false;
@@ -108,7 +112,7 @@ function render(){
       motion=diff<0?'Retrograde':'Direct';
     }
     const motionLabel=hindiActive?(motion==='Retrograde'?'वक्री':'मार्गी'):motion;
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${displayName}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${RASHI[sign]} (${RASHI_EN[sign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">${fmtDMS(sid)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.name}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.pada}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${motion==='Retrograde'?'#dc2626':'var(--color-body-text)'};">${motionLabel}</td></tr>`;
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${displayName}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trRashi(sign)} (${RASHI_EN[sign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">${fmtDMS(sid)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trNak(nk.idx)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.pada}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${motion==='Retrograde'?'#dc2626':'var(--color-body-text)'};">${motionLabel}</td></tr>`;
   });
   const body=document.getElementById('pp-body');
   if(body)body.innerHTML=rows;

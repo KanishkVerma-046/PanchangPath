@@ -46,7 +46,9 @@ function toJD(y:number,m:number,d:number,h=0){
   return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
 }
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+function trRashi(i:number){return hindiActive?RASHI_HI[i]:RASHI[i];}
 
 // Classical Gochara ruleset — cross-verified during planning (see plan Global Constraints). Do not modify without re-verifying.
 function houseFromMoon(moonSignIdx:number,planetSignIdx:number){
@@ -92,7 +94,7 @@ function render(){
     const hShani=houseFromMoon(moonSign,shaniSign);
     const hRahu=houseFromMoon(moonSign,rahuSign);
     const hKetu=houseFromMoon(moonSign,ketuSign);
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${RASHI[moonSign]} (${RASHI_EN[moonSign]})</td>`
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${trRashi(moonSign)} (${RASHI_EN[moonSign]})</td>`
       +cellHtml(classifyGeneric(hMangal,[3,6,11]))
       +cellHtml(classifyGeneric(hGuru,[2,5,7,9,11]))
       +cellHtml(classifyShani(hShani))
