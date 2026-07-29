@@ -8,6 +8,7 @@ import {
   getFestivalGradient,
   daysUntil,
   formatCountdown,
+  formatCountdownHi,
 } from '../../lib/festivals';
 import { formatDateHi } from '../../lib/date-i18n';
 
@@ -22,6 +23,7 @@ const { festival: f } = Astro.props;
 const today     = new Date();
 const days      = daysUntil(today, f.date);
 const countdown = formatCountdown(days);
+const countdownHi = formatCountdownHi(days);
 const icon      = getFestivalIcon(f);
 const gradient  = getFestivalGradient(f);
 const fd        = new Date(f.date);
@@ -57,7 +59,8 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <span aria-hidden="true">›</span>
           <a href="/festivals" data-hi="त्योहार">Festivals</a>
           <span aria-hidden="true">›</span>
-          <span>{f.name}</span>
+          <span class="en-text">{f.name}</span>
+          <span class="hi-text" style="display:none">{f.nameHi}</span>
         </div>
         <h1 class="fd-heading en-text">{f.name}</h1>
         <h1 class="fd-heading hi-text" style="display:none">{f.nameHi}</h1>
@@ -68,7 +71,8 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           {!isPast && (
             <span class={`fd-countdown-badge ${isToday ? 'fd-countdown-today' : ''}`}>
               {isToday && <span class="fd-dot" aria-hidden="true"></span>}
-              {countdown}
+              <span class="en-text">{countdown}</span>
+              <span class="hi-text" style="display:none">{countdownHi}</span>
             </span>
           )}
         </div>
@@ -95,7 +99,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <div class="fd-date-sep"></div>
           <div class="fd-date-col">
             <p class="fd-label" data-hi="उलटी गिनती">Countdown</p>
-            <p class="fd-value" style={isToday ? 'color:var(--color-saffron-deep)' : isPast ? 'color:var(--color-mute)' : ''} data-hi={isPast ? `${Math.abs(days)} दिन पहले` : countdown}>
+            <p class="fd-value" style={isToday ? 'color:var(--color-saffron-deep)' : isPast ? 'color:var(--color-mute)' : ''} data-hi={isPast ? `${Math.abs(days)} दिन पहले` : countdownHi}>
               {isPast ? `${Math.abs(days)} days ago` : countdown}
             </p>
           </div>
@@ -130,7 +134,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
             </div>
             <div class="fd-fact-row">
               <dt data-hi={`दिनांक (${f.date.slice(0,4)})`}>Date ({f.date.slice(0,4)})</dt>
-              <dd>{dateLabel}</dd>
+              <dd data-hi={dateLabelHi}>{dateLabel}</dd>
             </div>
             <div class="fd-fact-row">
               <dt data-hi="मनाया जाता है">Observed in</dt>
@@ -149,7 +153,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
         <!-- Add to calendar (decorative for now) -->
         <div class="fd-side-card">
           <h3 class="fd-side-title" data-hi="कैलेंडर में जोड़ें">Add to Calendar</h3>
-          <p class="fd-side-body">{dateLabel}</p>
+          <p class="fd-side-body" data-hi={dateLabelHi}>{dateLabel}</p>
           <a
             href={`/festivals`}
             class="fd-side-btn"
