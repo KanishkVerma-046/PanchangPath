@@ -1025,69 +1025,141 @@ Adham Ramsaagarahin tum, aashray deu punaatu.`,
     icon: '🪈',
     lyricsHi: `॥ दोहा ॥
 बंशी शोभित कर मधुर, नील जलद तन श्याम।
-अरुण अधर जनु बिम्ब फल, नयन कमल अभिराम॥
-पूर्ण इन्द्र, अरविन्द मुख, पिताम्बर शुभ साज।
+अरुण अधर जनु बिम्बफल, नयन कमल अभिराम॥
+पूर्ण इन्द्र, अरविन्द मुख, पीताम्बर शुभ साज।
 जय मनमोहन मदन छवि, कृष्णचन्द्र महाराज॥
 
 ॥ चौपाई ॥
-जय यदुनंदन जय जगवंदन। जय वसुदेव देवकी नंदन॥
-जय यशोदा सुत नंद दुलारे। जय प्रभु भक्तन के रखवारे॥
+जय यदुनन्दन जय जगवन्दन। जय वसुदेव देवकी नन्दन॥
+जय यशोदा सुत नन्द दुलारे। जय प्रभु भक्तन के दृग तारे॥
 
-पीताम्बर तन कुंज बिहारी। नंद के लाला गिरधर मुरारी॥
-मोर मुकुट मकराकृत कुण्डल। अरुण अधर सोहे धुनि मंगल॥
+जय नट-नागर नाग नथैया। कृष्ण कन्हैया धेनु चरैया॥
+पुनि नख पर प्रभु गिरिवर धारो। आओ दीनन कष्ट निवारो॥
 
-कर में मुरली अधर विराजे। छवि देखत बहु दुःख भाजे॥
-गोपिन संग रास रचावें। सुर मुनि सब मन मोहित पावें॥
+वंशी मधुर अधर धरी तेरी। होवे पूर्ण मनोरथ मेरो॥
+आओ हरि पुनि माखन चाखो। आज लाज भारत की राखो॥
 
-कालिय दह में कूद के पैठे। कालिय नाग शीश पर नैठे॥
-गोवर्धन गिरि लियो उठाई। इंद्र क्रोध से लियो बचाई॥
+गोल कपोल, चिबुक अरुणारे। मृदु मुस्कान मोहिनी डारे॥
+रंजित राजिव नयन विशाला। मोर मुकुट वैजयंती माला॥
 
-पूतना कंस दुष्ट संहारे। कंस मामा को नाश करारे॥
-मथुरा गोकुल द्वारका वासी। बाल सखा सुदामा के दासी॥
+कुण्डल श्रवण पीतपट आछे। कटि किंकणी काछन काछे॥
+नील जलज सुन्दर तनु सोहे। छवि लखि, सुर नर मुनिमन मोहे॥
 
-गीता ज्ञान अर्जुन को दीना। भगवद रूप विराट दिखीना॥
-कर्म योग भक्ति उपदेशा। जग को दियो अमर संदेशा॥
+मस्तक तिलक, अलक घुंघराले। आओ कृष्ण बांसुरी वाले॥
+करि पय पान, पुतनहि तारयो। अका बका कागासुर मारयो॥
 
-द्रौपदी की लाज बचाई। सुदर्शन चक्र चलाई भाई॥
-राधा संग प्रेम अनूपा। नाम अमर है श्याम सरूपा॥
+मधुवन जलत अग्नि जब ज्वाला। भै शीतल, लखितहिं नन्दलाला॥
+सुरपति जब ब्रज चढ़यो रिसाई। मसूर धार वारि वर्षाई॥
 
-जो नर तुम्हरो ध्यान लगावे। सो निश्चय भव पार हो जावे॥
-सुमिरन करत कृष्ण सुखदाई। पल में हरे सकल दुखदाई॥
+लगत-लगत ब्रज चहन बहायो। गोवर्धन नखधारि बचायो॥
+लखि यसुदा मन भ्रम अधिकाई। मुख महं चौदह भुवन दिखाई॥
+
+दुष्ट कंस अति उधम मचायो। कोटि कमल जब फूल मंगायो॥
+नाथि कालियहिं तब तुम लीन्हें। चरणचिन्ह दै निर्भय किन्हें॥
+
+करि गोपिन संग रास विलासा। सबकी पूरण करी अभिलाषा॥
+केतिक महा असुर संहारयो। कंसहि केस पकड़ि दै मारयो॥
+
+मात-पिता की बन्दि छुड़ाई। उग्रसेन कहं राज दिलाई॥
+महि से मृतक छहों सुत लायो। मातु देवकी शोक मिटायो॥
+
+भौमासुर मुर दैत्य संहारी। लाये षट दश सहसकुमारी॥
+दै भीमहिं तृण चीर सहारा। जरासिंधु राक्षस कहं मारा॥
+
+असुर बकासुर आदिक मारयो। भक्तन के तब कष्ट निवारियो॥
+दीन सुदामा के दुःख टारयो। तंदुल तीन मूंठ मुख डारयो॥
+
+प्रेम के साग विदुर घर मांगे। दुर्योधन के मेवा त्यागे॥
+लखि प्रेम की महिमा भारी। ऐसे श्याम दीन हितकारी॥
+
+भारत के पारथ रथ हांके। लिए चक्र कर नहिं बल ताके॥
+निज गीता के ज्ञान सुनाये। भक्तन हृदय सुधा वर्षाये॥
+
+मीरा थी ऐसी मतवाली। विष पी गई बजाकर ताली॥
+राना भेजा सांप पिटारी। शालिग्राम बने बनवारी॥
+
+निज माया तुम विधिहिं दिखायो। उर ते संशय सकल मिटायो॥
+तब शत निन्दा करी तत्काला। जीवन मुक्त भयो शिशुपाला॥
+
+जबहिं द्रौपदी टेर लगाई। दीनानाथ लाज अब जाई॥
+तुरतहिं वसन बने नन्दलाला। बढ़े चीर भै अरि मुँह काला॥
+
+अस नाथ के नाथ कन्हैया। डूबत भंवर बचावत नैया॥
+सुन्दरदास आस उर धारी। दयादृष्टि कीजै बनवारी॥
+
+नाथ सकल मम कुमति निवारो। क्षमहु बेगि अपराध हमारो॥
+खोलो पट अब दर्शन दीजै। बोलो कृष्ण कन्हैया की जै॥
 
 ॥ दोहा ॥
-कृष्ण चालीसा जो पढ़े, प्रेम सहित सुख पाय।
-गोपाल कृपा करहु सदा, चरणन शीश नवाय॥`,
+यह चालीसा कृष्ण का, पाठ करै उर धारि।
+अष्ट सिद्धि नवनिधि फल, लहै पदारथ चारि॥`,
     transliteration: `Bansi shobhit kar madhur, neel jalad tan shyaam,
-Arun adhar janu bimb phal, nayan kamal abhiraam.
-Poorn indra, aravind mukh, pitaambar shubh saaj,
+Arun adhar janu bimbaphal, nayan kamal abhiraam.
+Poorn indra, aravind mukh, peetaambar shubh saaj,
 Jai manmohan madan chhavi, Krishnachandra Maharaj.
 
 Jai Yadunandan jai jagvandan, jai Vasudev Devaki nandan,
-Jai Yashoda sut Nand dulaare, jai prabhu bhaktan ke rakhwaare.
+Jai Yashoda sut Nand dulaare, jai prabhu bhaktan ke drig taare.
 
-Peetaambar tan kunj bihaari, Nand ke laala Girdhar Muraari,
-Mor mukut makraakrit kundal, arun adhar sohe dhuni mangal.
+Jai nat-naagar naag nathaiyaa, Krishna Kanhaiyaa dhenu charaiyaa,
+Puni nakh par prabhu girivar dhaaro, aao deenan kasht nivaaro.
 
-Kar mein murali adhar viraaje, chhavi dekhat bahu dukh bhaaje,
-Gopin sang raas rachaaven, sur muni sab man mohit paaven.
+Vanshi madhur adhar dhari teri, hove poorn manorath mero,
+Aao Hari puni maakhan chaakho, aaj laaj Bharat ki raakho.
 
-Kaaliy dah mein kood ke paithe, Kaaliy naag sheesh par naithe,
-Govardhan giri liyo uthaai, Indra krodh se liyo bachaai.
+Gol kapol, chibuk arunaare, mridu muskaan mohini daare,
+Ranjit raajiv nayan vishaala, mor mukut vaijayanti maala.
 
-Pootana Kans dusht sanhaare, Kans maama ko naash karaare,
-Mathura Gokul Dwaarka vaasi, baal sakha Sudama ke daasi.
+Kundal shravan peetapat aachhe, kati kinkani kaachhan kaachhe,
+Neel jalaj sundar tanu sohe, chhavi lakhi, sur nar munimana mohe.
 
-Geeta gyaan Arjun ko deena, Bhagwad roop viraat dikheena,
-Karma yog bhakti updesha, jag ko diyo amar sandesha.
+Mastak tilak, alak ghunghraale, aao Krishna baansuri vaale,
+Kari pay paan, Putanahi taaryo, Aka Baka Kaagaasur maaryo.
 
-Draupadi ki laaj bachaai, Sudarshan chakra chalaai bhaai,
-Radha sang prem anoopa, naam amar hai Shyaam saroopa.
+Madhuvan jalat agni jab jwaala, bhai sheetal, lakhitahin Nandalaala,
+Surapati jab Braj chadhyo risaai, masoor dhaar vaari varshaai.
 
-Jo nar tumharo dhyaan lagaave, so nishchay bhav paar ho jaave,
-Sumiran karat Krishna sukhdaai, pal mein hare sakal dukhdaai.
+Lagat-lagat Braj chahan bahaayo, Govardhan nakhdhaari bachaayo,
+Lakhi Yasuda man bhram adhikaai, mukh mahan chaudah bhuvan dikhaai.
 
-Krishna chaalisa jo padhe, prem sahit sukh paay,
-Gopal kripa karahu sada, charanan sheesh navaay.`,
+Dusht Kans ati udham machaayo, koti kamal jab phool mangaayo,
+Naathi Kaaliyahin tab tum leenhen, charanchinh dai nirbhay kinhen.
+
+Kari gopin sang raas vilaasa, sabki pooran kari abhilaasha,
+Ketik mahaa asur sanhaaryo, Kansahi kes pakadi dai maaryo.
+
+Maat-pita ki bandi chhudaai, Ugrasen kahan raaj dilaai,
+Mahi se mritak chhahon sut laayo, maatu Devaki shok mitaayo.
+
+Bhaumaasur Mur daitya sanhaari, laaye shat dash sahaskumaari,
+Dai Bheemahin trin cheer sahaara, Jaraasindhu raakshas kahan maara.
+
+Asur Bakaasur aadik maaryo, bhaktan ke tab kasht nivaariyo,
+Deen Sudama ke dukh taaryo, tandul teen moonth mukh daaryo.
+
+Prem ke saag Vidur ghar maange, Duryodhan ke mewa tyaage,
+Lakhi prem ki mahima bhaari, aise Shyaam deen hitakaari.
+
+Bharat ke Paarath rath haanke, liye chakra kar nahin bal taake,
+Nij Geeta ke gyaan sunaaye, bhaktan hriday sudha varshaaye.
+
+Meera thi aisi matvaali, vish pi gai bajaakar taali,
+Raana bheja saanp pitaari, Shaaligraam bane Banwaari.
+
+Nij maaya tum vidhihin dikhaayo, ur te sanshay sakal mitaayo,
+Tab shat ninda kari tatkaala, jeevan mukt bhayo Shishupaala.
+
+Jabahin Draupadi ter lagaai, Deenanaath laaj ab jaai,
+Turatahin vasan bane Nandalaala, badhe cheer bhai ari munh kaala.
+
+As naath ke naath Kanhaiyaa, doobat bhanwar bachaavat naiyaa,
+Sundardas aas ur dhaari, dayaadrishti keeje Banwaari.
+
+Naath sakal mam kumati nivaaro, kshamahu begi aparaadh hamaaro,
+Kholo pat ab darshan deeje, bolo Krishna Kanhaiyaa ki jai.
+
+Yah chaalisa Krishna ka, paath karai ur dhaari,
+Asht siddhi navanidhi phal, lahai padaarath chaari.`,
     meaning: 'This chalisa celebrates Krishna\'s life — from his birth to Devaki and Vasudeva, his childhood in Gokul and Vrindavan (lifting Govardhan hill, subduing the Kaliya serpent), his friendship with Sudama, protecting Draupadi, and imparting the Bhagavad Gita to Arjuna.', meaningHi: 'यह चालीसा कृष्ण के जीवन का उत्सव मनाती है — देवकी और वसुदेव से उनके जन्म से लेकर, गोकुल और वृंदावन में उनके बचपन (गोवर्धन पर्वत उठाना, कालिया सर्प को वश में करना), सुदामा के साथ उनकी मित्रता, द्रौपदी की रक्षा करने, और अर्जुन को भगवद्गीता का उपदेश देने तक।',
     benefits: 'Recited daily by Krishna devotees, especially on Janmashtami and Wednesdays, seeking his protection and divine love (prema-bhakti).', benefitsHi: 'कृष्ण भक्तों द्वारा प्रतिदिन, विशेष रूप से जन्माष्टमी और बुधवार को, उनकी सुरक्षा और दिव्य प्रेम (प्रेम-भक्ति) की कामना करते हुए पाठ किया जाता है।',
   },
