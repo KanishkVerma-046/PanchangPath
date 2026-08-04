@@ -1,0 +1,187 @@
+---
+import Layout from '../layouts/Layout.astro';
+import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
+import { FAQ_CATEGORIES } from '../lib/faq';
+
+// Strip the minimal inline HTML (just <a> tags) from `html: true` answers so
+// the FAQPage schema's plain-text `text` field doesn't contain markup.
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, '');
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ_CATEGORIES.flatMap((cat) =>
+    cat.items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: stripTags(item.a),
+      },
+    }))
+  ),
+};
+---
+
+<Layout
+  title="FAQ — Frequently Asked Questions — PanchangPath"
+  description="Answers to common questions about Panchang basics, Drik calculations, Lahiri Ayanamsha, Muhurta timing, Kundali & Rashifal tools, and the devotional library on PanchangPath."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+  <!-- Hero -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+    <MandalaWatermark size={480} opacity={0.06} />
+    <div class="container" style="position:relative;">
+      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">प्रश्नोत्तर · FAQ</p>
+      <h1 data-hi="अक्सर पूछे जाने वाले प्रश्न" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Frequently Asked Questions</h1>
+      <p data-hi="पंचांग की मूल बातों, हमारी गणना पद्धति, मुहूर्त, कुंडली और राशिफल उपकरणों, तथा भक्ति पुस्तकालय के बारे में सामान्य प्रश्नों के उत्तर।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">Answers to common questions about Panchang basics, our calculation method, Muhurta timing, the Kundali &amp; Rashifal tools, and the devotional library.</p>
+
+      <!-- Category quick-nav -->
+      <div class="faq-cat-nav">
+        {FAQ_CATEGORIES.map((cat) => (
+          <a href={`#${cat.id}`} class="faq-cat-pill">
+            <span data-hi={cat.labelHi}>{cat.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ sections -->
+  <section style="padding:40px 0 64px;">
+    <div class="container" style="max-width:820px;">
+      {FAQ_CATEGORIES.map((cat) => (
+        <div class="faq-section" id={cat.id}>
+          <h2 data-hi={cat.labelHi} style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 16px;">{cat.label}</h2>
+          <div class="faq-list">
+            {cat.items.map((item) => (
+              <details class="faq-item">
+                <summary class="faq-summary">
+                  <span data-hi={item.qHi}>{item.q}</span>
+                  <span class="faq-caret" aria-hidden="true">▾</span>
+                </summary>
+                <div class="faq-answer">
+                  {item.html ? (
+                    <>
+                      <p class="en-text" set:html={item.a} />
+                      <p class="hi-text" style="display:none" set:html={item.aHi} />
+                    </>
+                  ) : (
+                    <p data-hi={item.aHi}>{item.a}</p>
+                  )}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      <!-- Still have a question -->
+      <div class="card" style="padding:28px;margin-top:8px;text-align:center;">
+        <p data-hi="अभी भी कोई प्रश्न है?" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Still have a question?</p>
+        <p class="en-text" style="font-size:14px;color:var(--color-body-text);margin:0 0 16px;">The <a href="/contact">Contact Us</a> page is the fastest way to reach out.</p>
+        <p class="hi-text" style="display:none;font-size:14px;color:var(--color-body-text);margin:0 0 16px;"><a href="/contact">संपर्क करें</a> पृष्ठ संपर्क करने का सबसे तेज़ तरीका है।</p>
+        <a href="/contact" class="btn-primary" data-hi="संपर्क करें">Contact Us</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .faq-cat-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .faq-cat-pill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--color-body-text);
+    background: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-pill);
+    padding: 6px 14px;
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .faq-cat-pill:hover {
+    color: var(--color-ink);
+    border-color: var(--color-hairline-strong);
+    background: var(--color-canvas-soft);
+  }
+
+  .faq-section { margin-bottom: 40px; }
+  .faq-section:last-of-type { margin-bottom: 32px; }
+
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .faq-item {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-elevation);
+    overflow: hidden;
+  }
+  .faq-item[open] { box-shadow: var(--shadow-card-hover); }
+
+  .faq-summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-ink);
+    user-select: none;
+  }
+  .faq-summary::-webkit-details-marker { display: none; }
+
+  .faq-caret {
+    flex-shrink: 0;
+    color: var(--color-saffron-deep);
+    font-size: 13px;
+    transition: transform 0.2s;
+  }
+  .faq-item[open] .faq-caret { transform: rotate(180deg); }
+
+  .faq-answer {
+    padding: 0 18px 18px;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--color-body-text);
+  }
+  .faq-answer p { margin: 0; }
+  .faq-answer :global(a) { color: var(--color-saffron-deep); }
+
+  @media (max-width: 640px) {
+    .faq-summary { font-size: 14px; padding: 14px 16px; }
+    .faq-answer { padding: 0 16px 16px; font-size: 14px; }
+  }
+</style>
+
+<script>
+  function applyPageLang(hindi: boolean) {
+    document.querySelectorAll<HTMLElement>('[data-hi]').forEach((el) => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+    });
+    document.querySelectorAll<HTMLElement>('.en-text').forEach((el) => (el.style.display = hindi ? 'none' : ''));
+    document.querySelectorAll<HTMLElement>('.hi-text').forEach((el) => (el.style.display = hindi ? '' : 'none'));
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>
