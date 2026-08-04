@@ -884,6 +884,16 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
   }
   @media (max-width: 480px) {
     .header-container { padding: 0 12px; }
+
+    /* Below ~480px, the logo + icon cluster alone don't leave room for the
+       search bar on the same row (it was collapsing to ~0px width, which
+       dragged the absolutely-positioned mic button back against the logo).
+       Give the search bar its own full-width row instead. */
+    #header-top { height: auto; padding: 8px 0; }
+    #header-top .header-container { flex-wrap: wrap; row-gap: 8px; }
+    .logo-link { order: 1; }
+    .header-right { order: 2; gap: 8px; }
+    .header-center { order: 3; flex-basis: 100%; }
   }
 </style>
 
