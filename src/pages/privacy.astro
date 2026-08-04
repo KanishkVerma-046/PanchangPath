@@ -3,16 +3,21 @@ import Layout from '../layouts/Layout.astro';
 import StaticPage from '../components/StaticPage.astro';
 ---
 
-<Layout title="Privacy Policy — PanchangPath" description="PanchangPath's Privacy Policy — no accounts, no cookies, no tracking. Learn how location and local storage are used.">
-  <StaticPage title="Privacy Policy" titleHi="गोपनीयता नीति" lastUpdated="13 July 2026" lastUpdatedHi="13 जुलाई 2026">
+<Layout title="Privacy Policy — PanchangPath" description="PanchangPath's Privacy Policy — no accounts, no advertising. Learn how location, local storage, and Google Analytics are used.">
+  <StaticPage title="Privacy Policy" titleHi="गोपनीयता नीति" lastUpdated="4 August 2026" lastUpdatedHi="4 अगस्त 2026">
     <h2 data-hi="संक्षिप्त संस्करण">The short version</h2>
-    <p data-hi="पंचांगपथ को किसी खाते की आवश्यकता नहीं है, यह कोई कुकीज़ का उपयोग नहीं करता, और कोई एनालिटिक्स या विज्ञापन स्क्रिप्ट नहीं चलाता। यह पृष्ठ सरल शब्दों में बताता है कि साइट का उपयोग करते समय आपका ब्राउज़र कितना बहुत कम डेटा संभालता है।">PanchangPath does not require an account, does not use cookies, and does not run any analytics or advertising scripts. This page explains, in plain terms, the very little data your browser handles while using the site.</p>
+    <p data-hi="पंचांगपथ को किसी खाते की आवश्यकता नहीं है। साइट विज़िटर्स की समग्र गतिविधि को समझने के लिए गूगल एनालिटिक्स का उपयोग करती है, जो मानक एनालिटिक्स कुकीज़ सेट करता है — विवरण के लिए नीचे 'एनालिटिक्स' अनुभाग देखें। साइट वर्तमान में कोई विज्ञापन नहीं चलाती, और आज साइट पर कहीं भी कोई विज्ञापन-ट्रैकिंग कुकीज़ नहीं हैं। यह पृष्ठ सरल शब्दों में बताता है कि अभी पंचांगपथ का उपयोग करते समय आपका ब्राउज़र कौन सा डेटा संभालता है, और भविष्य में विज्ञापन जोड़े जाने पर क्या बदलेगा।">PanchangPath does not require an account. The site uses Google Analytics to understand aggregate visitor activity, which sets standard analytics cookies — see the Analytics section below for details. The site does not currently run any advertising, and there are no advertising-tracking cookies anywhere on the site today. This page explains, in plain terms, what data your browser handles while using PanchangPath now, and what would change if advertising is added in the future.</p>
 
     <h2 data-hi="स्थान और जियोलोकेशन">Location &amp; Geolocation</h2>
     <p data-hi="यदि आप अनुमति दें, तो आपके ब्राउज़र के जियोलोकेशन एपीआई का उपयोग आपके अनुमानित निर्देशांक का पता लगाने के लिए किया जाता है ताकि दिखाया गया पंचांग, सूर्योदय/सूर्यास्त, और मुहूर्त समय आपके शहर से मेल खाएं। यह पूरी तरह से आपके ब्राउज़र में होता है — आपके निर्देशांक कभी भी किसी पंचांगपथ सर्वर पर प्रसारित, लॉग या संग्रहीत नहीं किए जाते। आप किसी भी समय स्थान अनुरोध को अस्वीकार कर सकते हैं और इसके बजाय मैन्युअल रूप से एक शहर चुन सकते हैं।">If you allow it, your browser's Geolocation API is used to detect your approximate coordinates so the Panchang, sunrise/sunset, and Muhurta times shown match your city. This happens entirely in your browser — your coordinates are never transmitted to, logged by, or stored on any PanchangPath server. You can decline the location prompt at any time and manually pick a city instead.</p>
 
     <h2 data-hi="लोकल स्टोरेज">Local Storage</h2>
     <p data-hi="आपके ब्राउज़र की लोकल स्टोरेज का उपयोग कुछ प्राथमिकताओं को याद रखने के लिए किया जाता है — आपकी चुनी हुई भाषा, आपका अंतिम चुना हुआ स्थान, और आप डार्क या लाइट मोड पसंद करते हैं या नहीं। यह जानकारी आपके अपने डिवाइस पर ही रहती है और कभी कहीं नहीं भेजी जाती।">Your browser's local storage is used to remember a few preferences — your selected language, your last-chosen location, and whether you prefer dark or light mode. This information stays on your own device and is never sent anywhere.</p>
+
+    <h2 data-hi="एनालिटिक्स (गूगल एनालिटिक्स)">Analytics (Google Analytics)</h2>
+    <p data-hi="पंचांगपथ समग्र ट्रैफिक पैटर्न को समझने के लिए गूगल एनालिटिक्स का उपयोग करता है — उदाहरण के लिए, कितने लोग साइट पर आते हैं, कौन से पृष्ठ लोकप्रिय हैं, और विज़िटर किन देशों से आते हैं। गूगल एनालिटिक्स आपके सत्रों और विज़िट्स को पहचानने के लिए आपके ब्राउज़र में अपनी खुद की कुकीज़ (जैसे _ga) सेट करता है; पंचांगपथ इस डेटा को सीधे नहीं पढ़ता या संग्रहीत नहीं करता — इसे गूगल द्वारा संसाधित किया जाता है और यह गूगल की अपनी गोपनीयता नीति के अधीन है। इस डेटा का उपयोग समग्र रूप से साइट के उपयोग को समझने के लिए किया जाता है, व्यक्तिगत विज़िटर्स की पहचान करने के लिए नहीं।">PanchangPath uses Google Analytics to understand aggregate traffic patterns — for example, how many people visit, which pages are popular, and which countries visitors come from. Google Analytics sets its own cookies (such as <code>_ga</code>) in your browser to distinguish sessions and visits; PanchangPath does not directly read or store this data — it is processed by Google and is subject to Google's own Privacy Policy. This data is used in aggregate to understand site usage, not to identify individual visitors.</p>
+    <p class="en-text">You can opt out of Google Analytics tracking using the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>, or by using your browser's cookie or tracking-protection settings.</p>
+    <p class="hi-text" style="display:none">आप <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">गूगल एनालिटिक्स ऑप्ट-आउट ब्राउज़र ऐड-ऑन</a> का उपयोग करके, या अपने ब्राउज़र की कुकी या ट्रैकिंग-सुरक्षा सेटिंग्स का उपयोग करके गूगल एनालिटिक्स ट्रैकिंग से बाहर निकल सकते हैं।</p>
 
     <h2 data-hi="संपर्क फॉर्म">Contact Form</h2>
     <p class="en-text">The <a href="/contact">Contact Us</a> page embeds a Google Form. Anything you submit through it is received and processed by Google, not by a PanchangPath server, and is subject to Google's own Privacy Policy.</p>
@@ -21,8 +26,18 @@ import StaticPage from '../components/StaticPage.astro';
     <h2 data-hi="होस्टिंग और सर्वर लॉग">Hosting &amp; Server Logs</h2>
     <p data-hi="पंचांगपथ को क्लाउडफ्लेयर पेजेज पर होस्ट किया गया है। लगभग सभी वेब होस्ट की तरह, क्लाउडफ्लेयर का इंफ्रास्ट्रक्चर नियमित नेटवर्क संचालन और सुरक्षा के हिस्से के रूप में मानक एक्सेस लॉग (जैसे आईपी पता, अनुरोध समय) बनाए रख सकता है। पंचांगपथ स्वयं इन लॉग को अलग से एक्सेस, विश्लेषण, या संग्रहीत नहीं करता।">PanchangPath is hosted on Cloudflare Pages. Like virtually all web hosts, Cloudflare's infrastructure may retain standard access logs (e.g. IP address, request time) as part of routine network operation and security. PanchangPath itself does not access, analyze, or store these logs separately.</p>
 
-    <h2 data-hi="कोई विज्ञापन नहीं, कोई ट्रैकिंग नहीं">No Ads, No Tracking</h2>
-    <p data-hi="इस साइट पर कहीं भी कोई विज्ञापन नेटवर्क, कोई तृतीय-पक्ष एनालिटिक्स, और कोई ट्रैकिंग पिक्सेल नहीं है। यहां बेचने, साझा करने, या दुरुपयोग करने के लिए कोई व्यक्तिगत डेटा एकत्र नहीं किया जाता।">There are no advertising networks, no third-party analytics, and no tracking pixels anywhere on this site. There is no personal data collected here to sell, share, or misuse.</p>
+    <h2 data-hi="विज्ञापन — वर्तमान स्थिति">Advertising — Current Status</h2>
+    <p data-hi="आज इस साइट पर कहीं भी कोई विज्ञापन नेटवर्क और कोई विज्ञापन-ट्रैकिंग कुकीज़ नहीं हैं। ऊपर बताई गई गूगल एनालिटिक्स कुकीज़ के अलावा, पंचांगपथ कोई तृतीय-पक्ष ट्रैकिंग स्क्रिप्ट नहीं चलाता और न ही व्यक्तिगत डेटा बेचता या साझा करता है।">There are no advertising networks and no advertising-tracking cookies anywhere on this site today. Other than the Google Analytics cookies described above, PanchangPath does not run any third-party tracking scripts, and does not sell or share personal data.</p>
+
+    <h2 data-hi="यदि भविष्य में विज्ञापन जोड़े जाते हैं">If Advertising Is Added in the Future</h2>
+    <p data-hi="पंचांगपथ वर्तमान में किसी भी विज्ञापन नेटवर्क का हिस्सा नहीं है, लेकिन साइट का मालिक भविष्य में गूगल ऐडसेंस के माध्यम से विज्ञापन चलाने के लिए आवेदन कर सकता है। यदि और जब यह साइट गूगल ऐडसेंस या किसी समान सेवा के माध्यम से विज्ञापन सक्षम करती है, तो निम्नलिखित लागू होगा:">PanchangPath is not currently part of any advertising network, but the site owner may apply to run ads through Google AdSense in the future. If and when this site enables advertising through Google AdSense or a similar service, the following will apply:</p>
+    <ul>
+      <li data-hi="गूगल सहित तृतीय-पक्ष वेंडर, इस साइट या अन्य वेबसाइटों पर उपयोगकर्ता की पिछली विज़िट्स के आधार पर विज्ञापन दिखाने के लिए कुकीज़ का उपयोग कर सकते हैं।">Third-party vendors, including Google, may use cookies to serve ads based on a user's prior visits to this site or other websites.</li>
+      <li data-hi="गूगल की विज्ञापन कुकीज़ का उपयोग गूगल और उसके साझेदारों को इस साइट और/या इंटरनेट पर अन्य साइटों पर आपकी विज़िट के आधार पर विज्ञापन दिखाने में सक्षम बनाता है।">Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to this site and/or other sites on the Internet.</li>
+      <li class="en-text">You will be able to opt out of personalized advertising by visiting <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a>, and/or opt out of some third-party vendors' use of cookies for personalized advertising by visiting <a href="https://www.aboutads.info" target="_blank" rel="noopener">www.aboutads.info</a>.</li>
+      <li class="hi-text" style="display:none">आप <a href="https://adssettings.google.com" target="_blank" rel="noopener">गूगल विज्ञापन सेटिंग्स</a> पर जाकर व्यक्तिगत विज्ञापन से बाहर निकल सकेंगे, और/या <a href="https://www.aboutads.info" target="_blank" rel="noopener">www.aboutads.info</a> पर जाकर कुछ तृतीय-पक्ष वेंडर्स द्वारा व्यक्तिगत विज्ञापन के लिए कुकीज़ के उपयोग से बाहर निकल सकेंगे।</li>
+    </ul>
+    <p data-hi="यदि और जब इस साइट पर वास्तव में विज्ञापन शुरू होंगे, तो यह अनुभाग वर्तमान व्यवहार को दर्शाने के लिए अपडेट किया जाएगा और यह सशर्त भाषा हटा दी जाएगी।">If and when advertising actually goes live on this site, this section will be updated to reflect current practice and the conditional language above will be removed.</p>
 
     <h2 data-hi="इस नीति में परिवर्तन">Changes to This Policy</h2>
     <p class="en-text">This policy may be updated occasionally as the site evolves. The date at the top of this page reflects the most recent revision. If you have questions about this policy, please reach out via the <a href="/contact">Contact Us</a> page.</p>
@@ -31,7 +46,7 @@ import StaticPage from '../components/StaticPage.astro';
 </Layout>
 
 <script>
-  // Two paragraphs on this page contain an embedded <a> link, which data-hi's
+  // Several paragraphs/list items on this page contain an embedded <a> link, which data-hi's
   // textContent-based swap would strip, so they use the en-text/hi-text pattern
   // instead and need this small toggle (everything else here uses data-hi,
   // handled automatically by Header.astro's global listener).
