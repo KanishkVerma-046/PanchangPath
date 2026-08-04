@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /cities.json
 
-Sitemap: https://panchangpath.com/sitemap-index.xml
+Sitemap: https://panchangpath.com/sitemap.xml
