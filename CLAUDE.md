@@ -25,7 +25,7 @@ Stack: **Astro v7** (`output: 'static'`), **Tailwind CSS v4** (`@theme` CSS cust
 - `src/lib/kundali.ts` — Kundali-domain orchestration on top of `astro-core.ts` (9-graha chart assembly, dignity); exports `jdFull`, `allTropicalLons`, `calculateKundali`
 - `src/lib/planetaryEvents.ts` — Event scanner (sign transits, retrogrades, eclipses, solstices); exports `computeUpcomingEvents`, `formatCountdownLabel`, `formatEventDateTime`
 - `src/lib/festivals.ts` — Festival data (2025–2026), slugs, icons, gradients
-- `src/lib/locations.ts` — City database with lat/lng/tzOffset
+- `src/lib/locations.ts` — City database with lat/lng/tzOffset (full 161-city list; `src/pages/cities.json.ts` auto-generates `/cities.json` from it for `LocationPicker.astro`'s header dropdown — but 12 other pages, `muhurta/*.astro` + `moonrise-moonset.astro` + `sunrise-sunset.astro` + `muhurta.astro`, hardcode their own smaller `LOCS` arrays independently, so adding a city to `locations.ts` does NOT propagate to those pages' dropdowns)
 - `src/lib/rashifal.ts` — 12 rashi data objects (predictions, lucky attrs, name letters); exports `RASHIS`, `getDailyPrediction`, `getRashiById`, `getRashiByNameLetter`, `getRashiByBirthDate`, `PRASHNAVALI_ANSWERS`
 - `src/lib/muhurta.ts` — Choghadiya, Hora, Gowri Panchangam, Yamaganda and other muhurta timing tables
 - `src/lib/jyotish.ts` — shared data (nakshatras, etc.) for the Jyotish calculator pages
@@ -100,6 +100,9 @@ Every category follows the same shape:
 - **Passing data to client scripts in static Astro** — use `define:vars={{ myData }}` on `<script>` tags to pass server-computed values (e.g. `PRASHNAVALI_ANSWERS` in `prashnavali.astro`) into client-side code; a client `<script>` block cannot read `Astro.props` or other frontmatter variables directly — but it CAN `import` functions/data from a `.ts` module in `src/lib/` (see the corrected gotcha above), which is a different thing from reading frontmatter
 - **`WebFetch` cannot return verbatim text** — hard ~125-char quote limit, always summarizes. Use `curl` + manual HTML-tag-stripping for anything requiring exact text (see "Sourcing long/sacred texts accurately" above).
 - **`astro check` reports ~900+ TypeScript errors** — nearly all are the same pattern (`document.getElementById(...)` returning untyped `HTMLElement`, missing null-checks) across every calculator's inline `<script>` block. This is pre-existing, doesn't block `astro build`, and isn't worth mass-fixing; don't be alarmed by the count.
+- **No browser-automation CLI in this harness** — Playwright is installed as a project devDependency though. To screenshot/verify UI: write a `.cjs` script (package.json has `"type":"module"`, so plain `.js` files are ES modules — `.cjs` lets you `require('playwright')`), and run it from the project root so `node_modules` resolves (running from an external scratchpad dir fails with `MODULE_NOT_FOUND`).
+- **Cloudflare Pages propagation lag** — after `npm run deploy`, the printed deployment-specific hash URL (`https://<hash>.panchangpath.pages.dev`) is live immediately; the `panchangpath.pages.dev` production alias can take 1-2 min to catch up. Verify against the hash URL first, or `npx wrangler pages deployment list --project-name=panchangpath` to confirm which commit is current Production.
+- **Devanagari conjuncts can render garbled in chat/terminal fonts** — when proposing new Hindi text for approval, don't just paste it in the response; stage it live (uncommitted) on the real page and screenshot it via Playwright so it renders in the site's actual font.
 
 ## Development
 
