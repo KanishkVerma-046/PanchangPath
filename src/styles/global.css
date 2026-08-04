@@ -110,7 +110,17 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+/* overflow-x:hidden is a safety net, not the actual fix for the bug that led
+   here: any page-level horizontal overflow (confirmed 2026-08-04, traced to a
+   CSS grid item without min-width:0 in RashifalFeed.astro) inflates
+   window.innerWidth/innerHeight on mobile Chromium - this alone does NOT
+   correct that inflation (verified empirically: body.scrollWidth still
+   reports the overflowed width even with this clip applied), because the
+   underlying content is still wider than the viewport, just visually
+   clipped. It only prevents a visible horizontal scrollbar/janky scroll if
+   some future overflow slips through. The real fix is not letting content
+   overflow the body in the first place. */
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
 body {
   margin: 0;

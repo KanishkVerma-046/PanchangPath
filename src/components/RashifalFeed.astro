@@ -87,7 +87,7 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
       <!-- Prashnavali card -->
       <a href="/prashnavali" class="rf-tool-card rf-prashnavali">
         <div class="rf-tool-icon">🔮</div>
-        <div>
+        <div class="rf-tool-text">
           <p class="rf-tool-title">
             <span class="en-text">Prashnavali</span>
             <span class="hi-text" style="display:none;">प्रश्नावली</span>
@@ -544,8 +544,15 @@ rfApplyExpandLabels();
   gap: 14px;
   text-decoration: none;
   transition: box-shadow 0.15s;
+  /* Grid items default to min-width:auto, sized to fit content without
+     wrapping. The Prashnavali card's unbroken description text pushed
+     its min-content past the grid track's width - and since all 3 cards
+     share one column in the single-column mobile layout below, that
+     stretched the shared track (and the whole page) past the viewport. */
+  min-width: 0;
 }
 .rf-tool-card:hover { box-shadow: var(--shadow-card-hover); }
+.rf-tool-text { flex: 1; min-width: 0; }
 .rf-tool-icon { font-size: 26px; flex-shrink: 0; }
 .rf-tool-title {
   font-size: 14px;

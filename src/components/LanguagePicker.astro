@@ -212,7 +212,15 @@ if (currentLang !== 'en') {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Section head ── */
+/* ── Section head ──
+   Purely decorative label, no click handler. It doesn't geometrically
+   overlap the option rows below it at rest, but WebKit was observed
+   intermittently treating it as intercepting taps aimed at the nearby
+   option during the dropdown's slide-in animation (sticky elements can
+   get their own compositing layer that paints above DOM-later siblings
+   mid-transition). pointer-events:none removes it from hit-testing
+   entirely, so it can never block a tap regardless of the transient
+   stacking/animation state. */
 .lng-section-head {
   font-size: 10px;
   font-weight: 700;
@@ -225,6 +233,7 @@ if (currentLang !== 'en') {
   position: sticky;
   top: 0;
   background: var(--color-canvas);
+  pointer-events: none;
 }
 
 /* ── Options ── */
