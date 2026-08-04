@@ -263,9 +263,13 @@ if (currentLang !== 'en') {
 }
 .lng-opt-active .lng-check { opacity: 1; }
 
-/* ── Mobile: icon-only pill ── */
+/* ── Mobile: icon-only pill ──
+   Padding/height bumped slightly above the desktop pill (30px) to keep
+   the tap target closer to the 44px guideline now that the "EN" text
+   label (which used to pad out the hit area) is hidden — there's ~13px
+   of spare room in the icon row at 360px to spend on this safely. */
 @media (max-width: 480px) {
-  .lng-pill { padding: 0 8px; }
+  .lng-pill { padding: 0 10px; height: 32px; }
   .lng-label-txt { display: none; }
 }
 
