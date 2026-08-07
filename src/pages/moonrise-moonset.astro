@@ -114,13 +114,9 @@ window.addEventListener('locationchange',(e:Event)=>{
 function computeForDate(y:number,m:number,d:number,loc:any){
   const jd=toJD(y,m,d,6-loc.tz);
   const jdMidnightUTC=toJD(y,m,d,0);
-  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
-  const elong=n360(moonLongitude(jd)-sunTrueLongitude(jd));
-  const moonAge=elong/360*29.53;
-  const moonriseSeedUTC=srUTC+moonAge*0.8;
-  const moonsetSeedUTC=moonriseSeedUTC+12.42;
-  const moonriseUTC=moonRiseSetUTC(jdMidnightUTC,loc.lat,loc.lng,true,moonriseSeedUTC);
-  const moonsetUTC=moonRiseSetUTC(jdMidnightUTC,loc.lat,loc.lng,false,moonsetSeedUTC);
+  // null on the ~1 day a month with no moonrise (or no moonset) — see moonRiseSetUTC.
+  const moonriseUTC=moonRiseSetUTC(jdMidnightUTC,loc.lat,loc.lng,true,loc.tz);
+  const moonsetUTC=moonRiseSetUTC(jdMidnightUTC,loc.lat,loc.lng,false,loc.tz);
   const phase=moonPhase(jd);
   return {moonriseUTC,moonsetUTC,phase};
 }
@@ -137,8 +133,8 @@ function calculate(){
   if(todayEl){
     const moonPhaseLabel=hindiActive?'चंद्र कला':'Moon Phase';
     todayEl.innerHTML=[
-      {label:hindiActive?'चंद्रोदय':'Moonrise',value:isNaN(moonriseUTC)?'—':decHoursToTime(moonriseUTC,loc.tz),color:'#6366f1'},
-      {label:hindiActive?'चंद्रास्त':'Moonset',value:isNaN(moonsetUTC)?'—':decHoursToTime(moonsetUTC,loc.tz),color:'#4338ca'},
+      {label:hindiActive?'चंद्रोदय':'Moonrise',value:moonriseUTC===null?(hindiActive?'आज चंद्रोदय नहीं':'No moonrise today'):decHoursToTime(moonriseUTC,loc.tz),color:'#6366f1'},
+      {label:hindiActive?'चंद्रास्त':'Moonset',value:moonsetUTC===null?(hindiActive?'आज चंद्रास्त नहीं':'No moonset today'):decHoursToTime(moonsetUTC,loc.tz),color:'#4338ca'},
       {label:moonPhaseLabel,value:hindiActive?phase.nameHi:phase.name,color:'var(--color-ink)'},
       {label:hindiActive?'रोशनी':'Illumination',value:phase.illumPct+'%',color:'var(--color-ink)'},
     ].map(c=>`<div class="card" style="padding:20px;text-align:center;"><p style="font-size:11px;color:var(--color-mute);text-transform:uppercase;letter-spacing:0.06em;font-family:var(--font-mono);margin:0 0 8px;">${c.label}</p><p style="font-size:${c.label===moonPhaseLabel?'16':'24'}px;font-weight:700;color:${c.color};margin:0;font-family:var(--font-mono);">${c.value}</p></div>`).join('');
@@ -152,7 +148,7 @@ function calculate(){
       const r=computeForDate(dt.getFullYear(),dt.getMonth()+1,dt.getDate(),loc);
       const dayName=formatDateHi(dt, hindiActive, {weekday:'short',month:'short',year:false});
       const todayTag=i===0?(hindiActive?' (आज)':' (Today)'):'';
-      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${todayTag}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${isNaN(r.moonriseUTC)?'—':decHoursToTime(r.moonriseUTC,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${isNaN(r.moonsetUTC)?'—':decHoursToTime(r.moonsetUTC,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);">${hindiActive?r.phase.nameHi:r.phase.name} (${r.phase.illumPct}%)</td></tr>`;
+      rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:${i===0?'700':'400'};">${dayName}${todayTag}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${r.moonriseUTC===null?'—':decHoursToTime(r.moonriseUTC,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);font-family:var(--font-mono);">${r.moonsetUTC===null?'—':decHoursToTime(r.moonsetUTC,loc.tz)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text);">${hindiActive?r.phase.nameHi:r.phase.name} (${r.phase.illumPct}%)</td></tr>`;
     }
     weekBody.innerHTML=rows;
   }

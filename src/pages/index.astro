@@ -325,9 +325,12 @@ import {
   equationOfTimeMinutes,
   sunriseUTC,
   gmstDegrees,
-  moonEquatorial,
   moonRiseSetUTC,
   findAngleCrossing,
+  NO_MOONRISE,
+  NO_MOONSET,
+  localizeMoonEvent,
+  localCivilDate,
   TITHIS,
   NAKSHATRAS,
   YOGAS,
@@ -397,7 +400,10 @@ let currentLang: string = localStorage.getItem('pp-lang') || 'en';
 let isHindi = currentLang === 'hi';
 
 function calcPanchang(date: Date, loc: Location) {
-  const year = date.getFullYear(), month = date.getMonth()+1, day = date.getDate();
+  // Calendar date AND weekday in the selected city's timezone, not the visitor's browser
+  // timezone — otherwise someone in New York viewing Delhi gets the previous day's Panchang
+  // and, worse, the previous day's Rahu Kalam / Gulika / Yamaganda slots. See localCivilDate.
+  const { year, month, day, weekday: wd } = localCivilDate(date, loc.tzOffset);
   const hour = 6 - loc.tzOffset;
   const jd = julianDay(year, month, day, hour);
   const sLon = sunTrueLon(jd);
@@ -413,7 +419,6 @@ function calcPanchang(date: Date, loc: Location) {
   const yLon = norm360(sSid + mSid);
   const yIdx = Math.floor(yLon / (360/27)) % 27;
   const kIdx = Math.floor(elong / 6) % 60;
-  const wd = date.getDay();
   const srUTC = sunriseUTC(jd, loc.lat, loc.lng, true);
   const ssUTC = sunriseUTC(jd, loc.lat, loc.lng, false);
   const srMins = srUTC * 60 + loc.tzOffset * 60;
@@ -424,11 +429,9 @@ function calcPanchang(date: Date, loc: Location) {
   srMinsGlobal = srMins; // store for 24+ format
 
   const jd0 = jd - hour / 24;
-  const moonAge = elong / 360 * 29.53;
-  const moonriseSeedUTC = srUTC + moonAge * 0.8;
-  const moonsetSeedUTC = moonriseSeedUTC + 12.42;
-  const moonriseUTC = moonRiseSetUTC(jd0, loc.lat, loc.lng, true, moonriseSeedUTC);
-  const moonsetUTC = moonRiseSetUTC(jd0, loc.lat, loc.lng, false, moonsetSeedUTC);
+  // Either can be null on the ~1 day a month with no moonrise (or no moonset) — see moonRiseSetUTC.
+  const moonriseUTC = moonRiseSetUTC(jd0, loc.lat, loc.lng, true, loc.tzOffset);
+  const moonsetUTC = moonRiseSetUTC(jd0, loc.lat, loc.lng, false, loc.tzOffset);
   const noonMins = (srMins + ssMins) / 2;
   const abStart = noonMins - dayMins / 30, abEnd = noonMins + dayMins / 30;
   return {
@@ -439,8 +442,8 @@ function calcPanchang(date: Date, loc: Location) {
     karana: { name: KARANAS[kIdx]||'Bava', nameHi: KARANAS_HI[kIdx]||'बव', endTime: estimateEnd(jd, 6, loc.tzOffset, j => norm360(moonLon(j) - sunTrueLon(j))) },
     sunrise: fmtTime(srUTC, loc.tzOffset),
     sunset: fmtTime(ssUTC, loc.tzOffset),
-    moonrise: fmtTime(moonriseUTC, loc.tzOffset),
-    moonset: fmtTime(moonsetUTC, loc.tzOffset),
+    moonrise: moonriseUTC === null ? NO_MOONRISE : fmtTime(moonriseUTC, loc.tzOffset),
+    moonset: moonsetUTC === null ? NO_MOONSET : fmtTime(moonsetUTC, loc.tzOffset),
     durationDay: `${Math.floor(dayMins/60)}h ${Math.round(dayMins%60)}m`,
     rahuKalam: slot(RAHU[wd]),
     gulikaKalam: slot(GULIKA[wd]),
@@ -522,7 +525,7 @@ function updateUI(p: ReturnType<typeof calcPanchang>) {
   setText('karana-end', p.karana.endTime);
   // Sun times
   setText('sunrise', p.sunrise); setText('sunset', p.sunset);
-  setText('moonrise', p.moonrise); setText('day-duration', p.durationDay);
+  setText('moonrise', localizeMoonEvent(p.moonrise, currentLang === 'hi')); setText('day-duration', p.durationDay);
   // Abhijit
   setText('abhijit-time', `${p.abhijitMuhurta.start} – ${p.abhijitMuhurta.end}`);
   // Kalam

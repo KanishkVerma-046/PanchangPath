@@ -1,7 +1,7 @@
 // Shared astronomy engine — the one place every astronomy-engine call lives, plus the small
 // geometry/utility functions that sit directly on top of it (ayanamsha, rise/set, Lagna).
 // See docs/superpowers/plans/2026-07-21-full-site-astronomy-engine-scope.md §4 for the design.
-import { SunPosition, EclipticGeoMoon, GeoVector, Ecliptic, Body } from 'astronomy-engine';
+import { SunPosition, EclipticGeoMoon, GeoVector, Ecliptic, Body, Observer, SearchRiseSet } from 'astronomy-engine';
 
 function toRad(d: number) { return d * Math.PI / 180; }
 function toDeg(r: number) { return r * 180 / Math.PI; }
@@ -92,47 +92,48 @@ export function gmstDegrees(jd: number): number {
   return norm360(280.46061837 + 360.98564736629 * (jd - 2451545.0) + 0.000387933 * T * T);
 }
 
-// Moon's geocentric equatorial position (RA/Dec), ecliptic latitude approximated as 0 —
-// consistent with the rest of this codebase, which does not model the Moon's ~5.1° orbital
-// inclination anywhere else (Nakshatra/Rashi placement use ecliptic longitude only). Moved
-// verbatim from panchang.ts.
+// Moon's geocentric equatorial position (RA/Dec), including the Moon's ecliptic latitude.
+// Longitude-only Panchang elements (Tithi/Nakshatra/Yoga/Karana) can ignore β, but declination
+// cannot: the Moon swings ±5.145° off the ecliptic, and that error feeds straight into any
+// hour-angle/altitude geometry. Dropping β here previously cost moonrise up to ~42 minutes.
 export function moonEquatorial(jd: number): { ra: number; dec: number } {
   const T = (jd - 2451545.0) / 36525;
-  const lambda = moonLongitude(jd);
+  const { lon, lat } = EclipticGeoMoon(jd - 2451545.0);
   const obliq = 23.4392911 - 0.0130042 * T;
-  const lamR = toRad(lambda);
+  const lamR = toRad(lon);
+  const betR = toRad(lat);
   const epsR = toRad(obliq);
-  const dec = Math.asin(Math.sin(epsR) * Math.sin(lamR));
-  const ra = norm360(toDeg(Math.atan2(Math.sin(lamR) * Math.cos(epsR), Math.cos(lamR))));
+  const dec = Math.asin(Math.sin(betR) * Math.cos(epsR) + Math.cos(betR) * Math.sin(epsR) * Math.sin(lamR));
+  const ra = norm360(toDeg(Math.atan2(
+    Math.sin(lamR) * Math.cos(epsR) - Math.tan(betR) * Math.sin(epsR),
+    Math.cos(lamR),
+  )));
   return { ra, dec: toDeg(dec) };
 }
 
 // Moonrise/moonset in decimal UTC hours, in the same "UTC hour relative to this calendar
-// date's 0h UTC" frame sunriseUTC() returns. Unlike the Sun, the Moon moves ~13°/day, so a
-// single daily snapshot isn't accurate — this iterates the altitude-crossing equation,
-// recomputing the Moon's actual position at each refined estimate, seeded from a day-offset
-// heuristic to stay anchored to the correct calendar-day event. Moved verbatim from panchang.ts.
-// jd0 = Julian Day at 0h UTC of the calendar date being computed for.
-export function moonRiseSetUTC(jd0: number, lat: number, lng: number, rising: boolean, seedUTCHour: number): number {
-  const h0 = 0.125; // target altitude: ~mean lunar horizontal parallax (0.7275×0.9508°) minus refraction (34')
-  const latR = toRad(lat);
-  let u = seedUTCHour;
-  for (let i = 0; i < 6; i++) {
-    const jd = jd0 + u / 24;
-    const { ra, dec } = moonEquatorial(jd);
-    const decR = toRad(dec);
-    const cosH0 = (Math.sin(toRad(h0)) - Math.sin(latR) * Math.sin(decR)) / (Math.cos(latR) * Math.cos(decR));
-    if (cosH0 < -1 || cosH0 > 1) return NaN;
-    const H0 = toDeg(Math.acos(cosH0));
-    const lst = norm360(gmstDegrees(jd) + lng);
-    let H = ((lst - ra + 180) % 360 + 360) % 360 - 180;
-    const target = rising ? -H0 : H0;
-    let err = ((H - target + 180) % 360 + 360) % 360 - 180;
-    const du = err / 14.35; // Moon's mean hour-angle progression rate, degrees/hour
-    u -= du;
-    if (Math.abs(du) < 0.0005) break; // converged to ~1.8 seconds
-  }
-  return u;
+// date's 0h UTC" frame sunriseUTC() returns — so fmtTime(result, tzOffset) still applies.
+//
+// Delegates to astronomy-engine's SearchRiseSet, which handles topocentric parallax, refraction
+// and the Moon's ecliptic latitude properly. This replaced a hand-rolled altitude-crossing
+// solver that (a) computed declination with β forced to 0, costing up to ~42 min, and (b) was
+// seeded by a `sunrise + moonAge*0.8` heuristic that landed on the *next* day's moonrise on
+// 48 of 300 sampled city-days.
+//
+// The search is anchored to local midnight so the event returned is the one that actually falls
+// on the location's own calendar date. Returns null when there is genuinely no such event that
+// day — the lunar day is ~24h50m, so roughly one day a month has no moonrise (or no moonset)
+// at all. Callers must render that case honestly rather than printing a neighbouring day's time.
+//
+// jd0 = Julian Day at 0h UTC of the calendar date; tzOffset = the location's UTC offset in hours.
+export function moonRiseSetUTC(
+  jd0: number, lat: number, lng: number, rising: boolean, tzOffset: number,
+): number | null {
+  const localMidnightJd = jd0 - tzOffset / 24;
+  const observer = new Observer(lat, lng, 0);
+  const event = SearchRiseSet(Body.Moon, observer, rising ? +1 : -1, localMidnightJd - 2451545.0, 1);
+  if (!event) return null;
+  return (event.ut + 2451545.0 - jd0) * 24;
 }
 
 // Iteratively finds the JD at which `longitudeFn(jd)` (a 0-360° wrapped angle) next crosses

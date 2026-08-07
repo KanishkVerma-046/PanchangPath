@@ -230,6 +230,40 @@ const GULIKA_SLOTS =    [6, 5, 4, 3, 2, 1, 0];
 // recompute) import the single verified source instead of carrying their own stale copy (Issue #1).
 export const YAMAGANDA_SLOTS = [4, 3, 2, 1, 0, 6, 5];
 
+// The lunar day runs ~24h50m, so roughly one calendar day a month has no moonrise at all (and,
+// on a different day, no moonset). Those days get these sentinels in place of a time string —
+// the honest answer, rather than silently showing the neighbouring day's event.
+export const NO_MOONRISE = 'No moonrise today';
+export const NO_MOONRISE_HI = 'आज चंद्रोदय नहीं';
+export const NO_MOONSET = 'No moonset today';
+export const NO_MOONSET_HI = 'आज चंद्रास्त नहीं';
+
+// The calendar date and weekday *at the location being computed for*, not in whatever timezone
+// the code happens to be running in. `Date.getFullYear()/getMonth()/getDate()/getDay()` all read
+// the runtime's local zone, so a visitor in New York at 11 PM viewing Delhi's Panchang used to
+// get the previous day — wrong Tithi/Nakshatra, and (via getDay) the wrong weekday, which drives
+// Rahu Kalam, Gulika, Yamaganda and Choghadiya. Shifting the instant by the location's offset and
+// then reading UTC fields makes the result independent of where the code runs.
+export function localCivilDate(instant: Date, tzOffset: number): {
+  year: number; month: number; day: number; weekday: number;
+} {
+  const shifted = new Date(instant.getTime() + tzOffset * 3600000);
+  return {
+    year: shifted.getUTCFullYear(),
+    month: shifted.getUTCMonth() + 1,
+    day: shifted.getUTCDate(),
+    weekday: shifted.getUTCDay(),
+  };
+}
+
+// Maps the English sentinels above to Hindi; passes real time strings through untouched.
+export function localizeMoonEvent(value: string, hindi: boolean): string {
+  if (!hindi) return value;
+  if (value === NO_MOONRISE) return NO_MOONRISE_HI;
+  if (value === NO_MOONSET) return NO_MOONSET_HI;
+  return value;
+}
+
 function slotTime(sunriseMins: number, sunsetMins: number, slot: number): { start: string; end: string } {
   const duration = (sunsetMins - sunriseMins) / 8;
   const start = sunriseMins + slot * duration;
@@ -264,9 +298,8 @@ function sunEndTime(lon: number, degPerUnit: number, jd: number, tzOffset: numbe
 }
 
 export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset: number): PanchangData {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
+  // Calendar date resolved in the *location's* timezone, not the runtime's — see localCivilDate.
+  const { year, month, day, weekday } = localCivilDate(date, tzOffset);
   const hour = 6 - tzOffset; // ~6 AM local = UTC hour
 
   const jd = julianDay(year, month, day, hour);
@@ -303,8 +336,7 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
   const halfTithiIdx = Math.floor(elongationFull / 6) % 60;
   const karanaEndTime = estimateEndTime(jd, 6, tzOffset, elongationFn);
 
-  // Vara (weekday)
-  const weekday = date.getDay();
+  // Vara (weekday) comes from localCivilDate above, so it matches the location's calendar day.
 
   // Sunrise/Sunset
   const srUTC = sunriseUTC(jd, lat, lng, true);
@@ -319,16 +351,14 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
   const dMin = Math.round(dayMins % 60);
   const durationDay = `${dHours}h ${dMin}m`;
 
-  // Moonrise/moonset: iterative altitude-crossing solve (see moonRiseSetUTC), seeded from the
-  // old day-offset heuristic so the iteration lands on this calendar day's actual event.
+  // Moonrise/moonset for this location's own calendar date (see moonRiseSetUTC). Either can be
+  // null: the lunar day is ~24h50m, so about one day a month genuinely has no moonrise (or no
+  // moonset) at all, and that is reported as such rather than borrowing the adjacent day's time.
   const jd0 = jd - hour / 24; // JD at 0h UTC of this calendar date
-  const moonAge = elongation / 360 * 29.53;
-  const moonriseSeedUTC = srUTC + moonAge * 0.8;
-  const moonsetSeedUTC = moonriseSeedUTC + 12.42;
-  const moonriseUTC = moonRiseSetUTC(jd0, lat, lng, true, moonriseSeedUTC);
-  const moonsetUTC = moonRiseSetUTC(jd0, lat, lng, false, moonsetSeedUTC);
-  const moonrise = decimalHoursToTime(moonriseUTC, tzOffset);
-  const moonset = decimalHoursToTime(moonsetUTC, tzOffset);
+  const moonriseUTC = moonRiseSetUTC(jd0, lat, lng, true, tzOffset);
+  const moonsetUTC = moonRiseSetUTC(jd0, lat, lng, false, tzOffset);
+  const moonrise = moonriseUTC === null ? NO_MOONRISE : decimalHoursToTime(moonriseUTC, tzOffset);
+  const moonset = moonsetUTC === null ? NO_MOONSET : decimalHoursToTime(moonsetUTC, tzOffset);
 
   // Kalam periods
   const rahuKalam = slotTime(srMins, ssMins, RAHU_SLOTS[weekday]);
