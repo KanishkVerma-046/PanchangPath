@@ -3,7 +3,10 @@ import Layout from '../../layouts/Layout.astro';
 import MandalaWatermark from '../../components/motifs/MandalaWatermark.astro';
 import { CATEGORY_META } from '../../lib/devotional/types';
 
-const categories = Object.values(CATEGORY_META);
+// Only surface categories that actually have pages. Unbuilt ones stay in CATEGORY_META
+// (flip `built` to true to bring the card back) rather than showing a permanent
+// "Coming Soon" placeholder the visitor can't act on.
+const categories = Object.values(CATEGORY_META).filter((c) => c.built);
 
 // UI-chrome Hindi translations for the category blurbs on this hub page.
 // (Category item content itself — lyricsHi/transliteration/meaning — is out of scope.)
@@ -25,7 +28,7 @@ const DESC_HI: Record<string, string> = {
 
 <Layout
   title="Devotional Content Library — Aarti, Chalisa, Stotram &amp; More — PanchangPath"
-  description="Free Hindu devotional text library — Aarti, Chalisa, Stotram, Ashtakam, Vedic Mantras, Yantras, Namavali, Durga Saptashati, Sundarkand, Nama Ramayanam, Vrat Katha and Puja Vidhi."
+  description="Free Hindu devotional text library — Aarti, Chalisa, Stotram, Ashtakam, Vedic Mantras, Yantras, Namavali, Durga Saptashati, Sundarkand, Vrat Katha and Puja Vidhi."
 >
   <!-- Hero -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
@@ -34,7 +37,7 @@ const DESC_HI: Record<string, string> = {
     <div class="container" style="position:relative;">
       <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">भक्ति साहित्य · DEVOTIONAL LIBRARY</p>
       <h1 data-hi="भक्ति सामग्री पुस्तकालय" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Devotional Content Library</h1>
-      <p data-hi="हिंदू भक्ति ग्रंथों का एक निःशुल्क, बढ़ता हुआ संग्रह — आरती, चालीसा, स्तोत्र, अष्टकम्, वैदिक मंत्र, यंत्र, नामावली, दुर्गा सप्तशती, सुंदरकांड, नाम रामायणम्, व्रत कथा और पूजा विधि मार्गदर्शिकाएं — प्रत्येक में देवनागरी बोल, लिप्यंतरण और अर्थ सहित।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">A free, growing collection of Hindu devotional texts — Aartis, Chalisas, Stotrams, Ashtakams, Vedic Mantras, Yantras, Namavalis, the Durga Saptashati, Sundarkand, Nama Ramayanam, Vrat Kathas and Puja Vidhi guides — each with Devanagari lyrics, transliteration and meaning.</p>
+      <p data-hi="हिंदू भक्ति ग्रंथों का एक निःशुल्क, बढ़ता हुआ संग्रह — आरती, चालीसा, स्तोत्र, अष्टकम्, वैदिक मंत्र, यंत्र, नामावली, दुर्गा सप्तशती, सुंदरकांड, व्रत कथा और पूजा विधि मार्गदर्शिकाएं — प्रत्येक में देवनागरी बोल, लिप्यंतरण और अर्थ सहित।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">A free, growing collection of Hindu devotional texts — Aartis, Chalisas, Stotrams, Ashtakams, Vedic Mantras, Yantras, Namavalis, the Durga Saptashati, Sundarkand, Vrat Kathas and Puja Vidhi guides — each with Devanagari lyrics, transliteration and meaning.</p>
     </div>
   </section>
 
