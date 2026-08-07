@@ -142,6 +142,10 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
       </div>
 
     </div>
+
+    <p class="rf-disclosure" data-hi="भविष्यवाणियाँ पहले से लिखी गई कुछ प्रविष्टियों के एक छोटे संग्रह से ली जाती हैं, जो कुछ ही दिनों में दोहराई जाती हैं। ये आपकी जन्म कुंडली से गणना नहीं की जातीं।">
+      Predictions are drawn from a small set of pre-written entries that repeats every few days. They are not calculated from your birth chart.
+    </p>
   </div>
 </section>
 
@@ -352,6 +356,13 @@ rfApplyExpandLabels();
 </script>
 
 <style>
+/* Transparency note about how the predictions are produced — see rashifal/index.astro. */
+.rf-disclosure {
+  font-size: 12.5px; color: var(--color-mute); margin: 26px 0 0;
+  max-width: 620px; line-height: 1.55; padding-left: 10px;
+  border-left: 2px solid var(--color-hairline-strong);
+}
+
 .rf-section {
   padding: 56px 0 48px;
   background: var(--color-canvas-soft);
