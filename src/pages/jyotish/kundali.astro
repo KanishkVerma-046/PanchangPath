@@ -95,7 +95,13 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
   #planet-table td { padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
   .style-btn { padding:5px 13px;border:1px solid var(--color-hairline-strong);border-radius:6px;background:var(--color-canvas);color:var(--color-body-text);cursor:pointer;font-size:12px;font-family:var(--font-mono); }
   .style-btn.active { background:var(--color-ink);color:var(--color-canvas);border-color:var(--color-ink); }
-  @media (max-width: 820px) { .kund-layout { grid-template-columns: 1fr !important; } }
+  /* minmax(0,1fr), not 1fr: a grid item defaults to min-width:auto, so the fixed-width chart
+     SVG sets a min-content floor wider than a 360px viewport. That pushed every card in the
+     layout to ~347px inside a 328px container, and because html has overflow-x:hidden the
+     planetary-positions table was clipped with no way to scroll to the Motion column. */
+  @media (max-width: 820px) { .kund-layout { grid-template-columns: minmax(0, 1fr) !important; } }
+  /* Let the chart itself scroll inside its card rather than widening the whole layout. */
+  #chart-box { max-width: 100%; overflow-x: auto; }
 </style>
 
 <script>

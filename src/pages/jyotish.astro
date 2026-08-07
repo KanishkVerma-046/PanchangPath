@@ -97,12 +97,17 @@ const CALCS = [
     color: var(--color-saffron-deep);
     flex-shrink: 0;
   }
+  /* minmax(0,...) rather than 1fr: grid items default to min-width:auto, so a card whose
+     longest word is wider than its share of the row pushes the whole grid past the viewport.
+     At 360px that overflowed the page by 13px and clipped the right-hand column of cards. */
   @media (max-width: 900px) {
-    .calc-grid { grid-template-columns: repeat(3, 1fr); }
+    .calc-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
   @media (max-width: 640px) {
-    .calc-grid { grid-template-columns: repeat(2, 1fr); }
+    .calc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
+  /* The card is a flex row (icon + text); the text child needs min-width:0 to be allowed to wrap. */
+  .calc-card > * { min-width: 0; }
 </style>
 
 <script>
