@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { metaDescription } from '../../lib/meta';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime } from '../../lib/planetaryEvents';
 import { formatDateHi } from '../../lib/date-i18n';
@@ -84,7 +85,7 @@ function heroBg(type: string): string {
 
 <Layout
   title={`${ev.title} — PanchangPath`}
-  description={ev.description}
+  description={metaDescription(ev.description, `${ev.title} — date, time and significance.`)}
 >
   <BreadcrumbSchema items={[
     { name: 'Home', url: '/' },

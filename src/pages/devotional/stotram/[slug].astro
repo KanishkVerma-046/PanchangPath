@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import { metaDescription } from '../../../lib/meta';
 import DevotionalDetail from '../../../components/DevotionalDetail.astro';
 import { STOTRAMS } from '../../../lib/devotional/stotram';
 import { CATEGORY_META } from '../../../lib/devotional/types';
@@ -21,7 +22,7 @@ const next = idx < STOTRAMS.length - 1 ? STOTRAMS[idx + 1] : null;
 
 <Layout
   title={`${item.title} — ${item.titleHi} — Stotram Lyrics &amp; Meaning — PanchangPath`}
-  description={item.meaning ?? `${item.title} lyrics in Sanskrit with transliteration and meaning.`}
+  description={metaDescription(item.meaning, `${item.title} lyrics in Sanskrit with transliteration and meaning.`)}
 >
   <DevotionalDetail item={item} category={category} prev={prev} next={next} />
 </Layout>

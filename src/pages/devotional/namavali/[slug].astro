@@ -1,5 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import { metaDescription } from '../../../lib/meta';
 import DevotionalDetail from '../../../components/DevotionalDetail.astro';
 import { NAMAVALIS } from '../../../lib/devotional/namavali';
 import { CATEGORY_META } from '../../../lib/devotional/types';
@@ -21,7 +22,7 @@ const next = idx < NAMAVALIS.length - 1 ? NAMAVALIS[idx + 1] : null;
 
 <Layout
   title={`${item.title} — ${item.titleHi} — 108 Names — PanchangPath`}
-  description={item.meaning ?? `${item.title} — 108 names for archana and japa.`}
+  description={metaDescription(item.meaning, `${item.title} — 108 names for archana and japa.`)}
 >
   <DevotionalDetail
     item={item} category={category} prev={prev} next={next}

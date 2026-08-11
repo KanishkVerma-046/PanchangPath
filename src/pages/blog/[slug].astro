@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { metaDescription } from '../../lib/meta';
 import BlogDetail from '../../components/BlogDetail.astro';
 import { BLOG_POSTS } from '../../lib/blog';
 
@@ -17,6 +18,6 @@ const prev = idx > 0 ? BLOG_POSTS[idx - 1] : null;
 const next = idx < BLOG_POSTS.length - 1 ? BLOG_POSTS[idx + 1] : null;
 ---
 
-<Layout title={`${post.title} — PanchangPath Blog`} description={post.description}>
+<Layout title={`${post.title} — PanchangPath Blog`} description={metaDescription(post.description, post.title)}>
   <BlogDetail post={post} prev={prev} next={next} />
 </Layout>

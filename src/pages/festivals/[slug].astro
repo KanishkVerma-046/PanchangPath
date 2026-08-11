@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { metaDescription } from '../../lib/meta';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
 import {
   FESTIVALS_2025_2027,
@@ -42,7 +43,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 
 <Layout
   title={`${f.name} ${f.date.slice(0,4)} — PanchangPath`}
-  description={f.description}
+  description={metaDescription(f.description, `${f.name} — date, significance and observance.`)}
 >
   <BreadcrumbSchema items={[
     { name: 'Home', url: '/' },
