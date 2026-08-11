@@ -12,6 +12,34 @@ export function getStaticPaths() {
   }));
 }
 
+/**
+ * Per-page meta descriptions.
+ *
+ * These pages cannot derive a description from `item.meaning` the way the other
+ * Devotional categories do — it is a numbered step list, so any trim of it
+ * describes step 1 rather than the page. A shared title template avoided that
+ * but produced 15 near-identical descriptions, which reads as duplicate content.
+ * Each page therefore names its own distinctive ritual details, drawn from that
+ * item's own `benefits` and samagri fields.
+ */
+const DESCRIPTIONS: Record<string, string> = {
+  'diwali-lakshmi-puja-vidhi': 'Lakshmi-Ganesha puja for Diwali night: the samagri list, chowki and kalash setup, the Pradosh Kaal muhurat, and the mantras and aarti to chant.',
+  'ganesh-chaturthi-puja-vidhi': 'Ganesh Chaturthi puja steps: Pran Pratishtha, the 16-step Shodashopachara, offerings of 21 durva and modak, the Madhyahna muhurat and visarjan.',
+  'navratri-durga-puja-vidhi': 'Nine nights of Durga puja: Ghatasthapana and barley sowing, the Akhand Jyoti, one Navadurga form each day, and Kanya Puja on Ashtami or Navami.',
+  'holi-puja-vidhi': 'Holika Dahan vidhi: building the pyre, the raw-cotton-thread parikrama, grain and coconut offerings, and picking a muhurat clear of Bhadra Kaal.',
+  'saraswati-puja-vidhi': 'Vasant Panchami Saraswati puja: the yellow-draped chowki, placing books and instruments for her blessing, and the Vidyarambham first-letters rite.',
+  'satyanarayan-puja-vidhi': 'Satyanarayan puja vidhi: the Sankalp vow, banana-leaf and kalash setup, sheera prasad, and the five-chapter katha read with everyone present.',
+  'karva-chauth-puja-vidhi': 'Karva Chauth vidhi: the pre-dawn Sargi, the nirjala fast, the katha circle, and viewing the moon and husband through a sieve at moonrise.',
+  'chhath-puja-vidhi': 'Chhath Puja across four days: Nahay Khay, Kharna, then Sandhya and Usha arghya to the sun, with the soop, thekua and 36-hour nirjala fast.',
+  'raksha-bandhan-puja-vidhi': 'Raksha Bandhan vidhi: preparing the thali, the tilak and aarti, tying the rakhi on the right wrist, and the Shravan Purnima muhurat to use.',
+  'janmashtami-puja-vidhi': 'Janmashtami vidhi: decorating the jhula, the midnight panchamrit abhishek in Rohini Nakshatra, and makhan-mishri and dhaniya panjiri bhog.',
+  'rudrabhishek-puja-vidhi': 'Rudrabhishek vidhi: the abhishek sequence of water, milk, curd, honey, ghee and sugarcane juice, with bel patra, bhasma and the Rudram chant.',
+  'makar-sankranti-puja-vidhi': 'Makar Sankranti vidhi: the sesame bath, Surya arghya from a copper vessel at sunrise, khichdi bhog, til-gud laddoos and daan to the needy.',
+  'hariyali-teej-puja-vidhi': 'Hariyali Teej vidhi: green attire and mehendi, Shiva-Parvati worship, the nirjala fast, ghewar bhog, and the jhula and traditional Teej songs.',
+  'ram-navami-puja-vidhi': 'Ram Navami vidhi: the Ram Darbar setup, panchamrit abhishek, the Bala Kanda reading, and the midday aarti at Rama\'s believed birth hour.',
+  'maha-shivratri-puja-vidhi': 'Maha Shivratri vidhi: the day-long fast, abhishek across all four prahars with water, curd, ghee and honey, bel patra offerings and the jagran.',
+};
+
 const { item } = Astro.props;
 const category = CATEGORY_META['puja-vidhi'];
 
@@ -23,7 +51,7 @@ const next = idx < PUJA_VIDHIS.length - 1 ? PUJA_VIDHIS[idx + 1] : null;
 <Layout
   title={`${item.title} — ${item.titleHi} — PanchangPath`}
   description={metaDescription(
-    `${item.title} — complete step-by-step procedure with samagri list, muhurat guidance, offerings and aarti mantras.`,
+    DESCRIPTIONS[item.slug],
     `${item.title} — samagri, step-by-step vidhi and mantras.`
   )}
 >
