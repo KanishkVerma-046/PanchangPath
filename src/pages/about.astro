@@ -1,31 +1,84 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import StaticPage from '../components/StaticPage.astro';
+import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
 ---
 
-<Layout title="About Us — PanchangPath" description="Learn about PanchangPath — an independent, ad-free Hindu Panchang built on Drik astronomical calculations and Lahiri Ayanamsha.">
-  <StaticPage title="About PanchangPath" titleHi="पंचांगपथ के बारे में">
-    <p class="en-text">PanchangPath is an independent, ad-free Hindu Panchang built for people who want accurate Tithi, Nakshatra, Yoga, Karana, Rahu Kalam and Muhurta timings without wading through pop-ups, autoplay videos, or a dozen ad networks to find them.</p>
-    <p class="hi-text" style="display:none">पंचांगपथ एक स्वतंत्र, विज्ञापन-मुक्त हिंदू पंचांग है जो उन लोगों के लिए बनाया गया है जो पॉप-अप, ऑटोप्ले वीडियो, या दर्जनों विज्ञापन नेटवर्क से गुज़रे बिना सटीक तिथि, नक्षत्र, योग, करण, राहु काल और मुहूर्त समय चाहते हैं।</p>
-    <p class="en-text">Every calculation on this site uses the Drik (astronomical) method with Lahiri Ayanamsha — the same observational approach used by most modern Panchang authorities — rather than older tabular (Vakya) methods. Sunrise, sunset, planetary positions, and festival dates are computed directly from orbital mechanics rather than looked up from a fixed almanac, so they stay accurate for any date and any location worldwide.</p>
-    <p class="hi-text" style="display:none">इस साइट पर हर गणना द्रिक (खगोलीय) पद्धति और लाहिरी अयनांश का उपयोग करती है — वही अवलोकन-आधारित दृष्टिकोण जो अधिकांश आधुनिक पंचांग प्राधिकरण उपयोग करते हैं — न कि पुरानी सारणी (वाक्य) पद्धतियों का। सूर्योदय, सूर्यास्त, ग्रह स्थिति, और त्योहार की तिथियां एक निश्चित पंचांग से देखने के बजाय सीधे कक्षीय गणित से गणना की जाती हैं, इसलिए वे दुनिया में किसी भी तिथि और किसी भी स्थान के लिए सटीक बनी रहती हैं।</p>
-    <p class="en-text">Beyond the daily Panchang, PanchangPath includes a live Kundali (birth chart) generator, a full festival and vrat calendar, Rashifal (daily horoscope) predictions for all twelve rashis, a set of Muhurta timing tools for choosing auspicious moments, and a library of devotional texts — aartis, chalisas, stotras, and more.</p>
-    <p class="hi-text" style="display:none">दैनिक पंचांग के अलावा, पंचांगपथ में एक लाइव कुंडली (जन्म कुंडली) जनरेटर, एक पूर्ण त्योहार और व्रत कैलेंडर, सभी बारह राशियों के लिए राशिफल (दैनिक कुंडली फल) भविष्यवाणियां, शुभ क्षण चुनने के लिए मुहूर्त समय उपकरणों का एक सेट, और भक्ति ग्रंथों की एक लाइब्रेरी — आरती, चालीसा, स्तोत्र, और बहुत कुछ शामिल है।</p>
-    <p class="en-text">This is a work in progress, built and maintained by one person. If you spot an error or have a suggestion, the <a href="/contact">Contact Us</a> page is the fastest way to reach out.</p>
-    <p class="hi-text" style="display:none">यह एक चालू परियोजना है, जिसे एक व्यक्ति द्वारा बनाया और बनाए रखा जाता है। यदि आपको कोई त्रुटि दिखे या कोई सुझाव हो, तो <a href="/contact">संपर्क करें</a> पृष्ठ संपर्क करने का सबसे तेज़ तरीका है।</p>
-  </StaticPage>
+<Layout
+  title="About Us — PanchangPath"
+  description="PanchangPath — a free Hindu Panchang and Jyotish site built by a student, using real astronomical calculations (Drik method, Lahiri Ayanamsha)."
+>
+  <!-- Hero: eyebrow + headline + subhead (same shape as /faq's hero) -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+    <MandalaWatermark size={480} opacity={0.06} />
+    <div class="container" style="position:relative;max-width:820px;">
+      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">ABOUT</p>
+      <h1 style="font-size:34px;font-weight:700;letter-spacing:-1.4px;line-height:1.15;color:var(--color-ink);margin:0 0 12px;">Built for accuracy, not shortcuts.</h1>
+      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:680px;line-height:1.6;">PanchangPath is a free Hindu Panchang and Jyotish site that calculates Tithi, Nakshatra, Muhurta timings, Kundali charts, and daily horoscopes using real astronomical positions — no signup, no paywall, no shortcuts.</p>
+    </div>
+  </section>
+
+  <!-- About this project -->
+  <section style="padding:40px 0 64px;">
+    <div class="container" style="max-width:820px;">
+      <div class="card ab-card">
+        <div class="ab-head">
+          <span class="ab-icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10L12 5 2 10l10 5 10-5z"/>
+              <path d="M6 12.2V17c3.2 2.8 8.8 2.8 12 0v-4.8"/>
+              <path d="M22 10v6"/>
+            </svg>
+          </span>
+          <h2 class="ab-heading">About this project</h2>
+        </div>
+
+        <div class="ab-body">
+          <p>PanchangPath is built and maintained by a university student studying Computer Science and Engineering, with an interest in Vedic astrology, Sanskrit texts, and Indian calendrical astronomy. The project started as a way to make accurate Panchang calculations — based on real astronomical positions (the Drik method with Lahiri Ayanamsha) rather than the older, simplified almanac shortcuts many Panchang sites still rely on — freely available to anyone who needs them, after finding that most existing Panchang sites either used outdated calculation methods, covered only a single regional tradition, or offered no Hindi-language support at all. It has grown into a full Hindu Panchang and Jyotish resource.</p>
+          <p>The site covers five areas: a daily Panchang calculator using real astronomical positions rather than simplified lookup tables, Muhurta tools for auspicious timing (Choghadiya, Rahu Kalam, and more), Jyotish calculators including Kundali generation and horoscope compatibility matching, a Rashifal horoscope section, and a devotional text library of Aarti, Chalisa, Stotram, and related scriptures — all available in both English and Hindi, and spanning 11 regional Panchang traditions alongside the standard Drik-Lahiri calculation. Rashifal predictions are drawn from a small set of pre-written entries rather than a true birth-chart calculation, and this is stated clearly on that page rather than left implied.</p>
+          <p>Where a feature has real limitations — for instance, Panchang calculations are pinned to 6:00 AM local time rather than the day's actual sunrise, which can occasionally shift a Nakshatra Pada by one at the sunrise boundary — that's noted directly on the relevant page rather than left implied. Devotional texts are sourced from established published references rather than generated or invented, and calculation logic is checked against independent Panchang references during development.</p>
+          <p>This is an independent, solo-built project and is not affiliated with any religious organization, temple, or publishing house. Nothing on this site constitutes religious or professional astrological guidance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>
 
-<script>
-  // This page's prose paragraphs use en-text/hi-text pairs (rather than
-  // data-hi) because some contain an embedded <a> link that data-hi's
-  // textContent-based swap would otherwise strip.
-  function applyPageLang(hindi: boolean) {
-    document.querySelectorAll<HTMLElement>('.en-text').forEach(el => el.style.display = hindi ? 'none' : '');
-    document.querySelectorAll<HTMLElement>('.hi-text').forEach(el => el.style.display = hindi ? '' : 'none');
+<style>
+  .ab-card { padding: 28px 32px 24px; }
+  .ab-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-hairline);
   }
-  document.addEventListener('langchange', (e: Event) => {
-    applyPageLang((e as CustomEvent).detail.langCode === 'hi');
-  });
-  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
-</script>
+  .ab-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-saffron-soft);
+    color: var(--color-saffron-deep);
+  }
+  .ab-heading {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--color-ink);
+    margin: 0;
+    min-width: 0;
+  }
+  .ab-body { font-size: 15.5px; line-height: 1.8; color: var(--color-body-text); }
+  .ab-body p { margin: 0 0 16px; }
+  .ab-body p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 640px) {
+    .ab-card { padding: 22px 20px 20px; }
+    .ab-heading { font-size: 18px; }
+    .ab-body { font-size: 15px; }
+  }
+</style>
