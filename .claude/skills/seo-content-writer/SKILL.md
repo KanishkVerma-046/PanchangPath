@@ -20,7 +20,7 @@ Writes SEO blog posts for panchangpath.com through a research-then-approval-then
 | Competitor mentions | Never name drikpanchang.com or any other competitor, anywhere |
 | Negative keywords (baseline) | "guaranteed," "overnight," medical/legal-advice-style astrology claims — extend per-post in Step 1 |
 
-Never mention that PanchangPath is ad-free in generated content.
+Never make claims about advertising on PanchangPath in generated content — no "ad-free", "zero ads", "no advertising", "without the ads", or equivalent. The site is applying to Google AdSense, so any promise that advertising is absent will become false. Positioning the site as clean, fast, uncluttered or free to use is fine.
 
 ## Workflow
 

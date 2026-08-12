@@ -98,10 +98,10 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
     labelHi: 'इस साइट का उपयोग',
     items: [
       {
-        q: 'Is PanchangPath really free, with no ads or sign-up?',
-        qHi: 'क्या पंचांगपथ वाकई मुफ्त है, बिना विज्ञापन या साइन-अप के?',
-        a: 'Yes. Every calculator, the full Panchang, Kundali, Rashifal, Muhurta tools, and the devotional library are free to use with no sign-up, no paywall, and no advertising anywhere on the site.',
-        aHi: 'हां। हर कैलकुलेटर, पूर्ण पंचांग, कुंडली, राशिफल, मुहूर्त उपकरण, और भक्ति पुस्तकालय — बिना साइन-अप, बिना पेवॉल, और साइट पर कहीं भी बिना किसी विज्ञापन के मुफ्त उपयोग के लिए उपलब्ध हैं।',
+        q: 'Is PanchangPath really free to use, with no sign-up?',
+        qHi: 'क्या पंचांगपथ वाकई उपयोग के लिए मुफ्त है, बिना साइन-अप के?',
+        a: 'Yes. Every calculator, the full Panchang, Kundali, Rashifal, Muhurta tools, and the devotional library are free to use — no sign-up, no paywall, and no premium tier holding features back.',
+        aHi: 'हां। हर कैलकुलेटर, पूर्ण पंचांग, कुंडली, राशिफल, मुहूर्त उपकरण, और भक्ति पुस्तकालय मुफ्त उपयोग के लिए उपलब्ध हैं — बिना साइन-अप, बिना पेवॉल, और बिना किसी प्रीमियम स्तर के जो सुविधाओं को रोके रखे।',
       },
       {
         q: 'How does the site know my location, and can I change it?',

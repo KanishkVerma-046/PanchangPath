@@ -1,6 +1,8 @@
 ## Project
 
-**PanchangPath** — a modern Hindu almanac website (panchangpath.com). Positioned as a cleaner, faster alternative to drikpanchang.com. Zero ads, Drik (astronomical) calculations, Lahiri Ayanamsha.
+**PanchangPath** — a modern Hindu almanac website (panchangpath.com). Positioned as a cleaner, faster alternative to drikpanchang.com. Drik (astronomical) calculations, Lahiri Ayanamsha.
+
+**Do not write "ad-free", "zero ads", "no advertising", or equivalent claims into any site copy, metadata, or generated content** (English or Hindi). The site is applying to Google AdSense, so any promise that advertising is absent will become false. Use neutral positioning instead — clean, fast, uncluttered, free to use. The `/privacy` page is the one exception: its body deliberately describes current advertising status in time-scoped, conditional language ("does not *currently* run any advertising", "If Advertising Is Added in the Future") and should stay that way.
 
 Stack: **Astro v7** (`output: 'static'`), **Tailwind CSS v4** (`@theme` CSS custom properties), TypeScript. Deployed to **Cloudflare Pages**.
 
