@@ -52,6 +52,54 @@ export interface PlanetaryEvent {
   indiaVisibility?: 'none' | 'penumbral' | 'partial' | 'full';
 }
 
+/**
+ * Whether sutak is observed in India for a given eclipse, derived from
+ * `indiaVisibility` rather than written per entry, so the rule is stated once and
+ * cannot drift between entries.
+ *
+ * The rule: sutak follows visibility. Dharma Sindhu and Nirnaya Sindhu condition it
+ * on the eclipse being seen from the place in question, and drikpanchang states it
+ * plainly — "Sutak is observed only when Eclipse is visible at the place under
+ * discussion." An eclipse below the horizon carries no sutak locally.
+ *
+ * Penumbral lunar eclipses are excluded even where they are technically above the
+ * horizon: the Moon never enters Earth's umbra, and Hindu calendars omit penumbral
+ * eclipses altogether rather than treating them as a lesser grahan.
+ *
+ * Where sutak does apply the window is 12 hours (4 prahar) before a solar eclipse and
+ * 9 hours (3 prahar) before a lunar one, ending at moksha, the last contact. Those
+ * windows are keyed to local first contact and so differ by city; this states
+ * applicability and the rule, and deliberately does not print a single clock time
+ * that would be wrong for most of the country.
+ */
+export function sutakNote(
+  visibility: PlanetaryEvent['indiaVisibility'],
+  type: EventType,
+): { en: string; hi: string } | null {
+  if (!visibility) return null;
+  const solar = type === 'solar_eclipse';
+
+  if (visibility === 'none') {
+    return {
+      en: 'Sutak is not observed in India for this eclipse. Sutak follows visibility — where no phase of the eclipse is above the horizon, the grahan restrictions (fasting, temple closure, the post-eclipse bath) do not apply. The event still carries astrological weight, but daily worship and routine need not change.',
+      hi: 'इस ग्रहण का सूतक भारत में मान्य नहीं है। सूतक दृश्यता पर निर्भर करता है — जहां ग्रहण का कोई चरण क्षितिज के ऊपर नहीं होता, वहां ग्रहण के नियम (उपवास, मंदिर बंद होना, ग्रहण के बाद स्नान) लागू नहीं होते। ज्योतिषीय दृष्टि से घटना का महत्व बना रहता है, परंतु नित्य पूजा और दिनचर्या में परिवर्तन आवश्यक नहीं।',
+    };
+  }
+
+  if (visibility === 'penumbral') {
+    return {
+      en: 'Sutak is not observed. A penumbral eclipse is not counted as a grahan at all — the Moon passes only through Earth\'s faint outer shadow and never enters the umbra, and Hindu calendars omit penumbral eclipses rather than listing them as a lesser grahan.',
+      hi: 'सूतक मान्य नहीं है। उपच्छाया ग्रहण को ग्रहण माना ही नहीं जाता — चंद्रमा केवल पृथ्वी की हल्की बाहरी छाया से गुजरता है और प्रच्छाया में प्रवेश नहीं करता; हिंदू पंचांग उपच्छाया ग्रहणों को सूचीबद्ध ही नहीं करते।',
+    };
+  }
+
+  // 'partial' or 'full' — the umbral phase is visible somewhere in India.
+  return {
+    en: `Sutak is observed in India for this eclipse. It begins ${solar ? '12 hours (4 prahar)' : '9 hours (3 prahar)'} before first contact and ends at moksha, the last contact. The window is keyed to local first contact and so differs by city — check timings for your own location. Children, the elderly and the unwell are traditionally held to a single prahar rather than the full period.`,
+    hi: `इस ग्रहण का सूतक भारत में मान्य है। यह स्पर्श से ${solar ? '12 घंटे (4 प्रहर)' : '9 घंटे (3 प्रहर)'} पूर्व आरंभ होकर मोक्ष (अंतिम स्पर्श) पर समाप्त होता है। सूतक काल स्थानीय स्पर्श-समय पर निर्भर है और नगर-अनुसार भिन्न होता है — अपने स्थान की सटीक समय-सारणी देखें। बालक, वृद्ध और रोगी परंपरागत रूप से पूर्ण अवधि के स्थान पर केवल एक प्रहर का पालन करते हैं।`,
+  };
+}
+
 /** Chip label for `indiaVisibility`, English and Hindi. */
 export const INDIA_VISIBILITY_LABEL: Record<string, { en: string; hi: string }> = {
   none:      { en: 'Not visible in India',  hi: 'भारत में नहीं दिखेगा' },
@@ -383,8 +431,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['chandra', 'rahu'],
     description: 'Total lunar eclipse visible across Asia, Africa, Europe on Holi Purnima.',
     descriptionHi: 'होली पूर्णिमा को एशिया, अफ्रीका, यूरोप में दिखाई देने वाला पूर्ण चंद्र ग्रहण।',
-    significance: 'Chandra Grahan (Lunar Eclipse) occurs on a Full Moon (Purnima) when Earth\'s shadow falls on the Moon near the Rahu/Ketu axis. This eclipse coincides with Holi Purnima — an exceptionally powerful event. The eclipse amplifies emotional and karmic energies. Bathing in holy rivers afterward is considered purifying.',
-    significanceHi: 'चंद्र ग्रहण पूर्णिमा को होता है जब पृथ्वी की छाया राहु/केतु अक्ष के निकट चंद्रमा पर पड़ती है। यह ग्रहण होली पूर्णिमा के साथ मेल खाता है — एक असाधारण रूप से शक्तिशाली घटना। यह ग्रहण भावनात्मक और कर्मिक ऊर्जाओं को बढ़ाता है। बाद में पवित्र नदियों में स्नान करना शुद्धिकारी माना जाता है।',
+    significance: 'Chandra Grahan (Lunar Eclipse) occurs on a Full Moon (Purnima) when Earth\'s shadow falls on the Moon near the Rahu/Ketu axis. This eclipse coincides with Holi Purnima — an exceptionally powerful event. The eclipse amplifies emotional and karmic energies.',
+    significanceHi: 'चंद्र ग्रहण पूर्णिमा को होता है जब पृथ्वी की छाया राहु/केतु अक्ष के निकट चंद्रमा पर पड़ती है। यह ग्रहण होली पूर्णिमा के साथ मेल खाता है — एक असाधारण रूप से शक्तिशाली घटना। यह ग्रहण भावनात्मक और कर्मिक ऊर्जाओं को बढ़ाता है।',
     indiaVisibility: 'none',
   },
   {
@@ -401,8 +449,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Partial solar eclipse on Chaitra Amavasya. Visible in northwestern Europe and northern Africa.',
     descriptionHi: 'चैत्र अमावस्या को आंशिक सूर्य ग्रहण। उत्तर-पश्चिमी यूरोप और उत्तरी अफ्रीका में दिखाई देगा।',
-    significance: 'Surya Grahan on Amavasya — the Moon passes between Earth and Sun near the Rahu/Ketu axis. A spiritually potent Amavasya. Avoid eating during the eclipse window; mantras and charity are considered highly effective.',
-    significanceHi: 'अमावस्या को सूर्य ग्रहण — चंद्रमा राहु/केतु अक्ष के निकट पृथ्वी और सूर्य के बीच से गुजरता है। यह एक आध्यात्मिक रूप से शक्तिशाली अमावस्या है। ग्रहण काल में भोजन करने से बचें; मंत्र और दान अत्यंत प्रभावी माने जाते हैं।',
+    significance: 'Surya Grahan on Amavasya — the Moon passes between Earth and Sun near the Rahu/Ketu axis. A spiritually potent Amavasya, and in Jyotish a charged point on the Rahu/Ketu axis.',
+    significanceHi: 'अमावस्या को सूर्य ग्रहण — चंद्रमा राहु/केतु अक्ष के निकट पृथ्वी और सूर्य के बीच से गुजरता है। यह एक आध्यात्मिक रूप से शक्तिशाली अमावस्या है, और ज्योतिष में राहु/केतु अक्ष का एक प्रभावशाली बिंदु।',
     indiaVisibility: 'none',
   },
   {
@@ -437,8 +485,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Partial solar eclipse visible in southern Australia and Antarctica.',
     descriptionHi: 'दक्षिणी ऑस्ट्रेलिया और अंटार्कटिका में दिखाई देने वाला आंशिक सूर्य ग्रहण।',
-    significance: 'Surya Grahan on Ashwin Amavasya — not visible from India, but the karmic intensity of the eclipse period applies. Avoid important new beginnings on this day.',
-    significanceHi: 'आश्विन अमावस्या को सूर्य ग्रहण — भारत से दिखाई नहीं देगा, लेकिन ग्रहण काल की कर्मिक तीव्रता लागू होती है। इस दिन महत्वपूर्ण नई शुरुआतों से बचें।',
+    significance: 'Surya Grahan on Ashwin Amavasya. In Jyotish the Rahu/Ketu axis is emphasised at an eclipse, and the Amavasya itself remains a significant lunar-month boundary.',
+    significanceHi: 'आश्विन अमावस्या को सूर्य ग्रहण। ज्योतिष में ग्रहण के समय राहु/केतु अक्ष प्रभावी रहता है, और अमावस्या स्वयं चांद्र मास की एक महत्वपूर्ण संधि है।',
     indiaVisibility: 'none',
   },
   {
@@ -473,8 +521,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Totality is seen only from northernmost Siberia, Greenland, Iceland, northern Spain and the extreme north-east of Portugal. Europe, North and West Africa and northern North America see a partial eclipse only. Greatest eclipse 17:46 UTC (11:16 PM IST).',
     descriptionHi: 'पूर्णता केवल उत्तरी साइबेरिया, ग्रीनलैंड, आइसलैंड, उत्तरी स्पेन और उत्तर-पूर्वी पुर्तगाल के अत्यंत छोटे भाग से दिखाई देगी। यूरोप, उत्तरी व पश्चिमी अफ्रीका तथा उत्तरी अमेरिका के उत्तरी भाग में केवल आंशिक ग्रहण दिखाई देगा। ग्रहण का मध्यकाल 17:46 UTC (रात 11:16, IST)।',
-    significance: 'Total Surya Grahan — one of the most dramatic astronomical events. The path of totality crosses Europe. In Jyotish, a total solar eclipse is an extremely significant karmic event. Avoid eating, starting new ventures, or important decisions on this day. Extended fasting, prayer, and donation (danam) yield amplified merit.',
-    significanceHi: 'पूर्ण सूर्य ग्रहण — सबसे नाटकीय खगोलीय घटनाओं में से एक। पूर्णता का पथ यूरोप से होकर गुजरता है। ज्योतिष में, पूर्ण सूर्य ग्रहण एक अत्यंत महत्वपूर्ण कर्मिक घटना है। इस दिन भोजन करने, नए उद्यम शुरू करने, या महत्वपूर्ण निर्णय लेने से बचें। विस्तारित उपवास, प्रार्थना और दान से बढ़ा हुआ पुण्य मिलता है।',
+    significance: 'Total Surya Grahan — one of the most dramatic astronomical events. The path of totality crosses Europe. In Jyotish, a total solar eclipse is an extremely significant karmic event, marking a strong Rahu/Ketu emphasis on the Amavasya.',
+    significanceHi: 'पूर्ण सूर्य ग्रहण — सबसे नाटकीय खगोलीय घटनाओं में से एक। पूर्णता का पथ यूरोप से होकर गुजरता है। ज्योतिष में, पूर्ण सूर्य ग्रहण एक अत्यंत महत्वपूर्ण कर्मिक घटना है, जो अमावस्या पर राहु/केतु के प्रबल प्रभाव को दर्शाती है।',
     indiaVisibility: 'none',
   },
   {
@@ -491,8 +539,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['chandra', 'rahu'],
     description: 'Falls on Shravana Purnima. Seen in full from North and South America, rising over the central Pacific and setting over Africa, Europe and the Middle East. Greatest eclipse 04:13 UTC (9:43 AM IST).',
     descriptionHi: 'श्रावण पूर्णिमा को। उत्तरी व दक्षिणी अमेरिका से पूर्ण रूप से दिखाई देगा; मध्य प्रशांत क्षेत्र में चंद्रोदय के समय तथा अफ्रीका, यूरोप व मध्य पूर्व में चंद्रास्त के समय। ग्रहण का मध्यकाल 04:13 UTC (प्रातः 9:43, IST)।',
-    significance: 'Partial Chandra Grahan on Purnima. A penumbral or partial eclipse still carries karmic weight in Jyotish. The traditional grahan rules (no food, prayer, post-eclipse bath) apply even for partial eclipses.',
-    significanceHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण। उपच्छाया या आंशिक ग्रहण भी ज्योतिष में कर्मिक महत्व रखता है। परंपरागत ग्रहण नियम (भोजन न करना, प्रार्थना, ग्रहण बाद स्नान) आंशिक ग्रहणों पर भी लागू होते हैं।',
+    significance: 'Partial Chandra Grahan on Purnima — a deep one, with most of the Moon entering Earth\'s umbra. In Jyotish a partial eclipse still carries karmic weight on the Rahu/Ketu axis.',
+    significanceHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण — एक गहरा ग्रहण, जिसमें चंद्रमा का अधिकांश भाग पृथ्वी की प्रच्छाया में प्रवेश करता है। ज्योतिष में आंशिक ग्रहण भी राहु/केतु अक्ष पर कर्मिक महत्व रखता है।',
     indiaVisibility: 'none',
   },
   {
@@ -527,8 +575,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Annular solar eclipse ("ring of fire") on Amavasya. Path of annularity crosses South America and West Africa; not visible from India.',
     descriptionHi: 'अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय")। वलयाकारता का पथ दक्षिण अमेरिका और पश्चिम अफ्रीका से होकर गुजरता है; भारत से दिखाई नहीं देगा।',
-    significance: 'Surya Grahan on Amavasya. Not visible from India, but the karmic intensity of the eclipse period still applies in Jyotish — avoid important new beginnings on this day.',
-    significanceHi: 'अमावस्या को सूर्य ग्रहण। भारत से दिखाई नहीं देगा, लेकिन ज्योतिष में ग्रहण काल की कर्मिक तीव्रता फिर भी लागू होती है — इस दिन महत्वपूर्ण नई शुरुआतों से बचें।',
+    significance: 'Surya Grahan on Amavasya. In Jyotish an eclipse marks a charged point on the Rahu/Ketu axis, and this one falls near the Ketu end, emphasising release and past karma.',
+    significanceHi: 'अमावस्या को सूर्य ग्रहण। ज्योतिष में ग्रहण राहु/केतु अक्ष का एक प्रभावशाली बिंदु है, और यह केतु छोर के निकट पड़ता है, जो त्याग और पूर्व कर्म पर बल देता है।',
     indiaVisibility: 'none',
   },
   {
@@ -545,8 +593,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['chandra', 'rahu'],
     description: 'Penumbral lunar eclipse on Purnima — the Moon passes only through Earth\'s outer shadow, producing a subtle dimming rather than visible darkening.',
     descriptionHi: 'पूर्णिमा को उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की बाहरी छाया से गुजरता है, जिससे स्पष्ट अंधकार के बजाय हल्की धुंधलाहट होती है।',
-    significance: 'Penumbral Chandra Grahan — a mild eclipse where the Moon only enters Earth\'s faint outer shadow. Traditional grahan observances are far less strict for penumbral eclipses, though the Purnima itself remains spiritually significant.',
-    significanceHi: 'उपच्छाया चंद्र ग्रहण — एक हल्का ग्रहण जिसमें चंद्रमा केवल पृथ्वी की हल्की बाहरी छाया में प्रवेश करता है। उपच्छाया ग्रहणों के लिए परंपरागत ग्रहण नियम बहुत कम कठोर हैं, हालांकि पूर्णिमा स्वयं आध्यात्मिक रूप से महत्वपूर्ण बनी रहती है।',
+    significance: 'Penumbral Chandra Grahan — the Moon enters only Earth\'s faint outer shadow and never the umbra, so the dimming is imperceptible. Hindu calendars do not treat a penumbral eclipse as a grahan at all, though the Purnima itself remains spiritually significant.',
+    significanceHi: 'उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की हल्की बाहरी छाया में प्रवेश करता है, प्रच्छाया में नहीं, अतः धुंधलाहट अगोचर रहती है। हिंदू पंचांग उपच्छाया ग्रहण को ग्रहण मानते ही नहीं, यद्यपि पूर्णिमा स्वयं आध्यात्मिक रूप से महत्वपूर्ण बनी रहती है।',
     indiaVisibility: 'penumbral',
   },
   {
@@ -581,8 +629,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Roughly half the Sun\'s diameter covered in the far south and in Mumbai, falling to under a fifth in Delhi and Kolkata. This Amavasya eclipse has over 6 minutes of totality at its longest — among the longest this century — crossing North Africa and the Middle East including Egypt and Saudi Arabia. Greatest eclipse 10:07 UTC (3:37 PM IST).',
     descriptionHi: 'सुदूर दक्षिण तथा मुंबई में सूर्य का लगभग आधा व्यास ढका रहेगा, जबकि दिल्ली और कोलकाता में पांचवें भाग से भी कम। अमावस्या के इस ग्रहण की अधिकतम पूर्णता 6 मिनट से अधिक है — इस शताब्दी की सबसे लंबी पूर्णताओं में से एक — जो उत्तरी अफ्रीका और मध्य पूर्व, मिस्र तथा सऊदी अरब सहित, से होकर गुजरेगी। ग्रहण का मध्यकाल 10:07 UTC (अपराह्न 3:37, IST)।',
-    significance: 'Total Surya Grahan — an extremely significant karmic event given its unusually long totality. In Jyotish, total solar eclipses call for avoiding eating, starting new ventures, or important decisions on this day. Extended fasting, prayer, and donation (danam) yield amplified merit.',
-    significanceHi: 'पूर्ण सूर्य ग्रहण — इसकी असामान्य रूप से लंबी पूर्णता को देखते हुए एक अत्यंत महत्वपूर्ण कर्मिक घटना। ज्योतिष में, पूर्ण सूर्य ग्रहण इस दिन भोजन करने, नए उद्यम शुरू करने, या महत्वपूर्ण निर्णय लेने से बचने का आह्वान करते हैं। विस्तारित उपवास, प्रार्थना और दान से बढ़ा हुआ पुण्य मिलता है।',
+    significance: 'Total Surya Grahan — an extremely significant karmic event given its unusually long totality, though India sees the partial phase rather than totality. In Jyotish an eclipse of this depth marks a strong Rahu/Ketu emphasis, and prayer and donation (danam) during the grahan are considered to yield amplified merit.',
+    significanceHi: 'पूर्ण सूर्य ग्रहण — इसकी असामान्य रूप से लंबी पूर्णता को देखते हुए एक अत्यंत महत्वपूर्ण कर्मिक घटना, यद्यपि भारत में पूर्णता नहीं, आंशिक चरण ही दिखाई देगा। ज्योतिष में इस गहराई का ग्रहण राहु/केतु के प्रबल प्रभाव को दर्शाता है, और ग्रहण काल में प्रार्थना तथा दान से बढ़ा हुआ पुण्य माना जाता है।',
     indiaVisibility: 'partial',
   },
   {
@@ -599,8 +647,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     planets: ['chandra', 'rahu'],
     description: 'Penumbral lunar eclipse on Purnima — the Moon passes only through Earth\'s outer shadow, producing a subtle dimming rather than visible darkening.',
     descriptionHi: 'पूर्णिमा को उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की बाहरी छाया से गुजरता है, जिससे स्पष्ट अंधकार के बजाय हल्की धुंधलाहट होती है।',
-    significance: 'Penumbral Chandra Grahan — a mild eclipse where the Moon only enters Earth\'s faint outer shadow. Traditional grahan observances are far less strict for penumbral eclipses, though the Purnima itself remains spiritually significant.',
-    significanceHi: 'उपच्छाया चंद्र ग्रहण — एक हल्का ग्रहण जिसमें चंद्रमा केवल पृथ्वी की हल्की बाहरी छाया में प्रवेश करता है। उपच्छाया ग्रहणों के लिए परंपरागत ग्रहण नियम बहुत कम कठोर हैं, हालांकि पूर्णिमा स्वयं आध्यात्मिक रूप से महत्वपूर्ण बनी रहती है।',
+    significance: 'Penumbral Chandra Grahan — the Moon enters only Earth\'s faint outer shadow, never the umbra. Hindu calendars do not treat a penumbral eclipse as a grahan, though the Purnima itself remains spiritually significant.',
+    significanceHi: 'उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की हल्की बाहरी छाया में प्रवेश करता है, प्रच्छाया में नहीं, अतः धुंधलाहट अगोचर रहती है। हिंदू पंचांग उपच्छाया ग्रहण को ग्रहण मानते ही नहीं, यद्यपि पूर्णिमा स्वयं आध्यात्मिक रूप से महत्वपूर्ण बनी रहती है।',
     indiaVisibility: 'none',
   },
 ];

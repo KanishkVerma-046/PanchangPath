@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { metaDescription } from '../../lib/meta';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
-import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime, INDIA_VISIBILITY_LABEL } from '../../lib/planetaryEvents';
+import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime, INDIA_VISIBILITY_LABEL, sutakNote } from '../../lib/planetaryEvents';
 import { formatDateHi } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
@@ -19,6 +19,7 @@ const today = new Date();
 const countdown = formatCountdownLabel(ev.daysAway);
 const datetime  = formatEventDateTime(ev);
 const isToday   = ev.daysAway === 0;
+const sutak     = sutakNote(ev.indiaVisibility, ev.type);
 const isPast    = ev.daysAway < 0;
 const evDateObj = new Date(ev.dateISO + 'T00:00:00Z');
 const evDateLong = formatDateHi(evDateObj, false, { weekday: 'long' });
@@ -180,6 +181,14 @@ function heroBg(type: string): string {
           <h2 class="ed-section-title" data-hi="ज्योतिष महत्व">Jyotish Significance</h2>
           <p class="ed-body" data-hi={ev.significanceHi}>{ev.significance}</p>
         </div>
+
+        <!-- Sutak: derived from indiaVisibility, never written per entry -->
+        {sutak && (
+          <div class="ed-section">
+            <h2 class="ed-section-title" data-hi="सूतक काल">Sutak Kaal</h2>
+            <p class="ed-body" data-hi={sutak.hi}>{sutak.en}</p>
+          </div>
+        )}
 
         <!-- Planets involved -->
         {ev.planets.length > 0 && (
