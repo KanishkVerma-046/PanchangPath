@@ -10,6 +10,7 @@ import {
   moonRiseSetUTC,
   findAngleCrossing,
 } from './astro-core';
+import { formatMinutes12h, formatDecimalHours12h, formatDurationMins } from './time-format';
 
 // Re-exported verbatim from astro-core.ts (the shared home for every astronomy-engine call and
 // the geometry/utility functions built on top of it) so every existing importer of this module
@@ -65,14 +66,7 @@ function solarNoonUTC(jd: number, lng: number): number {
 }
 
 function decimalHoursToTime(h: number, tzOffset: number): string {
-  const local = h + tzOffset;
-  const hh = Math.floor(((local % 24) + 24) % 24);
-  const mm = Math.round((local - Math.floor(local)) * 60);
-  const hStr = hh.toString().padStart(2, '0');
-  const mStr = mm.toString().padStart(2, '0');
-  const ampm = hh < 12 ? 'AM' : 'PM';
-  const h12 = hh % 12 || 12;
-  return `${h12}:${mStr} ${ampm}`;
+  return formatDecimalHours12h(h, tzOffset);
 }
 
 function addMinutes(timeStr: string, mins: number): string {
@@ -268,14 +262,7 @@ function slotTime(sunriseMins: number, sunsetMins: number, slot: number): { star
   const duration = (sunsetMins - sunriseMins) / 8;
   const start = sunriseMins + slot * duration;
   const end = start + duration;
-  const fmt = (m: number) => {
-    const h = Math.floor(m / 60) % 24;
-    const min = Math.round(m % 60);
-    const ap = h < 12 ? 'AM' : 'PM';
-    const h12 = h % 12 || 12;
-    return `${h12}:${min.toString().padStart(2, '0')} ${ap}`;
-  };
-  return { start: fmt(start), end: fmt(end) };
+  return { start: formatMinutes12h(start), end: formatMinutes12h(end) };
 }
 
 function estimateEndTime(jd: number, degPerUnit: number, tzOffset: number, longitudeFn: (jd: number) => number): string {
@@ -347,9 +334,7 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
   const srMins = srUTC * 60 + tzOffset * 60;
   const ssMins = ssUTC * 60 + tzOffset * 60;
   const dayMins = ssMins - srMins;
-  const dHours = Math.floor(dayMins / 60);
-  const dMin = Math.round(dayMins % 60);
-  const durationDay = `${dHours}h ${dMin}m`;
+  const durationDay = formatDurationMins(dayMins);
 
   // Moonrise/moonset for this location's own calendar date (see moonRiseSetUTC). Either can be
   // null: the lunar day is ~24h50m, so about one day a month genuinely has no moonrise (or no
@@ -369,13 +354,7 @@ export function calculatePanchang(date: Date, lat: number, lng: number, tzOffset
   const noonMins = (srMins + ssMins) / 2;
   const abStart = noonMins - dayMins / 30;
   const abEnd = noonMins + dayMins / 30;
-  const fmtSlot = (m: number) => {
-    const h = Math.floor((m / 60) % 24);
-    const min = Math.round(m % 60);
-    const ap = h < 12 ? 'AM' : 'PM';
-    return `${h % 12 || 12}:${min.toString().padStart(2, '0')} ${ap}`;
-  };
-  const abhijitMuhurta = { start: fmtSlot(abStart), end: fmtSlot(abEnd) };
+  const abhijitMuhurta = { start: formatMinutes12h(abStart), end: formatMinutes12h(abEnd) };
 
   return {
     vara: VARAS[weekday],

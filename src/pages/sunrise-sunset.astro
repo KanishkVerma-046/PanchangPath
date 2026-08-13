@@ -44,6 +44,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
 import { sunriseUTC } from '../lib/panchang';
 import { formatDateHi } from '../lib/date-i18n';
+import { formatDecimalHours12h, formatDurationHours } from '../lib/time-format';
 
 const LOCS = [
   {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.209,tz:5.5},
@@ -68,19 +69,8 @@ const n360=(a:number)=>((a%360)+360)%360;
 const toRad=(d:number)=>d*Math.PI/180;
 const toDeg=(r:number)=>r*180/Math.PI;
 
-function decHoursToTime(h:number,tz:number){
-  const local=h+tz;
-  const hh=Math.floor(((local%24)+24)%24);
-  const mm=Math.round((local-Math.floor(local))*60);
-  const ap=hh<12?'AM':'PM';
-  const h12=hh%12||12;
-  return `${h12}:${String(mm).padStart(2,'0')} ${ap}`;
-}
-function fmtDuration(hoursDecimal:number){
-  const h=Math.floor(hoursDecimal);
-  const m=Math.round((hoursDecimal-h)*60);
-  return `${h}h ${m}m`;
-}
+const decHoursToTime = formatDecimalHours12h;
+const fmtDuration = formatDurationHours;
 
 const sel=document.getElementById('ss-city') as HTMLSelectElement;
 let hindiActive=false;

@@ -44,6 +44,7 @@ import Layout from '../layouts/Layout.astro';
 <script>
 import { moonLongitude, sunTrueLongitude, moonRiseSetUTC, sunriseUTC } from '../lib/panchang';
 import { formatDateHi } from '../lib/date-i18n';
+import { formatDecimalHours12h } from '../lib/time-format';
 
 const LOCS = [
   {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.209,tz:5.5},
@@ -68,14 +69,7 @@ const n360=(a:number)=>((a%360)+360)%360;
 const toRad=(d:number)=>d*Math.PI/180;
 const toDeg=(r:number)=>r*180/Math.PI;
 
-function decHoursToTime(h:number,tz:number){
-  const local=h+tz;
-  const hh=Math.floor(((local%24)+24)%24);
-  const mm=Math.round((local-Math.floor(local))*60);
-  const ap=hh<12?'AM':'PM';
-  const h12=hh%12||12;
-  return `${h12}:${String(mm).padStart(2,'0')} ${ap}`;
-}
+const decHoursToTime = formatDecimalHours12h;
 const PHASE_NAMES=['New Moon','Waxing Crescent','First Quarter','Waxing Gibbous','Full Moon','Waning Gibbous','Last Quarter','Waning Crescent'];
 const PHASE_NAMES_HI=['अमावस्या','बढ़ता अर्धचंद्र','प्रथम चतुर्थांश चंद्रमा','बढ़ता हुआ पूर्ण-प्राय चंद्रमा','पूर्णिमा','घटता हुआ पूर्ण-प्राय चंद्रमा','अंतिम चतुर्थांश चंद्रमा','घटता अर्धचंद्र'];
 function moonPhase(jd:number){

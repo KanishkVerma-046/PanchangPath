@@ -72,6 +72,7 @@ import Layout from '../../layouts/Layout.astro';
 <script>
 import { LOCATIONS } from '../../lib/locations';
 import { moonLongitude as moonLon, lahiriAyanamsha as ayanamsha, sunriseUTC } from '../../lib/panchang';
+import { formatMinutes12h } from '../../lib/time-format';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
 const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -117,7 +118,7 @@ renderCityOptions();
 document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
 document.getElementById('f-time').value='12:00';
 
-function fmtMins(m){const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;}
+const fmtMins = formatMinutes12h;
 
 function calculate(){
   try{

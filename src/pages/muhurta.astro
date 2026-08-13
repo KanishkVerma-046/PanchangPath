@@ -110,6 +110,7 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
 
 <script>
 import { formatDateHi } from '../lib/date-i18n';
+import { formatMinutes12h } from '../lib/time-format';
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
   {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
@@ -175,10 +176,7 @@ function sunriseUTC(jd:number,lat:number,lng:number,rising=true) {
   const noon=12-lng/15-eot/60;
   return rising?noon-ha/15:noon+ha/15;
 }
-function fmtMins(m:number) {
-  const h=Math.floor((m/60)%24),mn=Math.round(m%60);
-  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
-}
+const fmtMins = formatMinutes12h;
 
 const now=new Date();
 const wd=now.getDay();

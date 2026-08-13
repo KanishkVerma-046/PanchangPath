@@ -344,6 +344,7 @@ import {
   YAMAGANDA_SLOTS,
 } from '../lib/panchang';
 import { formatDateHi } from '../lib/date-i18n';
+import { formatMinutes12h, formatMinutes24h, formatMinutes24Plus, formatDurationMins } from '../lib/time-format';
 
 // ── Global display state ──
 let timeFormat: '12h' | '24h' | '24p' = '12h';
@@ -354,22 +355,11 @@ let srMinsGlobal = 0; // sunrise (mins from midnight) for 24+ format
 const norm360 = (a: number) => ((a % 360) + 360) % 360;
 
 function minsToFmt(totalMins: number): string {
-  const m = ((totalMins % 1440) + 1440) % 1440;
-  const h = Math.floor(m / 60);
-  const mn = Math.round(m % 60);
-  if (timeFormat === '24h') {
-    return `${String(h).padStart(2,'0')}:${String(mn).padStart(2,'0')}`;
-  } else if (timeFormat === '24p') {
-    // Times before sunrise are part of the panchang day that started the previous sunrise;
-    // display them as 24+ (e.g. 1:30 AM → 25:30 when sunrise is ~5:30 AM)
-    const display = m < srMinsGlobal ? m + 1440 : m;
-    const dh = Math.floor(display / 60);
-    const dm = Math.round(display % 60);
-    return `${String(dh).padStart(2,'0')}:${String(dm).padStart(2,'0')}`;
-  }
-  // 12h (default)
-  const ap = h < 12 ? 'AM' : 'PM';
-  return `${h % 12 || 12}:${String(mn).padStart(2,'0')} ${ap}`;
+  if (timeFormat === '24h') return formatMinutes24h(totalMins);
+  // Times before sunrise are part of the panchang day that started the previous sunrise;
+  // display them as 24+ (e.g. 1:30 AM → 25:30 when sunrise is ~5:30 AM)
+  if (timeFormat === '24p') return formatMinutes24Plus(totalMins, srMinsGlobal);
+  return formatMinutes12h(totalMins); // 12h (default)
 }
 
 function fmtTime(h: number, tz: number): string {
@@ -444,7 +434,7 @@ function calcPanchang(date: Date, loc: Location) {
     sunset: fmtTime(ssUTC, loc.tzOffset),
     moonrise: moonriseUTC === null ? NO_MOONRISE : fmtTime(moonriseUTC, loc.tzOffset),
     moonset: moonsetUTC === null ? NO_MOONSET : fmtTime(moonsetUTC, loc.tzOffset),
-    durationDay: `${Math.floor(dayMins/60)}h ${Math.round(dayMins%60)}m`,
+    durationDay: formatDurationMins(dayMins),
     rahuKalam: slot(RAHU[wd]),
     gulikaKalam: slot(GULIKA[wd]),
     yamaganda: slot(YAMAGANDA_SLOTS[wd]),

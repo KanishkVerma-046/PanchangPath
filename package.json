@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "npm run build && npx wrangler pages deploy dist --project-name=panchangpath --branch=main",
-    "test:audit": "node --test scripts/audit/test/*.test.mjs",
+    "test:audit": "node --experimental-strip-types --test scripts/audit/test/*.test.mjs",
     "audit:crawl": "node scripts/audit/crawl.mjs"
   },
   "dependencies": {

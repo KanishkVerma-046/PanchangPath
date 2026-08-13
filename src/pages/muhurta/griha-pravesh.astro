@@ -73,6 +73,7 @@ import Layout from '../../layouts/Layout.astro';
 import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
 import { MUHURTA_CRITERIA, sunRashiVoidCheck, KHARMAS_RASHIS, CHATURMAS_RASHIS } from '../../lib/muhurta';
 import { formatDateHi } from '../../lib/date-i18n';
+import { formatMinutes12h } from '../../lib/time-format';
 
 const LOCS = [
   {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.209,tz:5.5},
@@ -158,10 +159,7 @@ function scoreGP(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;rah
   return {score,notes,bad};
 }
 
-function fmtMins(m:number){
-  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
-  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
-}
+const fmtMins = formatMinutes12h;
 
 const sel=document.getElementById('gp-city') as HTMLSelectElement;
 function renderCityOptions(){

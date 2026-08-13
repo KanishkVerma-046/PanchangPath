@@ -63,6 +63,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <script>
 import { moonLongitude, lahiriAyanamsha, sunriseUTC } from '../../lib/panchang';
+import { formatMinutes12h } from '../../lib/time-format';
 
 const LOCS = [
   {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.209,tz:5.5},
@@ -124,10 +125,7 @@ function toJD(y:number,m:number,d:number,h=0){
   return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
 }
 const n360=(a:number)=>((a%360)+360)%360;
-function fmtMins(m:number){
-  const h=Math.floor(((m/60)%24+24)%24),mn=Math.round(((m%60)+60)%60);
-  return `${h%12||12}:${String(mn).padStart(2,'0')} ${h<12?'AM':'PM'}`;
-}
+const fmtMins = formatMinutes12h;
 
 const sel=document.getElementById('pk-city') as HTMLSelectElement;
 function renderCityOptions(){
