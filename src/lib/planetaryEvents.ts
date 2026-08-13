@@ -325,7 +325,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2025-03-14',
-    timeUTC: 6.97,
+    // Greatest eclipse 06:58:44.5 UT1 (06:59:56.2 TD, deltaT 71.7s) per EclipseWise.
+    timeUTC: 6.979,
     planets: ['chandra', 'rahu'],
     description: 'Total lunar eclipse visible across Asia, Africa, Europe on Holi Purnima.',
     descriptionHi: 'होली पूर्णिमा को एशिया, अफ्रीका, यूरोप में दिखाई देने वाला पूर्ण चंद्र ग्रहण।',
@@ -342,7 +343,9 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2025-03-29',
-    timeUTC: 10.48,
+    // Greatest eclipse 10:47:24.2 UT1 (10:48:36.1 TD) per EclipseWise.
+    // Was 10.48 — the TD value "10:48" entered as HH.MM into this DECIMAL-hours field.
+    timeUTC: 10.790,
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Partial solar eclipse on Chaitra Amavasya. Visible in northwestern Europe and northern Africa.',
     descriptionHi: 'चैत्र अमावस्या को आंशिक सूर्य ग्रहण। उत्तर-पश्चिमी यूरोप और उत्तरी अफ्रीका में दिखाई देगा।',
@@ -376,7 +379,9 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2025-09-21',
-    timeUTC: 19.42,
+    // Greatest eclipse 19:41:52.2 UT1 (19:43:04.2 TD) per EclipseWise.
+    // Was 19.42 — the TD value "19:42" entered as HH.MM into this DECIMAL-hours field.
+    timeUTC: 19.698,
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Partial solar eclipse visible in southern Australia and Antarctica.',
     descriptionHi: 'दक्षिणी ऑस्ट्रेलिया और अंटार्कटिका में दिखाई देने वाला आंशिक सूर्य ग्रहण।',
@@ -393,7 +398,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2026-02-17',
-    timeUTC: 12.02,
+    // Greatest eclipse 12:11:53.6 UT1 (12:13:05.8 TD) per EclipseWise.
+    // Was 12.02 — read off the wrong row of the reference table: 12:01:05.9 UT1 is the
+    // Ecliptic Conjunction, not greatest eclipse.
+    timeUTC: 12.198,
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Annular solar eclipse ("ring of fire") on Magha Amavasya. Visible from Antarctica and southern South America.',
     descriptionHi: 'माघ अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय")। अंटार्कटिका और दक्षिणी दक्षिण अमेरिका से दिखाई देगा।',
@@ -466,7 +474,9 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2027-02-06',
-    timeUTC: 16.01,
+    // Greatest eclipse 15:59:35.1 UT1 (16:00:47.7 TD) per EclipseWise.
+    // Was 16.01 — the TD value; this field wants UT1, which is deltaT (~73s) earlier.
+    timeUTC: 15.993,
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Annular solar eclipse ("ring of fire") on Amavasya. Path of annularity crosses South America and West Africa; not visible from India.',
     descriptionHi: 'अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय")। वलयाकारता का पथ दक्षिण अमेरिका और पश्चिम अफ्रीका से होकर गुजरता है; भारत से दिखाई नहीं देगा।',
@@ -517,7 +527,9 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2027-08-02',
-    timeUTC: 10.13,
+    // Greatest eclipse 10:06:37.4 UT1 (10:07:50.2 TD) per EclipseWise.
+    // Was 10.13 — the TD value; this field wants UT1, which is deltaT (~73s) earlier.
+    timeUTC: 10.110,
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Total solar eclipse on Amavasya with a maximum totality of over 6 minutes — one of the longest total solar eclipses of the century. Path crosses North Africa and the Middle East, including Egypt and Saudi Arabia.',
     descriptionHi: 'अमावस्या को पूर्ण सूर्य ग्रहण, जिसकी अधिकतम पूर्णता 6 मिनट से अधिक है — इस शताब्दी के सबसे लंबे पूर्ण सूर्य ग्रहणों में से एक। पथ उत्तरी अफ्रीका और मध्य पूर्व, जिसमें मिस्र और सऊदी अरब शामिल हैं, से होकर गुजरता है।',
