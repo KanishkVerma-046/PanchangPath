@@ -104,6 +104,30 @@ function jdToTimeUTC(jd: number): number {
   return d.getUTCHours() + d.getUTCMinutes() / 60 + d.getUTCSeconds() / 3600;
 }
 
+/**
+ * Parse a UT1 clock time — 'HH:MM:SS' or 'HH:MM:SS.s' — into the decimal hours that
+ * `PlanetaryEvent.timeUTC` stores. Every hand-entered time in this file must go through
+ * here rather than being written as a bare number.
+ *
+ * Writing decimal hours by hand is what caused three separate wrong times to ship: a
+ * sexagesimal clock reading dropped straight into a decimal field ("17:45" written as
+ * 17.45 is 17:27, an 18-minute error) is indistinguishable from a correct decimal value
+ * once it is in the source. Requiring a colon-separated string makes that class of
+ * mistake unrepresentable, and throws on anything malformed.
+ *
+ * Note this cannot catch a value that is well-formed but sourced wrongly — using TD
+ * instead of UT1 (~73s apart in this window), or reading the Ecliptic Conjunction row
+ * of a reference table instead of Greatest Eclipse. Both have happened here. The
+ * function name and the per-entry TD annotations exist to make those visible on review.
+ */
+function ut(hms: string): number {
+  const m = /^(\d{1,2}):(\d{2}):(\d{2}(?:\.\d+)?)$/.exec(hms);
+  if (!m) throw new Error(`ut(): expected 'HH:MM:SS', got '${hms}'`);
+  const h = Number(m[1]), min = Number(m[2]), s = Number(m[3]);
+  if (h > 23 || min > 59 || s >= 60) throw new Error(`ut(): '${hms}' is not a valid clock time`);
+  return h + min / 60 + s / 3600;
+}
+
 function angDiff(a: number, b: number): number {
   let d = b - a;
   if (d > 180)  d -= 360;
@@ -312,7 +336,12 @@ function eclipseEvent(
   };
 }
 
-// ── Known eclipses 2025–2026 (NASA/JPL verified) ─────────────────────────
+// ── Known eclipses 2025–2027 ──────────────────────────────────────────────
+// Times are the UT1 instant of GREATEST ECLIPSE, taken from each eclipse's prime page on
+// EclipseWise (Espenak, JPL DE430/DE406) and written through ut() — never as bare decimal
+// hours. Two values are quoted per entry: UT1 (what we store) and TD (what most references,
+// including Wikipedia's infobox, print while labelling it "UTC"). TD runs ~73s ahead of UT1
+// here; storing it shifts the displayed minute.
 
 const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
   {
@@ -325,8 +354,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2025-03-14',
-    // Greatest eclipse 06:58:44.5 UT1 (06:59:56.2 TD, deltaT 71.7s) per EclipseWise.
-    timeUTC: 6.979,
+    timeUTC: ut('06:58:44.5'),   // greatest eclipse UT1 (TD 06:59:56.2)
     planets: ['chandra', 'rahu'],
     description: 'Total lunar eclipse visible across Asia, Africa, Europe on Holi Purnima.',
     descriptionHi: 'होली पूर्णिमा को एशिया, अफ्रीका, यूरोप में दिखाई देने वाला पूर्ण चंद्र ग्रहण।',
@@ -343,9 +371,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2025-03-29',
-    // Greatest eclipse 10:47:24.2 UT1 (10:48:36.1 TD) per EclipseWise.
-    // Was 10.48 — the TD value "10:48" entered as HH.MM into this DECIMAL-hours field.
-    timeUTC: 10.790,
+    timeUTC: ut('10:47:24.2'),   // greatest eclipse UT1 (TD 10:48:36.1)
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Partial solar eclipse on Chaitra Amavasya. Visible in northwestern Europe and northern Africa.',
     descriptionHi: 'चैत्र अमावस्या को आंशिक सूर्य ग्रहण। उत्तर-पश्चिमी यूरोप और उत्तरी अफ्रीका में दिखाई देगा।',
@@ -362,7 +388,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2025-09-07',
-    timeUTC: 18.2,
+    timeUTC: ut('18:11:46.1'),   // greatest eclipse UT1 (TD 18:12:58.0)
     planets: ['chandra', 'rahu'],
     description: 'Total lunar eclipse on Bhadrapada Purnima — visible from India, Asia, Europe and Africa.',
     descriptionHi: 'भाद्रपद पूर्णिमा को पूर्ण चंद्र ग्रहण — भारत, एशिया, यूरोप और अफ्रीका से दिखाई देगा।',
@@ -379,9 +405,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2025-09-21',
-    // Greatest eclipse 19:41:52.2 UT1 (19:43:04.2 TD) per EclipseWise.
-    // Was 19.42 — the TD value "19:42" entered as HH.MM into this DECIMAL-hours field.
-    timeUTC: 19.698,
+    timeUTC: ut('19:41:52.2'),   // greatest eclipse UT1 (TD 19:43:04.2)
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Partial solar eclipse visible in southern Australia and Antarctica.',
     descriptionHi: 'दक्षिणी ऑस्ट्रेलिया और अंटार्कटिका में दिखाई देने वाला आंशिक सूर्य ग्रहण।',
@@ -398,10 +422,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2026-02-17',
-    // Greatest eclipse 12:11:53.6 UT1 (12:13:05.8 TD) per EclipseWise.
-    // Was 12.02 — read off the wrong row of the reference table: 12:01:05.9 UT1 is the
-    // Ecliptic Conjunction, not greatest eclipse.
-    timeUTC: 12.198,
+    timeUTC: ut('12:11:53.6'),   // greatest eclipse UT1 (TD 12:13:05.8)
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Annular solar eclipse ("ring of fire") on Magha Amavasya. Visible from Antarctica and southern South America.',
     descriptionHi: 'माघ अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय")। अंटार्कटिका और दक्षिणी दक्षिण अमेरिका से दिखाई देगा।',
@@ -418,9 +439,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2026-08-12',
-    // Greatest eclipse 17:46:06 UTC (17:45:53 UT1 / 17:47:06 TD) per EclipseWise + timeanddate.
-    // NOTE: this field is DECIMAL hours, not HH.MM — 17:46 is 17.768, not 17.45.
-    timeUTC: 17.768,
+    timeUTC: ut('17:45:53.3'),   // greatest eclipse UT1 (TD 17:47:05.8)
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Total solar eclipse — totality is visible only from northernmost Siberia, Greenland, Iceland, northern Spain and the extreme north-east of Portugal. Europe, North and West Africa and northern North America see a partial eclipse only. Greatest eclipse 17:46 UTC (11:16 PM IST); not visible from India.',
     descriptionHi: 'पूर्ण सूर्य ग्रहण — पूर्णता केवल उत्तरी साइबेरिया, ग्रीनलैंड, आइसलैंड, उत्तरी स्पेन और उत्तर-पूर्वी पुर्तगाल के अत्यंत छोटे भाग से दिखाई देगी। यूरोप, उत्तरी व पश्चिमी अफ्रीका तथा उत्तरी अमेरिका के उत्तरी भाग में केवल आंशिक ग्रहण दिखाई देगा। ग्रहण का मध्यकाल 17:46 UTC (रात 11:16, IST); भारत से दिखाई नहीं देगा।',
@@ -437,10 +456,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2026-08-28',
-    // Greatest eclipse 04:12:49 UTC per Wikipedia/TheSkyLive; 9:43 AM IST matches the
-    // "deepest phase near 09:43 IST" figure Indian panchang sources publish.
-    // NOTE: this field is DECIMAL hours, not HH.MM.
-    timeUTC: 4.214,
+    timeUTC: ut('04:12:52.0'),   // greatest eclipse UT1 (TD 04:14:04.3)
     planets: ['chandra', 'rahu'],
     description: 'Partial lunar eclipse on Shravana Purnima. Visible in full from North and South America, rising over the central Pacific and setting over Africa, Europe and the Middle East. Greatest eclipse 04:13 UTC (9:43 AM IST); not visible from India.',
     descriptionHi: 'श्रावण पूर्णिमा को आंशिक चंद्र ग्रहण। उत्तरी व दक्षिणी अमेरिका से पूर्ण रूप से दिखाई देगा; मध्य प्रशांत क्षेत्र में चंद्रोदय के समय तथा अफ्रीका, यूरोप व मध्य पूर्व में चंद्रास्त के समय दिखाई देगा। ग्रहण का मध्यकाल 04:13 UTC (प्रातः 9:43, IST); भारत से दिखाई नहीं देगा।',
@@ -457,7 +473,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2026-03-03',
-    timeUTC: 11.56,
+    timeUTC: ut('11:33:40.0'),   // greatest eclipse UT1 (TD 11:34:52.1)
     planets: ['chandra', 'rahu'],
     description: 'Total lunar eclipse on Purnima, widely visible from Asia (including India), Australia, and the Americas.',
     descriptionHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, एशिया (भारत सहित), ऑस्ट्रेलिया और अमेरिका से व्यापक रूप से दिखाई देगा।',
@@ -474,9 +490,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2027-02-06',
-    // Greatest eclipse 15:59:35.1 UT1 (16:00:47.7 TD) per EclipseWise.
-    // Was 16.01 — the TD value; this field wants UT1, which is deltaT (~73s) earlier.
-    timeUTC: 15.993,
+    timeUTC: ut('15:59:35.1'),   // greatest eclipse UT1 (TD 16:00:47.7)
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Annular solar eclipse ("ring of fire") on Amavasya. Path of annularity crosses South America and West Africa; not visible from India.',
     descriptionHi: 'अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय")। वलयाकारता का पथ दक्षिण अमेरिका और पश्चिम अफ्रीका से होकर गुजरता है; भारत से दिखाई नहीं देगा।',
@@ -493,7 +507,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2027-02-20',
-    timeUTC: 23.21,
+    timeUTC: ut('23:12:52.7'),   // greatest eclipse UT1 (TD 23:14:05.3)
     planets: ['chandra', 'rahu'],
     description: 'Penumbral lunar eclipse on Purnima — the Moon passes only through Earth\'s outer shadow, producing a subtle dimming rather than visible darkening.',
     descriptionHi: 'पूर्णिमा को उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की बाहरी छाया से गुजरता है, जिससे स्पष्ट अंधकार के बजाय हल्की धुंधलाहट होती है।',
@@ -510,7 +524,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2027-07-18',
-    timeUTC: 16.05,
+    timeUTC: ut('16:02:57.8'),   // greatest eclipse UT1 (TD 16:04:10.5)
     planets: ['chandra', 'rahu'],
     description: 'Extremely shallow penumbral lunar eclipse on Purnima — the Moon barely clips Earth\'s outer shadow and the dimming is imperceptible to the naked eye.',
     descriptionHi: 'पूर्णिमा को अत्यंत हल्का उपच्छाया चंद्र ग्रहण — चंद्रमा पृथ्वी की बाहरी छाया को मुश्किल से छूता है और धुंधलाहट नंगी आंखों से अगोचर होती है।',
@@ -527,9 +541,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2027-08-02',
-    // Greatest eclipse 10:06:37.4 UT1 (10:07:50.2 TD) per EclipseWise.
-    // Was 10.13 — the TD value; this field wants UT1, which is deltaT (~73s) earlier.
-    timeUTC: 10.110,
+    timeUTC: ut('10:06:37.4'),   // greatest eclipse UT1 (TD 10:07:50.2)
     planets: ['surya', 'chandra', 'rahu'],
     description: 'Total solar eclipse on Amavasya with a maximum totality of over 6 minutes — one of the longest total solar eclipses of the century. Path crosses North Africa and the Middle East, including Egypt and Saudi Arabia.',
     descriptionHi: 'अमावस्या को पूर्ण सूर्य ग्रहण, जिसकी अधिकतम पूर्णता 6 मिनट से अधिक है — इस शताब्दी के सबसे लंबे पूर्ण सूर्य ग्रहणों में से एक। पथ उत्तरी अफ्रीका और मध्य पूर्व, जिसमें मिस्र और सऊदी अरब शामिल हैं, से होकर गुजरता है।',
@@ -546,7 +558,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2027-08-17',
-    timeUTC: 7.23,
+    timeUTC: ut('07:13:45.1'),   // greatest eclipse UT1 (TD 07:14:57.9)
     planets: ['chandra', 'rahu'],
     description: 'Penumbral lunar eclipse on Purnima — the Moon passes only through Earth\'s outer shadow, producing a subtle dimming rather than visible darkening.',
     descriptionHi: 'पूर्णिमा को उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की बाहरी छाया से गुजरता है, जिससे स्पष्ट अंधकार के बजाय हल्की धुंधलाहट होती है।',
