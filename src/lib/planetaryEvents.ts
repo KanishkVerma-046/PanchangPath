@@ -543,8 +543,8 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2027-08-02',
     timeUTC: ut('10:06:37.4'),   // greatest eclipse UT1 (TD 10:07:50.2)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Total solar eclipse on Amavasya with a maximum totality of over 6 minutes — one of the longest total solar eclipses of the century. Path crosses North Africa and the Middle East, including Egypt and Saudi Arabia.',
-    descriptionHi: 'अमावस्या को पूर्ण सूर्य ग्रहण, जिसकी अधिकतम पूर्णता 6 मिनट से अधिक है — इस शताब्दी के सबसे लंबे पूर्ण सूर्य ग्रहणों में से एक। पथ उत्तरी अफ्रीका और मध्य पूर्व, जिसमें मिस्र और सऊदी अरब शामिल हैं, से होकर गुजरता है।',
+    description: 'Total solar eclipse on Amavasya — India sees a partial eclipse, with roughly half the Sun\'s diameter covered in the far south and in Mumbai, falling to under a fifth in Delhi and Kolkata. Totality, over 6 minutes at its longest and among the longest this century, crosses North Africa and the Middle East including Egypt and Saudi Arabia. Greatest eclipse 10:07 UTC (3:37 PM IST).',
+    descriptionHi: 'अमावस्या को पूर्ण सूर्य ग्रहण — भारत में आंशिक ग्रहण दिखाई देगा; सुदूर दक्षिण तथा मुंबई में सूर्य का लगभग आधा व्यास ढका रहेगा, जबकि दिल्ली और कोलकाता में पांचवें भाग से भी कम। पूर्णता, जो अधिकतम 6 मिनट से अधिक और इस शताब्दी की सबसे लंबी पूर्णताओं में से एक है, उत्तरी अफ्रीका और मध्य पूर्व — मिस्र तथा सऊदी अरब सहित — से होकर गुजरेगी। ग्रहण का मध्यकाल 10:07 UTC (अपराह्न 3:37, IST)।',
     significance: 'Total Surya Grahan — an extremely significant karmic event given its unusually long totality. In Jyotish, total solar eclipses call for avoiding eating, starting new ventures, or important decisions on this day. Extended fasting, prayer, and donation (danam) yield amplified merit.',
     significanceHi: 'पूर्ण सूर्य ग्रहण — इसकी असामान्य रूप से लंबी पूर्णता को देखते हुए एक अत्यंत महत्वपूर्ण कर्मिक घटना। ज्योतिष में, पूर्ण सूर्य ग्रहण इस दिन भोजन करने, नए उद्यम शुरू करने, या महत्वपूर्ण निर्णय लेने से बचने का आह्वान करते हैं। विस्तारित उपवास, प्रार्थना और दान से बढ़ा हुआ पुण्य मिलता है।',
   },
