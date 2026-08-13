@@ -475,10 +475,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2026-03-03',
     timeUTC: ut('11:33:40.0'),   // greatest eclipse UT1 (TD 11:34:52.1)
     planets: ['chandra', 'rahu'],
-    description: 'Total lunar eclipse on Purnima, widely visible from Asia (including India), Australia, and the Americas.',
-    descriptionHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, एशिया (भारत सहित), ऑस्ट्रेलिया और अमेरिका से व्यापक रूप से दिखाई देगा।',
-    significance: 'Total Chandra Grahan on Purnima, visible from India. The Moon turns blood-red during totality. Temples traditionally close during the grahan period, and mantras recited during this time are considered exceptionally potent.',
-    significanceHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, भारत से दिखाई देगा। पूर्णता के दौरान चंद्रमा रक्त-लाल हो जाता है। ग्रहण काल में परंपरागत रूप से मंदिर बंद रहते हैं, और इस समय जप किए गए मंत्र अत्यंत प्रभावी माने जाते हैं।',
+    description: 'Total lunar eclipse on Purnima, visible from eastern Asia, Australia, the Pacific and the Americas. India sees only the closing partial phase, low in the sky after moonrise — totality and greatest eclipse both fall below the horizon there. Greatest eclipse 11:34 UTC (5:04 PM IST).',
+    descriptionHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, जो पूर्वी एशिया, ऑस्ट्रेलिया, प्रशांत क्षेत्र और अमेरिका से दिखाई देगा। भारत में केवल अंतिम आंशिक चरण ही चंद्रोदय के बाद क्षितिज के निकट दिखाई देगा — पूर्णता तथा ग्रहण का मध्यकाल, दोनों वहां क्षितिज के नीचे रहेंगे। ग्रहण का मध्यकाल 11:34 UTC (सायं 5:04, IST)।',
+    significance: 'Total Chandra Grahan on Purnima. The Moon turns blood-red during totality, but from India that phase falls below the horizon — only the closing partial phase is seen, after moonrise. Temples traditionally close during the grahan period, and mantras recited during this time are considered exceptionally potent.',
+    significanceHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण। पूर्णता के दौरान चंद्रमा रक्त-लाल हो जाता है, परंतु भारत से वह चरण क्षितिज के नीचे रहता है — यहां केवल अंतिम आंशिक चरण ही चंद्रोदय के बाद दिखाई देगा। ग्रहण काल में परंपरागत रूप से मंदिर बंद रहते हैं, और इस समय जप किए गए मंत्र अत्यंत प्रभावी माने जाते हैं।',
   },
   {
     id: 'solar-eclipse-2027-02-06',
