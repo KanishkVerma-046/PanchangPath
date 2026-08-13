@@ -54,6 +54,23 @@ function typeClass(type: string): string {
   }
 }
 
+// The `timeUTC` field is a single instant per event, but what that instant *means*
+// differs by type — for eclipses it is the moment of greatest eclipse, not the start
+// of the eclipse. Label it explicitly so the headline time can't be misread.
+// "IST" is India Standard Time (UTC+5:30) — spelled out because several eclipses in
+// this feed are European events, where IST would otherwise read as Irish Standard Time.
+function timeLabel(type: string): string {
+  return type === 'solar_eclipse' || type === 'lunar_eclipse'
+    ? 'Greatest Eclipse (India, IST)'
+    : 'Time (India, IST)';
+}
+
+function timeLabelHi(type: string): string {
+  return type === 'solar_eclipse' || type === 'lunar_eclipse'
+    ? 'ग्रहण मध्यकाल (भारत, IST)'
+    : 'समय (भारत, IST)';
+}
+
 function typeLabelHi(type: string): string {
   switch (type) {
     case 'sign_transit':     return 'राशि परिवर्तन';
@@ -140,7 +157,7 @@ function heroBg(type: string): string {
           </div>
           <div class="ed-sep"></div>
           <div class="ed-date-col">
-            <p class="ed-label" data-hi="समय (IST)">Time (IST)</p>
+            <p class="ed-label" data-hi={timeLabelHi(ev.type)}>{timeLabel(ev.type)}</p>
             <p class="ed-value">{datetime.split('·')[1]?.trim() ?? '—'}</p>
           </div>
           <div class="ed-sep"></div>
@@ -213,7 +230,7 @@ function heroBg(type: string): string {
               <dd data-hi={evDateShortHi}>{evDateShort}</dd>
             </div>
             <div class="ed-fact-row">
-              <dt data-hi="समय (IST)">Time (IST)</dt>
+              <dt data-hi={timeLabelHi(ev.type)}>{timeLabel(ev.type)}</dt>
               <dd>{datetime.split('·')[1]?.trim() ?? '—'}</dd>
             </div>
             <div id="ed-sidebar-countdown-row" class="ed-fact-row" style={isPast ? 'display:none' : ''}>

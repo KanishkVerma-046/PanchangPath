@@ -410,10 +410,12 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Solar Eclipse',
     labelHi: 'सूर्य ग्रहण',
     dateISO: '2026-08-12',
-    timeUTC: 17.45,
+    // Greatest eclipse 17:46:06 UTC (17:45:53 UT1 / 17:47:06 TD) per EclipseWise + timeanddate.
+    // NOTE: this field is DECIMAL hours, not HH.MM — 17:46 is 17.768, not 17.45.
+    timeUTC: 17.768,
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Total solar eclipse visible across Greenland, Iceland, Spain, and northern Africa. Partial visibility in Europe and Middle East.',
-    descriptionHi: 'ग्रीनलैंड, आइसलैंड, स्पेन और उत्तरी अफ्रीका में दिखाई देने वाला पूर्ण सूर्य ग्रहण। यूरोप और मध्य पूर्व में आंशिक रूप से दिखाई देगा।',
+    description: 'Total solar eclipse — totality is visible only from northernmost Siberia, Greenland, Iceland, northern Spain and the extreme north-east of Portugal. Europe, North and West Africa and northern North America see a partial eclipse only. Greatest eclipse 17:46 UTC (11:16 PM IST); not visible from India.',
+    descriptionHi: 'पूर्ण सूर्य ग्रहण — पूर्णता केवल उत्तरी साइबेरिया, ग्रीनलैंड, आइसलैंड, उत्तरी स्पेन और उत्तर-पूर्वी पुर्तगाल के अत्यंत छोटे भाग से दिखाई देगी। यूरोप, उत्तरी व पश्चिमी अफ्रीका तथा उत्तरी अमेरिका के उत्तरी भाग में केवल आंशिक ग्रहण दिखाई देगा। ग्रहण का मध्यकाल 17:46 UTC (रात 11:16, IST); भारत से दिखाई नहीं देगा।',
     significance: 'Total Surya Grahan — one of the most dramatic astronomical events. The path of totality crosses Europe. In Jyotish, a total solar eclipse is an extremely significant karmic event. Avoid eating, starting new ventures, or important decisions on this day. Extended fasting, prayer, and donation (danam) yield amplified merit.',
     significanceHi: 'पूर्ण सूर्य ग्रहण — सबसे नाटकीय खगोलीय घटनाओं में से एक। पूर्णता का पथ यूरोप से होकर गुजरता है। ज्योतिष में, पूर्ण सूर्य ग्रहण एक अत्यंत महत्वपूर्ण कर्मिक घटना है। इस दिन भोजन करने, नए उद्यम शुरू करने, या महत्वपूर्ण निर्णय लेने से बचें। विस्तारित उपवास, प्रार्थना और दान से बढ़ा हुआ पुण्य मिलता है।',
   },
@@ -427,10 +429,13 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     label: 'Lunar Eclipse',
     labelHi: 'चंद्र ग्रहण',
     dateISO: '2026-08-28',
-    timeUTC: 4.33,
+    // Greatest eclipse 04:12:49 UTC per Wikipedia/TheSkyLive; 9:43 AM IST matches the
+    // "deepest phase near 09:43 IST" figure Indian panchang sources publish.
+    // NOTE: this field is DECIMAL hours, not HH.MM.
+    timeUTC: 4.214,
     planets: ['chandra', 'rahu'],
-    description: 'Partial lunar eclipse visible from Asia, Australia, Pacific, and Americas on Bhadrapada Purnima.',
-    descriptionHi: 'भाद्रपद पूर्णिमा को एशिया, ऑस्ट्रेलिया, प्रशांत और अमेरिका से दिखाई देने वाला आंशिक चंद्र ग्रहण।',
+    description: 'Partial lunar eclipse on Shravana Purnima. Visible in full from North and South America, rising over the central Pacific and setting over Africa, Europe and the Middle East. Greatest eclipse 04:13 UTC (9:43 AM IST); not visible from India.',
+    descriptionHi: 'श्रावण पूर्णिमा को आंशिक चंद्र ग्रहण। उत्तरी व दक्षिणी अमेरिका से पूर्ण रूप से दिखाई देगा; मध्य प्रशांत क्षेत्र में चंद्रोदय के समय तथा अफ्रीका, यूरोप व मध्य पूर्व में चंद्रास्त के समय दिखाई देगा। ग्रहण का मध्यकाल 04:13 UTC (प्रातः 9:43, IST); भारत से दिखाई नहीं देगा।',
     significance: 'Partial Chandra Grahan on Purnima. A penumbral or partial eclipse still carries karmic weight in Jyotish. The traditional grahan rules (no food, prayer, post-eclipse bath) apply even for partial eclipses.',
     significanceHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण। उपच्छाया या आंशिक ग्रहण भी ज्योतिष में कर्मिक महत्व रखता है। परंपरागत ग्रहण नियम (भोजन न करना, प्रार्थना, ग्रहण बाद स्नान) आंशिक ग्रहणों पर भी लागू होते हैं।',
   },
