@@ -33,7 +33,32 @@ export interface PlanetaryEvent {
   descriptionHi: string;
   significance: string; // Jyotish significance paragraph
   significanceHi: string;
+  /**
+   * What an observer in India actually sees, for eclipses only.
+   *
+   * This is structural rather than a sentence in `description` on purpose. Feed
+   * descriptions are line-clamped — one line under 640px, two above — so a visibility
+   * note written into the prose is silently truncated away exactly where most readers
+   * meet the event. Rendered as its own chip it cannot be clipped, and every entry
+   * keeps a natural descriptive opening.
+   *
+   * 'none' means no phase is above the horizon anywhere in India. The other values
+   * name the deepest phase reachable from the mainland; local magnitude can vary a
+   * lot across the country (2027-08-02 runs 0.137 in Kolkata to 0.494 in Bengaluru),
+   * so the chip states the kind of eclipse seen and the description carries the range.
+   *
+   * Left undefined for non-eclipse events, which have no visibility to report.
+   */
+  indiaVisibility?: 'none' | 'penumbral' | 'partial' | 'full';
 }
+
+/** Chip label for `indiaVisibility`, English and Hindi. */
+export const INDIA_VISIBILITY_LABEL: Record<string, { en: string; hi: string }> = {
+  none:      { en: 'Not visible in India',  hi: 'भारत में नहीं दिखेगा' },
+  penumbral: { en: 'Penumbral in India',    hi: 'भारत में उपच्छाया' },
+  partial:   { en: 'Partial in India',      hi: 'भारत में आंशिक' },
+  full:      { en: 'Fully visible in India', hi: 'भारत में पूर्ण दृश्य' },
+};
 
 // ── Reference data ────────────────────────────────────────────────────────
 
@@ -360,6 +385,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'होली पूर्णिमा को एशिया, अफ्रीका, यूरोप में दिखाई देने वाला पूर्ण चंद्र ग्रहण।',
     significance: 'Chandra Grahan (Lunar Eclipse) occurs on a Full Moon (Purnima) when Earth\'s shadow falls on the Moon near the Rahu/Ketu axis. This eclipse coincides with Holi Purnima — an exceptionally powerful event. The eclipse amplifies emotional and karmic energies. Bathing in holy rivers afterward is considered purifying.',
     significanceHi: 'चंद्र ग्रहण पूर्णिमा को होता है जब पृथ्वी की छाया राहु/केतु अक्ष के निकट चंद्रमा पर पड़ती है। यह ग्रहण होली पूर्णिमा के साथ मेल खाता है — एक असाधारण रूप से शक्तिशाली घटना। यह ग्रहण भावनात्मक और कर्मिक ऊर्जाओं को बढ़ाता है। बाद में पवित्र नदियों में स्नान करना शुद्धिकारी माना जाता है।',
+    indiaVisibility: 'none',
   },
   {
     id: 'solar-eclipse-2025-03-29',
@@ -377,6 +403,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'चैत्र अमावस्या को आंशिक सूर्य ग्रहण। उत्तर-पश्चिमी यूरोप और उत्तरी अफ्रीका में दिखाई देगा।',
     significance: 'Surya Grahan on Amavasya — the Moon passes between Earth and Sun near the Rahu/Ketu axis. A spiritually potent Amavasya. Avoid eating during the eclipse window; mantras and charity are considered highly effective.',
     significanceHi: 'अमावस्या को सूर्य ग्रहण — चंद्रमा राहु/केतु अक्ष के निकट पृथ्वी और सूर्य के बीच से गुजरता है। यह एक आध्यात्मिक रूप से शक्तिशाली अमावस्या है। ग्रहण काल में भोजन करने से बचें; मंत्र और दान अत्यंत प्रभावी माने जाते हैं।',
+    indiaVisibility: 'none',
   },
   {
     id: 'lunar-eclipse-2025-09-07',
@@ -394,6 +421,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'भाद्रपद पूर्णिमा को पूर्ण चंद्र ग्रहण — भारत, एशिया, यूरोप और अफ्रीका से दिखाई देगा।',
     significance: 'Total Chandra Grahan visible across India. The Moon turns blood-red during totality. Temples traditionally close during the grahan period. Mantras, especially the Mahamrityunjaya Mantra, recited during this time are considered exceptionally potent.',
     significanceHi: 'भारत भर में दिखाई देने वाला पूर्ण चंद्र ग्रहण। पूर्णता के दौरान चंद्रमा रक्त-लाल हो जाता है। ग्रहण काल में परंपरागत रूप से मंदिर बंद रहते हैं। इस समय जप किए गए मंत्र, विशेष रूप से महामृत्युंजय मंत्र, अत्यंत प्रभावी माने जाते हैं।',
+    indiaVisibility: 'full',
   },
   {
     id: 'solar-eclipse-2025-09-21',
@@ -411,6 +439,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'दक्षिणी ऑस्ट्रेलिया और अंटार्कटिका में दिखाई देने वाला आंशिक सूर्य ग्रहण।',
     significance: 'Surya Grahan on Ashwin Amavasya — not visible from India, but the karmic intensity of the eclipse period applies. Avoid important new beginnings on this day.',
     significanceHi: 'आश्विन अमावस्या को सूर्य ग्रहण — भारत से दिखाई नहीं देगा, लेकिन ग्रहण काल की कर्मिक तीव्रता लागू होती है। इस दिन महत्वपूर्ण नई शुरुआतों से बचें।',
+    indiaVisibility: 'none',
   },
   {
     id: 'solar-eclipse-2026-02-17',
@@ -428,6 +457,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'माघ अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय")। अंटार्कटिका और दक्षिणी दक्षिण अमेरिका से दिखाई देगा।',
     significance: 'Surya Grahan on Magha Amavasya. In Jyotish, this eclipse near the Ketu end of the axis emphasizes past karma, spiritual liberation, and letting go. A powerful time for ancestral prayers (Pitru Tarpan).',
     significanceHi: 'माघ अमावस्या को सूर्य ग्रहण। ज्योतिष में, अक्ष के केतु छोर के निकट यह ग्रहण पिछले कर्म, आध्यात्मिक मुक्ति और त्याग पर बल देता है। पितृ तर्पण के लिए एक शक्तिशाली समय।',
+    indiaVisibility: 'none',
   },
   {
     id: 'solar-eclipse-2026-08-12',
@@ -441,10 +471,11 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2026-08-12',
     timeUTC: ut('17:45:53.3'),   // greatest eclipse UT1 (TD 17:47:05.8)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Total solar eclipse — totality is visible only from northernmost Siberia, Greenland, Iceland, northern Spain and the extreme north-east of Portugal. Europe, North and West Africa and northern North America see a partial eclipse only. Greatest eclipse 17:46 UTC (11:16 PM IST); not visible from India.',
-    descriptionHi: 'पूर्ण सूर्य ग्रहण — पूर्णता केवल उत्तरी साइबेरिया, ग्रीनलैंड, आइसलैंड, उत्तरी स्पेन और उत्तर-पूर्वी पुर्तगाल के अत्यंत छोटे भाग से दिखाई देगी। यूरोप, उत्तरी व पश्चिमी अफ्रीका तथा उत्तरी अमेरिका के उत्तरी भाग में केवल आंशिक ग्रहण दिखाई देगा। ग्रहण का मध्यकाल 17:46 UTC (रात 11:16, IST); भारत से दिखाई नहीं देगा।',
+    description: 'Totality is seen only from northernmost Siberia, Greenland, Iceland, northern Spain and the extreme north-east of Portugal. Europe, North and West Africa and northern North America see a partial eclipse only. Greatest eclipse 17:46 UTC (11:16 PM IST).',
+    descriptionHi: 'पूर्णता केवल उत्तरी साइबेरिया, ग्रीनलैंड, आइसलैंड, उत्तरी स्पेन और उत्तर-पूर्वी पुर्तगाल के अत्यंत छोटे भाग से दिखाई देगी। यूरोप, उत्तरी व पश्चिमी अफ्रीका तथा उत्तरी अमेरिका के उत्तरी भाग में केवल आंशिक ग्रहण दिखाई देगा। ग्रहण का मध्यकाल 17:46 UTC (रात 11:16, IST)।',
     significance: 'Total Surya Grahan — one of the most dramatic astronomical events. The path of totality crosses Europe. In Jyotish, a total solar eclipse is an extremely significant karmic event. Avoid eating, starting new ventures, or important decisions on this day. Extended fasting, prayer, and donation (danam) yield amplified merit.',
     significanceHi: 'पूर्ण सूर्य ग्रहण — सबसे नाटकीय खगोलीय घटनाओं में से एक। पूर्णता का पथ यूरोप से होकर गुजरता है। ज्योतिष में, पूर्ण सूर्य ग्रहण एक अत्यंत महत्वपूर्ण कर्मिक घटना है। इस दिन भोजन करने, नए उद्यम शुरू करने, या महत्वपूर्ण निर्णय लेने से बचें। विस्तारित उपवास, प्रार्थना और दान से बढ़ा हुआ पुण्य मिलता है।',
+    indiaVisibility: 'none',
   },
   {
     id: 'lunar-eclipse-2026-08-28',
@@ -458,10 +489,11 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2026-08-28',
     timeUTC: ut('04:12:52.0'),   // greatest eclipse UT1 (TD 04:14:04.3)
     planets: ['chandra', 'rahu'],
-    description: 'Partial lunar eclipse on Shravana Purnima. Visible in full from North and South America, rising over the central Pacific and setting over Africa, Europe and the Middle East. Greatest eclipse 04:13 UTC (9:43 AM IST); not visible from India.',
-    descriptionHi: 'श्रावण पूर्णिमा को आंशिक चंद्र ग्रहण। उत्तरी व दक्षिणी अमेरिका से पूर्ण रूप से दिखाई देगा; मध्य प्रशांत क्षेत्र में चंद्रोदय के समय तथा अफ्रीका, यूरोप व मध्य पूर्व में चंद्रास्त के समय दिखाई देगा। ग्रहण का मध्यकाल 04:13 UTC (प्रातः 9:43, IST); भारत से दिखाई नहीं देगा।',
+    description: 'Falls on Shravana Purnima. Seen in full from North and South America, rising over the central Pacific and setting over Africa, Europe and the Middle East. Greatest eclipse 04:13 UTC (9:43 AM IST).',
+    descriptionHi: 'श्रावण पूर्णिमा को। उत्तरी व दक्षिणी अमेरिका से पूर्ण रूप से दिखाई देगा; मध्य प्रशांत क्षेत्र में चंद्रोदय के समय तथा अफ्रीका, यूरोप व मध्य पूर्व में चंद्रास्त के समय। ग्रहण का मध्यकाल 04:13 UTC (प्रातः 9:43, IST)।',
     significance: 'Partial Chandra Grahan on Purnima. A penumbral or partial eclipse still carries karmic weight in Jyotish. The traditional grahan rules (no food, prayer, post-eclipse bath) apply even for partial eclipses.',
     significanceHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण। उपच्छाया या आंशिक ग्रहण भी ज्योतिष में कर्मिक महत्व रखता है। परंपरागत ग्रहण नियम (भोजन न करना, प्रार्थना, ग्रहण बाद स्नान) आंशिक ग्रहणों पर भी लागू होते हैं।',
+    indiaVisibility: 'none',
   },
   {
     id: 'lunar-eclipse-2026-03-03',
@@ -479,6 +511,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, जो पूर्वी एशिया, ऑस्ट्रेलिया, प्रशांत क्षेत्र और अमेरिका से दिखाई देगा। भारत में केवल अंतिम आंशिक चरण ही चंद्रोदय के बाद क्षितिज के निकट दिखाई देगा — पूर्णता तथा ग्रहण का मध्यकाल, दोनों वहां क्षितिज के नीचे रहेंगे। ग्रहण का मध्यकाल 11:34 UTC (सायं 5:04, IST)।',
     significance: 'Total Chandra Grahan on Purnima. The Moon turns blood-red during totality, but from India that phase falls below the horizon — only the closing partial phase is seen, after moonrise. Temples traditionally close during the grahan period, and mantras recited during this time are considered exceptionally potent.',
     significanceHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण। पूर्णता के दौरान चंद्रमा रक्त-लाल हो जाता है, परंतु भारत से वह चरण क्षितिज के नीचे रहता है — यहां केवल अंतिम आंशिक चरण ही चंद्रोदय के बाद दिखाई देगा। ग्रहण काल में परंपरागत रूप से मंदिर बंद रहते हैं, और इस समय जप किए गए मंत्र अत्यंत प्रभावी माने जाते हैं।',
+    indiaVisibility: 'partial',
   },
   {
     id: 'solar-eclipse-2027-02-06',
@@ -496,6 +529,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय")। वलयाकारता का पथ दक्षिण अमेरिका और पश्चिम अफ्रीका से होकर गुजरता है; भारत से दिखाई नहीं देगा।',
     significance: 'Surya Grahan on Amavasya. Not visible from India, but the karmic intensity of the eclipse period still applies in Jyotish — avoid important new beginnings on this day.',
     significanceHi: 'अमावस्या को सूर्य ग्रहण। भारत से दिखाई नहीं देगा, लेकिन ज्योतिष में ग्रहण काल की कर्मिक तीव्रता फिर भी लागू होती है — इस दिन महत्वपूर्ण नई शुरुआतों से बचें।',
+    indiaVisibility: 'none',
   },
   {
     id: 'lunar-eclipse-2027-02-20',
@@ -513,6 +547,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'पूर्णिमा को उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की बाहरी छाया से गुजरता है, जिससे स्पष्ट अंधकार के बजाय हल्की धुंधलाहट होती है।',
     significance: 'Penumbral Chandra Grahan — a mild eclipse where the Moon only enters Earth\'s faint outer shadow. Traditional grahan observances are far less strict for penumbral eclipses, though the Purnima itself remains spiritually significant.',
     significanceHi: 'उपच्छाया चंद्र ग्रहण — एक हल्का ग्रहण जिसमें चंद्रमा केवल पृथ्वी की हल्की बाहरी छाया में प्रवेश करता है। उपच्छाया ग्रहणों के लिए परंपरागत ग्रहण नियम बहुत कम कठोर हैं, हालांकि पूर्णिमा स्वयं आध्यात्मिक रूप से महत्वपूर्ण बनी रहती है।',
+    indiaVisibility: 'penumbral',
   },
   {
     id: 'lunar-eclipse-2027-07-18',
@@ -530,6 +565,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'पूर्णिमा को अत्यंत हल्का उपच्छाया चंद्र ग्रहण — चंद्रमा पृथ्वी की बाहरी छाया को मुश्किल से छूता है और धुंधलाहट नंगी आंखों से अगोचर होती है।',
     significance: 'A very marginal penumbral Chandra Grahan, essentially unobservable without instruments. Included here for completeness of the Rahu-Ketu axis timeline rather than for any visible or practical grahan observance.',
     significanceHi: 'एक अत्यंत मामूली उपच्छाया चंद्र ग्रहण, जो उपकरणों के बिना मूलतः अवलोकन योग्य नहीं है। इसे किसी दृश्य या व्यावहारिक ग्रहण पालन के बजाय राहु-केतु अक्ष की समयरेखा की पूर्णता के लिए शामिल किया गया है।',
+    indiaVisibility: 'none',
   },
   {
     id: 'solar-eclipse-2027-08-02',
@@ -543,10 +579,11 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2027-08-02',
     timeUTC: ut('10:06:37.4'),   // greatest eclipse UT1 (TD 10:07:50.2)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Total solar eclipse on Amavasya — India sees a partial eclipse, with roughly half the Sun\'s diameter covered in the far south and in Mumbai, falling to under a fifth in Delhi and Kolkata. Totality, over 6 minutes at its longest and among the longest this century, crosses North Africa and the Middle East including Egypt and Saudi Arabia. Greatest eclipse 10:07 UTC (3:37 PM IST).',
-    descriptionHi: 'अमावस्या को पूर्ण सूर्य ग्रहण — भारत में आंशिक ग्रहण दिखाई देगा; सुदूर दक्षिण तथा मुंबई में सूर्य का लगभग आधा व्यास ढका रहेगा, जबकि दिल्ली और कोलकाता में पांचवें भाग से भी कम। पूर्णता, जो अधिकतम 6 मिनट से अधिक और इस शताब्दी की सबसे लंबी पूर्णताओं में से एक है, उत्तरी अफ्रीका और मध्य पूर्व — मिस्र तथा सऊदी अरब सहित — से होकर गुजरेगी। ग्रहण का मध्यकाल 10:07 UTC (अपराह्न 3:37, IST)।',
+    description: 'Roughly half the Sun\'s diameter covered in the far south and in Mumbai, falling to under a fifth in Delhi and Kolkata. This Amavasya eclipse has over 6 minutes of totality at its longest — among the longest this century — crossing North Africa and the Middle East including Egypt and Saudi Arabia. Greatest eclipse 10:07 UTC (3:37 PM IST).',
+    descriptionHi: 'सुदूर दक्षिण तथा मुंबई में सूर्य का लगभग आधा व्यास ढका रहेगा, जबकि दिल्ली और कोलकाता में पांचवें भाग से भी कम। अमावस्या के इस ग्रहण की अधिकतम पूर्णता 6 मिनट से अधिक है — इस शताब्दी की सबसे लंबी पूर्णताओं में से एक — जो उत्तरी अफ्रीका और मध्य पूर्व, मिस्र तथा सऊदी अरब सहित, से होकर गुजरेगी। ग्रहण का मध्यकाल 10:07 UTC (अपराह्न 3:37, IST)।',
     significance: 'Total Surya Grahan — an extremely significant karmic event given its unusually long totality. In Jyotish, total solar eclipses call for avoiding eating, starting new ventures, or important decisions on this day. Extended fasting, prayer, and donation (danam) yield amplified merit.',
     significanceHi: 'पूर्ण सूर्य ग्रहण — इसकी असामान्य रूप से लंबी पूर्णता को देखते हुए एक अत्यंत महत्वपूर्ण कर्मिक घटना। ज्योतिष में, पूर्ण सूर्य ग्रहण इस दिन भोजन करने, नए उद्यम शुरू करने, या महत्वपूर्ण निर्णय लेने से बचने का आह्वान करते हैं। विस्तारित उपवास, प्रार्थना और दान से बढ़ा हुआ पुण्य मिलता है।',
+    indiaVisibility: 'partial',
   },
   {
     id: 'lunar-eclipse-2027-08-17',
@@ -564,6 +601,7 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     descriptionHi: 'पूर्णिमा को उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की बाहरी छाया से गुजरता है, जिससे स्पष्ट अंधकार के बजाय हल्की धुंधलाहट होती है।',
     significance: 'Penumbral Chandra Grahan — a mild eclipse where the Moon only enters Earth\'s faint outer shadow. Traditional grahan observances are far less strict for penumbral eclipses, though the Purnima itself remains spiritually significant.',
     significanceHi: 'उपच्छाया चंद्र ग्रहण — एक हल्का ग्रहण जिसमें चंद्रमा केवल पृथ्वी की हल्की बाहरी छाया में प्रवेश करता है। उपच्छाया ग्रहणों के लिए परंपरागत ग्रहण नियम बहुत कम कठोर हैं, हालांकि पूर्णिमा स्वयं आध्यात्मिक रूप से महत्वपूर्ण बनी रहती है।',
+    indiaVisibility: 'none',
   },
 ];
 // Coverage: verified against Wikipedia/EclipseWise (NASA-derived) eclipse predictions through 2027-08-17 only.

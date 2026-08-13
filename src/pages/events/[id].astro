@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { metaDescription } from '../../lib/meta';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
-import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime } from '../../lib/planetaryEvents';
+import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime, INDIA_VISIBILITY_LABEL } from '../../lib/planetaryEvents';
 import { formatDateHi } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
@@ -233,6 +233,14 @@ function heroBg(type: string): string {
               <dt data-hi={timeLabelHi(ev.type)}>{timeLabel(ev.type)}</dt>
               <dd>{datetime.split('·')[1]?.trim() ?? '—'}</dd>
             </div>
+            {ev.indiaVisibility && (
+              <div class="ed-fact-row">
+                <dt data-hi="भारत में दृश्यता">Visible in India</dt>
+                <dd data-hi={INDIA_VISIBILITY_LABEL[ev.indiaVisibility].hi}>
+                  {INDIA_VISIBILITY_LABEL[ev.indiaVisibility].en}
+                </dd>
+              </div>
+            )}
             <div id="ed-sidebar-countdown-row" class="ed-fact-row" style={isPast ? 'display:none' : ''}>
               <dt data-hi="उलटी गिनती">Countdown</dt>
               <dd id="ed-sidebar-countdown-text" style={isToday ? 'color:var(--color-saffron-deep);font-weight:700' : ''}>{countdown}</dd>

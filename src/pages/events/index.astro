@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime } from '../../lib/planetaryEvents';
+import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime, INDIA_VISIBILITY_LABEL } from '../../lib/planetaryEvents';
 import type { EventType } from '../../lib/planetaryEvents';
 import { formatMonthYearHi } from '../../lib/date-i18n';
 
@@ -128,6 +128,12 @@ function monthLabelHi(key: string): string {
                       <span class="ev-pulse" style={isToday ? '' : 'display:none'}></span>
                       <span class="ev-when-text">{countdown}</span>
                     </span>
+                    {ev.indiaVisibility && (
+                      <span
+                        class={`ev-vis ev-vis-${ev.indiaVisibility}`}
+                        data-hi={INDIA_VISIBILITY_LABEL[ev.indiaVisibility].hi}
+                      >{INDIA_VISIBILITY_LABEL[ev.indiaVisibility].en}</span>
+                    )}
                   </div>
                   <p class="ev-name en-text">{ev.title}</p>
                   <p class="ev-name hi-text" style="display:none">{ev.titleHi}</p>
@@ -371,6 +377,23 @@ function monthLabelHi(key: string): string {
   padding: 2px 7px;
   border-radius: 4px;
 }
+/* India-visibility chip — mirrors .ev-tag's shape, muted so it reads as
+   secondary to the event-type tag beside it. */
+.ev-vis {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.ev-vis-none      { background: rgba(100,116,139,0.13); color: #475569; }
+.ev-vis-penumbral { background: rgba(100,116,139,0.13); color: #475569; }
+.ev-vis-partial   { background: rgba(255,153,51,0.14);  color: #b45309; }
+.ev-vis-full      { background: rgba(21,128,61,0.12);   color: #15803d; }
+
 .ev-tag-transit { background: rgba(255,153,51,0.12); color: #c05c00; }
 .ev-tag-retro   { background: rgba(220,38,38,0.10);  color: #b91c1c; }
 .ev-tag-direct  { background: rgba(21,128,61,0.10);  color: #15803d; }

@@ -1,6 +1,6 @@
 ---
 import type { PlanetaryEvent } from '../lib/planetaryEvents';
-import { formatCountdownLabel, formatEventDateTime } from '../lib/planetaryEvents';
+import { formatCountdownLabel, formatEventDateTime, INDIA_VISIBILITY_LABEL } from '../lib/planetaryEvents';
 
 interface Props {
   events: PlanetaryEvent[];
@@ -108,6 +108,12 @@ function typeClass(type: string): string {
                     {isToday && <span class="pef-pulse" aria-hidden="true"></span>}
                     <span class="pef-countdown-text">{countdown}</span>
                   </span>
+                  {ev.indiaVisibility && (
+                    <span
+                      class={`pef-vis pef-vis-${ev.indiaVisibility}`}
+                      data-hi={INDIA_VISIBILITY_LABEL[ev.indiaVisibility].hi}
+                    >{INDIA_VISIBILITY_LABEL[ev.indiaVisibility].en}</span>
+                  )}
                 </div>
 
                 <p class="pef-name">
@@ -341,6 +347,23 @@ function typeClass(type: string): string {
   padding: 2px 7px;
   border-radius: 4px;
 }
+/* India-visibility chip — same shape as .pef-tag, muted so it reads as
+   secondary to the event-type tag it sits beside. */
+.pef-vis {
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.pef-vis-none      { background: rgba(100,116,139,0.13); color: #475569; }
+.pef-vis-penumbral { background: rgba(100,116,139,0.13); color: #475569; }
+.pef-vis-partial   { background: rgba(255,153,51,0.14);  color: #b45309; }
+.pef-vis-full      { background: rgba(21,128,61,0.12);   color: #15803d; }
+
 .pef-tag-transit  { background: rgba(255,153,51,0.12); color: #c05c00; }
 .pef-tag-retro    { background: rgba(220,38,38,0.10);  color: #b91c1c; }
 .pef-tag-direct   { background: rgba(21,128,61,0.10);  color: #15803d; }
