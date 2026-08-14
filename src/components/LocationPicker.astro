@@ -116,8 +116,13 @@ function getTzInfo(ianaTimezone) {
   const parts = new Intl.DateTimeFormat('en-US', { timeZone: ianaTimezone, timeZoneName: 'short' }).formatToParts(now);
   const tzAbbr = (parts.find(p => p.type === 'timeZoneName') || {}).value || ianaTimezone;
 
-  const ah = Math.floor(Math.abs(offset));
-  const am = Math.round((Math.abs(offset) - ah) * 60);
+  // Round to a whole minute FIRST, then decompose into hours/minutes — computing the hour
+  // with Math.floor and the minute with Math.round independently (the old code here) can
+  // round the minute up past its max while the floored hour hasn't advanced, the same class
+  // of minute-rollover bug fixed sitewide in src/lib/time-format.ts (see commit 6abf8d5).
+  const totalOffsetMins = Math.round(Math.abs(offset) * 60);
+  const ah = Math.floor(totalOffsetMins / 60);
+  const am = totalOffsetMins % 60;
   const offsetStr = (offset >= 0 ? '+' : '-') + String(ah).padStart(2, '0') + ':' + String(am).padStart(2, '0');
 
   return { offset, isDST, observesDST, tzAbbr, offsetStr };
