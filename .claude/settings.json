@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl *)",
+      "Bash(node_modules/.bin/astro dev *)",
+      "Bash(npm test)",
+      "Bash(npx wrangler pages deployment list*)",
+      "Bash(npx astro check*)",
+      "Bash(npm run preview)",
+      "mcp__astro-docs__search_astro_docs",
+      "PowerShell(Select-Object *)",
+      "PowerShell(Select-String *)",
+      "PowerShell(npm test*)",
+      "PowerShell(Get-ChildItem *)",
+      "PowerShell(Get-Content *)",
+      "PowerShell(Invoke-WebRequest *)",
+      "PowerShell(npx astro check*)",
+      "PowerShell(git status*)",
+      "PowerShell(Get-Job*)",
+      "PowerShell(Start-Job *)",
+      "PowerShell(Out-Null)",
+      "PowerShell(Sort-Object *)",
+      "PowerShell(Start-Sleep *)",
+      "PowerShell(Stop-Job*)",
+      "PowerShell(Remove-Job*)"
+    ]
+  }
+}
