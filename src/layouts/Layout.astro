@@ -29,6 +29,34 @@ const currentYear = new Date().getFullYear();
 <!doctype html>
 <html lang="en" class="light">
 <head>
+  <script is:inline>
+    // ── Hindi language toggle: temporarily disabled site-wide (Task 0, 2026-08-15) ──
+    // ~70 pages/components each independently read localStorage.getItem('pp-lang')
+    // on load to decide whether to render Hindi (see LanguagePicker.astro, Header.astro,
+    // and every src/pages/**/*.astro / src/components/*.astro that calls
+    // applyPageLang(true) / applyHeaderLang(true) when that key === 'hi'). Rather than
+    // editing every one of those call sites, this single shim intercepts reads of that
+    // one key so they all transparently resolve to 'en' while HINDI_ENABLED is false —
+    // the real stored value (if any) is left untouched, so no visitor's saved
+    // preference is destroyed, it's just ignored for now.
+    //
+    // To re-enable Hindi: flip HINDI_ENABLED back to true here AND in
+    // src/components/LanguagePicker.astro (which independently hides the toggle
+    // button/dropdown using its own copy of this same flag). Must run as the very
+    // first synchronous script on the page (is:inline, first thing in <head>) so it
+    // executes before Header.astro's and every page's own inline scripts read the key.
+    (function () {
+      var HINDI_ENABLED = false;
+      if (HINDI_ENABLED) return;
+      try {
+        var nativeGetItem = Storage.prototype.getItem;
+        Storage.prototype.getItem = function (key) {
+          if (this === window.localStorage && key === 'pp-lang') return 'en';
+          return nativeGetItem.call(this, key);
+        };
+      } catch (e) {}
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />

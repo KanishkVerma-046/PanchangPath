@@ -10,10 +10,17 @@ const LANGS: LangOption[] = [
   { code: 'en', nativeName: 'English', label: 'EN',  name: 'English' },
   { code: 'hi', nativeName: 'हिन्दी',  label: 'हिं', name: 'Hindi' },
 ];
+
+// ── Hindi language toggle: temporarily disabled site-wide (Task 0, 2026-08-15) ──
+// Flip back to true, together with the matching flag in src/layouts/Layout.astro's
+// <head> shim, to restore the toggle. While false, the pill+dropdown below is
+// rendered `hidden` (not clickable/visible) and the script never resolves to 'hi',
+// regardless of what's stored in localStorage. No Hindi markup/data is removed.
+const HINDI_ENABLED = false;
 ---
 
 <!-- Language picker pill + dropdown -->
-<div class="lng-root" id="lng-root">
+<div class="lng-root" id="lng-root" hidden={!HINDI_ENABLED}>
   <button class="lng-pill" id="lng-pill" aria-haspopup="listbox" aria-expanded="false" title="Change language">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
       <circle cx="12" cy="12" r="10"/>
@@ -43,7 +50,7 @@ const LANGS: LangOption[] = [
 
 <div class="lng-backdrop" id="lng-backdrop" hidden></div>
 
-<script define:vars={{ LANGS }}>
+<script define:vars={{ LANGS, HINDI_ENABLED }}>
 // Reliable langchange delivery: consuming pages (index.astro, calendar.astro,
 // festivals, rashifal, events, prashnavali, etc.) register a plain
 // document.addEventListener('langchange', ...) listener, but heavier pages
@@ -75,7 +82,11 @@ const LANGS: LangOption[] = [
   };
 })();
 
-let currentLang = localStorage.getItem('pp-lang') || 'en';
+// Layout.astro's <head> shim already forces localStorage.getItem('pp-lang') to
+// 'en' while HINDI_ENABLED is false, but currentLang is pinned here too as a
+// second, independent guard so this component never resolves to 'hi' even if
+// that shim is ever bypassed.
+let currentLang = HINDI_ENABLED ? (localStorage.getItem('pp-lang') || 'en') : 'en';
 
 function getLang(code) {
   return LANGS.find(l => l.code === code) || LANGS[0];
@@ -127,6 +138,7 @@ function closeDropdown() {
 }
 
 function selectLang(code) {
+  if (!HINDI_ENABLED) code = 'en';
   currentLang = code;
   localStorage.setItem('pp-lang', code);
   updatePill();
