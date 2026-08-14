@@ -376,7 +376,7 @@ function estimateEnd(jd: number, step: number, tz: number, lonFn: (jd: number) =
   return fmtTime(hourUTC, tz);
 }
 
-const RAHU = [7,1,6,4,5,2,3];
+const RAHU = [7,1,6,4,5,3,2]; // Fri/Sat swap fixed 2026-08-14
 const GULIKA = [6,5,4,3,2,1,0];
 // Yamaganda: imported YAMAGANDA_SLOTS from panchang.ts (Issue #1) — no local copy, so this
 // can never drift from the server-rendered value again.
@@ -671,7 +671,7 @@ function drawSummaryTimeline(p: ReturnType<typeof calcPanchang>) {
   const now = new Date();
   const nowMins = now.getHours() * 60 + now.getMinutes();
   const wd = currentDate.getDay();
-  const RAHU_S = [7,1,6,4,5,2,3], GULIKA_S = [6,5,4,3,2,1,0];
+  const RAHU_S = [7,1,6,4,5,3,2], GULIKA_S = [6,5,4,3,2,1,0]; // Fri/Sat swap fixed 2026-08-14
   const slotDur = total / 8;
   const segments = [
     { s: pct(sr + RAHU_S[wd] * slotDur), e: pct(sr + (RAHU_S[wd]+1) * slotDur), color: '#ef4444' },

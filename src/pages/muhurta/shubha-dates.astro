@@ -127,7 +127,7 @@ const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shash
 const TITHI_NAMES_HI=['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा','प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','अमावस्या'];
 const VARA_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const VARA_NAMES_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
-const RAHU_SLOTS=[7,1,6,4,5,2,3];
+const RAHU_SLOTS=[7,1,6,4,5,3,2]; // Fri/Sat swap fixed 2026-08-14
 
 function toJD(y:number,m:number,d:number,h=0){
   if(m<=2){y--;m+=12;}

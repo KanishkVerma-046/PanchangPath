@@ -218,7 +218,7 @@ export const VARAS = [
 ];
 
 // Rahu Kalam slots (0-indexed, slot × dayDuration/8 from sunrise)
-const RAHU_SLOTS =      [7, 1, 6, 4, 5, 2, 3]; // Sun=7,Mon=1,Tue=6,Wed=4,Thu=5,Fri=2,Sat=3
+const RAHU_SLOTS =      [7, 1, 6, 4, 5, 3, 2]; // Sun=7,Mon=1,Tue=6,Wed=4,Thu=5,Fri=3,Sat=2 — Fri/Sat swap fixed 2026-08-14, verified against DrikPanchang
 const GULIKA_SLOTS =    [6, 5, 4, 3, 2, 1, 0];
 // Exported so other pages that need the Yamaganda slot table (e.g. index.astro's client-side
 // recompute) import the single verified source instead of carrying their own stale copy (Issue #1).
