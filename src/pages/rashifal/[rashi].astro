@@ -165,6 +165,10 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
             </div>
           </div>
 
+          <p class="rf-disclosure" data-hi="भविष्यवाणियाँ पहले से लिखी गई कुछ प्रविष्टियों के एक छोटे संग्रह से ली जाती हैं, जो कुछ ही दिनों में दोहराई जाती हैं। ये आपकी जन्म कुंडली से गणना नहीं की जातीं।">
+            Predictions are drawn from a small set of pre-written entries that repeats every few days. They are not calculated from your birth chart.
+          </p>
+
           <!-- Prashnavali CTA -->
           <a href="/prashnavali" class="card" style="display:flex;align-items:center;gap:16px;padding:20px 24px;margin-top:12px;text-decoration:none;background:linear-gradient(135deg,var(--color-saffron-soft) 0%,var(--color-canvas) 100%);border:1px solid rgba(255,153,51,0.2);">
             <span style="font-size:32px;">🔮</span>
@@ -174,10 +178,6 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
             </div>
             <span data-hi="खोलें →" style="margin-left:auto;font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open →</span>
           </a>
-
-          <p class="rf-disclosure" data-hi="भविष्यवाणियाँ पहले से लिखी गई कुछ प्रविष्टियों के एक छोटे संग्रह से ली जाती हैं, जो कुछ ही दिनों में दोहराई जाती हैं। ये आपकी जन्म कुंडली से गणना नहीं की जातीं।">
-            Predictions are drawn from a small set of pre-written entries that repeats every few days. They are not calculated from your birth chart.
-          </p>
         </div>
 
         <!-- Right sidebar: Rashi info -->
@@ -282,7 +282,7 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 <style>
 /* See rashifal/index.astro: transparency note about how predictions are produced. */
 .rf-disclosure {
-  font-size: 12.5px; color: var(--color-mute); margin: 20px 0 0;
+  font-size: 12.5px; color: var(--color-mute); margin: 12px 0 24px;
   line-height: 1.55; padding-left: 10px; border-left: 2px solid var(--color-hairline-strong);
 }
 

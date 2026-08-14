@@ -26,10 +26,6 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
         Daily horoscope for all 12 Vedic rashis based on planetary positions and Jyotish principles.
       </p>
 
-      <p class="rf-disclosure" data-hi="भविष्यवाणियाँ पहले से लिखी गई कुछ प्रविष्टियों के एक छोटे संग्रह से ली जाती हैं, जो कुछ ही दिनों में दोहराई जाती हैं। ये आपकी जन्म कुंडली से गणना नहीं की जातीं।">
-        Predictions are drawn from a small set of pre-written entries that repeats every few days. They are not calculated from your birth chart.
-      </p>
-
       <!-- Period tabs -->
       <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
         <button class="period-btn active" data-period="daily" data-hi="दैनिक">Daily</button>
@@ -96,6 +92,10 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
           );
         })}
       </div>
+
+      <p class="rf-disclosure" data-hi="भविष्यवाणियाँ पहले से लिखी गई कुछ प्रविष्टियों के एक छोटे संग्रह से ली जाती हैं, जो कुछ ही दिनों में दोहराई जाती हैं। ये आपकी जन्म कुंडली से गणना नहीं की जातीं।">
+        Predictions are drawn from a small set of pre-written entries that repeats every few days. They are not calculated from your birth chart.
+      </p>
     </div>
   </section>
 
@@ -295,7 +295,7 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   .rf-disclosure {
     font-size: 12.5px;
     color: var(--color-mute);
-    margin: -14px 0 22px;
+    margin: 24px 0 0;
     max-width: 560px;
     line-height: 1.55;
     padding-left: 10px;
