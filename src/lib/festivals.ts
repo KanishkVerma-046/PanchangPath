@@ -214,6 +214,43 @@ export function getTodayFestivals(date: Date): Festival[] {
   return FESTIVALS_2025_2027.filter(f => f.date === dateStr);
 }
 
+// ── "Major" festival tier (nav/search "next 3 upcoming") ────────────────────
+// `type: 'major'` alone isn't a usable filter here — it's shared by ~30 entries
+// (Ram Navami, Akshaya Tritiya, Dhanteras, Bhai Dooj, Dev Uthani Ekadashi, etc.)
+// that are real but not the handful of best-known festivals a header nav/search
+// should surface. This explicit name allowlist is that smaller "major" tier.
+// Names must match the `name` field exactly as it appears in FESTIVALS_2025_2027
+// (which doesn't always match the popular short name, e.g. "Navratri Begins"
+// not "Navratri", "Vijayadashami / Dussehra" not "Dussehra").
+const MAJOR_FESTIVAL_NAMES = new Set<string>([
+  'Diwali',
+  'Holi',
+  'Navratri Begins',
+  'Raksha Bandhan',
+  'Krishna Janmashtami',
+  'Ganesh Chaturthi',
+  'Vijayadashami / Dussehra',
+  'Maha Shivaratri',
+]);
+
+/**
+ * Next `count` upcoming major festivals (see MAJOR_FESTIVAL_NAMES) on or after
+ * `asOf` (defaults to now), sorted ascending by date. Used by Header.astro's
+ * Festivals dropdown/drawer/search so nav links always point at whatever's
+ * actually coming up instead of hardcoded past-dated festival slugs.
+ *
+ * If fewer than `count` major festivals remain in the data set's date range
+ * as of `asOf`, this returns however many are available (no wraparound to a
+ * new year of synthesized dates) — callers should tolerate a shorter array.
+ */
+export function getUpcomingMajorFestivals(count: number, asOf: Date = new Date()): Festival[] {
+  const dateStr = asOf.toISOString().split('T')[0];
+  return FESTIVALS_2025_2027
+    .filter(f => f.date >= dateStr && MAJOR_FESTIVAL_NAMES.has(f.name))
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, count);
+}
+
 export function daysUntil(date: Date, festivalDate: string): number {
   const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   const fd    = new Date(festivalDate);

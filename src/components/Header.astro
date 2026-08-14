@@ -3,6 +3,19 @@
 import LocationPicker from './LocationPicker.astro';
 import LanguagePicker from './LanguagePicker.astro';
 import DeepamFlame from './motifs/DeepamFlame.astro';
+import { getUpcomingMajorFestivals, getFestivalSlug } from '../lib/festivals';
+
+// Next 3 upcoming major festivals, computed at build time (astro build runs
+// `new Date()` once, server-side) so the Festivals dropdown/drawer/search
+// always point at what's actually coming up instead of hardcoded past-dated
+// slugs (e.g. "Diwali 2025" showing on an August 2026 build). See
+// getUpcomingMajorFestivals in src/lib/festivals.ts for the major-festival
+// tier definition and the "fewer than 3 remain" fallback behavior.
+const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
+  label: `${f.name} ${f.date.slice(0, 4)}`,
+  labelHi: `${f.nameHi} ${f.date.slice(0, 4)}`,
+  url: `/festivals/${getFestivalSlug(f)}`,
+}));
 ---
 
 <!-- HEADER -->
@@ -157,9 +170,9 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
           <a href="/festivals" class="nav-cat"><span class="nav-label" data-hi="त्योहार">Festivals</span> <span class="nav-caret">▾</span></a>
           <div class="nav-dropdown">
             <a href="/festivals" class="dd-link" data-hi="सभी त्योहार">All Festivals</a>
-            <a href="/festivals/diwali-2025" class="dd-link" data-hi="दिवाली 2025">Diwali 2025</a>
-            <a href="/festivals/navratri-begins-2025" class="dd-link" data-hi="नवरात्रि 2025">Navratri 2025</a>
-            <a href="/festivals/holi-2026" class="dd-link" data-hi="होली 2026">Holi 2026</a>
+            {upcomingFestivals.map(f => (
+              <a href={f.url} class="dd-link" data-hi={f.labelHi}>{f.label}</a>
+            ))}
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -320,9 +333,9 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
         </button>
         <div class="drawer-sub" id="m-festivals">
           <a href="/festivals" class="drawer-link" data-hi="सभी त्योहार">All Festivals</a>
-          <a href="/festivals/diwali-2025" class="drawer-link" data-hi="दिवाली 2025">Diwali 2025</a>
-          <a href="/festivals/navratri-begins-2025" class="drawer-link" data-hi="नवरात्रि 2025">Navratri 2025</a>
-          <a href="/festivals/holi-2026" class="drawer-link" data-hi="होली 2026">Holi 2026</a>
+          {upcomingFestivals.map(f => (
+            <a href={f.url} class="drawer-link" data-hi={f.labelHi}>{f.label}</a>
+          ))}
         </div>
       </div>
       <div class="drawer-section">
@@ -900,6 +913,20 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
 <script>
   import { sunTrueLongitude, moonLongitude, lahiriAyanamsha, TITHIS, NAKSHATRAS } from '../lib/panchang';
   import { formatDateHi } from '../lib/date-i18n';
+  import { getUpcomingMajorFestivals, getFestivalSlug } from '../lib/festivals';
+
+  // Next 3 upcoming major festivals for the search index — same helper/tier
+  // definition as the dropdown/drawer above (which are computed server-side
+  // at build time in the frontmatter); this client <script> can't read those
+  // frontmatter variables directly (see CLAUDE.md's Critical Gotchas), so it
+  // recomputes via the same shared src/lib/festivals.ts helper instead of
+  // duplicating a hardcoded list. Runs against the visitor's own clock rather
+  // than the build clock, which — for a manually-deployed static site — is if
+  // anything more current than a build-time snapshot, not less.
+  const upcomingFestivalSearchItems = getUpcomingMajorFestivals(3).map(f => ({
+    label: `${f.name} ${f.date.slice(0, 4)}`,
+    url: `/festivals/${getFestivalSlug(f)}`,
+  }));
 
   // Tracks the header's current language so the live clock/status strip
   // (updated on a setInterval, independent of applyHeaderLang's [data-hi]
@@ -1154,9 +1181,7 @@ import DeepamFlame from './motifs/DeepamFlame.astro';
     { label: "Vehicle Purchase Muhurat", url: "/muhurta/shubha-dates?activity=vehicle" },
     { label: "Property Purchase Muhurat", url: "/muhurta/shubha-dates?activity=property" },
     { label: "Shubha Dates", url: "/muhurta/shubha-dates" },
-    { label: "Diwali 2025", url: "/festivals/diwali-2025" },
-    { label: "Navratri 2025", url: "/festivals/navratri-begins-2025" },
-    { label: "Holi 2026", url: "/festivals/holi-2026" },
+    ...upcomingFestivalSearchItems,
     { label: "Ekadashi", url: "/devotional/vrat-katha/ekadashi-vrat-katha" },
     { label: "Sunrise & Sunset", url: "/sunrise-sunset" },
     { label: "Moonrise & Moonset", url: "/moonrise-moonset" },
