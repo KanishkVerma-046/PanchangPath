@@ -13,9 +13,9 @@ export interface BlogPost {
 export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'aarti-chalisa-stotram-mantra-devotional-practice-guide',
-    title: 'Aarti, Chalisa, Stotram & Mantra Explained: A Guide to Hindu Devotional Practice',
+    title: 'Aarti, Chalisa, Stotram & Mantra Explained: A Guide to Hindu Devotional Practice',
     titleHi: 'आरती, चालीसा, स्तोत्र और मंत्र की व्याख्या: हिंदू भक्ति साधना की मार्गदर्शिका',
-    description: 'Learn the difference between Aarti, Chalisa, Stotram and Mantra, how to perform Griha Pravesh puja, why Durga Saptashati matters, and Gayatri Mantra timing.',
+    description: 'Learn the difference between Aarti, Chalisa, Stotram and Mantra, how to perform Griha Pravesh puja, why Durga Saptashati matters, and Gayatri Mantra timing.',
     descriptionHi: 'आरती, चालीसा, स्तोत्र और मंत्र के बीच अंतर जानें, गृह प्रवेश पूजा कैसे करें, दुर्गा सप्तशती का महत्व क्यों है, और गायत्री मंत्र का समय।',
     publishDate: '2026-07-13',
     keywords: ['difference between aarti chalisa and stotram', 'griha pravesh puja vidhi', 'durga saptashati significance', 'gayatri mantra best time'],
@@ -92,9 +92,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: 'rashi-vs-moon-sign-rashifal-accuracy-explained',
-    title: 'Rashifal Explained: Daily vs Weekly vs Monthly, Accuracy, and Rashi vs Moon Sign',
+    title: 'Rashifal Explained: Daily vs Weekly vs Monthly, Accuracy, and Rashi vs Moon Sign',
     titleHi: 'राशिफल की व्याख्या: दैनिक बनाम साप्ताहिक बनाम मासिक, सटीकता, और राशि बनाम चंद्र राशि',
-    description: 'Learn the difference between Rashi and Moon sign, how accurate daily Rashifal is according to research, and what daily, weekly, monthly Rashifal cover.',
+    description: 'Learn the difference between Rashi and Moon sign, how accurate daily Rashifal is according to research, and what daily, weekly, monthly Rashifal cover.',
     descriptionHi: 'राशि और चंद्र राशि के बीच अंतर जानें, शोध के अनुसार दैनिक राशिफल कितना सटीक है, और दैनिक, साप्ताहिक, मासिक राशिफल क्या शामिल करते हैं।',
     publishDate: '2026-07-13',
     keywords: ['difference between rashi and moon sign', 'how accurate is daily rashifal', 'daily weekly monthly horoscope difference'],
@@ -159,9 +159,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: 'how-to-read-kundali-birth-chart-mangal-dosha-kalasarpa',
-    title: 'How to Read Your Kundali: Birth Chart Basics, Kundali Matching, Mangal Dosha & Kalasarpa Yoga',
+    title: 'How to Read Your Kundali: Birth Chart Basics, Kundali Matching, Mangal Dosha & Kalasarpa Yoga',
     titleHi: 'अपनी कुंडली कैसे पढ़ें: जन्म कुंडली की बुनियादी बातें, कुंडली मिलान, मंगल दोष और कालसर्प योग',
-    description: 'Learn how to read a birth chart (Kundali), what Kundali matching (Guna Milan) scores, how serious Mangal Dosha really is, and what Kalasarpa Yoga means.',
+    description: 'Learn how to read a birth chart (Kundali), what Kundali matching (Guna Milan) scores, how serious Mangal Dosha really is, and what Kalasarpa Yoga means.',
     descriptionHi: 'जन्म कुंडली कैसे पढ़ें, कुंडली मिलान (गुण मिलान) क्या स्कोर करता है, मंगल दोष वास्तव में कितना गंभीर है, और कालसर्प योग का क्या अर्थ है, यह जानें।',
     publishDate: '2026-07-13',
     keywords: ['how to read a birth chart kundali', 'kundali matching guna milan', 'mangal dosha', 'kalasarpa yoga'],
@@ -230,9 +230,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: 'shubh-muhurat-choghadiya-wedding-vehicle-purchase',
-    title: 'Shubh Muhurat Explained: Choghadiya, Wedding Dates, Vehicle Purchase & Days to Avoid',
+    title: 'Shubh Muhurat Explained: Choghadiya, Wedding Dates, Vehicle Purchase & Days to Avoid',
     titleHi: 'शुभ मुहूर्त की व्याख्या: चौघड़िया, विवाह तिथियां, वाहन खरीद और बचने योग्य दिन',
-    description: 'Learn how to read Choghadiya, choose an auspicious Vivah Muhurat wedding date, which tithis suit buying a vehicle, and which weekdays to avoid for muhurta.',
+    description: 'Learn how to read Choghadiya, choose an auspicious Vivah Muhurat wedding date, which tithis suit buying a vehicle, and which weekdays to avoid for muhurta.',
     descriptionHi: 'चौघड़िया कैसे पढ़ें, एक शुभ विवाह मुहूर्त तिथि कैसे चुनें, वाहन खरीदने के लिए कौन सी तिथियां उपयुक्त हैं, और मुहूर्त के लिए किन सप्ताह के दिनों से बचना है, यह जानें।',
     publishDate: '2026-07-13',
     keywords: ['shubh muhurat', 'choghadiya', 'vivah muhurat wedding date', 'vehicle purchase muhurat'],
@@ -255,7 +255,7 @@ export const BLOG_POSTS: BlogPost[] = [
 <h3>Best Nakshatras and Weekdays</h3>
 <p>Vehicle purchase muhurat leans on a narrower, more practical set of rules than a wedding date. <a href="https://astromedha.in/insights/vedic/vehicle-purchase-muhurat">Nakshatras such as Rohini, Mrigashira, Pushya, Hasta, Chitra, Swati and Revati are considered favorable</a>, and among tithis, the growing or "healthy" tithis — the 2nd, 5th, 7th, 10th, 11th, 13th and the 15th (Purnima) — are preferred, while the Rikta tithis are avoided just as with weddings. Friday, ruled by Venus, is often treated as the single best weekday for taking delivery of a vehicle, with Wednesday and Monday also considered reasonable choices.</p>
 <h3>Days to Avoid for Vehicle Purchase</h3>
-<p><a href="https://www.anytimeastro.com/blog/muhurat/vehicle-purchase-muhurat/">Amavasya, along with Tuesday and Saturday, is generally avoided for buying a vehicle</a>, and the Rahu Kaal window — the roughly 90-minute inauspicious segment that occurs at a different time every day — is avoided for the purchase or delivery appointment itself regardless of which day it falls on. Because Rahu Kaal shifts with sunrise and sunset, confirming <a href="/muhurta/rahu-kala">today's Rahu Kala for your own location</a> before finalizing a delivery time is worth doing even on an otherwise well-chosen date. PanchangPath's <a href="/muhurta/shubha-dates">vehicle purchase muhurat finder</a> combines these tithi, nakshatra and weekday rules into a ready date list rather than requiring each to be checked separately.</p>
+<p><a href="https://www.anytimeastro.com/blog/muhurat/vehicle-purchase-muhurat/">Amavasya, along with Tuesday and Saturday, is generally avoided for buying a vehicle</a>, and the Rahu Kaal window — the inauspicious segment (roughly one-eighth of daylight hours, typically 75-105 minutes) that occurs at a different time every day — is avoided for the purchase or delivery appointment itself regardless of which day it falls on. Because Rahu Kaal shifts with sunrise and sunset, confirming <a href="/muhurta/rahu-kala">today's Rahu Kala for your own location</a> before finalizing a delivery time is worth doing even on an otherwise well-chosen date. PanchangPath's <a href="/muhurta/shubha-dates">vehicle purchase muhurat finder</a> combines these tithi, nakshatra and weekday rules into a ready date list rather than requiring each to be checked separately.</p>
 
 <h2>What Days of the Week Are Generally Avoided for Muhurta?</h2>
 <p>Across most categories of auspicious timing — not just weddings or vehicle purchases — <a href="https://vedicrishi.in/blog/shubh-muhurta-significance-and-auspicious-timings">Sunday, Tuesday and Saturday are commonly treated with caution for important transactions and new beginnings</a>, while Wednesday, Thursday and Friday tend to be preferred across the board. This general weekday guidance sits alongside, rather than replacing, the tithi- and nakshatra-specific rules covered above — a favorable weekday does not override an unfavorable tithi, and the strongest muhurats are the ones where weekday, tithi, and nakshatra all align.</p>
@@ -309,9 +309,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: 'ekadashi-vrat-katha-diwali-dhanteras-explained',
-    title: 'Hindu Vrat & Fasting Traditions: Ekadashi, Vrat Katha and Festival Differences Explained',
+    title: 'Hindu Vrat & Fasting Traditions: Ekadashi, Vrat Katha and Festival Differences Explained',
     titleHi: 'हिंदू व्रत और उपवास परंपराएं: एकादशी, व्रत कथा और त्योहारों के अंतर की व्याख्या',
-    description: 'Learn why Hindus fast on Ekadashi, the types of Ekadashi fasts and food rules, what Vrat Katha means, and the real difference between Dhanteras and Diwali.',
+    description: 'Learn why Hindus fast on Ekadashi, the types of Ekadashi fasts and food rules, what Vrat Katha means, and the real difference between Dhanteras and Diwali.',
     descriptionHi: 'हिंदू एकादशी को व्रत क्यों रखते हैं, एकादशी व्रत के प्रकार और भोजन नियम, व्रत कथा का क्या अर्थ है, और धनतेरस और दिवाली के बीच वास्तविक अंतर जानें।',
     publishDate: '2026-07-13',
     keywords: ['why do we fast on ekadashi', 'vrat katha meaning', 'difference between diwali and dhanteras', 'ekadashi fasting rules'],
@@ -384,9 +384,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: 'hindu-panchang-tithi-nakshatra-rahu-kalam-explained',
-    title: 'Understanding the Hindu Panchang: Tithi, Nakshatra & Rahu Kalam Explained',
+    title: 'Understanding the Hindu Panchang: Tithi, Nakshatra & Rahu Kalam Explained',
     titleHi: 'हिंदू पंचांग को समझना: तिथि, नक्षत्र और राहु काल की व्याख्या',
-    description: "Learn what Tithi means in the Hindu calendar, how it's calculated, the Amanta vs Purnimanta difference, and how Rahu Kalam is calculated for your city.",
+    description: "Learn what Tithi means in the Hindu calendar, how it's calculated, the Amanta vs Purnimanta difference, and how Rahu Kalam is calculated for your city.",
     descriptionHi: 'हिंदू कैलेंडर में तिथि का क्या अर्थ है, इसकी गणना कैसे की जाती है, अमांत बनाम पूर्णिमांत का अंतर, और अपने शहर के लिए राहु काल की गणना कैसे की जाती है, यह जानें।',
     publishDate: '2026-07-13',
     keywords: ['what is tithi in hindu calendar', 'amanta vs purnimanta', 'rahu kalam calculation', 'nakshatra', 'hindu panchang'],
@@ -413,7 +413,7 @@ export const BLOG_POSTS: BlogPost[] = [
 
 <h2>What Is Rahu Kalam and How Is It Calculated?</h2>
 <h3>The Eight-Part Day Division</h3>
-<p>Rahu Kalam is a period during daylight hours considered inauspicious for starting new or significant undertakings — weddings, housewarmings, new business ventures, and similar events are traditionally avoided during this window, though routine or already-started activities are not affected. It is calculated by <a href="https://en.wikipedia.org/wiki/R%C4%81huk%C4%81la">dividing the time between local sunrise and sunset into eight equal parts</a>, each roughly 90 minutes long on a typical day. One of these eight segments is assigned to Rahu Kalam according to a fixed weekly rotation — for example, the eighth segment on Sunday, the second on Monday, and so on through the week — which is why Rahu Kalam falls at a different clock time depending on both the day of the week and the local sunrise time for that date and location.</p>
+<p>Rahu Kalam is a period during daylight hours considered inauspicious for starting new or significant undertakings — weddings, housewarmings, new business ventures, and similar events are traditionally avoided during this window, though routine or already-started activities are not affected. It is calculated by <a href="https://en.wikipedia.org/wiki/R%C4%81huk%C4%81la">dividing the time between local sunrise and sunset into eight equal parts</a> — typically 75 to 105 minutes each, since the length depends on that day's daylight duration, which itself varies by season and latitude. One of these eight segments is assigned to Rahu Kalam according to a fixed weekly rotation — for example, the eighth segment on Sunday, the second on Monday, and so on through the week — which is why Rahu Kalam falls at a different clock time depending on both the day of the week and the local sunrise time for that date and location.</p>
 <h3>What to Avoid During Rahu Kalam</h3>
 <p><a href="https://bhaktibharat.org/learn-panchangam/rahu-kalam">Traditional guidance avoids starting new ventures, travel, large purchases, contract signings, and auspicious ceremonies during Rahu Kalam</a>, while ongoing work, routine errands, and tasks already in progress may continue without concern. Because the window shifts with sunrise time, a Rahu Kalam calculated for one city cannot simply be reused in another — checking <a href="/muhurta/rahu-kala">today's Rahu Kala for your own location</a> is the only reliable way to know the exact window.</p>
 

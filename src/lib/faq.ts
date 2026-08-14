@@ -44,8 +44,8 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
       {
         q: 'What is Rahu Kalam, and why should I avoid starting work then?',
         qHi: 'राहु काल क्या है, और इस दौरान कार्य शुरू करने से क्यों बचना चाहिए?',
-        a: "Rahu Kalam is a daily period, roughly 90 minutes long, considered inauspicious in Hindu tradition. It shifts every day because it's calculated from local sunrise and sunset. Many people avoid starting new or important ventures — travel, business, ceremonies — during this window.",
-        aHi: 'राहु काल एक दैनिक अवधि है, जो लगभग 90 मिनट लंबी होती है और हिंदू परंपरा में अशुभ मानी जाती है। यह हर दिन बदलती है क्योंकि इसकी गणना स्थानीय सूर्योदय और सूर्यास्त से की जाती है। कई लोग इस अवधि के दौरान नए या महत्वपूर्ण कार्य — यात्रा, व्यापार, समारोह — शुरू करने से बचते हैं।',
+        a: "Rahu Kalam is a daily period considered inauspicious in Hindu tradition, calculated as roughly one-eighth of the time between local sunrise and sunset — typically 75 to 105 minutes depending on the season and your location, not a fixed length. It shifts every day because it's calculated from local sunrise and sunset. Many people avoid starting new or important ventures — travel, business, ceremonies — during this window.",
+        aHi: 'राहु काल एक दैनिक अवधि है जो हिंदू परंपरा में अशुभ मानी जाती है, और इसकी गणना स्थानीय सूर्योदय व सूर्यास्त के बीच के समय के लगभग आठवें हिस्से के रूप में की जाती है — आमतौर पर मौसम और आपके स्थान के आधार पर 75 से 105 मिनट तक, न कि कोई निश्चित अवधि। यह हर दिन बदलती है क्योंकि इसकी गणना स्थानीय सूर्योदय और सूर्यास्त से की जाती है। कई लोग इस अवधि के दौरान नए या महत्वपूर्ण कार्य — यात्रा, व्यापार, समारोह — शुरू करने से बचते हैं।',
       },
       {
         q: "What's the difference between Gulika Kalam, Yamaganda, and Rahu Kalam?",
@@ -137,8 +137,8 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
       {
         q: 'What is Abhijit Muhurta?',
         qHi: 'अभिजीत मुहूर्त क्या है?',
-        a: 'Abhijit Muhurta is a roughly 48-minute window centered on solar noon, considered one of the most universally auspicious times of day — suitable for starting important work regardless of other daily timing considerations.',
-        aHi: 'अभिजीत मुहूर्त सौर मध्याह्न पर केंद्रित लगभग 48 मिनट की अवधि है, जिसे दिन के सबसे सार्वभौमिक रूप से शुभ समयों में से एक माना जाता है — अन्य दैनिक समय संबंधी विचारों की परवाह किए बिना महत्वपूर्ण कार्य शुरू करने के लिए उपयुक्त।',
+        a: 'Abhijit Muhurta is a window centered on true solar noon, considered one of the most universally auspicious times of day — suitable for starting important work regardless of other daily timing considerations. It spans day length ÷ 15, which works out to roughly 40 to 55 minutes depending on the season and your location, not a fixed 48 minutes.',
+        aHi: 'अभिजीत मुहूर्त सही सौर मध्याह्न पर केंद्रित एक अवधि है, जिसे दिन के सबसे सार्वभौमिक रूप से शुभ समयों में से एक माना जाता है — अन्य दैनिक समय संबंधी विचारों की परवाह किए बिना महत्वपूर्ण कार्य शुरू करने के लिए उपयुक्त। यह दिन की लंबाई ÷ 15 तक फैला होता है, जो मौसम और आपके स्थान के आधार पर लगभग 40 से 55 मिनट के बराबर होता है, न कि कोई निश्चित 48 मिनट।',
       },
       {
         q: 'How do I find a good date for a wedding or Griha Pravesh?',
