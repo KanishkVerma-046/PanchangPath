@@ -42,7 +42,14 @@ import Layout from '../../layouts/Layout.astro';
 
       <!-- Planet guide -->
       <h3 data-hi="ग्रह होरा गाइड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Planetary Hora Guide</h3>
-      <div id="hora-guide" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+      <div id="hora-guide" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:48px;"></div>
+
+      <!-- How it's calculated -->
+      <div class="card" style="padding:24px;max-width:760px;">
+        <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How Shubha Hora Is Calculated</h3>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Hora divides day and night into 12 planetary hours each (24 total), following the Chaldean order — the same descending-speed planetary sequence used for planetary-hour systems since antiquity: Sun, Venus, Mercury, Moon, Saturn, Jupiter, Mars, then repeating. The first Hora of daylight always belongs to that weekday's own ruling planet — Sunday's day opens with Sun's Hora, Monday's with Moon's — after which the cycle simply keeps advancing through the same seven-planet sequence across the rest of the day and into the night.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Each Hora is one-twelfth of that day's actual sunrise-to-sunset or sunset-to-sunrise span, so — like Choghadiya — its length shifts with the season and location rather than staying a fixed 60 minutes. Jupiter's and Moon's Horas are considered the most universally auspicious for starting new work; Saturn's and Mars's the least. <a href="https://en.wikipedia.org/wiki/Planetary_hours" style="color:var(--color-saffron-deep);">Wikipedia: Planetary hours</a></p>
+      </div>
     </div>
   </section>
 </Layout>

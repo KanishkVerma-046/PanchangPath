@@ -56,7 +56,14 @@ import Layout from '../../layouts/Layout.astro';
       </div>
 
       <!-- Criteria cards by activity -->
-      <div id="sd-criteria" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;"></div>
+      <div id="sd-criteria" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:24px;"></div>
+
+      <!-- How the score works -->
+      <div class="card" style="padding:24px;">
+        <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How the Score Works</h3>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Every date across all four categories is scored with the same underlying mechanism, just checked against a different set of good and avoid nakshatras, tithis, and weekdays per activity — shown in the cards above. Each date starts at zero: +3 for a favourable weekday, +4 for an activity-specific auspicious nakshatra (or -3 for one on that activity's avoid list, with a smaller -1 penalty for landing in Panchaka when neither list applies), +3 for an auspicious tithi (or -3 for an avoided one), and +2 for one of seventeen auspicious yogas shared across all four activities.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Kharmas — the Sun's transit through Dhanu (Sagittarius) or Meena (Pisces) — subtracts 4 points, checked at both the start and end of the civil day so a same-day Sankranti can't slip past the gate. Results are filtered and ranked purely by this score; the "Avoid Rahu Kala" window shown on the top result each day is informational only and isn't part of the numeric score itself.</p>
+      </div>
     </div>
   </section>
 </Layout>

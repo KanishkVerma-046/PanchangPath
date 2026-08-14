@@ -50,7 +50,14 @@ import Layout from '../../layouts/Layout.astro';
 
       <!-- Gowri legend -->
       <h3 data-hi="गौरी पंचांगम गाइड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Gowri Panchangam Guide</h3>
-      <div id="gowri-legend" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;"></div>
+      <div id="gowri-legend" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:48px;"></div>
+
+      <!-- How it's calculated -->
+      <div class="card" style="padding:24px;max-width:780px;">
+        <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How Panchaka &amp; Gowri Panchangam Are Calculated</h3>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Panchaka's window is set purely by the Moon's nakshatra. This calculator computes the Moon's current sidereal longitude and checks whether it falls in one of the zodiac's final five nakshatras — the second half of Dhanishtha through Revati, spanning the tail of Kumbha (Aquarius) and all of Meena (Pisces). Since the Moon takes about 27.3 days to complete one nakshatra circuit and each nakshatra spans roughly a day, five consecutive nakshatras work out to close to five days of Panchaka every lunar month. Which of the five sub-types is active — Mrityu, Agni, Raja, Chora, or Roga Panchaka — depends on exactly which of those five nakshatras the Moon occupies at the time.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Gowri Panchangam, the parallel South Indian system, is built the same way Choghadiya and Rahu Kala are: sunrise-to-sunset and sunset-to-next-sunrise are each split into eight equal slots, and which of the eight named Gowri types falls in each slot follows a fixed weekly rotation table rooted in the Tamil Panchangam tradition. <a href="https://www.prokerala.com/astrology/gowri-nalla-neram.php" style="color:var(--color-saffron-deep);">Prokerala: Gowri Nalla Neram</a></p>
+      </div>
     </div>
   </section>
 </Layout>

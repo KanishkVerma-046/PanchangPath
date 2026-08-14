@@ -39,7 +39,14 @@ import Layout from '../../layouts/Layout.astro';
       <div id="rk-week" style="display:flex;flex-direction:column;gap:6px;max-width:600px;margin-bottom:48px;"></div>
 
       <!-- Info -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;" id="kalam-info"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;" id="kalam-info"></div>
+
+      <!-- How it's calculated -->
+      <div class="card" style="padding:24px;max-width:780px;">
+        <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How the Weekly Rotation Works</h3>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">All three periods are computed the same way: sunrise-to-sunset is split into eight equal segments, and each weekday is permanently assigned one of those eight segments by a fixed table — which is why the clock time shifts daily with sunrise, but the segment number for a given weekday never does. For Rahu Kala specifically, counting segments 1 through 8 from sunrise, the assignment is Sunday the 8th segment, Monday the 2nd, Tuesday the 7th, Wednesday the 5th, Thursday the 6th, Friday the 4th, and Saturday the 3rd — verified against Wikipedia's Rahukaala article and cross-checked against DrikPanchang.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Gulika Kala and Yamaganda follow their own separate weekly tables (also sunrise-to-sunset ÷ 8), which is why all three inauspicious periods land at different times even on the same day — they're never the same segment. <a href="https://en.wikipedia.org/wiki/R%C4%81huk%C4%81la" style="color:var(--color-saffron-deep);">Wikipedia: Rahukaala</a></p>
+      </div>
     </div>
   </section>
 </Layout>

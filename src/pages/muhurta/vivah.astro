@@ -59,6 +59,14 @@ import Layout from '../../layouts/Layout.astro';
           ))}
         </div>
       </div>
+
+      <!-- How the score works -->
+      <div class="card" style="padding:24px;margin-top:24px;">
+        <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How the Score Works</h3>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Every candidate date starts at zero and is scored by adding or subtracting points as its Panchang elements are checked: +3 for a favourable weekday (Monday, Wednesday, Thursday, or Friday), +4 for one of eleven auspicious marriage nakshatras — or -3 if the Moon falls in Panchaka instead — +3 for an auspicious tithi in Shukla Paksha (or +1 for the same tithi in Krishna Paksha), -4 for one of the explicitly forbidden tithis, and +2 for one of seventeen auspicious yogas.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Kharmas — the roughly two-month stretch when the Sun transits Dhanu (Sagittarius) or Meena (Pisces) — subtracts 5 points, checked at both the start and end of the civil day so a same-day Sankranti can't slip past the gate. Venus combustion (Shukra Ast, when Venus sits too close to the Sun to be visible) is a hard veto rather than a point deduction: any date with a combust Venus is disqualified outright regardless of every other score, since classical muhurta tradition holds that no valid Vivah Muhurat exists while Shukra is combust.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Only dates scoring 4 or higher are shown, ranked highest first. Each result also lists that date's Rahu Kala window as a scheduling reminder — it's shown for reference only and isn't part of the numeric score above.</p>
+      </div>
     </div>
   </section>
 </Layout>

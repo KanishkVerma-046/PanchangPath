@@ -36,7 +36,14 @@ import Layout from '../../layouts/Layout.astro';
 
       <!-- Auspicious lagna guide -->
       <h3 data-hi="सामान्य कार्यों के लिए शुभ लग्न" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Auspicious Lagnas for Common Activities</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;" id="lg-guide"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:48px;" id="lg-guide"></div>
+
+      <!-- How it's calculated -->
+      <div class="card" style="padding:24px;max-width:780px;">
+        <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How Lagna Is Calculated</h3>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Lagna (the Ascendant) is the zodiac degree rising on the eastern horizon at a given moment, computed from the observer's exact latitude, longitude, and local sidereal time. This calculator derives it with the same sidereal-time and horizon-geometry math (<code>calcLagna</code> in astro-core.ts) used across the site's Kundali and Jyotish charts, then converts the tropical result to sidereal using the Lahiri ayanamsha so it lines up with every other chart on PanchangPath.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Because Earth completes one rotation roughly every 24 hours and the zodiac has 12 signs of 30° each, the Lagna cycles through all twelve rashis about once a day — averaging close to two hours per sign. The exact length of each sign's window isn't perfectly uniform, though: it depends on how steeply that stretch of the ecliptic meets the horizon at the observer's latitude, so some signs rise faster and others slower than the two-hour average, an effect that becomes more pronounced at higher latitudes. <a href="https://en.wikipedia.org/wiki/Ascendant_(astrology)" style="color:var(--color-saffron-deep);">Wikipedia: Ascendant (astrology)</a></p>
+      </div>
     </div>
   </section>
 </Layout>

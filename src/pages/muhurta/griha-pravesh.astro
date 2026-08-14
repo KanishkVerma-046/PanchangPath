@@ -59,6 +59,14 @@ import Layout from '../../layouts/Layout.astro';
           </div>
         ))}
       </div>
+
+      <!-- How the score works -->
+      <div class="card" style="padding:24px;margin-top:24px;">
+        <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How the Score Works</h3>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Each candidate date is scored from zero: +3 for a favourable weekday, +4 for one of thirteen auspicious Griha Pravesh nakshatras (or -2 if the Moon is in Panchaka instead), -3 for a Rikta tithi (4th, 9th, or 14th), or +3 for one of eight auspicious tithis (labeled Shukla when it falls in the bright fortnight), and +2 for an auspicious yoga.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Two seasonal exclusions apply as point penalties rather than hard vetoes: Kharmas (Sun in Dhanu or Meena) subtracts 4 points, and Chaturmas (Sun in Simha, Kanya, or Tula — the four-month stretch traditionally considered unfit for housewarmings and other major beginnings) subtracts 10, heavily enough that a Chaturmas date essentially never clears the results threshold even if everything else about it is favourable. Both checks look at the Sun's sidereal position at the very start and very end of the civil day, so a Sankranti (sign change) partway through the day can't slip past the gate.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Only dates scoring 4 or above appear in the results, sorted best-first. The Rahu Kala window shown on the top result is a scheduling reminder for the entry itself — it's informational and isn't part of the numeric score above.</p>
+      </div>
     </div>
   </section>
 </Layout>
