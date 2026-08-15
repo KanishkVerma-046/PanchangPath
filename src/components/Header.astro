@@ -227,7 +227,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
           </div>
         </li>
         <li class="nav-item has-dropdown">
-          <a href="#" class="nav-cat" aria-haspopup="true"><span class="nav-label" data-hi="अन्य">Others</span> <span class="nav-caret">▾</span></a>
+          <button type="button" class="nav-cat nav-cat-trigger" aria-haspopup="true"><span class="nav-label" data-hi="अन्य">Others</span> <span class="nav-caret">▾</span></button>
           <div class="nav-dropdown">
             <a href="/blog" class="dd-link" data-hi="ब्लॉग">Blog</a>
             <a href="/faq" class="dd-link" data-hi="अक्सर पूछे जाने वाले प्रश्न">FAQ</a>
@@ -706,6 +706,14 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     transition: color 0.12s, border-color 0.12s;
   }
   .nav-cat:hover { color: var(--color-saffron-deep); border-bottom-color: var(--color-saffron); }
+  .nav-cat-trigger {
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    font-family: inherit;
+    cursor: default;
+  }
   .nav-caret { font-size: 9px; opacity: 0.6; }
 
   /* Dropdown */
