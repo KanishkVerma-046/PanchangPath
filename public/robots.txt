@@ -4,6 +4,10 @@ Allow: /
 Disallow: /404/
 Disallow: /500/
 
+# Claude-User — on-demand fetches when a person asks Claude to look up this site (not bulk training)
+User-agent: Claude-User
+Allow: /
+
 # AI-training crawlers — blocked from all content
 User-agent: Amazonbot
 Disallow: /
