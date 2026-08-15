@@ -579,6 +579,15 @@ function updateSummaryCard(p: ReturnType<typeof calcPanchang>, date: Date, loc: 
   setText('ps-city', loc.name); setText('ps-city-hi', loc.nameHi ?? loc.name);
   setText('ps-date', formatDateHi(date, isHindi, { weekday: 'long' }));
 
+  // Reference-time subnote: values on this card are anchored to the viewed
+  // date's sunrise (see calcPanchang), not the live current moment.
+  const nowForSubnote = new Date();
+  const isViewingToday = date.getFullYear() === nowForSubnote.getFullYear()
+    && date.getMonth() === nowForSubnote.getMonth()
+    && date.getDate() === nowForSubnote.getDate();
+  setText('ps-date-subnote', isViewingToday ? "As of today's sunrise" : "As of that day's sunrise");
+  setText('ps-date-subnote-hi', isViewingToday ? 'आज सूर्योदय के अनुसार' : 'उस दिन के सूर्योदय के अनुसार');
+
   // Vikrama / Shaka
   setText('ps-vs-year', String(cal.vsYear));
   setText('ps-vs-name', isHindi ? cal.vsNameHi : cal.vsName);
@@ -604,34 +613,13 @@ function updateSummaryCard(p: ReturnType<typeof calcPanchang>, date: Date, loc: 
   setText('ps-tl-sunrise', p.sunrise); setText('ps-tl-sunset', p.sunset);
 
   // Rashis
-  // Moon Sign has no end-time counter next to it (unlike Tithi/Nakshatra/Yoga/Karana,
-  // which intentionally show the value at sunrise per Panchang convention and pair it
-  // with an end time), so it reads as a live "right now" field. Compute it from the
-  // live instant rather than calcPanchang's sunrise-anchored jd — otherwise it can
-  // visibly disagree with the live Kundali widget on days the Moon crosses a rashi
-  // boundary. Only applies when viewing today; a browsed past/future date has no "now"
-  // to be live about, so it keeps the date's own sunrise-anchored value.
-  const nowActual = new Date();
-  const isToday = date.getFullYear() === nowActual.getFullYear()
-    && date.getMonth() === nowActual.getMonth()
-    && date.getDate() === nowActual.getDate();
-  let displayMoonRashi = cal.moonRashi;
-  if (isToday) {
-    const liveJd = julianDay(
-      nowActual.getUTCFullYear(), nowActual.getUTCMonth() + 1, nowActual.getUTCDate(),
-      nowActual.getUTCHours() + nowActual.getUTCMinutes() / 60 + nowActual.getUTCSeconds() / 3600
-    );
-    const liveMoonSidereal = norm360(moonLon(liveJd) - ayanamsha(liveJd));
-    displayMoonRashi = RASHIS[Math.floor(liveMoonSidereal / 30) % 12];
-  }
-
   const enMode = !isHindi;
   if (enMode) {
     setText('ps-sunsign', `${cal.sunRashi.name} (${cal.sunRashi.en})`);
-    setText('ps-moonsign', `${displayMoonRashi.name} (${displayMoonRashi.en})`);
+    setText('ps-moonsign', `${cal.moonRashi.name} (${cal.moonRashi.en})`);
   } else {
     setText('ps-sunsign-hi', cal.sunRashi.nameHi);
-    setText('ps-moonsign-hi', displayMoonRashi.nameHi);
+    setText('ps-moonsign-hi', cal.moonRashi.nameHi);
   }
 
   // Paksha badge

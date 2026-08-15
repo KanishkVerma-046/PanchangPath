@@ -78,6 +78,10 @@ const pakshaHi  = p.tithi.pakshaNi;
             <span class="hi-text" id="ps-city-hi" style="display:none;">{cityHi}</span>
           </div>
           <div class="ps-header-date" id="ps-date">{dateStr}</div>
+          <div class="ps-header-subnote">
+            <span class="en-text" id="ps-date-subnote">As of today's sunrise</span>
+            <span class="hi-text" id="ps-date-subnote-hi" style="display:none">आज सूर्योदय के अनुसार</span>
+          </div>
         </div>
         <div class="ps-om" aria-hidden="true">🕉️</div>
       </div>
@@ -377,6 +381,12 @@ const pakshaHi  = p.tithi.pakshaNi;
     font-weight: 600;
     color: var(--color-ink);
     letter-spacing: -0.2px;
+  }
+  .ps-header-subnote {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--color-mute);
+    margin-top: 2px;
   }
   .ps-om {
     font-size: 28px;
