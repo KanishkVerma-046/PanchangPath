@@ -102,7 +102,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
   </div>
 
   <!-- Live status strip: Tithi · Nakshatra · City -->
-  <a href="/" class="status-strip" id="status-strip" title="Today's Panchang">
+  <a href="/" class="status-strip" id="status-strip" title="Today's Panchang — Tithi &amp; Nakshatra shown here are live, current-moment values (may briefly differ from the homepage summary card's sunrise-anchored figures right at a boundary crossing)">
     <div class="header-container status-strip-inner">
       <DeepamFlame size={13} class="status-flame" />
       <span class="status-item status-item-strong" id="status-tithi">—</span>
@@ -110,6 +110,8 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
       <span class="status-item" id="status-nakshatra">—</span>
       <span class="status-dot">·</span>
       <span class="status-item" id="status-city">—</span>
+      <span class="status-dot">·</span>
+      <span class="status-item status-item-muted" data-hi="लाइव">Live</span>
     </div>
   </a>
 
@@ -665,6 +667,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     white-space: nowrap;
   }
   .status-item-strong { color: var(--color-saffron); font-weight: 600; }
+  .status-item-muted { color: var(--color-mute); font-size: 10px; text-transform: uppercase; letter-spacing: 0.4px; }
   .status-dot { color: var(--color-hairline-strong); font-size: 11px; }
 
   /* ── Desktop nav bar (second row) ── */
