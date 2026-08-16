@@ -1,0 +1,47 @@
+name: Daily rebuild + deploy
+
+# Systemic fix for build-time-content staleness on a static site with otherwise
+# manual/on-demand deploys (rashifal's daily prediction, the planetary-events feed,
+# and the muhurta hub duplicate were all separate symptoms of the same root cause:
+# content computed from `new Date()` at build time doesn't refresh without a new
+# build). Rebuilding once a day, shortly after IST midnight, bounds every such
+# staleness window to at most ~24h -- and to a few minutes right around IST
+# midnight for content that's specifically date-sensitive, like rashifal's Daily
+# prediction. A fresh `actions/checkout` is always a clean working tree, so the
+# existing `predeploy` clean-tree gate (scripts/check-clean-tree.mjs) is satisfied
+# trivially here -- it stays meaningful as a safety net for manual/local deploys.
+#
+# Requires a CLOUDFLARE_API_TOKEN repo secret (Cloudflare dashboard -> My Profile ->
+# API Tokens -> Create Token -> "Edit Cloudflare Workers" template, or a custom token
+# scoped to Cloudflare Pages:Edit for this account) and a CLOUDFLARE_ACCOUNT_ID repo
+# secret (visible via `npx wrangler whoami`). Neither exists yet as of this workflow's
+# creation -- this job will fail authentication until both are added.
+
+on:
+  schedule:
+    # 18:47 UTC = 00:17 IST -- shortly after India's midnight, off the :00/:30 mark.
+    - cron: '47 18 * * *'
+  workflow_dispatch: {} # allows a manual test run from the Actions tab or `gh workflow run`
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/permission-allowlist # matches the branch currently deployed to production; change if that changes
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
