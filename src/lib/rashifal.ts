@@ -1071,10 +1071,22 @@ export function getRashiById(id: string): Rashi | undefined {
   return RASHIS.find(r => r.id === id);
 }
 
+// Day-of-year must be anchored to IST regardless of the caller's local clock -- this
+// function runs both server-side at Astro build time (build machine's local tz, not
+// guaranteed to be IST) and client-side in the visitor's own browser (any tz worldwide).
+// Using local Date getters would give a different day index to a visitor outside India's
+// timezone than to a visitor in Delhi at the same real instant, near either one's local
+// midnight -- the same "wrong day" symptom this function's staleness fix was meant to
+// solve, just caused by location instead of a stale build. Date.getTime() is an absolute,
+// timezone-independent instant; adding the IST offset and reading it back with UTC getters
+// (also timezone-independent) is the only way to get a host-environment-independent result.
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+
 export function getDailyPrediction(rashi: Rashi, date: Date, hindi = false): string {
-  const start = new Date(date.getFullYear(), 0, 0);
-  const diff = date.getTime() - start.getTime();
-  const dayOfYear = Math.floor(diff / 86400000);
+  const istMs = date.getTime() + IST_OFFSET_MS;
+  const istYear = new Date(istMs).getUTCFullYear();
+  const start = Date.UTC(istYear, 0, 0); // Dec 31 (prior year) 00:00 UTC == "day 0" in this scheme
+  const dayOfYear = Math.floor((istMs - start) / 86400000);
   const arr = (hindi && rashi.predictionsHi) ? rashi.predictionsHi.daily : rashi.predictions.daily;
   return arr[dayOfYear % arr.length];
 }

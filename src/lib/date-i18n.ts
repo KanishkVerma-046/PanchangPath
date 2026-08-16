@@ -75,6 +75,45 @@ export function formatDateHi(date: Date, hindi: boolean, opts: FormatDateHiOptio
   return `${wdName}, ${dmParts.join(' ')}`;
 }
 
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+
+/**
+ * Same output shape as formatDateHi(), but the weekday/day/month/year are read from the
+ * instant's India Standard Time (UTC+5:30) wall-clock value instead of the calling
+ * environment's local timezone. formatDateHi()'s local-field behavior is correct and
+ * intentional for its other callers (showing "today" in the visitor's own calendar day) --
+ * this is for the opposite case: a label that must read the same in India regardless of
+ * where the code runs (Astro build machine, or a visitor's browser anywhere in the world).
+ */
+export function formatDateIST(date: Date, hindi: boolean, opts: FormatDateHiOptions = {}): string {
+  const shifted = new Date(date.getTime() + IST_OFFSET_MS);
+  const monthStyle = opts.month ?? 'long';
+  const showDay = opts.day ?? true;
+  const showYear = opts.year ?? true;
+
+  const wd = shifted.getUTCDay();
+  const mo = shifted.getUTCMonth();
+  const d = shifted.getUTCDate();
+  const y = shifted.getUTCFullYear();
+
+  const moName = hindi
+    ? (monthStyle === 'short' ? MO_HI_SHORT[mo] : MO_HI_LONG[mo])
+    : (monthStyle === 'short' ? MO_EN_SHORT[mo] : MO_EN_LONG[mo]);
+
+  const dmParts: string[] = [];
+  if (showDay) dmParts.push(String(d));
+  dmParts.push(moName);
+  if (showYear) dmParts.push(String(y));
+
+  if (!opts.weekday) return dmParts.join(' ');
+
+  const wdName = hindi
+    ? (opts.weekday === 'short' ? WD_HI_SHORT[wd] : WD_HI_LONG[wd])
+    : (opts.weekday === 'short' ? WD_EN_SHORT[wd] : WD_EN_LONG[wd]);
+
+  return `${wdName}, ${dmParts.join(' ')}`;
+}
+
 /** Convenience: "July 2026" / "जुलाई 2026" (matches {month:'long', year:'numeric'}). */
 export function formatMonthYearHi(date: Date, hindi: boolean, month: 'long' | 'short' = 'long'): string {
   return formatDateHi(date, hindi, { month, day: false, year: true });

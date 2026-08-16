@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction, type Rashi } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
-import { formatDateHi, formatMonthYearHi, WD_EN_LONG, WD_HI_LONG } from '../../lib/date-i18n';
+import { formatDateHi, formatDateIST, formatMonthYearHi, WD_EN_LONG, WD_HI_LONG } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   return RASHIS.map(r => ({ params: { rashi: r.id }, props: { rashi: r } }));
@@ -13,8 +13,11 @@ interface Props { rashi: Rashi; }
 const { rashi } = Astro.props;
 
 const today = new Date();
-const dateLabel = formatDateHi(today, false, { weekday: 'long' });
-const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
+// Daily Rashifal's date label must read as "today in India" regardless of the machine
+// running astro build -- formatDateIST anchors to IST explicitly rather than relying on
+// the build host's local timezone (see date-i18n.ts).
+const dateLabel = formatDateIST(today, false, { weekday: 'long' });
+const dateLabelHi = formatDateIST(today, true, { weekday: 'long' });
 const monthYearLabel = formatMonthYearHi(today, false);
 const monthYearLabelHi = formatMonthYearHi(today, true);
 const ELEMENT_HI: Record<string, string> = { Fire: 'अग्नि', Earth: 'पृथ्वी', Air: 'वायु', Water: 'जल' };
@@ -252,7 +255,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
 
 <script>
 import { RASHIS, getDailyPrediction } from '../../lib/rashifal';
-import { formatDateHi } from '../../lib/date-i18n';
+import { formatDateIST } from '../../lib/date-i18n';
 
 // Daily Rashifal is a static page (Astro output: 'static', manual/on-demand deploys) --
 // the server-rendered text reflects whatever day the last build ran on, not "today" for
@@ -274,9 +277,9 @@ import { formatDateHi } from '../../lib/date-i18n';
   }
   const dateEl = document.getElementById('rp-daily-date');
   if (dateEl) {
-    dateEl.textContent = formatDateHi(now, false, { weekday: 'long' });
-    dateEl.dataset.en = formatDateHi(now, false, { weekday: 'long' });
-    dateEl.dataset.hi = formatDateHi(now, true, { weekday: 'long' });
+    dateEl.textContent = formatDateIST(now, false, { weekday: 'long' });
+    dateEl.dataset.en = formatDateIST(now, false, { weekday: 'long' });
+    dateEl.dataset.hi = formatDateIST(now, true, { weekday: 'long' });
   }
 })();
 
