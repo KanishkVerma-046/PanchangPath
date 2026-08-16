@@ -114,10 +114,10 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
                 <span style="font-size:20px;">☀️</span>
                 <div>
                   <p class="caption-mono" data-hi="दैनिक राशिफल" style="color:var(--color-mute);margin:0;">Daily Rashifal</p>
-                  <p data-hi={dateLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
+                  <p id="rp-daily-date" data-hi={dateLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
                 </div>
               </div>
-              <p style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={dailyHi}>{daily}</p>
+              <p id="rp-daily-text" style="font-size:16px;color:var(--color-body-text);line-height:1.8;margin:0;" data-hi={dailyHi}>{daily}</p>
             </div>
           </div>
 
@@ -251,6 +251,35 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
 </Layout>
 
 <script>
+import { RASHIS, getDailyPrediction } from '../../lib/rashifal';
+import { formatDateHi } from '../../lib/date-i18n';
+
+// Daily Rashifal is a static page (Astro output: 'static', manual/on-demand deploys) --
+// the server-rendered text reflects whatever day the last build ran on, not "today" for
+// a visitor loading the page days or weeks later. Recompute live on every load, the same
+// self-correcting pattern PlanetaryEventsFeed.astro uses for its countdown text, instead
+// of leaving this frozen the way it was (found via the 2026-08-16/17 audit; flagged
+// across three prior audits without a fix).
+(function refreshDailyRashifal() {
+  const slug = window.location.pathname.split('/').filter(Boolean).pop();
+  const rashi = RASHIS.find(r => r.id === slug);
+  if (!rashi) return;
+  const now = new Date();
+
+  const textEl = document.getElementById('rp-daily-text');
+  if (textEl) {
+    textEl.textContent = getDailyPrediction(rashi, now, false);
+    textEl.dataset.en = getDailyPrediction(rashi, now, false);
+    textEl.dataset.hi = getDailyPrediction(rashi, now, true);
+  }
+  const dateEl = document.getElementById('rp-daily-date');
+  if (dateEl) {
+    dateEl.textContent = formatDateHi(now, false, { weekday: 'long' });
+    dateEl.dataset.en = formatDateHi(now, false, { weekday: 'long' });
+    dateEl.dataset.hi = formatDateHi(now, true, { weekday: 'long' });
+  }
+})();
+
 document.querySelectorAll<HTMLButtonElement>('.rp-tab').forEach(btn => {
   btn.addEventListener('click', () => {
     const period = btn.dataset.period ?? 'daily';
