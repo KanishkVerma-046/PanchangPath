@@ -167,28 +167,37 @@ function resolveLoc(): typeof LOCS[number] {
   return LOCS[0];
 }
 
+// "Today"/"now" (weekday, calendar date, minutes-since-midnight) must all be evaluated in
+// the SELECTED location's local time, not the visitor's own device timezone -- this widget
+// is location-aware (window.__initLoc / locationchange), so those are often different.
+// Shift the real instant by the selected location's own tz (the same value already used
+// for srMins/ssMins), then read everything back with UTC getters -- host-timezone-
+// independent by construction, same pattern as the daily Rashifal IST fix, but
+// parameterized on the selected location instead of a hardcoded +5:30.
 let now=new Date();
-let wd=now.getDay();
 let loc=resolveLoc();
-let jd=toJD(now.getFullYear(),now.getMonth()+1,now.getDate(),6-loc.tz);
+let locNow=new Date(now.getTime()+loc.tz*3600000);
+let wd=locNow.getUTCDay();
+let jd=toJD(locNow.getUTCFullYear(),locNow.getUTCMonth()+1,locNow.getUTCDate(),6-loc.tz);
 let srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
 let ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
 let srMins=srUTC*60+loc.tz*60, ssMins=ssUTC*60+loc.tz*60;
 let slotDur=(ssMins-srMins)/8;
 let daySeq=DAY_CHOG[wd];
-let nowMins=now.getHours()*60+now.getMinutes();
+let nowMins=locNow.getUTCHours()*60+locNow.getUTCMinutes();
 
 function recalc(){
   now=new Date();
-  wd=now.getDay();
   loc=resolveLoc();
-  jd=toJD(now.getFullYear(),now.getMonth()+1,now.getDate(),6-loc.tz);
+  locNow=new Date(now.getTime()+loc.tz*3600000);
+  wd=locNow.getUTCDay();
+  jd=toJD(locNow.getUTCFullYear(),locNow.getUTCMonth()+1,locNow.getUTCDate(),6-loc.tz);
   srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
   ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
   srMins=srUTC*60+loc.tz*60; ssMins=ssUTC*60+loc.tz*60;
   slotDur=(ssMins-srMins)/8;
   daySeq=DAY_CHOG[wd];
-  nowMins=now.getHours()*60+now.getMinutes();
+  nowMins=locNow.getUTCHours()*60+locNow.getUTCMinutes();
 }
 window.addEventListener('locationchange', () => { recalc(); renderQuickChog(); });
 

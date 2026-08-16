@@ -136,19 +136,26 @@ function calculate(){
     document.getElementById('bird-name').textContent=`${BIRDS[birthBird]} · ${BIRDS_HI[birthBird]}`;
     document.getElementById('bird-desc').textContent=tr(BIRD_DESC[birthBird],BIRD_DESC_HI[birthBird]);
 
-    // Today's periods
+    // Today's periods -- "today"/"now" (weekday, calendar date, minutes-since-midnight)
+    // must be evaluated in the SELECTED location's local time, not the visitor's own
+    // device timezone (this page is location-selectable) and not UTC. Shift the real
+    // instant by the same loc.tz used for srMins/ssMins, then read everything back with
+    // UTC getters -- host-timezone-independent by construction, same pattern as the daily
+    // Rashifal IST fix, but parameterized on the selected location instead of a hardcoded
+    // +5:30.
     const now=new Date();
-    const ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
+    const locNow=new Date(now.getTime()+loc.tz*3600000);
+    const ty=locNow.getUTCFullYear(),tm=locNow.getUTCMonth()+1,td=locNow.getUTCDate();
     const jdT=toJD(ty,tm,td,6-loc.tz);
     const srMins=sunriseUTC(jdT,loc.lat,loc.lng,true)*60+loc.tz*60;
     const ssMins=sunriseUTC(jdT,loc.lat,loc.lng,false)*60+loc.tz*60;
     const jdN=toJD(ty,tm,td+1,6-loc.tz);
     const srNextMins=sunriseUTC(jdN,loc.lat,loc.lng,true)*60+loc.tz*60+1440;
     const dayDur=(ssMins-srMins)/5;const nightDur=(srNextMins-ssMins)/5;
-    const wd=now.getDay();const dayBird=DAY_BIRD[wd];
-    const nowMins=now.getHours()*60+now.getMinutes();
-    const isToday=dateStr===new Date().toISOString().split('T')[0];
-    document.getElementById('period-sub').textContent=`${formatLongDate(now.getFullYear(),now.getMonth()+1,now.getDate())} · ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[dayBird],BIRDS_HI[dayBird])} · ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
+    const wd=locNow.getUTCDay();const dayBird=DAY_BIRD[wd];
+    const nowMins=locNow.getUTCHours()*60+locNow.getUTCMinutes();
+    const isToday=dateStr===`${ty}-${String(tm).padStart(2,'0')}-${String(td).padStart(2,'0')}`;
+    document.getElementById('period-sub').textContent=`${formatLongDate(ty,tm,td)} · ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[dayBird],BIRDS_HI[dayBird])} · ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
 
     function makePeriods(startMins,dur,nightOffset){
       let html='';
@@ -186,17 +193,19 @@ function calculateByNak(){
     document.getElementById('bird-emoji').textContent=BIRD_EMOJI[birthBird];
     document.getElementById('bird-name').textContent=`${BIRDS[birthBird]} \xb7 ${BIRDS_HI[birthBird]}`;
     document.getElementById('bird-desc').textContent=tr(BIRD_DESC[birthBird],BIRD_DESC_HI[birthBird]);
+    // Same location-timezone anchoring as calculate() above -- see its comment.
     const now=new Date();
-    const ty=now.getFullYear(),tm=now.getMonth()+1,td=now.getDate();
+    const locNow=new Date(now.getTime()+loc.tz*3600000);
+    const ty=locNow.getUTCFullYear(),tm=locNow.getUTCMonth()+1,td=locNow.getUTCDate();
     const jdT=toJD(ty,tm,td,6-loc.tz);
     const srMins=sunriseUTC(jdT,loc.lat,loc.lng,true)*60+loc.tz*60;
     const ssMins=sunriseUTC(jdT,loc.lat,loc.lng,false)*60+loc.tz*60;
     const jdN=toJD(ty,tm,td+1,6-loc.tz);
     const srNextMins=sunriseUTC(jdN,loc.lat,loc.lng,true)*60+loc.tz*60+1440;
     const dayDur=(ssMins-srMins)/5;const nightDur=(srNextMins-ssMins)/5;
-    const wd=now.getDay();const dayBird=DAY_BIRD[wd];
-    const nowMins=now.getHours()*60+now.getMinutes();
-    document.getElementById('period-sub').textContent=`${formatLongDate(now.getFullYear(),now.getMonth()+1,now.getDate())} \xb7 ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[dayBird],BIRDS_HI[dayBird])} \xb7 ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
+    const wd=locNow.getUTCDay();const dayBird=DAY_BIRD[wd];
+    const nowMins=locNow.getUTCHours()*60+locNow.getUTCMinutes();
+    document.getElementById('period-sub').textContent=`${formatLongDate(ty,tm,td)} \xb7 ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[dayBird],BIRDS_HI[dayBird])} \xb7 ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
     function makePeriods2(startMins,dur,nightOffset){
       let html='';
       for(let i=0;i<5;i++){

@@ -169,9 +169,16 @@ function calculate(){
   const dayHoraDur=(ssMins-srMins)/12;
   const nightHoraDur=(srNextMins-ssMins)/12;
   const startIdx=HORA_START[wd];
-  const isToday=dateStr===new Date().toISOString().split('T')[0];
+  // "Today" and "now" must be evaluated in the SELECTED location's local time, not the
+  // visitor's own device timezone (this page is location-selectable) and not UTC
+  // (toISOString() always returns UTC). Shift the real instant by the same loc.tz already
+  // used for srMins/ssMins above, then read it back with UTC getters -- host-timezone-
+  // independent by construction, same pattern as the daily Rashifal IST fix, but
+  // parameterized on the selected location instead of a hardcoded +5:30.
   const now=new Date();
-  const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
+  const locNow=new Date(now.getTime()+loc.tz*3600000);
+  const isToday=dateStr===`${locNow.getUTCFullYear()}-${String(locNow.getUTCMonth()+1).padStart(2,'0')}-${String(locNow.getUTCDate()).padStart(2,'0')}`;
+  const nowMins=isToday?locNow.getUTCHours()*60+locNow.getUTCMinutes():-1;
 
   document.getElementById('day-hora-title')!.textContent=isHindi?`दिन होरा (${HORA_SEQ[startIdx]} होरा पहले)`:`Day Horas (${HORA_SEQ[startIdx]} hour first)`;
   document.getElementById('night-hora-title')!.textContent=isHindi?'रात्रि होरा':'Night Horas';

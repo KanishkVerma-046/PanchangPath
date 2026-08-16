@@ -195,9 +195,17 @@ function calculate(){
   const dayDur=(ssMins-srMins)/8;
   const nightDur=(srNextMins-ssMins)/8;
 
+  // "Today" and "now" must be evaluated in the SELECTED location's local time, not the
+  // visitor's own device timezone (this page is location-selectable, so those are often
+  // different) and not UTC (toISOString() always returns UTC). Shift the real instant by
+  // the same loc.tz already used for srMins/ssMins above, then read it back with UTC
+  // getters -- host-timezone-independent by construction, same pattern as the daily
+  // Rashifal IST fix, but parameterized on the selected location instead of a hardcoded
+  // +5:30.
   const now=new Date();
-  const isToday=dateStr===new Date().toISOString().split('T')[0];
-  const nowMins=isToday?now.getHours()*60+now.getMinutes():-1;
+  const locNow=new Date(now.getTime()+loc.tz*3600000);
+  const isToday=dateStr===`${locNow.getUTCFullYear()}-${String(locNow.getUTCMonth()+1).padStart(2,'0')}-${String(locNow.getUTCDate()).padStart(2,'0')}`;
+  const nowMins=isToday?locNow.getUTCHours()*60+locNow.getUTCMinutes():-1;
 
   const srEl=document.getElementById('sr-label');
   const ssEl=document.getElementById('ss-label');

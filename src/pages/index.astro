@@ -538,8 +538,16 @@ function drawTimeline(p: ReturnType<typeof calcPanchang>) {
   const sr = p.srMins, ss = p.ssMins, total = ss - sr;
   if (total <= 0) return;
   const pct = (m: number) => Math.max(0, Math.min(100, ((m - sr) / total) * 100));
+  // "Now" on this timeline must be evaluated in the SELECTED location's local time, not
+  // the visitor's own device timezone -- this widget is location-aware (currentLoc), so
+  // those are often different. Shift the real instant by currentLoc.tzOffset (the same
+  // value calcPanchang already used to produce p.srMins/p.ssMins), then read it back with
+  // UTC getters -- host-timezone-independent by construction, same pattern as the daily
+  // Rashifal IST fix, but parameterized on the selected location instead of a hardcoded
+  // +5:30.
   const now = new Date();
-  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const locNow = new Date(now.getTime() + currentLoc.tzOffset * 3600000);
+  const nowMins = locNow.getUTCHours() * 60 + locNow.getUTCMinutes();
   const segments = [
     { color: '#ef4444', label: 'Rahu', startM: sr + RAHU[currentDate.getDay()] * (total/8) },
     { color: '#f59e0b', label: 'Gulika', startM: sr + GULIKA[currentDate.getDay()] * (total/8) },
@@ -677,8 +685,10 @@ function drawSummaryTimeline(p: ReturnType<typeof calcPanchang>) {
   const sr = p.srMins, ss = p.ssMins, total = ss - sr;
   if (total <= 0) return;
   const pct = (m: number) => Math.max(0, Math.min(100, ((m - sr) / total) * 100));
+  // Same location-timezone anchoring as drawTimeline() above -- see its comment.
   const now = new Date();
-  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const locNow = new Date(now.getTime() + currentLoc.tzOffset * 3600000);
+  const nowMins = locNow.getUTCHours() * 60 + locNow.getUTCMinutes();
   const wd = currentDate.getDay();
   const RAHU_S = [7,1,6,4,5,3,2], GULIKA_S = [6,5,4,3,2,1,0]; // Fri/Sat swap fixed 2026-08-14
   const slotDur = total / 8;
