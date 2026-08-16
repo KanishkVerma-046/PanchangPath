@@ -1091,8 +1091,15 @@ export function getDailyPrediction(rashi: Rashi, date: Date, hindi = false): str
   return arr[dayOfYear % arr.length];
 }
 
+// Same IST-anchoring bug getDailyPrediction() had: the rest of this function is already
+// UTC-based (correctly host-timezone-independent), but it used to seed `d` from
+// date.getFullYear()/getMonth()/getDate() -- local, host-timezone-dependent getters. Fixed
+// the same way: shift by the explicit IST offset first, then read the calendar day back
+// with UTC getters, so which ISO week (and therefore which of the site's rotating weekly
+// predictions) is shown no longer depends on the build machine's or visitor's own clock.
 function getISOWeek(date: Date): number {
-  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const ist = new Date(date.getTime() + IST_OFFSET_MS);
+  const d = new Date(Date.UTC(ist.getUTCFullYear(), ist.getUTCMonth(), ist.getUTCDate()));
   const dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
