@@ -1,0 +1,6 @@
+# Karwa -> Karva spelling standardization (2026-08-16 audit) — the puja-vidhi and
+# vrat-katha URL trees already used "Karva"; festivals.ts now matches them.
+# Keep these redirects indefinitely since the old URLs may still be indexed/linked.
+/festivals/karwa-chauth-2025  /festivals/karva-chauth-2025  301
+/festivals/karwa-chauth-2026  /festivals/karva-chauth-2026  301
+/festivals/karwa-chauth-2027  /festivals/karva-chauth-2027  301
