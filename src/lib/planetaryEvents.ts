@@ -1084,6 +1084,25 @@ export function computeUpcomingEvents(today: Date, daysAhead = 365): PlanetaryEv
     .sort((a, b) => a.daysAway - b.daysAway || a.dateISO.localeCompare(b.dateISO));
 }
 
+// Eclipses are the one event type judged to carry "comparable public interest" to a
+// festival — often linked/indexed before they happen (see the Aug 12, 2026 total solar
+// eclipse, pruned from the site the moment it rolled past today() in computeUpcomingEvents's
+// forward-only window). Unlike sign transits/retrograde stations (routine, many per year,
+// not archived), past eclipse detail pages are kept reachable at their original URL going
+// back through the full KNOWN_ECLIPSES table, mirroring festivals.ts's unfiltered retention.
+export function getPastSignificantEvents(today: Date, daysBack = 1000): PlanetaryEvent[] {
+  const todayMS = today.getTime();
+  const events: PlanetaryEvent[] = [];
+  for (const eclipse of KNOWN_ECLIPSES) {
+    const d = new Date(eclipse.dateISO + 'T12:00:00Z');
+    const daysAway = Math.round((d.getTime() - todayMS) / 86400000);
+    if (daysAway < 0 && daysAway >= -daysBack) {
+      events.push({ ...eclipse, daysAway });
+    }
+  }
+  return events.sort((a, b) => a.daysAway - b.daysAway);
+}
+
 // ── Formatting helpers ────────────────────────────────────────────────────
 
 export function formatEventDateTime(e: PlanetaryEvent, tzOffsetHours = 5.5, hindi = false): string {

@@ -2,12 +2,16 @@
 import Layout from '../../layouts/Layout.astro';
 import { metaDescription } from '../../lib/meta';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
-import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime, INDIA_VISIBILITY_LABEL, sutakNote } from '../../lib/planetaryEvents';
+import { computeUpcomingEvents, getPastSignificantEvents, formatCountdownLabel, formatEventDateTime, INDIA_VISIBILITY_LABEL, sutakNote } from '../../lib/planetaryEvents';
 import { formatDateHi } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   const today  = new Date();
-  const events = computeUpcomingEvents(today, 365);
+  // Eclipses stay reachable at their original URL after the fact (comparable public
+  // interest to a festival page — see getPastSignificantEvents). Routine event types
+  // (sign transits, retrograde stations, conjunctions) are intentionally NOT included
+  // here and keep rolling off once they're in the past.
+  const events = [...computeUpcomingEvents(today, 365), ...getPastSignificantEvents(today)];
   return events.map(ev => ({
     params: { id: ev.id },
     props:  { event: ev },
