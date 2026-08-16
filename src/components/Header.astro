@@ -986,8 +986,20 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
   function updateStatusStrip() {
     const loc = (window as any).__initLoc || { lat: 28.6139, lng: 77.2090, tzOffset: 5.5, name: 'New Delhi' };
     const now = new Date();
-    const hourUTC = now.getHours() + now.getMinutes() / 60 - loc.tzOffset;
-    const jd = stripJulianDay(now.getFullYear(), now.getMonth() + 1, now.getDate(), hourUTC);
+    // Tithi/Nakshatra here are instant-based (Sun/Moon ecliptic longitude at this real
+    // moment) — unlike sunrise/Lagna elsewhere on the site, no location offset belongs
+    // in this calculation at all; the previous formula (`now.getHours() - loc.tzOffset`)
+    // silently assumed the visitor's own browser clock was already reading in the
+    // *selected location's* timezone, which is never true — Date getters always reflect
+    // the visitor's own device, regardless of which city is picked. Confirmed live: the
+    // same real instant produced a full Tithi apart between an Asia/Kolkata and an
+    // America/Los_Angeles browser. Julian Day is a UTC-referenced quantity by definition
+    // (same convention as astro-core.ts/panchang.ts), so read it straight from the
+    // instant's own UTC getters — timezone-independent by construction, no offset to add
+    // or get wrong, same "absolute instant, not host-local" proof pattern as the daily
+    // Rashifal IST fix, just with the correct target offset (none) for what this
+    // computation actually represents.
+    const jd = stripJulianDay(now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate(), now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600);
     const sunLon = sunTrueLongitude(jd);
     const moonLon = moonLongitude(jd);
     const ayanamsha = lahiriAyanamsha(jd);
