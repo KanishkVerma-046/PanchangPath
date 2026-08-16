@@ -4147,4 +4147,292 @@ Om Shantih Shantih Shantih.`,
     meaning: 'The Shri Suktam is an ancient Vedic hymn (khila appended to the Rigveda) invoking Shri/Lakshmi as the golden goddess of prosperity, fame and abundance, describing her in symbolic forms including gold, cattle, the Bilva tree, and the elephant that bathes her.', meaningHi: 'श्री सूक्तम एक प्राचीन वैदिक स्तोत्र है (ऋग्वेद से जुड़ा खिल) जो श्री/लक्ष्मी को समृद्धि, यश और प्रचुरता की स्वर्णिम देवी के रूप में आह्वान करता है, उन्हें सोना, गाय, बिल्व वृक्ष, और उन्हें स्नान कराने वाले हाथी सहित प्रतीकात्मक रूपों में वर्णित करते हुए।',
     benefits: 'Recited during Lakshmi Puja, Diwali, and Vedic yajnas for prosperity; considered one of the most authoritative and ancient hymns dedicated to wealth and abundance.', benefitsHi: 'लक्ष्मी पूजा, दिवाली, और वैदिक यज्ञों के दौरान समृद्धि के लिए पाठ किया जाता है; इसे धन और प्रचुरता को समर्पित सबसे आधिकारिक और प्राचीन स्तोत्रों में से एक माना जाता है।',
   },
+  {
+    slug: 'mahishasura-mardini-ashtakam',
+    title: 'Mahishasura Mardini Stotram',
+    titleHi: 'महिषासुरमर्दिनी स्तोत्रम्',
+    deity: 'Durga', deityHi: 'माँ दुर्गा',
+    icon: '⚔️',
+    lyricsHi: `अयि गिरिनन्दिनि नन्दितमेदिनि विश्वविनोदिनि नन्दिनुते
+गिरिवरविन्ध्यशिरोधिनिवासिनि विष्णुविलासिनि जिष्णुनुते।
+भगवति हे शितिकण्ठकुटुम्बिनि भूरिकुटुम्बिनि भूरिकृते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+सुरवरवर्षिणि दुर्धरधर्षिणि दुर्मुखमर्षिणि हर्षरते
+त्रिभुवनपोषिणि शङ्करतोषिणि कल्मषमोषिणि घोररते।
+दनुजनिरोषिणि दितिसुतरोषिणि दुर्मदशोषिणि सिन्धुसुते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+अयि जगदम्ब मदम्ब कदम्बवनप्रियवासिनि हासरते
+शिखरिशिरोमणितुङ्गहिमालयशृङ्गनिजालयमध्यगते।
+मधुमधुरे मधुकैटभगञ्जिनि कैटभभञ्जिनि रासरते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+अयि शतखण्ड विखण्डितरुण्ड वितुण्डितशुण्ड गजाधिपते
+रिपुगजगण्ड विदारणचण्ड पराक्रमशुण्ड मृगाधिपते।
+निजभुजदण्ड निपातितखण्ड विपातितमुण्डभटाधिपते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+अयि रणदुर्मद शत्रुवधोदित दुर्धरनिर्जर शक्तिभृते
+चतुरविचारधुरीण महाशिव दूतकृत प्रमथाधिपते।
+दुरितदुरीहदुराशयदुर्मतिदानवदूतकृतान्तमते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+अयि शरणागतवैरिवधूवर वीरवराभयदायकरे
+त्रिभुवन मस्तक शूलविरोधिशिरोधिकृतामल शूलकरे।
+दुमिदुमितामर दुन्दुभिनाद महो मुखरीकृत तिग्मकरे
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+अयि निजहुङ्कृतिमात्र निराकृत धूम्रविलोचन धूम्रशते
+समरविशोषित शोणितबीज समुद्भवशोणित बीजलते।
+शिव शिव शुम्भ निशुम्भ महाहव तर्पित भूत पिशाचरते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+धनुरनुसङ्ग रणक्षणसङ्ग परिस्फुरदङ्ग नटत्कटके
+कनक पिशङ्गपृषत्कनिषङ्गरसद्भट शृङ्ग हतावटुके।
+कृतचतुरङ्ग बलक्षितिरङ्ग घटद्बहुरङ्ग रटद्बटुके
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+सुरललना ततथेयि तथेयि कृताभिनयोदर नृत्यरते
+कृत कुकुथः कुकुथो गडदादिकताल कुतूहल गानरते।
+धुधुकुट धुक्कुट धिन्धिमित ध्वनि धीर मृदङ्ग निनादरते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+जय जय जप्य जये जय शब्दपरस्तुति तत्पर विश्वनुते
+भण भण भिञ्जिमि भिङ्कृतनूपुर सिञ्जितमोहित भूतपते।
+नटितनटार्ध नटीनटनायक नाटितनाट्य सुगानरते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+अयि सुमनः सुमनः सुमनः सुमनः सुमनोहर कान्तियुते
+श्रित रजनी रजनी रजनी रजनी रजनीकर वक्त्रवृते।
+सुनयन विभ्रमर भ्रमर भ्रमर भ्रमर भ्रमराधिपते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+सहित महाहव मल्लम तल्लिक मल्लित रल्लक मल्लरते
+विरचित वल्लिक पल्लिक मल्लिक भिल्लिक भिल्लिक वर्ग वृते।
+सितकृत फुल्लसमुल्लसितारुण तल्लज पल्लव सल्ललिते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+अविरलगण्डगलन्मदमेदुर मत्तमतङ्गज राजपते
+त्रिभुवनभूषणभूतकलानिधि रूपपयोनिधि राजसुते।
+अयि सुदतीजन लालसमानस मोहनमन्मथ राजसुते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+कमलदलामल कोमलकान्ति कलाकलितामल भाललते
+सकलविलासकलानिलय क्रमकेलिचलत्कलहंसकुले।
+अलिकुल सङ्कुल कुवलय मण्डल मौलिमिलद्भकुलालि कुले
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+करमुरलीरववीजितकूजित लज्जितकोकिल मञ्जुमते
+मिलित पुलिन्द मनोहर गुञ्जित रञ्जितशैल निकुञ्जगते।
+निजगुणभूत महाशबरीगण सद्गुणसम्भृत केलितले
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+कटितटपीत दुकूलविचित्र मयूखतिरस्कृत चन्द्ररुचे
+प्रणतसुरासुर मौलिमणिस्फुरदंशुलसन्नख चन्द्ररुचे।
+जितकनकाचल मौलिपदोर्जित निर्भरकुञ्जर कुम्भकुचे
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+विजित सहस्रकरैक सहस्रकरैक सहस्रकरैकनुते
+कृत सुरतारक सङ्गरतारक सङ्गरतारक सूनुसुते।
+सुरथसमाधि समानसमाधि समाधिसमाधि सुजातरते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+पदकमलं करुणानिलये वरिवस्यति योऽनुदिनं स शिवे
+अयि कमले कमलानिलये कमलानिलयः स कथं न भवेत्।
+तव पदमेव परम्पदमित्यनुशीलयतो मम किं न शिवे
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+कनकलसत्कल सिन्धुजलैरनुसिञ्चिनुते गुणरङ्गभुवं
+भजति स किं न शचीकुचकुम्भ तटीपरिरम्भ सुखानुभवम्।
+तव चरणं शरणं करवाणि नतामरवाणि निवासि शिवं
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+तव विमलेन्दुकुलं वदनेन्दुमलं सकलं ननु कूलयते
+किमु पुरुहूत पुरीन्दुमुखी सुमुखीभिरसौ विमुखीक्रियते।
+मम तु मतं शिवनामधने भवती कृपया किमुत क्रियते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥
+
+अयि मयि दीनदयालुतया कृपयैव त्वया भवितव्यमुमे
+अयि जगतो जननी कृपयासि यथासि तथाऽनुभितासिरते।
+यदुचितमत्र भवत्युररि कुरुतादुरुतापमपाकुरु ते
+जय जय हे महिषासुरमर्दिनि रम्यकपर्दिनि शैलसुते॥`,
+    transliteration: `Ayi girinandini nandita-medini vishwavinodini nandanute
+Girivara-vindhya-shiro'dhinivasini Vishnu-vilasini jishnu-nute,
+Bhagavati he shitikanthakutumbini bhurikutumbini bhurikrite
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Suravara-varshini durdhara-dharshini durmukha-marshini harsharate
+Tribhuvana-poshini shankara-toshini kalmasha-moshini ghorarate,
+Danuja-niroshini diti-suta-roshini durmada-shoshini sindhusute
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi jagadamba madamba kadamba-vana-priya-vasini hasarate
+Shikhari-shiromani-tunga-himalaya-shringa-nijalaya-madhyagate,
+Madhu-madhure madhu-kaitabha-ganjini kaitabha-bhanjini rasarate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi shatakhanda vikhandita-runda vitundita-shunda gajadhipate
+Ripu-gaja-ganda vidarana-chanda parakrama-shunda mrigadhipate,
+Nija-bhuja-danda nipatita-khanda vipatita-munda-bhatadhipate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi rana-durmada shatru-vadhodita durdhara-nirjara shaktibhrite
+Chatura-vichara-dhurina mahashiva dootakrita pramathadhipate,
+Durita-dureeha-durashaya-durmati-danava-dootakritantamate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi sharanagata-vairivadhuvara veeravara-bhayadayakare
+Tribhuvana mastaka shoola-virodhi-shirodhikritamala shoolakare,
+Dumidumitamara dundubhinada maho mukhareekrita tigmakare
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi nija-hunkriti-matra nirakrita dhoomravilochana dhoomrashate
+Samara-vishoshita shonita-beeja samudbhava-shonita beejalate,
+Shiva shiva shumbha nishumbha mahahava tarpita bhoota pishacharate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Dhanuranusanga rana-kshana-sanga parisphurad-anga natatkatake
+Kanaka-pishanga-prishatka-nishanga-rasadbhata shringa hatavatuke,
+Krita-chaturanga bala-kshiti-ranga ghatad-bahuranga ratad-batuke
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Suralalana tatatheyi tatheyi kritabhinayodara nrityarate
+Krita kukuthah kukutho gadadadikatala kutoohala ganarate,
+Dhudhukuta dhukkuta dhindhimita dhwani dheera mridanga ninadarate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Jaya jaya japya jaye jaya shabdapara-stuti tatpara vishwanute
+Bhana bhana bhinjimi bhinkrita-noopura sinjita-mohita bhootapate,
+Natita-natardha natee-nata-nayaka natita-natya suganarate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi sumanah sumanah sumanah sumanah sumanohara kantiyute
+Shrita rajani rajani rajani rajani rajanikara vaktravrite,
+Sunayana vibhramara bhramara bhramara bhramara bhramaradhipate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Sahita mahahava mallama tallika mallita rallaka mallarate
+Virachita vallika pallika mallika bhillika bhillika varga vrite,
+Sitakrita phulla-samullasitaruna tallaja pallava sallalite
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Avirala-ganda-galanmada-medura matta-matangaja rajapate
+Tribhuvana-bhooshana-bhoota-kalanidhi roopa-payonidhi rajasute,
+Ayi sudateejana lalasamanasa mohana-manmatha rajasute
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Kamaladalamala komalakanti kalakalitamala bhalalate
+Sakala-vilasa-kalanilaya krama-keli-chalat-kalahansakule,
+Alikula sankula kuvalaya mandala mauli-miladbakulali kule
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Karamuralee-rava-veejita-koojita lajjita-kokila manjumate
+Milita pulinda manohara gunjita ranjitashaila nikunjagate,
+Nijaguna-bhoota mahashabareegana sadguna-sambhrita kelitale
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Katitata-peeta dukoola-vichitra mayookha-tiraskrita chandraruche
+Pranata-surasura mauli-mani-sphurad-anshu-lasannakha chandraruche,
+Jita-kanakachala mauli-padorjita nirbhara-kunjara kumbhakuche
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Vijita sahasrakaraika sahasrakaraika sahasrakaraikanute
+Krita suratarakasangara-tarakasangara-tarakasoonusute,
+Suratha-samadhi samana-samadhi samadhi-samadhi sujatarate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Padakamalam karunanilaye varivasyati yo'nudinam sa shive
+Ayi kamale kamalanilaye kamalanilayah sa katham na bhavet,
+Tava padameva paramapadamityanusheelayato mama kim na shive
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Kanakalasatkala sindhujalairanusinchinute gunarangabhuvam
+Bhajati sa kim na shacheekuchakumbha tateeparirambha sukhanubhavam,
+Tava charanam sharanam karavani natamaravani nivasi shivam
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Tava vimalendukulam vadanendumalam sakalam nanu koolayate
+Kimu puruhoota pureendumukhee sumukheebhirasau vimukheekriyate,
+Mama tu matam shivanamadhane bhavati kripaya kimuta kriyate
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.
+
+Ayi mayi deenadayalutaya kripayaiva twaya bhavitavyamume
+Ayi jagato janani kripayasi yathasi tathanubhitasirate,
+Yaduchitamatra bhavatyurari kurutaadurutapamapakuru te
+Jaya jaya he Mahishasuramardini ramyakapardini shailasute.`,
+    meaning: 'One of the most rhythmically celebrated Sanskrit hymns, this stotram glorifies Durga as the daughter of the mountain (Girinandini) who destroys the buffalo demon Mahishasura, praising her beauty, valor, and role as protector of the three worlds.', meaningHi: 'सबसे लयबद्ध रूप से प्रसिद्ध संस्कृत स्तोत्रों में से एक, यह स्तोत्र दुर्गा को पर्वत-पुत्री (गिरिनंदिनी) के रूप में महिमामंडित करता है जो महिषासुर राक्षस का विनाश करती हैं, उनके सौंदर्य, वीरता, और तीनों लोकों की रक्षक के रूप में उनकी भूमिका की स्तुति करते हुए।',
+    benefits: 'Recited during Navratri, especially on Ashtami and Navami, for courage, protection and victory over difficulties, often sung for its powerful rhythmic quality.', benefitsHi: 'नवरात्रि के दौरान, विशेष रूप से अष्टमी और नवमी को, साहस, सुरक्षा और कठिनाइयों पर विजय के लिए पाठ किया जाता है, अक्सर इसकी शक्तिशाली लयबद्ध गुणवत्ता के लिए गाया जाता है।',
+  },
+  {
+    slug: 'ayyappa-ashtakam',
+    title: 'Ayyappa Pancharatnam',
+    titleHi: 'अयप्पा पञ्चरत्नम्',
+    deity: 'Ayyappa', deityHi: 'भगवान अयप्पा',
+    icon: '🛕',
+    lyricsHi: `लोकवीरं महापूज्यं सर्वरक्षाकरं विभुम्।
+पार्वतीहृदयानन्दं शास्तारं प्रणमाम्यहम्॥
+
+विप्रपूज्यं विश्ववन्द्यं विष्णुशम्भोः प्रियं सुतम्।
+क्षिप्रप्रसादनिरतं शास्तारं प्रणमाम्यहम्॥
+
+मत्तमातङ्गगमनं कारुण्यामृतपूरितम्।
+सर्वविघ्नहरं देवं शास्तारं प्रणमाम्यहम्॥
+
+अस्मत्कुलेश्वरं देवमस्मच्छत्रुविनाशनम्।
+अस्मदिष्टप्रदातारं शास्तारं प्रणमाम्यहम्॥
+
+पाण्ड्येशवंशतिलकं केरळे केलिविग्रहम्।
+आर्तत्राणपरं देवं शास्तारं प्रणमाम्यहम्॥
+
+त्र्यम्बकपुराधीशं गणाधिपसमन्वितम्।
+गजारूढमहं वन्दे शास्तारं प्रणमाम्यहम्॥
+
+शिववीर्यसमुद्भूतं श्रीनिवासतनूद्भवम्।
+शिखिवाहानुजं वन्दे शास्तारं प्रणमाम्यहम्॥
+
+यस्य धन्वन्तरिर्माता पिता देवो महेश्वरः।
+तं शास्तारमहं वन्दे महारोगनिवारणम्॥
+
+भूतनाथदयानन्द सर्वभूतदयापर।
+रक्ष रक्ष महाबाहो शास्त्रे तुभ्यं नमो नमः॥
+
+आश्याम कोमलविशालतनुं विचित्रं
+वासो वसानमरुणोत्पलदामहस्तम्।
+उत्तुङ्गरत्नमकुटं कुटिलाग्रकेशं
+शास्तारमिष्टवरदं शरणं प्रपद्ये॥`,
+    transliteration: `Lokaveeram mahapoojyam sarvarakshakaram vibhum,
+Parvati-hridayanandam Shastaram pranamamyaham.
+
+Viprapoojyam vishwavandyam Vishnu-Shambhoh priyam sutam,
+Kshipraprasadaniratam Shastaram pranamamyaham.
+
+Mattamatanga-gamanam karunyamritapooritam,
+Sarvavighnaharam devam Shastaram pranamamyaham.
+
+Asmatkuleshwaram devamasmacchatruvinashanam,
+Asmadishtapradataram Shastaram pranamamyaham.
+
+Pandyeshavamshatilakam Kerale kelivigraham,
+Artatranaparam devam Shastaram pranamamyaham.
+
+Tryambakapuradheesham ganadhipasamanvitam,
+Gajaroodhamaham vande Shastaram pranamamyaham.
+
+Shivaveerya-samudbhootam Shrinivasa-tanoodbhavam,
+Shikhivahanujam vande Shastaram pranamamyaham.
+
+Yasya Dhanvantarirmata pita devo Maheshwarah,
+Tam Shastaramaham vande maharoganivaranam.
+
+Bhootanatha-dayananda sarvabhootadayapara,
+Raksha raksha mahabaho Shastre tubhyam namo namah.
+
+Ashyama komalavishalatanum vichitram
+Vaso vasanamarunotpaladamahastam,
+Uttungaratnamakutam kutilagrakesham
+Shastaramishtavaradam sharanam prapadye.`,
+    meaning: 'This pancharatnam venerates Ayyappa (also called Shasta), son of Shiva and Mohini (an incarnation of Vishnu), lord of Sabarimala and Ponnambalamedu, praising his form seated in meditation, his wisdom of the Vedas, and his role as protector of devotees.', meaningHi: 'यह पञ्चरत्नम अयप्पा (जिन्हें शास्ता भी कहा जाता है) की वंदना करता है, जो शिव और मोहिनी (विष्णु का एक अवतार) के पुत्र, सबरीमाला और पोन्नंबलमेडु के स्वामी हैं, ध्यानमग्न बैठी उनकी मुद्रा, वेदों में उनकी विद्वता, और भक्तों के रक्षक के रूप में उनकी भूमिका की स्तुति करते हुए।',
+    benefits: 'Recited daily by Ayyappa devotees during the Mandala-Makaravilakku pilgrimage season and as part of the 41-day vratam preceding the Sabarimala yatra.', benefitsHi: 'अयप्पा भक्तों द्वारा मंडल-मकरविलक्कु तीर्थयात्रा के मौसम में प्रतिदिन, तथा सबरीमाला यात्रा से पूर्व के 41-दिवसीय व्रतम के भाग के रूप में पाठ किया जाता है।',
+  },
 ];

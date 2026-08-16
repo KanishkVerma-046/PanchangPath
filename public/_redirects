@@ -4,3 +4,11 @@
 /festivals/karwa-chauth-2025  /festivals/karva-chauth-2025  301
 /festivals/karwa-chauth-2026  /festivals/karva-chauth-2026  301
 /festivals/karwa-chauth-2027  /festivals/karva-chauth-2027  301
+
+# Ashtakam -> Stotram recategorization (2026-08-17 audit) — Mahishasura Mardini and
+# Ayyappa are genuine, complete, correctly-named compositions (a 21-verse stotram and
+# a 5-verse Pancharatnam respectively) that were never actually Ashtakams (8 verses).
+# Moved to the Stotram category, where verse count already varies freely. Slugs kept
+# as-is, only the category path segment changes.
+/devotional/ashtakam/mahishasura-mardini-ashtakam  /devotional/stotram/mahishasura-mardini-ashtakam  301
+/devotional/ashtakam/ayyappa-ashtakam              /devotional/stotram/ayyappa-ashtakam              301
