@@ -174,6 +174,7 @@ function typeClass(type: string): string {
     if (!hindi) {
       if (daysAway === 0) return 'Today';
       if (daysAway === 1) return 'Tomorrow';
+      if (daysAway < 0)   return `${Math.abs(daysAway)}d ago`;
       if (daysAway < 7)   return `${daysAway} Days`;
       if (daysAway < 30)  return `${Math.floor(daysAway / 7)}w ${daysAway % 7}d`;
       const months = Math.floor(daysAway / 30);
@@ -182,6 +183,7 @@ function typeClass(type: string): string {
     }
     if (daysAway === 0) return 'आज';
     if (daysAway === 1) return 'कल';
+    if (daysAway < 0)   return `${Math.abs(daysAway)} दिन पहले`;
     if (daysAway < 7)   return `${daysAway} दिन`;
     if (daysAway < 30)  return `${Math.floor(daysAway / 7)} सप्ताह ${daysAway % 7} दिन`;
     const months = Math.floor(daysAway / 30);
