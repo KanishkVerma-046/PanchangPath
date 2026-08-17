@@ -14,8 +14,7 @@ name: Daily rebuild + deploy
 # Requires a CLOUDFLARE_API_TOKEN repo secret (Cloudflare dashboard -> My Profile ->
 # API Tokens -> Create Token -> "Edit Cloudflare Workers" template, or a custom token
 # scoped to Cloudflare Pages:Edit for this account) and a CLOUDFLARE_ACCOUNT_ID repo
-# secret (visible via `npx wrangler whoami`). Neither exists yet as of this workflow's
-# creation -- this job will fail authentication until both are added.
+# secret (visible via `npx wrangler whoami`). Both added 2026-08-17.
 
 on:
   schedule:
@@ -31,8 +30,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: chore/permission-allowlist # matches the branch currently deployed to production; change if that changes
+        # No explicit ref: defaults to the repo's default branch (master), which is what
+        # actually drives production via manual `npm run deploy`. A prior version pinned
+        # this to a feature branch (chore/permission-allowlist) that fell 2 commits behind
+        # master and would have silently redeployed stale content once auth was fixed.
 
       - uses: actions/setup-node@v4
         with:
