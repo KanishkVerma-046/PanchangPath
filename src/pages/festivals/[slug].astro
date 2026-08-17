@@ -43,7 +43,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 
 <Layout
   title={`${f.name} ${f.date.slice(0,4)} — PanchangPath`}
-  description={metaDescription(f.description, `${f.name} — date, significance and observance.`)}
+  description={metaDescription(`${f.description} (${f.date.slice(0,4)})`, `${f.name} ${f.date.slice(0,4)} — date, significance and observance.`)}
 >
   <BreadcrumbSchema items={[
     { name: 'Home', url: '/' },

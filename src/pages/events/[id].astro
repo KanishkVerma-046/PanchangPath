@@ -30,6 +30,10 @@ const evDateLong = formatDateHi(evDateObj, false, { weekday: 'long' });
 const evDateLongHi = formatDateHi(evDateObj, true, { weekday: 'long' });
 const evDateShort = formatDateHi(evDateObj, false, { month: 'short' });
 const evDateShortHi = formatDateHi(evDateObj, true, { month: 'short' });
+// Month + year only (no day) -- long enough to disambiguate same-year duplicate
+// events like two eclipses in the same year, short enough to fit metaDescription()'s
+// 160-char budget even for the longest base descriptions (see solstice/eclipse cases).
+const metaDateLabel = formatDateHi(evDateObj, false, { day: false, month: 'short' });
 
 function typeLabel(type: string): string {
   switch (type) {
@@ -107,7 +111,7 @@ function heroBg(type: string): string {
 
 <Layout
   title={`${ev.title} — PanchangPath`}
-  description={metaDescription(ev.description, `${ev.title} — date, time and significance.`)}
+  description={metaDescription(`${ev.description} (${metaDateLabel})`, `${ev.title} — date, time and significance.`)}
 >
   <BreadcrumbSchema items={[
     { name: 'Home', url: '/' },
