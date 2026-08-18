@@ -1,5 +1,43 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { pakshiBirthBird, computePanchaPakshi } from '../../lib/jyotish';
+import { formatMinutes12h } from '../../lib/time-format';
+
+// Build-time default: exactly reproduces what this page's client <script> already computes
+// unconditionally on load (calculate() runs immediately, no user interaction required) —
+// "born now, at noon, in New Delhi" — so this is not inventing new default content, just
+// moving the page's own existing default state to build time. Uses the exact same
+// pakshiBirthBird()/computePanchaPakshi() the client <script> below calls, so server and
+// client can never disagree — see CLAUDE.md's 2026-08-18 SEO-prerender rollout note.
+const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const istNow = new Date(Date.now() + IST_OFFSET_MS);
+const defY = istNow.getUTCFullYear();
+const defM = istNow.getUTCMonth() + 1;
+const defD = istNow.getUTCDate();
+
+const defBirthBird = pakshiBirthBird(defY, defM, defD, 12, NEW_DELHI.tz);
+const defResult = computePanchaPakshi(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz, defBirthBird);
+const fmt = formatMinutes12h;
+
+const BIRDS = ['Vulture', 'Owl', 'Crow', 'Cock', 'Peacock'];
+const BIRDS_HI = ['गिद्ध', 'उल्लू', 'कौआ', 'मुर्गा', 'मोर'];
+const BIRD_EMOJI = ['🦅', '🦉', '🐦‍⬛', '🐓', '🦚'];
+const BIRD_DESC = [
+  'Powerful, far-sighted and commanding. Vulture-born are natural leaders with sharp vision, ambition and the ability to rise above obstacles.',
+  'Wise, introspective and patient. Owl-born possess deep intuition, work well at night, and excel in research and contemplation.',
+  'Clever, social and adaptable. Crow-born are resourceful communicators, quick learners and skilled at networking.',
+  'Energetic, disciplined and alert. Cock-born are punctual, courageous and thrive on routine, leadership and protection of others.',
+  'Charming, creative and graceful. Peacock-born are artistic, attractive and expressive, drawing admiration wherever they go.',
+];
+const ACTIVITIES = ['Ruling', 'Eating', 'Walking', 'Sleeping', 'Dying'];
+const ACT_Q = ['Best', 'Good', 'Neutral', 'Unfavorable', 'Worst'];
+const ACT_COLOR = ['#15803d', '#65a30d', '#b45309', '#ea580c', '#dc2626'];
+const WD_EN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const MO_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const defDateLabel = `${WD_EN[defResult.weekday]}, ${defD} ${MO_EN[defM - 1]} ${defY}`;
+const defBirthDateLabel = defDateLabel; // birth date defaults to today, same string
+const periodSub = `${defDateLabel} · Day ruling bird: ${BIRDS[defResult.dayBird]} · Sunrise ${fmt(defResult.srMins)}, Sunset ${fmt(defResult.ssMins)}`;
 ---
 
 <Layout title="Pancha Pakshi Calculator — Your Birth Bird — PanchangPath" description="Find your Pancha Pakshi birth bird from your nakshatra and see today\'s favourable and unfavourable periods in the traditional South Indian bird system.">
@@ -22,7 +60,7 @@ import Layout from '../../layouts/Layout.astro';
         <div><label for="f-city" class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
         <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
-      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
+      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Date of birth: {defBirthDateLabel}</p>
 
       <div style="border-top:1px solid var(--color-hairline);padding-top:22px;margin-bottom:32px;">
         <p data-hi="त्वरित खोज — अपना नक्षत्र जानें" style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 12px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Quick Lookup — Know Your Nakshatra</p>
@@ -33,23 +71,43 @@ import Layout from '../../layouts/Layout.astro';
         </div>
       </div>
 
-      <div id="result" style="display:none;">
+      <div id="result">
         <div class="card" style="padding:28px;text-align:center;margin-bottom:24px;background:linear-gradient(135deg,var(--color-canvas) 55%,var(--color-saffron-soft));">
-          <div id="bird-emoji" style="font-size:48px;line-height:1;margin-bottom:8px;"></div>
+          <div id="bird-emoji" style="font-size:48px;line-height:1;margin-bottom:8px;">{BIRD_EMOJI[defBirthBird]}</div>
           <p class="caption-mono" data-hi="आपका जन्म पक्षी" style="color:var(--color-saffron-deep);margin:0 0 6px;">YOUR BIRTH BIRD</p>
-          <h2 id="bird-name" style="font-size:26px;font-weight:700;color:var(--color-ink);margin:0 0 6px;"></h2>
-          <p id="bird-desc" style="font-size:14px;color:var(--color-body-text);margin:0 auto;max-width:460px;line-height:1.6;"></p>
+          <h2 id="bird-name" style="font-size:26px;font-weight:700;color:var(--color-ink);margin:0 0 6px;">{BIRDS[defBirthBird]} · {BIRDS_HI[defBirthBird]}</h2>
+          <p id="bird-desc" style="font-size:14px;color:var(--color-body-text);margin:0 auto;max-width:460px;line-height:1.6;">{BIRD_DESC[defBirthBird]}</p>
         </div>
         <h3 data-hi="आज के सक्रियता काल" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Today's Activity Periods</h3>
-        <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;" id="period-sub"></p>
+        <p style="font-size:12px;color:var(--color-mute);margin:0 0 14px;" id="period-sub">{periodSub}</p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;" class="period-cols">
           <div>
             <p data-hi="☀ दिन (सूर्योदय → सूर्यास्त)" style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">☀ DAY (Sunrise → Sunset)</p>
-            <div id="day-periods" style="display:flex;flex-direction:column;gap:8px;"></div>
+            <div id="day-periods" style="display:flex;flex-direction:column;gap:8px;">
+              {defResult.day.map(p => (
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:var(--color-canvas-soft-2);">
+                  <span style={`width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[p.activityIdx]};flex-shrink:0;`}></span>
+                  <div style="flex:1;">
+                    <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0;">{ACTIVITIES[p.activityIdx]} <span style={`font-size:11px;font-weight:500;color:${ACT_COLOR[p.activityIdx]};`}>· {ACT_Q[p.activityIdx]}</span></p>
+                    <p style="font-size:11px;color:var(--color-mute);margin:1px 0 0;font-family:var(--font-mono);">{fmt(p.start)} – {fmt(p.end)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           <div>
             <p data-hi="🌙 रात्रि (सूर्यास्त → सूर्योदय)" style="font-size:12px;font-weight:600;color:var(--color-mute);margin:0 0 8px;font-family:var(--font-mono);">🌙 NIGHT (Sunset → Sunrise)</p>
-            <div id="night-periods" style="display:flex;flex-direction:column;gap:8px;"></div>
+            <div id="night-periods" style="display:flex;flex-direction:column;gap:8px;">
+              {defResult.night.map(p => (
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:var(--color-canvas-soft-2);">
+                  <span style={`width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[p.activityIdx]};flex-shrink:0;`}></span>
+                  <div style="flex:1;">
+                    <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0;">{ACTIVITIES[p.activityIdx]} <span style={`font-size:11px;font-weight:500;color:${ACT_COLOR[p.activityIdx]};`}>· {ACT_Q[p.activityIdx]}</span></p>
+                    <p style="font-size:11px;color:var(--color-mute);margin:1px 0 0;font-family:var(--font-mono);">{fmt(p.start)} – {fmt(p.end)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -71,7 +129,7 @@ import Layout from '../../layouts/Layout.astro';
 
 <script>
 import { LOCATIONS } from '../../lib/locations';
-import { moonLongitude as moonLon, lahiriAyanamsha as ayanamsha, sunriseUTC } from '../../lib/panchang';
+import { pakshiBirthBird, computePanchaPakshi } from '../../lib/jyotish';
 import { formatMinutes12h } from '../../lib/time-format';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
@@ -81,10 +139,6 @@ const MO_EN=['January','February','March','April','May','June','July','August','
 const MO_HI=['जनवरी','फरवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return tr(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
-function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
-const n360=a=>((a%360)+360)%360;
-const toR=d=>d*Math.PI/180;
-const toD=r=>r*180/Math.PI;
 
 const BIRDS=['Vulture','Owl','Crow','Cock','Peacock'];
 const BIRDS_HI=['गिद्ध','उल्लू','कौआ','मुर्गा','मोर'];
@@ -106,8 +160,6 @@ const ACTIVITIES_HI=['शासन','भोजन','चलना','सोना'
 const ACT_Q=['Best','Good','Neutral','Unfavorable','Worst'];
 const ACT_Q_HI=['सर्वश्रेष्ठ','अच्छा','सामान्य','प्रतिकूल','सबसे खराब'];
 const ACT_COLOR=['#15803d','#65a30d','#b45309','#ea580c','#dc2626'];
-// Day ruling bird by weekday (Sun..Sat)
-const DAY_BIRD=[0,1,2,3,4,0,1];
 
 const sel=document.getElementById('f-city');function renderCityOptions(){
   const selected=sel.value;
@@ -120,6 +172,22 @@ document.getElementById('f-time').value='12:00';
 
 const fmtMins = formatMinutes12h;
 
+// Shared period-list renderer: PakshiPeriod[] from computePanchaPakshi() + the current
+// instant's minutes-since-midnight (for the live "NOW" highlight, client-only by design).
+function makePeriods(periods,nowMins){
+  return periods.map(p=>{
+    const s=p.start,e=p.end;
+    const cur=(s>=1440?nowMins+1440:nowMins)>=s&&(s>=1440?nowMins+1440:nowMins)<e;
+    return `<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:${cur?'var(--color-ink)':'var(--color-canvas-soft-2)'};">
+      <span style="width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[p.activityIdx]};flex-shrink:0;"></span>
+      <div style="flex:1;">
+        <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${tr(ACTIVITIES[p.activityIdx],ACTIVITIES_HI[p.activityIdx])} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[p.activityIdx]};">· ${tr(ACT_Q[p.activityIdx],ACT_Q_HI[p.activityIdx])}${cur?' · '+tr('NOW','अभी'):''}</span></p>
+        <p style="font-size:11px;color:${cur?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:1px 0 0;font-family:var(--font-mono);">${fmtMins(s)} – ${fmtMins(e)}</p>
+      </div>
+    </div>`;
+  }).join('');
+}
+
 function calculate(){
   try{
     const dateStr=document.getElementById('f-date').value;
@@ -128,55 +196,28 @@ function calculate(){
     const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
     const de=document.getElementById('date-echo');
     if(de){de.textContent=tr('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);de.hidden=false;}
-    const jdBirth=toJD(y,m,d,(hh+mm/60)-loc.tz);
-    const nakIdx=Math.floor(n360(moonLon(jdBirth)-ayanamsha(jdBirth))/(360/27));
-    const birthBird=nakIdx%5;
+    const birthBird=pakshiBirthBird(y,m,d,hh+mm/60,loc.tz);
 
     document.getElementById('bird-emoji').textContent=BIRD_EMOJI[birthBird];
     document.getElementById('bird-name').textContent=`${BIRDS[birthBird]} · ${BIRDS_HI[birthBird]}`;
     document.getElementById('bird-desc').textContent=tr(BIRD_DESC[birthBird],BIRD_DESC_HI[birthBird]);
 
-    // Today's periods -- "today"/"now" (weekday, calendar date, minutes-since-midnight)
-    // must be evaluated in the SELECTED location's local time, not the visitor's own
-    // device timezone (this page is location-selectable) and not UTC. Shift the real
-    // instant by the same loc.tz used for srMins/ssMins, then read everything back with
-    // UTC getters -- host-timezone-independent by construction, same pattern as the daily
-    // Rashifal IST fix, but parameterized on the selected location instead of a hardcoded
-    // +5:30.
+    // Today's periods -- "today"/"now" (calendar date, minutes-since-midnight) must be
+    // evaluated in the SELECTED location's local time, not the visitor's own device
+    // timezone (this page is location-selectable) and not UTC. Shift the real instant by
+    // the same loc.tz computePanchaPakshi() uses internally, then read everything back
+    // with UTC getters -- host-timezone-independent by construction, same pattern as the
+    // daily Rashifal IST fix, but parameterized on the selected location instead of a
+    // hardcoded +5:30.
     const now=new Date();
     const locNow=new Date(now.getTime()+loc.tz*3600000);
     const ty=locNow.getUTCFullYear(),tm=locNow.getUTCMonth()+1,td=locNow.getUTCDate();
-    const jdT=toJD(ty,tm,td,6-loc.tz);
-    const srMins=sunriseUTC(jdT,loc.lat,loc.lng,true)*60+loc.tz*60;
-    const ssMins=sunriseUTC(jdT,loc.lat,loc.lng,false)*60+loc.tz*60;
-    const jdN=toJD(ty,tm,td+1,6-loc.tz);
-    const srNextMins=sunriseUTC(jdN,loc.lat,loc.lng,true)*60+loc.tz*60+1440;
-    const dayDur=(ssMins-srMins)/5;const nightDur=(srNextMins-ssMins)/5;
-    const wd=locNow.getUTCDay();const dayBird=DAY_BIRD[wd];
+    const result=computePanchaPakshi(ty,tm,td,loc.lat,loc.lng,loc.tz,birthBird);
     const nowMins=locNow.getUTCHours()*60+locNow.getUTCMinutes();
-    const isToday=dateStr===`${ty}-${String(tm).padStart(2,'0')}-${String(td).padStart(2,'0')}`;
-    document.getElementById('period-sub').textContent=`${formatLongDate(ty,tm,td)} · ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[dayBird],BIRDS_HI[dayBird])} · ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
+    document.getElementById('period-sub').textContent=`${formatLongDate(ty,tm,td)} · ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[result.dayBird],BIRDS_HI[result.dayBird])} · ${tr('Sunrise','सूर्योदय')} ${fmtMins(result.srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(result.ssMins)}`;
 
-    function makePeriods(startMins,dur,nightOffset){
-      let html='';
-      for(let i=0;i<5;i++){
-        const rulingBird=(dayBird+i+nightOffset)%5;
-        const offset=(birthBird-rulingBird+5)%5; // 0 Ruling .. 4 Dying
-        const s=startMins+i*dur,e=s+dur;
-        const isCur=nowMins>=s%1440&&nowMins<e%1440&&(s<1440)===(nowMins<1440);
-        const cur=(s>=1440?nowMins+1440:nowMins)>=s&&(s>=1440?nowMins+1440:nowMins)<e;
-        html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:${cur?'var(--color-ink)':'var(--color-canvas-soft-2)'};">
-          <span style="width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[offset]};flex-shrink:0;"></span>
-          <div style="flex:1;">
-            <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${tr(ACTIVITIES[offset],ACTIVITIES_HI[offset])} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[offset]};">· ${tr(ACT_Q[offset],ACT_Q_HI[offset])}${cur?' · '+tr('NOW','अभी'):''}</span></p>
-            <p style="font-size:11px;color:${cur?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:1px 0 0;font-family:var(--font-mono);">${fmtMins(s)} – ${fmtMins(e)}</p>
-          </div>
-        </div>`;
-      }
-      return html;
-    }
-    document.getElementById('day-periods').innerHTML=makePeriods(srMins,dayDur,0);
-    document.getElementById('night-periods').innerHTML=makePeriods(ssMins,nightDur,2);
+    document.getElementById('day-periods').innerHTML=makePeriods(result.day,nowMins);
+    document.getElementById('night-periods').innerHTML=makePeriods(result.night,nowMins);
 
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
@@ -197,34 +238,11 @@ function calculateByNak(){
     const now=new Date();
     const locNow=new Date(now.getTime()+loc.tz*3600000);
     const ty=locNow.getUTCFullYear(),tm=locNow.getUTCMonth()+1,td=locNow.getUTCDate();
-    const jdT=toJD(ty,tm,td,6-loc.tz);
-    const srMins=sunriseUTC(jdT,loc.lat,loc.lng,true)*60+loc.tz*60;
-    const ssMins=sunriseUTC(jdT,loc.lat,loc.lng,false)*60+loc.tz*60;
-    const jdN=toJD(ty,tm,td+1,6-loc.tz);
-    const srNextMins=sunriseUTC(jdN,loc.lat,loc.lng,true)*60+loc.tz*60+1440;
-    const dayDur=(ssMins-srMins)/5;const nightDur=(srNextMins-ssMins)/5;
-    const wd=locNow.getUTCDay();const dayBird=DAY_BIRD[wd];
+    const result=computePanchaPakshi(ty,tm,td,loc.lat,loc.lng,loc.tz,birthBird);
     const nowMins=locNow.getUTCHours()*60+locNow.getUTCMinutes();
-    document.getElementById('period-sub').textContent=`${formatLongDate(ty,tm,td)} \xb7 ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[dayBird],BIRDS_HI[dayBird])} \xb7 ${tr('Sunrise','सूर्योदय')} ${fmtMins(srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(ssMins)}`;
-    function makePeriods2(startMins,dur,nightOffset){
-      let html='';
-      for(let i=0;i<5;i++){
-        const rulingBird=(dayBird+i+nightOffset)%5;
-        const offset=(birthBird-rulingBird+5)%5;
-        const s=startMins+i*dur,e=s+dur;
-        const cur=(s>=1440?nowMins+1440:nowMins)>=s&&(s>=1440?nowMins+1440:nowMins)<e;
-        html+=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:${cur?'var(--color-ink)':'var(--color-canvas-soft-2)'};">
-          <span style="width:8px;height:8px;border-radius:50%;background:${ACT_COLOR[offset]};flex-shrink:0;"></span>
-          <div style="flex:1;">
-            <p style="font-size:13px;font-weight:600;color:${cur?'#fff':'var(--color-ink)'};margin:0;">${tr(ACTIVITIES[offset],ACTIVITIES_HI[offset])} <span style="font-size:11px;font-weight:500;color:${cur?'rgba(255,255,255,0.6)':ACT_COLOR[offset]};">\xb7 ${tr(ACT_Q[offset],ACT_Q_HI[offset])}${cur?' \xb7 '+tr('NOW','अभी'):''}</span></p>
-            <p style="font-size:11px;color:${cur?'rgba(255,255,255,0.6)':'var(--color-mute)'};margin:1px 0 0;font-family:var(--font-mono);">${fmtMins(s)} – ${fmtMins(e)}</p>
-          </div>
-        </div>`;
-      }
-      return html;
-    }
-    document.getElementById('day-periods').innerHTML=makePeriods2(srMins,dayDur,0);
-    document.getElementById('night-periods').innerHTML=makePeriods2(ssMins,nightDur,2);
+    document.getElementById('period-sub').textContent=`${formatLongDate(ty,tm,td)} \xb7 ${tr('Day ruling bird','दिन का शासक पक्षी')}: ${tr(BIRDS[result.dayBird],BIRDS_HI[result.dayBird])} \xb7 ${tr('Sunrise','सूर्योदय')} ${fmtMins(result.srMins)}, ${tr('Sunset','सूर्यास्त')} ${fmtMins(result.ssMins)}`;
+    document.getElementById('day-periods').innerHTML=makePeriods(result.day,nowMins);
+    document.getElementById('night-periods').innerHTML=makePeriods(result.night,nowMins);
     document.getElementById('result').style.display='block';
     document.getElementById('err').style.display='none';
   }catch(e){const er=document.getElementById('err');er.style.display='block';er.textContent='Calculation error: '+e.message;}

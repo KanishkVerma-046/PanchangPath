@@ -1,6 +1,11 @@
-// jyotish.ts — server-side data library for Jyotish / Astrology calculators
-// NOTE: Calculation math lives inline in each page's <script> block (static Astro
-// cannot import TS modules into client scripts). This file holds shared DATA only.
+// jyotish.ts — shared data + calculation library for Jyotish / Astrology calculators.
+// Corrected 2026-08-18: contrary to this file's old note, static Astro's client <script>
+// blocks CAN import from local .ts modules (see CLAUDE.md's Critical Gotchas) — most of this
+// file's calculation math historically lived duplicated inline in each page's <script> block
+// instead, which is exactly the divergence risk the SEO-prerender rollout is retiring page by
+// page. Pancha Pakshi's engine below is the first calculation logic added directly here.
+
+import { sunriseUTC, moonLongitude, lahiriAyanamsha } from './panchang';
 
 export interface Nakshatra {
   n: string;        // English name
@@ -131,3 +136,67 @@ export const WESTERN_SIGNS: WesternSign[] = [
 export const RASHIS = ['Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya', 'Tula', 'Vrishchika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'];
 export const RASHI_HI = ['मेष', 'वृषभ', 'मिथुन', 'कर्क', 'सिंह', 'कन्या', 'तुला', 'वृश्चिक', 'धनु', 'मकर', 'कुम्भ', 'मीन'];
 export const RASHI_EN = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+
+// ── Pancha Pakshi engine ──────────────────────────────────────────────────
+// Single source of truth for /jyotish/pancha-pakshi's build-time prerender (Astro frontmatter,
+// today/New Delhi/noon default) AND its client <script> (birth-date and quick-lookup
+// recalculation). Both call sites import these same functions so they can never compute two
+// different answers — see CLAUDE.md, 2026-08-18 SEO-prerender rollout.
+
+function pkJD(y: number, m: number, d: number, h: number): number {
+  let yy = y, mm = m;
+  if (mm <= 2) { yy--; mm += 12; }
+  const A = Math.floor(yy / 100), B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (yy + 4716)) + Math.floor(30.6001 * (mm + 1)) + d + h / 24 + B - 1524.5;
+}
+const pkNorm360 = (a: number) => ((a % 360) + 360) % 360;
+
+// Day ruling bird by weekday (0=Sun..6=Sat). 0=Vulture,1=Owl,2=Crow,3=Cock,4=Peacock.
+const PK_DAY_BIRD = [0, 1, 2, 3, 4, 0, 1];
+
+/** Birth bird (0-4) from a birth moment: nakshatra of the Moon at that instant, mod 5. */
+export function pakshiBirthBird(y: number, m: number, d: number, hourDecimalLocal: number, tzOffset: number): number {
+  const jd = pkJD(y, m, d, hourDecimalLocal - tzOffset);
+  const nakIdx = Math.floor(pkNorm360(moonLongitude(jd) - lahiriAyanamsha(jd)) / (360 / 27));
+  return nakIdx % 5;
+}
+
+export interface PakshiPeriod { activityIdx: number; start: number; end: number }
+
+export interface PakshiResult {
+  birthBird: number;
+  dayBird: number;
+  weekday: number;
+  srMins: number;
+  ssMins: number;
+  day: PakshiPeriod[];
+  night: PakshiPeriod[];
+}
+
+/** Today's (civil date y/m/d, at lat/lng/tzOffset) 5 day + 5 night activity periods for a
+ *  given birth bird. Deliberately carries no live/current-time data — "NOW" highlighting is a
+ *  visitor-clock concern and must stay client-side only. */
+export function computePanchaPakshi(y: number, m: number, d: number, lat: number, lng: number, tzOffset: number, birthBird: number): PakshiResult {
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  const dayBird = PK_DAY_BIRD[weekday];
+  const jd = pkJD(y, m, d, 6 - tzOffset);
+  const jdNext = pkJD(y, m, d + 1, 6 - tzOffset);
+  const srMins = sunriseUTC(jd, lat, lng, true) * 60 + tzOffset * 60;
+  const ssMins = sunriseUTC(jd, lat, lng, false) * 60 + tzOffset * 60;
+  const srNextMins = sunriseUTC(jdNext, lat, lng, true) * 60 + tzOffset * 60 + 1440;
+  const dayDur = (ssMins - srMins) / 5;
+  const nightDur = (srNextMins - ssMins) / 5;
+
+  const day: PakshiPeriod[] = Array.from({ length: 5 }, (_, i) => {
+    const rulingBird = (dayBird + i) % 5;
+    const s = srMins + i * dayDur;
+    return { activityIdx: (birthBird - rulingBird + 5) % 5, start: s, end: s + dayDur };
+  });
+  const night: PakshiPeriod[] = Array.from({ length: 5 }, (_, i) => {
+    const rulingBird = (dayBird + i + 2) % 5;
+    const s = ssMins + i * nightDur;
+    return { activityIdx: (birthBird - rulingBird + 5) % 5, start: s, end: s + nightDur };
+  });
+
+  return { birthBird, dayBird, weekday, srMins, ssMins, day, night };
+}
