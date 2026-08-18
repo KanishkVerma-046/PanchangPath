@@ -1,6 +1,6 @@
 // Muhurta tools — data, types, and server-side scoring functions
 
-import { sunTrueLongitude, lahiriAyanamsha } from './panchang';
+import { sunTrueLongitude, lahiriAyanamsha, sunriseUTC } from './panchang';
 
 export type ChoghadiyaType = 'Amrit' | 'Shubh' | 'Labh' | 'Char' | 'Udveg' | 'Kaal' | 'Rog';
 export type Quality = 'best' | 'good' | 'neutral' | 'bad';
@@ -301,3 +301,67 @@ export function sunRashiVoidCheck(
 // Shared void-rashi sets so all 3 call sites reference the same definition.
 export const KHARMAS_RASHIS = [8, 11];       // Dhanu (Sagittarius), Meena (Pisces)
 export const CHATURMAS_RASHIS = [4, 5, 6];   // Simha, Kanya, Tula
+
+// --- Rahu Kala / Gulika Kala / Yamaganda: shared slot engine -------------------------------
+// Single source of truth for /muhurta/rahu-kala's build-time prerender (Astro frontmatter,
+// New Delhi default) AND its client-side <script> (date/location picker updates). Both call
+// sites import this same function so they can never compute two different answers for the
+// same (date, location) — see CLAUDE.md, 2026-08-18 SEO-prerender pilot.
+
+const RK_RAHU_SLOTS =   [7, 1, 6, 4, 5, 3, 2]; // Sun=7,Mon=1,Tue=6,Wed=4,Thu=5,Fri=3,Sat=2
+const RK_GULIKA_SLOTS = [6, 5, 4, 3, 2, 1, 0];
+const RK_YAMAG_SLOTS =  [4, 3, 2, 1, 0, 6, 5];
+
+function rkJD(y: number, m: number, d: number, h: number): number {
+  let yy = y, mm = m;
+  if (mm <= 2) { yy--; mm += 12; }
+  const A = Math.floor(yy / 100), B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (yy + 4716)) + Math.floor(30.6001 * (mm + 1)) + d + h / 24 + B - 1524.5;
+}
+
+function rkSlot(srMins: number, ssMins: number, slotIdx: number): { start: number; end: number } {
+  const dur = (ssMins - srMins) / 8;
+  const s = srMins + slotIdx * dur;
+  return { start: s, end: s + dur };
+}
+
+export interface RahuKalaPeriod { start: number; end: number } // minutes from local midnight
+
+export interface RahuKalaSlots {
+  weekday: number; // 0=Sunday
+  rahu: RahuKalaPeriod;
+  gulika: RahuKalaPeriod;
+  yamaganda: RahuKalaPeriod;
+  /** "This week" strip: one row per weekday, each the NEXT occurrence of that weekday on/after
+   *  the given date (row for `weekday` itself is the given date) — a rolling 7-day window, not
+   *  a Sun-Sat calendar week. Matches the page's existing "This Week" UI. */
+  week: { weekday: number; rahu: RahuKalaPeriod }[];
+}
+
+/**
+ * Rahu Kala / Gulika Kala / Yamaganda slots for a civil date and location. Deliberately carries
+ * no live/current-time data — "active now" status is a visitor-clock concern and must stay
+ * client-side only (a build-time snapshot of "now" would be wrong by the time anyone sees it).
+ */
+export function computeRahuKalaSlots(y: number, m: number, d: number, lat: number, lng: number, tz: number): RahuKalaSlots {
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  const jd = rkJD(y, m, d, 6 - tz);
+  const srMins = sunriseUTC(jd, lat, lng, true) * 60 + tz * 60;
+  const ssMins = sunriseUTC(jd, lat, lng, false) * 60 + tz * 60;
+
+  const week = RK_RAHU_SLOTS.map((_, i) => {
+    const offset = (i - weekday + 7) % 7;
+    const dayJD = rkJD(y, m, d + offset, 6 - tz);
+    const daySr = sunriseUTC(dayJD, lat, lng, true) * 60 + tz * 60;
+    const daySs = sunriseUTC(dayJD, lat, lng, false) * 60 + tz * 60;
+    return { weekday: i, rahu: rkSlot(daySr, daySs, RK_RAHU_SLOTS[i]) };
+  });
+
+  return {
+    weekday,
+    rahu: rkSlot(srMins, ssMins, RK_RAHU_SLOTS[weekday]),
+    gulika: rkSlot(srMins, ssMins, RK_GULIKA_SLOTS[weekday]),
+    yamaganda: rkSlot(srMins, ssMins, RK_YAMAG_SLOTS[weekday]),
+    week,
+  };
+}

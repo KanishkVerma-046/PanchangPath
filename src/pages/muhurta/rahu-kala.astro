@@ -1,5 +1,28 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { computeRahuKalaSlots } from '../../lib/muhurta';
+import { formatMinutes12h } from '../../lib/time-format';
+
+// Build-time default: today (IST, matching the daily-rebuild cron's clock — see CLAUDE.md
+// "Orbital mechanics"/daily-rebuild notes) at New Delhi, the site's default location. Uses the
+// exact same computeRahuKalaSlots() the client <script> below calls for date/location changes,
+// so server and client can never disagree — see CLAUDE.md's 2026-08-18 SEO-prerender pilot note.
+const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const istNow = new Date(Date.now() + IST_OFFSET_MS);
+const defY = istNow.getUTCFullYear();
+const defM = istNow.getUTCMonth() + 1;
+const defD = istNow.getUTCDate();
+
+const defaultSlots = computeRahuKalaSlots(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
+
+const VARA_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+const KALAM_META = [
+  { key: 'rahu', slot: defaultSlots.rahu, name: 'Rahu Kala', lord: 'Rahu', color: '#dc2626', bg: '#fee2e2', desc: 'Most inauspicious — ruled by Rahu (shadow planet). Never start new work.' },
+  { key: 'gulika', slot: defaultSlots.gulika, name: 'Gulika Kala', lord: "Saturn's son", color: '#b45309', bg: '#fef3c7', desc: "Inauspicious — ruled by Mandi (Saturn's son). Avoid auspicious activities." },
+  { key: 'yamaganda', slot: defaultSlots.yamaganda, name: 'Yamaganda', lord: 'Yama', color: '#374151', bg: '#f3f4f6', desc: 'Inauspicious — ruled by Yama. Avoid new ventures and travel.' },
+];
 ---
 
 <Layout title="Rahu Kala Today — Inauspicious Period — PanchangPath" description="Today's Rahu Kala, Gulika Kala and Yamaganda — inauspicious periods to avoid when starting new work.">
@@ -28,15 +51,46 @@ import Layout from '../../layouts/Layout.astro';
         <button id="rk-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
-      <!-- Today's status banner -->
+      <!-- Today's status banner: live-clock-dependent ("active now" / "starts in N min"), so it
+           is intentionally left for client JS to fill in — a build-time snapshot of "now" would
+           be stale by the time anyone sees it. -->
       <div id="rk-status" style="margin-bottom:28px;"></div>
 
-      <!-- Three kalam cards -->
-      <div id="kalam-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:40px;"></div>
+      <!-- Default-location note: prerendered alongside the New Delhi defaults below; client JS
+           hides it once a non-default city is selected (see calculate() in the script below). -->
+      <p id="rk-default-note" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Showing Rahu Kala for New Delhi — select your city above for your location.</p>
+
+      <!-- Three kalam cards: prerendered at build time for New Delhi/today so the page has real
+           content before client JS runs (SEO/no-JS crawlers); client JS overwrites this on load
+           with the live version (adds the "active now" badge, honors the visitor's date/location). -->
+      <div id="kalam-cards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:40px;">
+        {KALAM_META.map(k => (
+          <div class="card" style={`padding:20px;border:2px solid var(--color-hairline);`}>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+              <div>
+                <p style={`font-size:15px;font-weight:700;color:${k.color};margin:0 0 2px;`}>{k.name}</p>
+                <p style="font-size:11px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">Lord: {k.lord}</p>
+              </div>
+            </div>
+            <div style={`background:${k.bg};border-radius:8px;padding:12px;margin-bottom:10px;`}>
+              <p style={`font-size:20px;font-weight:700;color:${k.color};margin:0;font-family:var(--font-mono);`}>{formatMinutes12h(k.slot.start)} – {formatMinutes12h(k.slot.end)}</p>
+            </div>
+            <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">{k.desc}</p>
+          </div>
+        ))}
+      </div>
 
       <!-- Week view -->
       <h3 data-hi="राहु काल — इस सप्ताह" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Rahu Kala — This Week</h3>
-      <div id="rk-week" style="display:flex;flex-direction:column;gap:6px;max-width:600px;margin-bottom:48px;"></div>
+      <div id="rk-week" style="display:flex;flex-direction:column;gap:6px;max-width:600px;margin-bottom:48px;">
+        {defaultSlots.week.map((w, i) => (
+          <div style={`display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:${i === defaultSlots.weekday ? 'var(--color-canvas-soft-2)' : 'transparent'};border:1px solid ${i === defaultSlots.weekday ? 'var(--color-hairline)' : 'transparent'};`}>
+            <span style="font-size:12px;font-weight:600;color:var(--color-ink);width:90px;">{VARA_NAMES[i]}</span>
+            <span style="flex:1;font-size:13px;font-weight:600;color:#dc2626;font-family:var(--font-mono);">{formatMinutes12h(w.rahu.start)} – {formatMinutes12h(w.rahu.end)}</span>
+            {i === defaultSlots.weekday && <span style="font-size:10px;font-weight:700;color:var(--color-mute);font-family:var(--font-mono);">TODAY</span>}
+          </div>
+        ))}
+      </div>
 
       <!-- Info -->
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;" id="kalam-info"></div>
@@ -58,7 +112,7 @@ import Layout from '../../layouts/Layout.astro';
 </style>
 
 <script>
-import { sunriseUTC } from '../../lib/panchang';
+import { computeRahuKalaSlots } from '../../lib/muhurta';
 import { formatMinutes12h } from '../../lib/time-format';
 
 const LOCS = [
@@ -75,28 +129,10 @@ const LOCS = [
   {name:'London',nameHi:'लंदन',lat:51.5074,lng:-0.1278,tz:1},
 ];
 
-// Slots 0-7 from sunrise; Sun=7,Mon=1,Tue=6,Wed=4,Thu=5,Fri=3,Sat=2 (Fri/Sat swap fixed 2026-08-14)
-const RAHU_SLOTS =    [7,1,6,4,5,3,2];
-const GULIKA_SLOTS =  [6,5,4,3,2,1,0];
-const YAMAG_SLOTS =   [4,3,2,1,0,6,5];
 const VARA_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const VARA_HI = ['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
 let isHindi = false;
-
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const n360=(a:number)=>((a%360)+360)%360;
-const toRad=(d:number)=>d*Math.PI/180;
-const toDeg=(r:number)=>r*180/Math.PI;
 const fmtMins = formatMinutes12h;
-function slot(srMins:number,ssMins:number,slotIdx:number){
-  const dur=(ssMins-srMins)/8;
-  const s=srMins+slotIdx*dur;
-  return {start:s,end:s+dur};
-}
 
 const sel=document.getElementById('rk-city') as HTMLSelectElement;
 function renderCityOptions(){
@@ -131,16 +167,12 @@ function calculate(){
   const cityName=(document.getElementById('rk-city') as HTMLSelectElement).value;
   const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
   const [y,m,d]=dateStr.split('-').map(Number);
-  const date=new Date(dateStr+'T12:00:00');
-  const wd=date.getDay();
-  const jd=toJD(y,m,d,6-loc.tz);
-  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
-  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
-  const srMins=srUTC*60+loc.tz*60, ssMins=ssUTC*60+loc.tz*60;
+  const result=computeRahuKalaSlots(y,m,d,loc.lat,loc.lng,loc.tz);
+  const wd=result.weekday;
+  const rahu=result.rahu, gulika=result.gulika, yamag=result.yamaganda;
 
-  const rahu=slot(srMins,ssMins,RAHU_SLOTS[wd]);
-  const gulika=slot(srMins,ssMins,GULIKA_SLOTS[wd]);
-  const yamag=slot(srMins,ssMins,YAMAG_SLOTS[wd]);
+  const noteEl=document.getElementById('rk-default-note');
+  if(noteEl) (noteEl as HTMLElement).style.display = loc.name==='New Delhi' ? '' : 'none';
 
   // "Today" and "now" must be evaluated in the SELECTED location's local time, not the
   // visitor's own device timezone (this page is location-selectable) and not UTC
@@ -208,10 +240,7 @@ function calculate(){
   const weekEl=document.getElementById('rk-week');
   if(weekEl){
     weekEl.innerHTML=VARA_NAMES.map((dayName,i)=>{
-      const dayJD=toJD(y,m,d+(i-wd+7)%7-7+7,6-loc.tz);
-      const daySr=sunriseUTC(dayJD,loc.lat,loc.lng,true)*60+loc.tz*60;
-      const daySs=sunriseUTC(dayJD,loc.lat,loc.lng,false)*60+loc.tz*60;
-      const r=slot(daySr,daySs,RAHU_SLOTS[i]);
+      const r=result.week[i].rahu;
       const isCurrentDay=i===wd&&isToday;
       return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:${isCurrentDay?'var(--color-canvas-soft-2)':'transparent'};border:1px solid ${isCurrentDay?'var(--color-hairline)':'transparent'};">
         <span style="font-size:12px;font-weight:600;color:var(--color-ink);width:90px;">${isHindi?VARA_HI[i]:dayName}</span>
