@@ -1,5 +1,37 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { lahiriAyanamsha, julianDay } from '../../lib/panchang';
+import { planetLongitude, rahuLongitude } from '../../lib/astro-core';
+import { RASHIS, houseFromMoon, classifyGochara, classifyShaniGochara } from '../../lib/kundali';
+
+// Build-time default: "now" (IST, matching the daily-rebuild cron's clock). This page is
+// location-independent (a planet's rashi doesn't depend on an observer's lat/lng), so there's
+// no "default city" concept here — just a live snapshot, refreshed client-side every 60s.
+// Uses the exact same houseFromMoon()/classifyGochara()/classifyShaniGochara() the client
+// <script> below calls, so server and client can never disagree — see CLAUDE.md's
+// 2026-08-18 SEO-prerender rollout note.
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const buildNow = new Date(Date.now() + IST_OFFSET_MS);
+const buildJD = julianDay(buildNow.getUTCFullYear(), buildNow.getUTCMonth() + 1, buildNow.getUTCDate(), buildNow.getUTCHours() + buildNow.getUTCMinutes() / 60);
+const n360 = (a: number) => ((a % 360) + 360) % 360;
+const buildAy = lahiriAyanamsha(buildJD);
+
+const mangalSign = Math.floor(n360(planetLongitude('mars', buildJD) - buildAy) / 30);
+const guruSign = Math.floor(n360(planetLongitude('jupiter', buildJD) - buildAy) / 30);
+const shaniSign = Math.floor(n360(planetLongitude('saturn', buildJD) - buildAy) / 30);
+const rahuTrop = rahuLongitude(buildJD);
+const rahuSign = Math.floor(n360(rahuTrop - buildAy) / 30);
+const ketuSign = Math.floor(n360(n360(rahuTrop + 180) - buildAy) / 30);
+
+const gcRows = Array.from({ length: 12 }, (_, moonSign) => ({
+  moonSign,
+  mangal: classifyGochara(houseFromMoon(moonSign, mangalSign), [3, 6, 11]),
+  guru: classifyGochara(houseFromMoon(moonSign, guruSign), [2, 5, 7, 9, 11]),
+  shani: classifyShaniGochara(houseFromMoon(moonSign, shaniSign)),
+  rahu: classifyGochara(houseFromMoon(moonSign, rahuSign), [3, 6, 11]),
+  ketu: classifyGochara(houseFromMoon(moonSign, ketuSign), [3, 6, 11]),
+}));
+const gcCellColor = (cls: string) => cls === 'favorable' ? '#15803d' : cls === 'challenging' ? '#dc2626' : 'var(--color-body-text)';
 ---
 
 <Layout title="Gochara — Planetary Transit Table Today — PanchangPath" description="Live Gochara (transit) grid for Mars, Jupiter, Saturn, Rahu and Ketu across all 12 Moon-sign rashis, using the classical Vedic house-from-Moon framework.">
@@ -16,7 +48,7 @@ import Layout from '../../layouts/Layout.astro';
 
   <section style="padding:28px 0 48px;">
     <div class="container">
-      <p id="gc-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;"></p>
+      <p id="gc-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildNow.toLocaleTimeString('en-IN')} (auto-refreshes every 60s)</p>
       <div class="card" style="padding:20px;overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:640px;" id="gc-table">
           <thead><tr>
@@ -27,7 +59,18 @@ import Layout from '../../layouts/Layout.astro';
             <th data-hi="राहु" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Rahu</th>
             <th data-hi="केतु" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu</th>
           </tr></thead>
-          <tbody id="gc-body"></tbody>
+          <tbody id="gc-body">
+            {gcRows.map(r => (
+              <tr>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">{RASHIS[r.moonSign].name} ({RASHIS[r.moonSign].en})</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${gcCellColor(r.mangal.cls)};font-weight:600;font-size:12px;`}>{r.mangal.label}</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${gcCellColor(r.guru.cls)};font-weight:600;font-size:12px;`}>{r.guru.label}</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${gcCellColor(r.shani.cls)};font-weight:600;font-size:12px;`}>{r.shani.label}</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${gcCellColor(r.rahu.cls)};font-weight:600;font-size:12px;`}>{r.rahu.label}</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${gcCellColor(r.ketu.cls)};font-weight:600;font-size:12px;`}>{r.ketu.label}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
       <p data-hi="मंगल/राहु/केतु/शनि: चंद्र राशि से भाव 3, 6, 11 में अनुकूल ('उपचय')। गुरु: भाव 2, 5, 7, 9, 11 में अनुकूल। शनि अतिरिक्त रूप से साढ़े साती (12, 1, 2) और अष्टम शनि (8) को प्रतिकूल दर्शाता है।" style="font-size:11px;color:var(--color-mute);margin:16px 0 0;max-width:600px;">Mars/Rahu/Ketu/Saturn: favorable in houses 3, 6, 11 from Moon sign ("Upachaya"). Jupiter: favorable in houses 2, 5, 7, 9, 11. Saturn additionally shows Sade Sati (12, 1, 2) and Ashtam Shani (8) as challenging.</p>
@@ -36,33 +79,12 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <script>
-import { lahiriAyanamsha } from '../../lib/panchang';
+import { lahiriAyanamsha, julianDay } from '../../lib/panchang';
 import { planetLongitude, rahuLongitude } from '../../lib/astro-core';
+import { RASHIS, houseFromMoon, classifyGochara, classifyShaniGochara } from '../../lib/kundali';
 
 const n360=(a:number)=>((a%360)+360)%360;
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
-const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
-const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-function trRashi(i:number){return hindiActive?RASHI_HI[i]:RASHI[i];}
-
-// Classical Gochara ruleset — cross-verified during planning (see plan Global Constraints). Do not modify without re-verifying.
-function houseFromMoon(moonSignIdx:number,planetSignIdx:number){
-  return ((planetSignIdx-moonSignIdx+12)%12)+1;
-}
-function classifyGeneric(house:number,favorable:number[]){
-  return favorable.includes(house) ? {label:'Favorable',cls:'favorable'} : {label:'Challenging',cls:'challenging'};
-}
-function classifyShani(house:number){
-  if([12,1,2].includes(house))return {label:'Sade Sati',cls:'challenging'};
-  if(house===8)return {label:'Ashtam Shani',cls:'challenging'};
-  if([3,6,11].includes(house))return {label:'Favorable',cls:'favorable'};
-  return {label:'Neutral',cls:'neutral'};
-}
+function trRashi(i:number){return hindiActive?RASHIS[i].nameHi:RASHIS[i].name;}
 const LABEL_HI:any={'Favorable':'अनुकूल','Challenging':'प्रतिकूल','Sade Sati':'साढ़े साती','Ashtam Shani':'अष्टम शनि','Neutral':'तटस्थ'};
 function cellHtml(c:{label:string,cls:string}){
   const color=c.cls==='favorable'?'#15803d':c.cls==='challenging'?'#dc2626':'var(--color-body-text)';
@@ -74,7 +96,7 @@ let hindiActive=false;
 
 function render(){
   const now=new Date();
-  const jd=toJD(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
+  const jd=julianDay(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
   const ay=lahiriAyanamsha(jd);
 
   const mangalSign=Math.floor(n360(planetLongitude('mars',jd)-ay)/30);
@@ -94,12 +116,12 @@ function render(){
     const hShani=houseFromMoon(moonSign,shaniSign);
     const hRahu=houseFromMoon(moonSign,rahuSign);
     const hKetu=houseFromMoon(moonSign,ketuSign);
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${trRashi(moonSign)} (${RASHI_EN[moonSign]})</td>`
-      +cellHtml(classifyGeneric(hMangal,[3,6,11]))
-      +cellHtml(classifyGeneric(hGuru,[2,5,7,9,11]))
-      +cellHtml(classifyShani(hShani))
-      +cellHtml(classifyGeneric(hRahu,[3,6,11]))
-      +cellHtml(classifyGeneric(hKetu,[3,6,11]))
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${trRashi(moonSign)} (${RASHIS[moonSign].en})</td>`
+      +cellHtml(classifyGochara(hMangal,[3,6,11]))
+      +cellHtml(classifyGochara(hGuru,[2,5,7,9,11]))
+      +cellHtml(classifyShaniGochara(hShani))
+      +cellHtml(classifyGochara(hRahu,[3,6,11]))
+      +cellHtml(classifyGochara(hKetu,[3,6,11]))
       +'</tr>';
   }
   const body=document.getElementById('gc-body');

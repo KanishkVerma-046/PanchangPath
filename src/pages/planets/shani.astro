@@ -1,5 +1,31 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { lahiriAyanamsha, julianDay, NAKSHATRAS } from '../../lib/panchang';
+import { planetLongitude } from '../../lib/astro-core';
+import { RASHIS, houseFromMoon, classifyShaniGochara, siderealNakshatraPada, formatDegMin } from '../../lib/kundali';
+
+// Build-time default: "now" (IST, matching the daily-rebuild cron's clock). This page is
+// location-independent, so there's no "default city" concept — just a live snapshot,
+// refreshed client-side every 60s. Uses the exact same houseFromMoon()/classifyShaniGochara()/
+// siderealNakshatraPada()/formatDegMin() the client <script> below calls, so server and
+// client can never disagree — see CLAUDE.md's 2026-08-18 SEO-prerender rollout note.
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const buildNow = new Date(Date.now() + IST_OFFSET_MS);
+const buildJD = julianDay(buildNow.getUTCFullYear(), buildNow.getUTCMonth() + 1, buildNow.getUTCDate(), buildNow.getUTCHours() + buildNow.getUTCMinutes() / 60);
+const n360 = (a: number) => ((a % 360) + 360) % 360;
+const buildAy = lahiriAyanamsha(buildJD);
+
+const saturnSid = n360(planetLongitude('saturn', buildJD) - buildAy);
+const saturnSign = Math.floor(saturnSid / 30);
+const saturnNak = siderealNakshatraPada(saturnSid);
+
+const shRows = Array.from({ length: 12 }, (_, moonSign) => ({
+  moonSign,
+  house: houseFromMoon(moonSign, saturnSign),
+  effect: classifyShaniGochara(houseFromMoon(moonSign, saturnSign)),
+}));
+const HOUSE_SUFFIX = (h: number) => h === 1 ? 'st' : h === 2 ? 'nd' : h === 3 ? 'rd' : 'th';
+const shColor = (cls: string) => cls === 'favorable' ? '#15803d' : cls === 'challenging' ? '#dc2626' : 'var(--color-body-text)';
 ---
 
 <Layout title="Shani (Saturn) Transit Today — Sade Sati Table — PanchangPath" description="Live sidereal position of Saturn plus the classical Sade Sati / Ashtam Shani / favorable transit table for all 12 Moon-sign rashis.">
@@ -16,8 +42,12 @@ import Layout from '../../layouts/Layout.astro';
 
   <section style="padding:28px 0 48px;">
     <div class="container">
-      <p id="sh-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;"></p>
-      <div class="card" style="padding:20px;max-width:320px;margin-bottom:36px;" id="sh-current"></div>
+      <p id="sh-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildNow.toLocaleTimeString('en-IN')} (auto-refreshes every 60s)</p>
+      <div class="card" style="padding:20px;max-width:320px;margin-bottom:36px;" id="sh-current">
+        <p style="font-size:14px;font-weight:700;color:#374151;margin:0 0 6px;">Shani (Saturn)</p>
+        <p style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">{RASHIS[saturnSign].name} ({RASHIS[saturnSign].en})</p>
+        <p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">{formatDegMin(saturnSid)} · {NAKSHATRAS[saturnNak.idx].name} Pada {saturnNak.pada}</p>
+      </div>
 
       <h3 data-hi="चंद्र राशि के अनुसार शनि गोचर प्रभाव" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Saturn Gochara (Transit) Effect by Moon Sign</h3>
       <p data-hi="साढ़े साती (आपकी चंद्र राशि से 12वें, 1ले, 2रे भाव) 7.5 वर्ष का प्रसिद्ध शनि गोचर चक्र है। अष्टम शनि (8वां भाव) भी विशेष रूप से चुनौतीपूर्ण माना जाता है। भाव 3, 6, और 11 अनुकूल हैं ('उपचय'); शेष तटस्थ हैं।" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;max-width:600px;">Sade Sati (houses 12, 1, 2 from your Moon sign) is the well-known 7.5-year Saturn transit cycle. Ashtam Shani (house 8) is also considered particularly challenging. Houses 3, 6, and 11 are favorable ("Upachaya"); the rest are neutral.</p>
@@ -28,7 +58,15 @@ import Layout from '../../layouts/Layout.astro';
             <th data-hi="शनि का भाव" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Saturn's House</th>
             <th data-hi="प्रभाव" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Effect</th>
           </tr></thead>
-          <tbody id="sh-body"></tbody>
+          <tbody id="sh-body">
+            {shRows.map(r => (
+              <tr>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">{RASHIS[r.moonSign].name} ({RASHIS[r.moonSign].en})</td>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{r.house}{HOUSE_SUFFIX(r.house)} house</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${shColor(r.effect.cls)};font-weight:600;`}>{r.effect.label}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
@@ -36,35 +74,14 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <script>
-import { lahiriAyanamsha } from '../../lib/panchang';
+import { lahiriAyanamsha, julianDay, NAKSHATRAS } from '../../lib/panchang';
 import { planetLongitude } from '../../lib/astro-core';
+import { RASHIS, houseFromMoon, classifyShaniGochara, siderealNakshatraPada, formatDegMin } from '../../lib/kundali';
 
 const n360=(a:number)=>((a%360)+360)%360;
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
-const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
-const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const NAKS_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
-function trRashi(i:number){return hindiActive?RASHI_HI[i]:RASHI[i];}
-function trNak(i:number){return hindiActive?NAKS_HI[i]:NAKS[i];}
-function fmtDMS(lon:number){const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);return deg+'°'+String(mn).padStart(2,'0')+"'";}
-function nakInfo(sid:number){const idx=Math.floor(sid/(360/27))%27;const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;return {name:NAKS[idx],idx,pada};}
-
-// Classical Gochara ruleset — cross-verified during planning (see plan Global Constraints). Do not modify without re-verifying.
-function houseFromMoon(moonSignIdx:number,planetSignIdx:number){
-  return ((planetSignIdx-moonSignIdx+12)%12)+1;
-}
-function classifyShani(house:number){
-  if([12,1,2].includes(house))return {label:'Sade Sati',cls:'challenging'};
-  if(house===8)return {label:'Ashtam Shani',cls:'challenging'};
-  if([3,6,11].includes(house))return {label:'Favorable',cls:'favorable'};
-  return {label:'Neutral',cls:'neutral'};
-}
+function trRashi(i:number){return hindiActive?RASHIS[i].nameHi:RASHIS[i].name;}
+function trNak(i:number){return hindiActive?NAKSHATRAS[i].nameHi:NAKSHATRAS[i].name;}
+function classifyShani(house:number){ return classifyShaniGochara(house); }
 const SHANI_LABEL_HI:any={'Sade Sati':'साढ़े साती','Ashtam Shani':'अष्टम शनि','Favorable':'अनुकूल','Neutral':'तटस्थ'};
 const HOUSE_ORDINAL_HI=['पहला','दूसरा','तीसरा','चौथा','पांचवां','छठा','सातवां','आठवां','नौवां','दसवां','ग्यारहवां','बारहवां'];
 function houseLabel(house:number,hindi:boolean){
@@ -77,12 +94,12 @@ let hindiActive=false;
 
 function render(){
   const now=new Date();
-  const jd=toJD(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
+  const jd=julianDay(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
   const ay=lahiriAyanamsha(jd);
   const saturnTrop=planetLongitude('saturn',jd);
   const saturnSid=n360(saturnTrop-ay);
   const saturnSign=Math.floor(saturnSid/30);
-  const nak=nakInfo(saturnSid);
+  const nak=siderealNakshatraPada(saturnSid);
 
   const updatedEl=document.getElementById('sh-updated');
   if(updatedEl)updatedEl.textContent=(hindiActive?'अंतिम अद्यतन: ':'Last updated: ')+now.toLocaleTimeString()+(hindiActive?' (हर 60 सेकंड में स्वतः अपडेट)':' (auto-refreshes every 60s)');
@@ -90,7 +107,7 @@ function render(){
   const curEl=document.getElementById('sh-current');
   if(curEl){
     const shaniName=hindiActive?'शनि':'Shani (Saturn)';
-    curEl.innerHTML=`<p style="font-size:14px;font-weight:700;color:#374151;margin:0 0 6px;">${shaniName}</p><p style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${trRashi(saturnSign)} (${RASHI_EN[saturnSign]})</p><p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${fmtDMS(saturnSid)} · ${trNak(nak.idx)} Pada ${nak.pada}</p>`;
+    curEl.innerHTML=`<p style="font-size:14px;font-weight:700;color:#374151;margin:0 0 6px;">${shaniName}</p><p style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${trRashi(saturnSign)} (${RASHIS[saturnSign].en})</p><p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${formatDegMin(saturnSid)} · ${trNak(nak.idx)} Pada ${nak.pada}</p>`;
   }
 
   let rows='';
@@ -99,7 +116,7 @@ function render(){
     const c=classifyShani(house);
     const color=c.cls==='favorable'?'#15803d':c.cls==='challenging'?'#dc2626':'var(--color-body-text)';
     const label=hindiActive?SHANI_LABEL_HI[c.label]:c.label;
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${trRashi(moonSign)} (${RASHI_EN[moonSign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${houseLabel(house,hindiActive)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${color};font-weight:600;">${label}</td></tr>`;
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${trRashi(moonSign)} (${RASHIS[moonSign].en})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${houseLabel(house,hindiActive)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${color};font-weight:600;">${label}</td></tr>`;
   }
   const body=document.getElementById('sh-body');
   if(body)body.innerHTML=rows;

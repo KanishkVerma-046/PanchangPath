@@ -1,5 +1,46 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { lahiriAyanamsha, julianDay, NAKSHATRAS } from '../../lib/panchang';
+import { rahuLongitude } from '../../lib/astro-core';
+import { RASHIS, houseFromMoon, classifyGochara, siderealNakshatraPada, formatDegMin } from '../../lib/kundali';
+
+// Build-time default: "now" (IST, matching the daily-rebuild cron's clock). This page is
+// location-independent, so there's no "default city" concept — just a live snapshot,
+// refreshed client-side every 60s. Uses the exact same houseFromMoon()/classifyGochara()/
+// siderealNakshatraPada()/formatDegMin() the client <script> below calls, so server and
+// client can never disagree — see CLAUDE.md's 2026-08-18 SEO-prerender rollout note.
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const buildNow = new Date(Date.now() + IST_OFFSET_MS);
+const buildJD = julianDay(buildNow.getUTCFullYear(), buildNow.getUTCMonth() + 1, buildNow.getUTCDate(), buildNow.getUTCHours() + buildNow.getUTCMinutes() / 60);
+const n360 = (a: number) => ((a % 360) + 360) % 360;
+const buildAy = lahiriAyanamsha(buildJD);
+
+const rahuTrop = rahuLongitude(buildJD);
+const ketuTrop = n360(rahuTrop + 180);
+const rahuSid = n360(rahuTrop - buildAy);
+const ketuSid = n360(ketuTrop - buildAy);
+const rahuSign = Math.floor(rahuSid / 30);
+const ketuSign = Math.floor(ketuSid / 30);
+const rahuNak = siderealNakshatraPada(rahuSid);
+const ketuNak = siderealNakshatraPada(ketuSid);
+
+const RK_CARDS = [
+  { label: 'Rahu', sign: rahuSign, deg: rahuSid, nak: rahuNak, color: '#7c3aed' },
+  { label: 'Ketu', sign: ketuSign, deg: ketuSid, nak: ketuNak, color: '#4338ca' },
+];
+
+const HOUSE_SUFFIX = (h: number) => h === 1 ? 'st' : h === 2 ? 'nd' : h === 3 ? 'rd' : 'th';
+
+const rkRows = Array.from({ length: 12 }, (_, moonSign) => {
+  const rahuHouse = houseFromMoon(moonSign, rahuSign);
+  const ketuHouse = houseFromMoon(moonSign, ketuSign);
+  return {
+    moonSign,
+    rahuHouse, ketuHouse,
+    rahuCls: classifyGochara(rahuHouse, [3, 6, 11]),
+    ketuCls: classifyGochara(ketuHouse, [3, 6, 11]),
+  };
+});
 ---
 
 <Layout title="Rahu & Ketu Transit Today — PanchangPath" description="Live sidereal position of Rahu and Ketu, plus the classical Gochara (transit) favorable/challenging table for all 12 Moon-sign rashis.">
@@ -16,8 +57,16 @@ import Layout from '../../layouts/Layout.astro';
 
   <section style="padding:28px 0 48px;">
     <div class="container">
-      <p id="rk-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;"></p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:36px;" id="rk-current"></div>
+      <p id="rk-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildNow.toLocaleTimeString('en-IN')} (auto-refreshes every 60s)</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:36px;" id="rk-current">
+        {RK_CARDS.map(p => (
+          <div class="card" style="padding:20px;">
+            <p style={`font-size:14px;font-weight:700;color:${p.color};margin:0 0 6px;`}>{p.label}</p>
+            <p style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">{RASHIS[p.sign].name} ({RASHIS[p.sign].en})</p>
+            <p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">{formatDegMin(p.deg)} · {NAKSHATRAS[p.nak.idx].name} Pada {p.nak.pada}</p>
+          </div>
+        ))}
+      </div>
 
       <h3 data-hi="चंद्र राशि के अनुसार गोचर प्रभाव" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Gochara (Transit) Effect by Moon Sign</h3>
       <p data-hi="शास्त्रीय वैदिक गोचर सिद्धांत: राहु और केतु आपकी जन्म चंद्र राशि से गिनकर तीसरे, छठे, या ग्यारहवें भाव ('उपचय' भाव) से गोचर करते समय अनुकूल परिणाम देते हैं। अन्य सभी स्थितियां अधिक चुनौतीपूर्ण मानी जाती हैं।" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;max-width:600px;">Classical Vedic transit theory: Rahu and Ketu give favorable results when transiting the 3rd, 6th, or 11th house counted from your natal Moon sign (the "Upachaya" houses). All other positions are considered more challenging.</p>
@@ -30,7 +79,17 @@ import Layout from '../../layouts/Layout.astro';
             <th data-hi="केतु का भाव" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu's House</th>
             <th data-hi="केतु प्रभाव" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Ketu Effect</th>
           </tr></thead>
-          <tbody id="rk-body"></tbody>
+          <tbody id="rk-body">
+            {rkRows.map(r => (
+              <tr>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">{RASHIS[r.moonSign].name} ({RASHIS[r.moonSign].en})</td>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{r.rahuHouse}{HOUSE_SUFFIX(r.rahuHouse)} house</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${r.rahuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;`}>{r.rahuCls.label}</td>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{r.ketuHouse}{HOUSE_SUFFIX(r.ketuHouse)} house</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${r.ketuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;`}>{r.ketuCls.label}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
@@ -38,33 +97,14 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <script>
-import { lahiriAyanamsha } from '../../lib/panchang';
+import { lahiriAyanamsha, julianDay, NAKSHATRAS } from '../../lib/panchang';
 import { rahuLongitude } from '../../lib/astro-core';
+import { RASHIS, houseFromMoon, classifyGochara, siderealNakshatraPada, formatDegMin } from '../../lib/kundali';
 
 const n360=(a:number)=>((a%360)+360)%360;
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
-const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
-const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const NAKS_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
-function trRashi(i:number){return hindiActive?RASHI_HI[i]:RASHI[i];}
-function trNak(i:number){return hindiActive?NAKS_HI[i]:NAKS[i];}
-function fmtDMS(lon:number){const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);return deg+'°'+String(mn).padStart(2,'0')+"'";}
-function nakInfo(sid:number){const idx=Math.floor(sid/(360/27))%27;const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;return {name:NAKS[idx],idx,pada};}
-
-// Classical Gochara ruleset — cross-verified against independent sources during planning (see plan Global Constraints). Do not modify without re-verifying.
-const FAVORABLE_HOUSES=[3,6,11];
-function houseFromMoon(moonSignIdx:number,planetSignIdx:number){
-  return ((planetSignIdx-moonSignIdx+12)%12)+1;
-}
-function classify(house:number){
-  return FAVORABLE_HOUSES.includes(house) ? {label:'Favorable',cls:'favorable'} : {label:'Challenging',cls:'challenging'};
-}
+function trRashi(i:number){return hindiActive?RASHIS[i].nameHi:RASHIS[i].name;}
+function trNak(i:number){return hindiActive?NAKSHATRAS[i].nameHi:NAKSHATRAS[i].name;}
+function classify(house:number){ return classifyGochara(house,[3,6,11]); }
 const HOUSE_ORDINAL_HI=['पहला','दूसरा','तीसरा','चौथा','पांचवां','छठा','सातवां','आठवां','नौवां','दसवां','ग्यारहवां','बारहवां'];
 function houseLabel(house:number,hindi:boolean){
   if(hindi) return HOUSE_ORDINAL_HI[house-1]+' भाव';
@@ -76,7 +116,7 @@ let hindiActive=false;
 
 function render(){
   const now=new Date();
-  const jd=toJD(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
+  const jd=julianDay(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
   const ay=lahiriAyanamsha(jd);
   const rahuTrop=rahuLongitude(jd);
   const ketuTrop=n360(rahuTrop+180);
@@ -84,8 +124,8 @@ function render(){
   const ketuSid=n360(ketuTrop-ay);
   const rahuSign=Math.floor(rahuSid/30);
   const ketuSign=Math.floor(ketuSid/30);
-  const rahuNak=nakInfo(rahuSid);
-  const ketuNak=nakInfo(ketuSid);
+  const rahuNak=siderealNakshatraPada(rahuSid);
+  const ketuNak=siderealNakshatraPada(ketuSid);
 
   const updatedEl=document.getElementById('rk-updated');
   if(updatedEl)updatedEl.textContent=(hindiActive?'अंतिम अद्यतन: ':'Last updated: ')+now.toLocaleTimeString()+(hindiActive?' (हर 60 सेकंड में स्वतः अपडेट)':' (auto-refreshes every 60s)');
@@ -95,7 +135,7 @@ function render(){
     curEl.innerHTML=[
       {label:hindiActive?'राहु':'Rahu',sign:rahuSign,deg:rahuSid,nak:rahuNak,color:'#7c3aed'},
       {label:hindiActive?'केतु':'Ketu',sign:ketuSign,deg:ketuSid,nak:ketuNak,color:'#4338ca'},
-    ].map(p=>`<div class="card" style="padding:20px;"><p style="font-size:14px;font-weight:700;color:${p.color};margin:0 0 6px;">${p.label}</p><p style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${trRashi(p.sign)} (${RASHI_EN[p.sign]})</p><p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${fmtDMS(p.deg)} · ${trNak(p.nak.idx)} Pada ${p.nak.pada}</p></div>`).join('');
+    ].map(p=>`<div class="card" style="padding:20px;"><p style="font-size:14px;font-weight:700;color:${p.color};margin:0 0 6px;">${p.label}</p><p style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${trRashi(p.sign)} (${RASHIS[p.sign].en})</p><p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${formatDegMin(p.deg)} · ${trNak(p.nak.idx)} Pada ${p.nak.pada}</p></div>`).join('');
   }
 
   let rows='';
@@ -106,7 +146,7 @@ function render(){
     const ketuCls=classify(ketuHouse);
     const rahuLabel=hindiActive?(rahuCls.cls==='favorable'?'अनुकूल':'प्रतिकूल'):rahuCls.label;
     const ketuLabel=hindiActive?(ketuCls.cls==='favorable'?'अनुकूल':'प्रतिकूल'):ketuCls.label;
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${trRashi(moonSign)} (${RASHI_EN[moonSign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${houseLabel(rahuHouse,hindiActive)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${rahuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;">${rahuLabel}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${houseLabel(ketuHouse,hindiActive)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${ketuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;">${ketuLabel}</td></tr>`;
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${trRashi(moonSign)} (${RASHIS[moonSign].en})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${houseLabel(rahuHouse,hindiActive)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${rahuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;">${rahuLabel}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${houseLabel(ketuHouse,hindiActive)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${ketuCls.cls==='favorable'?'#15803d':'#dc2626'};font-weight:600;">${ketuLabel}</td></tr>`;
   }
   const body=document.getElementById('rk-body');
   if(body)body.innerHTML=rows;

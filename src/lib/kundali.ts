@@ -272,3 +272,53 @@ export function drawSouthGrid(data: KundaliData): string {
   }
   return `<div class="kw-grid" id="kw-grid">${cells}</div>`;
 }
+
+// ── Live "now" planet pages: shared helpers ─────────────────────────────────
+// Single source of truth for /planets/{planetary-positions,gochara,rahu-ketu,shani} —
+// previously each of these 4 pages carried its own duplicated copy of nakshatra/pada lookup,
+// degree-minute formatting, and (on 3 of the 4) the Gochara house-from-Moon classification
+// rules. Extracted here so build-time prerender and the client's 60s auto-refresh can never
+// disagree — see CLAUDE.md, 2026-08-18 SEO-prerender rollout.
+
+/** Nakshatra index (0-26) and pada (1-4) for a sidereal longitude. Look up display names via
+ *  NAKSHATRAS[idx] from src/lib/panchang.ts. */
+export function siderealNakshatraPada(sid: number): { idx: number; pada: number } {
+  const span = 360 / 27;
+  const idx = Math.floor(sid / span) % 27;
+  const pada = Math.floor((sid % span) / (span / 4)) + 1;
+  return { idx, pada };
+}
+
+/** Sidereal longitude within its sign -> "14°23'". */
+export function formatDegMin(lon: number): string {
+  const d = lon % 30;
+  const deg = Math.floor(d);
+  const mn = Math.floor((d - deg) * 60);
+  return `${deg}°${String(mn).padStart(2, '0')}'`;
+}
+
+/** Classical Gochara ruleset — cross-verified during planning. Do not modify without
+ *  re-verifying against an independent source. */
+export function houseFromMoon(moonSignIdx: number, planetSignIdx: number): number {
+  return ((planetSignIdx - moonSignIdx + 12) % 12) + 1;
+}
+
+export type GocharaEffect = {
+  label: 'Favorable' | 'Challenging' | 'Neutral' | 'Sade Sati' | 'Ashtam Shani';
+  cls: 'favorable' | 'challenging' | 'neutral';
+};
+
+/** Mars/Mercury/Jupiter/Venus/Rahu/Ketu-style Gochara: favorable in the given houses (default
+ *  3, 6, 11 — the "Upachaya" houses), challenging everywhere else. */
+export function classifyGochara(house: number, favorableHouses: number[] = [3, 6, 11]): GocharaEffect {
+  return favorableHouses.includes(house) ? { label: 'Favorable', cls: 'favorable' } : { label: 'Challenging', cls: 'challenging' };
+}
+
+/** Saturn-specific Gochara: Sade Sati (12th/1st/2nd from Moon), Ashtam Shani (8th), Upachaya
+ *  favorable (3rd/6th/11th), Neutral otherwise. */
+export function classifyShaniGochara(house: number): GocharaEffect {
+  if ([12, 1, 2].includes(house)) return { label: 'Sade Sati', cls: 'challenging' };
+  if (house === 8) return { label: 'Ashtam Shani', cls: 'challenging' };
+  if ([3, 6, 11].includes(house)) return { label: 'Favorable', cls: 'favorable' };
+  return { label: 'Neutral', cls: 'neutral' };
+}

@@ -1,5 +1,34 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { calculateKundali, siderealNakshatraPada, formatDegMin, RASHIS } from '../../lib/kundali';
+import { NAKSHATRAS } from '../../lib/panchang';
+
+// Build-time default: "now" (IST, matching the daily-rebuild cron's clock). This page is
+// location-independent (graha longitudes don't depend on an observer's lat/lng), so there's
+// no "default city" concept here — just a live snapshot, refreshed client-side every 60s.
+// calculateKundali() is the exact same function the client <script> below calls; lat/lng/tz
+// are passed as 0 because only .grahas is used here, never .lagna (which is the only field
+// they'd affect) — see CLAUDE.md's 2026-08-18 SEO-prerender rollout note.
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const buildNow = new Date(Date.now() + IST_OFFSET_MS);
+const initKundali = calculateKundali(buildNow, 0, 0, 0);
+
+const PLANET_SIGNIFICANCE: Record<string, { full: string; desc: string; nameHi: string; descHi: string }> = {
+  surya:   { full: 'Surya (Sun)', desc: 'Soul, vitality, self-confidence, authority, father, government service, and overall health.', nameHi: 'सूर्य', descHi: 'आत्मा, जीवन शक्ति, आत्मविश्वास, अधिकार, पिता, सरकारी सेवा, और समग्र स्वास्थ्य।' },
+  chandra: { full: 'Chandra (Moon)', desc: 'Mind, emotions, intuition, mother, and the emotional core used for daily Rashifal and Muhurta decisions.', nameHi: 'चंद्रमा', descHi: 'मन, भावनाएं, अंतर्ज्ञान, माता, और दैनिक राशिफल व मुहूर्त निर्णयों में प्रयुक्त भावनात्मक केंद्र।' },
+  mangal:  { full: 'Mangal (Mars)', desc: 'Energy, courage, siblings, land and property, conflict, and drive to take action.', nameHi: 'मंगल', descHi: 'ऊर्जा, साहस, भाई-बहन, भूमि व संपत्ति, संघर्ष, और कार्य करने की प्रेरणा।' },
+  budha:   { full: 'Budha (Mercury)', desc: 'Intellect, communication, business acumen, education, and analytical skill.', nameHi: 'बुध', descHi: 'बुद्धि, संचार, व्यावसायिक कुशलता, शिक्षा, और विश्लेषणात्मक क्षमता।' },
+  guru:    { full: 'Guru (Jupiter)', desc: 'Wisdom, wealth, children, spirituality, teachers, and expansion or growth.', nameHi: 'गुरु', descHi: 'ज्ञान, धन, संतान, आध्यात्मिकता, गुरुजन, और विस्तार या विकास।' },
+  shukra:  { full: 'Shukra (Venus)', desc: 'Love, marriage, beauty, luxury, art, and relationships.', nameHi: 'शुक्र', descHi: 'प्रेम, विवाह, सौंदर्य, विलासिता, कला, और रिश्ते।' },
+  shani:   { full: 'Shani (Saturn)', desc: 'Discipline, longevity, hard work, career, delays, and karmic lessons.', nameHi: 'शनि', descHi: 'अनुशासन, दीर्घायु, कठोर परिश्रम, करियर, विलंब, और कर्म संबंधी सीख।' },
+  rahu:    { full: 'Rahu', desc: 'Worldly desire, obsession, foreign connections, sudden change, and illusion.', nameHi: 'राहु', descHi: 'सांसारिक इच्छा, जुनून, विदेशी संबंध, अचानक परिवर्तन, और भ्रम।' },
+  ketu:    { full: 'Ketu', desc: 'Detachment, spirituality, past-life karma, and liberation.', nameHi: 'केतु', descHi: 'वैराग्य, आध्यात्मिकता, पूर्वजन्म का कर्म, और मोक्ष।' },
+};
+
+const initRows = initKundali.grahas.map(g => {
+  const nak = siderealNakshatraPada(g.siderealLon);
+  return { g, nak: NAKSHATRAS[nak.idx], pada: nak.pada, sig: PLANET_SIGNIFICANCE[g.id] };
+});
 ---
 
 <Layout title="Planetary Positions Today — Live Graha Sphuta — PanchangPath" description="Real-time sidereal positions of all 9 grahas (Sun through Ketu) — sign, nakshatra, degree and retrograde status, computed live with Lahiri ayanamsha.">
@@ -16,7 +45,7 @@ import Layout from '../../layouts/Layout.astro';
 
   <section style="padding:28px 0 48px;">
     <div class="container">
-      <p id="pp-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;"></p>
+      <p id="pp-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildNow.toLocaleTimeString('en-IN')} (auto-refreshes every 60s)</p>
       <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:32px;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pp-table">
           <thead><tr>
@@ -27,32 +56,40 @@ import Layout from '../../layouts/Layout.astro';
             <th data-hi="पद" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Pada</th>
             <th data-hi="गति" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Motion</th>
           </tr></thead>
-          <tbody id="pp-body"></tbody>
+          <tbody id="pp-body">
+            {initRows.map(({ g, nak, pada }) => (
+              <tr>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">{g.name}</td>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{g.signName} ({RASHIS[g.sign].en})</td>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">{formatDegMin(g.siderealLon)}</td>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{nak.name}</td>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{pada}</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${g.isRetrograde ? '#dc2626' : 'var(--color-body-text)'};`}>{g.isRetrograde ? 'Retrograde' : 'Direct'}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
 
       <h3 data-hi="प्रत्येक ग्रह का अर्थ" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">What Each Graha Signifies</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;" id="pp-significations"></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;" id="pp-significations">
+        {initRows.map(({ g, sig }) => (
+          <div class="card" style="padding:16px;">
+            <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">{sig.full}</p>
+            <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">{sig.desc}</p>
+          </div>
+        ))}
+      </div>
     </div>
   </section>
 </Layout>
 
 <script>
-import { allTropicalLons } from '../../lib/kundali';
+import { calculateKundali, siderealNakshatraPada, formatDegMin, RASHIS } from '../../lib/kundali';
+import { NAKSHATRAS } from '../../lib/panchang';
 
-const n360=(a:number)=>((a%360)+360)%360;
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
-const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
-const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const NAKS_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
-function trRashi(i:number){return hindiActive?RASHI_HI[i]:RASHI[i];}
-function trNak(i:number){return hindiActive?NAKS_HI[i]:NAKS[i];}
+function trRashi(i:number){return hindiActive?RASHIS[i].nameHi:RASHIS[i].name;}
+function trNak(i:number){return hindiActive?NAKSHATRAS[i].nameHi:NAKSHATRAS[i].name;}
 const PLANETS=[
   ['surya','Surya (Sun)','Soul, vitality, self-confidence, authority, father, government service, and overall health.'],
   ['chandra','Chandra (Moon)','Mind, emotions, intuition, mother, and the emotional core used for daily Rashifal and Muhurta decisions.'],
@@ -75,24 +112,11 @@ const PLANETS_HI:any={
   rahu:['राहु','सांसारिक इच्छा, जुनून, विदेशी संबंध, अचानक परिवर्तन, और भ्रम।'],
   ketu:['केतु','वैराग्य, आध्यात्मिकता, पूर्वजन्म का कर्म, और मोक्ष।'],
 };
-function fmtDMS(lon:number){
-  const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);
-  return deg+'°'+String(mn).padStart(2,'0')+"'";
-}
-function nakInfo(sid:number){
-  const idx=Math.floor(sid/(360/27))%27;
-  const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;
-  return {name:NAKS[idx],idx,pada};
-}
-
 let hindiActive=false;
 
 function render(){
   const now=new Date();
-  const jd=toJD(now.getUTCFullYear(),now.getUTCMonth()+1,now.getUTCDate(),now.getUTCHours()+now.getUTCMinutes()/60);
-  const L=allTropicalLons(jd);
-  const Lp=allTropicalLons(jd+1);
-  const ay=L.ayanamsha;
+  const data=calculateKundali(now,0,0,0);
 
   const updatedEl=document.getElementById('pp-updated');
   if(updatedEl)updatedEl.textContent=(hindiActive?'अंतिम अद्यतन: ':'Last updated: ')+now.toLocaleTimeString()+(hindiActive?' (हर 60 सेकंड में स्वतः अपडेट)':' (auto-refreshes every 60s)');
@@ -100,19 +124,11 @@ function render(){
   let rows='';
   PLANETS.forEach(([k,full])=>{
     const displayName=hindiActive?PLANETS_HI[k][0]:full;
-    const sid=n360((L as any)[k]-ay);
-    const sign=Math.floor(sid/30);
-    const nk=nakInfo(sid);
-    let motion='Direct';
-    if(k==='rahu'||k==='ketu')motion='Retrograde';
-    else if(k!=='surya'&&k!=='chandra'){
-      const cur=n360((L as any)[k]-ay);
-      const nxt=n360((Lp as any)[k]-(Lp as any).ayanamsha);
-      let diff=nxt-cur;if(diff>180)diff-=360;if(diff<-180)diff+=360;
-      motion=diff<0?'Retrograde':'Direct';
-    }
+    const g=data.grahas.find(x=>x.id===k)!;
+    const nk=siderealNakshatraPada(g.siderealLon);
+    const motion=g.isRetrograde?'Retrograde':'Direct';
     const motionLabel=hindiActive?(motion==='Retrograde'?'वक्री':'मार्गी'):motion;
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${displayName}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trRashi(sign)} (${RASHI_EN[sign]})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">${fmtDMS(sid)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trNak(nk.idx)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.pada}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${motion==='Retrograde'?'#dc2626':'var(--color-body-text)'};">${motionLabel}</td></tr>`;
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${displayName}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trRashi(g.sign)} (${RASHIS[g.sign].en})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">${formatDegMin(g.siderealLon)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trNak(nk.idx)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.pada}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${motion==='Retrograde'?'#dc2626':'var(--color-body-text)'};">${motionLabel}</td></tr>`;
   });
   const body=document.getElementById('pp-body');
   if(body)body.innerHTML=rows;
