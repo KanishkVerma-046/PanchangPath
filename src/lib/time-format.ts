@@ -67,3 +67,13 @@ export function formatDurationMins(totalMins: number): string {
 export function formatDurationHours(hours: number): string {
   return formatDurationMins(hours * 60);
 }
+
+/** Inverse of formatMinutes12h(): "6:05 AM" -> minutes from midnight. For deriving a
+ *  percentage-bar position from an already-computed display string (e.g. the homepage day
+ *  timeline), not for any new astronomy calculation — the string itself remains the single
+ *  source of truth for the underlying time. */
+export function parseMinutes12h(timeStr: string): number {
+  const [timePart, period] = timeStr.trim().split(' ');
+  const [h, m] = timePart.split(':').map(Number);
+  return (h % 12 + (period === 'PM' ? 12 : 0)) * 60 + m;
+}

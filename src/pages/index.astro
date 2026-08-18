@@ -13,6 +13,7 @@ import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festi
 import { computeUpcomingEvents } from '../lib/planetaryEvents';
 import { getDefaultLocation } from '../lib/locations';
 import { formatDateHi } from '../lib/date-i18n';
+import { parseMinutes12h } from '../lib/time-format';
 
 const today = new Date();
 const loc = getDefaultLocation(); // New Delhi, will be overridden client-side
@@ -25,6 +26,20 @@ const planetaryEvents = computeUpcomingEvents(today, 180);
 const dateStr = formatDateHi(today, false, { weekday: 'long' });
 const dateStrHi = formatDateHi(today, true, { weekday: 'long' });
 const panchangDateLabel = formatDateHi(today, false, { month: 'short' });
+
+// Day Timeline bar segments (Rahu/Gulika/Yama) — derived from the same panchang.rahuKalam/
+// gulikaKalam/yamaganda/sunrise/sunset values already rendered as text above, so this can
+// never disagree with them. The live "now" marker line stays client-only (see drawTimeline()
+// in the <script> below) — a build-time snapshot of "now" would be stale by page-view time.
+const tlSrMins = parseMinutes12h(panchang.sunrise);
+const tlSsMins = parseMinutes12h(panchang.sunset);
+const tlTotal = tlSsMins - tlSrMins;
+const tlPct = (m: number) => Math.max(0, Math.min(100, ((m - tlSrMins) / tlTotal) * 100));
+const TIMELINE_SEGMENTS = [
+  { color: '#ef4444', label: 'Rahu', start: parseMinutes12h(panchang.rahuKalam.start), end: parseMinutes12h(panchang.rahuKalam.end) },
+  { color: '#f59e0b', label: 'Gulika', start: parseMinutes12h(panchang.gulikaKalam.start), end: parseMinutes12h(panchang.gulikaKalam.end) },
+  { color: '#8b5cf6', label: 'Yama', start: parseMinutes12h(panchang.yamaganda.start), end: parseMinutes12h(panchang.yamaganda.end) },
+].map(s => ({ ...s, leftPct: tlPct(s.start), widthPct: tlPct(s.end) - tlPct(s.start) }));
 ---
 
 <Layout
@@ -225,7 +240,10 @@ const panchangDateLabel = formatDateHi(today, false, { month: 'short' });
       <div class="card" style="padding:20px 24px;margin-bottom:12px;overflow:hidden;">
         <p class="caption-mono" style="color:var(--color-mute);margin:0 0 14px;"><span class="en-text">Day Timeline</span><span class="hi-text" style="display:none">दिन की समयरेखा</span></p>
         <div style="position:relative;height:32px;background:var(--color-canvas-soft-2);border-radius:4px;overflow:hidden;" id="timeline-bar">
-          <!-- Filled by JS -->
+          {TIMELINE_SEGMENTS.map(s => (
+            <div style={`position:absolute;left:${s.leftPct}%;width:${s.widthPct}%;height:100%;background:${s.color};opacity:0.25;`} title={`${s.label} Kalam`}></div>
+          ))}
+          <!-- "Now" marker line added by client JS (see drawTimeline()) — live-clock-dependent. -->
         </div>
         <div style="display:flex;justify-content:space-between;margin-top:6px;">
           <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="tl-sunrise">{panchang.sunrise}</span>

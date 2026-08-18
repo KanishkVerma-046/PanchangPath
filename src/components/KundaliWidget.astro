@@ -1,5 +1,5 @@
 ---
-import { calculateKundali, RASHIS, GRAHA_META, jdFull } from '../lib/kundali';
+import { calculateKundali, RASHIS, GRAHA_META, jdFull, drawNorthDiamond } from '../lib/kundali';
 import { getDefaultLocation } from '../lib/locations';
 import { PLANET_ICONS } from '../lib/icons/planets';
 import PlanetIcon from './icons/PlanetIcon.astro';
@@ -7,6 +7,10 @@ import PlanetIcon from './icons/PlanetIcon.astro';
 const loc  = getDefaultLocation();
 const now  = new Date();
 const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
+// Default chart style is North (matches the "active" tab below); the client <script> calls
+// this exact same drawNorthDiamond()/drawSouthGrid() pair on tab switch / location change, so
+// the prerendered chart and the hydrated one are always built from identical code.
+const initChartSvg = drawNorthDiamond(init);
 ---
 
 <!-- ─── Lagna Kundali Widget ─── -->
@@ -33,8 +37,7 @@ const init = calculateKundali(now, loc.lat, loc.lng, loc.tzOffset);
 
       <!-- Chart panel -->
       <div class="kw-chart-panel">
-        <div class="kw-chart-container" id="kw-chart-container">
-          <!-- North: SVG diamond grid · South: 4×4 cell grid — JS fills content -->
+        <div class="kw-chart-container" id="kw-chart-container" set:html={initChartSvg}>
         </div>
         <!-- Lagna info under chart -->
         <div class="kw-lagna-row">
@@ -394,7 +397,7 @@ text.kwc-chip:hover { fill: var(--color-saffron-deep) !important; }
 
 <!-- ─── Client script ─── -->
 <script>
-import { calculateKundali, RASHIS } from '../lib/kundali';
+import { calculateKundali, drawNorthDiamond, drawSouthGrid } from '../lib/kundali';
 
 const PLANET_ICONS: Record<string, string> = JSON.parse(document.getElementById('planet-icons-data')!.textContent || '{}');
 
@@ -402,83 +405,9 @@ function planetIconSvg(id: string, size: number) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;">${PLANET_ICONS[id]}</svg>`;
 }
 
-// North Indian diamond: house (0-indexed, house 1..12) → normalised [x,y] label position
-// Same kite/diamond coordinate scheme as the Kundali Generator's SVG chart.
-const NI_HOUSE_XY: [number, number][] = [
-  [0.5,0.25],[0.25,0.12],[0.12,0.25],[0.25,0.5],[0.12,0.75],[0.25,0.88],
-  [0.5,0.75],[0.75,0.88],[0.88,0.75],[0.75,0.5],[0.88,0.25],[0.75,0.12],
-];
-
-// South Indian: cell → rashi index (−1 = center)
-const SI_CELL_RASHI: number[][] = [
-  [11,0,1,2],[10,-1,-1,3],[9,-1,-1,4],[8,7,6,5]
-];
-
 // ─── Chart rendering ──────────────────────────────────────────────────────────
 let currentStyle = 'north';
 let currentData: ReturnType<typeof calculateKundali> | null = null;
-
-// True North Indian diamond chart, rendered as SVG (matching the Kundali
-// Generator's chart geometry). Sanskrit-abbreviated planet labels (g.abbr).
-function drawNorthDiamond(data: ReturnType<typeof calculateKundali>): string {
-  const S = 272;
-  const planetsByHouse: (typeof data.grahas) [] = Array.from({ length: 12 }, () => []);
-  data.grahas.forEach(g => {
-    const house = ((g.sign - data.lagna.sign) + 12) % 12;
-    planetsByHouse[house].push(g);
-  });
-
-  const lines = `<line x1="0" y1="0" x2="${S}" y2="${S}"/><line x1="${S}" y1="0" x2="0" y2="${S}"/>` +
-    `<polygon points="${S/2},0 ${S},${S/2} ${S/2},${S} 0,${S/2}" fill="none"/>`;
-
-  let txt = '';
-  for (let h = 0; h < 12; h++) {
-    const cx = NI_HOUSE_XY[h][0] * S, cy = NI_HOUSE_XY[h][1] * S;
-    const signIdx = (data.lagna.sign + h) % 12;
-    const isLagna = h === 0;
-    txt += `<text class="kw-diamond-house" x="${cx}" y="${cy - 17}" text-anchor="middle" font-size="9" fill="var(--color-kundali-house)" stroke="none">${signIdx + 1}</text>`;
-    if (isLagna) {
-      txt += `<text x="${cx + 15}" y="${cy - 17}" text-anchor="middle" font-size="8" font-weight="700" fill="var(--color-saffron-deep)" stroke="none">La</text>`;
-    }
-    const pls = planetsByHouse[h];
-    const perRow = 3;
-    pls.forEach((p, i) => {
-      const col = i % perRow, row = Math.floor(i / perRow);
-      const px = cx + (col - (Math.min(pls.length, perRow) - 1) / 2) * 20;
-      const py = cy + row * 13;
-      const fill = p.isRetrograde ? '#c62828' : p.isCombust ? 'var(--color-mute)' : 'var(--color-kundali-label)';
-      txt += `<text class="kwc-chip" data-pid="${p.id}" x="${px}" y="${py}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${fill}" stroke="none" style="cursor:pointer;">${p.abbr}${p.isRetrograde ? 'ᴿ' : ''}</text>`;
-    });
-  }
-
-  return `<svg viewBox="-2 -2 ${S + 4} ${S + 4}" width="${S}" height="${S}" style="stroke:var(--color-kundali-grid);stroke-width:1;">` +
-    `<rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-kundali-bg)" rx="4"/>${lines}${txt}</svg>`;
-}
-
-// South Indian: fixed rashi positions, 4×4 cell grid (unchanged layout).
-function drawSouthGrid(data: ReturnType<typeof calculateKundali>): string {
-  let cells = '';
-  for (let r = 0; r < 4; r++) {
-    for (let c = 0; c < 4; c++) {
-      const isCenter = r >= 1 && r <= 2 && c >= 1 && c <= 2;
-      if (isCenter) {
-        cells += `<div class="kw-cell kw-center">${r === 1 && c === 1 ? '<span class="kw-om">🕉</span>' : ''}</div>`;
-        continue;
-      }
-      const rashiIdx = SI_CELL_RASHI[r][c];
-      const isLagna = rashiIdx === data.lagna.sign;
-      const planetsHere = data.grahas.filter(g => g.sign === rashiIdx);
-      cells += `<div class="kw-cell${isLagna ? ' kw-lagna-cell' : ''}">
-        <span class="kwc-si-rashi">${RASHIS[rashiIdx].abbr}</span>
-        ${isLagna ? '<span class="kwc-si-lagna">La</span>' : ''}
-        <span class="kwc-si-planets">${planetsHere.map(p =>
-          `<span class="kwc-chip ${p.isRetrograde?'vakri':''} ${p.isCombust?'asta':''}" data-pid="${p.id}">${p.abbr}${p.isRetrograde?'ᴿ':''}</span>`
-        ).join('')}</span>
-      </div>`;
-    }
-  }
-  return `<div class="kw-grid" id="kw-grid">${cells}</div>`;
-}
 
 function renderChart(data: ReturnType<typeof calculateKundali>, style: string) {
   const container = document.getElementById('kw-chart-container');

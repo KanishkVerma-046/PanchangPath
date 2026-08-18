@@ -1,6 +1,26 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
+import { computeChoghadiyaSlots, CHOGHADIYA_INFO } from '../lib/muhurta';
+import { formatMinutes12h } from '../lib/time-format';
+import { formatDateIST } from '../lib/date-i18n';
+
+// Build-time default: today (IST, matching the daily-rebuild cron's clock) at New Delhi, the
+// site's default location. Uses the exact same computeChoghadiyaSlots() the client <script>
+// below calls for date/location changes, so server and client can never disagree — see
+// CLAUDE.md's 2026-08-18 SEO-prerender rollout note. The live "NOW" highlight stays
+// client-only (a build-time snapshot of "now" would be stale by the time anyone sees it).
+const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const istNow = new Date(Date.now() + IST_OFFSET_MS);
+const defY = istNow.getUTCFullYear();
+const defM = istNow.getUTCMonth() + 1;
+const defD = istNow.getUTCDate();
+
+const defaultQuickChog = computeChoghadiyaSlots(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
+const fmt = formatMinutes12h;
+const quickDateLabelEn = formatDateIST(new Date(), false, { weekday: 'long', month: 'short' });
+const quickDateLabelHi = formatDateIST(new Date(), true, { weekday: 'long', month: 'short' });
 ---
 
 <Layout title="Muhurta Tools — Auspicious Timing — PanchangPath" description="Complete Muhurta toolkit: Choghadiya, Shubha Hora, Rahu Kala, Lagna table, Vivah Muhurat, Griha Pravesh and more.">
@@ -22,15 +42,25 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
         <div>
           <h2 data-hi="आज की चौघड़िया" style="font-size:18px;font-weight:600;letter-spacing:-0.4px;color:var(--color-ink);margin:0 4px 0 0;display:inline;">Today's Choghadiya</h2>
-          <span style="font-size:13px;color:var(--color-mute);margin-left:8px;" id="quick-date-label"></span>
+          <span style="font-size:13px;color:var(--color-mute);margin-left:8px;" id="quick-date-label" data-hi={quickDateLabelHi} data-en={quickDateLabelEn}>{quickDateLabelEn}</span>
         </div>
         <a href="/muhurta/choghadiya" data-hi="पूर्ण चौघड़िया →" class="btn-outline" style="font-size:13px;height:34px;padding:0 16px;">Full Choghadiya →</a>
       </div>
+      <p id="quick-chog-default-note" style="font-size:12px;color:var(--color-mute);margin:-12px 0 12px;">Showing today's Choghadiya for New Delhi — select your location in the header for your own.</p>
       <div id="quick-chog" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:40px;">
-        <div style="height:60px;background:var(--color-canvas-soft-2);border-radius:8px;animation:pulse 1.5s infinite;"></div>
-        <div style="height:60px;background:var(--color-canvas-soft-2);border-radius:8px;animation:pulse 1.5s infinite;"></div>
-        <div style="height:60px;background:var(--color-canvas-soft-2);border-radius:8px;animation:pulse 1.5s infinite;"></div>
-        <div style="height:60px;background:var(--color-canvas-soft-2);border-radius:8px;animation:pulse 1.5s infinite;"></div>
+        {defaultQuickChog.day.map(slot => {
+          const info = CHOGHADIYA_INFO[slot.name];
+          const qLabel = info.quality === 'best' ? 'Best' : info.quality === 'good' ? 'Good' : info.quality === 'neutral' ? 'Neutral' : 'Avoid';
+          return (
+            <div style={`background:${info.bgColor};border-radius:8px;padding:12px 14px;border:1px solid var(--color-hairline);`}>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+                <span style={`font-size:13px;font-weight:600;color:${info.color};`}>{slot.name}</span>
+              </div>
+              <p style="font-size:10px;color:var(--color-mute);margin:0;">{fmt(slot.start)} – {fmt(slot.end)}</p>
+              <p style={`font-size:10px;color:${info.color};margin:2px 0 0;`}>{qLabel}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -111,7 +141,7 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
 <script>
 import { formatDateHi } from '../lib/date-i18n';
 import { formatMinutes12h } from '../lib/time-format';
-import { sunriseUTC } from '../lib/panchang';
+import { computeChoghadiyaSlots, CHOGHADIYA_INFO } from '../lib/muhurta';
 const LOCS = [
   {name:'New Delhi',lat:28.6139,lng:77.209,tz:5.5},
   {name:'Mumbai',lat:19.076,lng:72.8777,tz:5.5},
@@ -123,36 +153,9 @@ const LOCS = [
   {name:'Varanasi',lat:25.3176,lng:82.9739,tz:5.5},
 ];
 
-const DAY_CHOG = [
-  ['Udveg','Char','Labh','Amrit','Kaal','Shubh','Rog','Udveg'],
-  ['Amrit','Kaal','Shubh','Rog','Udveg','Char','Labh','Amrit'],
-  ['Rog','Udveg','Char','Labh','Amrit','Kaal','Shubh','Rog'],
-  ['Labh','Amrit','Kaal','Shubh','Rog','Udveg','Char','Labh'],
-  ['Shubh','Rog','Udveg','Char','Labh','Amrit','Kaal','Shubh'],
-  ['Char','Labh','Amrit','Kaal','Shubh','Rog','Udveg','Char'],
-  ['Kaal','Shubh','Rog','Udveg','Char','Labh','Amrit','Kaal'],
-];
-const CHOG_COLOR: Record<string,string> = {
-  Amrit:'#DCF3E3',Shubh:'#FBF0D9',Labh:'#FBE4D2',Char:'#F5E7C8',
-  Udveg:'#FBE0DE',Kaal:'#E8D9BE',Rog:'#FBE4D2',
-};
-const CHOG_TEXT: Record<string,string> = {
-  Amrit:'#16803D',Shubh:'#97690F',Labh:'#B5390A',Char:'#8C7660',
-  Udveg:'#C81E1E',Kaal:'#3A2712',Rog:'#7F2700',
-};
-const CHOG_QUALITY: Record<string,string> = {
-  Amrit:'Best',Shubh:'Good',Labh:'Good',Char:'Neutral',
-  Udveg:'Avoid',Kaal:'Avoid',Rog:'Avoid',
-};
-const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
-const CHOG_NAME_HI: Record<string,string> = { Amrit:'अमृत', Shubh:'शुभ', Labh:'लाभ', Char:'चर', Udveg:'उद्वेग', Kaal:'काल', Rog:'रोग' };
+const QUALITY_HI: Record<string,string> = { best:'सर्वोत्तम', good:'शुभ', neutral:'सामान्य', bad:'अशुभ' };
+const QUALITY_LABEL: Record<string,string> = { best:'Best', good:'Good', neutral:'Neutral', bad:'Avoid' };
 let isHindi = false;
-
-function toJD(y:number,m:number,d:number,h=0) {
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
 const fmtMins = formatMinutes12h;
 
 // Pre-fill from the header's location picker (same "today, my location" scope as /muhurta/choghadiya)
@@ -167,37 +170,26 @@ function resolveLoc(): typeof LOCS[number] {
   return LOCS[0];
 }
 
-// "Today"/"now" (weekday, calendar date, minutes-since-midnight) must all be evaluated in
-// the SELECTED location's local time, not the visitor's own device timezone -- this widget
-// is location-aware (window.__initLoc / locationchange), so those are often different.
-// Shift the real instant by the selected location's own tz (the same value already used
-// for srMins/ssMins), then read everything back with UTC getters -- host-timezone-
-// independent by construction, same pattern as the daily Rashifal IST fix, but
-// parameterized on the selected location instead of a hardcoded +5:30.
+// "Today"/"now" (calendar date, minutes-since-midnight) must all be evaluated in the
+// SELECTED location's local time, not the visitor's own device timezone -- this widget is
+// location-aware (window.__initLoc / locationchange), so those are often different. Shift
+// the real instant by the selected location's own tz, then read everything back with UTC
+// getters -- host-timezone-independent by construction, same pattern as the daily Rashifal
+// IST fix, but parameterized on the selected location instead of a hardcoded +5:30.
 let now=new Date();
 let loc=resolveLoc();
 let locNow=new Date(now.getTime()+loc.tz*3600000);
-let wd=locNow.getUTCDay();
-let jd=toJD(locNow.getUTCFullYear(),locNow.getUTCMonth()+1,locNow.getUTCDate(),6-loc.tz);
-let srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
-let ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
-let srMins=srUTC*60+loc.tz*60, ssMins=ssUTC*60+loc.tz*60;
-let slotDur=(ssMins-srMins)/8;
-let daySeq=DAY_CHOG[wd];
+let result=computeChoghadiyaSlots(locNow.getUTCFullYear(),locNow.getUTCMonth()+1,locNow.getUTCDate(),loc.lat,loc.lng,loc.tz);
 let nowMins=locNow.getUTCHours()*60+locNow.getUTCMinutes();
 
 function recalc(){
   now=new Date();
   loc=resolveLoc();
   locNow=new Date(now.getTime()+loc.tz*3600000);
-  wd=locNow.getUTCDay();
-  jd=toJD(locNow.getUTCFullYear(),locNow.getUTCMonth()+1,locNow.getUTCDate(),6-loc.tz);
-  srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
-  ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
-  srMins=srUTC*60+loc.tz*60; ssMins=ssUTC*60+loc.tz*60;
-  slotDur=(ssMins-srMins)/8;
-  daySeq=DAY_CHOG[wd];
+  result=computeChoghadiyaSlots(locNow.getUTCFullYear(),locNow.getUTCMonth()+1,locNow.getUTCDate(),loc.lat,loc.lng,loc.tz);
   nowMins=locNow.getUTCHours()*60+locNow.getUTCMinutes();
+  const noteEl=document.getElementById('quick-chog-default-note');
+  if(noteEl) (noteEl as HTMLElement).style.display = loc.name==='New Delhi' ? '' : 'none';
 }
 window.addEventListener('locationchange', () => { recalc(); renderQuickChog(); });
 
@@ -211,20 +203,20 @@ if(label) {
 function renderQuickChog(){
   const grid=document.getElementById('quick-chog');
   if(!grid) return;
-  grid.innerHTML=daySeq.map((name,i)=>{
-    const start=srMins+i*slotDur, end=start+slotDur;
-    const isCurrent=nowMins>=start&&nowMins<end;
-    const bg=isCurrent?'var(--color-ink)':CHOG_COLOR[name];
-    const fg=isCurrent?'var(--color-on-primary)':CHOG_TEXT[name];
+  grid.innerHTML=result.day.map(slot=>{
+    const info=CHOGHADIYA_INFO[slot.name];
+    const isCurrent=nowMins>=slot.start&&nowMins<slot.end;
+    const bg=isCurrent?'var(--color-ink)':info.bgColor;
+    const fg=isCurrent?'var(--color-on-primary)':info.color;
     const muted=isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 35%)':'var(--color-mute)';
-    const q=isHindi?QUALITY_HI[CHOG_QUALITY[name]]:CHOG_QUALITY[name];
+    const q=isHindi?QUALITY_HI[info.quality]:QUALITY_LABEL[info.quality];
     return `<div style="background:${bg};border-radius:8px;padding:12px 14px;border:1px solid ${isCurrent?'transparent':'var(--color-hairline)'};">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-        <span style="font-size:13px;font-weight:600;color:${fg};">${isHindi?CHOG_NAME_HI[name]:name}</span>
+        <span style="font-size:13px;font-weight:600;color:${fg};">${isHindi?info.nameHi:slot.name}</span>
         ${isCurrent?`<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:1px 6px;border-radius:100px;">${isHindi?'अभी':'NOW'}</span>`:''}
       </div>
-      <p style="font-size:10px;color:${muted};margin:0;">${fmtMins(start)} – ${fmtMins(end)}</p>
-      <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':CHOG_COLOR[name]==='#f3f4f6'?'#6b7280':'var(--color-mute)'};margin:2px 0 0;">${q}</p>
+      <p style="font-size:10px;color:${muted};margin:0;">${fmtMins(slot.start)} – ${fmtMins(slot.end)}</p>
+      <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':'var(--color-mute)'};margin:2px 0 0;">${q}</p>
     </div>`;
   }).join('');
 }
