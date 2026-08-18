@@ -1,5 +1,21 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { computeChoghadiyaSlots, CHOGHADIYA_INFO } from '../../lib/muhurta';
+import { formatMinutes12h } from '../../lib/time-format';
+
+// Build-time default: today (IST, matching the daily-rebuild cron's clock) at New Delhi, the
+// site's default location. Uses the exact same computeChoghadiyaSlots() the client <script>
+// below calls for date/location changes, so server and client can never disagree — see
+// CLAUDE.md's 2026-08-18 SEO-prerender rollout note.
+const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const istNow = new Date(Date.now() + IST_OFFSET_MS);
+const defY = istNow.getUTCFullYear();
+const defM = istNow.getUTCMonth() + 1;
+const defD = istNow.getUTCDate();
+
+const defaultChog = computeChoghadiyaSlots(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
+const fmt = formatMinutes12h;
 ---
 
 <Layout title="Choghadiya Today — Auspicious Time Slots — PanchangPath" description="Today's Choghadiya — 8 day and 8 night time slots with Amrit, Shubh, Labh, Char, Udveg, Kaal and Rog periods.">
@@ -30,22 +46,58 @@ import Layout from '../../layouts/Layout.astro';
         <button id="chog-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
+      <!-- Default-location note: prerendered alongside the New Delhi defaults below; client JS
+           hides it once a non-default city is selected. -->
+      <p id="chog-default-note" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Showing Choghadiya for New Delhi — select your city above for your location.</p>
+
       <!-- Day choghadiya -->
       <div style="margin-bottom:36px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
           <h2 data-hi="दिन चौघड़िया" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Day Choghadiya</h2>
-          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="sr-label">Sunrise → Sunset</span>
+          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="sr-label">Sunrise {fmt(defaultChog.srMins)} → Sunset {fmt(defaultChog.ssMins)}</span>
         </div>
-        <div id="day-chog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;"></div>
+        <div id="day-chog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;">
+          {defaultChog.day.map(slot => {
+            const info = CHOGHADIYA_INFO[slot.name];
+            const qLabel = info.quality === 'best' ? 'Best' : info.quality === 'good' ? 'Good' : info.quality === 'neutral' ? 'Neutral' : 'Avoid';
+            const qColor = info.quality === 'best' ? '#16803D' : info.quality === 'good' ? '#97690F' : info.quality === 'neutral' ? '#8C7660' : '#C81E1E';
+            return (
+              <div style={`background:${info.bgColor};border-radius:10px;padding:14px 16px;border:1px solid var(--color-hairline);`}>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <span style={`font-size:15px;font-weight:700;color:${info.color};`}>{slot.name}</span>
+                  <span style={`font-size:10px;font-weight:600;color:${qColor};background:${info.bgColor};padding:1px 6px;border-radius:100px;border:1px solid ${info.color}33;`}>{qLabel}</span>
+                </div>
+                <p style={`font-size:11px;color:${info.color};margin:0 0 2px;font-family:var(--font-mono);`}>{fmt(slot.start)} – {fmt(slot.end)}</p>
+                <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;">{info.nameHi} · {info.planet}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <!-- Night choghadiya -->
       <div style="margin-bottom:48px;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
           <h2 data-hi="रात्रि चौघड़िया" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Night Choghadiya</h2>
-          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="ss-label">Sunset → Next Sunrise</span>
+          <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);" id="ss-label">Sunset {fmt(defaultChog.ssMins)} → Next Sunrise</span>
         </div>
-        <div id="night-chog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;"></div>
+        <div id="night-chog-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;">
+          {defaultChog.night.map(slot => {
+            const info = CHOGHADIYA_INFO[slot.name];
+            const qLabel = info.quality === 'best' ? 'Best' : info.quality === 'good' ? 'Good' : info.quality === 'neutral' ? 'Neutral' : 'Avoid';
+            const qColor = info.quality === 'best' ? '#16803D' : info.quality === 'good' ? '#97690F' : info.quality === 'neutral' ? '#8C7660' : '#C81E1E';
+            return (
+              <div style={`background:${info.bgColor};border-radius:10px;padding:14px 16px;border:1px solid var(--color-hairline);`}>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                  <span style={`font-size:15px;font-weight:700;color:${info.color};`}>{slot.name}</span>
+                  <span style={`font-size:10px;font-weight:600;color:${qColor};background:${info.bgColor};padding:1px 6px;border-radius:100px;border:1px solid ${info.color}33;`}>{qLabel}</span>
+                </div>
+                <p style={`font-size:11px;color:${info.color};margin:0 0 2px;font-family:var(--font-mono);`}>{fmt(slot.start)} – {fmt(slot.end)}</p>
+                <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;">{info.nameHi} · {info.planet}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <!-- Legend + info -->
@@ -65,7 +117,7 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <script>
-import { sunriseUTC } from '../../lib/panchang';
+import { computeChoghadiyaSlots } from '../../lib/muhurta';
 import { formatMinutes12h } from '../../lib/time-format';
 
 const LOCS = [
@@ -86,25 +138,6 @@ const LOCS = [
   {name:'Singapore',nameHi:'सिंगापुर',lat:1.3521,lng:103.8198,tz:8},
 ];
 
-const DAY_CHOG = [
-  ['Udveg','Char','Labh','Amrit','Kaal','Shubh','Rog','Udveg'],
-  ['Amrit','Kaal','Shubh','Rog','Udveg','Char','Labh','Amrit'],
-  ['Rog','Udveg','Char','Labh','Amrit','Kaal','Shubh','Rog'],
-  ['Labh','Amrit','Kaal','Shubh','Rog','Udveg','Char','Labh'],
-  ['Shubh','Rog','Udveg','Char','Labh','Amrit','Kaal','Shubh'],
-  ['Char','Labh','Amrit','Kaal','Shubh','Rog','Udveg','Char'],
-  ['Kaal','Shubh','Rog','Udveg','Char','Labh','Amrit','Kaal'],
-];
-const NIGHT_CHOG = [
-  ['Shubh','Amrit','Char','Rog','Kaal','Labh','Udveg','Shubh'],
-  ['Char','Rog','Kaal','Labh','Udveg','Shubh','Amrit','Char'],
-  ['Kaal','Labh','Udveg','Shubh','Amrit','Char','Rog','Kaal'],
-  ['Udveg','Shubh','Amrit','Char','Rog','Kaal','Labh','Udveg'],
-  ['Amrit','Char','Rog','Kaal','Labh','Udveg','Shubh','Amrit'],
-  ['Rog','Kaal','Labh','Udveg','Shubh','Amrit','Char','Rog'],
-  ['Labh','Udveg','Shubh','Amrit','Char','Rog','Kaal','Labh'],
-];
-
 let isHindi = false;
 const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
 const trQ = (q:string) => isHindi ? QUALITY_HI[q] : q;
@@ -117,15 +150,6 @@ const CHOG_DATA: Record<string,{hi:string;q:string;planet:string;bg:string;fg:st
   Kaal:  {hi:'काल',q:'Avoid',planet:'Saturn',bg:'#E8D9BE',fg:'#3A2712',suitable:'Avoid all auspicious activities',suitableHi:'सभी शुभ कार्यों से बचें'},
   Rog:   {hi:'रोग',q:'Avoid',planet:'Mars',bg:'#FBE4D2',fg:'#7F2700',suitable:'Avoid — especially surgery & medicine',suitableHi:'बचें — विशेष रूप से शल्य चिकित्सा व औषधि'},
 };
-
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const n360=(a:number)=>((a%360)+360)%360;
-const toRad=(d:number)=>d*Math.PI/180;
-const toDeg=(r:number)=>r*180/Math.PI;
 
 const fmtMins = formatMinutes12h;
 
@@ -179,21 +203,11 @@ function calculate(){
   const cityName=(document.getElementById('chog-city') as HTMLSelectElement).value;
   const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
   const [y,m,d]=dateStr.split('-').map(Number);
-  const date=new Date(dateStr+'T12:00:00');
-  const wd=date.getDay();
-  const jd=toJD(y,m,d,6-loc.tz);
-  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
-  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
-  // Next sunrise (next day)
-  const jdNext=toJD(y,m,d+1,6-loc.tz);
-  const srNextUTC=sunriseUTC(jdNext,loc.lat,loc.lng,true);
+  const result=computeChoghadiyaSlots(y,m,d,loc.lat,loc.lng,loc.tz);
+  const srMins=result.srMins, ssMins=result.ssMins;
 
-  const srMins=srUTC*60+loc.tz*60;
-  const ssMins=ssUTC*60+loc.tz*60;
-  const srNextMins=srNextUTC*60+loc.tz*60+1440; // next day
-
-  const dayDur=(ssMins-srMins)/8;
-  const nightDur=(srNextMins-ssMins)/8;
+  const noteEl=document.getElementById('chog-default-note');
+  if(noteEl) (noteEl as HTMLElement).style.display = loc.name==='New Delhi' ? '' : 'none';
 
   // "Today" and "now" must be evaluated in the SELECTED location's local time, not the
   // visitor's own device timezone (this page is location-selectable, so those are often
@@ -214,18 +228,12 @@ function calculate(){
 
   const dayGrid=document.getElementById('day-chog-grid');
   if(dayGrid){
-    dayGrid.innerHTML=DAY_CHOG[wd].map((name,i)=>{
-      const s=srMins+i*dayDur, e=s+dayDur;
-      return makeSlot(name,s,e,isToday&&nowMins>=s&&nowMins<e);
-    }).join('');
+    dayGrid.innerHTML=result.day.map(slot=>makeSlot(slot.name,slot.start,slot.end,isToday&&nowMins>=slot.start&&nowMins<slot.end)).join('');
   }
 
   const nightGrid=document.getElementById('night-chog-grid');
   if(nightGrid){
-    nightGrid.innerHTML=NIGHT_CHOG[wd].map((name,i)=>{
-      const s=ssMins+i*nightDur, e=s+nightDur;
-      return makeSlot(name,s,e,isToday&&nowMins>=s&&nowMins<e);
-    }).join('');
+    nightGrid.innerHTML=result.night.map(slot=>makeSlot(slot.name,slot.start,slot.end,isToday&&nowMins>=slot.start&&nowMins<slot.end)).join('');
   }
 }
 

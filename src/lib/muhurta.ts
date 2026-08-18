@@ -1,6 +1,7 @@
 // Muhurta tools — data, types, and server-side scoring functions
 
-import { sunTrueLongitude, lahiriAyanamsha, sunriseUTC } from './panchang';
+import { sunTrueLongitude, lahiriAyanamsha, sunriseUTC, moonLongitude } from './panchang';
+import { calcLagna } from './astro-core';
 
 export type ChoghadiyaType = 'Amrit' | 'Shubh' | 'Labh' | 'Char' | 'Udveg' | 'Kaal' | 'Rog';
 export type Quality = 'best' | 'good' | 'neutral' | 'bad';
@@ -364,4 +365,174 @@ export function computeRahuKalaSlots(y: number, m: number, d: number, lat: numbe
     yamaganda: rkSlot(srMins, ssMins, RK_YAMAG_SLOTS[weekday]),
     week,
   };
+}
+
+// --- Batch 1 SEO-prerender slot engines (Choghadiya, Hora, Abhijit, Panchaka/Gowri, Lagna) ---
+// Each function below is the single source of truth for both a page's Astro frontmatter
+// (build-time default: today, New Delhi) and its client <script> (date/location picker
+// updates) — same pattern as computeRahuKalaSlots above. Previously each page carried its own
+// duplicated toJD/slot-splitting logic inline in <script>; extracted here so server and client
+// can never compute two different answers for the same (date, location). See CLAUDE.md,
+// 2026-08-18 SEO-prerender rollout.
+
+function civilJD(y: number, m: number, d: number, h: number): number {
+  let yy = y, mm = m;
+  if (mm <= 2) { yy--; mm += 12; }
+  const A = Math.floor(yy / 100), B = 2 - A + Math.floor(A / 4);
+  return Math.floor(365.25 * (yy + 4716)) + Math.floor(30.6001 * (mm + 1)) + d + h / 24 + B - 1524.5;
+}
+const civilNorm360 = (a: number) => ((a % 360) + 360) % 360;
+
+// -- Choghadiya --
+
+export interface ChoghadiyaSlot { name: ChoghadiyaType; start: number; end: number }
+
+export interface ChoghadiyaSlots {
+  weekday: number;
+  srMins: number;
+  ssMins: number;
+  day: ChoghadiyaSlot[];
+  night: ChoghadiyaSlot[];
+}
+
+export function computeChoghadiyaSlots(y: number, m: number, d: number, lat: number, lng: number, tz: number): ChoghadiyaSlots {
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  const jd = civilJD(y, m, d, 6 - tz);
+  const jdNext = civilJD(y, m, d + 1, 6 - tz);
+  const srMins = sunriseUTC(jd, lat, lng, true) * 60 + tz * 60;
+  const ssMins = sunriseUTC(jd, lat, lng, false) * 60 + tz * 60;
+  const srNextMins = sunriseUTC(jdNext, lat, lng, true) * 60 + tz * 60 + 1440;
+  const dayDur = (ssMins - srMins) / 8;
+  const nightDur = (srNextMins - ssMins) / 8;
+  const day = DAY_CHOG[weekday].map((name, i) => ({ name, start: srMins + i * dayDur, end: srMins + (i + 1) * dayDur }));
+  const night = NIGHT_CHOG[weekday].map((name, i) => ({ name, start: ssMins + i * nightDur, end: ssMins + (i + 1) * nightDur }));
+  return { weekday, srMins, ssMins, day, night };
+}
+
+// -- Shubha Hora --
+
+export interface HoraSlot { planet: string; start: number; end: number }
+
+export interface HoraSlots {
+  weekday: number;
+  startIdx: number;
+  srMins: number;
+  ssMins: number;
+  day: HoraSlot[];
+  night: HoraSlot[];
+}
+
+export function computeHoraSlots(y: number, m: number, d: number, lat: number, lng: number, tz: number): HoraSlots {
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  const jd = civilJD(y, m, d, 6 - tz);
+  const jdNext = civilJD(y, m, d + 1, 6 - tz);
+  const srMins = sunriseUTC(jd, lat, lng, true) * 60 + tz * 60;
+  const ssMins = sunriseUTC(jd, lat, lng, false) * 60 + tz * 60;
+  const srNextMins = sunriseUTC(jdNext, lat, lng, true) * 60 + tz * 60 + 1440;
+  const dayHoraDur = (ssMins - srMins) / 12;
+  const nightHoraDur = (srNextMins - ssMins) / 12;
+  const startIdx = HORA_START[weekday];
+  const day: HoraSlot[] = Array.from({ length: 12 }, (_, i) => {
+    const s = srMins + i * dayHoraDur;
+    return { planet: HORA_PLANETS[(startIdx + i) % 7], start: s, end: s + dayHoraDur };
+  });
+  const night: HoraSlot[] = Array.from({ length: 12 }, (_, i) => {
+    const s = ssMins + i * nightHoraDur;
+    return { planet: HORA_PLANETS[(startIdx + 12 + i) % 7], start: s, end: s + nightHoraDur };
+  });
+  return { weekday, startIdx, srMins, ssMins, day, night };
+}
+
+// -- Abhijit Muhurat / Do Ghati / Brahma Muhurta --
+
+export interface AbhijitWindows {
+  weekday: number;
+  isWednesday: boolean;
+  srMins: number;
+  ssMins: number;
+  abhijit: { start: number; end: number };
+  doGhati: { start: number; end: number };
+  brahma: { start: number; end: number };
+}
+
+export function computeAbhijitWindows(y: number, m: number, d: number, lat: number, lng: number, tz: number): AbhijitWindows {
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  const jd = civilJD(y, m, d, 6 - tz);
+  const srMins = sunriseUTC(jd, lat, lng, true) * 60 + tz * 60;
+  const ssMins = sunriseUTC(jd, lat, lng, false) * 60 + tz * 60;
+  const noonMins = (srMins + ssMins) / 2;
+  const dayMins = ssMins - srMins;
+  return {
+    weekday,
+    isWednesday: weekday === 3,
+    srMins,
+    ssMins,
+    // Abhijit = solar noon ± 1/15 of day length (day-length-proportional, not a fixed 24 min).
+    abhijit: { start: noonMins - dayMins / 30, end: noonMins + dayMins / 30 },
+    // Do Ghati Muhurat = 2 Ghatis = 48 fixed minutes centered on solar noon (1 Ghati = 24 min,
+    // unlike Abhijit this window is NOT day-length-proportional).
+    doGhati: { start: noonMins - 24, end: noonMins + 24 },
+    // Brahma Muhurta = 96 min before sunrise to 48 min before sunrise, same civil day's sunrise.
+    brahma: { start: srMins - 96, end: srMins - 48 },
+  };
+}
+
+// -- Panchaka / Gowri Panchangam --
+
+export interface GowriSlot { name: GowriType; start: number; end: number }
+
+export interface PanchakaGowri {
+  weekday: number;
+  nakIdx: number;
+  isPanchaka: boolean;
+  srMins: number;
+  ssMins: number;
+  gowriDay: GowriSlot[];
+  gowriNight: GowriSlot[];
+}
+
+export function computePanchakaGowri(y: number, m: number, d: number, lat: number, lng: number, tz: number): PanchakaGowri {
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  const jd = civilJD(y, m, d, 6 - tz);
+  const jdNext = civilJD(y, m, d + 1, 6 - tz);
+  const moonSid = civilNorm360(moonLongitude(jd) - lahiriAyanamsha(jd));
+  const nakIdx = Math.floor(moonSid / (360 / 27)) % 27;
+  const isPanchaka = PANCHAKA_NAKS.includes(nakIdx);
+  const srMins = sunriseUTC(jd, lat, lng, true) * 60 + tz * 60;
+  const ssMins = sunriseUTC(jd, lat, lng, false) * 60 + tz * 60;
+  const srNextMins = sunriseUTC(jdNext, lat, lng, true) * 60 + tz * 60 + 1440;
+  const dayDur = (ssMins - srMins) / 8;
+  const nightDur = (srNextMins - ssMins) / 8;
+  const gowriDay = GOWRI_DAY[weekday].map((name, i) => ({ name, start: srMins + i * dayDur, end: srMins + (i + 1) * dayDur }));
+  const gowriNight = GOWRI_NIGHT[weekday].map((name, i) => ({ name, start: ssMins + i * nightDur, end: ssMins + (i + 1) * nightDur }));
+  return { weekday, nakIdx, isPanchaka, srMins, ssMins, gowriDay, gowriNight };
+}
+
+// -- Lagna Table --
+
+export interface LagnaEntry { rashi: number; startMins: number }
+
+export interface LagnaTable {
+  weekday: number;
+  entries: LagnaEntry[];
+}
+
+/** Lagna (Ascendant) rashi changeover table for a civil date/location, sampled every 10 minutes
+ *  across 24 hours and collapsed to just the changeover points — matches /muhurta/lagna's table. */
+export function computeLagnaTable(y: number, m: number, d: number, lat: number, lng: number, tz: number): LagnaTable {
+  const weekday = new Date(Date.UTC(y, m - 1, d)).getUTCDay();
+  const baseJD = civilJD(y, m, d, 0 - tz);
+  const entries: LagnaEntry[] = [];
+  let lastRashi = -1;
+  for (let i = 0; i < 144; i++) {
+    const tMins = i * 10;
+    const tJD = baseJD + tMins / (60 * 24);
+    const asc = civilNorm360(calcLagna(tJD, lat, lng) - lahiriAyanamsha(tJD));
+    const rashi = Math.floor(asc / 30) % 12;
+    if (rashi !== lastRashi) {
+      entries.push({ rashi, startMins: tMins });
+      lastRashi = rashi;
+    }
+  }
+  return { weekday, entries };
 }

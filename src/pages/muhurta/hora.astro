@@ -1,5 +1,32 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { computeHoraSlots } from '../../lib/muhurta';
+import { formatMinutes12h } from '../../lib/time-format';
+
+// Build-time default: today (IST, matching the daily-rebuild cron's clock) at New Delhi, the
+// site's default location. Uses the exact same computeHoraSlots() the client <script> below
+// calls for date/location changes, so server and client can never disagree — see CLAUDE.md's
+// 2026-08-18 SEO-prerender rollout note.
+const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const istNow = new Date(Date.now() + IST_OFFSET_MS);
+const defY = istNow.getUTCFullYear();
+const defM = istNow.getUTCMonth() + 1;
+const defD = istNow.getUTCDate();
+
+const defaultHora = computeHoraSlots(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
+const fmt = formatMinutes12h;
+
+const HORA_DATA_META: Record<string, { hi: string; q: string; color: string }> = {
+  Sun:     { hi: 'सूर्य',  q: 'Neutral', color: '#C8922A' },
+  Venus:   { hi: 'शुक्र', q: 'Good',    color: '#97690F' },
+  Mercury: { hi: 'बुध',   q: 'Good',    color: '#16803D' },
+  Moon:    { hi: 'चंद्र', q: 'Best',    color: '#B5390A' },
+  Saturn:  { hi: 'शनि',  q: 'Avoid',   color: '#3A2712' },
+  Jupiter: { hi: 'गुरु',  q: 'Best',    color: '#7F2700' },
+  Mars:    { hi: 'मंगल', q: 'Neutral',  color: '#C81E1E' },
+};
+const horaQColor = (q: string) => q==='Best'?'#15803d':q==='Good'?'#1d4ed8':q==='Avoid'?'#dc2626':'#6b7280';
 ---
 
 <Layout title="Shubha Hora — Planetary Hours Today — PanchangPath" description="Today's Shubha Hora — 24 planetary hours ruled by Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn.">
@@ -29,14 +56,54 @@ import Layout from '../../layouts/Layout.astro';
         <button id="hora-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
+      <!-- Default-location note: prerendered alongside the New Delhi defaults below; client JS
+           hides it once a non-default city is selected. -->
+      <p id="hora-default-note" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Showing Shubha Hora for New Delhi — select your city above for your location.</p>
+
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px;" id="hora-cols">
         <div>
-          <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;" id="day-hora-title">Day Horas</h2>
-          <div id="day-hora-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+          <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;" id="day-hora-title">Day Horas ({defaultHora.day[0].planet} hour first)</h2>
+          <div id="day-hora-list" style="display:flex;flex-direction:column;gap:6px;">
+            {defaultHora.day.map((slot, i) => {
+              const meta = HORA_DATA_META[slot.planet];
+              return (
+                <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--color-canvas-soft-2);border:1px solid var(--color-hairline);">
+                  <span style="font-size:11px;font-weight:700;color:var(--color-mute);width:20px;text-align:center;">{i+1}</span>
+                  <span style={`width:8px;height:8px;border-radius:50%;background:${meta.color};flex-shrink:0;`}></span>
+                  <div style="flex:1;min-width:0;">
+                    <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{slot.planet}</span>
+                    <span style="font-size:10px;color:var(--color-mute);margin-left:6px;font-family:var(--font-mono);">{meta.hi}</span>
+                  </div>
+                  <div style="text-align:right;">
+                    <span style="font-size:11px;color:var(--color-body-text);font-family:var(--font-mono);">{fmt(slot.start)}</span>
+                    <span style={`display:block;font-size:9px;font-weight:600;color:${horaQColor(meta.q)};`}>{meta.q}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div>
           <h2 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 14px;" id="night-hora-title">Night Horas</h2>
-          <div id="night-hora-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+          <div id="night-hora-list" style="display:flex;flex-direction:column;gap:6px;">
+            {defaultHora.night.map((slot, i) => {
+              const meta = HORA_DATA_META[slot.planet];
+              return (
+                <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:8px;background:var(--color-canvas-soft-2);border:1px solid var(--color-hairline);">
+                  <span style="font-size:11px;font-weight:700;color:var(--color-mute);width:20px;text-align:center;">{i+1}</span>
+                  <span style={`width:8px;height:8px;border-radius:50%;background:${meta.color};flex-shrink:0;`}></span>
+                  <div style="flex:1;min-width:0;">
+                    <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{slot.planet}</span>
+                    <span style="font-size:10px;color:var(--color-mute);margin-left:6px;font-family:var(--font-mono);">{meta.hi}</span>
+                  </div>
+                  <div style="text-align:right;">
+                    <span style="font-size:11px;color:var(--color-body-text);font-family:var(--font-mono);">{fmt(slot.start)}</span>
+                    <span style={`display:block;font-size:9px;font-weight:600;color:${horaQColor(meta.q)};`}>{meta.q}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -61,7 +128,7 @@ import Layout from '../../layouts/Layout.astro';
 </style>
 
 <script>
-import { sunriseUTC } from '../../lib/panchang';
+import { computeHoraSlots } from '../../lib/muhurta';
 import { formatMinutes12h } from '../../lib/time-format';
 
 const LOCS = [
@@ -79,10 +146,6 @@ const LOCS = [
   {name:'Singapore',nameHi:'सिंगापुर',lat:1.3521,lng:103.8198,tz:8},
 ];
 
-// Chaldean sequence: Sun→Venus→Mercury→Moon→Saturn→Jupiter→Mars
-const HORA_SEQ = ['Sun','Venus','Mercury','Moon','Saturn','Jupiter','Mars'];
-const HORA_START = [0,3,6,2,5,1,4]; // weekday → start index
-
 let isHindi = false;
 const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
 const trQ = (q:string) => isHindi ? QUALITY_HI[q] : q;
@@ -96,14 +159,6 @@ const HORA_DATA: Record<string,{hi:string;q:string;color:string;suitable:string;
   Mars:    {hi:'मंगल', q:'Neutral',  color:'#C81E1E', suitable:'Physical work · Competition · Surgery · Courage', suitableHi:'शारीरिक कार्य · प्रतिस्पर्धा · शल्य चिकित्सा · साहस'},
 };
 
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const n360=(a:number)=>((a%360)+360)%360;
-const toRad=(d:number)=>d*Math.PI/180;
-const toDeg=(r:number)=>r*180/Math.PI;
 const fmtMins = formatMinutes12h;
 
 const sel=document.getElementById('hora-city') as HTMLSelectElement;
@@ -156,19 +211,11 @@ function calculate(){
   const cityName=(document.getElementById('hora-city') as HTMLSelectElement).value;
   const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
   const [y,m,d]=dateStr.split('-').map(Number);
-  const date=new Date(dateStr+'T12:00:00');
-  const wd=date.getDay();
-  const jd=toJD(y,m,d,6-loc.tz);
-  const jdNext=toJD(y,m,d+1,6-loc.tz);
-  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
-  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
-  const srNextUTC=sunriseUTC(jdNext,loc.lat,loc.lng,true);
-  const srMins=srUTC*60+loc.tz*60;
-  const ssMins=ssUTC*60+loc.tz*60;
-  const srNextMins=srNextUTC*60+loc.tz*60+1440;
-  const dayHoraDur=(ssMins-srMins)/12;
-  const nightHoraDur=(srNextMins-ssMins)/12;
-  const startIdx=HORA_START[wd];
+  const result=computeHoraSlots(y,m,d,loc.lat,loc.lng,loc.tz);
+
+  const noteEl=document.getElementById('hora-default-note');
+  if(noteEl) (noteEl as HTMLElement).style.display = loc.name==='New Delhi' ? '' : 'none';
+
   // "Today" and "now" must be evaluated in the SELECTED location's local time, not the
   // visitor's own device timezone (this page is location-selectable) and not UTC
   // (toISOString() always returns UTC). Shift the real instant by the same loc.tz already
@@ -180,25 +227,17 @@ function calculate(){
   const isToday=dateStr===`${locNow.getUTCFullYear()}-${String(locNow.getUTCMonth()+1).padStart(2,'0')}-${String(locNow.getUTCDate()).padStart(2,'0')}`;
   const nowMins=isToday?locNow.getUTCHours()*60+locNow.getUTCMinutes():-1;
 
-  document.getElementById('day-hora-title')!.textContent=isHindi?`दिन होरा (${HORA_SEQ[startIdx]} होरा पहले)`:`Day Horas (${HORA_SEQ[startIdx]} hour first)`;
+  document.getElementById('day-hora-title')!.textContent=isHindi?`दिन होरा (${result.day[0].planet} होरा पहले)`:`Day Horas (${result.day[0].planet} hour first)`;
   document.getElementById('night-hora-title')!.textContent=isHindi?'रात्रि होरा':'Night Horas';
 
   const dayList=document.getElementById('day-hora-list');
   if(dayList){
-    dayList.innerHTML=Array.from({length:12},(_,i)=>{
-      const planet=HORA_SEQ[(startIdx+i)%7];
-      const s=srMins+i*dayHoraDur, e=s+dayHoraDur;
-      return makeHoraRow(planet,s,e,nowMins>=s&&nowMins<e,i);
-    }).join('');
+    dayList.innerHTML=result.day.map((slot,i)=>makeHoraRow(slot.planet,slot.start,slot.end,nowMins>=slot.start&&nowMins<slot.end,i)).join('');
   }
 
   const nightList=document.getElementById('night-hora-list');
   if(nightList){
-    nightList.innerHTML=Array.from({length:12},(_,i)=>{
-      const planet=HORA_SEQ[(startIdx+12+i)%7];
-      const s=ssMins+i*nightHoraDur, e=s+nightHoraDur;
-      return makeHoraRow(planet,s,e,nowMins>=s&&nowMins<e,i);
-    }).join('');
+    nightList.innerHTML=result.night.map((slot,i)=>makeHoraRow(slot.planet,slot.start,slot.end,nowMins>=slot.start&&nowMins<slot.end,i)).join('');
   }
 }
 

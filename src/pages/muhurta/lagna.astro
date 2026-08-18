@@ -1,5 +1,25 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { computeLagnaTable } from '../../lib/muhurta';
+import { formatMinutes12h } from '../../lib/time-format';
+
+// Build-time default: today (IST, matching the daily-rebuild cron's clock) at New Delhi, the
+// site's default location. Uses the exact same computeLagnaTable() the client <script> below
+// calls for date/location changes, so server and client can never disagree — see CLAUDE.md's
+// 2026-08-18 SEO-prerender rollout note.
+const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const istNow = new Date(Date.now() + IST_OFFSET_MS);
+const defY = istNow.getUTCFullYear();
+const defM = istNow.getUTCMonth() + 1;
+const defD = istNow.getUTCDate();
+
+const defaultLagna = computeLagnaTable(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
+const fmt = formatMinutes12h;
+
+const RASHI_NAMES_L = ['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
+const RASHI_HI_L = ['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
+const SYMBOLS_L = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
 ---
 
 <Layout title="Lagna Table Today — Rising Sign — PanchangPath" description="Today's Lagna (ascendant) table — the rising zodiac sign changes every ~2 hours. See when each Lagna begins and ends.">
@@ -28,11 +48,33 @@ import Layout from '../../layouts/Layout.astro';
         <button id="lg-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
-      <!-- Current lagna banner -->
+      <!-- Default-location note: prerendered alongside the New Delhi defaults below; client JS
+           hides it once a non-default city is selected. -->
+      <p id="lg-default-note" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Showing Lagna Table for New Delhi — select your city above for your location.</p>
+
+      <!-- Current lagna banner: live-clock-dependent ("current" as of the visitor's moment),
+           so it is intentionally left for client JS to fill in — a build-time snapshot of "now"
+           would be stale by the time anyone sees it. -->
       <div id="lg-current" style="margin-bottom:24px;"></div>
 
-      <!-- Lagna table -->
-      <div id="lg-table" style="display:flex;flex-direction:column;gap:6px;max-width:680px;margin-bottom:48px;"></div>
+      <!-- Lagna table: prerendered at build time for New Delhi/today so the page has real
+           content before client JS runs; client JS overwrites this on load with the live
+           version (adds the "NOW" highlight, honors the visitor's date/location). -->
+      <div id="lg-table" style="display:flex;flex-direction:column;gap:6px;max-width:680px;margin-bottom:48px;">
+        {defaultLagna.entries.map((e, i) => {
+          const endMins = i+1 < defaultLagna.entries.length ? defaultLagna.entries[i+1].startMins : defaultLagna.entries[0].startMins + 1440;
+          return (
+            <div style="display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:8px;background:var(--color-canvas-soft-2);border:1px solid var(--color-hairline);">
+              <span style="font-size:18px;">{SYMBOLS_L[e.rashi]}</span>
+              <div style="flex:1;">
+                <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{RASHI_NAMES_L[e.rashi]}</span>
+                <span style="font-size:11px;color:var(--color-mute);margin-left:6px;">{RASHI_HI_L[e.rashi]}</span>
+              </div>
+              <span style="font-size:12px;color:var(--color-body-text);font-family:var(--font-mono);">{fmt(e.startMins)} – {fmt(endMins)}</span>
+            </div>
+          );
+        })}
+      </div>
 
       <!-- Auspicious lagna guide -->
       <h3 data-hi="सामान्य कार्यों के लिए शुभ लग्न" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Auspicious Lagnas for Common Activities</h3>
@@ -49,8 +91,7 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <script>
-import { calcLagna } from '../../lib/astro-core';
-import { lahiriAyanamsha } from '../../lib/panchang';
+import { computeLagnaTable } from '../../lib/muhurta';
 import { formatMinutes12h } from '../../lib/time-format';
 
 const LOCS = [
@@ -90,15 +131,6 @@ const RASHI_SUITABLE: Record<number,string> = {
   6:'Partnerships, legal, marriage', 7:'Research, occult — avoid auspicious', 8:'Long journeys, philosophy, teaching',
   9:'Career, structure, property', 10:'Community, innovation, technology', 11:'Spiritual retreat — avoid for material work',
 };
-
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const n360=(a:number)=>((a%360)+360)%360;
-const toRad=(d:number)=>d*Math.PI/180;
-const toDeg=(r:number)=>r*180/Math.PI;
 
 const fmtMins = formatMinutes12h;
 
@@ -146,20 +178,10 @@ function calculate(){
   const isToday=dateStr===`${locNow.getUTCFullYear()}-${String(locNow.getUTCMonth()+1).padStart(2,'0')}-${String(locNow.getUTCDate()).padStart(2,'0')}`;
   const nowMins=isToday?locNow.getUTCHours()*60+locNow.getUTCMinutes():-1;
 
-  // Compute lagna every 10 minutes for 24 hours
-  const baseJD=toJD(y,m,d,0-loc.tz); // midnight local
-  const entries:{rashi:number;startMins:number}[]=[];
-  let lastRashi=-1;
-  for(let i=0;i<144;i++){
-    const tMins=i*10;
-    const tJD=baseJD+tMins/(60*24);
-    const asc=n360(calcLagna(tJD,loc.lat,loc.lng)-lahiriAyanamsha(tJD));
-    const rashi=Math.floor(asc/30)%12;
-    if(rashi!==lastRashi){
-      entries.push({rashi,startMins:tMins});
-      lastRashi=rashi;
-    }
-  }
+  const noteEl=document.getElementById('lg-default-note');
+  if(noteEl) (noteEl as HTMLElement).style.display = loc.name==='New Delhi' ? '' : 'none';
+
+  const entries=computeLagnaTable(y,m,d,loc.lat,loc.lng,loc.tz).entries;
 
   // Current lagna
   let currentRashi=-1;

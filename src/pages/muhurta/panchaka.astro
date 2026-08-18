@@ -1,5 +1,39 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { computePanchakaGowri, GOWRI_INFO } from '../../lib/muhurta';
+import { formatMinutes12h } from '../../lib/time-format';
+
+// Build-time default: today (IST, matching the daily-rebuild cron's clock) at New Delhi, the
+// site's default location. Uses the exact same computePanchakaGowri() the client <script>
+// below calls for date/location changes, so server and client can never disagree — see
+// CLAUDE.md's 2026-08-18 SEO-prerender rollout note.
+const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
+const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
+const istNow = new Date(Date.now() + IST_OFFSET_MS);
+const defY = istNow.getUTCFullYear();
+const defM = istNow.getUTCMonth() + 1;
+const defD = istNow.getUTCDate();
+
+const defaultPk = computePanchakaGowri(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
+const fmt = formatMinutes12h;
+
+const NAK_NAMES = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const PANCHAKA_TYPES: Record<number,string> = {22:'Mrityu Panchaka',23:'Agni Panchaka',24:'Raja Panchaka',25:'Chora Panchaka',26:'Roga Panchaka'};
+
+// Presentation-only styling (bg/fg per Gowri type) — matches the client <script>'s GOWRI_DATA
+// below. Not calculation logic (that lives solely in computePanchakaGowri/GOWRI_DAY/GOWRI_NIGHT
+// in muhurta.ts), so kept local to each render path like the rest of this page's card styling.
+const GOWRI_STYLE: Record<string,{bg:string;fg:string}> = {
+  Amrutham: {bg:'#DCF3E3',fg:'#16803D'},
+  Sudham:   {bg:'#FBF0D9',fg:'#97690F'},
+  Uthamam:  {bg:'#FBE4D2',fg:'#B5390A'},
+  Labham:   {bg:'#FBE4D2',fg:'#7F2700'},
+  Dhanam:   {bg:'#F5E7C8',fg:'#8C7660'},
+  Charam:   {bg:'#E8D9BE',fg:'#5A4636'},
+  Rogam:    {bg:'#FBE0DE',fg:'#C81E1E'},
+  Visha:    {bg:'#E8D9BE',fg:'#3A2712'},
+};
+const gowriQLabel = (q: string) => q==='best'?'Best':q==='good'?'Good':q==='neutral'?'Neutral':'Avoid';
 ---
 
 <Layout title="Panchaka & Gowri Panchangam — PanchangPath" description="Check Panchaka Rahita Muhurat (inauspicious Moon periods) and Gowri Panchangam 8-slot daily guide for South India.">
@@ -28,8 +62,25 @@ import Layout from '../../layouts/Layout.astro';
         <button id="pk-calc" data-hi="गणना करें" class="btn-primary" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
 
+      <!-- Default-location note: prerendered alongside the New Delhi defaults below; client JS
+           hides it once a non-default city is selected. -->
+      <p id="pk-default-note" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Showing Panchaka &amp; Gowri Panchangam for New Delhi — select your city above for your location.</p>
+
       <!-- Panchaka status -->
-      <div id="pk-status" style="margin-bottom:32px;"></div>
+      <div id="pk-status" style="margin-bottom:32px;">
+        {defaultPk.isPanchaka ? (
+          <div style="background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:16px 20px;">
+            <p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 4px;">⚠️ {PANCHAKA_TYPES[defaultPk.nakIdx] || 'Panchaka'} Active Today</p>
+            <p style="font-size:13px;color:#991b1b;margin:0 0 6px;">Moon is in <strong>{NAK_NAMES[defaultPk.nakIdx]}</strong> nakshatra (Nakshatra {defaultPk.nakIdx+1}). Panchaka is active.</p>
+            <p style="font-size:12px;color:#7f1d1d;margin:0;">Avoid: funeral rites, roof construction, travel south, buying cots/beds, and storing firewood. Panchaka Shanti puja can be performed to mitigate effects.</p>
+          </div>
+        ) : (
+          <div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;">
+            <p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 4px;">✓ No Panchaka Today</p>
+            <p style="font-size:13px;color:#166534;margin:0;">Moon is in <strong>{NAK_NAMES[defaultPk.nakIdx]}</strong> — outside the Panchaka zone (Nakshatras 23–27).</p>
+          </div>
+        )}
+      </div>
 
       <!-- Gowri Panchangam -->
       <div style="margin-bottom:36px;">
@@ -37,12 +88,40 @@ import Layout from '../../layouts/Layout.astro';
           <h2 data-hi="गौरी पंचांगम" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">Gowri Panchangam</h2>
           <span data-hi="दिन स्लॉट (सूर्योदय से सूर्यास्त तक)" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">Day slots (sunrise to sunset)</span>
         </div>
-        <div id="gowri-day" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:24px;"></div>
+        <div id="gowri-day" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:24px;">
+          {defaultPk.gowriDay.map(slot => {
+            const style = GOWRI_STYLE[slot.name];
+            const q = GOWRI_INFO[slot.name].quality;
+            return (
+              <div style={`background:${style.bg};border-radius:10px;padding:12px 14px;border:1px solid var(--color-hairline);`}>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span style={`font-size:13px;font-weight:700;color:${style.fg};`}>{slot.name}</span>
+                </div>
+                <p style="font-size:10px;color:var(--color-mute);margin:0;">{fmt(slot.start)} – {fmt(slot.end)}</p>
+                <p style={`font-size:10px;color:${style.fg};margin:2px 0 0;`}>{gowriQLabel(q)}</p>
+              </div>
+            );
+          })}
+        </div>
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
           <h2 data-hi="रात्रि गौरी" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">Night Gowri</h2>
           <span data-hi="सूर्यास्त से अगले सूर्योदय तक" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">Sunset to next sunrise</span>
         </div>
-        <div id="gowri-night" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:36px;"></div>
+        <div id="gowri-night" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:36px;">
+          {defaultPk.gowriNight.map(slot => {
+            const style = GOWRI_STYLE[slot.name];
+            const q = GOWRI_INFO[slot.name].quality;
+            return (
+              <div style={`background:${style.bg};border-radius:10px;padding:12px 14px;border:1px solid var(--color-hairline);`}>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+                  <span style={`font-size:13px;font-weight:700;color:${style.fg};`}>{slot.name}</span>
+                </div>
+                <p style="font-size:10px;color:var(--color-mute);margin:0;">{fmt(slot.start)} – {fmt(slot.end)}</p>
+                <p style={`font-size:10px;color:${style.fg};margin:2px 0 0;`}>{gowriQLabel(q)}</p>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <!-- Panchaka info -->
@@ -69,7 +148,7 @@ import Layout from '../../layouts/Layout.astro';
 </style>
 
 <script>
-import { moonLongitude, lahiriAyanamsha, sunriseUTC } from '../../lib/panchang';
+import { computePanchakaGowri } from '../../lib/muhurta';
 import { formatMinutes12h } from '../../lib/time-format';
 
 const LOCS = [
@@ -86,32 +165,8 @@ const LOCS = [
   {name:'London',nameHi:'लंदन',lat:51.5074,lng:-0.1278,tz:1},
 ];
 
-// Panchaka: nakshatras 22-26 (0-indexed: Dhanishtha, Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, Revati)
-const PANCHAKA_NAKS = [22,23,24,25,26];
 const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const PANCHAKA_TYPES: Record<number,string> = {22:'Mrityu Panchaka',23:'Agni Panchaka',24:'Raja Panchaka',25:'Chora Panchaka',26:'Roga Panchaka'};
-
-// Gowri Panchangam sequences
-const GOWRI_DAY = [
-  ['Uthamam','Amrutham','Rogam','Labham','Dhanam','Sudham','Charam','Visha'],
-  ['Amrutham','Visha','Rogam','Labham','Dhanam','Sudham','Charam','Uthamam'],
-  ['Rogam','Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham'],
-  ['Labham','Dhanam','Sudham','Charam','Visha','Uthamam','Amrutham','Rogam'],
-  ['Dhanam','Sudham','Charam','Uthamam','Amrutham','Visha','Rogam','Labham'],
-  ['Sudham','Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam'],
-  ['Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam','Sudham'],
-];
-// Verified 2026-07 against drikpanchang.com (see src/lib/muhurta.ts#GOWRI_NIGHT for sourcing
-// notes and the Saturday source-data anomaly, kept faithfully rather than "corrected").
-const GOWRI_NIGHT = [
-  ['Dhanam','Sudham','Charam','Visha','Uthamam','Amrutham','Rogam','Labham'],
-  ['Sudham','Charam','Uthamam','Amrutham','Visha','Rogam','Labham','Dhanam'],
-  ['Charam','Uthamam','Visha','Amrutham','Rogam','Labham','Dhanam','Sudham'],
-  ['Uthamam','Amrutham','Rogam','Labham','Dhanam','Sudham','Charam','Visha'],
-  ['Amrutham','Visha','Rogam','Labham','Dhanam','Sudham','Charam','Uthamam'],
-  ['Rogam','Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham'],
-  ['Labham','Dhanam','Sudham','Charam','Uthamam','Visha','Amrutham','Charam'],
-];
 let isHindi = false;
 const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
 const trQ = (q:string) => isHindi ? (QUALITY_HI[q]||q) : q;
@@ -126,12 +181,6 @@ const GOWRI_DATA: Record<string,{q:string;bg:string;fg:string;suitable:string;su
   Visha:    {q:'Avoid',   bg:'#E8D9BE',fg:'#3A2712',suitable:'Avoid — inauspicious', suitableHi:'बचें — अशुभ'},
 };
 
-function toJD(y:number,m:number,d:number,h=0){
-  if(m<=2){y--;m+=12;}
-  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
-  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
-}
-const n360=(a:number)=>((a%360)+360)%360;
 const fmtMins = formatMinutes12h;
 
 const sel=document.getElementById('pk-city') as HTMLSelectElement;
@@ -181,20 +230,13 @@ function calculate(){
   const cityName=(document.getElementById('pk-city') as HTMLSelectElement).value;
   const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
   const [y,m,d]=dateStr.split('-').map(Number);
-  const date=new Date(dateStr+'T12:00:00');
-  const wd=date.getDay();
-  const jd=toJD(y,m,d,6-loc.tz);
-  const jdNext=toJD(y,m,d+1,6-loc.tz);
-  const moonSid=n360(moonLongitude(jd)-lahiriAyanamsha(jd));
-  const nakIdx=Math.floor(moonSid/(360/27))%27;
-  const isPanchaka=PANCHAKA_NAKS.includes(nakIdx);
+  const result=computePanchakaGowri(y,m,d,loc.lat,loc.lng,loc.tz);
+  const nakIdx=result.nakIdx;
+  const isPanchaka=result.isPanchaka;
 
-  // Gowri timing
-  const srUTC=sunriseUTC(jd,loc.lat,loc.lng,true);
-  const ssUTC=sunriseUTC(jd,loc.lat,loc.lng,false);
-  const srNextUTC=sunriseUTC(jdNext,loc.lat,loc.lng,true);
-  const srMins=srUTC*60+loc.tz*60, ssMins=ssUTC*60+loc.tz*60, srNextMins=srNextUTC*60+loc.tz*60+1440;
-  const dayDur=(ssMins-srMins)/8, nightDur=(srNextMins-ssMins)/8;
+  const noteEl=document.getElementById('pk-default-note');
+  if(noteEl) (noteEl as HTMLElement).style.display = loc.name==='New Delhi' ? '' : 'none';
+
   // "Today" and "now" must be evaluated in the SELECTED location's local time, not the
   // visitor's own device timezone (this page is location-selectable) and not UTC
   // (toISOString() always returns UTC). Shift the real instant by the same loc.tz already
@@ -230,19 +272,13 @@ function calculate(){
   // Gowri day
   const dayEl=document.getElementById('gowri-day');
   if(dayEl){
-    dayEl.innerHTML=GOWRI_DAY[wd].map((name,i)=>{
-      const s=srMins+i*dayDur, e=s+dayDur;
-      return makeGowriSlot(name,s,e,nowMins>=s&&nowMins<e);
-    }).join('');
+    dayEl.innerHTML=result.gowriDay.map(slot=>makeGowriSlot(slot.name,slot.start,slot.end,nowMins>=slot.start&&nowMins<slot.end)).join('');
   }
 
   // Gowri night
   const nightEl=document.getElementById('gowri-night');
   if(nightEl){
-    nightEl.innerHTML=GOWRI_NIGHT[wd].map((name,i)=>{
-      const s=ssMins+i*nightDur, e=s+nightDur;
-      return makeGowriSlot(name,s,e,nowMins>=s&&nowMins<e);
-    }).join('');
+    nightEl.innerHTML=result.gowriNight.map(slot=>makeGowriSlot(slot.name,slot.start,slot.end,nowMins>=slot.start&&nowMins<slot.end)).join('');
   }
 }
 
