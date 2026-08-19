@@ -184,7 +184,7 @@ function calculate(){
     else{verdict=tr('Poor Match','कमजोर मिलान');vColor='#dc2626';rec=tr('The score falls below the traditional threshold. Consult an experienced astrologer to examine doshas and possible remedies before proceeding.','यह स्कोर पारंपरिक मानदंड से कम है। आगे बढ़ने से पहले दोषों और संभावित उपायों की जांच हेतु किसी अनुभवी ज्योतिषी से परामर्श लें।');}
     let doshaNote='';
     if(nadiDosha)doshaNote+=`<p style="font-size:13px;color:#b91c1c;margin:8px 0 0;">${tr('⚠ Nadi Dosha present (same Nadi) — classically a concern for health & progeny. Check for cancellations (same rashi different nakshatra, etc.).','⚠ नाड़ी दोष मौजूद है (समान नाड़ी) — शास्त्रीय रूप से स्वास्थ्य और संतान के लिए चिंता का विषय। निवारण की जांच करें (समान राशि परंतु भिन्न नक्षत्र, आदि)।')}</p>`;
-    if(bhakootDosha)doshaNote+=`<p style="font-size:13px;color:#b91c1c;margin:8px 0 0;">${tr('⚠ Bhakoot Dosha present — may affect finances and family harmony. Often cancelled if Graha Maitri is strong.','⚠ भकूट दोष मौजूद है — धन और पारिवारिक सामंजस्य को प्रभावित कर सकता है। ग्रह मैत्री मजबूत होने पर अक्सर निवारण हो जाता है।')}</p>`;
+    if(bhakootDosha)doshaNote+=`<p style="font-size:13px;color:#b91c1c;margin:8px 0 0;">${tr('⚠ Bhakoot Dosha present — may affect finances and family harmony. Check the Graha Maitri score above for possible cancellation.','⚠ भकूट दोष मौजूद है — धन और पारिवारिक सामंजस्य को प्रभावित कर सकता है। संभावित निवारण के लिए ऊपर ग्रह मैत्री स्कोर देखें।')}</p>`;
     document.getElementById('verdict-box').innerHTML=
       `<h3 style="font-size:18px;font-weight:700;color:${vColor};margin:0 0 8px;">${verdict}</h3>
        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">${rec}</p>${doshaNote}`;
