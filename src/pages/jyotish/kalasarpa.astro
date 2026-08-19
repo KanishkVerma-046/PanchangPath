@@ -1,6 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq(),
+  {
+    q: 'How is my specific Kalasarpa type (like Ananta or Vasuki) determined?',
+    a: 'By which house Rahu occupies, counted from your Lagna — not by Rahu\'s zodiac sign directly. Rahu in the 1st house from your Lagna gives Ananta, the 2nd gives Kulika, and so on through all 12 houses to Sheshanaga in the 12th. This matches the standard convention used across Vedic astrology references for naming the 12 types.',
+  },
+  {
+    q: "What's the difference between Anuloma and Viloma, and does it matter?",
+    a: 'This calculator distinguishes them by zodiacal direction: in Anuloma ("with the current"), all seven planets sit on the arc running forward from Ketu to Rahu; in Viloma ("against the current"), they sit on the reverse arc, from Rahu to Ketu. Worth being upfront about, though: sources don\'t agree on how this distinction is defined in the first place. Some, like this calculator, use the zodiacal-direction framing above; others define it instead by which node — Rahu or Ketu — is "ahead" versus "behind" in the chain of planets, a related but not always identical test. Even paramarsh.app, one of the sources for this framing, states plainly that "the terminology is not uniform, so any reading must state its convention before calling a formation anuloma or viloma." What is well-corroborated across sources: Anuloma is traditionally read as the more favorable of the two directions, Viloma as more difficult — that part isn\'t in dispute, even where the exact definition mechanism is. Both still carry the core Kalasarpa themes of delay and eventual transformation.',
+  },
+  {
+    q: 'What does "Partial" Kalasarpa mean here, and is it less serious than the full yoga?',
+    a: 'On this calculator specifically, "Partial" means all seven planets are confined to one side of the axis, but one of them sits within about 2° of Rahu or Ketu — close enough that classical sources describe the conjunction as blurring the clean enclosure and softening the yoga\'s effect. Worth noting: some other sources use "partial" differently — for a case where one planet falls fully outside the axis, which this calculator instead reports as no yoga forming at all. The terminology isn\'t fully standardized across sources, so it\'s worth checking exactly what a given site or astrologer means by "partial" before comparing results.',
+  },
+];
 ---
 
 <Layout title="Kalasarpa Yoga Calculator — Dosha Detector — PanchangPath" description="Detect Kalasarpa Yoga / Dosha in your birth chart — when all seven planets lie between Rahu and Ketu. Identifies the type and explains effects and remedies.">
@@ -41,8 +59,11 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="कालसर्प योग के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Kalasarpa Yoga</h2>
-        <p data-hi="कालसर्प योग ('समय का सर्प') तब बनता है जब सभी सात शास्त्रीय ग्रह — सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र और शनि — राहु-केतु अक्ष के एक ओर सीमित हो जाते हैं। लग्न से राहु जिस भाव में स्थित है उसके आधार पर 12 नामित प्रकार हैं। कहा जाता है कि यह देरी, संघर्ष और अचानक उतार-चढ़ाव लाता है, लेकिन साथ ही तीव्र एकाग्रता और कर्म पूर्ण होने पर उल्लेखनीय उपलब्धि की संभावना भी। यदि एक भी ग्रह अक्ष से बाहर हो, तो योग आंशिक या अनुपस्थित माना जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Kalasarpa Yoga (the "serpent of time") occurs when all seven classical planets — Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn — are confined to one side of the Rahu–Ketu axis. There are 12 named types depending on the house Rahu occupies from the Lagna. It is said to bring delays, struggles and sudden ups and downs, but also intense focus and the potential for remarkable achievement once the karma is worked through. If even one planet falls outside the axis, the yoga is considered partial or absent.</p>
+        <p data-hi="कालसर्प योग ('समय का सर्प') तब बनता है जब सभी सात शास्त्रीय ग्रह — सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र और शनि — राहु-केतु अक्ष के एक ओर सीमित हो जाते हैं। लग्न से राहु जिस भाव में स्थित है उसके आधार पर 12 नामित प्रकार हैं। कहा जाता है कि यह देरी, संघर्ष और अचानक उतार-चढ़ाव लाता है, लेकिन साथ ही तीव्र एकाग्रता और कर्म पूर्ण होने पर उल्लेखनीय उपलब्धि की संभावना भी। यदि एक भी ग्रह अक्ष से बाहर हो, तो योग आंशिक या अनुपस्थित माना जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Kalasarpa Yoga (the "serpent of time") occurs when all seven classical planets — Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn — are confined to one side of the Rahu–Ketu axis. There are 12 named types depending on the house Rahu occupies from the Lagna. It is said to bring delays, struggles and sudden ups and downs, but also intense focus and the potential for remarkable achievement once the karma is worked through. If even one planet falls outside the axis, the yoga is considered partial or absent.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">This detector names your specific type from among the traditional 12 — Ananta through Sheshanaga — the 1st house from Lagna gives Ananta, the 2nd gives Kulika, and so on through the 12th. It also distinguishes Anuloma from Viloma — this calculator defines Anuloma as all seven planets sitting on the side running forward from Ketu toward Rahu, and Viloma as the reverse; sources aren't fully consistent on how this distinction is defined (see the FAQ below), though they agree Anuloma is traditionally read as the more favorable of the two, Viloma as more difficult. A planet within about 2° of either node is flagged as forming only a partial yoga.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>
