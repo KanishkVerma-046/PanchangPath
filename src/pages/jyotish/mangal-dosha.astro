@@ -1,6 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq('before deciding a match is incompatible'),
+  {
+    q: 'Why does the calculator check Mars from three different points (Lagna, Moon, and Venus) instead of just one?',
+    a: 'Because that\'s the standard method for a complete Mangal Dosha assessment — a person is only considered fully clear if Mars avoids the dosha houses (1st, 2nd, 4th, 7th, 8th, 12th) from all three reference points, not just one. The more of the three points where Mars falls in a dosha house, the more significant the affliction is traditionally considered — which is exactly why this calculator reports how many of the three references flagged it, not just a single yes/no.',
+  },
+  {
+    q: 'The page lists "both partners are Manglik" and "the dosha weakens after age 28" as cancellation rules above, but the Cancellation Analysis table doesn\'t check them — why?',
+    a: 'Because neither one can be evaluated from a single birth chart. "Both partners Manglik" requires comparing two separate charts against each other, which is outside what a one-person calculator can check — that\'s a factor to apply yourself once you have both results. The age-28 rule isn\'t a chart placement at all; it\'s a general statement about timing that applies the same way regardless of any specific chart detail. The six rules in the Cancellation Analysis table are the ones this calculator can verify directly from your birth data: Mars in its own sign, Mars exalted, a Cancer/Leo Lagna (where Mars is a yogakaraka), Mars in a weakening sign, and close conjunction with Jupiter or the Moon.',
+  },
+  {
+    q: 'How is the severity (High vs. Low-to-Medium) determined?',
+    a: "This calculator's own reasonable rule of thumb, applying the general principle sources agree on — more afflicted reference points and a poorly-placed Mars mean a more significant dosha — rather than a single universally fixed formula. Specifically: it's rated High when Mars falls in a dosha house from 2 or more of the three references and Mars isn't in its own sign, exalted, or a weakening sign; otherwise, if the dosha is present at all, it's rated Low to Medium. Different sources grade severity somewhat differently, so treat this rating as directional rather than an authoritative classification.",
+  },
+];
 ---
 
 <Layout title="Mangal Dosha Calculator — Manglik Check — PanchangPath" description="Check if you are Manglik (Mangal Dosha) from your birth chart. Analyses Mars from Lagna, Moon and Venus, with severity and classical cancellation rules.">
@@ -60,6 +78,8 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
         <h2 data-hi="मंगल दोष के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Mangal Dosha</h2>
         <p data-hi="मंगल दोष (जिसे कुज दोष या 'मांगलिक' होना भी कहा जाता है) तब होता है जब मंगल पहले, दूसरे, चौथे, सातवें, आठवें या बारहवें भाव में स्थित हो। चूंकि मंगल उग्र और आक्रामक है, माना जाता है कि ये स्थितियां विवाह में घर्षण पैदा करती हैं। विवाह मिलान में, परंपरागत रूप से एक मांगलिक की जोड़ी दूसरे मांगलिक से बनाई जाती है ताकि दोष निष्प्रभावी हो जाएं। आधुनिक अभ्यास कई निवारण कारकों पर विचार करता है, इसलिए केवल मांगलिक परिणाम शायद ही कभी निर्णायक बाधा बनता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Mangal Dosha (also called Kuja Dosha or being "Manglik") occurs when Mars sits in the 1st, 2nd, 4th, 7th, 8th or 12th house. Because Mars is fiery and aggressive, these placements are believed to create friction in marriage. In matchmaking, a Manglik is traditionally paired with another Manglik so the doshas neutralise. Modern practice weighs many cancellation factors, so a Manglik result alone is rarely a deal-breaker.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>

@@ -1,6 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq(),
+  {
+    q: 'Which yogas does this report check for, and how are they detected?',
+    a: "Nine checks run automatically: Gajakesari (Jupiter in a kendra — 1st, 4th, 7th or 10th — from the Moon), Budhaditya (Sun and Mercury in the same sign), Chandra-Mangal (Moon and Mars conjunct or opposite), the five Pancha Mahapurusha yogas (Ruchaka, Bhadra, Hamsa, Malavya, Shasha — each formed when Mars, Mercury, Jupiter, Venus or Saturn respectively sits in its own or exalted sign and in a kendra from the Lagna), two Raja Yoga variants (Lagna lord conjunct the 5th or 9th lord), and Kemadruma (Moon with no other planet in the houses immediately before or after it). Each uses the base classical definition; some traditions layer additional refinement conditions on top of a few of these — see the Gajakesari/Kemadruma note below for a specific example.",
+  },
+  {
+    q: "I've seen Gajakesari or Kemadruma Yoga reported differently on another site — why?",
+    a: 'Sources genuinely disagree on the fine print for both. For Gajakesari, some sources add extra conditions beyond "Jupiter in a kendra from the Moon" — for instance, requiring the Moon itself not be in the 6th, 8th or 12th house, or not already caught in Kemadruma — before calling the yoga "fully formed." This report checks the core, most commonly cited condition only. For Kemadruma, sources disagree on whether the Sun counts as a "neighbour" that prevents the yoga: most sources include the Sun in that check (which is what this report does), but some — citing Brihat Parashara Hora Shastra — exclude the Sun specifically, reasoning that the Sun and Moon represent different enough principles (soul vs. mind) that the Sun\'s presence doesn\'t provide real companionship to the Moon. Neither reading is being treated as more authoritative here — it\'s a genuine, documented difference between sources.',
+  },
+  {
+    q: 'How is my Vimshottari Dasha balance calculated?',
+    a: "From your Moon's exact position within its Janma Nakshatra at birth. Each of the 27 nakshatras is ruled by one of 9 planets in a fixed repeating order, and each planet's Dasha (planetary period) has a fixed length in the 120-year cycle. The fraction of your Janma Nakshatra the Moon had already crossed at your birth is applied to that ruling planet's full Dasha length to find how many years of it remain — that remainder becomes your first (birth) Dasha, and the rest of the 120-year sequence follows in the fixed planetary order from there.",
+  },
+];
 ---
 
 <Layout title="Janma Kundali — Detailed Natal Chart Report — PanchangPath" description="Generate a detailed Janma Kundali report with ascendant, sidereal planetary positions, house lords, dignity analysis, yoga detection and Vimshottari Dasha.">
@@ -83,6 +101,8 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
         <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><b data-hi="ग्रह बल:">Planetary Dignity:</b> <span data-hi="अपनी राशि या उच्च राशि में स्थित ग्रह पूर्ण बल से कार्य करता है; नीच राशि में उसे सचेत प्रयास की आवश्यकता हो सकती है। नीच भंग (नीचता का निवारण) उसकी ऊर्जा को पुनः स्थापित कर सकता है।">A planet in its own sign or exaltation functions at full strength; in debilitation it may need conscious cultivation. Neecha Bhanga (cancellation of debilitation) can restore its energy.</span></p>
         <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"><b data-hi="विंशोत्तरी दशा:">Vimshottari Dasha:</b> <span data-hi="जन्म के समय चंद्र नक्षत्र से सक्रिय होने वाली 120-वर्षीय ग्रह अवधि प्रणाली। जन्म दशा के शेष वर्ष, फिर पूरा क्रम, यहां दिखाया गया है। व्यक्तिगत विश्लेषण हेतु किसी योग्य ज्योतिषी से परामर्श लें।">The 120-year planetary period system activated by the Moon's nakshatra at birth. The remaining years of the birth dasha, then the full sequence, are shown. Consult a qualified Jyotishi for a personalised reading.</span></p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
 
     </div>
   </section>
