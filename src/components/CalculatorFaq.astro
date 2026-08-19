@@ -1,0 +1,103 @@
+---
+// Reuses the FAQ display pattern established in src/pages/faq.astro
+// (details/summary accordion + FAQPage JSON-LD), English-only since the
+// Hindi toggle is currently disabled and this is new copy with no Hindi
+// counterpart.
+export interface CalcFaqItem {
+  q: string;
+  a: string;
+  html?: boolean;
+}
+interface Props {
+  items: CalcFaqItem[];
+}
+const { items } = Astro.props as Props;
+
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, '');
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.html ? stripTags(item.a) : item.a,
+    },
+  })),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+<div class="card faq-card" style="padding:28px;margin-top:24px;">
+  <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 16px;">Frequently Asked Questions</h2>
+  <div class="faq-list">
+    {items.map((item) => (
+      <details class="faq-item">
+        <summary class="faq-summary">
+          <span>{item.q}</span>
+          <span class="faq-caret" aria-hidden="true">▾</span>
+        </summary>
+        <div class="faq-answer">
+          {item.html ? <p set:html={item.a} /> : <p>{item.a}</p>}
+        </div>
+      </details>
+    ))}
+  </div>
+</div>
+
+<style>
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .faq-item {
+    background: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-elevation);
+    overflow: hidden;
+  }
+  .faq-item[open] { box-shadow: var(--shadow-card-hover); }
+
+  .faq-summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-ink);
+    user-select: none;
+  }
+  .faq-summary::-webkit-details-marker { display: none; }
+
+  .faq-caret {
+    flex-shrink: 0;
+    color: var(--color-saffron-deep);
+    font-size: 13px;
+    transition: transform 0.2s;
+  }
+  .faq-item[open] .faq-caret { transform: rotate(180deg); }
+
+  .faq-answer {
+    padding: 0 18px 18px;
+    font-size: 14.5px;
+    line-height: 1.7;
+    color: var(--color-body-text);
+  }
+  .faq-answer p { margin: 0; }
+  .faq-answer :global(a) { color: var(--color-saffron-deep); }
+
+  @media (max-width: 640px) {
+    .faq-summary { font-size: 14px; padding: 14px 16px; }
+    .faq-answer { padding: 0 16px 16px; font-size: 14px; }
+  }
+</style>

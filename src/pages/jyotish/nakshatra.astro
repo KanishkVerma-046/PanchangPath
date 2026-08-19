@@ -1,5 +1,25 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq(),
+  {
+    q: "Why does my Pada matter, and does this tool give the actual naming syllable?",
+    a: "Yes — the calculator lists all four padas of your Nakshatra with their traditional naming syllables, highlighting the one that's yours. This is a naming convention, not a rule: many families follow it strictly, others treat it as one input among several.",
+  },
+  {
+    q: 'What\'s the difference between Nakshatra and Rashi (Moon sign)?',
+    a: 'Both come from the same Moon position, just sliced differently. Rashi divides the zodiac into 12 signs of 30° each; Nakshatra divides it into 27 lunar mansions of 13°20′ each. Because the two grids don\'t line up evenly, a single Nakshatra can span parts of two different Rashis. See the <a href="/jyotish/rashi">Rashi calculator</a> for that separate 30°-based reading.',
+    html: true,
+  },
+  {
+    q: 'Why do Gana and Nadi matter beyond my personal profile?',
+    a: 'They\'re two of the eight Ashtakoota factors used in Kundali matching for marriage compatibility (see the <a href="/jyotish/horoscope-match">Horoscope Match calculator</a>). A shared Nadi between two charts is considered the most significant compatibility concern in that system — traditionally advised against regardless of how the other seven factors score.',
+    html: true,
+  },
+];
 ---
 
 <Layout title="Nakshatra Calculator — Find Your Birth Star — PanchangPath" description="Find your Janma Nakshatra (birth star) and pada from birth details. Includes lord, gana, nadi, yoni, deity, symbol and name syllables.">
@@ -61,8 +81,12 @@ import Layout from '../../layouts/Layout.astro';
 
       <div class="card" style="padding:28px;">
         <h2 data-hi="नक्षत्रों के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Nakshatras</h2>
-        <p data-hi="क्रांतिवृत्त को 27 नक्षत्रों में विभाजित किया गया है, प्रत्येक 13°20' का, और प्रत्येक को आगे 4 पदों में विभाजित किया गया है, प्रत्येक 3°20' का। हर नक्षत्र का एक शासक ग्रह (विंशोत्तरी दशा हेतु उपयोग), एक देवता, एक पशु (योनि), एक गण (स्वभाव), और एक नाड़ी (संरचना) होती है — ये सभी संगतता मिलान, नामकरण और मुहूर्त ज्योतिष को निर्धारित करते हैं।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">The ecliptic is divided into 27 nakshatras of 13°20' each, every one further split into 4 padas of 3°20'. Each nakshatra has a ruling planet (used for Vimshottari Dasha), a deity, an animal (yoni), a gana (temperament), and a nadi (constitution) — all of which inform compatibility matching, naming and electional astrology.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">The 27 nakshatras divide the Moon's path into equal 13°20′ segments — the same span the Moon covers in about one day, which is why "nakshatra" is often translated as "lunar mansion." Each nakshatra further splits into 4 padas of 3°20′, traditionally used for naming: a child's first name syllable is drawn from the pada the Moon occupied at birth, and this calculator lists the exact syllable for each of the four padas alongside your own.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Beyond naming, every nakshatra carries a ruling planet — the basis for the Vimshottari Dasha system used to time life events — plus a deity, a yoni (animal nature), a gana (temperament: Deva, Manushya or Rakshasa), and a nadi (constitutional type). Nadi and Gana are two of the eight Ashtakoota factors checked in Kundali matching for marriage compatibility, which is why your Janma Nakshatra carries weight well beyond a horoscope column.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">This calculator finds your Nakshatra and Pada by computing the Moon's sidereal longitude for your birth date, time and place — using the same astronomy-engine-based <code>moonLongitude()</code> and Lahiri ayanamsha the rest of the site shares — then dividing that longitude by 13°20′ to locate the nakshatra, and by 3°20′ within it to locate the pada.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>

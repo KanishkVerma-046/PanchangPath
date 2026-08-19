@@ -1,5 +1,25 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq(),
+  {
+    q: 'How is my Rashi different from my Lagna (Ascendant)?',
+    a: 'They come from different points in the chart. Rashi is the Moon\'s sign at birth — your emotional and mental nature, used for daily Rashifal. Lagna is the sign rising on the eastern horizon at birth — your physical body and outward personality, and the basis for all 12 houses. See the <a href="/jyotish/lagna">Lagna calculator</a> for that separate calculation.',
+    html: true,
+  },
+  {
+    q: 'Is this the same as my "zodiac sign" from Western horoscopes?',
+    a: 'No. Western astrology uses the tropical zodiac, anchored to the seasons; Vedic astrology uses the sidereal zodiac, anchored to the actual background stars. Precession has opened a gap of roughly 24° between the two over the centuries — enough that most people\'s Vedic Rashi is one sign "earlier" than their familiar Western sun sign.',
+  },
+  {
+    q: 'Why does the calculator ask for my birth place?',
+    a: "Mainly to convert your local birth time into the correct universal time for the calculation. This calculator's Moon-longitude computation (<code>moonLongitude()</code> in <code>astro-core.ts</code>, the same function used sitewide for Rashi, Nakshatra, and Panchang) is geocentric — it doesn't apply a location-specific (topocentric/parallax) correction, a real effect that can shift the Moon's apparent position by up to roughly a degree near the horizon. That's a characteristic of how this site currently computes the Moon everywhere, not a claim that location is astronomically irrelevant to the Moon's position in general. In practice, your city selection here matters for getting the time zone right; it's your Lagna, not your Rashi, that's genuinely location-sensitive.",
+    html: true,
+  },
+];
 ---
 
 <Layout title="Rashi Calculator — Find Your Moon Sign — PanchangPath" description="Find your Vedic Moon sign (Rashi) from your birth date, time and place. Includes nakshatra, pada, ruling planet and rashi characteristics.">
@@ -51,8 +71,12 @@ import Layout from '../../layouts/Layout.astro';
 
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="राशि के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rashi</h2>
-        <p data-hi="वैदिक ज्योतिष में, आपकी राशि (चंद्र राशि) आपके मन, भावनाओं और सहज स्वभाव को दर्शाती है। चूंकि चंद्रमा तेजी से चलता है — प्रति राशि लगभग 2.25 दिन — सटीक जन्म समय सबसे विश्वसनीय परिणाम देता है। यह वही राशि है जिसे आपको दैनिक राशिफल के लिए पढ़ना चाहिए और शुभ समय चुनते समय उपयोग करना चाहिए।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">In Vedic astrology, your Rashi (Moon sign) reflects your mind, emotions and instinctive nature. Because the Moon moves quickly — roughly 2.25 days per sign — accurate birth time gives the most reliable result. This is the sign you should read for daily horoscopes (Rashifal) and use when choosing auspicious timings.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Your Rashi — also called Chandra Rashi or Janma Rashi — is the zodiac sign the Moon occupied at the moment of your birth, and it's the single most-used placement in everyday Vedic astrology: it's the sign Rashifal predictions, Muhurta timing, and gemstone recommendations are built around, distinct from the Sun-based sign most Western horoscopes use.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Because the Moon completes a full 360° circuit of the sidereal zodiac in about 27.3 days, it moves through each 30°-wide Rashi in roughly 2.25 days on average — noticeably faster than the Sun, which takes about a month per sign. That speed is exactly why an accurate birth time matters more here than for a Sun-based reading: if your birth falls within a day or so of the Moon crossing into the next sign, only the precise time settles which Rashi is genuinely yours.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">This calculator computes the Moon's sidereal longitude for your birth date, time and place using the site's shared astronomy-engine-based <code>moonLongitude()</code> function, subtracts the Lahiri ayanamsha, and reads off the Rashi, its ruling planet, element, quality, and your Moon's exact Nakshatra Pada — the same math used everywhere else Rashi appears on this site.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>
