@@ -1,5 +1,23 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq('before scheduling a Shraddha ceremony'),
+  {
+    q: 'Why does this calculator use a different tithi rule than the rest of the site?',
+    a: "Because Shraddha specifically follows the Aparahna Vyapini rule — the tithi that's active during the afternoon window (the 4th of five equal daylight parts) is the one that governs the ritual, even if a different tithi was present at sunrise. Panchang elements like festivals and daily Tithi/Nakshatra use a sunrise-based rule instead, which is why this page doesn't reuse that logic even though both ultimately come from the same underlying Sun/Moon position functions.",
+  },
+  {
+    q: 'What are Vriddhi and Kshaya tithis, and how does this calculator handle them?',
+    a: "These are the two edge cases where a simple \"one tithi per day\" mapping breaks down. Vriddhi is when a tithi is long enough to overlap two consecutive days' Aparahna windows — this calculator assigns it to the first of the two days, per convention. Kshaya is the opposite: a tithi so short it doesn't overlap any day's Aparahna window at all — this calculator assigns it to whichever day's window falls temporally closest to the tithi's actual span.",
+  },
+  {
+    q: "What if I don't know the exact tithi of a family member's passing?",
+    a: 'Observe Sarva Pitru Amavasya instead — the final day of Pitru Paksha, specifically set aside for ancestors whose tithi isn\'t known, alongside anyone who passed on any Amavasya. This calculator\'s "By Tithi Directly" mode doesn\'t have an "unknown" option deliberately — Sarva Pitru Amavasya is the traditional answer, so it\'s covered by the About section\'s note rather than a separate form option.',
+  },
+];
 ---
 
 <Layout title="Shraddha Tithi Calculator — Pitru Paksha — PanchangPath" description="Find the tithi of a death anniversary and the correct day to perform Shraddha during Pitru Paksha. Includes the full Pitru Paksha tithi schedule.">
@@ -82,8 +100,11 @@ import Layout from '../../layouts/Layout.astro';
       <div class="card" style="padding:28px;">
         <h2 data-hi="श्राद्ध के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shraddha</h2>
         <p data-hi="श्राद्ध पूर्वजों (पितरों) के सम्मान में किया जाने वाला अनुष्ठानिक अर्पण है। वार्षिक श्राद्ध मृत्यु की तिथि के अनुरूप तिथि पर, पितृ पक्ष के दौरान किया जाता है — अश्विन माह (सितंबर-अक्टूबर) के कृष्ण पक्ष का 16-दिवसीय पखवाड़ा।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Shraddha is the ritual offering made to honour departed ancestors (pitrs). The annual Shraddha is performed on the tithi corresponding to the date of death, during Pitru Paksha — a 16-day fortnight in the Krishna Paksha of the month of Ashwin (September–October).</p>
-        <p style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0;"><span data-hi="विशेष स्थितियां: जो किसी भी अमावस्या को गुजरे, या जिनकी तिथि अज्ञात है, उन्हें ">Special cases: those who passed on any Amavasya, or whose tithi is unknown, are honoured on </span><b><span data-hi="सर्व पितृ अमावस्या">Sarva Pitru Amavasya</span></b><span data-hi=" (अंतिम दिन) पर सम्मानित किया जाता है। जिनकी मृत्यु अप्राकृतिक रूप से हुई उन्हें चतुर्दशी पर स्मरण किया जाता है। संन्यासियों को द्वादशी पर सम्मानित किया जाता है।"> (the final day). Those who died unnaturally are remembered on Chaturdashi. Sanyasis are honoured on Dwadashi.</span></p>
+        <p style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0 0 14px;"><span data-hi="विशेष स्थितियां: जो किसी भी अमावस्या को गुजरे, या जिनकी तिथि अज्ञात है, उन्हें ">Special cases: those who passed on any Amavasya, or whose tithi is unknown, are honoured on </span><b><span data-hi="सर्व पितृ अमावस्या">Sarva Pitru Amavasya</span></b><span data-hi=" (अंतिम दिन) पर सम्मानित किया जाता है। जिनकी मृत्यु अप्राकृतिक रूप से हुई उन्हें चतुर्दशी पर स्मरण किया जाता है। संन्यासियों को द्वादशी पर सम्मानित किया जाता है।"> (the final day). Those who died unnaturally are remembered on Chaturdashi. Sanyasis are honoured on Dwadashi.</span></p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">This calculator applies the Aparahna Vyapini rule specifically for Shraddha — different from the sunrise-based tithi rule this site uses elsewhere for festivals and daily Panchang. Aparahna is the fourth of five equal parts of daylight, the classical afternoon window Dharmashastra prescribes for these rites; a tithi is assigned to whichever day its span actually overlaps that window, even if it isn't the tithi present at sunrise. Two edge cases follow: a long tithi overlapping two days' windows (Vriddhi) is assigned to the first day; a short tithi that misses every window entirely (Kshaya) goes to the day whose window falls nearest to it. The Pitru Paksha schedule below is computed fresh each year using this same rule.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>

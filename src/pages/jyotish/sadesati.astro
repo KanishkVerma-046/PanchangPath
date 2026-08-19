@@ -1,6 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq(),
+  {
+    q: 'The calculator labels two of the three phases "Dhaiya" — is that the same thing as Sadesati?',
+    a: 'Sources use "Dhaiya" two different ways, and they disagree. Some use it loosely for Sadesati\'s own Rising and Setting sub-phases, which is how this calculator uses the label. Others use it more strictly for a completely separate transit — Saturn passing through the 4th or 8th house from your Moon sign, which has nothing to do with the 12th/1st/2nd houses Sadesati is built on. If you\'ve seen "Dhaiya" used differently elsewhere, that\'s likely why — it isn\'t a universally standardized term.',
+  },
+  {
+    q: 'Will I really experience Sadesati two to three times in my life?',
+    a: "For most lifespans, yes, roughly — Saturn's ~29.5-year orbital period means each recurrence lands about 30 years after the last one, so a typical 80-90 year lifespan spans roughly two to three full cycles. This calculator scans a full 95 years forward from your birth date specifically to capture all of them, not just the current or next one.",
+  },
+  {
+    q: 'Which phase is considered the most difficult?',
+    a: "The Peak phase — when Saturn transits directly over your natal Moon sign, not the sign before or after it. Classical and contemporary sources agree this middle ~2.5-year stretch is typically the most tested, since it coincides with Saturn's most direct pressure on the Moon's themes of mind and emotional stability, rather than the more anticipatory (Rising) or resolving (Setting) phases on either side.",
+  },
+];
 ---
 
 <Layout title="Shani Sadesati Calculator — 7.5 Year Saturn Cycle — PanchangPath" description="Check your Shani Sadesati status — Saturn\'s 7.5-year transit over your Moon sign. See current phase and a lifetime timeline of all three Sadesati periods.">
@@ -38,8 +56,11 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="शनि साढ़े साती के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shani Sadesati</h2>
-        <p data-hi="शनि (शनिदेव) को राशिचक्र का चक्कर पूरा करने में लगभग 29.5 वर्ष लगते हैं, यानी हर राशि में लगभग 2.5 वर्ष। साढ़े साती ('सात साढ़े') वह अवधि है जब शनि आपकी जन्म चंद्र राशि से बारहवीं, पहली और दूसरी राशि से गुजरता है — कुल मिलाकर लगभग 7.5 वर्ष। यह लगभग हर 30 वर्ष में दोहराई जाती है, इसलिए अधिकांश लोग इसे जीवन में दो से तीन बार अनुभव करते हैं। कठिन परीक्षाओं और सबकों के लिए जानी जाने वाली साढ़े साती अंततः परिपक्वता, अनुशासन और स्थायी विकास की अवधि है। यहां दी गई तिथियां अनुमानित हैं (शनि के निरयण राशि प्रवेश से गणना की गई)।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">Saturn (Shani) takes about 29.5 years to circle the zodiac, spending roughly 2.5 years in each sign. Sadesati ("seven and a half") is the period when Saturn passes through the 12th, 1st and 2nd signs from your natal Moon — about 7.5 years in total. It recurs roughly every 30 years, so most people experience it two to three times in a lifetime. Though known for tests and hard lessons, Sadesati is ultimately a period of maturity, discipline and lasting growth. Dates here are approximate (computed from Saturn's sidereal sign ingress).</p>
+        <p data-hi="शनि (शनिदेव) को राशिचक्र का चक्कर पूरा करने में लगभग 29.5 वर्ष लगते हैं, यानी हर राशि में लगभग 2.5 वर्ष। साढ़े साती ('सात साढ़े') वह अवधि है जब शनि आपकी जन्म चंद्र राशि से बारहवीं, पहली और दूसरी राशि से गुजरता है — कुल मिलाकर लगभग 7.5 वर्ष। यह लगभग हर 30 वर्ष में दोहराई जाती है, इसलिए अधिकांश लोग इसे जीवन में दो से तीन बार अनुभव करते हैं। कठिन परीक्षाओं और सबकों के लिए जानी जाने वाली साढ़े साती अंततः परिपक्वता, अनुशासन और स्थायी विकास की अवधि है। यहां दी गई तिथियां अनुमानित हैं (शनि के निरयण राशि प्रवेश से गणना की गई)।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Saturn (Shani) takes about 29.5 years to circle the zodiac, spending roughly 2.5 years in each sign. Sadesati ("seven and a half") is the period when Saturn passes through the 12th, 1st and 2nd signs from your natal Moon — about 7.5 years in total. It recurs roughly every 30 years, so most people experience it two to three times in a lifetime. Though known for tests and hard lessons, Sadesati is ultimately a period of maturity, discipline and lasting growth. Dates here are approximate (computed from Saturn's sidereal sign ingress).</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">This calculator scans forward from your birth date to find every window where Saturn's sidereal position falls in one of the three signs anchored to your natal Moon, then locates the boundary between each of the three roughly-2.5-year sub-phases the same way — using the site's shared <code>planetLongitude('saturn', ...)</code> and Lahiri ayanamsha. The three sub-phases are commonly labelled Rising, Peak and Setting: the middle one, when Saturn transits directly over your Moon sign, is traditionally considered the most intense of the three, since it tests career, health, relationships and self-image most directly.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>

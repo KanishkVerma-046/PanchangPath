@@ -1,5 +1,23 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq(),
+  {
+    q: "Why does the calculator ask for time and place if they're marked optional?",
+    a: "Because they only change the result on the one or two days a month when the Sun is actually crossing from one sign into the next. The Sun moves only about 1° per day, so unless your birthday falls right on one of those crossing days, the date alone is already enough to fix both your Western and Vedic Sun sign precisely — time and place don't add any further precision.",
+  },
+  {
+    q: 'If my Western and Vedic Sun signs differ, which one is "correct"?',
+    a: "Neither is wrong — they answer different questions using different reference points. Western tropical astrology (the sign in most newspaper horoscopes) measures from the seasons; Vedic sidereal astrology measures from the actual background stars. If you're reading a Jyotish prediction, in-depth Vedic Panchang, or anything else on this site, the Vedic sign is the relevant one; the Western sign is what applies to typical Western pop-astrology content.",
+  },
+  {
+    q: 'My birthday is right around a sign changeover (like late March) — how do I know which sign I actually am?',
+    a: "That's exactly the case where entering an exact birth time and place matters, unlike for most other birth dates. Late March is a genuine edge case for this reason: it's close to when the Western Aries/Pisces boundary falls, and — separately — often lands right around the Vedic Pisces/Aries boundary too because of the ~24° ayanamsha offset. Fill in the optional fields for the most reliable result if your birthday is within a day or two of either boundary.",
+  },
+];
 ---
 
 <Layout title="Sun Sign Calculator — Vedic & Western — PanchangPath" description="Find both your Vedic (sidereal) and Western (tropical) Sun signs from birth date, time and place, with element, quality, ruler and compatible signs.">
@@ -47,8 +65,10 @@ import Layout from '../../layouts/Layout.astro';
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="सूर्य राशि के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Sun Signs</h2>
         <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><span data-hi="पश्चिमी ज्योतिष ">Western astrology uses the </span><b><span data-hi="उष्णकटिबंधीय राशिचक्र (सायन)">tropical zodiac</span></b><span data-hi=", का उपयोग करता है जो ऋतुओं पर आधारित है (मेष हमेशा वसंत विषुव से आरंभ होता है)। वैदिक ज्योतिष ">, anchored to the seasons (Aries always begins at the spring equinox). Vedic astrology uses the </span><b><span data-hi="निरयण राशिचक्र (सिडेरियल)">sidereal zodiac</span></b><span data-hi=", का उपयोग करता है जो वास्तविक स्थिर तारों पर आधारित है। विषुवों की अयन-गति (precession) के कारण, ये दोनों हजारों वर्षों में लगभग 24° अलग हो गए हैं।">, anchored to the actual fixed stars. Due to the precession of the equinoxes, the two have drifted apart by roughly 24&deg; over millennia.</span></p>
-        <p data-hi="मार्च के अंत में जन्मे व्यक्ति की सायन राशि सामान्यतः मेष होगी, लेकिन निरयण राशि मीन होगी। दोनों प्रणालियां अपने-अपने संदर्भ बिंदु से आंतरिक रूप से सुसंगत हैं। ज्योतिष में, वैदिक सूर्य राशि आत्मा के मूल उद्देश्य को दर्शाती है, जबकि चंद्र राशि मन और दैनिक जीवन को नियंत्रित करती है।" style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0;">A person born in late March will typically be a Western Aries but a Vedic Pisces. Both systems are internally consistent — they just measure from different reference points. In Jyotish, the Vedic Sun sign describes the soul's core purpose, while the Moon sign (Rashi) governs the mind and daily life.</p>
+        <p style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0;"><span data-hi="मार्च के अंत में जन्मे व्यक्ति की सायन राशि सामान्यतः मेष होगी, लेकिन निरयण राशि मीन होगी। दोनों प्रणालियां अपने-अपने संदर्भ बिंदु से आंतरिक रूप से सुसंगत हैं। ज्योतिष में, वैदिक सूर्य राशि आत्मा के मूल उद्देश्य को दर्शाती है, जबकि चंद्र राशि मन और दैनिक जीवन को नियंत्रित करती है।">A person born in late March will typically be a Western Aries but a Vedic Pisces. Both systems are internally consistent — they just measure from different reference points. In Jyotish, the Vedic Sun sign describes the soul's core purpose, while the Moon sign (Rashi) governs the mind and daily life.</span> This calculator's birth time and place fields are optional because they only matter on the one or two days each month when the Sun is crossing from one sign to the next — for any other birth date, the day alone fixes both Sun signs precisely.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>
