@@ -1,6 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq(),
+  {
+    q: 'What is the Atmakaraka shown in my interpretations, and how is it found?',
+    a: 'The Atmakaraka ("soul significator") is whichever planet has progressed furthest through its own sign — measured in degrees from 0° to 30°, regardless of which sign that is. In the Jaimini system, this planet is treated as the primary indicator of the soul\'s purpose in this lifetime. This calculator checks the Sun through Saturn plus Rahu (using Rahu\'s reversed degree count, since it always moves backward through the zodiac) and excludes Ketu — one common variant of the calculation; some traditions use only the seven classical planets.',
+  },
+  {
+    q: 'Why are there four chart style options, and do they show different information?',
+    a: 'No — North Indian, South Indian, East Indian and West Indian are just different regional visual conventions for arranging the same 12 houses and planetary positions. North Indian is a fixed diamond with rotating house numbers; South and West Indian use a fixed 4×4 grid with rotating sign positions; East Indian uses a 3×3 Bengali layout. Whichever style you\'re used to reading, the underlying chart is identical.',
+  },
+  {
+    q: 'What does "Vakri" (retrograde) next to a planet mean — is it really moving backward?',
+    a: 'No planet actually reverses direction in its orbit. Retrograde is an apparent effect: as Earth and another planet orbit the Sun at different speeds, the other planet can appear to move backward against the background stars for a period, the same way a car you\'re overtaking seems to slide backward relative to you. This calculator detects it by comparing each planet\'s longitude one day apart — if it\'s decreased, the planet is marked Vakri.',
+  },
+];
 ---
 
 <Layout title="Kundali Generator — Free Vedic Birth Chart — PanchangPath" description="Generate your free Vedic birth chart (Janma Kundali) with planetary positions, signs, nakshatras, Lagna and interpretations. Lahiri ayanamsha.">
@@ -83,8 +101,11 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="जन्म कुंडली के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About the Janma Kundali</h2>
         <p data-hi="जन्म कुंडली आपके जन्म के ठीक क्षण और स्थान पर आकाश का नक्शा है। 12 भाव, पूर्वी क्षितिज पर उदित होने वाली राशि (लग्न), और नौ ग्रहों की स्थिति मिलकर आपके जीवन की संभावनाओं, शक्तियों और कर्म-पैटर्न को दर्शाते हैं।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">The Janma Kundali (birth chart) is a map of the heavens at the exact moment and place of your birth. The 12 houses (bhavas), the rashi rising on the eastern horizon (Lagna), and the placement of the nine grahas together describe your life's potential, strengths and karmic patterns.</p>
-        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"><span data-hi="चार क्षेत्रीय चार्ट शैलियों में से चुनें: ">Choose from four regional chart styles: </span><b data-hi="उत्तर भारतीय">North Indian</b><span data-hi=" (हिंदुस्तानी हीरा/पतंग शैली), "> (Hindustani diamond/kite), </span><b data-hi="दक्षिण भारतीय">South Indian</b><span data-hi=" (तमिलनाडु और कर्नाटक में प्रयुक्त स्थिर-राशि 4×4 ग्रिड), "> (fixed-sign 4&times;4 grid used in Tamil Nadu and Karnataka), </span><b data-hi="पूर्व भारतीय">East Indian</b><span data-hi=" (बंगाली 3×3 वर्ग), या "> (Bengali 3&times;3 square), or </span><b data-hi="पश्चिम भारतीय">West Indian</b><span data-hi=" (गुजराती/मराठी स्थिर-राशि ग्रिड)। सभी शैलियां समान खगोलीय आंकड़े दर्शाती हैं।"> (Gujarati/Marathi fixed-sign grid). All styles show the same astronomical data.</span></p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;"><span data-hi="चार क्षेत्रीय चार्ट शैलियों में से चुनें: ">Choose from four regional chart styles: </span><b data-hi="उत्तर भारतीय">North Indian</b><span data-hi=" (हिंदुस्तानी हीरा/पतंग शैली), "> (Hindustani diamond/kite), </span><b data-hi="दक्षिण भारतीय">South Indian</b><span data-hi=" (तमिलनाडु और कर्नाटक में प्रयुक्त स्थिर-राशि 4×4 ग्रिड), "> (fixed-sign 4&times;4 grid used in Tamil Nadu and Karnataka), </span><b data-hi="पूर्व भारतीय">East Indian</b><span data-hi=" (बंगाली 3×3 वर्ग), या "> (Bengali 3&times;3 square), or </span><b data-hi="पश्चिम भारतीय">West Indian</b><span data-hi=" (गुजराती/मराठी स्थिर-राशि ग्रिड)। सभी शैलियां समान खगोलीय आंकड़े दर्शाती हैं।"> (Gujarati/Marathi fixed-sign grid). All styles show the same astronomical data.</span></p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">This generator computes all nine grahas' sidereal positions from the site's shared <code>allTropicalLons()</code> and Lahiri ayanamsha, plus your Lagna via <code>calcLagna()</code> — the same math used across every chart tool on this site. Retrograde (Vakri) status for the five classical outer planets is derived by comparing each planet's longitude a day apart; Rahu and Ketu, always in retrograde motion by definition, are marked Vakri directly. The Key Interpretations panel also identifies your Atmakaraka — the planet holding the highest degree within its sign, the Jaimini system's primary soul-significator.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>

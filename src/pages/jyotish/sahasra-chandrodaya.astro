@@ -1,6 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import TithiIcon from '../../components/icons/TithiIcon.astro';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq(),
+  {
+    q: "Why doesn't this calculator ask for my birth time or location, unlike most other tools on this site?",
+    a: 'Because full moons repeat roughly every 29.5 days, a difference of a few hours in birth time essentially never changes which lunar cycle counts as your first — only a birth within hours of an actual full moon could shift the count, and even then by at most one moon out of a thousand. Birth date alone is precise enough for a milestone this many decades out.',
+  },
+  {
+    q: 'How precise is the estimated date?',
+    a: "The date comes from a real astronomical calculation — an iterative solve for the exact Moon-Sun elongation crossing, the same method used elsewhere on this site — not a rough rule of thumb. The one source of drift: after finding your precise first full moon, the calculator adds 999 more cycles at the mean synodic month length (29.530589 days) rather than solving each one individually, so the final date can land a day or so off from a fully rigorous month-by-month calculation, for the same reason the page's own note already states — the Moon's elliptical orbit makes real synodic months a few hours longer or shorter than the mean, and those small differences accumulate slightly over 999 cycles.",
+  },
+  {
+    q: 'Is the 1000th full moon exactly your 80th birthday?',
+    a: "No — it falls a little after, in a person's early 80s, since 1000 lunar cycles run longer than 80 solar years (see the About section above for the precise figure). It's a separate, purely lunar milestone from a birthday, which is why it's calculated in full moons rather than years.",
+  },
+];
 ---
 
 <Layout title="Sahasra Chandrodaya Calculator — 1000th Full Moon — PanchangPath" description="Calculate the date of your Sahasra Chandra Darshan — the 1000th full moon seen in a lifetime, an auspicious milestone celebrated around age 80.">
@@ -47,8 +65,11 @@ import TithiIcon from '../../components/icons/TithiIcon.astro';
       <div class="card" style="padding:28px;">
         <h2 data-hi="सहस्र चंद्र दर्शन के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Sahasra Chandra Darshan</h2>
         <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;"><span data-hi="हिंदू परंपरा में, एक हजार पूर्णिमाओं को देखना एक दीर्घ, धन्य जीवन को दर्शाने वाली पवित्र उपलब्धि मानी जाती है। चूंकि एक चांद्र (सिनोडिक) माह लगभग 29.53 दिन का होता है, 1000 पूर्णिमाएं लगभग 80 वर्ष 10 माह तक फैली होती हैं। इस अवसर को, जिसे कभी-कभी ">In Hindu tradition, witnessing one thousand full moons is a sacred achievement signifying a long, blessed life. Since a lunar (synodic) month is about 29.53 days, 1000 full moons span roughly 80 years and 10 months. The occasion, sometimes called </span><i><span data-hi="सहस्र चंद्र दर्शन शांति">Sahasra Chandra Darshana Shanti</span></i><span data-hi=" कहा जाता है, विशेष पूजा और पारिवारिक उत्सव के साथ मनाया जाता है।">, is marked with a special puja and family celebration.</span></p>
-        <p data-hi="यह कैलकुलेटर जन्म के बाद पहली पूर्णिमा में 999 सिनोडिक माह जोड़कर तिथि का अनुमान लगाता है। चंद्रमा की दीर्घवृत्तीय कक्षा के कारण वास्तविक पूर्णिमा तिथियों में थोड़ा अंतर हो सकता है।" style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0;">This calculator estimates the date by adding 999 synodic months to the first full moon after birth. Actual full-moon dates vary slightly due to the Moon's elliptical orbit.</p>
+        <p data-hi="यह कैलकुलेटर जन्म के बाद पहली पूर्णिमा में 999 सिनोडिक माह जोड़कर तिथि का अनुमान लगाता है। चंद्रमा की दीर्घवृत्तीय कक्षा के कारण वास्तविक पूर्णिमा तिथियों में थोड़ा अंतर हो सकता है।" style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0 0 14px;">This calculator estimates the date by adding 999 synodic months to the first full moon after birth. Actual full-moon dates vary slightly due to the Moon's elliptical orbit.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">The calculator finds your first full moon after birth precisely — solving for the moment the Moon-Sun elongation crosses 180°, using the site's shared <code>sunTrueLongitude()</code> and <code>moonLongitude()</code> functions — then adds 999 more synodic months (29.530589 days each, the modern mean value) to reach the 1000th. Because full moons repeat roughly every 29.5 days, a birth time to the hour rarely changes which lunar cycle counts as the first one; that's why, unlike most calculators on this site, this one only asks for a birth date, not a time or location.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>

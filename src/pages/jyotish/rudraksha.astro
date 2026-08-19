@@ -1,6 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
+import { sharedCalcFaq } from '../../lib/calculatorFaq';
+
+const FAQ_ITEMS = [
+  ...sharedCalcFaq('before buying an expensive rudraksha or gemstone'),
+  {
+    q: 'Why does the calculator offer two ways to find my Rudraksha?',
+    a: '"By Birth Details" computes your Lagna and Moon Rashi precisely from a full chart calculation — use this if you don\'t already know them. "By Rashi / Lagna" skips straight to the recommendation if you already know your signs from another source (a previous chart reading, a family priest, another tool) and just want them mapped to a mukhi instantly.',
+  },
+  {
+    q: 'Why is my primary recommendation based on my Lagna lord rather than my Moon sign or Nakshatra?',
+    a: "Because the planet ruling your Ascendant is traditionally treated as the most personally significant remedial planet — it governs your body, personality and overall life direction. This is one common, sourced approach to Rudraksha selection, not the only one: some traditions instead recommend based on your Nakshatra, or on a specific planet that's weak or afflicted in your individual chart, which a general calculator like this one can't fully assess.",
+  },
+  {
+    q: 'Is it safe to wear any Rudraksha without consulting an astrologer?',
+    a: "Not universally. As noted above, the 5-mukhi is considered safe for nearly everyone, but 7-mukhi (Saturn) and 14-mukhi (Saturn-Rahu) beads are traditionally recommended only after a Jyotishi reviews your full chart, since Saturn's energy is believed to intensify whatever pattern — positive or negative — is already present.",
+  },
+];
 ---
 
 <Layout title="Rudraksha Calculator — Find Your Mukhi — PanchangPath" description="Find the Rudraksha mukhi best suited to you based on your Vedic birth chart or Rashi/Lagna. See all 14 mukhis with deity, ruling planet, benefits and mantra.">
@@ -65,8 +83,11 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
       <div class="card" style="padding:28px;">
         <h2 data-hi="रुद्राक्ष के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rudraksha</h2>
         <p data-hi="रुद्राक्ष (रुद्र + अक्ष, 'शिव के आंसू') एलियोकार्पस गणित्रस वृक्ष के बीज हैं, जो अपने आध्यात्मिक और उपचारात्मक गुणों के लिए प्रसिद्ध हैं। हर दाने में प्राकृतिक धारियां होती हैं जिन्हें मुखी कहा जाता है; मुखियों की संख्या इसे किसी विशेष देवता और शासक ग्रह से जोड़ती है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">Rudraksha (rudra + aksha, "tears of Shiva") are seeds of the Elaeocarpus ganitrus tree, prized for their spiritual and healing properties. Each bead has natural clefts called mukhis; the number of mukhis links it to a specific deity and ruling planet.</p>
-        <p data-hi="5-मुखी सबसे सामान्य और सर्वमान्य रूप से सुरक्षित दाना है। नीलम ऊर्जा (7-मुखी / शनि) और 14-मुखी (शिव / शनि-राहु) हमेशा किसी ज्योतिषी से परामर्श के बाद ही पहनना चाहिए, क्योंकि शनि ऊर्जा कुंडली के सकारात्मक और नकारात्मक दोनों पैटर्न को बढ़ाती है।" style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0;">The 5-mukhi is the most common and universally safe bead. Blue Sapphire energy (7-mukhi / Saturn) and 14-mukhi (Shiva / Saturn-Rahu) should always be worn after consulting a Jyotishi, as Saturn energy amplifies both positive and negative chart patterns.</p>
+        <p data-hi="5-मुखी सबसे सामान्य और सर्वमान्य रूप से सुरक्षित दाना है। नीलम ऊर्जा (7-मुखी / शनि) और 14-मुखी (शिव / शनि-राहु) हमेशा किसी ज्योतिषी से परामर्श के बाद ही पहनना चाहिए, क्योंकि शनि ऊर्जा कुंडली के सकारात्मक और नकारात्मक दोनों पैटर्न को बढ़ाती है।" style="font-size:14px;color:var(--color-mute);line-height:1.7;margin:0 0 14px;">The 5-mukhi is the most common and universally safe bead. Blue Sapphire energy (7-mukhi / Saturn) and 14-mukhi (Shiva / Saturn-Rahu) should always be worn after consulting a Jyotishi, as Saturn energy amplifies both positive and negative chart patterns.</p>
+        <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">This calculator offers two ways in: enter your birth date, time and place and it derives your Lagna and Moon Rashi the same way the site's other chart tools do (<code>calcLagna</code> and <code>moonLongitude</code>, both sidereal via the Lahiri ayanamsha), or skip straight to picking your Lagna and Moon sign if you already know them. From there it recommends the mukhi tied to your Lagna lord as your primary bead — since the planet ruling the Ascendant is traditionally treated as the most personally significant remedial planet — with your Moon lord's mukhi and the universally-safe 5-mukhi offered as supporting options.</p>
       </div>
+
+      <CalculatorFaq items={FAQ_ITEMS} />
     </div>
   </section>
 </Layout>
