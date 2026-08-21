@@ -4,9 +4,9 @@ import {
   REGIONS, getRegionBySlug, getSolarMonthIndex,
   getRegionalTithiName, getRegionalNakshatraName, getRegionalVaraName,
 } from '../../lib/panchang-i18n';
-import { calculatePanchang, getHinduCalendarInfo } from '../../lib/panchang';
+import { calculatePanchang, getHinduCalendarInfo, localCivilDate } from '../../lib/panchang';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
-import { formatDateHi } from '../../lib/date-i18n';
+import { formatDateAtOffset } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   return REGIONS.map(r => ({ params: { region: r.slug } }));
@@ -23,11 +23,18 @@ const scriptHi = SCRIPT_HI[regionDef.script] ?? regionDef.nameHi;
 
 // Compute Panchang for this tradition's default city
 const today = new Date();
+// Calendar date/weekday resolved in THIS tradition's own default-city offset (not raw
+// build-machine-local time, which is UTC on the daily-rebuild GH Actions runner and
+// therefore ~1 day behind every non-negative-UTC-offset region at the 00:17 IST build
+// time) -- same fix as homepage/rashifal hub, parameterized per-region since Nepal
+// (+5:45) differs from the other 10 traditions (+5:30). See 2026-08-21 date-bug
+// investigation (Tasks 2 & 4 share this one root cause).
+const civil = localCivilDate(today, regionDef.defaultTzOffset);
 const p = calculatePanchang(today, regionDef.defaultLat, regionDef.defaultLng, regionDef.defaultTzOffset);
 const cal = getHinduCalendarInfo(today, p.sunLongitude, p.moonLongitude, p.tithi.paksha);
 
 // Regional element names
-const varName  = getRegionalVaraName(regionDef, today.getDay());
+const varName  = getRegionalVaraName(regionDef, civil.weekday);
 const tithiName = getRegionalTithiName(regionDef, p.tithi.number, p.tithi.paksha);
 const nakName  = getRegionalNakshatraName(regionDef, p.nakshatra.number - 1);
 const pakshaName = regionDef.paksha[p.tithi.paksha === 'Shukla' ? 0 : 1];
@@ -42,15 +49,16 @@ const monthName = regionDef.monthSystem === 'solar'
   ? (regionDef.months[solarMonthIdx] ?? regionDef.months[0])
   : (regionDef.months[AMANTA_TO_IDX[cal.amantaMonth.name] ?? 0]);
 
-// Same day-of-year convention as panchang.ts's getHinduCalendarInfo() (Issue #17).
+// Same day-of-year convention as panchang.ts's getHinduCalendarInfo() (Issue #17), but
+// computed from the region-shifted calendar date (civil), not the raw build-local one.
 const dayOfYear = Math.floor(
-  (Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) - Date.UTC(today.getFullYear(), 0, 0)) / 86_400_000,
+  (Date.UTC(civil.year, civil.month - 1, civil.day) - Date.UTC(civil.year, 0, 0)) / 86_400_000,
 );
-const yearInfo = regionDef.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat, dayOfYear);
+const yearInfo = regionDef.getYear(p.sunLongitude, civil.year, cal.vikramaSamvat, cal.shakaSamvat, dayOfYear);
 
 // Date label
-const dateLabel = formatDateHi(today, false, { weekday: 'long' });
-const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
+const dateLabel = formatDateAtOffset(today, regionDef.defaultTzOffset, false, { weekday: 'long' });
+const dateLabelHi = formatDateAtOffset(today, regionDef.defaultTzOffset, true, { weekday: 'long' });
 
 const TRADITION_COLORS: Record<string, string> = {
   bn: '#e8622a', as: '#d4800f', ta: '#0f766e', ml: '#065f46',

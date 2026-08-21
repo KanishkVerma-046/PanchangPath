@@ -75,18 +75,18 @@ export function formatDateHi(date: Date, hindi: boolean, opts: FormatDateHiOptio
   return `${wdName}, ${dmParts.join(' ')}`;
 }
 
-const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
-
 /**
  * Same output shape as formatDateHi(), but the weekday/day/month/year are read from the
- * instant's India Standard Time (UTC+5:30) wall-clock value instead of the calling
+ * instant's wall-clock value at a fixed UTC offset (in hours) instead of the calling
  * environment's local timezone. formatDateHi()'s local-field behavior is correct and
  * intentional for its other callers (showing "today" in the visitor's own calendar day) --
- * this is for the opposite case: a label that must read the same in India regardless of
+ * this is for the opposite case: a label that must read the same everywhere regardless of
  * where the code runs (Astro build machine, or a visitor's browser anywhere in the world).
+ * Used by formatDateIST() below (offset 5.5) and directly by pages that need a
+ * *different* fixed offset (e.g. Nepal's regional Panchang page, UTC+5:45).
  */
-export function formatDateIST(date: Date, hindi: boolean, opts: FormatDateHiOptions = {}): string {
-  const shifted = new Date(date.getTime() + IST_OFFSET_MS);
+export function formatDateAtOffset(date: Date, tzOffsetHours: number, hindi: boolean, opts: FormatDateHiOptions = {}): string {
+  const shifted = new Date(date.getTime() + tzOffsetHours * 3600000);
   const monthStyle = opts.month ?? 'long';
   const showDay = opts.day ?? true;
   const showYear = opts.year ?? true;
@@ -112,6 +112,11 @@ export function formatDateIST(date: Date, hindi: boolean, opts: FormatDateHiOpti
     : (opts.weekday === 'short' ? WD_EN_SHORT[wd] : WD_EN_LONG[wd]);
 
   return `${wdName}, ${dmParts.join(' ')}`;
+}
+
+/** formatDateAtOffset() pinned to India Standard Time (UTC+5:30). */
+export function formatDateIST(date: Date, hindi: boolean, opts: FormatDateHiOptions = {}): string {
+  return formatDateAtOffset(date, 5.5, hindi, opts);
 }
 
 /** Convenience: "July 2026" / "जुलाई 2026" (matches {month:'long', year:'numeric'}). */

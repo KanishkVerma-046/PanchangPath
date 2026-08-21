@@ -2,11 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
-import { formatDateHi, WD_EN_LONG, WD_HI_LONG } from '../../lib/date-i18n';
+import { formatDateIST, WD_EN_LONG, WD_HI_LONG } from '../../lib/date-i18n';
 
 const today = new Date();
-const dateLabel = formatDateHi(today, false, { weekday: 'long' });
-const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
+// Must read as "today in India" regardless of the build machine's own timezone -- same fix
+// already applied to rashifal/[rashi].astro; the hub template had been missed (see
+// 2026-08-21 date-bug investigation, Task 2).
+const dateLabel = formatDateIST(today, false, { weekday: 'long' });
+const dateLabelHi = formatDateIST(today, true, { weekday: 'long' });
 ---
 
 <Layout

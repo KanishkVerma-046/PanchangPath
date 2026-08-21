@@ -12,7 +12,7 @@ import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
 import { computeUpcomingEvents } from '../lib/planetaryEvents';
 import { getDefaultLocation } from '../lib/locations';
-import { formatDateHi } from '../lib/date-i18n';
+import { formatDateAtOffset } from '../lib/date-i18n';
 import { parseMinutes12h } from '../lib/time-format';
 
 const today = new Date();
@@ -23,9 +23,14 @@ const todayFestivals = getTodayFestivals(today);
 const upcoming = getUpcomingFestivals(today, 8);
 const planetaryEvents = computeUpcomingEvents(today, 180);
 
-const dateStr = formatDateHi(today, false, { weekday: 'long' });
-const dateStrHi = formatDateHi(today, true, { weekday: 'long' });
-const panchangDateLabel = formatDateHi(today, false, { month: 'short' });
+// Build-time label for the default location's (New Delhi/IST) calendar day -- must read
+// loc.tzOffset-shifted fields, not the build machine's own local calendar date (which is
+// UTC on the daily-rebuild GitHub Actions runner, and therefore always ~1 day behind IST
+// at the 00:17 IST build time). Matches the pattern panchang.vara/calculatePanchang()
+// already used correctly via localCivilDate() -- see 2026-08-21 date-bug investigation.
+const dateStr = formatDateAtOffset(today, loc.tzOffset, false, { weekday: 'long' });
+const dateStrHi = formatDateAtOffset(today, loc.tzOffset, true, { weekday: 'long' });
+const panchangDateLabel = formatDateAtOffset(today, loc.tzOffset, false, { month: 'short' });
 
 // Day Timeline bar segments (Rahu/Gulika/Yama) — derived from the same panchang.rahuKalam/
 // gulikaKalam/yamaganda/sunrise/sunset values already rendered as text above, so this can
