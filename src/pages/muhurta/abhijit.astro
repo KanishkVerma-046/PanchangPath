@@ -149,7 +149,15 @@ function renderCityOptions(){
 }
 renderCityOptions();
 const dateInput=document.getElementById('ab-date') as HTMLInputElement;
-dateInput.value=new Date().toISOString().split('T')[0];
+// Default to the resolved location's own local calendar date, not the visitor's raw UTC
+// date (toISOString() always returns UTC) -- wrong specifically during 00:00-05:30 IST
+// each day (UTC hasn't rolled to the new date yet), defaulting the picker to yesterday.
+// Same locNow pattern calculate() below already uses for its "is this today" check.
+{
+  const initLoc=LOCS.find(l=>l.name===sel.value)||LOCS[0];
+  const locNow=new Date(Date.now()+initLoc.tz*3600000);
+  dateInput.value=`${locNow.getUTCFullYear()}-${String(locNow.getUTCMonth()+1).padStart(2,'0')}-${String(locNow.getUTCDate()).padStart(2,'0')}`;
+}
 
 // Pre-fill from the header's location picker (same "today, my location" scope as the homepage)
 function applyHeaderLoc(loc:any){

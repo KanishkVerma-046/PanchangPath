@@ -217,7 +217,11 @@ function applyHeaderLoc(loc:any){
 if((window as any).__initLoc) applyHeaderLoc((window as any).__initLoc);
 window.addEventListener('locationchange',(e:Event)=>applyHeaderLoc((e as CustomEvent).detail));
 
-const now=new Date();
+// Shifted to the resolved location's own local calendar date, not raw UTC (toISOString()
+// always returns UTC) -- wrong specifically during 00:00-05:30 IST each day (UTC hasn't
+// rolled to the new date yet), defaulting the range start to yesterday.
+const initLoc=LOCS.find(l=>l.name===sel.value)||LOCS[0];
+const now=new Date(Date.now()+initLoc.tz*3600000);
 const fromInput=document.getElementById('sd-from') as HTMLInputElement;
 const toInput=document.getElementById('sd-to') as HTMLInputElement;
 fromInput.value=now.toISOString().split('T')[0];
