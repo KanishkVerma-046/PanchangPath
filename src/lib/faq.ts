@@ -137,8 +137,8 @@ export const FAQ_CATEGORIES: FAQCategory[] = [
       {
         q: 'What is Abhijit Muhurta?',
         qHi: 'अभिजीत मुहूर्त क्या है?',
-        a: 'Abhijit Muhurta is a window centered on true solar noon, considered one of the most universally auspicious times of day — suitable for starting important work regardless of other daily timing considerations. It spans day length ÷ 15, which works out to roughly 40 to 55 minutes depending on the season and your location, not a fixed 48 minutes.',
-        aHi: 'अभिजीत मुहूर्त सही सौर मध्याह्न पर केंद्रित एक अवधि है, जिसे दिन के सबसे सार्वभौमिक रूप से शुभ समयों में से एक माना जाता है — अन्य दैनिक समय संबंधी विचारों की परवाह किए बिना महत्वपूर्ण कार्य शुरू करने के लिए उपयुक्त। यह दिन की लंबाई ÷ 15 तक फैला होता है, जो मौसम और आपके स्थान के आधार पर लगभग 40 से 55 मिनट के बराबर होता है, न कि कोई निश्चित 48 मिनट।',
+        a: 'Abhijit Muhurta is a window centered on true solar noon, considered one of the most universally auspicious times of day — suitable for starting important work regardless of other daily timing considerations, with one traditional exception: on Wednesdays, Abhijit is considered weak and this override doesn\'t apply. It spans day length ÷ 15, which works out to roughly 40 to 55 minutes depending on the season and your location, not a fixed 48 minutes.',
+        aHi: 'अभिजीत मुहूर्त सही सौर मध्याह्न पर केंद्रित एक अवधि है, जिसे दिन के सबसे सार्वभौमिक रूप से शुभ समयों में से एक माना जाता है — अन्य दैनिक समय संबंधी विचारों की परवाह किए बिना महत्वपूर्ण कार्य शुरू करने के लिए उपयुक्त, एक पारंपरिक अपवाद के साथ: बुधवार को अभिजित कमजोर माना जाता है और यह छूट लागू नहीं होती। यह दिन की लंबाई ÷ 15 तक फैला होता है, जो मौसम और आपके स्थान के आधार पर लगभग 40 से 55 मिनट के बराबर होता है, न कि कोई निश्चित 48 मिनट।',
       },
       {
         q: 'How do I find a good date for a wedding or Griha Pravesh?',
