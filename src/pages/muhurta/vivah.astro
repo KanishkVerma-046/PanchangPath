@@ -50,7 +50,7 @@ import Layout from '../../layouts/Layout.astro';
             {label:'Auspicious Nakshatras',labelHi:'शुभ नक्षत्र',desc:'Rohini, Mrigashira, Magha, Uttara Phalguni, Hasta, Swati, Anuradha, Mula, Uttara Ashadha, Uttara Bhadrapada, Revati',descHi:'रोहिणी, मृगशिरा, मघा, उत्तर फाल्गुनी, हस्त, स्वाति, अनुराधा, मूल, उत्तराषाढ़ा, उत्तर भाद्रपदा, रेवती'},
             {label:'Auspicious Tithis',labelHi:'शुभ तिथियां',desc:'Dwitiya, Tritiya, Panchami, Saptami, Dashami, Ekadashi, Dwadashi, Trayodashi in Shukla Paksha',descHi:'शुक्ल पक्ष में द्वितीया, तृतीया, पंचमी, सप्तमी, दशमी, एकादशी, द्वादशी, त्रयोदशी'},
             {label:'Auspicious Varas',labelHi:'शुभ वार',desc:'Monday, Wednesday, Thursday, Friday — these weekdays are ruled by Moon, Mercury, Jupiter, and Venus respectively.',descHi:'सोमवार, बुधवार, गुरुवार, शुक्रवार — इन वारों पर क्रमशः चंद्र, बुध, गुरु और शुक्र का आधिपत्य है।'},
-            {label:'Avoided periods',labelHi:'त्याज्य अवधियां',desc:'Panchaka, Kharmas (sun in Sagittarius/Pisces), Adhika Masa, eclipse periods, Rikta tithis (Chaturthi, Navami, Chaturdashi), Purnima, Amavasya.',descHi:'पंचक, खरमास (सूर्य धनु/मीन राशि में), अधिक मास, ग्रहण काल, रिक्ता तिथियां (चतुर्थी, नवमी, चतुर्दशी), पूर्णिमा, अमावस्या।'},
+            {label:'Avoided periods',labelHi:'त्याज्य अवधियां',desc:'Panchaka, Kharmas (sun in Sagittarius/Pisces), Chaturmas (Devshayani to Devutthana Ekadashi), Adhika Masa, eclipse periods, Rikta tithis (Chaturthi, Navami, Chaturdashi), Purnima, Amavasya.',descHi:'पंचक, खरमास (सूर्य धनु/मीन राशि में), चातुर्मास (देवशयनी से देवउत्थान एकादशी तक), अधिक मास, ग्रहण काल, रिक्ता तिथियां (चतुर्थी, नवमी, चतुर्दशी), पूर्णिमा, अमावस्या।'},
           ].map(c => (
             <div class="card" style="padding:14px;">
               <p data-hi={c.labelHi} style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">{c.label}</p>
@@ -64,7 +64,7 @@ import Layout from '../../layouts/Layout.astro';
       <div class="card" style="padding:24px;margin-top:24px;">
         <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How the Score Works</h3>
         <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Every candidate date starts at zero and is scored by adding or subtracting points as its Panchang elements are checked: +3 for a favourable weekday (Monday, Wednesday, Thursday, or Friday), +4 for one of eleven auspicious marriage nakshatras — or -3 if the Moon falls in Panchaka instead — +3 for an auspicious tithi in Shukla Paksha (or +1 for the same tithi in Krishna Paksha), -4 for one of the explicitly forbidden tithis, and +2 for one of seventeen auspicious yogas.</p>
-        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Kharmas — the roughly two-month stretch when the Sun transits Dhanu (Sagittarius) or Meena (Pisces) — subtracts 5 points, checked at both the start and end of the civil day so a same-day Sankranti can't slip past the gate. Venus combustion (Shukra Ast, when Venus sits too close to the Sun to be visible) is a hard veto rather than a point deduction: any date with a combust Venus is disqualified outright regardless of every other score, since classical muhurta tradition holds that no valid Vivah Muhurat exists while Shukra is combust.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Kharmas — the roughly two-month stretch when the Sun transits Dhanu (Sagittarius) or Meena (Pisces) — subtracts 5 points, checked at both the start and end of the civil day so a same-day Sankranti can't slip past the gate. Chaturmas — the four-month period from Devshayani Ekadashi to Devutthana (Prabodhini) Ekadashi, when Vivah is most strictly forbidden — subtracts 10, heavily enough that a Chaturmas date essentially never clears the results threshold. Because Chaturmas is bounded by a lunar Ekadashi tithi rather than a clean solar transit, its exact yearly dates are looked up rather than estimated. Venus combustion (Shukra Ast, when Venus sits too close to the Sun to be visible) is a hard veto rather than a point deduction: any date with a combust Venus is disqualified outright regardless of every other score, since classical muhurta tradition holds that no valid Vivah Muhurat exists while Shukra is combust.</p>
         <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Only dates scoring 4 or higher are shown, ranked highest first. Each result also lists that date's Rahu Kala window as a scheduling reminder — it's shown for reference only and isn't part of the numeric score above.</p>
       </div>
     </div>
@@ -80,7 +80,7 @@ import Layout from '../../layouts/Layout.astro';
 <script>
 import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
 import { planetLongitude, isCombust } from '../../lib/astro-core';
-import { MUHURTA_CRITERIA, sunRashiVoidCheck, KHARMAS_RASHIS } from '../../lib/muhurta';
+import { MUHURTA_CRITERIA, sunRashiVoidCheck, KHARMAS_RASHIS, isChaturmas } from '../../lib/muhurta';
 import { formatDateHi } from '../../lib/date-i18n';
 import { formatMinutes12h } from '../../lib/time-format';
 
@@ -181,6 +181,11 @@ function scoreVivah(res:{tithiIdx:number;nakIdx:number;yogaIdx:number;wd:number;
   // 6 AM snapshot.
   const kharmas=sunRashiVoidCheck(y,m,d,loc.tz,KHARMAS_RASHIS);
   if(kharmas.isVoid){score-=5;bad.push((isHindi?'खरमास (सूर्य ':'Kharmas (Sun in ')+(kharmas.rashiIdx===8?'Dhanu':'Meena')+')');}
+  // Chaturmas (Devshayani -> Devutthana Ekadashi) — Vivah is the ceremony most strictly
+  // forbidden during this period; -10 is a soft-but-effectively-hard gate (matches Griha
+  // Pravesh's own Chaturmas penalty), large enough that no combination of other favourable
+  // factors can push a Chaturmas date back over the score>=4 display threshold.
+  if(isChaturmas(y,m,d,loc.tz)){score-=10;bad.push(isHindi?'चातुर्मास — विवाह वर्जित':'Chaturmas — Vivah forbidden');}
   // Venus combust (Shukra Ast) — hard gate: no Vivah Muhurat exists on a combust-Venus date,
   // regardless of how favourable everything else scores (Issue #12).
   if(res.venusCombust){bad.push(isHindi?'शुक्र अस्त — विवाह मुहूर्त निष्प्रभावी':'Venus combust (Shukra Ast) — voids Vivah Muhurat');score=-99;}

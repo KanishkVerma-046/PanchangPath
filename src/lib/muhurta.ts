@@ -301,7 +301,45 @@ export function sunRashiVoidCheck(
 
 // Shared void-rashi sets so all 3 call sites reference the same definition.
 export const KHARMAS_RASHIS = [8, 11];       // Dhanu (Sagittarius), Meena (Pisces)
+// Griha Pravesh's own solar-rashi approximation of Chaturmas (Sun transiting Simha/Kanya/Tula).
+// Kept as-is for Griha Pravesh (unchanged, out of scope here), but empirically this proxy starts
+// too late for Vivah: tested against 2026, it misses ~3 weeks at the front of the classical
+// window (25 Jul - ~17 Aug, while the Sun is still sidereally in Karka) -- see CHATURMAS_WINDOWS.
 export const CHATURMAS_RASHIS = [4, 5, 6];   // Simha, Kanya, Tula
+
+// Classical Chaturmas = Devshayani Ekadashi (Ashadha Shukla Ekadashi) through Devutthana/
+// Prabodhini Ekadashi (Kartika Shukla Ekadashi) -- the period Vivah is most strictly forbidden.
+// This is a lunar-tithi boundary, not a clean solar-rashi one (CHATURMAS_RASHIS above is only an
+// approximation used by Griha Pravesh), and it lands differently each year depending on Adhika
+// Maas -- a same-formula astronomical scan for "the Ekadashi after Sun enters Karka" was tried
+// and failed for 2027 (produced 12 Aug instead of the real 13/14 Jul, thrown off by that year's
+// intercalary month), so these are hand-verified per year instead, the same maintenance pattern
+// festivals.ts already uses for hard-to-compute festival dates. End dates use the later of the
+// commonly-cited dual-observance dates (stricter/safer for a marriage-avoidance gate).
+// Sources cross-checked 2026-08-21 (WebSearch, multiple independent sites agreeing):
+//   2025: Devshayani 6 Jul 2025 -> Dev Uthani 1-2 Nov 2025
+//   2026: Devshayani 25 Jul 2026 -> Dev Uthani 20-21 Nov 2026
+//   2027: Devshayani 13-14 Jul 2027 -> Dev Uthani 9-10 Nov 2027
+// Extend this table yearly, same as festivals.ts. Years not listed fall back to the
+// CHATURMAS_RASHIS solar approximation in sunRashiVoidCheck() below (better than no check at
+// all, though it misses the early-Karka weeks as noted above).
+export const CHATURMAS_WINDOWS: Record<number, { start: string; end: string }> = {
+  2025: { start: '2025-07-06', end: '2025-11-02' },
+  2026: { start: '2026-07-25', end: '2026-11-21' },
+  2027: { start: '2027-07-13', end: '2027-11-10' },
+};
+
+// True during the classical Devshayani->Devutthana Ekadashi window for the given calendar date
+// (y/m/d, no time-of-day precision needed -- Ekadashi boundaries are date-level here). Falls
+// back to the CHATURMAS_RASHIS solar-rashi approximation for years outside CHATURMAS_WINDOWS.
+export function isChaturmas(y: number, m: number, d: number, tzOffset: number): boolean {
+  const win = CHATURMAS_WINDOWS[y];
+  if (win) {
+    const key = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    return key >= win.start && key <= win.end;
+  }
+  return sunRashiVoidCheck(y, m, d, tzOffset, CHATURMAS_RASHIS).isVoid;
+}
 
 // --- Rahu Kala / Gulika Kala / Yamaganda: shared slot engine -------------------------------
 // Single source of truth for /muhurta/rahu-kala's build-time prerender (Astro frontmatter,
