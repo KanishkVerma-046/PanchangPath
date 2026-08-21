@@ -231,10 +231,12 @@ export const REGIONS: RegionDef[] = [
     descriptionHi: 'तमिल पंचांगम एक सौर कैलेंडर (सौरमानम) का पालन करता है, जिसमें महीने सूर्य के प्रत्येक राशि से गोचर के अनुरूप होते हैं। वर्ष चित्तिरई से शुरू होता है जब सूर्य मेष राशि में प्रवेश करता है।',
     specialNote: 'Tamil New Year (Puthandu) falls on Chithirai 1 when the Sun enters the Mesha rashi, usually around April 14.',
     specialNoteHi: 'तमिल नववर्ष (पुथांडु) चित्तिरई 1 को पड़ता है जब सूर्य मेष राशि में प्रवेश करता है, आमतौर पर 14 अप्रैल के आसपास।',
-    getYear(sunSidereal, gregYear, vsYear) {
-      // Offset verified against drikpanchang.com: VS2081=Pingala, VS2082=Kalayukti,
-      // VS2083=Siddharthi (see Issue #16 fix) — SAMVATSARA_60[(vsYear + 9) % 60].
-      const samvatsara = SAMVATSARA_60[(vsYear + 9) % 60];
+    getYear(sunSidereal, gregYear, vsYear, ssYear) {
+      // Samvatsara names are keyed off the Shaka year, not Vikram Samvat — same fix and
+      // reasoning as the Kannada/Telugu blocks below (verified SS1948 = Parabhava for
+      // 2026-07-23; the old vsYear-based formula gave the wrong "Siddharthi" — see Task 3
+      // of the 2026-08-21 audit follow-up).
+      const samvatsara = SAMVATSARA_60[(ssYear + 11) % 60];
       const num = gregYear + 31; // Thiruvalluvar year (approximate)
       return { num, name: samvatsara, era: 'திருவள்ளுவர் ஆண்டு', displayLabel: `${samvatsara} (${num})` };
     },
@@ -336,9 +338,9 @@ export const REGIONS: RegionDef[] = [
     descriptionHi: 'मराठी पंचांग अमांत चंद्र कैलेंडर (विक्रम संवत) का पालन करता है, जिसमें नववर्ष (गुड़ी पड़वा) चैत्र शुक्ल प्रतिपदा को होता है।',
     specialNote: 'Gudi Padwa marks the Marathi New Year. Ganesh Chaturthi (Bhadrapada Shukla Chaturthi) is the most celebrated festival.',
     specialNoteHi: 'गुड़ी पड़वा मराठी नववर्ष का प्रतीक है। गणेश चतुर्थी (भाद्रपद शुक्ल चतुर्थी) सबसे अधिक मनाया जाने वाला त्योहार है।',
-    getYear(sunSidereal, gregYear, vsYear) {
-      // Offset verified against drikpanchang.com (see Issue #16 fix note in the Tamil block above).
-      const samvatsara = SAMVATSARA_60[(vsYear + 9) % 60];
+    getYear(sunSidereal, gregYear, vsYear, ssYear) {
+      // Shaka-keyed, not vsYear-keyed — see fix note in the Tamil block above (Task 3).
+      const samvatsara = SAMVATSARA_60[(ssYear + 11) % 60];
       return { num: vsYear, name: samvatsara, era: 'विक्रम संवत', displayLabel: `${samvatsara} संवत ${vsYear}` };
     },
   },

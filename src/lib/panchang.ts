@@ -512,10 +512,14 @@ export function getHinduCalendarInfo(
   );
   const vsYear = dayOfYear >= 91 ? year + 57 : year + 56;
   const ssYear = vsYear - 135;
-  // Offset verified against drikpanchang.com: VS2081=Pingala, VS2082=Kalayukti,
-  // VS2083=Siddharthi (see Issue #16 fix, same correction applied in panchang-i18n.ts).
-  const vsName = SAMVATSARA_NAMES[(vsYear + 9) % 60];
-  const vsNameHi = SAMVATSARA_NAMES_HI[(vsYear + 9) % 60];
+  // Samvatsara names are keyed off the SHAKA year, not Vikram Samvat -- they genuinely
+  // differ for the same Gregorian year (the old `(vsYear+9)%60` formula gave "Siddharthi"
+  // for VS2083/SS1948, which independent sources (mypanchang.com, drikpanchang-derived
+  // secondary sites) confirm should be "Parabhava"). Fixed 2026-08-21 to match the
+  // `(ssYear+11)%60` formula panchang-i18n.ts's Kannada/Telugu blocks already used and had
+  // verified correct (SS1948 = Parabhava for 2026-07-23) -- see Task 3 investigation.
+  const vsName = SAMVATSARA_NAMES[(ssYear + 11) % 60];
+  const vsNameHi = SAMVATSARA_NAMES_HI[(ssYear + 11) % 60];
 
   return {
     vikramaSamvat: vsYear,
