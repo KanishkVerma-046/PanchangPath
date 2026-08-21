@@ -166,7 +166,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
         <div class="fd-side-card">
           <h3 class="fd-side-title" data-hi="पंचांग">Panchang</h3>
           <p class="fd-side-body" data-hi="इस दिन का पूरा पंचांग देखें — तिथि, नक्षत्र, योग, करण, राहु कालम, और मुहूर्त।">See the full Panchang for this day — Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, and Muhurtas.</p>
-          <a href="/" class="fd-side-btn" data-hi="आज का पंचांग देखें →">View Today's Panchang →</a>
+          <a href={`/?date=${f.date}`} class="fd-side-btn" data-hi="इस दिन का पंचांग देखें →">View This Day's Panchang →</a>
         </div>
 
       </aside>

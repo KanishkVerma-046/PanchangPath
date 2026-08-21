@@ -859,6 +859,17 @@ chartToggleBtn?.addEventListener('click', () => {
   }
 });
 
+// Honor a ?date=YYYY-MM-DD deep link (calendar.astro's day-cell links and festival detail
+// pages both point here) -- previously silently ignored, so those links always showed
+// today regardless of which date was clicked/linked. Parsed with T12:00:00 like the
+// date-picker's own change handler above, to avoid UTC-midnight rolling to the wrong
+// local calendar day.
+const dateParam = new URLSearchParams(window.location.search).get('date');
+if (dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam)) {
+  const parsed = new Date(dateParam + 'T12:00:00');
+  if (!isNaN(parsed.getTime())) currentDate = parsed;
+}
+
 // Initial render — use location already set by LocationPicker (fires before this script)
 renderWithLoc(((window as any).__initLoc as Location) || currentLoc, currentDate);
 
