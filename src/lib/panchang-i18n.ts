@@ -538,8 +538,8 @@ export const REGIONS: RegionDef[] = [
     ],
     varas: ['ରବିବାର','ସୋମବାର','ମଙ୍ଗଳବାର','ବୁଧବାର','ଗୁରୁବାର','ଶୁକ୍ରବାର','ଶନିବାର'],
     paksha: ['ଶୁକ୍ଳ ପକ୍ଷ','କୃଷ୍ଣ ପକ୍ଷ'],
-    description: 'The Odia Panji follows a lunar calendar (Vikram Samvat) with the new year (Pana Sankranti) on Mesha Sankranti in mid-April.',
-    descriptionHi: 'ओड़िया पंजी एक चंद्र कैलेंडर (विक्रम संवत) का पालन करती है, जिसमें नववर्ष (पण सक्रांति) मध्य अप्रैल में मेष सक्रांति पर होता है।',
+    description: 'The Odia Panji is fundamentally a solar (Sauramana) calendar, using the Vikram Samvat era for year-numbering — its months and New Year (Pana Sankranti) follow the Sun\'s sidereal transit into Mesha (Aries) in mid-April, though Purnimanta lunar tithis are still used for religious dates.',
+    descriptionHi: 'ओड़िया पंजी मूलतः एक सौर (सौरमान) कैलेंडर है, जो वर्ष-गणना के लिए विक्रम संवत युग का उपयोग करता है — इसके महीने और नववर्ष (पण सक्रांति) सूर्य के निरयण राशिचक्र में मेष संक्रांति (मध्य अप्रैल) पर आधारित होते हैं, हालांकि धार्मिक तिथियों के लिए पूर्णिमांत चंद्र तिथियां अब भी प्रयोग की जाती हैं।',
     specialNote: 'The Rath Yatra of Puri (Ashadha Shukla Dwitiya) is the most sacred Odia festival. Pana Sankranti marks the Odia New Year.',
     specialNoteHi: 'पुरी की रथ यात्रा (आषाढ़ शुक्ल द्वितीया) सबसे पवित्र ओड़िया त्योहार है। पण सक्रांति ओड़िया नववर्ष का प्रतीक है।',
     getYear(sunSidereal, gregYear, vsYear) {
