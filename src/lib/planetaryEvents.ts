@@ -663,10 +663,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2028-01-12',
     timeUTC: ut('04:13:00'),   // greatest eclipse UT1 (TD 04:14:13)
     planets: ['chandra', 'rahu'],
-    description: 'Shallow partial lunar eclipse on Purnima — only about 7% of the Moon\'s diameter enters Earth\'s umbra, so the bite out of the disc is slight. Visible from the Americas, Europe and Africa. Greatest eclipse 04:13 UTC (9:43 AM IST).',
-    descriptionHi: 'पूर्णिमा को हल्का आंशिक चंद्र ग्रहण — चंद्रमा के व्यास का लगभग 7% ही पृथ्वी की प्रच्छाया में प्रवेश करता है, अतः कटाव अल्प रहता है। अमेरिका महाद्वीप, यूरोप और अफ्रीका से दिखाई देगा। ग्रहण का मध्यकाल 04:13 UTC (प्रातः 9:43, IST)।',
-    significance: 'Partial Chandra Grahan on Purnima. In Jyotish even a shallow eclipse marks the Moon crossing the Rahu/Ketu axis, and the Purnima itself remains a significant point in the lunar month.',
-    significanceHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण। ज्योतिष में हल्का ग्रहण भी चंद्रमा के राहु/केतु अक्ष से गुजरने को दर्शाता है, और पूर्णिमा स्वयं चांद्र मास का एक महत्वपूर्ण बिंदु रहती है।',
+    description: 'Shallow partial lunar eclipse on Pausha Purnima — only about 7% of the Moon\'s diameter enters Earth\'s umbra, so the bite out of the disc is slight. Visible from the Americas, Europe and Africa. Greatest eclipse 04:13 UTC (9:43 AM IST).',
+    descriptionHi: 'पौष पूर्णिमा को हल्का आंशिक चंद्र ग्रहण — चंद्रमा के व्यास का लगभग 7% ही पृथ्वी की प्रच्छाया में प्रवेश करता है, अतः कटाव अल्प रहता है। अमेरिका महाद्वीप, यूरोप और अफ्रीका से दिखाई देगा। ग्रहण का मध्यकाल 04:13 UTC (प्रातः 9:43, IST)।',
+    significance: 'Partial Chandra Grahan on Pausha Purnima. In Jyotish even a shallow eclipse marks the Moon crossing the Rahu/Ketu axis, and the Purnima itself remains a significant point in the lunar month.',
+    significanceHi: 'पौष पूर्णिमा को आंशिक चंद्र ग्रहण। ज्योतिष में हल्का ग्रहण भी चंद्रमा के राहु/केतु अक्ष से गुजरने को दर्शाता है, और पूर्णिमा स्वयं चांद्र मास का एक महत्वपूर्ण बिंदु रहती है।',
     indiaVisibility: 'none',
   },
   {
@@ -681,10 +681,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2028-01-26',
     timeUTC: ut('15:07:46'),   // greatest eclipse UT1 (TD 15:08:59)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Annular solar eclipse ("ring of fire") on Amavasya, with up to 10 minutes 27 seconds of annularity — unusually long. The path crosses eastern North America, Central and South America, western Europe and north-west Africa. Greatest eclipse 15:08 UTC (8:38 PM IST).',
-    descriptionHi: 'अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय"), जिसकी वलयाकारता 10 मिनट 27 सेकंड तक रहेगी — असामान्य रूप से लंबी। पथ पूर्वी उत्तरी अमेरिका, मध्य व दक्षिण अमेरिका, पश्चिमी यूरोप और उत्तर-पश्चिमी अफ्रीका से होकर गुजरता है। ग्रहण का मध्यकाल 15:08 UTC (रात 8:38, IST)।',
-    significance: 'Surya Grahan on Amavasya. In Jyotish an eclipse marks a charged point on the Rahu/Ketu axis, and an annular eclipse — where the Sun is ringed rather than covered — is read as obstruction rather than eclipse of the solar significations.',
-    significanceHi: 'अमावस्या को सूर्य ग्रहण। ज्योतिष में ग्रहण राहु/केतु अक्ष का एक प्रभावशाली बिंदु है, और वलयाकार ग्रहण — जिसमें सूर्य ढकने के बजाय वलय रूप में दिखता है — सूर्य के कारकत्वों के अवरोध के रूप में पढ़ा जाता है।',
+    description: 'Annular solar eclipse ("ring of fire") on Pausha Amavasya, with up to 10 minutes 27 seconds of annularity — unusually long. The annular path crosses Ecuador, Peru, Brazil and Suriname, then the Atlantic Ocean, reaching Portugal, Spain and Morocco; observers elsewhere in the Americas, Europe and north-west Africa see only a partial eclipse. Greatest eclipse 15:08 UTC (8:38 PM IST).',
+    descriptionHi: 'पौष अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय"), जिसकी वलयाकारता 10 मिनट 27 सेकंड तक रहेगी — असामान्य रूप से लंबी। वलयाकार पथ इक्वाडोर, पेरू, ब्राज़ील और सूरीनाम से होते हुए अटलांटिक महासागर पार करके पुर्तगाल, स्पेन और मोरक्को तक पहुंचता है; शेष अमेरिका, यूरोप और उत्तर-पश्चिमी अफ्रीका में केवल आंशिक ग्रहण दिखेगा। ग्रहण का मध्यकाल 15:08 UTC (रात 8:38, IST)।',
+    significance: 'Surya Grahan on Pausha Amavasya. In Jyotish an eclipse marks a charged point on the Rahu/Ketu axis, and an annular eclipse — where the Sun is ringed rather than covered — is read as obstruction rather than eclipse of the solar significations.',
+    significanceHi: 'पौष अमावस्या को सूर्य ग्रहण। ज्योतिष में ग्रहण राहु/केतु अक्ष का एक प्रभावशाली बिंदु है, और वलयाकार ग्रहण — जिसमें सूर्य ढकने के बजाय वलय रूप में दिखता है — सूर्य के कारकत्वों के अवरोध के रूप में पढ़ा जाता है।',
     indiaVisibility: 'none',
   },
   {
@@ -699,10 +699,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2028-07-06',
     timeUTC: ut('18:19:44'),   // greatest eclipse UT1 (TD 18:20:57)
     planets: ['chandra', 'rahu'],
-    description: 'Partial lunar eclipse on Purnima, with about 39% of the Moon\'s diameter in Earth\'s umbra. Visible from Europe, Africa, Asia and Australia — including India, where the umbral phase is above the horizon. Greatest eclipse 18:20 UTC (11:50 PM IST).',
-    descriptionHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण, जिसमें चंद्रमा के व्यास का लगभग 39% भाग पृथ्वी की प्रच्छाया में रहेगा। यूरोप, अफ्रीका, एशिया और ऑस्ट्रेलिया से दिखाई देगा — भारत सहित, जहां प्रच्छाया चरण क्षितिज के ऊपर रहेगा। ग्रहण का मध्यकाल 18:20 UTC (रात 11:50, IST)।',
-    significance: 'Partial Chandra Grahan on Purnima, visible across India. The Moon crosses the Rahu/Ketu axis with roughly a third of its disc darkened. Mantras recited during the grahan are traditionally held to be especially potent.',
-    significanceHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण, भारत भर में दिखाई देगा। चंद्रमा अपनी लगभग एक-तिहाई चक्रिका के अंधकार सहित राहु/केतु अक्ष से गुजरता है। ग्रहण काल में जप किए गए मंत्र परंपरागत रूप से विशेष प्रभावी माने जाते हैं।',
+    description: 'Partial lunar eclipse on Ashadha Purnima, with about 39% of the Moon\'s diameter in Earth\'s umbra. Visible from Europe, Africa, Asia and Australia — including India, where the umbral phase is above the horizon. Greatest eclipse 18:20 UTC (11:50 PM IST).',
+    descriptionHi: 'आषाढ़ पूर्णिमा को आंशिक चंद्र ग्रहण, जिसमें चंद्रमा के व्यास का लगभग 39% भाग पृथ्वी की प्रच्छाया में रहेगा। यूरोप, अफ्रीका, एशिया और ऑस्ट्रेलिया से दिखाई देगा — भारत सहित, जहां प्रच्छाया चरण क्षितिज के ऊपर रहेगा। ग्रहण का मध्यकाल 18:20 UTC (रात 11:50, IST)।',
+    significance: 'Partial Chandra Grahan on Ashadha Purnima, visible across India. The Moon crosses the Rahu/Ketu axis with roughly a third of its disc darkened. Mantras recited during the grahan are traditionally held to be especially potent.',
+    significanceHi: 'आषाढ़ पूर्णिमा को आंशिक चंद्र ग्रहण, भारत भर में दिखाई देगा। चंद्रमा अपनी लगभग एक-तिहाई चक्रिका के अंधकार सहित राहु/केतु अक्ष से गुजरता है। ग्रहण काल में जप किए गए मंत्र परंपरागत रूप से विशेष प्रभावी माने जाते हैं।',
     indiaVisibility: 'partial',
   },
   {
@@ -717,10 +717,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2028-07-22',
     timeUTC: ut('02:55:26'),   // greatest eclipse UT1 (TD 02:56:40)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Total solar eclipse on Amavasya with up to 5 minutes 10 seconds of totality. The path of totality crosses South-East Asia, the East Indies, Australia and New Zealand, passing over Sydney. Greatest eclipse 02:55 UTC (8:25 AM IST).',
-    descriptionHi: 'अमावस्या को पूर्ण सूर्य ग्रहण, जिसकी पूर्णता 5 मिनट 10 सेकंड तक रहेगी। पूर्णता का पथ दक्षिण-पूर्व एशिया, पूर्वी द्वीपसमूह, ऑस्ट्रेलिया और न्यूज़ीलैंड से होकर सिडनी के ऊपर से गुजरता है। ग्रहण का मध्यकाल 02:55 UTC (प्रातः 8:25, IST)।',
-    significance: 'Total Surya Grahan on Amavasya — in Jyotish an extremely significant karmic marker, with the Sun fully covered near the Rahu/Ketu axis.',
-    significanceHi: 'अमावस्या को पूर्ण सूर्य ग्रहण — ज्योतिष में एक अत्यंत महत्वपूर्ण कर्मिक संकेतक, जिसमें सूर्य राहु/केतु अक्ष के निकट पूर्णतः ढक जाता है।',
+    description: 'Total solar eclipse on Ashadha Amavasya with up to 5 minutes 10 seconds of totality. The path of totality crosses South-East Asia, the East Indies, Australia and New Zealand, passing over Sydney. Greatest eclipse 02:55 UTC (8:25 AM IST).',
+    descriptionHi: 'आषाढ़ अमावस्या को पूर्ण सूर्य ग्रहण, जिसकी पूर्णता 5 मिनट 10 सेकंड तक रहेगी। पूर्णता का पथ दक्षिण-पूर्व एशिया, पूर्वी द्वीपसमूह, ऑस्ट्रेलिया और न्यूज़ीलैंड से होकर सिडनी के ऊपर से गुजरता है। ग्रहण का मध्यकाल 02:55 UTC (प्रातः 8:25, IST)।',
+    significance: 'Total Surya Grahan on Ashadha Amavasya — in Jyotish an extremely significant karmic marker, with the Sun fully covered near the Rahu/Ketu axis.',
+    significanceHi: 'आषाढ़ अमावस्या को पूर्ण सूर्य ग्रहण — ज्योतिष में एक अत्यंत महत्वपूर्ण कर्मिक संकेतक, जिसमें सूर्य राहु/केतु अक्ष के निकट पूर्णतः ढक जाता है।',
     indiaVisibility: 'none',
   },
   {
@@ -735,10 +735,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2028-12-31',
     timeUTC: ut('16:52:02'),   // greatest eclipse UT1 (TD 16:53:15)
     planets: ['chandra', 'rahu'],
-    description: 'Total lunar eclipse on Purnima, falling on New Year\'s Eve, with 1 hour 11 minutes of totality. Fully visible from India, and from Europe, Africa, Asia, Australia and the Pacific. Greatest eclipse 16:52 UTC (10:22 PM IST).',
-    descriptionHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, नववर्ष की पूर्वसंध्या पर, जिसकी पूर्णता 1 घंटा 11 मिनट रहेगी। भारत से पूर्ण रूप से दिखाई देगा, तथा यूरोप, अफ्रीका, एशिया, ऑस्ट्रेलिया और प्रशांत क्षेत्र से भी। ग्रहण का मध्यकाल 16:52 UTC (रात 10:22, IST)।',
-    significance: 'Total Chandra Grahan on Purnima, fully visible across India. The Moon turns copper-red during totality. Temples traditionally close during the grahan period, and the Mahamrityunjaya Mantra recited at this time is considered exceptionally potent.',
-    significanceHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, भारत भर में पूर्ण रूप से दिखाई देगा। पूर्णता के दौरान चंद्रमा ताम्र-लाल हो जाता है। ग्रहण काल में परंपरागत रूप से मंदिर बंद रहते हैं, और इस समय जपा गया महामृत्युंजय मंत्र अत्यंत प्रभावी माना जाता है।',
+    description: 'Total lunar eclipse on Pausha Purnima, falling on New Year\'s Eve, with 1 hour 11 minutes of totality. Fully visible from India, and from Europe, Africa, Asia, Australia and the Pacific. Greatest eclipse 16:52 UTC (10:22 PM IST).',
+    descriptionHi: 'पौष पूर्णिमा को पूर्ण चंद्र ग्रहण, नववर्ष की पूर्वसंध्या पर, जिसकी पूर्णता 1 घंटा 11 मिनट रहेगी। भारत से पूर्ण रूप से दिखाई देगा, तथा यूरोप, अफ्रीका, एशिया, ऑस्ट्रेलिया और प्रशांत क्षेत्र से भी। ग्रहण का मध्यकाल 16:52 UTC (रात 10:22, IST)।',
+    significance: 'Total Chandra Grahan on Pausha Purnima, fully visible across India. The Moon turns copper-red during totality. Temples traditionally close during the grahan period, and the Mahamrityunjaya Mantra recited at this time is considered exceptionally potent.',
+    significanceHi: 'पौष पूर्णिमा को पूर्ण चंद्र ग्रहण, भारत भर में पूर्ण रूप से दिखाई देगा। पूर्णता के दौरान चंद्रमा ताम्र-लाल हो जाता है। ग्रहण काल में परंपरागत रूप से मंदिर बंद रहते हैं, और इस समय जपा गया महामृत्युंजय मंत्र अत्यंत प्रभावी माना जाता है।',
     indiaVisibility: 'full',
   },
   {
@@ -753,12 +753,17 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2029-01-14',
     timeUTC: ut('17:12:34'),   // greatest eclipse UT1 (TD 17:13:48)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Deep partial solar eclipse on Amavasya, covering up to 87% of the Sun\'s diameter at maximum. Visible from North and Central America. Greatest eclipse 17:12 UTC (10:42 PM IST).',
-    descriptionHi: 'अमावस्या को गहरा आंशिक सूर्य ग्रहण, जो अधिकतम पर सूर्य के व्यास का 87% तक ढक लेगा। उत्तरी और मध्य अमेरिका से दिखाई देगा। ग्रहण का मध्यकाल 17:12 UTC (रात 10:42, IST)।',
-    significance: 'Surya Grahan on Amavasya. A deep partial eclipse near the Rahu/Ketu axis, read in Jyotish as a strong but incomplete obstruction of the solar significations.',
-    significanceHi: 'अमावस्या को सूर्य ग्रहण। राहु/केतु अक्ष के निकट एक गहरा आंशिक ग्रहण, जिसे ज्योतिष में सूर्य के कारकत्वों के प्रबल परंतु अपूर्ण अवरोध के रूप में पढ़ा जाता है।',
+    description: 'Deep partial solar eclipse on Pausha Amavasya, covering up to 87% of the Sun\'s diameter at maximum. Visible from North and Central America. Greatest eclipse 17:12 UTC (10:42 PM IST).',
+    descriptionHi: 'पौष अमावस्या को गहरा आंशिक सूर्य ग्रहण, जो अधिकतम पर सूर्य के व्यास का 87% तक ढक लेगा। उत्तरी और मध्य अमेरिका से दिखाई देगा। ग्रहण का मध्यकाल 17:12 UTC (रात 10:42, IST)।',
+    significance: 'Surya Grahan on Pausha Amavasya. A deep partial eclipse near the Rahu/Ketu axis, read in Jyotish as a strong but incomplete obstruction of the solar significations.',
+    significanceHi: 'पौष अमावस्या को सूर्य ग्रहण। राहु/केतु अक्ष के निकट एक गहरा आंशिक ग्रहण, जिसे ज्योतिष में सूर्य के कारकत्वों के प्रबल परंतु अपूर्ण अवरोध के रूप में पढ़ा जाता है।',
     indiaVisibility: 'none',
   },
+  // Amanta Vaishakha and Jyeshtha respectively (see the 2029-07-11 entry below) —
+  // not a shared month. The 11b0bfe extension commit's "both resolve to amanta
+  // Jyeshtha" mixed amanta/purnimanta naming (2029-06-12 is purnimanta Jyeshtha,
+  // not amanta); verified against drikpanchang.com 2026-08-21, no adhika
+  // ambiguity here (2029's Adhika Masa is Phalguna, mid-March to mid-April).
   {
     id: 'solar-eclipse-2029-06-12',
     type: 'solar_eclipse',
@@ -771,10 +776,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2029-06-12',
     timeUTC: ut('04:04:59'),   // greatest eclipse UT1 (TD 04:06:13)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Partial solar eclipse on Amavasya, covering up to 46% of the Sun\'s diameter. Visible from the Arctic, Scandinavia, Alaska, northern Asia and northern Canada. Greatest eclipse 04:05 UTC (9:35 AM IST).',
-    descriptionHi: 'अमावस्या को आंशिक सूर्य ग्रहण, जो सूर्य के व्यास का 46% तक ढक लेगा। आर्कटिक, स्कैंडिनेविया, अलास्का, उत्तरी एशिया और उत्तरी कनाडा से दिखाई देगा। ग्रहण का मध्यकाल 04:05 UTC (प्रातः 9:35, IST)।',
-    significance: 'Surya Grahan on Amavasya. In Jyotish the Amavasya remains a significant lunar-month boundary, and the eclipse marks the Sun and Moon meeting near the Rahu/Ketu axis.',
-    significanceHi: 'अमावस्या को सूर्य ग्रहण। ज्योतिष में अमावस्या चांद्र मास की एक महत्वपूर्ण संधि रहती है, और ग्रहण सूर्य तथा चंद्रमा के राहु/केतु अक्ष के निकट मिलन को दर्शाता है।',
+    description: 'Partial solar eclipse on Vaishakha Amavasya, covering up to 46% of the Sun\'s diameter. Visible from the Arctic, Scandinavia, Alaska, northern Asia and northern Canada. Greatest eclipse 04:05 UTC (9:35 AM IST).',
+    descriptionHi: 'वैशाख अमावस्या को आंशिक सूर्य ग्रहण, जो सूर्य के व्यास का 46% तक ढक लेगा। आर्कटिक, स्कैंडिनेविया, अलास्का, उत्तरी एशिया और उत्तरी कनाडा से दिखाई देगा। ग्रहण का मध्यकाल 04:05 UTC (प्रातः 9:35, IST)।',
+    significance: 'Surya Grahan on Vaishakha Amavasya. In Jyotish the Amavasya remains a significant lunar-month boundary, and the eclipse marks the Sun and Moon meeting near the Rahu/Ketu axis.',
+    significanceHi: 'वैशाख अमावस्या को सूर्य ग्रहण। ज्योतिष में अमावस्या चांद्र मास की एक महत्वपूर्ण संधि रहती है, और ग्रहण सूर्य तथा चंद्रमा के राहु/केतु अक्ष के निकट मिलन को दर्शाता है।',
     indiaVisibility: 'none',
   },
   {
@@ -789,12 +794,14 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2029-06-26',
     timeUTC: ut('03:22:09'),   // greatest eclipse UT1 (TD 03:23:22)
     planets: ['chandra', 'rahu'],
-    description: 'Exceptionally deep total lunar eclipse on Purnima — umbral magnitude 1.84, with 1 hour 42 minutes of totality, among the longest of the decade. Visible from the Americas, Europe, Africa and the Middle East. Greatest eclipse 03:22 UTC (8:52 AM IST).',
-    descriptionHi: 'पूर्णिमा को असाधारण रूप से गहरा पूर्ण चंद्र ग्रहण — प्रच्छाया मान 1.84, और पूर्णता 1 घंटा 42 मिनट, जो इस दशक की सबसे लंबी पूर्णताओं में से एक है। अमेरिका महाद्वीप, यूरोप, अफ्रीका और मध्य पूर्व से दिखाई देगा। ग्रहण का मध्यकाल 03:22 UTC (प्रातः 8:52, IST)।',
-    significance: 'Total Chandra Grahan on Purnima, and an unusually deep one — the Moon passes close to the centre of Earth\'s shadow. In Jyotish a total lunar eclipse marks a strong emotional and karmic emphasis on the Rahu/Ketu axis.',
-    significanceHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, और असामान्य रूप से गहरा — चंद्रमा पृथ्वी की छाया के केंद्र के निकट से गुजरता है। ज्योतिष में पूर्ण चंद्र ग्रहण राहु/केतु अक्ष पर प्रबल भावनात्मक और कर्मिक प्रभाव को दर्शाता है।',
+    description: 'Exceptionally deep total lunar eclipse on Jyeshtha Purnima — umbral magnitude 1.84, with 1 hour 42 minutes of totality, among the longest of the decade. Visible from the Americas, Europe, Africa and the Middle East. Greatest eclipse 03:22 UTC (8:52 AM IST).',
+    descriptionHi: 'ज्येष्ठ पूर्णिमा को असाधारण रूप से गहरा पूर्ण चंद्र ग्रहण — प्रच्छाया मान 1.84, और पूर्णता 1 घंटा 42 मिनट, जो इस दशक की सबसे लंबी पूर्णताओं में से एक है। अमेरिका महाद्वीप, यूरोप, अफ्रीका और मध्य पूर्व से दिखाई देगा। ग्रहण का मध्यकाल 03:22 UTC (प्रातः 8:52, IST)।',
+    significance: 'Total Chandra Grahan on Jyeshtha Purnima, and an unusually deep one — the Moon passes close to the centre of Earth\'s shadow. In Jyotish a total lunar eclipse marks a strong emotional and karmic emphasis on the Rahu/Ketu axis.',
+    significanceHi: 'ज्येष्ठ पूर्णिमा को पूर्ण चंद्र ग्रहण, और असामान्य रूप से गहरा — चंद्रमा पृथ्वी की छाया के केंद्र के निकट से गुजरता है। ज्योतिष में पूर्ण चंद्र ग्रहण राहु/केतु अक्ष पर प्रबल भावनात्मक और कर्मिक प्रभाव को दर्शाता है।',
     indiaVisibility: 'none',
   },
+  // Amanta Jyeshtha (see the 2029-06-12 entry above) — not the same month as that
+  // eclipse's amanta Vaishakha; verified against drikpanchang.com 2026-08-21.
   {
     id: 'solar-eclipse-2029-07-11',
     type: 'solar_eclipse',
@@ -807,10 +814,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2029-07-11',
     timeUTC: ut('15:36:05'),   // greatest eclipse UT1 (TD 15:37:19)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Small partial solar eclipse on Amavasya, covering only about 23% of the Sun\'s diameter. Visible from southern Chile and southern Argentina. Greatest eclipse 15:36 UTC (9:06 PM IST).',
-    descriptionHi: 'अमावस्या को छोटा आंशिक सूर्य ग्रहण, जो सूर्य के व्यास का केवल लगभग 23% ढकेगा। दक्षिणी चिली और दक्षिणी अर्जेंटीना से दिखाई देगा। ग्रहण का मध्यकाल 15:36 UTC (रात 9:06, IST)।',
-    significance: 'Surya Grahan on Amavasya. A modest partial eclipse, though in Jyotish the conjunction of Sun and Moon near the Rahu/Ketu axis carries weight regardless of depth.',
-    significanceHi: 'अमावस्या को सूर्य ग्रहण। एक सामान्य आंशिक ग्रहण, यद्यपि ज्योतिष में सूर्य और चंद्रमा की राहु/केतु अक्ष के निकट युति गहराई से स्वतंत्र रूप से महत्व रखती है।',
+    description: 'Small partial solar eclipse on Jyeshtha Amavasya, covering only about 23% of the Sun\'s diameter. Visible from southern Chile and southern Argentina. Greatest eclipse 15:36 UTC (9:06 PM IST).',
+    descriptionHi: 'ज्येष्ठ अमावस्या को छोटा आंशिक सूर्य ग्रहण, जो सूर्य के व्यास का केवल लगभग 23% ढकेगा। दक्षिणी चिली और दक्षिणी अर्जेंटीना से दिखाई देगा। ग्रहण का मध्यकाल 15:36 UTC (रात 9:06, IST)।',
+    significance: 'Surya Grahan on Jyeshtha Amavasya. A modest partial eclipse, though in Jyotish the conjunction of Sun and Moon near the Rahu/Ketu axis carries weight regardless of depth.',
+    significanceHi: 'ज्येष्ठ अमावस्या को सूर्य ग्रहण। एक सामान्य आंशिक ग्रहण, यद्यपि ज्योतिष में सूर्य और चंद्रमा की राहु/केतु अक्ष के निकट युति गहराई से स्वतंत्र रूप से महत्व रखती है।',
     indiaVisibility: 'none',
   },
   {
@@ -825,10 +832,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2029-12-05',
     timeUTC: ut('15:02:44'),   // greatest eclipse UT1 (TD 15:03:58)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Deep partial solar eclipse on Amavasya, covering up to 89% of the Sun\'s diameter. Visible from southern Argentina, southern Chile and Antarctica. Greatest eclipse 15:03 UTC (8:33 PM IST).',
-    descriptionHi: 'अमावस्या को गहरा आंशिक सूर्य ग्रहण, जो सूर्य के व्यास का 89% तक ढक लेगा। दक्षिणी अर्जेंटीना, दक्षिणी चिली और अंटार्कटिका से दिखाई देगा। ग्रहण का मध्यकाल 15:03 UTC (रात 8:33, IST)।',
-    significance: 'Surya Grahan on Amavasya. A deep partial eclipse close to the Rahu/Ketu axis, read in Jyotish as a pronounced obstruction of the solar significations.',
-    significanceHi: 'अमावस्या को सूर्य ग्रहण। राहु/केतु अक्ष के निकट एक गहरा आंशिक ग्रहण, जिसे ज्योतिष में सूर्य के कारकत्वों के स्पष्ट अवरोध के रूप में पढ़ा जाता है।',
+    description: 'Deep partial solar eclipse on Kartika Amavasya, covering up to 89% of the Sun\'s diameter. Visible from southern Argentina, southern Chile and Antarctica. Greatest eclipse 15:03 UTC (8:33 PM IST).',
+    descriptionHi: 'कार्तिक अमावस्या को गहरा आंशिक सूर्य ग्रहण, जो सूर्य के व्यास का 89% तक ढक लेगा। दक्षिणी अर्जेंटीना, दक्षिणी चिली और अंटार्कटिका से दिखाई देगा। ग्रहण का मध्यकाल 15:03 UTC (रात 8:33, IST)।',
+    significance: 'Surya Grahan on Kartika Amavasya. A deep partial eclipse close to the Rahu/Ketu axis, read in Jyotish as a pronounced obstruction of the solar significations.',
+    significanceHi: 'कार्तिक अमावस्या को सूर्य ग्रहण। राहु/केतु अक्ष के निकट एक गहरा आंशिक ग्रहण, जिसे ज्योतिष में सूर्य के कारकत्वों के स्पष्ट अवरोध के रूप में पढ़ा जाता है।',
     indiaVisibility: 'none',
   },
   {
@@ -843,10 +850,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2029-12-20',
     timeUTC: ut('22:41:58'),   // greatest eclipse UT1 (TD 22:43:12)
     planets: ['chandra', 'rahu'],
-    description: 'Total lunar eclipse on Purnima with 54 minutes of totality, fully visible from India in the small hours. Also visible from the Americas, Europe, Africa and Asia. Greatest eclipse 22:42 UTC (4:12 AM IST, 21 December).',
-    descriptionHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, 54 मिनट की पूर्णता सहित, भारत से रात्रि के पिछले प्रहर में पूर्ण रूप से दिखाई देगा। अमेरिका महाद्वीप, यूरोप, अफ्रीका और एशिया से भी दिखाई देगा। ग्रहण का मध्यकाल 22:42 UTC (21 दिसंबर, प्रातः 4:12, IST)।',
-    significance: 'Total Chandra Grahan on Purnima, fully visible across India. Temples traditionally close during the grahan period, and mantras recited at this time are considered exceptionally potent.',
-    significanceHi: 'पूर्णिमा को पूर्ण चंद्र ग्रहण, भारत भर में पूर्ण रूप से दिखाई देगा। ग्रहण काल में परंपरागत रूप से मंदिर बंद रहते हैं, और इस समय जप किए गए मंत्र अत्यंत प्रभावी माने जाते हैं।',
+    description: 'Total lunar eclipse on Margashirsha Purnima with 54 minutes of totality, fully visible from India in the small hours. Also visible from the Americas, Europe, Africa and Asia. Greatest eclipse 22:42 UTC (4:12 AM IST, 21 December).',
+    descriptionHi: 'मार्गशीर्ष पूर्णिमा को पूर्ण चंद्र ग्रहण, 54 मिनट की पूर्णता सहित, भारत से रात्रि के पिछले प्रहर में पूर्ण रूप से दिखाई देगा। अमेरिका महाद्वीप, यूरोप, अफ्रीका और एशिया से भी दिखाई देगा। ग्रहण का मध्यकाल 22:42 UTC (21 दिसंबर, प्रातः 4:12, IST)।',
+    significance: 'Total Chandra Grahan on Margashirsha Purnima, fully visible across India. Temples traditionally close during the grahan period, and mantras recited at this time are considered exceptionally potent.',
+    significanceHi: 'मार्गशीर्ष पूर्णिमा को पूर्ण चंद्र ग्रहण, भारत भर में पूर्ण रूप से दिखाई देगा। ग्रहण काल में परंपरागत रूप से मंदिर बंद रहते हैं, और इस समय जप किए गए मंत्र अत्यंत प्रभावी माने जाते हैं।',
     indiaVisibility: 'full',
   },
   {
@@ -861,10 +868,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2030-06-01',
     timeUTC: ut('06:27:59'),   // greatest eclipse UT1 (TD 06:29:13)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Annular solar eclipse ("ring of fire") on Amavasya with up to 5 minutes 21 seconds of annularity. The path crosses Europe, north Africa, the Middle East, Asia, the Arctic and Alaska; India sees a partial eclipse, around a fifth of the Sun\'s diameter covered at Delhi. Greatest eclipse 06:28 UTC (11:58 AM IST).',
-    descriptionHi: 'अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय"), जिसकी वलयाकारता 5 मिनट 21 सेकंड तक रहेगी। पथ यूरोप, उत्तरी अफ्रीका, मध्य पूर्व, एशिया, आर्कटिक और अलास्का से होकर गुजरता है; भारत में आंशिक ग्रहण दिखेगा, दिल्ली में सूर्य के व्यास का लगभग पांचवां भाग ढका रहेगा। ग्रहण का मध्यकाल 06:28 UTC (दोपहर 11:58, IST)।',
-    significance: 'Surya Grahan on Amavasya, visible as a partial eclipse from India. In Jyotish an annular eclipse near the Rahu/Ketu axis is read as obstruction of the solar significations rather than their eclipse.',
-    significanceHi: 'अमावस्या को सूर्य ग्रहण, भारत से आंशिक ग्रहण के रूप में दिखाई देगा। ज्योतिष में राहु/केतु अक्ष के निकट वलयाकार ग्रहण को सूर्य के कारकत्वों के ग्रहण के बजाय अवरोध के रूप में पढ़ा जाता है।',
+    description: 'Annular solar eclipse ("ring of fire") on Vaishakha Amavasya with up to 5 minutes 21 seconds of annularity. The path crosses Europe, north Africa, the Middle East, Asia, the Arctic and Alaska; India sees a partial eclipse, around a fifth of the Sun\'s diameter covered at Delhi. Greatest eclipse 06:28 UTC (11:58 AM IST).',
+    descriptionHi: 'वैशाख अमावस्या को वलयाकार सूर्य ग्रहण ("अग्नि वलय"), जिसकी वलयाकारता 5 मिनट 21 सेकंड तक रहेगी। पथ यूरोप, उत्तरी अफ्रीका, मध्य पूर्व, एशिया, आर्कटिक और अलास्का से होकर गुजरता है; भारत में आंशिक ग्रहण दिखेगा, दिल्ली में सूर्य के व्यास का लगभग पांचवां भाग ढका रहेगा। ग्रहण का मध्यकाल 06:28 UTC (दोपहर 11:58, IST)।',
+    significance: 'Surya Grahan on Vaishakha Amavasya, visible as a partial eclipse from India. In Jyotish an annular eclipse near the Rahu/Ketu axis is read as obstruction of the solar significations rather than their eclipse.',
+    significanceHi: 'वैशाख अमावस्या को सूर्य ग्रहण, भारत से आंशिक ग्रहण के रूप में दिखाई देगा। ज्योतिष में राहु/केतु अक्ष के निकट वलयाकार ग्रहण को सूर्य के कारकत्वों के ग्रहण के बजाय अवरोध के रूप में पढ़ा जाता है।',
     indiaVisibility: 'partial',
   },
   {
@@ -879,10 +886,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2030-06-15',
     timeUTC: ut('18:33:19'),   // greatest eclipse UT1 (TD 18:34:33)
     planets: ['chandra', 'rahu'],
-    description: 'Partial lunar eclipse on Purnima, with about half the Moon\'s diameter in Earth\'s umbra. Visible from Europe, Africa, Asia and Australia, including India. Greatest eclipse 18:33 UTC (12:03 AM IST, 16 June).',
-    descriptionHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण, जिसमें चंद्रमा के व्यास का लगभग आधा भाग पृथ्वी की प्रच्छाया में रहेगा। यूरोप, अफ्रीका, एशिया और ऑस्ट्रेलिया से, भारत सहित, दिखाई देगा। ग्रहण का मध्यकाल 18:33 UTC (16 जून, रात 12:03, IST)।',
-    significance: 'Partial Chandra Grahan on Purnima, visible from India with roughly half the lunar disc darkened. Mantras recited during the grahan are traditionally held to be especially potent.',
-    significanceHi: 'पूर्णिमा को आंशिक चंद्र ग्रहण, भारत से दिखाई देगा जिसमें चंद्र चक्रिका का लगभग आधा भाग अंधकारमय रहेगा। ग्रहण काल में जप किए गए मंत्र परंपरागत रूप से विशेष प्रभावी माने जाते हैं।',
+    description: 'Partial lunar eclipse on Jyeshtha Purnima, with about half the Moon\'s diameter in Earth\'s umbra. Visible from Europe, Africa, Asia and Australia, including India. Greatest eclipse 18:33 UTC (12:03 AM IST, 16 June).',
+    descriptionHi: 'ज्येष्ठ पूर्णिमा को आंशिक चंद्र ग्रहण, जिसमें चंद्रमा के व्यास का लगभग आधा भाग पृथ्वी की प्रच्छाया में रहेगा। यूरोप, अफ्रीका, एशिया और ऑस्ट्रेलिया से, भारत सहित, दिखाई देगा। ग्रहण का मध्यकाल 18:33 UTC (16 जून, रात 12:03, IST)।',
+    significance: 'Partial Chandra Grahan on Jyeshtha Purnima, visible from India with roughly half the lunar disc darkened. Mantras recited during the grahan are traditionally held to be especially potent.',
+    significanceHi: 'ज्येष्ठ पूर्णिमा को आंशिक चंद्र ग्रहण, भारत से दिखाई देगा जिसमें चंद्र चक्रिका का लगभग आधा भाग अंधकारमय रहेगा। ग्रहण काल में जप किए गए मंत्र परंपरागत रूप से विशेष प्रभावी माने जाते हैं।',
     indiaVisibility: 'partial',
   },
   {
@@ -897,10 +904,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2030-11-25',
     timeUTC: ut('06:50:23'),   // greatest eclipse UT1 (TD 06:51:37)
     planets: ['surya', 'chandra', 'rahu'],
-    description: 'Total solar eclipse on Amavasya with up to 3 minutes 44 seconds of totality. The path crosses southern Africa, the southern Indian Ocean, the East Indies, Australia and Antarctica. Greatest eclipse 06:50 UTC (12:20 PM IST).',
-    descriptionHi: 'अमावस्या को पूर्ण सूर्य ग्रहण, जिसकी पूर्णता 3 मिनट 44 सेकंड तक रहेगी। पथ दक्षिणी अफ्रीका, दक्षिणी हिंद महासागर, पूर्वी द्वीपसमूह, ऑस्ट्रेलिया और अंटार्कटिका से होकर गुजरता है। ग्रहण का मध्यकाल 06:50 UTC (दोपहर 12:20, IST)।',
-    significance: 'Total Surya Grahan on Amavasya — in Jyotish an extremely significant karmic marker, with the Sun fully covered near the Rahu/Ketu axis.',
-    significanceHi: 'अमावस्या को पूर्ण सूर्य ग्रहण — ज्योतिष में एक अत्यंत महत्वपूर्ण कर्मिक संकेतक, जिसमें सूर्य राहु/केतु अक्ष के निकट पूर्णतः ढक जाता है।',
+    description: 'Total solar eclipse on Kartika Amavasya with up to 3 minutes 44 seconds of totality. The path crosses southern Africa, the southern Indian Ocean, the East Indies, Australia and Antarctica. Greatest eclipse 06:50 UTC (12:20 PM IST).',
+    descriptionHi: 'कार्तिक अमावस्या को पूर्ण सूर्य ग्रहण, जिसकी पूर्णता 3 मिनट 44 सेकंड तक रहेगी। पथ दक्षिणी अफ्रीका, दक्षिणी हिंद महासागर, पूर्वी द्वीपसमूह, ऑस्ट्रेलिया और अंटार्कटिका से होकर गुजरता है। ग्रहण का मध्यकाल 06:50 UTC (दोपहर 12:20, IST)।',
+    significance: 'Total Surya Grahan on Kartika Amavasya — in Jyotish an extremely significant karmic marker, with the Sun fully covered near the Rahu/Ketu axis.',
+    significanceHi: 'कार्तिक अमावस्या को पूर्ण सूर्य ग्रहण — ज्योतिष में एक अत्यंत महत्वपूर्ण कर्मिक संकेतक, जिसमें सूर्य राहु/केतु अक्ष के निकट पूर्णतः ढक जाता है।',
     indiaVisibility: 'none',
   },
   {
@@ -915,10 +922,10 @@ const KNOWN_ECLIPSES: Omit<PlanetaryEvent, 'daysAway'>[] = [
     dateISO: '2030-12-09',
     timeUTC: ut('22:27:37'),   // greatest eclipse UT1 (TD 22:28:51)
     planets: ['chandra', 'rahu'],
-    description: 'Penumbral lunar eclipse on Purnima — the Moon passes only through Earth\'s faint outer shadow and never the umbra, so the dimming is imperceptible to the naked eye. Greatest eclipse 22:28 UTC (3:58 AM IST, 10 December).',
-    descriptionHi: 'पूर्णिमा को उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की धुंधली बाहरी छाया से गुजरता है, प्रच्छाया में कभी नहीं, अतः धुंधलाहट नंगी आंखों से अगोचर रहती है। ग्रहण का मध्यकाल 22:28 UTC (10 दिसंबर, प्रातः 3:58, IST)।',
-    significance: 'Penumbral Chandra Grahan — the Moon enters only Earth\'s faint outer shadow. Hindu calendars do not treat a penumbral eclipse as a grahan, though the Purnima itself remains spiritually significant.',
-    significanceHi: 'उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की धुंधली बाहरी छाया में प्रवेश करता है। हिंदू पंचांग उपच्छाया ग्रहण को ग्रहण नहीं मानते, यद्यपि पूर्णिमा स्वयं आध्यात्मिक रूप से महत्वपूर्ण रहती है।',
+    description: 'Penumbral lunar eclipse on Margashirsha Purnima — the Moon passes only through Earth\'s faint outer shadow and never the umbra, so the dimming is imperceptible to the naked eye. Greatest eclipse 22:28 UTC (3:58 AM IST, 10 December).',
+    descriptionHi: 'मार्गशीर्ष पूर्णिमा को उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की धुंधली बाहरी छाया से गुजरता है, प्रच्छाया में कभी नहीं, अतः धुंधलाहट नंगी आंखों से अगोचर रहती है। ग्रहण का मध्यकाल 22:28 UTC (10 दिसंबर, प्रातः 3:58, IST)।',
+    significance: 'Penumbral Chandra Grahan — the Moon enters only Earth\'s faint outer shadow. Hindu calendars do not treat a penumbral eclipse as a grahan, though the Margashirsha Purnima itself remains spiritually significant.',
+    significanceHi: 'उपच्छाया चंद्र ग्रहण — चंद्रमा केवल पृथ्वी की धुंधली बाहरी छाया में प्रवेश करता है। हिंदू पंचांग उपच्छाया ग्रहण को ग्रहण नहीं मानते, यद्यपि मार्गशीर्ष पूर्णिमा स्वयं आध्यात्मिक रूप से महत्वपूर्ण रहती है।',
     indiaVisibility: 'penumbral',
   },
 ];
