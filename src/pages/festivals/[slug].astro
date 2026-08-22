@@ -63,8 +63,9 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <span class="en-text">{f.name}</span>
           <span class="hi-text" style="display:none">{f.nameHi}</span>
         </div>
-        <h1 class="fd-heading en-text">{f.name}</h1>
-        <h1 class="fd-heading hi-text" style="display:none">{f.nameHi}</h1>
+        <h1 class="fd-heading">
+          <span class="en-text">{f.name}</span><span class="hi-text" style="display:none">{f.nameHi}</span>
+        </h1>
         <div class="fd-hero-badges">
           <span class={`fd-type-badge fd-type-${f.type}`} data-hi={f.type === 'major' ? '✦ प्रमुख त्योहार' : f.type === 'vrat' ? '🙏 व्रत' : '🌏 क्षेत्रीय त्योहार'}>
             {f.type === 'major' ? '✦ Major Festival' : f.type === 'vrat' ? '🙏 Vrat / Fast' : '🌏 Regional Festival'}

@@ -116,7 +116,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">☀️</span>
                 <div>
-                  <p class="caption-mono" data-hi="दैनिक राशिफल" style="color:var(--color-mute);margin:0;">Daily Rashifal</p>
+                  <h2 class="caption-mono" data-hi="दैनिक राशिफल" style="color:var(--color-mute);margin:0;font-weight:400;">Daily Rashifal</h2>
                   <p id="rp-daily-date" data-hi={dateLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
                 </div>
               </div>
@@ -130,7 +130,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">🗓️</span>
                 <div>
-                  <p class="caption-mono" data-hi="साप्ताहिक राशिफल" style="color:var(--color-mute);margin:0;">Weekly Rashifal</p>
+                  <h2 class="caption-mono" data-hi="साप्ताहिक राशिफल" style="color:var(--color-mute);margin:0;font-weight:400;">Weekly Rashifal</h2>
                   <p data-hi="वर्तमान सप्ताह का अवलोकन" style="font-size:13px;color:var(--color-body-text);margin:0;">Current week's overview</p>
                 </div>
               </div>
@@ -144,7 +144,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">📆</span>
                 <div>
-                  <p class="caption-mono" data-hi="मासिक राशिफल" style="color:var(--color-mute);margin:0;">Monthly Rashifal</p>
+                  <h2 class="caption-mono" data-hi="मासिक राशिफल" style="color:var(--color-mute);margin:0;font-weight:400;">Monthly Rashifal</h2>
                   <p data-hi={monthYearLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">
                     {monthYearLabel}
                   </p>
@@ -160,7 +160,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">🌟</span>
                 <div>
-                  <p class="caption-mono" data-hi="वार्षिक राशिफल" style="color:var(--color-mute);margin:0;">Yearly Rashifal</p>
+                  <h2 class="caption-mono" data-hi="वार्षिक राशिफल" style="color:var(--color-mute);margin:0;font-weight:400;">Yearly Rashifal</h2>
                   <p data-hi={`${today.getFullYear()} अवलोकन`} style="font-size:13px;color:var(--color-body-text);margin:0;">{today.getFullYear()} Overview</p>
                 </div>
               </div>

@@ -2,6 +2,8 @@ export interface BlogPost {
   slug: string;
   title: string;
   titleHi?: string;
+  // Overrides `title` in the <title> tag only, for posts whose display title is too long to fit ~60 chars.
+  metaTitle?: string;
   description: string;
   descriptionHi?: string;
   publishDate: string; // ISO date, e.g. '2026-07-13'
@@ -385,6 +387,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'hindu-panchang-tithi-nakshatra-rahu-kalam-explained',
     title: 'Understanding the Hindu Panchang: Tithi, Nakshatra & Rahu Kalam Explained',
+    metaTitle: 'Tithi, Nakshatra & Rahu Kalam Explained',
     titleHi: 'हिंदू पंचांग को समझना: तिथि, नक्षत्र और राहु काल की व्याख्या',
     description: "Learn what Tithi means in the Hindu calendar, how it's calculated, the Amanta vs Purnimanta difference, and how Rahu Kalam is calculated for your city.",
     descriptionHi: 'हिंदू कैलेंडर में तिथि का क्या अर्थ है, इसकी गणना कैसे की जाती है, अमांत बनाम पूर्णिमांत का अंतर, और अपने शहर के लिए राहु काल की गणना कैसे की जाती है, यह जानें।',
