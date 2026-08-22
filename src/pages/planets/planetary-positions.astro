@@ -31,7 +31,7 @@ const initRows = initKundali.grahas.map(g => {
 });
 ---
 
-<Layout title="Planetary Positions Today — Live Graha Sphuta — PanchangPath" description="Real-time sidereal positions of all 9 grahas (Sun through Ketu) — sign, nakshatra, degree and retrograde status, computed live with Lahiri ayanamsha.">
+<Layout title="Planetary Positions Today (Graha Sphuta) | PanchangPath" description="Live sidereal positions of all 9 grahas (Sun to Ketu) with sign, nakshatra, degree, retrograde and combustion status, computed with Lahiri ayanamsha.">
 
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
@@ -55,6 +55,7 @@ const initRows = initKundali.grahas.map(g => {
             <th data-hi="नक्षत्र" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Nakshatra</th>
             <th data-hi="पद" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Pada</th>
             <th data-hi="गति" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Motion</th>
+            <th data-hi="अस्त/उदित" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Combustion</th>
           </tr></thead>
           <tbody id="pp-body">
             {initRows.map(({ g, nak, pada }) => (
@@ -65,6 +66,7 @@ const initRows = initKundali.grahas.map(g => {
                 <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{nak.name}</td>
                 <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{pada}</td>
                 <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${g.isRetrograde ? '#dc2626' : 'var(--color-body-text)'};`}>{g.isRetrograde ? 'Retrograde' : 'Direct'}</td>
+                <td style={`padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${g.isCombust ? '#dc2626' : 'var(--color-body-text)'};`}>{(g.id === 'surya' || g.id === 'rahu' || g.id === 'ketu') ? '—' : (g.isCombust ? 'Asta (Combust)' : 'Udita')}</td>
               </tr>
             ))}
           </tbody>
@@ -128,7 +130,9 @@ function render(){
     const nk=siderealNakshatraPada(g.siderealLon);
     const motion=g.isRetrograde?'Retrograde':'Direct';
     const motionLabel=hindiActive?(motion==='Retrograde'?'वक्री':'मार्गी'):motion;
-    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${displayName}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trRashi(g.sign)} (${RASHIS[g.sign].en})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">${formatDegMin(g.siderealLon)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trNak(nk.idx)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.pada}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${motion==='Retrograde'?'#dc2626':'var(--color-body-text)'};">${motionLabel}</td></tr>`;
+    const combustNA=(k==='surya'||k==='rahu'||k==='ketu');
+    const combustLabel=combustNA?'—':(g.isCombust?(hindiActive?'अस्त (दग्ध)':'Asta (Combust)'):(hindiActive?'उदित':'Udita'));
+    rows+=`<tr><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">${displayName}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trRashi(g.sign)} (${RASHIS[g.sign].en})</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">${formatDegMin(g.siderealLon)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${trNak(nk.idx)}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">${nk.pada}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${motion==='Retrograde'?'#dc2626':'var(--color-body-text)'};">${motionLabel}</td><td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:${g.isCombust?'#dc2626':'var(--color-body-text)'};">${combustLabel}</td></tr>`;
   });
   const body=document.getElementById('pp-body');
   if(body)body.innerHTML=rows;
