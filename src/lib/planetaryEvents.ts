@@ -1091,12 +1091,51 @@ export function computeUpcomingEvents(today: Date, daysAhead = 365): PlanetaryEv
     .sort((a, b) => a.daysAway - b.daysAway || a.dateISO.localeCompare(b.dateISO));
 }
 
+// Rahu/Ketu shift sign together (Ketu sits exactly 180° from Rahu, see kundali.ts's
+// `ketu: n360(rahu + 180)`) roughly every 18 months — the same rarity + high-astrological-
+// -significance bar that earns eclipses their unfiltered retention below. Unlike eclipses,
+// whose dates come from an external ephemeris catalogue (KNOWN_ECLIPSES has no formula to
+// fall back on for past dates), node longitude is a deterministic mean-node polynomial
+// (astro-core.ts's rahuLongitude/ketuLongitude) — a past date is exactly as computable as a
+// future one, so past transits are found by walking backward day-by-day and re-running the
+// same sidereal-sign-crossing detection computeUpcomingEvents uses going forward, rather
+// than needing a hardcoded historical table. Mirrors the forward scanner's rahu-specific
+// bypass of the ">1 day" re-entry check (Rahu is always retrograde, so a detected sign
+// change is never a spurious double-crossing) — see the `planet === 'rahu'` branch above.
+function getPastRahuTransits(today: Date, daysBack: number): PlanetaryEvent[] {
+  const toJD   = jdFromDate(today);
+  const fromJD = toJD - daysBack;
+  const events: PlanetaryEvent[] = [];
+
+  let prev = allTropicalLons(fromJD);
+  for (let jd = fromJD + 1; jd <= toJD; jd++) {
+    const curr = allTropicalLons(jd);
+    const sid0 = (prev.rahu - prev.ayanamsha + 360000) % 360;
+    const sid1 = (curr.rahu - curr.ayanamsha + 360000) % 360;
+    const sign0 = Math.floor(sid0 / 30) % 12;
+    const sign1 = Math.floor(sid1 / 30) % 12;
+
+    if (sign0 !== sign1) {
+      const frac = interpolateCrossing(sid0, sid1, sign1 * 30);
+      const transitJD = (jd - 1) + frac;
+      const ev = signTransitEvent('rahu', sign1, transitJD, today);
+      if (ev.daysAway < 0) events.push(ev);
+    }
+    prev = curr;
+  }
+  return events;
+}
+
 // Eclipses are the one event type judged to carry "comparable public interest" to a
 // festival — often linked/indexed before they happen (see the Aug 12, 2026 total solar
 // eclipse, pruned from the site the moment it rolled past today() in computeUpcomingEvents's
 // forward-only window). Unlike sign transits/retrograde stations (routine, many per year,
 // not archived), past eclipse detail pages are kept reachable at their original URL going
 // back through the full KNOWN_ECLIPSES table, mirroring festivals.ts's unfiltered retention.
+// Rahu/Ketu axis-shift transits (see getPastRahuTransits above) get the same treatment for
+// the same reason; every other sign transit (Sun, Mercury, Venus, Mars, Jupiter, Saturn —
+// see computeUpcomingEvents's TRANSIT_PLANETS) and every retrograde/direct station or
+// conjunction remains routine and intentionally keeps rolling off once past.
 export function getPastSignificantEvents(today: Date, daysBack = 1000): PlanetaryEvent[] {
   const todayMS = today.getTime();
   const events: PlanetaryEvent[] = [];
@@ -1107,6 +1146,7 @@ export function getPastSignificantEvents(today: Date, daysBack = 1000): Planetar
       events.push({ ...eclipse, daysAway });
     }
   }
+  events.push(...getPastRahuTransits(today, daysBack));
   return events.sort((a, b) => a.daysAway - b.daysAway);
 }
 

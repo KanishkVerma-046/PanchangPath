@@ -7,10 +7,11 @@ import { formatDateHi } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   const today  = new Date();
-  // Eclipses stay reachable at their original URL after the fact (comparable public
-  // interest to a festival page — see getPastSignificantEvents). Routine event types
-  // (sign transits, retrograde stations, conjunctions) are intentionally NOT included
-  // here and keep rolling off once they're in the past.
+  // Eclipses and Rahu/Ketu axis-shift sign transits stay reachable at their original URL
+  // after the fact (comparable public interest to a festival page — see
+  // getPastSignificantEvents). Every other routine event type (Sun/Mercury/Venus/Mars/
+  // Jupiter/Saturn sign transits, retrograde stations, conjunctions) is intentionally NOT
+  // included here and keeps rolling off once it's in the past.
   const events = [...computeUpcomingEvents(today, 365), ...getPastSignificantEvents(today)];
   return events.map(ev => ({
     params: { id: ev.id },
