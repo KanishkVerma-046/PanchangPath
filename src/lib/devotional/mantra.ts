@@ -22,6 +22,7 @@ Dhiyo Yo Nah Prachodayat.`,
     slug: 'mahamrityunjaya-mantra',
     title: 'Mahamrityunjaya Mantra',
     titleHi: 'महामृत्युंजय मंत्र',
+    metaTitle: 'Mahamrityunjaya Mantra — Meaning & Japa — PanchangPath',
     deity: 'Shiva', deityHi: 'भगवान शिव',
     icon: '🔱',
     lyricsHi: `ॐ त्र्यम्बकं यजामहे

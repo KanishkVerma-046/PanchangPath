@@ -5,6 +5,7 @@ export const YANTRAS: DevotionalItem[] = [
     slug: 'sri-yantra',
     title: 'Sri Yantra (Sri Chakra)',
     titleHi: 'श्री यंत्र (श्री चक्र)',
+    metaTitle: 'Sri Yantra — Puja Vidhi & Benefits — PanchangPath',
     deity: 'Lalita Tripurasundari / Lakshmi', deityHi: 'श्री ललिता त्रिपुरसुन्दरी / लक्ष्मी',
     icon: '🔯',
     lyricsHi: `ॐ श्रीं ह्रीं क्लीं ऐं सौः।`,

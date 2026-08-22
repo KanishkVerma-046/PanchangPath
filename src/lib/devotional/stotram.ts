@@ -5,6 +5,7 @@ export const STOTRAMS: DevotionalItem[] = [
     slug: 'vishnu-sahasranama-stotram',
     title: 'Vishnu Sahasranama Stotram',
     titleHi: 'विष्णु सहस्रनाम स्तोत्रम्',
+    metaTitle: 'Vishnu Sahasranama Stotram Lyrics — PanchangPath',
     deity: 'Vishnu', deityHi: 'भगवान विष्णु',
     icon: '🪷',
     lyricsHi: `॥ पूर्वपीठिका ॥
