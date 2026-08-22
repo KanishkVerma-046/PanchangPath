@@ -1,0 +1,337 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { SHUBHA_DATES_ACTIVITY_PAGES } from '../../../lib/muhurta';
+
+// Only Vehicle and Property get their own static route (Task 3, 2026-08-22) — each was
+// previously only reachable via /muhurta/shubha-dates?activity=vehicle|property, which
+// Layout.astro's canonical tag (built from Astro.url.pathname alone) always collapsed back
+// onto the bare page, so neither could rank independently. Business and General stay on the
+// bare /muhurta/shubha-dates umbrella page as before — see docs/bugs/backlog.md's "Shubha
+// Dates `?activity=` variants can't rank separately" entry for the full root-cause writeup.
+export function getStaticPaths() {
+  return (Object.keys(SHUBHA_DATES_ACTIVITY_PAGES) as Array<keyof typeof SHUBHA_DATES_ACTIVITY_PAGES>).map(activity => ({
+    params: { activity },
+    props: { activity },
+  }));
+}
+
+const { activity } = Astro.props as { activity: keyof typeof SHUBHA_DATES_ACTIVITY_PAGES };
+const meta = SHUBHA_DATES_ACTIVITY_PAGES[activity];
+
+const OTHER_TABS = [
+  { id: 'vehicle',  label: '🚗 Vehicle Purchase',  labelHi: '🚗 वाहन खरीद',    href: '/muhurta/shubha-dates/vehicle' },
+  { id: 'property', label: '🏗️ Property Purchase', labelHi: '🏗️ संपत्ति खरीद', href: '/muhurta/shubha-dates/property' },
+  { id: 'business', label: '💼 Business Start',     labelHi: '💼 व्यवसाय शुरू', href: '/muhurta/shubha-dates?activity=business' },
+  { id: 'general',  label: '📅 General Shubha',     labelHi: '📅 सामान्य शुभ', href: '/muhurta/shubha-dates' },
+];
+---
+
+<Layout title={meta.metaTitle} description={meta.metaDesc}>
+
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
+      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शुभ दिन · {meta.label}</p>
+      <h1 data-hi={meta.h1Hi} style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">{meta.h1} Finder</h1>
+      <p data-hi={meta.introHi} style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">{meta.intro}</p>
+    </div>
+  </section>
+
+  <section style="padding:28px 0 48px;">
+    <div class="container" style="max-width:900px;margin:0 auto;">
+      <div class="card" style="padding:28px;margin-bottom:32px;">
+        <h2 data-hi="शुभ तिथियां खोजें" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 20px;">Find Auspicious Dates</h2>
+
+        <!-- Activity tabs — real links: only this page's own activity renders as a page-local
+             tab, the other three navigate to their own URL (2 dedicated static pages + the
+             bare umbrella page for Business/General) rather than switching state client-side. -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+          {OTHER_TABS.map(t => (
+            t.id === activity ? (
+              <span data-hi={t.labelHi} style="padding:7px 14px;border-radius:20px;border:1px solid var(--color-ink);background:var(--color-ink);color:#fff;font-size:13px;">{t.label}</span>
+            ) : (
+              <a href={t.href} data-hi={t.labelHi} style="padding:7px 14px;border-radius:20px;border:1px solid var(--color-hairline);background:var(--color-canvas-soft-2);color:var(--color-body-text);font-size:13px;text-decoration:none;">{t.label}</a>
+            )
+          ))}
+        </div>
+
+        <div class="finder-form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div>
+            <label for="sd-from" data-hi="प्रारंभ तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">From Date</label>
+            <input type="date" id="sd-from" class="input" style="height:38px;" />
+          </div>
+          <div>
+            <label for="sd-to" data-hi="अंतिम तिथि" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">To Date</label>
+            <input type="date" id="sd-to" class="input" style="height:38px;" />
+          </div>
+          <div>
+            <label for="sd-city" data-hi="स्थान" style="font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em;">Location</label>
+            <select id="sd-city" class="input" style="height:38px;"></select>
+          </div>
+        </div>
+        <button id="sd-find" data-hi="शुभ तिथियां खोजें →" class="btn-primary" style="width:100%;height:44px;justify-content:center;font-size:15px;">Find Shubha Dates →</button>
+      </div>
+
+      <div id="sd-results" style="display:none;">
+        <h2 id="sd-results-title" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 16px;"></h2>
+        <div id="sd-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:40px;"></div>
+      </div>
+
+      <!-- Criteria card for this activity -->
+      <div id="sd-criteria" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:24px;"></div>
+
+      <!-- How the score works -->
+      <div class="card" style="padding:24px;">
+        <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">How the Score Works</h3>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0 0 10px;line-height:1.7;">Every date is scored with the same underlying mechanism: each date starts at zero: +3 for a favourable weekday, +4 for an activity-specific auspicious nakshatra (or -3 for one on the avoid list, with a smaller -1 penalty for landing in Panchaka when neither list applies), +3 for an auspicious tithi (or -3 for an avoided one), and +2 for one of seventeen auspicious yogas.</p>
+        <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.7;">Kharmas — the Sun's transit through Dhanu (Sagittarius) or Meena (Pisces) — subtracts 4 points, checked at both the start and end of the civil day so a same-day Sankranti can't slip past the gate. Results are filtered and ranked purely by this score; the "Avoid Rahu Kala" window shown on the top result each day is informational only and isn't part of the numeric score itself.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<div id="sd-activity" data-activity={activity} style="display:none"></div>
+
+<style>
+  @media (max-width: 640px) {
+    .finder-form-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+
+<script>
+import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../../lib/panchang';
+import { MUHURTA_CRITERIA, sunRashiVoidCheck, KHARMAS_RASHIS } from '../../../lib/muhurta';
+import { formatDateHi } from '../../../lib/date-i18n';
+import { formatMinutes12h } from '../../../lib/time-format';
+
+const LOCS = [
+  {name:'New Delhi',nameHi:'नई दिल्ली',lat:28.6139,lng:77.209,tz:5.5},
+  {name:'Mumbai',nameHi:'मुंबई',lat:19.076,lng:72.8777,tz:5.5},
+  {name:'Bengaluru',nameHi:'बेंगलुरू',lat:12.9716,lng:77.5946,tz:5.5},
+  {name:'Chennai',nameHi:'चेन्नई',lat:13.0827,lng:80.2707,tz:5.5},
+  {name:'Kolkata',nameHi:'कोलकाता',lat:22.5726,lng:88.3639,tz:5.5},
+  {name:'Hyderabad',nameHi:'हैदराबाद',lat:17.385,lng:78.4867,tz:5.5},
+  {name:'Jaipur',nameHi:'जयपुर',lat:26.9124,lng:75.7873,tz:5.5},
+  {name:'Varanasi',nameHi:'वाराणसी',lat:25.3176,lng:82.9739,tz:5.5},
+  {name:'Dubai',nameHi:'दुबई',lat:25.2048,lng:55.2708,tz:4},
+  {name:'New York',nameHi:'न्यूयॉर्क',lat:40.7128,lng:-74.006,tz:-4},
+  {name:'London',nameHi:'लंदन',lat:51.5074,lng:-0.1278,tz:1},
+];
+
+type Activity = 'vehicle'|'property';
+
+let isHindi = false;
+const ACTIVITY_LABEL_HI: Record<Activity,string> = { vehicle:'वाहन खरीद', property:'संपत्ति खरीद' };
+
+// This page's fixed activity, read from the DOM rather than passed via define:vars — a
+// define:vars script forces is:inline, which blocks Vite from resolving the imports above
+// (see CLAUDE.md's Critical Gotchas).
+const currentActivity = ((document.getElementById('sd-activity') as HTMLElement | null)?.dataset.activity ?? 'vehicle') as Activity;
+
+// Descriptions are page-only display copy; the numeric criteria (naks/tithis/varas/avoidNaks/
+// avoidTithis) are sourced from the shared MUHURTA_CRITERIA table, same as the bare
+// shubha-dates.astro umbrella page.
+const CRITERIA_DESC: Record<Activity,string> = {
+  vehicle: 'Best nakshatras: Ashwini (speed), Rohini, Mrigashira, Punarvasu, Pushya, Hasta, Swati, Shravana, Revati. Good on Monday, Wednesday, Thursday, Friday, and Sunday. Avoid Bharani, Ardra, Ashlesha, Jyeshtha, Mula, Shatabhisha, Purva Bhadrapada.',
+  property: 'Best nakshatras: Rohini, Punarvasu, Pushya, Uttara Phalguni, Hasta, Shravana, Dhanishtha, Uttara Bhadrapada, Revati. Avoid Tuesday (Mars) and Saturday (Saturn).',
+};
+const CRITERIA_DESC_HI: Record<Activity,string> = {
+  vehicle: 'सर्वोत्तम नक्षत्र: अश्विनी (गति), रोहिणी, मृगशिरा, पुनर्वसु, पुष्य, हस्त, स्वाति, श्रावण, रेवती। सोमवार, बुधवार, गुरुवार, शुक्रवार और रविवार को शुभ। भरणी, आर्द्रा, आश्लेषा, ज्येष्ठा, मूल, शतभिषा, पूर्वभाद्रपद से बचें।',
+  property: 'सर्वोत्तम नक्षत्र: रोहिणी, पुनर्वसु, पुष्य, उत्तर फाल्गुनी, हस्त, श्रावण, धनिष्ठा, उत्तर भाद्रपदा, रेवती। मंगलवार (मंगल) और शनिवार (शनि) से बचें।',
+};
+
+const CRITERIA: Record<Activity,{label:string;naks:number[];tithis:number[];varas:number[];avoidNaks:number[];avoidTithis:number[];desc:string;descHi:string}> = {
+  vehicle:  { label:MUHURTA_CRITERIA.vehicle.label,  naks:MUHURTA_CRITERIA.vehicle.goodNakshatras,  tithis:MUHURTA_CRITERIA.vehicle.goodTithis,  varas:MUHURTA_CRITERIA.vehicle.goodVaras,  avoidNaks:MUHURTA_CRITERIA.vehicle.avoidNakshatras,  avoidTithis:MUHURTA_CRITERIA.vehicle.avoidTithis,  desc:CRITERIA_DESC.vehicle, descHi:CRITERIA_DESC_HI.vehicle },
+  property: { label:MUHURTA_CRITERIA.property.label, naks:MUHURTA_CRITERIA.property.goodNakshatras, tithis:MUHURTA_CRITERIA.property.goodTithis, varas:MUHURTA_CRITERIA.property.goodVaras, avoidNaks:MUHURTA_CRITERIA.property.avoidNakshatras, avoidTithis:MUHURTA_CRITERIA.property.avoidTithis, desc:CRITERIA_DESC.property, descHi:CRITERIA_DESC_HI.property },
+};
+
+const GOOD_YOGAS = [1,2,3,4,6,7,10,11,13,15,19,20,21,22,23,24,25];
+const PANCHAKA_NAKS = [22,23,24,25,26];
+const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAK_NAMES_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
+const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+const TITHI_NAMES_HI=['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा','प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','अमावस्या'];
+const VARA_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const VARA_NAMES_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const RAHU_SLOTS=[7,1,6,4,5,3,2]; // Fri/Sat swap fixed 2026-08-14
+
+function toJD(y:number,m:number,d:number,h=0){
+  if(m<=2){y--;m+=12;}
+  const A=Math.floor(y/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;
+}
+const n360=(a:number)=>((a%360)+360)%360;
+const toRad=(d:number)=>d*Math.PI/180;
+const toDeg=(r:number)=>r*180/Math.PI;
+
+function calcDay(y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number}){
+  const jd=toJD(y,m,d,6-loc.tz);
+  const sunLon=sunTrueLongitude(jd);
+  const moonLon=moonLongitude(jd);
+  const ay=lahiriAyanamsha(jd);
+  const sunSid=n360(sunLon-ay), moonSid=n360(moonLon-ay);
+  const elong=n360(moonLon-sunLon);
+  const tithiIdx=Math.floor(elong/12)%30;
+  const nakIdx=Math.floor(moonSid/(360/27))%27;
+  const yogaIdx=Math.floor(n360(sunSid+moonSid)/(360/27))%27;
+  const wd=new Date(y,m-1,d).getDay();
+  const sinDec=Math.sin(toRad(23.4393))*Math.sin(toRad(sunLon));
+  const dec=Math.asin(sinDec);
+  const cosHA=(Math.sin(toRad(-0.8333))-Math.sin(toRad(loc.lat))*Math.sin(dec))/(Math.cos(toRad(loc.lat))*Math.cos(dec));
+  const ha=toDeg(Math.acos(Math.max(-1,Math.min(1,cosHA))));
+  const noon=12-loc.lng/15;
+  const srMins=(noon-ha/15)*60+loc.tz*60, ssMins=(noon+ha/15)*60+loc.tz*60;
+  const dur=(ssMins-srMins)/8;
+  const rahuStart=srMins+RAHU_SLOTS[wd]*dur, rahuEnd=rahuStart+dur;
+  return {tithiIdx,nakIdx,yogaIdx,wd,rahuStart,rahuEnd,paksha:tithiIdx<15?'S':'K'};
+}
+
+function scoreDay(res:ReturnType<typeof calcDay>,activity:Activity,y:number,m:number,d:number,loc:{lat:number;lng:number;tz:number}){
+  const c=CRITERIA[activity];
+  let score=0; const notes:string[]=[],bad:string[]=[];
+  const varaName=isHindi?VARA_NAMES_HI[res.wd]:VARA_NAMES[res.wd];
+  if(c.varas.includes(res.wd)){score+=3;notes.push(varaName);}
+  else bad.push(varaName+(isHindi?' (उपयुक्त नहीं)':' (not ideal)'));
+  const nakName=isHindi?NAK_NAMES_HI[res.nakIdx]:NAK_NAMES[res.nakIdx];
+  const tithiName=isHindi?TITHI_NAMES_HI[res.tithiIdx]:TITHI_NAMES[res.tithiIdx];
+  if(c.avoidNaks.includes(res.nakIdx)){score-=3;bad.push(nakName+(isHindi?' (वर्जित)':' (avoid)'));}
+  else if(c.naks.includes(res.nakIdx)){score+=4;notes.push(nakName);}
+  else if(PANCHAKA_NAKS.includes(res.nakIdx)){score-=1;bad.push(isHindi?'पंचक':'Panchaka');}
+  if(c.avoidTithis.includes(res.tithiIdx)){score-=3;bad.push(tithiName+(isHindi?' (वर्जित)':' (avoid)'));}
+  else if(c.tithis.includes(res.tithiIdx)){score+=3;notes.push(tithiName);}
+  if(GOOD_YOGAS.includes(res.yogaIdx)){score+=2;notes.push(isHindi?'शुभ योग':'Auspicious yoga');}
+  // Dual-endpoint (start-of-day + end-of-day) Sun-rashi check so a same-day Sankranti can't
+  // slip past a fixed 6 AM snapshot — same as the bare shubha-dates.astro umbrella page.
+  const kharmas=sunRashiVoidCheck(y,m,d,loc.tz,KHARMAS_RASHIS);
+  if(kharmas.isVoid){score-=4;bad.push(isHindi?'खरमास':'Kharmas month');}
+  return {score,notes,bad};
+}
+
+const fmtMins = formatMinutes12h;
+
+// Init UI
+const sel=document.getElementById('sd-city') as HTMLSelectElement;
+function renderCityOptions(){
+  const selected=sel.value;
+  sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(isHindi?(l.nameHi||l.name):l.name)+'</option>').join('');
+  if(selected) sel.value=selected;
+}
+renderCityOptions();
+
+// Pre-fill from the header's location picker (same "today, my location" scope as the homepage)
+function applyHeaderLoc(loc:any){
+  if(!loc||!loc.name)return;
+  const norm=(s:string)=>s.trim().toLowerCase();
+  let match=LOCS.find(l=>norm(l.name)===norm(loc.name));
+  if(!match){
+    match={name:loc.name,nameHi:loc.nameHi,lat:loc.lat,lng:loc.lng,tz:loc.tzOffset};
+    LOCS.unshift(match);
+    renderCityOptions();
+  }
+  sel.value=match.name;
+}
+if((window as any).__initLoc) applyHeaderLoc((window as any).__initLoc);
+window.addEventListener('locationchange',(e:Event)=>applyHeaderLoc((e as CustomEvent).detail));
+
+// Shifted to the resolved location's own local calendar date, not raw UTC (toISOString()
+// always returns UTC) -- wrong specifically during 00:00-05:30 IST each day (UTC hasn't
+// rolled to the new date yet), defaulting the range start to yesterday.
+const initLoc=LOCS.find(l=>l.name===sel.value)||LOCS[0];
+const now=new Date(Date.now()+initLoc.tz*3600000);
+const fromInput=document.getElementById('sd-from') as HTMLInputElement;
+const toInput=document.getElementById('sd-to') as HTMLInputElement;
+fromInput.value=now.toISOString().split('T')[0];
+const threeMonths=new Date(now); threeMonths.setMonth(threeMonths.getMonth()+3);
+toInput.value=threeMonths.toISOString().split('T')[0];
+
+function renderCriteria(){
+  const crit=CRITERIA[currentActivity];
+  const critEl=document.getElementById('sd-criteria');
+  if(critEl){
+    critEl.innerHTML=[
+      {label:isHindi?'विवरण':'Description',text:isHindi?crit.descHi:crit.desc},
+      {label:isHindi?'शुभ नक्षत्र':'Good Nakshatras',text:crit.naks.map(i=>isHindi?NAK_NAMES_HI[i]:NAK_NAMES[i]).join(', ')},
+      {label:isHindi?'शुभ तिथियां':'Good Tithis',text:crit.tithis.map(i=>isHindi?TITHI_NAMES_HI[i]:TITHI_NAMES[i]).join(', ')},
+      {label:isHindi?'शुभ वार':'Good Weekdays',text:crit.varas.map(i=>isHindi?VARA_NAMES_HI[i]:VARA_NAMES[i]).join(', ')},
+    ].map(c=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">${c.label}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${c.text}</p></div>`).join('');
+  }
+}
+renderCriteria();
+
+function findDates(scroll=true){
+  const fromStr=fromInput.value, toStr=toInput.value;
+  const cityName=sel.value;
+  const loc=LOCS.find(l=>l.name===cityName)||LOCS[0];
+  const [fy,fm,fd]=fromStr.split('-').map(Number);
+  const [ty,tm,td]=toStr.split('-').map(Number);
+  const fromD=new Date(fy,fm-1,fd), toD=new Date(ty,tm-1,td);
+  if(toD<=fromD||((toD.getTime()-fromD.getTime())>400*24*3600*1000)){
+    alert(isHindi?'कृपया लगभग 13 महीने तक की एक वैध सीमा चुनें।':'Please select a valid range up to ~13 months.');return;
+  }
+
+  const results:any[]=[];
+  const cur=new Date(fromD);
+  while(cur<=toD){
+    const y=cur.getFullYear(),m=cur.getMonth()+1,d=cur.getDate();
+    const res=calcDay(y,m,d,loc);
+    const {score,notes,bad}=scoreDay(res,currentActivity,y,m,d,loc);
+    if(score>=4) results.push({date:new Date(cur),score,notes,bad,res});
+    cur.setDate(cur.getDate()+1);
+  }
+  results.sort((a,b)=>b.score-a.score);
+  const top=results.slice(0,20);
+
+  const listEl=document.getElementById('sd-list');
+  const titleEl=document.getElementById('sd-results-title');
+  const secEl=document.getElementById('sd-results');
+  if(!listEl||!titleEl||!secEl)return;
+  const actLabel=isHindi?ACTIVITY_LABEL_HI[currentActivity]:CRITERIA[currentActivity].label;
+  titleEl.textContent=isHindi?`${top.length} शुभ ${actLabel} तिथियां मिलीं`:`${top.length} auspicious ${actLabel} dates found`;
+  if(!top.length){
+    listEl.innerHTML=isHindi?`<div class="card" style="padding:20px;text-align:center;"><p style="color:var(--color-mute);">कोई प्रबल तिथि नहीं मिली। कृपया तिथि सीमा बढ़ाएं।</p></div>`:`<div class="card" style="padding:20px;text-align:center;"><p style="color:var(--color-mute);">No strong dates found. Try extending the date range.</p></div>`;
+  } else {
+    listEl.innerHTML=top.map((r,i)=>{
+      const label=r.score>=9?(isHindi?'उत्कृष्ट':'Excellent'):r.score>=7?(isHindi?'बहुत अच्छा':'Very Good'):r.score>=5?(isHindi?'अच्छा':'Good'):(isHindi?'स्वीकार्य':'Acceptable');
+      const lc=r.score>=9?'#16803D':r.score>=7?'#97690F':r.score>=5?'#B5390A':'#8C7660';
+      const isTop=i===0;
+      const tc=isTop?'var(--color-on-primary)':'var(--color-ink)';
+      const mut=isTop?'color-mix(in srgb, var(--color-on-primary), transparent 40%)':'var(--color-mute)';
+      return `<div class="card" style="padding:18px;${isTop?'background:var(--color-ink);':''}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <p style="font-size:16px;font-weight:700;color:${tc};margin:0;">${formatDateHi(r.date, isHindi, { weekday: 'long', month: 'short' })}</p>
+            <p style="font-size:11px;color:${mut};margin:3px 0 0;font-family:var(--font-mono);">${isHindi?NAK_NAMES_HI[r.res.nakIdx]:NAK_NAMES[r.res.nakIdx]} · ${isHindi?TITHI_NAMES_HI[r.res.tithiIdx]:TITHI_NAMES[r.res.tithiIdx]}</p>
+          </div>
+          <span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;background:${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 85%)':lc+'18'};color:${isTop?'var(--color-on-primary)':lc};border:1px solid ${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 80%)':lc+'44'};">${label}</span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${r.bad.length?'8px':'0'};">
+          ${r.notes.map((n:string)=>`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 85%)':'var(--color-canvas-soft-2)'};color:${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 15%)':'var(--color-body-text)'};border:1px solid ${isTop?'color-mix(in srgb, var(--color-on-primary), transparent 80%)':'var(--color-hairline)'};">✓ ${n}</span>`).join('')}
+          ${r.bad.map((n:string)=>`<span style="font-size:10px;padding:2px 8px;border-radius:100px;background:#fee2e2;color:#dc2626;border:1px solid #fecaca;">✗ ${n}</span>`).join('')}
+        </div>
+        ${isTop?`<div style="margin-top:10px;padding-top:10px;border-top:1px solid color-mix(in srgb, var(--color-on-primary), transparent 85%);"><p style="font-size:10px;color:color-mix(in srgb, var(--color-on-primary), transparent 50%);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">${isHindi?'राहु काल से बचें':'Avoid Rahu Kala'}</p><p style="font-size:12px;color:color-mix(in srgb, var(--color-on-primary), transparent 15%);margin:0;">${fmtMins(r.res.rahuStart)} – ${fmtMins(r.res.rahuEnd)}</p></div>`:''}
+      </div>`;
+    }).join('');
+  }
+  secEl.style.display='block';
+  if(scroll) secEl.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('sd-find')?.addEventListener('click',()=>findDates(true));
+
+function applyPageLang(hindi: boolean) {
+  isHindi = hindi;
+  renderCityOptions();
+  document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+    if (!el.dataset.en) el.dataset.en = el.textContent || '';
+    el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
+  });
+  renderCriteria();
+  const secEl = document.getElementById('sd-results');
+  if (secEl && secEl.style.display === 'block') findDates(false);
+}
+document.addEventListener('langchange', (e: Event) => {
+  applyPageLang((e as CustomEvent).detail.langCode === 'hi');
+});
+if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>

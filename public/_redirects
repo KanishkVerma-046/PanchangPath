@@ -12,3 +12,11 @@
 # as-is, only the category path segment changes.
 /devotional/ashtakam/mahishasura-mardini-ashtakam  /devotional/stotram/mahishasura-mardini-ashtakam  301
 /devotional/ashtakam/ayyappa-ashtakam              /devotional/stotram/ayyappa-ashtakam              301
+
+# Shubha Dates URL restructuring (Task 3, 2026-08-22) — Vehicle/Property Purchase moved off
+# ?activity= query params (which Layout.astro's canonical tag always collapsed onto the bare
+# page, so neither could rank independently) onto their own static routes. See
+# docs/bugs/backlog.md's "Shubha Dates `?activity=` variants can't rank separately" entry.
+# Keep indefinitely since the old query-param URLs may still be indexed/linked externally.
+/muhurta/shubha-dates?activity=vehicle   /muhurta/shubha-dates/vehicle   301
+/muhurta/shubha-dates?activity=property  /muhurta/shubha-dates/property  301

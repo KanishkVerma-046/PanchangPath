@@ -208,6 +208,44 @@ export const MUHURTA_CRITERIA: Record<ActivityType, MuhurtaCriteria> = {
   },
 };
 
+// ── Shubha Dates static-route metadata (Task 3, 2026-08-22) ──────────────────
+// Only Vehicle and Property get their own indexable static route under
+// /muhurta/shubha-dates/[activity].astro — Business and General stay on the bare
+// /muhurta/shubha-dates umbrella page. Defined here (not inline in the page) because
+// Astro's build-time getStaticPaths() extraction only reliably picks up outer-scope
+// data that comes from an import, not a same-file module-level const (hit this as a
+// literal "ACTIVITY_PAGES is not defined" build failure when it was inline).
+export interface ShubhaDatesActivityPageMeta {
+  label: string;
+  labelHi: string;
+  emoji: string;
+  metaTitle: string;
+  metaDesc: string;
+  h1: string;
+  h1Hi: string;
+  intro: string;
+  introHi: string;
+}
+
+export const SHUBHA_DATES_ACTIVITY_PAGES: Record<'vehicle' | 'property', ShubhaDatesActivityPageMeta> = {
+  vehicle: {
+    label: 'Vehicle Purchase', labelHi: 'वाहन खरीद', emoji: '🚗',
+    metaTitle: 'Vehicle Purchase Muhurat 2026-2027 — Auspicious Dates — PanchangPath',
+    metaDesc: 'Find the best vehicle purchase muhurat dates for 2026-2027 — scored live by Nakshatra, Tithi, Vara and Yoga using Vedic Panchang.',
+    h1: 'Vehicle Purchase Muhurat', h1Hi: 'वाहन खरीद मुहूर्त',
+    intro: 'Find auspicious dates for buying a new car, two-wheeler, or any vehicle — scored by Nakshatra, Tithi, Vara and Yoga.',
+    introHi: 'नई कार, दुपहिया या किसी भी वाहन को खरीदने के लिए शुभ तिथियां खोजें — नक्षत्र, तिथि, वार और योग के आधार पर स्कोर की गई।',
+  },
+  property: {
+    label: 'Property Purchase', labelHi: 'संपत्ति खरीद', emoji: '🏗️',
+    metaTitle: 'Property Purchase Muhurat 2026-2027 — Auspicious Dates — PanchangPath',
+    metaDesc: 'Find the best property purchase muhurat dates for 2026-2027 — scored live by Nakshatra, Tithi, Vara and Yoga using Vedic Panchang.',
+    h1: 'Property Purchase Muhurat', h1Hi: 'संपत्ति खरीद मुहूर्त',
+    intro: 'Find auspicious dates to purchase, register, or take possession of property — scored by Nakshatra, Tithi, Vara and Yoga.',
+    introHi: 'संपत्ति खरीदने, पंजीकरण करने या कब्जा लेने के लिए शुभ तिथियां खोजें — नक्षत्र, तिथि, वार और योग के आधार पर स्कोर की गई।',
+  },
+};
+
 // ── Gowri Panchangam ──────────────────────────────────────────────────────────
 
 export type GowriType = 'Amrutham' | 'Sudham' | 'Labham' | 'Uthamam' | 'Rogam' | 'Dhanam' | 'Charam' | 'Visha';
