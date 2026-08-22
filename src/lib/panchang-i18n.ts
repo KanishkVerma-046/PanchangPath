@@ -594,8 +594,19 @@ export const REGIONS: RegionDef[] = [
     descriptionHi: 'नेपाली पात्रो बिक्रम सम्वत सौर कैलेंडर का पालन करता है। वर्ष बैशाख से शुरू होता है जब सूर्य मेष राशि में प्रवेश करता है।',
     specialNote: 'Bikram Sambat is Nepal\'s official national calendar. Naya Barsha (New Year) starts on Baisakh 1, usually around April 14.',
     specialNoteHi: 'बिक्रम सम्वत नेपाल का आधिकारिक राष्ट्रीय कैलेंडर है। नया वर्ष (नववर्ष) बैशाख 1 से शुरू होता है, आमतौर पर 14 अप्रैल के आसपास।',
-    getYear(sunSidereal, gregYear, vsYear) {
-      return { num: vsYear, era: 'विक्रम सम्वत', displayLabel: `वि.सं. ${vsYear}` };
+    getYear(sunSidereal, gregYear, vsYear, ssYear, dayOfYear) {
+      // Bikram Sambat rolls over at Baisakh 1 (Mesha Sankranti, ~April 13-14 — the same
+      // solar threshold Bengali/Assamese use, dayOfYear ~104), NOT at panchang.ts's fixed
+      // April-1 (dayOfYear>=91) proxy for India's lunisolar Vikram Samvat, which the old
+      // code incorrectly reused via vsYear -- the two calendars' new-year dates diverge by
+      // ~13 days every year (Apr 1-14), during which the reused vsYear would show next
+      // year's BS number too early. Verified: Baisakh 1, 2083 BS = 2026-04-14 (dayOfYear
+      // 104) via nepaltibettrekking.com, ctxpress.com, vertexholiday.com; offset (BS =
+      // gregYear+57 after New Year, +56 before) independently verified via
+      // spotlightnepal.com ("Vikram Sambat 2080 Begins On April 14", 2023) and
+      // nepaljyotish.org ("57 Years Ahead"). Task 4, 2026-08-22.
+      const num = dayOfYear >= 104 ? gregYear + 57 : gregYear + 56;
+      return { num, era: 'विक्रम सम्वत', displayLabel: `वि.सं. ${num}` };
     },
   },
 
