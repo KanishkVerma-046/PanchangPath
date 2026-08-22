@@ -66,11 +66,21 @@ const TRADITION_COLORS: Record<string, string> = {
   or: '#dc2626', ne: '#4f46e5', iskcon: '#92400e',
 };
 const accent = TRADITION_COLORS[regionDef.code] || 'var(--color-saffron)';
+
+// "Today's Panchang" per-region override for a region-specific real search term
+// (Task 3, 2026-08-22 audit: "Aajche Panchang" verified as a common real Marathi query,
+// e.g. marathimati.com, bhaktibharat.org both title pages exactly this).
+const TODAY_PHRASE: Record<string, string> = { mr: 'Aajche Panchang' };
+const todayPhrase = TODAY_PHRASE[regionDef.code] ?? "Today's Panchang";
+
+// yearInfo.displayLabel already carries its own trailing abbreviation period for some
+// traditions (e.g. Malayalam "കൊ.വ."); avoid stacking a second sentence-ending period.
+const yearLabelClean = yearInfo.displayLabel.replace(/\.$/, '');
 ---
 
 <Layout
-  title={`${regionDef.calendarName} — Today's Panchang in ${regionDef.name} | PanchangPath`}
-  description={`Today's Panchang in ${regionDef.name} (${regionDef.nativeName}) — ${monthName} ${yearInfo.displayLabel}. Tithi, Nakshatra, Yoga, Muhurtas for ${regionDef.defaultCity}.`}
+  title={`${regionDef.calendarName} — ${todayPhrase} | PanchangPath`}
+  description={`${todayPhrase} in ${regionDef.name} (${regionDef.nativeName}) — ${monthName} ${yearLabelClean}. Tithi, Nakshatra, Yoga, Karana, Rahu Kalam & Muhurtas for ${regionDef.defaultCity}, updated daily.`}
 >
   <BreadcrumbSchema items={[
     { name: 'Home', url: '/' },

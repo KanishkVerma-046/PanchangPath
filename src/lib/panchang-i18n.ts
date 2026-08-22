@@ -131,7 +131,7 @@ export const REGIONS: RegionDef[] = [
       // this Gregorian year's Boishakh 1), so use the actual day-of-year threshold instead
       // (Issue #17 — the old `sunRashiIdx >= 0` check was unconditionally true, dead code).
       const num = dayOfYear >= 104 ? gregYear - 593 : gregYear - 594;
-      return { num, era: 'বঙ্গাব্দ', displayLabel: `${num} বঙ্গাব্দ` };
+      return { num, era: 'Bangabda', displayLabel: `${num} Bangabda (বঙ্গাব্দ)` };
     },
   },
 
@@ -180,10 +180,13 @@ export const REGIONS: RegionDef[] = [
     specialNote: 'Rongali Bihu (Bohag Bihu) marks the Assamese New Year in mid-April, when the Sun enters the Mesha rashi.',
     specialNoteHi: 'रंगाली बिहू (बोहाग बिहू) मध्य अप्रैल में असमिया नववर्ष का प्रतीक है, जब सूर्य मेष राशि में प्रवेश करता है।',
     getYear(sunSidereal, gregYear, vsYear, ssYear, dayOfYear) {
-      // Same rollover as Bangabda for Assamese Panjika purposes (Rongali/Bohag Bihu ≈
-      // Mesha Sankranti, day-of-year ~104) — see Issue #17 fix note in the Bengali block above.
+      // Same rollover threshold as Bangabda (Rongali/Bohag Bihu ≈ Mesha Sankranti,
+      // day-of-year ~104 — see Issue #17 fix note in the Bengali block above), but Assam's
+      // own era name is Bhaskarabda (after King Bhaskaravarman of Kamrupa), not Bangabda —
+      // the two share this rollover math but are named/identified separately (Task 3,
+      // 2026-08-22 audit: verified via adda247.com and iasgyan.in Bhaskarabda explainers).
       const num = dayOfYear >= 104 ? gregYear - 593 : gregYear - 594;
-      return { num, era: 'বঙ্গাব্দ', displayLabel: `${num} বঙ্গাব্দ` };
+      return { num, era: 'Bhaskarabda', displayLabel: `${num} Bhaskarabda` };
     },
   },
 
