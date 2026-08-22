@@ -18,11 +18,16 @@ const category = CATEGORY_META['durga-saptashati'];
 const idx = DURGA_SAPTASHATI.findIndex(a => a.slug === item.slug);
 const prev = idx > 0 ? DURGA_SAPTASHATI[idx - 1] : null;
 const next = idx < DURGA_SAPTASHATI.length - 1 ? DURGA_SAPTASHATI[idx + 1] : null;
+
+/** item.title carries a long Sanskrit episode subtitle ("Chapter 1: Madhu-Kaitabha Vadha")
+ *  that alone pushes every chapter's <title> tag past 60 chars; the chapter number
+ *  extracted from the slug gives a short, search-matched title instead. */
+const chapterNum = item.slug.match(/chapter-(\d+)/)?.[1] ?? '';
 ---
 
 <Layout
-  title={`${item.title} — Durga Saptashati — PanchangPath`}
-  description={metaDescription(item.meaning, `${item.title} — full Sanskrit text, summary and significance.`)}
+  title={item.metaTitle ?? `Durga Saptashati Chapter ${chapterNum} — PanchangPath`}
+  description={metaDescription(item.metaDesc ?? item.meaning, `${item.title} — full Sanskrit text, summary and significance.`)}
 >
   <DevotionalDetail
     item={item} category={category} prev={prev} next={next}
