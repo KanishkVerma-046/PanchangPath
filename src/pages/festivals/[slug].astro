@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { metaDescription } from '../../lib/meta';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
+import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import {
   FESTIVALS_2025_2027,
   getFestivalSlug,
@@ -42,8 +43,8 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 ---
 
 <Layout
-  title={`${f.name} ${f.date.slice(0,4)} — PanchangPath`}
-  description={metaDescription(`${f.description} (${f.date.slice(0,4)})`, `${f.name} ${f.date.slice(0,4)} — date, significance and observance.`)}
+  title={`${f.metaTitle ?? `${f.name} ${f.date.slice(0,4)}`} — PanchangPath`}
+  description={f.metaDesc ?? metaDescription(`${f.description} (${f.date.slice(0,4)})`, `${f.name} ${f.date.slice(0,4)} — date, significance and observance.`)}
 >
   <BreadcrumbSchema items={[
     { name: 'Home', url: '/' },
@@ -147,6 +148,8 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           </dl>
         </div>
 
+        {f.faq && f.faq.length > 0 && <CalculatorFaq items={f.faq} />}
+
       </article>
 
       <!-- Right: sidebar -->
@@ -169,6 +172,17 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <p class="fd-side-body" data-hi="इस दिन का पूरा पंचांग देखें — तिथि, नक्षत्र, योग, करण, राहु कालम, और मुहूर्त।">See the full Panchang for this day — Tithi, Nakshatra, Yoga, Karana, Rahu Kalam, and Muhurtas.</p>
           <a href={`/?date=${f.date}`} class="fd-side-btn" data-hi="इस दिन का पंचांग देखें →">View This Day's Panchang →</a>
         </div>
+
+        {f.relatedLinks && f.relatedLinks.length > 0 && (
+          <div class="fd-side-card">
+            <h3 class="fd-side-title">Related</h3>
+            <ul class="fd-related-list">
+              {f.relatedLinks.map(link => (
+                <li><a href={link.href}>{link.label}</a></li>
+              ))}
+            </ul>
+          </div>
+        )}
 
       </aside>
 
@@ -435,6 +449,16 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
   transition: background 0.15s;
 }
 .fd-side-btn:hover { background: var(--color-saffron-soft); border-color: var(--color-saffron); }
+
+.fd-related-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.fd-related-list a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-saffron-deep);
+  text-decoration: none;
+  line-height: 1.4;
+}
+.fd-related-list a:hover { text-decoration: underline; }
 
 /* ── Prev/Next nav ── */
 .fd-nav {
