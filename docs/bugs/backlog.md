@@ -45,6 +45,7 @@ Paste this into a fresh session (fill in the bracketed part):
 
 | Title | Status | Reported |
 |---|---|---|
+| [`moonrise-moonset.astro` can't be deep-linked to a specific date or city — always shows today + last-set header location](#moonrise-moonsetastro-cant-be-deep-linked-to-a-specific-date-or-city--always-shows-today--last-set-header-location) | Open | 2026-08-22 |
 | [Shubha Dates `?activity=` variants can't rank separately — canonical tag strips the query string](#shubha-dates-activity-variants-cant-rank-separately--canonical-tag-strips-the-query-string) | Open | 2026-08-22 |
 | [`findElongationPP`'s unsigned-first-step convergence only empirically verified for 2025-2027](#findelongationpps-unsigned-first-step-convergence-only-empirically-verified-for-2025-2027) | Open | 2026-07-21 |
 | [Homepage date and Panchang data freeze after reopening the site (no bfcache/visibility refresh)](#homepage-date-and-panchang-data-freeze-after-reopening-the-site-no-bfcachevisibility-refresh) | Fixed (2026-07-17) | 2026-07-17 |
@@ -55,6 +56,115 @@ Paste this into a fresh session (fill in the bracketed part):
 | [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Fixed (2026-07-17) | 2026-07-17 |
 | [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Fixed (2026-07-17) | 2026-07-16 |
 | [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Fixed (2026-07-17) | 2026-07-16 |
+
+---
+
+## `moonrise-moonset.astro` can't be deep-linked to a specific date or city — always shows today + last-set header location
+
+- **Status:** Open
+- **Reported:** 2026-08-22
+- **Severity:** Medium (real, previously-flagged content/feature opportunity, not a correctness
+  bug — the tool computes the right moonrise for *today*, it just can't be pointed at a different
+  date or a specific city from a link)
+- **Affected files:** `src/pages/moonrise-moonset.astro` (`calculate()`, lines ~118-124: hardcodes
+  `const now = new Date()`; the `#ms-city` `<select>` is populated from `LOCS` and driven only by
+  the header's `locationchange` event / `window.__initLoc`, lines ~96-106 — no URL param path at
+  all)
+
+### Description
+Found during the 2026-08-22 Festivals Tier 1 on-page SEO pass (Task 5A) while researching Karva
+Chauth 2026 (`/festivals/karva-chauth-2026`), whose keyword research flagged live, city-specific
+moonrise as "the single highest-value live-data opportunity" in the whole festivals category — the
+vrat's fast literally ends at moonrise, so a visitor landing on that page wants *that day's*
+moonrise for *their* city with zero extra steps.
+
+The site already has a real, working live-moonrise tool (`/moonrise-moonset`, iterative topocentric
+solver, not a static table), so the obvious fix looked like just linking the festival page to it.
+Checked the tool's client script before shipping that as a fix: `calculate()` (line ~121) reads
+`const now = new Date()` unconditionally — there is no `Astro.url.searchParams`/`URLSearchParams`
+handling anywhere in the file for a date, and no way to pass one in via the URL. The `#ms-city`
+dropdown is driven only by the shared header location picker's `locationchange` event and
+`window.__initLoc` (whatever the visitor last set sitewide, defaulting to wherever `LocationPicker`
+defaults when nothing is set) — again, nothing reads a city from the URL either.
+
+So a `/festivals/karva-chauth-2026` → `/moonrise-moonset` link lands the visitor on *today's*
+moonrise for *whatever city was last selected in the header* — useless outside the ~1 week before
+Oct 29, and still requires the visitor to manually reselect their city even during that window. It
+was shipped anyway as a partial, honest cross-link (better than nothing, and it does showcase the
+live tool), but it does **not** resolve the underlying gap — Task 5A's report explicitly calls this
+out as still-open, not fixed.
+
+### Root cause
+`moonrise-moonset.astro` was built as a "today, for whoever's looking" utility page and has no
+concept of being deep-linked with state — no `?date=` param (contrast with `festivals/[slug].astro`'s
+`/?date=${f.date}` links into the homepage Panchang panel, which *does* support a date param) and
+no `?city=`/`?lat=&lng=` param (contrast with nothing currently — no page on the site passes a city
+via URL to this tool either, so there's no existing convention to copy, only the `LOCS` array shape
+to match).
+
+### Real fix shape (not yet implemented — real feature change to a shared, sitewide calculator, not
+a Karva-Chauth-specific tweak; deserves its own scoped session, not a rider on an SEO pass)
+1. Add `Astro.url.searchParams` reading in `moonrise-moonset.astro`'s frontmatter or client script
+   for an optional `?date=YYYY-MM-DD` and `?city=<name>` (matched against `LOCS` the same way the
+   header's `locationchange` handler already matches by name).
+2. When both are present, seed `calculate()`'s `now`/`cityName` from them instead of `new Date()`/
+   the header's last-set location, while still letting the visitor change either afterward via the
+   existing date-adjacent controls (there currently are none — a date `<input type="date">` would
+   need to be added too, since today the page only ever computes for the live "now").
+3. Update `festivals/[slug].astro`'s Karva Chauth `relatedLinks` entry (added 2026-08-22, Task 5A)
+   from the plain `/moonrise-moonset` link to `/moonrise-moonset?date=${f.date}` once a city can
+   also be threaded through — check whether the festival page has any city context available to
+   pass (currently it doesn't; the site's location context lives only in the header/localStorage,
+   so this may need `moonrise-moonset.astro` to read the header's last-set city as today, but
+   *also* accept a `?date=` override — the two params don't have to ship together).
+4. Consider whether other vrat/festival pages with a similar "ends at moonrise/sunrise" structure
+   would benefit from the same deep-link pattern once it exists (Karva Chauth is the flagged
+   highest-value case, not necessarily the only one).
+
+### Claude Code Fix Prompt
+```
+PanchangPath (panchangpath.com) — add date/city deep-linking to the live
+Moonrise & Moonset tool (src/pages/moonrise-moonset.astro), per the gap
+logged in docs/bugs/backlog.md under "moonrise-moonset.astro can't be
+deep-linked to a specific date or city". Read that full entry first for
+context (found while adding a Karva Chauth -> /moonrise-moonset cross-link
+during the 2026-08-22 Festivals on-page SEO pass; the link was shipped as a
+partial, honest workaround, not a real fix, since the tool always computes
+today's moonrise for whatever city the header last had set).
+
+Do this:
+1. In moonrise-moonset.astro's client <script>, calculate() currently reads
+   `const now = new Date()` unconditionally (~line 121) and the #ms-city
+   select is only driven by the header's locationchange event / window.
+   __initLoc (~lines 96-106). Add support for an optional `?date=YYYY-MM-DD`
+   query param (read via `new URLSearchParams(location.search)` client-side,
+   or Astro.url.searchParams if you thread it through as server-rendered
+   initial state) that seeds the date calculate() uses instead of `new
+   Date()`. Since the page currently has no date picker UI at all (it's
+   permanently "today"), add a simple `<input type="date">` control next to
+   the existing #ms-city <select> so a visitor can also change the date
+   manually after landing, defaulting to the ?date= param if present, else
+   today.
+2. Add an optional `?city=<name>` param, matched against LOCS the same way
+   the header's location-name matching already works (see the existing
+   applyHeaderLoc-style matching near line ~100), to preselect #ms-city on
+   load. If the param doesn't match any LOCS entry, fall back to the current
+   behavior (header's last-set location) rather than erroring.
+3. Update festivals/[slug].astro's Karva Chauth relatedLinks entry (search
+   for "Moonrise & Moonset (live, city-specific)") to pass
+   `/moonrise-moonset?date=${f.date}` instead of the bare path. Leave the
+   city param off that specific link unless you find a clean way to thread
+   the festival page's location context through -- it currently has none.
+4. Build, verify locally that visiting /moonrise-moonset?date=2026-10-29
+   shows Oct 29's moonrise (not today's) and that ?city=<name> preselects
+   that city, deploy, and confirm live on panchangpath.com per this
+   project's established deploy-verification steps.
+
+Verify: run npm run build, test both params individually and together
+locally, confirm the Karva Chauth festival page's link now lands on the
+correct date. Update this bug's Status line in docs/bugs/backlog.md to
+"Fixed (<date>, commit <hash>)" once verified.
+```
 
 ---
 
