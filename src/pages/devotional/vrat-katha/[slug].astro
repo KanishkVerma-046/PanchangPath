@@ -18,16 +18,22 @@ const category = CATEGORY_META['vrat-katha'];
 const idx = VRAT_KATHAS.findIndex(a => a.slug === item.slug);
 const prev = idx > 0 ? VRAT_KATHAS[idx - 1] : null;
 const next = idx < VRAT_KATHAS.length - 1 ? VRAT_KATHAS[idx + 1] : null;
+
+/** Cross-links to the matching Puja Vidhi page, where one exists for the same vrat/festival. */
+const RELATED: Record<string, { label: string; labelHi?: string; href: string }[]> = {
+  'satyanarayan-vrat-katha': [{ label: 'Satyanarayan Puja Vidhi', labelHi: 'सत्यनारायण पूजा विधि', href: '/devotional/puja-vidhi/satyanarayan-puja-vidhi' }],
+};
 ---
 
 <Layout
-  title={`${item.title} — ${item.titleHi} — PanchangPath`}
-  description={metaDescription(item.meaning, `${item.title} — story, significance and vrat vidhi.`)}
+  title={item.metaTitle ?? `${item.title} — PanchangPath`}
+  description={metaDescription(item.metaDesc ?? item.meaning, `${item.title} — story, significance and vrat vidhi.`)}
 >
   <DevotionalDetail
     item={item} category={category} prev={prev} next={next}
     lyricsLabel="Katha (Story)"
     meaningLabel="Significance"
     benefitsLabel="How the Vrat Is Observed"
+    relatedLinks={RELATED[item.slug]}
   />
 </Layout>

@@ -2,6 +2,12 @@
 import type { DevotionalItem, CategoryMeta } from '../lib/devotional/types';
 import BreadcrumbSchema from './seo/BreadcrumbSchema.astro';
 
+interface RelatedLink {
+  label: string;
+  labelHi?: string;
+  href: string;
+}
+
 interface Props {
   item: DevotionalItem;
   category: CategoryMeta;
@@ -10,6 +16,7 @@ interface Props {
   lyricsLabel?: string;
   meaningLabel?: string;
   benefitsLabel?: string;
+  relatedLinks?: RelatedLink[];
 }
 
 const {
@@ -17,6 +24,7 @@ const {
   lyricsLabel = 'Lyrics (Devanagari)',
   meaningLabel = 'Meaning',
   benefitsLabel = 'When & Why It Is Recited',
+  relatedLinks = [],
 } = Astro.props;
 
 // UI-chrome Hindi translations. Covers the default section labels plus every
@@ -144,6 +152,14 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
         <p class="dv-side-body" data-hi={DESC_HI[category.id]}>{category.description}</p>
         <a href={category.url} class="dv-side-btn" data-hi={backToCategoryHi}>← Back to {category.label}</a>
       </div>
+      {relatedLinks.length > 0 && (
+        <div class="dv-side-card">
+          <h3 class="dv-side-title" data-hi="संबंधित">Related</h3>
+          {relatedLinks.map(link => (
+            <a href={link.href} class="dv-side-btn" style="margin-bottom:8px" data-hi={link.labelHi ?? link.label}>{link.label} →</a>
+          ))}
+        </div>
+      )}
       <div class="dv-side-card">
         <h3 class="dv-side-title" data-hi="भक्ति पुस्तकालय">Devotional Library</h3>
         <p class="dv-side-body" data-hi="आरती, चालीसा, स्तोत्र, मंत्र, व्रत कथा और बहुत कुछ देखें।">Explore aartis, chalisas, stotrams, mantras, vrat kathas and more.</p>

@@ -46,12 +46,17 @@ const category = CATEGORY_META['puja-vidhi'];
 const idx = PUJA_VIDHIS.findIndex(a => a.slug === item.slug);
 const prev = idx > 0 ? PUJA_VIDHIS[idx - 1] : null;
 const next = idx < PUJA_VIDHIS.length - 1 ? PUJA_VIDHIS[idx + 1] : null;
+
+/** Cross-links to the matching Vrat Katha page, where one exists for the same vrat/festival. */
+const RELATED: Record<string, { label: string; labelHi?: string; href: string }[]> = {
+  'satyanarayan-puja-vidhi': [{ label: 'Satyanarayan Vrat Katha', labelHi: 'सत्यनारायण व्रत कथा', href: '/devotional/vrat-katha/satyanarayan-vrat-katha' }],
+};
 ---
 
 <Layout
-  title={`${item.title} — ${item.titleHi} — PanchangPath`}
+  title={item.metaTitle ?? `${item.title} — PanchangPath`}
   description={metaDescription(
-    DESCRIPTIONS[item.slug],
+    item.metaDesc ?? DESCRIPTIONS[item.slug],
     `${item.title} — samagri, step-by-step vidhi and mantras.`
   )}
 >
@@ -60,5 +65,6 @@ const next = idx < PUJA_VIDHIS.length - 1 ? PUJA_VIDHIS[idx + 1] : null;
     lyricsLabel="Samagri (Materials Needed)"
     meaningLabel="Step-by-Step Vidhi"
     benefitsLabel="Auspicious Timing & Mantras"
+    relatedLinks={RELATED[item.slug]}
   />
 </Layout>
