@@ -129,6 +129,7 @@ export const NAMAVALIS: DevotionalItem[] = [
     slug: 'saraswati-ashtottara-shatanamavali',
     title: 'Saraswati Ashtottara Shatanamavali',
     titleHi: 'सरस्वती अष्टोत्तरशतनामावली',
+    metaTitle: 'Saraswati Ashtottara Shatanamavali — PanchangPath',
     deity: 'Saraswati', deityHi: 'माँ सरस्वती',
     icon: '📖',
     lyricsHi: `१. सरस्वती २. महाभद्रा ३. महामाया ४. वरप्रदा ५. श्रीप्रदा ६. पद्मनिलया ७. पद्माक्षी ८. पद्मवक्त्रका ९. शिवानुजा १०. पुस्तकभृतः
