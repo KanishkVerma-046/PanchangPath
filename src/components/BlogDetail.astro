@@ -28,9 +28,27 @@ const jsonLd = {
   datePublished: post.publishDate,
   mainEntityOfPage: { '@type': 'WebPage', '@id': `https://panchangpath.com/blog/${post.slug}` },
 };
+
+// Every post ends its English body with a "Frequently Asked Questions" H2 followed by
+// H3/P pairs; extract those pairs for FAQPage schema rather than hand-maintaining a
+// separate FAQ list per post.
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, '').trim();
+const faqSectionStart = post.contentHtml.indexOf('Frequently Asked Questions');
+const faqSection = faqSectionStart >= 0 ? post.contentHtml.slice(faqSectionStart) : '';
+const faqPairs = [...faqSection.matchAll(/<h3>([\s\S]*?)<\/h3>\s*<p>([\s\S]*?)<\/p>/g)];
+const faqJsonLd = faqPairs.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqPairs.map(([, q, a]) => ({
+    '@type': 'Question',
+    name: stripTags(q),
+    acceptedAnswer: { '@type': 'Answer', text: stripTags(a) },
+  })),
+} : null;
 ---
 
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+{faqJsonLd && <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />}
 
 <!-- Hero -->
 <section class="bl-hero">

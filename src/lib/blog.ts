@@ -16,6 +16,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'aarti-chalisa-stotram-mantra-devotional-practice-guide',
     title: 'Aarti, Chalisa, Stotram & Mantra Explained: A Guide to Hindu Devotional Practice',
+    metaTitle: 'Aarti, Chalisa, Stotram & Mantra Guide',
     titleHi: 'आरती, चालीसा, स्तोत्र और मंत्र की व्याख्या: हिंदू भक्ति साधना की मार्गदर्शिका',
     description: 'Learn the difference between Aarti, Chalisa, Stotram and Mantra, how to perform Griha Pravesh puja, why Durga Saptashati matters, and Gayatri Mantra timing.',
     descriptionHi: 'आरती, चालीसा, स्तोत्र और मंत्र के बीच अंतर जानें, गृह प्रवेश पूजा कैसे करें, दुर्गा सप्तशती का महत्व क्यों है, और गायत्री मंत्र का समय।',
@@ -95,6 +96,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'rashi-vs-moon-sign-rashifal-accuracy-explained',
     title: 'Rashifal Explained: Daily vs Weekly vs Monthly, Accuracy, and Rashi vs Moon Sign',
+    metaTitle: 'Rashi vs Moon Sign: Rashifal Explained',
     titleHi: 'राशिफल की व्याख्या: दैनिक बनाम साप्ताहिक बनाम मासिक, सटीकता, और राशि बनाम चंद्र राशि',
     description: 'Learn the difference between Rashi and Moon sign, how accurate daily Rashifal is according to research, and what daily, weekly, monthly Rashifal cover.',
     descriptionHi: 'राशि और चंद्र राशि के बीच अंतर जानें, शोध के अनुसार दैनिक राशिफल कितना सटीक है, और दैनिक, साप्ताहिक, मासिक राशिफल क्या शामिल करते हैं।',
@@ -162,6 +164,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'how-to-read-kundali-birth-chart-mangal-dosha-kalasarpa',
     title: 'How to Read Your Kundali: Birth Chart Basics, Kundali Matching, Mangal Dosha & Kalasarpa Yoga',
+    metaTitle: 'How to Read a Kundali Birth Chart',
     titleHi: 'अपनी कुंडली कैसे पढ़ें: जन्म कुंडली की बुनियादी बातें, कुंडली मिलान, मंगल दोष और कालसर्प योग',
     description: 'Learn how to read a birth chart (Kundali), what Kundali matching (Guna Milan) scores, how serious Mangal Dosha really is, and what Kalasarpa Yoga means.',
     descriptionHi: 'जन्म कुंडली कैसे पढ़ें, कुंडली मिलान (गुण मिलान) क्या स्कोर करता है, मंगल दोष वास्तव में कितना गंभीर है, और कालसर्प योग का क्या अर्थ है, यह जानें।',
@@ -233,6 +236,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'shubh-muhurat-choghadiya-wedding-vehicle-purchase',
     title: 'Shubh Muhurat Explained: Choghadiya, Wedding Dates, Vehicle Purchase & Days to Avoid',
+    metaTitle: 'Shubh Muhurat & Choghadiya Explained',
     titleHi: 'शुभ मुहूर्त की व्याख्या: चौघड़िया, विवाह तिथियां, वाहन खरीद और बचने योग्य दिन',
     description: 'Learn how to read Choghadiya, choose an auspicious Vivah Muhurat wedding date, which tithis suit buying a vehicle, and which weekdays to avoid for muhurta.',
     descriptionHi: 'चौघड़िया कैसे पढ़ें, एक शुभ विवाह मुहूर्त तिथि कैसे चुनें, वाहन खरीदने के लिए कौन सी तिथियां उपयुक्त हैं, और मुहूर्त के लिए किन सप्ताह के दिनों से बचना है, यह जानें।',
@@ -312,6 +316,7 @@ export const BLOG_POSTS: BlogPost[] = [
   {
     slug: 'ekadashi-vrat-katha-diwali-dhanteras-explained',
     title: 'Hindu Vrat & Fasting Traditions: Ekadashi, Vrat Katha and Festival Differences Explained',
+    metaTitle: 'Ekadashi Vrat Katha & Fasting Explained',
     titleHi: 'हिंदू व्रत और उपवास परंपराएं: एकादशी, व्रत कथा और त्योहारों के अंतर की व्याख्या',
     description: 'Learn why Hindus fast on Ekadashi, the types of Ekadashi fasts and food rules, what Vrat Katha means, and the real difference between Dhanteras and Diwali.',
     descriptionHi: 'हिंदू एकादशी को व्रत क्यों रखते हैं, एकादशी व्रत के प्रकार और भोजन नियम, व्रत कथा का क्या अर्थ है, और धनतेरस और दिवाली के बीच वास्तविक अंतर जानें।',
