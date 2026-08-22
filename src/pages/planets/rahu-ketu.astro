@@ -43,7 +43,7 @@ const rkRows = Array.from({ length: 12 }, (_, moonSign) => {
 });
 ---
 
-<Layout title="Rahu & Ketu Transit Today — PanchangPath" description="Live sidereal position of Rahu and Ketu, plus the classical Gochara (transit) favorable/challenging table for all 12 Moon-sign rashis.">
+<Layout title="Rahu & Ketu Transit Today (2026) | PanchangPath" description="Live sidereal position of Rahu and Ketu today, the Dec 2026 sign change into Capricorn/Cancer, and the classical Gochara table for all 12 Moon signs.">
 
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
@@ -91,6 +91,15 @@ const rkRows = Array.from({ length: 12 }, (_, moonSign) => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div class="card" style="padding:20px;margin-top:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+        <p data-hi="राहु का अगला राशि परिवर्तन: दिसंबर 2026 में राहु मकर और केतु कर्क राशि में प्रवेश करेंगे।" style="font-size:13px;color:var(--color-body-text);margin:0;">Rahu's next sign change: Rahu enters Capricorn and Ketu enters Cancer in December 2026.</p>
+        <a href="/events/rahu-enters-makara-2026-12" data-hi="विवरण देखें →" style="font-size:13px;font-weight:600;color:var(--color-saffron-deep);white-space:nowrap;text-decoration:none;">View transit details →</a>
+      </div>
+      <div class="card" style="padding:20px;margin-top:12px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
+        <p data-hi="जब राहु और केतु आपकी कुंडली के सभी ग्रहों को दोनों ओर से घेर लेते हैं, तो कालसर्प योग बनता है — अपनी कुंडली जांचें।" style="font-size:13px;color:var(--color-body-text);margin:0;">When Rahu and Ketu hem in all other planets on either side, it forms Kalasarpa Yoga — check your own birth chart.</p>
+        <a href="/jyotish/kalasarpa" data-hi="कालसर्प योग जांचें →" style="font-size:13px;font-weight:600;color:var(--color-saffron-deep);white-space:nowrap;text-decoration:none;">Check Kalasarpa Yoga →</a>
       </div>
     </div>
   </section>
