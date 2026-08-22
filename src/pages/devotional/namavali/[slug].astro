@@ -18,6 +18,24 @@ const category = CATEGORY_META['namavali'];
 const idx = NAMAVALIS.findIndex(a => a.slug === item.slug);
 const prev = idx > 0 ? NAMAVALIS[idx - 1] : null;
 const next = idx < NAMAVALIS.length - 1 ? NAMAVALIS[idx + 1] : null;
+
+/** One-directional cross-link to the matching same-deity Chalisa, mirroring the
+ * existing Aarti<->Chalisa and Mantra<->Yantra same-deity pattern (see
+ * docs/superpowers/plans/2026-08-22-devotional-cross-link-candidates.md) — Namavali
+ * never got an outbound relatedLinks card in that session, only inbound links from a
+ * few Puja Vidhi/Vrat Katha pages, which left thin, single-nav-link pages like this. */
+const RELATED: Record<string, { label: string; labelHi?: string; href: string }[]> = {
+  'shiva-ashtottara-shatanamavali': [{ label: 'Shiv Chalisa', labelHi: 'शिव चालीसा', href: '/devotional/chalisa/shiv-chalisa' }],
+  'ganesh-ashtottara-shatanamavali': [{ label: 'Ganesh Chalisa', labelHi: 'गणेश चालीसा', href: '/devotional/chalisa/ganesh-chalisa' }],
+  'durga-ashtottara-shatanamavali': [{ label: 'Durga Chalisa', labelHi: 'दुर्गा चालीसा', href: '/devotional/chalisa/durga-chalisa' }],
+  'lakshmi-ashtottara-shatanamavali': [{ label: 'Lakshmi Chalisa', labelHi: 'लक्ष्मी चालीसा', href: '/devotional/chalisa/lakshmi-chalisa' }],
+  'saraswati-ashtottara-shatanamavali': [{ label: 'Saraswati Chalisa', labelHi: 'सरस्वती चालीसा', href: '/devotional/chalisa/saraswati-chalisa' }],
+  'krishna-ashtottara-shatanamavali': [{ label: 'Krishna Chalisa', labelHi: 'कृष्ण चालीसा', href: '/devotional/chalisa/krishna-chalisa' }],
+  'rama-ashtottara-shatanamavali': [{ label: 'Ram Chalisa', labelHi: 'राम चालीसा', href: '/devotional/chalisa/ram-chalisa' }],
+  'hanuman-ashtottara-shatanamavali': [{ label: 'Hanuman Chalisa', labelHi: 'हनुमान चालीसा', href: '/devotional/chalisa/hanuman-chalisa' }],
+  'surya-ashtottara-shatanamavali': [{ label: 'Surya Chalisa', labelHi: 'सूर्य चालीसा', href: '/devotional/chalisa/surya-chalisa' }],
+  'shani-ashtottara-shatanamavali': [{ label: 'Shani Chalisa', labelHi: 'शनि चालीसा', href: '/devotional/chalisa/shani-chalisa' }],
+};
 ---
 
 <Layout
@@ -29,5 +47,6 @@ const next = idx < NAMAVALIS.length - 1 ? NAMAVALIS[idx + 1] : null;
     lyricsLabel="108 Names (Devanagari)"
     meaningLabel="About This Namavali"
     benefitsLabel="Archana & Recitation Guide"
+    relatedLinks={RELATED[item.slug]}
   />
 </Layout>
