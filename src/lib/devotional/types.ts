@@ -13,6 +13,8 @@ export interface DevotionalItem {
   meaningHi?: string;    // Hindi translation of meaning
   benefits?: string;     // When / why it is recited, benefits
   benefitsHi?: string;   // Hindi translation of benefits
+  metaTitle?: string;    // Override for the <title> tag when the template default runs long or needs keyword differentiation
+  metaDesc?: string;     // Override for the meta description when item.meaning doesn't read as a standalone description
 }
 
 export type DevotionalCategoryId =

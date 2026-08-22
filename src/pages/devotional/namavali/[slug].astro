@@ -21,8 +21,8 @@ const next = idx < NAMAVALIS.length - 1 ? NAMAVALIS[idx + 1] : null;
 ---
 
 <Layout
-  title={`${item.title} — ${item.titleHi} — 108 Names — PanchangPath`}
-  description={metaDescription(item.meaning, `${item.title} — 108 names for archana and japa.`)}
+  title={item.metaTitle ?? `${item.title} — 108 Names — PanchangPath`}
+  description={metaDescription(item.metaDesc ?? item.meaning, `${item.title} — 108 names for archana and japa.`)}
 >
   <DevotionalDetail
     item={item} category={category} prev={prev} next={next}

@@ -21,8 +21,8 @@ const next = idx < YANTRAS.length - 1 ? YANTRAS[idx + 1] : null;
 ---
 
 <Layout
-  title={`${item.title} — ${item.titleHi} — Puja Vidhi & Benefits — PanchangPath`}
-  description={metaDescription(item.meaning, `${item.title} structure, mantra and puja vidhi.`)}
+  title={item.metaTitle ?? `${item.title} — Puja Vidhi & Benefits — PanchangPath`}
+  description={metaDescription(item.metaDesc ?? item.meaning, `${item.title} structure, mantra and puja vidhi.`)}
 >
   <DevotionalDetail
     item={item} category={category} prev={prev} next={next}
