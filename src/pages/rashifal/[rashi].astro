@@ -22,6 +22,14 @@ const monthYearLabel = formatMonthYearHi(today, false);
 const monthYearLabelHi = formatMonthYearHi(today, true);
 const ELEMENT_HI: Record<string, string> = { Fire: 'अग्नि', Earth: 'पृथ्वी', Air: 'वायु', Water: 'जल' };
 const QUALITY_HI: Record<string, string> = { Cardinal: 'चर', Fixed: 'स्थिर', Mutable: 'द्विस्वभाव' };
+// Common Hindi-romanization variant (final schwa dropped) for the meta description --
+// distinct from rashi.name, which stays the full Sanskrit form used sitewide elsewhere.
+const ROMANIZATION_VARIANT: Record<string, string> = {
+  mesha: 'Mesh', vrishabha: 'Vrishabh', mithuna: 'Mithun', karka: 'Kark', simha: 'Simh',
+  vrishchika: 'Vrischik', makara: 'Makar', kumbha: 'Kumbh', meena: 'Meen',
+};
+const variant = ROMANIZATION_VARIANT[rashi.id];
+const metaDesc = `Aaj ka ${rashi.name.toLowerCase()}${variant ? ` (${variant})` : ''} rashifal: today's ${rashi.english} horoscope with love, career, money & lucky color/number, plus weekly, monthly & yearly predictions.`;
 const daily = getDailyPrediction(rashi, today);
 const weekly = getWeeklyPrediction(rashi, today);
 const monthly = getMonthlyPrediction(rashi, today);
@@ -38,8 +46,8 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
 ---
 
 <Layout
-  title={`${rashi.name} (${rashi.english}) Rashifal — Daily Horoscope | PanchangPath`}
-  description={`Read today's ${rashi.name} Rashifal. Daily, weekly, monthly and yearly horoscope for ${rashi.english} (${rashi.name}) based on Vedic Jyotish.`}
+  title={`${rashi.name} (${rashi.english}) Rashifal Today | PanchangPath`}
+  description={metaDesc}
 >
   <BreadcrumbSchema items={[
     { name: 'Home', url: '/' },
