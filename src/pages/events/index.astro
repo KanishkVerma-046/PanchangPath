@@ -7,6 +7,17 @@ import { formatMonthYearHi } from '../../lib/date-i18n';
 const today = new Date();
 const allEvents = computeUpcomingEvents(today, 365);
 
+// Title year = the build's own calendar year, not a min/max over the 365-day window's actual
+// event dates. Verified (see docs/bugs/backlog.md's Planetary Events entry) that a literal
+// min/max over the window shows a 2-year range 363 of 365 days a year -- the window almost
+// always bleeds into next year, so a "real span" title would show "2026-2027" nearly
+// year-round and defeat the "eclipse 2026"-style single-year keyword match. This relies on the
+// same daily-rebuild cron already assumed elsewhere on this page/site (see the muhurta pages'
+// "Build-time default" comments) -- it's only ever stale for at most the one day between a
+// year boundary and the next rebuild. Do NOT copy this "just use the build year" shortcut onto
+// a page that isn't rebuilt daily; that would reintroduce the exact staleness bug this replaced.
+const titleYear = today.getFullYear();
+
 // Group by month
 const byMonth: Record<string, typeof allEvents> = {};
 for (const ev of allEvents) {
@@ -69,7 +80,7 @@ function monthLabelHi(key: string): string {
 ---
 
 <Layout
-  title="Upcoming Planetary Events — Transits & Eclipses — PanchangPath"
+  title={`Upcoming Planetary Events ${titleYear} — PanchangPath`}
   description="Complete list of upcoming Jyotish planetary events: sign transits, retrograde/direct stations, eclipses, solstices, and conjunctions."
 >
 
