@@ -18,11 +18,26 @@ const category = CATEGORY_META['mantra'];
 const idx = MANTRAS.findIndex(a => a.slug === item.slug);
 const prev = idx > 0 ? MANTRAS[idx - 1] : null;
 const next = idx < MANTRAS.length - 1 ? MANTRAS[idx + 1] : null;
+
+/** Cross-links to the matching Yantra page for the same deity, where one exists. */
+const RELATED: Record<string, { label: string; labelHi?: string; href: string }[]> = {
+  'ganesh-mantra': [{ label: 'Ganesh Yantra', labelHi: 'गणेश यंत्र', href: '/devotional/yantra/ganesh-yantra' }],
+  'lakshmi-mantra': [{ label: 'Lakshmi Yantra', labelHi: 'लक्ष्मी यंत्र', href: '/devotional/yantra/lakshmi-yantra' }],
+  'saraswati-mantra': [{ label: 'Saraswati Yantra', labelHi: 'सरस्वती यंत्र', href: '/devotional/yantra/saraswati-yantra' }],
+  'durga-devi-mantra': [{ label: 'Durga Yantra', labelHi: 'दुर्गा यंत्र', href: '/devotional/yantra/durga-yantra' }],
+  'navgraha-mantras': [
+    { label: 'Navgraha Yantra', labelHi: 'नवग्रह यंत्र', href: '/devotional/yantra/navgraha-yantra' },
+    { label: 'Shani Yantra', labelHi: 'शनि यंत्र', href: '/devotional/yantra/shani-yantra' },
+  ],
+  'hanuman-mantra': [{ label: 'Hanuman Yantra', labelHi: 'हनुमान यंत्र', href: '/devotional/yantra/hanuman-yantra' }],
+  'kuber-mantra': [{ label: 'Kuber Yantra', labelHi: 'कुबेर यंत्र', href: '/devotional/yantra/kuber-yantra' }],
+  'mahamrityunjaya-mantra': [{ label: 'Mahamrityunjaya Yantra', labelHi: 'महामृत्युंजय यंत्र', href: '/devotional/yantra/mahamrityunjaya-yantra' }],
+};
 ---
 
 <Layout
   title={item.metaTitle ?? `${item.title} — Meaning & Japa Guide — PanchangPath`}
   description={metaDescription(item.metaDesc ?? item.meaning, `${item.title} mantra in Sanskrit with transliteration and meaning.`)}
 >
-  <DevotionalDetail item={item} category={category} prev={prev} next={next} />
+  <DevotionalDetail item={item} category={category} prev={prev} next={next} relatedLinks={RELATED[item.slug]} />
 </Layout>
