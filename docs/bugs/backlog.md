@@ -45,6 +45,7 @@ Paste this into a fresh session (fill in the bracketed part):
 
 | Title | Status | Reported |
 |---|---|---|
+| [Shubha Dates `?activity=` variants can't rank separately — canonical tag strips the query string](#shubha-dates-activity-variants-cant-rank-separately--canonical-tag-strips-the-query-string) | Open | 2026-08-22 |
 | [`findElongationPP`'s unsigned-first-step convergence only empirically verified for 2025-2027](#findelongationpps-unsigned-first-step-convergence-only-empirically-verified-for-2025-2027) | Open | 2026-07-21 |
 | [Homepage date and Panchang data freeze after reopening the site (no bfcache/visibility refresh)](#homepage-date-and-panchang-data-freeze-after-reopening-the-site-no-bfcachevisibility-refresh) | Fixed (2026-07-17) | 2026-07-17 |
 | [Change Language picker: Hindi barely translates anything + Regional Panchang duplicated in the dropdown](#change-language-picker-hindi-barely-translates-anything-regional-panchang-duplicated-in-the-dropdown) | Fixed (2026-07-17) | 2026-07-17 |
@@ -54,6 +55,111 @@ Paste this into a fresh session (fill in the bracketed part):
 | [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Fixed (2026-07-17) | 2026-07-17 |
 | [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Fixed (2026-07-17) | 2026-07-16 |
 | [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Fixed (2026-07-17) | 2026-07-16 |
+
+---
+
+## Shubha Dates `?activity=` variants can't rank separately — canonical tag strips the query string
+
+- **Status:** Open (deferred — architecture decision, not a mechanical fix; needs explicit
+  go-ahead before implementing)
+- **Reported:** 2026-08-22
+- **Severity:** Medium (SEO opportunity cost, not a correctness bug — the page works correctly
+  for every visitor; the gap is that three of its four activity variants structurally cannot
+  earn their own search ranking no matter what on-page copy they carry)
+- **Affected files:** `src/pages/muhurta/shubha-dates.astro` (the whole page — one shared finder
+  script branches on `?activity=vehicle|property|business|general`); `src/layouts/Layout.astro`
+  line ~23 (`const canonicalUrl = canonical ?? \`${siteUrl}${Astro.url.pathname}\`;`); inbound
+  links from `src/pages/muhurta.astro` (hub page's Property/Vehicle/Business Purchase cards) and
+  `src/components/Header.astro` (Others menu / searchItems) all point at the `?activity=` URLs
+
+### Description
+Found during the 2026-08-22 Muhurta Tools on-page SEO pass (Task 4) while investigating why the
+hub page links to `/muhurta/shubha-dates?activity=vehicle` and `?activity=property` with
+descriptive anchors ("Vehicle Purchase", "Property Purchase") as if they were their own landing
+pages. They aren't: all four URLs (bare page + 3 query variants) render from one Astro file with
+one `<Layout title=... description=...>` set once at build time — before this session's fix,
+even the prerendered `<title>`/`<meta>` were bit-for-bit identical across all four; there was no
+per-variant differentiation anywhere, not even in client JS.
+
+More fundamentally: `Layout.astro`'s canonical tag is built from `Astro.url.pathname` only, which
+always strips the query string. That means every one of `/muhurta/shubha-dates?activity=vehicle`,
+`?activity=property`, and `?activity=business` self-canonicalizes to the plain
+`/muhurta/shubha-dates` URL — i.e. the page itself tells Google "this is a duplicate, index the
+other one instead." No amount of on-page title/copy differentiation on the query-param URL can
+overcome that signal; Google will consolidate ranking signals onto the bare URL regardless.
+
+Per the site owner (2026-08-22): "vehicle purchase muhurat" and "property purchase muhurat" are
+both large, well-established search clusters with dedicated competitor pages — this isn't a
+marginal keyword, it's real left-on-the-table demand.
+
+**2026-08-22 same-session fix (cosmetic only, does not resolve this):** added a client-side
+`ACTIVITY_META` map + `updateMetaForActivity()` in `shubha-dates.astro`'s script that overrides
+`document.title` and the meta-description tag's `content` when `?activity=` is present, and again
+on tab click. This fixes the browser tab title and any social-share preview grabbed after JS
+runs. It does **not** touch the canonical tag, does not change what Google indexes, and does not
+give these variants any ability to rank separately. Do not count it as partial progress toward
+this issue in any future report — the underlying architecture problem is fully open.
+
+### Root cause
+No static route exists per activity — `vehicle`/`property`/`business`/`general` are read from
+`URLSearchParams` inside one shared client script, not from the URL path, so there is nothing for
+`Astro.url.pathname` (and therefore the canonical tag) to distinguish between variants on.
+
+### Real fix shape (not yet implemented — needs a go/no-go decision, then a scoped session)
+1. Extract the currently-inline `calcDay`/`scoreDay`/`CRITERIA` finder logic out of
+   `shubha-dates.astro`'s `<script>` into a shared function in `src/lib/muhurta.ts` (it already
+   duplicates `sunTrueLongitude`/`moonLongitude`/`lahiriAyanamsha` math you'd want in one place
+   regardless of the routing decision).
+2. Convert to static routes via `getStaticPaths()` — e.g. `/muhurta/shubha-dates/vehicle`,
+   `/muhurta/shubha-dates/property`, `/muhurta/shubha-dates/business` as their own pages, each
+   with its own real (self-referencing) canonical, unique title/meta, and its own criteria-card
+   content already written per-activity in `CRITERIA_DESC`/`CRITERIA_DESC_HI`. Decide whether
+   `/muhurta/shubha-dates` stays as the "general" umbrella or becomes a hub linking to the three.
+3. Update `src/pages/muhurta.astro`'s Property/Vehicle/Business Purchase card `href`s and
+   `src/components/Header.astro`'s Others-menu/searchItems entries to the new paths (currently
+   all point at `?activity=` query strings).
+4. Redirect risk is low: because the canonical tag has always stripped the query string, the
+   `?activity=` URLs were very unlikely to have been indexed as distinct pages in the first
+   place — there's little to lose by retiring them, but add redirects from the old `?activity=`
+   links to the new paths anyway as a courtesy for anyone with an old link/bookmark.
+
+### Claude Code Fix Prompt
+```
+PanchangPath (panchangpath.com) — implement the Shubha Dates static-route
+split logged in docs/bugs/backlog.md under "Shubha Dates `?activity=`
+variants can't rank separately". Read that full entry first for context
+(root cause: Layout.astro's canonical tag strips query strings, so
+?activity=vehicle/property/business all self-canonicalize to the bare
+/muhurta/shubha-dates page and can never rank independently).
+
+Do this:
+1. Extract the finder logic (calcDay/scoreDay, CRITERIA construction) from
+   src/pages/muhurta/shubha-dates.astro's <script> into src/lib/muhurta.ts
+   as a reusable function, following this project's existing pattern of
+   sharing calculation logic (see MUHURTA_CRITERIA/sunRashiVoidCheck in the
+   same file).
+2. Add static routes for vehicle/property/business (getStaticPaths() or
+   three separate .astro files under src/pages/muhurta/shubha-dates/),
+   each with its own unique, front-loaded title (~60 chars) and meta
+   description (~155 chars) targeting that activity, its own canonical
+   (automatic once it's a real path), and the criteria copy already
+   written in CRITERIA_DESC/CRITERIA_DESC_HI for that activity.
+3. Decide with the site owner whether /muhurta/shubha-dates stays a
+   "general" activity finder or becomes a hub page linking to the three;
+   implement whichever is chosen.
+4. Update src/pages/muhurta.astro's Property/Vehicle/Business Purchase
+   cards and src/components/Header.astro's Others-menu + searchItems
+   entries to point at the new static paths instead of ?activity= query
+   strings (all 3 nav-sync locations, per CLAUDE.md convention).
+5. Add redirects (via _redirects or middleware) from the old ?activity=
+   URLs to the new paths.
+6. Remove the client-side ACTIVITY_META/updateMetaForActivity() override
+   added 2026-08-22 — it becomes dead code once real per-activity pages
+   exist.
+7. Build, verify each new URL's title/meta/canonical via curl, deploy, and
+   confirm live on panchangpath.com (cache-busted) per this project's
+   established deploy-verification steps.
+```
 
 ---
 
