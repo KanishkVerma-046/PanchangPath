@@ -17,8 +17,8 @@ const category = CATEGORY_META['sundarkand'];
 ---
 
 <Layout
-  title={`${item.title} — Ramcharitmanas, Panchama Sopan — PanchangPath`}
-  description={metaDescription(item.meaning, `${item.title} — full Awadhi/Sanskrit text, summary and significance.`)}
+  title={item.metaTitle ?? `Sundarkand Path — Full Text & Meaning — PanchangPath`}
+  description={metaDescription(item.metaDesc ?? item.meaning, `${item.title} — full Awadhi/Sanskrit text, summary and significance.`)}
 >
   <DevotionalDetail
     item={item} category={category} prev={null} next={null}
