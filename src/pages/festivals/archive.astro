@@ -1,0 +1,93 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { FESTIVALS_2025_2027, getFestivalSlug } from '../../lib/festivals';
+import { formatDateHi } from '../../lib/date-i18n';
+
+const today = new Date();
+const todayStr = today.toISOString().split('T')[0];
+
+const past = FESTIVALS_2025_2027
+  .filter(f => f.date < todayStr)
+  .sort((a, b) => b.date.localeCompare(a.date));
+
+const byYear: Record<string, typeof past> = {};
+for (const f of past) {
+  const y = f.date.slice(0, 4);
+  if (!byYear[y]) byYear[y] = [];
+  byYear[y].push(f);
+}
+const years = Object.keys(byYear).sort((a, b) => +b - +a);
+
+const WEEKDAY_HI = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+function typeLabelHi(type: string) {
+  return type === 'major' ? '✦ प्रमुख' : type === 'vrat' ? 'व्रत' : 'क्षेत्रीय';
+}
+---
+
+<Layout title="Past Hindu Festivals Archive — PanchangPath" description={`Browse all ${past.length} past Hindu festival and vrat dates, chronologically, with full details for each — Diwali, Holi, Navratri, and more.`}>
+  <!-- Hero -->
+  <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
+    <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
+    <div class="container" style="position:relative;">
+      <p class="caption-mono" data-hi="पुरालेख" style="color:var(--color-mute);margin:0 0 10px;">Archive</p>
+      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;"><span class="en-text">Past Festivals &amp; Vrats.</span><span class="hi-text" style="display:none">पिछले त्योहार और व्रत।</span></h1>
+      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;"><span class="en-text">All {past.length} previously celebrated Hindu festivals and vrats, listed chronologically with full details.</span><span class="hi-text" style="display:none">सभी {past.length} पूर्व में मनाए गए हिंदू त्योहार और व्रत, विस्तृत जानकारी के साथ कालानुक्रमिक रूप से सूचीबद्ध।</span></p>
+      <p style="margin:16px 0 0;">
+        <a href="/festivals" class="en-text" style="font-size:14px;font-weight:500;color:var(--color-primary);text-decoration:none;">&larr; Back to upcoming festivals</a>
+        <a href="/festivals" class="hi-text" style="display:none;font-size:14px;font-weight:500;color:var(--color-primary);text-decoration:none;">&larr; आगामी त्योहारों पर वापस जाएं</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Archive list by year -->
+  <section style="padding:40px 0 48px;">
+    <div class="container">
+      {years.map(year => (
+        <div class="year-section" style="margin-bottom:40px;">
+          <h2 style="font-size:13px;font-weight:500;color:var(--color-mute);letter-spacing:0.06em;text-transform:uppercase;font-family:var(--font-mono);margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--color-hairline);">{year}</h2>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            {byYear[year].map(f => {
+              const fd = new Date(f.date);
+              return (
+                <a href={`/festivals/${getFestivalSlug(f)}`} class="card" data-type={f.type} style="padding:16px 20px;display:flex;align-items:center;gap:16px;opacity:0.9;text-decoration:none;color:inherit;">
+                  <!-- Date box -->
+                  <div style="width:52px;flex-shrink:0;text-align:center;background:var(--color-canvas-soft-2);border-radius:8px;padding:8px 4px;">
+                    <p style="font-size:20px;font-weight:700;line-height:1;color:var(--color-ink);margin:0;">{fd.getDate()}</p>
+                    <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;font-family:var(--font-mono);text-transform:uppercase;" data-hi={formatDateHi(fd, true, { month: 'short', day: false, year: false })}>{formatDateHi(fd, false, { month: 'short', day: false, year: false })}</p>
+                  </div>
+                  <!-- Info -->
+                  <div style="flex:1;min-width:0;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;flex-wrap:wrap;">
+                      <p class="en-text" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0;">{f.name}</p>
+                      <p class="hi-text" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0;display:none;">{f.nameHi}</p>
+                      <span class={f.type === 'major' ? 'badge badge-saffron' : 'badge'} style="font-size:10px;" data-hi={typeLabelHi(f.type)}>{f.type === 'major' ? '✦ Major' : f.type === 'vrat' ? 'Vrat' : 'Regional'}</span>
+                    </div>
+                    <p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" data-hi={WEEKDAY_HI[fd.getDay()]}>{fd.toLocaleDateString('en-IN',{weekday:'long'})}</p>
+                    <p style="font-size:13px;color:var(--color-body-text);margin:4px 0 0;" data-hi={f.descriptionHi}>{f.description}</p>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  function applyPageLang(hindi: boolean) {
+    document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
+    document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');
+    document.querySelectorAll<HTMLElement>('[data-hi]').forEach(el => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? (el.dataset.hi ?? '') : el.dataset.en;
+    });
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    const evt = e as CustomEvent;
+    applyPageLang(evt.detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
+</script>
+</Layout>
