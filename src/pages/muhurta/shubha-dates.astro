@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 ---
 
-<Layout title="Shubha Dates — Vehicle, Property & Business Muhurat — PanchangPath" description="Find auspicious dates for vehicle purchase, property purchase, business start, and general activities using Vedic Panchang.">
+<Layout title="Shubha Dates — Vehicle, Property & Business — PanchangPath" description="Find auspicious dates for vehicle purchase, property purchase, business launch or any activity — scored live by Nakshatra, Tithi, Vara and Yoga.">
 
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
@@ -228,6 +228,23 @@ fromInput.value=now.toISOString().split('T')[0];
 const threeMonths=new Date(now); threeMonths.setMonth(threeMonths.getMonth()+3);
 toInput.value=threeMonths.toISOString().split('T')[0];
 
+// Per-activity browser-tab title/meta so a direct ?activity= link and social shares reflect
+// the selected activity instead of the generic page title. This is a display-only fix — the
+// prerendered <title>/<meta> above (what search engines actually index) stays the generic
+// umbrella copy, and Layout.astro's canonical tag already points every ?activity= variant at
+// the query-less base URL, so this does not change how the page ranks or gets indexed.
+const ACTIVITY_META: Record<Activity,{title:string;desc:string}> = {
+  vehicle:  { title:'Vehicle Purchase Muhurat — Auspicious Dates — PanchangPath', desc:'Find auspicious dates for buying a new vehicle, scored by Nakshatra, Tithi, Vara and Yoga using Vedic Panchang.' },
+  property: { title:'Property Purchase Muhurat — Auspicious Dates — PanchangPath', desc:'Find auspicious dates to purchase, register, or take possession of property, scored using Vedic Panchang.' },
+  business: { title:'Business Start Muhurat — Auspicious Dates — PanchangPath', desc:'Find auspicious dates to start a new business, shop, or venture, scored using Vedic Panchang.' },
+  general:  { title:'Shubha Dates — Vehicle, Property & Business — PanchangPath', desc:'Find auspicious dates for vehicle purchase, property purchase, business launch or any activity — scored live by Nakshatra, Tithi, Vara and Yoga.' },
+};
+function updateMetaForActivity(){
+  const m=ACTIVITY_META[currentActivity];
+  document.title=m.title;
+  document.querySelector('meta[name="description"]')?.setAttribute('content',m.desc);
+}
+
 // Tab activation
 function updateTabs(){
   document.querySelectorAll<HTMLButtonElement>('.activity-tab').forEach(btn=>{
@@ -257,9 +274,14 @@ document.querySelectorAll<HTMLButtonElement>('.activity-tab').forEach(btn=>{
   btn.addEventListener('click',()=>{
     currentActivity=btn.dataset.activity as Activity;
     updateTabs();
+    updateMetaForActivity();
   });
 });
 updateTabs();
+// Only override the prerendered generic title/meta when the URL explicitly asked for one
+// activity (?activity=...) -- the bare /muhurta/shubha-dates URL should keep its generic
+// title even though currentActivity still defaults to 'vehicle' for the tab UI.
+if(urlActivity&&CRITERIA[urlActivity]) updateMetaForActivity();
 
 function findDates(scroll=true){
   const fromStr=fromInput.value, toStr=toInput.value;

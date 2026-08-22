@@ -34,9 +34,44 @@ const GOWRI_STYLE: Record<string,{bg:string;fg:string}> = {
   Visha:    {bg:'#E8D9BE',fg:'#3A2712'},
 };
 const gowriQLabel = (q: string) => q==='best'?'Best':q==='good'?'Good':q==='neutral'?'Neutral':'Avoid';
+
+// Mirrors the three Q&A cards the client <script> below renders unconditionally on load
+// (renderInfoGrid()) — text kept in sync by hand since that block isn't prerendered. Only
+// genuine Q&A-shaped content on this page; nothing else here qualifies for FAQPage schema.
+const panchakaFaqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What is Panchaka?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What to avoid in Panchaka?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How is Panchak different from Rahu Kaal?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: "They're unrelated systems on different time scales. Rahu Kaal is a short daily window (roughly 75-105 minutes) that occurs once every single day, timed off that day's sunrise-to-sunset span. Panchaka is a lunar-calendar period of about 5 consecutive days each month, set by which Nakshatra the Moon occupies. A date can fall in both, either, or neither — checking one doesn't tell you anything about the other.",
+      },
+    },
+  ],
+};
 ---
 
-<Layout title="Panchaka & Gowri Panchangam — PanchangPath" description="Check Panchaka Rahita Muhurat (inauspicious Moon periods) and Gowri Panchangam 8-slot daily guide for South India.">
+<Layout title="Panchaka & Gowri Panchangam — PanchangPath" description="Check today's Panchaka status, Gowri Panchangam's 8 day & night slots for South India, and how Panchak differs from daily Rahu Kala.">
+  <script type="application/ld+json" set:html={JSON.stringify(panchakaFaqJsonLd)} />
 
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
@@ -296,6 +331,7 @@ function renderInfoGrid(){
   infoGrid.innerHTML=[
     {title:'What is Panchaka?',titleHi:'पंचक क्या है?',text:'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.',textHi:'पंचक का अर्थ है "पांच का समूह।" यह तब होता है जब चंद्रमा अंतिम 5 नक्षत्रों से गुजरता है: धनिष्ठा (उत्तरार्ध), शतभिषा, पूर्वाभाद्रपद, उत्तराभाद्रपद और रेवती — जो कुंभ और मीन राशियों में फैले हैं। अवधि: प्रत्येक माह लगभग 5 दिन।'},
     {title:'What to avoid in Panchaka?',titleHi:'पंचक में क्या टालें?',text:'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.',textHi:'मृत्यु पंचक: अंतिम संस्कार से बचें। अग्नि पंचक: अग्नि संबंधी कार्यों से बचें। राज पंचक: दक्षिण दिशा की यात्रा से बचें। चोर पंचक: कीमती वस्तुओं की सुरक्षा करें। रोग पंचक: स्वास्थ्य जोखिमों से बचें। सामान्य दैनिक कार्य प्रायः प्रभावित नहीं होते।'},
+    {title:'How is Panchak different from Rahu Kaal?',titleHi:'पंचक, राहु काल से कैसे अलग है?',text:'They\'re unrelated systems on different time scales. Rahu Kaal is a short daily window (roughly 75-105 minutes) that occurs once every single day, timed off that day\'s sunrise-to-sunset span. Panchaka is a lunar-calendar period of about 5 consecutive days each month, set by which Nakshatra the Moon occupies. A date can fall in both, either, or neither — checking one doesn\'t tell you anything about the other.',textHi:'ये अलग-अलग समयावधि की स्वतंत्र प्रणालियां हैं। राहु काल एक छोटी दैनिक अवधि (लगभग 75-105 मिनट) है जो हर दिन उस दिन के सूर्योदय-सूर्यास्त के अनुसार तय होती है। पंचक चंद्र-आधारित लगभग 5 दिनों की मासिक अवधि है, जो चंद्रमा के नक्षत्र पर निर्भर करती है। कोई तिथि दोनों में, किसी एक में, या किसी में भी नहीं पड़ सकती — एक की जांच दूसरे के बारे में कुछ नहीं बताती।'},
   ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?i.titleHi:i.title}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">${isHindi?i.textHi:i.text}</p></div>`).join('');
 }
 renderInfoGrid();

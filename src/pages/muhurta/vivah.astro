@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 ---
 
-<Layout title="Vivah Muhurat 2025-2026 — Marriage Auspicious Dates — PanchangPath" description="Find the best auspicious marriage dates (Vivah Muhurat) for 2025-2026 using strict Vedic Panchang criteria.">
+<Layout title="Vivah Muhurat 2026-2027 — Marriage Dates — PanchangPath" description="Find auspicious Vivah Muhurat dates for 2026-2027 by city — scored on Nakshatra, Tithi, Vara and Yoga, with Chaturmas, Kharmas and Venus-combustion checks.">
 
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
@@ -58,6 +58,12 @@ import Layout from '../../layouts/Layout.astro';
             </div>
           ))}
         </div>
+      </div>
+
+      <!-- Cross-link: Lagna matters alongside the date itself -->
+      <div class="card" style="padding:16px 20px;margin-top:16px;border-left:3px solid var(--color-saffron);">
+        <p data-hi="💡 सुझाव: लग्न भी देखें" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">💡 Tip: Check the Lagna too</p>
+        <p data-hi="शुभ तिथि चुनने के बाद, विवाह के समय कौन सा लग्न उदय हो रहा है यह भी देखें — वृषभ, मिथुन, कर्क, कन्या, तुला और धनु लग्न विवाह के लिए विशेष रूप से अनुकूल माने जाते हैं। पूर्ण तालिका के लिए हमारी <a href='/muhurta/lagna' style='color:var(--color-saffron-deep);'>लग्न तालिका</a> देखें।" style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">A good date is only half of a strong Vivah Muhurat — the rising sign (Lagna) at the ceremony's exact start time matters too. Taurus, Gemini, Cancer, Virgo, Libra and Sagittarius Lagnas are considered especially favourable for marriage. See our <a href="/muhurta/lagna" style="color:var(--color-saffron-deep);">Lagna Table</a> for the full day's timings.</p>
       </div>
 
       <!-- How the score works -->
