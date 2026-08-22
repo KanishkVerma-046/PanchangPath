@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { FESTIVALS_2025_2027 } from '../lib/festivals';
+import { FESTIVALS_2025_2027, getFestivalSlug } from '../lib/festivals';
+import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
 
 const today = new Date();
 const year = today.getFullYear();
@@ -16,6 +17,12 @@ const monthName = today.toLocaleDateString('en-IN', { month: 'long', year: 'nume
 const MONTHS_HI = ['जनवरी', 'फरवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर'];
 const monthNameHi = `${MONTHS_HI[month]} ${year}`;
 
+// Vikram/Shaka Samvat, shown as static text (New Delhi/IST default, matching the site's
+// other location-independent prerendered pages — see rahu-kala.astro/planetary-positions.astro).
+const NEW_DELHI = { lat: 28.6139, lng: 77.209, tz: 5.5 };
+const samvatPanchang = calculatePanchang(today, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
+const hinduCal = getHinduCalendarInfo(today, samvatPanchang.sunLongitude, samvatPanchang.moonLongitude, samvatPanchang.tithi.paksha);
+
 // Festival lookup map
 const festMap: Record<string, typeof FESTIVALS_2025_2027[0][]> = {};
 for (const f of FESTIVALS_2025_2027) {
@@ -23,12 +30,19 @@ for (const f of FESTIVALS_2025_2027) {
   festMap[f.date].push(f);
 }
 
+// Visible-text festival list for the current month (SSR-rendered, distinct from the calendar
+// grid's per-cell labels) so the month's festivals are readable without the client-rendered grid.
+const monthPrefix = `${year}-${String(month + 1).padStart(2, '0')}-`;
+const monthFestivals = FESTIVALS_2025_2027
+  .filter(f => f.date.startsWith(monthPrefix))
+  .sort((a, b) => a.date.localeCompare(b.date));
+
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 // Short Hindi weekday labels, matching WEEKDAY_HI_SHORT in lib/planetaryEvents.ts.
 const WEEKDAYS_HI = ['रवि', 'सोम', 'मंगल', 'बुध', 'गुरु', 'शुक्र', 'शनि'];
 ---
 
-<Layout title="Monthly Panchang Calendar — PanchangPath" description="Monthly Panchang calendar view with Tithi, Nakshatra, and festival highlights for every day.">
+<Layout title="Hindu Panchang Calendar 2026 — Monthly View | PanchangPath" description="Monthly Hindu Panchang calendar for 2026 with Tithi, Nakshatra, festival dates and the current Vikram Samvat year for every day.">
   <!-- Hero -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
@@ -46,6 +60,10 @@ const WEEKDAYS_HI = ['रवि', 'सोम', 'मंगल', 'बुध', 'ग
           </button>
         </div>
       </div>
+      <p style="font-size:13px;color:var(--color-mute);margin:8px 0 0;font-family:var(--font-mono);">
+        <span class="en-text">Vikram Samvat {hinduCal.vikramaSamvat} ({hinduCal.vikramaSamvatsara}) · Shaka Samvat {hinduCal.shakaSamvat}</span>
+        <span class="hi-text" style="display:none">विक्रम संवत {hinduCal.vikramaSamvat} ({hinduCal.vikramaSamvatsaraHi}) · शक संवत {hinduCal.shakaSamvat}</span>
+      </p>
     </div>
   </section>
 
@@ -99,6 +117,36 @@ const WEEKDAYS_HI = ['रवि', 'सोम', 'मंगल', 'बुध', 'ग
       </div>
     </div>
   </section>
+
+  <!-- Festivals this month: visible-text list, distinct from the grid's per-cell labels,
+       so crawlers and no-JS visitors get the month's festival dates as readable content. -->
+  {monthFestivals.length > 0 && (
+    <section style="padding:0 0 40px;">
+      <div class="container">
+        <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">
+          <span class="en-text">Festivals &amp; Vrats in {monthName}</span>
+          <span class="hi-text" style="display:none">{monthNameHi} में त्योहार और व्रत</span>
+        </h2>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;max-width:640px;">
+          {monthFestivals.map(f => {
+            const d = new Date(f.date + 'T12:00:00');
+            const dayLabel = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+            const dayLabelHi = d.toLocaleDateString('hi-IN', { day: 'numeric', month: 'short' });
+            return (
+              <li style="display:flex;align-items:baseline;gap:10px;font-size:14px;color:var(--color-body-text);">
+                <span style="font-family:var(--font-mono);color:var(--color-mute);min-width:56px;">
+                  <span class="en-text">{dayLabel}</span><span class="hi-text" style="display:none">{dayLabelHi}</span>
+                </span>
+                <a href={`/festivals/${getFestivalSlug(f)}`} style="color:var(--color-saffron-deep);text-decoration:none;">
+                  <span class="en-text">{f.name}</span><span class="hi-text" style="display:none">{f.nameHi}</span>
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  )}
 
   <!-- Day detail panel (bottom sheet on mobile, sidebar on desktop) -->
   <div id="day-panel" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--color-canvas);border-top:1px solid var(--color-hairline);padding:20px 24px;box-shadow:0 -8px 32px rgba(0,0,0,0.1);z-index:30;max-height:60vh;overflow-y:auto;">
