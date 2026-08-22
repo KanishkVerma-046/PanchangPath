@@ -4,6 +4,20 @@ import Layout from '../../layouts/Layout.astro';
 
 <Layout title="Shubha Dates — Business & General Muhurat — PanchangPath" description="Find auspicious dates for a business launch or any important activity — scored live by Nakshatra, Tithi, Vara and Yoga. Vehicle and Property Purchase have their own dedicated finders.">
 
+  <!-- Old ?activity=vehicle|property deep links now live at their own static route
+       (Task 3, 2026-08-22). A real 301 via _redirects isn't possible here — Cloudflare
+       Pages _redirects can't match on query-parameter VALUES, only on path (confirmed
+       2026-08-22: a path-only rule fired for every ?activity= value, including business,
+       which must stay on this page) — so this does the redirect client-side instead.
+       is:inline + placed first so it runs before the rest of the page parses. -->
+  <script is:inline>
+    (function () {
+      var activity = new URLSearchParams(location.search).get('activity');
+      if (activity === 'vehicle') location.replace('/muhurta/shubha-dates/vehicle');
+      else if (activity === 'property') location.replace('/muhurta/shubha-dates/property');
+    })();
+  </script>
+
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
