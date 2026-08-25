@@ -15,8 +15,12 @@ const FAQ_ITEMS = [
     a: 'Because neither one can be evaluated from a single birth chart. "Both partners Manglik" requires comparing two separate charts against each other, which is outside what a one-person calculator can check — that\'s a factor to apply yourself once you have both results. The age-28 rule isn\'t a chart placement at all; it\'s a general statement about timing that applies the same way regardless of any specific chart detail. The six rules in the Cancellation Analysis table are the ones this calculator can verify directly from your birth data: Mars in its own sign, Mars exalted, a Cancer/Leo Lagna (where Mars is a yogakaraka), Mars in a weakening sign, and close conjunction with Jupiter or the Moon.',
   },
   {
+    q: 'What does a "Cancelled (Bhanga)" result mean, and how is it different from "Present, Low to Medium"?',
+    a: 'Both mean Mars falls in a dosha house from at least one reference point — the difference is which cancellation condition, if any, applies. Four of the six rules — Mars in its own sign, Mars exalted, a Cancer/Leo Lagna, and a close Jupiter conjunction — are described as full, near-unanimous cancellations across the classical sources this calculator was cross-checked against, so when any of those applies the result is "Cancelled" rather than "Present." The other two rules — Mars in a weakening sign, and a close Moon conjunction — are recognised in the same sources but with more mixed treatment (one source explicitly calls the Moon\'s influence "a mild modifier" rather than a full cancellation), so they only lower the severity rating rather than flipping the verdict to Cancelled. A Cancelled result is not the same as "nothing to worry about" — it means a specific, classically-recognised exception applies to a placement that would otherwise be flagged, not that the placement was never a placement worth checking.',
+  },
+  {
     q: 'How is the severity (High vs. Low-to-Medium) determined?',
-    a: "This calculator's own reasonable rule of thumb, applying the general principle sources agree on — more afflicted reference points and a poorly-placed Mars mean a more significant dosha — rather than a single universally fixed formula. Specifically: it's rated High when Mars falls in a dosha house from 2 or more of the three references and Mars isn't in its own sign, exalted, or a weakening sign; otherwise, if the dosha is present at all, it's rated Low to Medium. Different sources grade severity somewhat differently, so treat this rating as directional rather than an authoritative classification.",
+    a: "This calculator's own reasonable rule of thumb, applying the general principle sources agree on — more afflicted reference points and a poorly-placed Mars mean a more significant dosha — rather than a single universally fixed formula. Specifically: it's rated High when Mars falls in a dosha house from 2 or more of the three references and none of the six cancellation rules apply at all; if any rule applies but none of them is full-strength, or only 1 of 3 references is affected, it's rated Low to Medium; if a full-strength rule applies, the result is Cancelled instead of a severity rating. Different sources grade severity somewhat differently, so treat this rating as directional rather than an authoritative classification.",
   },
 ];
 ---
@@ -64,12 +68,12 @@ const FAQ_ITEMS = [
       <div class="card" style="padding:24px;margin-top:24px;">
         <h3 data-hi="निवारण नियम (मंगल दोष भंग)" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Cancellation Rules (Mangal Dosha Bhanga)</h3>
         <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;">
-          <li data-hi="स्वराशि (मेष, वृश्चिक) में या उच्च राशि (मकर) में मंगल अपने अशुभ प्रभाव का अधिकांश भाग खो देता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Mars in its own sign (Mesha, Vrishchika) or exalted (Makara) loses much of its malefic effect.</li>
-          <li data-hi="कर्क, सिंह, कुम्भ या मीन में मंगल कमजोर माना जाता है और दोष कम हो जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Mars in Karka, Simha, Kumbha or Meena is considered weak and the dosha is reduced.</li>
+          <li data-hi="स्वराशि (मेष, वृश्चिक) में या उच्च राशि (मकर) में मंगल दोष को शास्त्रोक्त रूप से निष्प्रभावी कर देता है — यह इस कैलकुलेटर की गणना में एक पूर्ण निवारण माना जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Mars in its own sign (Mesha, Vrishchika) or exalted (Makara) classically cancels the dosha — treated as a full cancellation in this calculator's verdict.</li>
+          <li data-hi="कर्क, सिंह, कुम्भ या मीन में मंगल कमजोर माना जाता है और दोष की तीव्रता कम हो जाती है, यद्यपि पूर्णतः निष्प्रभावी नहीं होता।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Mars in Karka, Simha, Kumbha or Meena is considered weak and reduces the dosha's severity, though it does not cancel it outright.</li>
           <li data-hi="जब दोनों साथी मांगलिक हों, तो दोष परस्पर निष्प्रभावी हो जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">When both partners are Manglik, the dosha is mutually cancelled.</li>
-          <li data-hi="गुरु या चंद्रमा की दृष्टि या युति में मंगल काफी शांत हो जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Mars aspected by or conjunct Jupiter or the Moon is greatly pacified.</li>
+          <li data-hi="गुरु की दृष्टि या युति में मंगल दोष शास्त्रोक्त रूप से निष्प्रभावी माना जाता है — स्रोतों में यह सबसे प्रबल एकल निवारण है।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Jupiter's aspect or conjunction on Mars is described across sources as the single strongest cancellation — treated as a full cancellation here.</li>
+          <li data-hi="चंद्रमा की युति मंगल को कुछ हद तक शांत करती है, परंतु स्रोत इसे गुरु जितना प्रबल नहीं मानते — यह तीव्रता कम करता है, दोष को पूर्णतः निष्प्रभावी नहीं करता।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">The Moon's conjunction softens Mars somewhat, but sources treat it as milder than Jupiter's — it lowers severity rather than clearing the dosha outright.</li>
           <li data-hi="कर्क या सिंह लग्न में जन्मे लोगों के लिए मंगल योगकारक/शुभ ग्रह है और दोष लागू नहीं होता।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">For people born with Karka or Simha Lagna, Mars is a yogakaraka/benefic and the dosha does not apply.</li>
-          <li data-hi="केंद्र या त्रिकोण में एक मजबूत, अच्छी स्थिति वाला गुरु प्रभाव को कम करता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">A strong, well-placed Jupiter in a kendra or trikona reduces the impact.</li>
           <li data-hi="कहा जाता है कि 28 वर्ष की आयु के बाद दोष स्वाभाविक रूप से कमजोर हो जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.6;">The dosha is said to weaken naturally after the age of 28.</li>
         </ul>
       </div>
@@ -95,6 +99,7 @@ import { LOCATIONS } from '../../lib/locations';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import { moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
 import { planetLongitude, calcLagna } from '../../lib/astro-core';
+import { evaluateMangalDosha } from '../../lib/mangalDosha';
 
 const MANGAL_SVG = PLANET_ICONS.mangal;
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
@@ -114,8 +119,6 @@ const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrish
 const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
-const DOSHA_HOUSES=[1,2,4,7,8,12];
-function getHouse(planetSign,refSign){return ((planetSign-refSign+12)%12)+1;}
 
 const sel=document.getElementById('f-city');function renderCityOptions(){
   const selected=sel.value;
@@ -146,46 +149,59 @@ function calculate(){
     const dGuruMars=angDiff(sid_guru,sid_mangal);
     const dMoonMars=angDiff(sid_moon,sid_mangal);
 
-    const refs=[[tr('Lagna (Ascendant)','लग्न (उदय राशि)'),lagnaSign],[tr('Moon','चंद्रमा'),moonSign],[tr('Venus','शुक्र'),venusSign]];
-    let doshaCount=0;
-    const rows=refs.map(([label,sign])=>{
-      const h=getHouse(marsSign,sign);const isDosha=DOSHA_HOUSES.includes(h);if(isDosha)doshaCount++;
-      return `<tr><td style="color:var(--color-ink);font-weight:600;">${tr('From '+label,label+' से')}</td><td>${trRashi(sign)}</td><td>${tr('House','भाव')} ${h}</td><td><span style="color:${isDosha?'#dc2626':'#15803d'};font-weight:600;">${isDosha?tr('Dosha','दोष'):tr('Clear','शुद्ध')}</span></td></tr>`;
+    const md=evaluateMangalDosha({marsSign,lagnaSign,moonSign,venusSign,jupiterMarsOrbDeg:dGuruMars,moonMarsOrbDeg:dMoonMars});
+    const doshaCount=md.doshaCount;
+    const refLabels=[tr('Lagna (Ascendant)','लग्न (उदय राशि)'),tr('Moon','चंद्रमा'),tr('Venus','शुक्र')];
+    const rows=md.referenceHouses.map((r,i)=>{
+      const label=refLabels[i];
+      return `<tr><td style="color:var(--color-ink);font-weight:600;">${tr('From '+label,label+' से')}</td><td>${trRashi(r.sign)}</td><td>${tr('House','भाव')} ${r.house}</td><td><span style="color:${r.isDosha?'#dc2626':'#15803d'};font-weight:600;">${r.isDosha?tr('Dosha','दोष'):tr('Clear','शुद्ध')}</span></td></tr>`;
     });
     document.getElementById('pos-table').innerHTML=`<tr><th>${tr('Reference','संदर्भ')}</th><th>${tr('Sign','राशि')}</th><th>${tr('Mars House','मंगल भाव')}</th><th>${tr('Status','स्थिति')}</th></tr>`+rows.join('');
 
-    const present=doshaCount>0;
-    // severity & weakening
-    const ownExalt=[0,7,9].includes(marsSign); // Mesha, Vrishchika own; Makara exalted
-    const weakSigns=[3,4,10,11].includes(marsSign);
-    let severity,sevColor;
-    if(!present){severity='No Mangal Dosha';sevColor='#15803d';}
-    else if(doshaCount>=2&&!ownExalt&&!weakSigns){severity='High';sevColor='#dc2626';}
-    else{severity='Low to Medium';sevColor='#b45309';}
+    const present=md.present;
+    // Cancellation rules this severity/verdict responds to (see src/lib/mangalDosha.ts for
+    // sourcing): Mars own sign, Mars exalted, Cancer/Leo Lagna, and Jupiter conjunction are
+    // treated as FULL cancellations (verdict becomes "Cancelled"); Mars in a weakening sign
+    // and Moon conjunction are treated as reducing severity without cancelling outright.
+    const fullRuleLabel={ownSign:tr('Mars in own sign','मंगल स्वराशि में'),exalted:tr('Mars exalted in Makara','मंगल मकर में उच्च का'),yogakarakaLagna:tr('Cancer/Leo Lagna (Yogakaraka Mars)','कर्क/सिंह लग्न (योगकारक मंगल)'),jupiterConjunct:tr('Jupiter conjunct Mars','गुरु मंगल की युति में')};
+    const appliedFullRules=md.cancelRules.filter(c=>c.applies&&fullRuleLabel[c.key]).map(c=>fullRuleLabel[c.key]);
+    let severityLabel,sevColor;
+    if(md.severity==='none'){severityLabel=tr('No Mangal Dosha','मंगल दोष नहीं');sevColor='#15803d';}
+    else if(md.severity==='cancelled'){severityLabel=tr('Cancelled (Bhanga)','निष्प्रभावी (भंग)');sevColor='#0891b2';}
+    else if(md.severity==='high'){severityLabel=tr('High','उच्च');sevColor='#dc2626';}
+    else{severityLabel=tr('Low to Medium','निम्न से मध्यम');sevColor='#b45309';}
 
-    const bg=present?(severity==='High'?'var(--color-inauspicious-soft)':'var(--color-warning-soft)'):'var(--color-auspicious-soft)';
+    const bg=md.severity==='none'||md.severity==='cancelled'?'var(--color-auspicious-soft)':(md.severity==='high'?'var(--color-inauspicious-soft)':'var(--color-warning-soft)');
     document.getElementById('dosha-banner').style.background=bg;
-    document.getElementById('dosha-banner').innerHTML=present
-      ?`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,sevColor)}</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">${tr('Mangal Dosha Present','मंगल दोष उपस्थित')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Severity','तीव्रता')}: <b style="color:${sevColor};">${severity}</b> · ${tr('Mars in','मंगल')} ${trRashi(marsSign)} · ${tr('Dosha from '+doshaCount+' of 3 references',doshaCount+' में से 3 संदर्भों से दोष')}</p>`
-      :`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">${tr('No Mangal Dosha','मंगल दोष नहीं है')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Mars in '+trRashi(marsSign)+' does not fall in a dosha house from your Lagna, Moon or Venus.','आपके लग्न, चंद्रमा या शुक्र से '+trRashi(marsSign)+' में मंगल किसी दोष भाव में नहीं आता।')}</p>`;
+    if(md.severity==='none'){
+      document.getElementById('dosha-banner').innerHTML=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,'#15803d')}</div><h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">${tr('No Mangal Dosha','मंगल दोष नहीं है')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Mars in '+trRashi(marsSign)+' does not fall in a dosha house from your Lagna, Moon or Venus.','आपके लग्न, चंद्रमा या शुक्र से '+trRashi(marsSign)+' में मंगल किसी दोष भाव में नहीं आता।')}</p>`;
+    }else if(md.severity==='cancelled'){
+      document.getElementById('dosha-banner').innerHTML=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,sevColor)}</div><h2 style="font-size:22px;font-weight:700;color:${sevColor};margin:0 0 6px;">${tr('Mangal Dosha — Cancelled (Bhanga)','मंगल दोष — निष्प्रभावी (भंग)')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Mars in','मंगल')} ${trRashi(marsSign)} ${tr('does place a dosha from '+doshaCount+' of 3 references, but',doshaCount+' में से 3 संदर्भों से दोष तो बनाता है, परंतु')} ${appliedFullRules.join(tr(' and ',' और '))} ${tr('is a classically recognised cancellation.','एक शास्त्रोक्त निवारण है।')}</p>`;
+    }else{
+      document.getElementById('dosha-banner').innerHTML=`<div style="display:flex;justify-content:center;margin-bottom:6px;">${mangalIconSvg(40,sevColor)}</div><h2 style="font-size:24px;font-weight:700;color:${sevColor};margin:0 0 6px;">${tr('Mangal Dosha Present','मंगल दोष उपस्थित')}</h2><p style="font-size:14px;color:var(--color-body-text);margin:0;">${tr('Severity','तीव्रता')}: <b style="color:${sevColor};">${severityLabel}</b> · ${tr('Mars in','मंगल')} ${trRashi(marsSign)} · ${tr('Dosha from '+doshaCount+' of 3 references',doshaCount+' में से 3 संदर्भों से दोष')}</p>`;
+    }
 
     let meaning;
-    if(!present){meaning=tr(`Your Mars is favourably placed and does not create Mangal Dosha. There are no Manglik-related concerns for marriage from this analysis.`,`आपका मंगल अनुकूल स्थिति में है और मंगल दोष उत्पन्न नहीं करता। इस विश्लेषण के अनुसार विवाह हेतु कोई मांगलिक संबंधी चिंता नहीं है।`);}
+    if(md.severity==='none'){meaning=tr(`Your Mars is favourably placed and does not create Mangal Dosha. There are no Manglik-related concerns for marriage from this analysis.`,`आपका मंगल अनुकूल स्थिति में है और मंगल दोष उत्पन्न नहीं करता। इस विश्लेषण के अनुसार विवाह हेतु कोई मांगलिक संबंधी चिंता नहीं है।`);}
+    else if(md.severity==='cancelled'){meaning=tr(`Mars falls in a dosha-causing house from ${doshaCount} reference point${doshaCount>1?'s':''}, but a classical cancellation condition — ${appliedFullRules.join(', ')} — is present in your chart, which the classical texts treat as clearing the dosha rather than merely softening it. This is not the same as "nothing to worry about": it means the specific placement that would otherwise be flagged is, by the same tradition that flags it, also the tradition's own exception to it. Most practitioners still weigh the full chart before ruling it out entirely.`,`मंगल ${doshaCount} संदर्भ बिंदु${doshaCount>1?'ओं':''} से दोष उत्पन्न करने वाले भाव में तो है, परंतु आपकी कुंडली में एक शास्त्रोक्त निवारण स्थिति — ${appliedFullRules.join(', ')} — मौजूद है, जिसे शास्त्रों में दोष को केवल कम करने के बजाय पूर्णतः निष्प्रभावी करने वाला माना जाता है। इसका अर्थ यह नहीं कि "कोई चिंता की बात नहीं" — बल्कि यह है कि जो स्थिति सामान्यतः चिह्नित की जाती, वही परंपरा उसका अपवाद भी मानती है। अधिकांश ज्योतिषी फिर भी अंतिम निर्णय से पहले पूर्ण कुंडली पर विचार करते हैं।`);}
     else{meaning=tr(`Mars falls in a dosha-causing house from ${doshaCount} reference point${doshaCount>1?'s':''}. `,`मंगल ${doshaCount} संदर्भ बिंदु${doshaCount>1?'ओं':''} से दोष उत्पन्न करने वाले भाव में स्थित है। `);
-      if(ownExalt)meaning+=tr(`However, Mars is in ${trRashi(marsSign)} (own/exalted sign), which significantly reduces the dosha. `,`हालांकि, मंगल ${trRashi(marsSign)} (स्वराशि/उच्च राशि) में है, जो दोष को काफी कम कर देता है। `);
-      else if(weakSigns)meaning+=tr(`However, Mars in ${trRashi(marsSign)} is considered weak, lessening the effect. `,`हालांकि, ${trRashi(marsSign)} में मंगल कमजोर माना जाता है, जिससे प्रभाव कम हो जाता है। `);
-      meaning+=tr(`Traditionally this calls for matching with a partner who is also Manglik, or applying the cancellation rules below. Mangal Dosha is one factor among many — a full chart reading gives the complete picture.`,`परंपरागत रूप से इसके लिए ऐसे साथी से मिलान आवश्यक है जो स्वयं भी मांगलिक हो, या नीचे दिए निवारण नियमों को लागू करना चाहिए। मंगल दोष कई कारकों में से एक है — पूर्ण कुंडली विश्लेषण से संपूर्ण चित्र मिलता है।`);}
+      const weakApplies=md.cancelRules.find(c=>c.key==='weakSign')?.applies;
+      const moonApplies=md.cancelRules.find(c=>c.key==='moonConjunct')?.applies;
+      if(weakApplies)meaning+=tr(`Mars in ${trRashi(marsSign)} is considered a weakening sign, which lessens (but does not cancel) the effect. `,`${trRashi(marsSign)} में मंगल कमजोर राशि माना जाता है, जिससे प्रभाव कम होता है (परंतु निष्प्रभावी नहीं होता)। `);
+      if(moonApplies)meaning+=tr(`The Moon's proximity to Mars also softens it somewhat, though sources treat this as a mild modifier rather than a full cancellation. `,`चंद्रमा की मंगल से निकटता भी इसे कुछ हद तक नरम करती है, यद्यपि स्रोत इसे पूर्ण निवारण के बजाय एक हल्का प्रभावक मानते हैं। `);
+      meaning+=tr(`No classical full-cancellation condition (own sign, exaltation, yogakaraka Lagna, or close Jupiter conjunction) applies here, so this result should be taken seriously rather than dismissed — though it is one factor among many, and a full chart reading with a qualified Jyotishi gives the complete picture. Traditionally this also calls for matching with a partner who is also Manglik.`,`यहां कोई पूर्ण निवारण स्थिति (स्वराशि, उच्च राशि, योगकारक लग्न, या निकट गुरु युति) लागू नहीं होती, अतः इस परिणाम को हल्के में न लें — यद्यपि यह कई कारकों में से एक है, और किसी योग्य ज्योतिषी द्वारा पूर्ण कुंडली विश्लेषण ही संपूर्ण चित्र देता है। परंपरागत रूप से इसके लिए ऐसे साथी से मिलान भी उपयुक्त है जो स्वयं भी मांगलिक हो।`);}
     document.getElementById('meaning').textContent=meaning;
 
-    // Dynamic cancellation analysis
-    const cancels=[
-      {rule:tr('Mars in own sign (Mesha or Vrishchika)','मंगल स्वराशि में (मेष या वृश्चिक)'),applies:[0,7].includes(marsSign),strength:tr('Strong','प्रबल'),note:[0,7].includes(marsSign)?tr('Mars in '+trRashi(marsSign)+' — natural dignity greatly reduces the dosha','मंगल '+trRashi(marsSign)+' में — स्वाभाविक गरिमा दोष को काफी कम करती है'):tr('Mars in '+trRashi(marsSign)+' — not in own sign','मंगल '+trRashi(marsSign)+' में — स्वराशि में नहीं')},
-      {rule:tr('Mars exalted (Makara)','मंगल उच्च राशि में (मकर)'),applies:marsSign===9,strength:tr('Full','पूर्ण'),note:marsSign===9?tr('Mars is exalted in Makara — dosha is effectively cancelled','मंगल मकर में उच्च का है — दोष प्रभावी रूप से निष्प्रभावी हो जाता है'):tr('Mars is not exalted (exaltation: Makara)','मंगल उच्च का नहीं है (उच्च राशि: मकर)')},
-      {rule:tr('Cancer or Leo Lagna (Yogakaraka)','कर्क या सिंह लग्न (योगकारक)'),applies:[3,4].includes(lagnaSign),strength:tr('Full','पूर्ण'),note:[3,4].includes(lagnaSign)?tr('For '+trRashi(lagnaSign)+' Lagna, Mars is a benefic yogakaraka — dosha does not apply',trRashi(lagnaSign)+' लग्न के लिए, मंगल एक शुभ योगकारक है — दोष लागू नहीं होता'):tr('Lagna is '+trRashi(lagnaSign)+' — Mars is not yogakaraka','लग्न '+trRashi(lagnaSign)+' है — मंगल योगकारक नहीं है')},
-      {rule:tr('Mars in weakening sign (Karka, Simha, Kumbha, Meena)','मंगल कमजोर राशि में (कर्क, सिंह, कुम्भ, मीन)'),applies:[3,4,10,11].includes(marsSign),strength:tr('Partial','आंशिक'),note:[3,4,10,11].includes(marsSign)?tr('Mars in '+trRashi(marsSign)+' is considered weak — dosha impact is reduced','मंगल '+trRashi(marsSign)+' में कमजोर माना जाता है — दोष प्रभाव कम हो जाता है'):tr('Mars in '+trRashi(marsSign)+' is not in a weakening sign','मंगल '+trRashi(marsSign)+' में कमजोर राशि में नहीं है')},
-      {rule:tr('Jupiter conjunct Mars (within 10\xb0)','गुरु मंगल की युति में (10° के भीतर)'),applies:dGuruMars<10,strength:tr('Strong','प्रबल'),note:tr('Jupiter is '+dGuruMars.toFixed(1)+'\xb0 from Mars — '+(dGuruMars<10?'Guru’s proximity greatly pacifies the fiery Mars energy':'not in close conjunction'),'गुरु मंगल से '+dGuruMars.toFixed(1)+'° दूर है — '+(dGuruMars<10?'गुरु की निकटता उग्र मंगल ऊर्जा को काफी शांत करती है':'निकट युति में नहीं'))},
-      {rule:tr('Moon conjunct Mars (within 10\xb0)','चंद्रमा मंगल की युति में (10° के भीतर)'),applies:dMoonMars<10,strength:tr('Moderate','मध्यम'),note:tr('Moon is '+dMoonMars.toFixed(1)+'\xb0 from Mars — '+(dMoonMars<10?'Moon’s nurturing energy softens Mars':'not in close conjunction'),'चंद्रमा मंगल से '+dMoonMars.toFixed(1)+'° दूर है — '+(dMoonMars<10?'चंद्रमा की पोषक ऊर्जा मंगल को नरम करती है':'निकट युति में नहीं'))},
-    ];
+    // Cancellation analysis table — display copy for the six rules computed in md.cancelRules
+    const ruleCopy={
+      ownSign:{rule:tr('Mars in own sign (Mesha or Vrishchika)','मंगल स्वराशि में (मेष या वृश्चिक)'),strength:tr('Full','पूर्ण'),note:[0,7].includes(marsSign)?tr('Mars in '+trRashi(marsSign)+' — natural dignity clears the dosha','मंगल '+trRashi(marsSign)+' में — स्वाभाविक गरिमा दोष को निष्प्रभावी करती है'):tr('Mars in '+trRashi(marsSign)+' — not in own sign','मंगल '+trRashi(marsSign)+' में — स्वराशि में नहीं')},
+      exalted:{rule:tr('Mars exalted (Makara)','मंगल उच्च राशि में (मकर)'),strength:tr('Full','पूर्ण'),note:marsSign===9?tr('Mars is exalted in Makara — dosha is classically cancelled','मंगल मकर में उच्च का है — दोष शास्त्रोक्त रूप से निष्प्रभावी हो जाता है'):tr('Mars is not exalted (exaltation: Makara)','मंगल उच्च का नहीं है (उच्च राशि: मकर)')},
+      yogakarakaLagna:{rule:tr('Cancer or Leo Lagna (Yogakaraka)','कर्क या सिंह लग्न (योगकारक)'),strength:tr('Full','पूर्ण'),note:[3,4].includes(lagnaSign)?tr('For '+trRashi(lagnaSign)+' Lagna, Mars is a benefic yogakaraka — dosha does not apply',trRashi(lagnaSign)+' लग्न के लिए, मंगल एक शुभ योगकारक है — दोष लागू नहीं होता'):tr('Lagna is '+trRashi(lagnaSign)+' — Mars is not yogakaraka','लग्न '+trRashi(lagnaSign)+' है — मंगल योगकारक नहीं है')},
+      jupiterConjunct:{rule:tr('Jupiter conjunct Mars (within 10\xb0)','गुरु मंगल की युति में (10° के भीतर)'),strength:tr('Full','पूर्ण'),note:tr('Jupiter is '+dGuruMars.toFixed(1)+'\xb0 from Mars — '+(dGuruMars<10?'this close conjunction is classically the strongest single cancellation':'not in close conjunction'),'गुरु मंगल से '+dGuruMars.toFixed(1)+'° दूर है — '+(dGuruMars<10?'यह निकट युति शास्त्रोक्त रूप से सबसे प्रबल निवारण मानी जाती है':'निकट युति में नहीं'))},
+      weakSign:{rule:tr('Mars in weakening sign (Karka, Simha, Kumbha, Meena)','मंगल कमजोर राशि में (कर्क, सिंह, कुम्भ, मीन)'),strength:tr('Partial','आंशिक'),note:[3,4,10,11].includes(marsSign)?tr('Mars in '+trRashi(marsSign)+' is considered weak — reduces severity, does not cancel','मंगल '+trRashi(marsSign)+' में कमजोर माना जाता है — तीव्रता कम करता है, निष्प्रभावी नहीं करता'):tr('Mars in '+trRashi(marsSign)+' is not in a weakening sign','मंगल '+trRashi(marsSign)+' में कमजोर राशि में नहीं है')},
+      moonConjunct:{rule:tr('Moon conjunct Mars (within 10\xb0)','चंद्रमा मंगल की युति में (10° के भीतर)'),strength:tr('Moderate','मध्यम'),note:tr('Moon is '+dMoonMars.toFixed(1)+'\xb0 from Mars — '+(dMoonMars<10?'sources treat this as a mild softening modifier, not a full cancellation':'not in close conjunction'),'चंद्रमा मंगल से '+dMoonMars.toFixed(1)+'° दूर है — '+(dMoonMars<10?'स्रोत इसे हल्का शामक प्रभावक मानते हैं, पूर्ण निवारण नहीं':'निकट युति में नहीं'))},
+    };
+    const cancels=md.cancelRules.map(c=>({...ruleCopy[c.key],applies:c.applies}));
     const thSt='text-align:left;padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-size:11px;text-transform:uppercase;letter-spacing:0.04em;font-weight:600;';
     const tdSt='padding:8px 8px;border-bottom:1px solid var(--color-hairline);';
     document.getElementById('cancel-table').innerHTML='<tr><th style="'+thSt+'">'+tr('Rule','नियम')+'</th><th style="'+thSt+'">'+tr('Strength','तीव्रता')+'</th><th style="'+thSt+'">'+tr('Status','स्थिति')+'</th><th style="'+thSt+'">'+tr('Note','टिप्पणी')+'</th></tr>'+
@@ -194,7 +210,7 @@ function calculate(){
     const remedyPanel=document.getElementById('remedy-panel');
     if(present){
       remedyPanel.style.display='block';
-      remedyPanel.innerHTML='<h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">'+tr('Recommended Remedies','अनुशंसित उपाय')+'</h3>'+(anyCancel?'<p style="font-size:13px;color:var(--color-body-text);margin:0 0 10px;line-height:1.6;">'+tr('Cancellation factors are present in your chart, which reduce the dosha’s potency. The remedies below can be adopted for further pacification.','आपकी कुंडली में निवारण कारक मौजूद हैं, जो दोष की तीव्रता को कम करते हैं। और शांति के लिए नीचे दिए उपाय अपनाए जा सकते हैं।')+'</p>':'')+
+      remedyPanel.innerHTML='<h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">'+tr('Recommended Remedies','अनुशंसित उपाय')+'</h3>'+(md.severity==='cancelled'?'<p style="font-size:13px;color:var(--color-body-text);margin:0 0 10px;line-height:1.6;">'+tr('A full cancellation condition applies to your chart, so these remedies are not required — some traditions still recommend them as routine Tuesday practice rather than a response to affliction.','आपकी कुंडली में एक पूर्ण निवारण स्थिति लागू होती है, अतः ये उपाय आवश्यक नहीं हैं — कुछ परंपराओं में इन्हें पीड़ा के प्रत्युत्तर के बजाय नियमित मंगलवार अभ्यास के रूप में अपनाया जाता है।')+'</p>':(anyCancel?'<p style="font-size:13px;color:var(--color-body-text);margin:0 0 10px;line-height:1.6;">'+tr('Partial cancellation factors are present in your chart, which reduce the dosha’s potency without clearing it. The remedies below can be adopted for further pacification.','आपकी कुंडली में आंशिक निवारण कारक मौजूद हैं, जो दोष की तीव्रता को कम करते हैं परंतु उसे निष्प्रभावी नहीं करते। और शांति के लिए नीचे दिए उपाय अपनाए जा सकते हैं।')+'</p>':''))+
       '<ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;"><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Recite the Mangal Mantra — "Om Angarakaya Namah" — 108 times every Tuesday.','हर मंगलवार 108 बार मंगल मंत्र — "ॐ अंगारकाय नमः" — का जाप करें।')+'</li><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Worship Lord Hanuman or Lord Kartikeya (Murugan) on Tuesdays.','मंगलवार को भगवान हनुमान या भगवान कार्तिकेय (मुरुगन) की पूजा करें।')+'</li><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Observe a Tuesday fast and donate red lentils (masoor dal), red cloth or red flowers.','मंगलवार का व्रत रखें और मसूर दाल, लाल कपड़ा या लाल फूल दान करें।')+'</li><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Consider Red Coral (Moonga) in gold on the ring finger — consult a qualified Jyotishi before wearing.','सोने में जड़ित लाल मूंगा अनामिका उंगली में धारण करने पर विचार करें — पहनने से पहले किसी योग्य ज्योतिषी से परामर्श लें।')+'</li><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('A Mangal Shanti Puja performed by a trained priest provides deeper karmic relief.','प्रशिक्षित पुरोहित द्वारा की गई मंगल शांति पूजा गहरी कर्मिक राहत प्रदान करती है।')+'</li></ul>';
     }else{
       remedyPanel.style.display='none';
