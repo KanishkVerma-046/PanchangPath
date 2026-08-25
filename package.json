@@ -12,7 +12,7 @@
     "astro": "astro",
     "predeploy": "node scripts/check-clean-tree.mjs",
     "deploy": "npm run build && npx wrangler pages deploy dist --project-name=panchangpath --branch=main",
-    "test:audit": "node --experimental-strip-types --test scripts/audit/test/*.test.mjs",
+    "test:audit": "node --experimental-strip-types --import ./scripts/audit/test/register-ts-resolve.mjs --test scripts/audit/test/*.test.mjs",
     "audit:crawl": "node scripts/audit/crawl.mjs"
   },
   "dependencies": {

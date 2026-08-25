@@ -1092,36 +1092,56 @@ export function computeUpcomingEvents(today: Date, daysAhead = 365): PlanetaryEv
 }
 
 // Rahu/Ketu shift sign together (Ketu sits exactly 180° from Rahu, see kundali.ts's
-// `ketu: n360(rahu + 180)`) roughly every 18 months — the same rarity + high-astrological-
-// -significance bar that earns eclipses their unfiltered retention below. Unlike eclipses,
-// whose dates come from an external ephemeris catalogue (KNOWN_ECLIPSES has no formula to
-// fall back on for past dates), node longitude is a deterministic mean-node polynomial
-// (astro-core.ts's rahuLongitude/ketuLongitude) — a past date is exactly as computable as a
-// future one, so past transits are found by walking backward day-by-day and re-running the
+// `ketu: n360(rahu + 180)`) roughly every 18 months, and Saturn shifts sign roughly every
+// 2.5 years (Shani Peyarchi, the Sadesati onset/end trigger) — the same rarity + high-
+// astrological-significance bar that earns eclipses their unfiltered retention below.
+// Unlike eclipses, whose dates come from an external ephemeris catalogue (KNOWN_ECLIPSES
+// has no formula to fall back on for past dates), both node longitude (astro-core.ts's
+// rahuLongitude/ketuLongitude, a deterministic mean-node polynomial) and Saturn's longitude
+// (astronomy-engine, also deterministic) are exactly as computable in the past as in the
+// future, so past transits are found by walking backward day-by-day and re-running the
 // same sidereal-sign-crossing detection computeUpcomingEvents uses going forward, rather
-// than needing a hardcoded historical table. Mirrors the forward scanner's rahu-specific
-// bypass of the ">1 day" re-entry check (Rahu is always retrograde, so a detected sign
-// change is never a spurious double-crossing) — see the `planet === 'rahu'` branch above.
-function getPastRahuTransits(today: Date, daysBack: number): PlanetaryEvent[] {
+// than needing a hardcoded historical table.
+//
+// Rahu is always retrograde, so any detected sign change is unambiguous — see the
+// `planet === 'rahu'` bypass below, mirroring computeUpcomingEvents' TRANSIT_PLANETS loop.
+// Saturn genuinely stations and can retrograde back across a boundary it just crossed, then
+// cross forward again later — so for Saturn this requires the new sign to hold for a
+// further day before counting it, the same ">1 day settles" gate computeUpcomingEvents
+// applies going forward (see its `sign2 === sign1 || planet === 'rahu'` check).
+function getPastSignTransits(planet: 'rahu' | 'shani', today: Date, daysBack: number): PlanetaryEvent[] {
   const toJD   = jdFromDate(today);
   const fromJD = toJD - daysBack;
   const events: PlanetaryEvent[] = [];
 
-  let prev = allTropicalLons(fromJD);
-  for (let jd = fromJD + 1; jd <= toJD; jd++) {
-    const curr = allTropicalLons(jd);
-    const sid0 = (prev.rahu - prev.ayanamsha + 360000) % 360;
-    const sid1 = (curr.rahu - curr.ayanamsha + 360000) % 360;
+  // One extra day ahead (toJD+1) so the Saturn ">1 day settles" gate has a sample even for
+  // a crossing detected on the very last day of the window.
+  const snaps: ReturnType<typeof allTropicalLons>[] = [];
+  for (let jd = fromJD; jd <= toJD + 1; jd++) snaps.push(allTropicalLons(jd));
+  // snaps[i] corresponds to JD (fromJD + i)
+
+  for (let i = 1; i <= daysBack; i++) {
+    const s0 = snaps[i - 1];
+    const s1 = snaps[i];
+    const sid0 = (s0[planet] - s0.ayanamsha + 360000) % 360;
+    const sid1 = (s1[planet] - s1.ayanamsha + 360000) % 360;
     const sign0 = Math.floor(sid0 / 30) % 12;
     const sign1 = Math.floor(sid1 / 30) % 12;
 
     if (sign0 !== sign1) {
-      const frac = interpolateCrossing(sid0, sid1, sign1 * 30);
-      const transitJD = (jd - 1) + frac;
-      const ev = signTransitEvent('rahu', sign1, transitJD, today);
-      if (ev.daysAway < 0) events.push(ev);
+      let confirmed = planet === 'rahu';
+      if (!confirmed) {
+        const s2 = snaps[i + 1];
+        const sid2 = (s2[planet] - s2.ayanamsha + 360000) % 360;
+        confirmed = Math.floor(sid2 / 30) % 12 === sign1;
+      }
+      if (confirmed) {
+        const frac = interpolateCrossing(sid0, sid1, sign1 * 30);
+        const transitJD = fromJD + (i - 1) + frac;
+        const ev = signTransitEvent(planet, sign1, transitJD, today);
+        if (ev.daysAway < 0) events.push(ev);
+      }
     }
-    prev = curr;
   }
   return events;
 }
@@ -1132,10 +1152,11 @@ function getPastRahuTransits(today: Date, daysBack: number): PlanetaryEvent[] {
 // forward-only window). Unlike sign transits/retrograde stations (routine, many per year,
 // not archived), past eclipse detail pages are kept reachable at their original URL going
 // back through the full KNOWN_ECLIPSES table, mirroring festivals.ts's unfiltered retention.
-// Rahu/Ketu axis-shift transits (see getPastRahuTransits above) get the same treatment for
-// the same reason; every other sign transit (Sun, Mercury, Venus, Mars, Jupiter, Saturn —
-// see computeUpcomingEvents's TRANSIT_PLANETS) and every retrograde/direct station or
-// conjunction remains routine and intentionally keeps rolling off once past.
+// Rahu/Ketu axis-shift transits and Saturn's sign transits (see getPastSignTransits above)
+// get the same treatment for the same reason (rarity + outsized Jyotish significance —
+// Sadesati onset/end for Saturn); every other sign transit (Sun, Mercury, Venus, Mars,
+// Jupiter — see computeUpcomingEvents's TRANSIT_PLANETS) and every retrograde/direct
+// station or conjunction remains routine and intentionally keeps rolling off once past.
 export function getPastSignificantEvents(today: Date, daysBack = 1000): PlanetaryEvent[] {
   const todayMS = today.getTime();
   const events: PlanetaryEvent[] = [];
@@ -1146,7 +1167,8 @@ export function getPastSignificantEvents(today: Date, daysBack = 1000): Planetar
       events.push({ ...eclipse, daysAway });
     }
   }
-  events.push(...getPastRahuTransits(today, daysBack));
+  events.push(...getPastSignTransits('rahu', today, daysBack));
+  events.push(...getPastSignTransits('shani', today, daysBack));
   return events.sort((a, b) => a.daysAway - b.daysAway);
 }
 
