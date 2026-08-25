@@ -4439,4 +4439,133 @@ Shastaramishtavaradam sharanam prapadye.`,
     meaning: 'This pancharatnam venerates Ayyappa (also called Shasta), son of Shiva and Mohini (an incarnation of Vishnu), lord of Sabarimala and Ponnambalamedu, praising his form seated in meditation, his wisdom of the Vedas, and his role as protector of devotees.', meaningHi: 'यह पञ्चरत्नम अयप्पा (जिन्हें शास्ता भी कहा जाता है) की वंदना करता है, जो शिव और मोहिनी (विष्णु का एक अवतार) के पुत्र, सबरीमाला और पोन्नंबलमेडु के स्वामी हैं, ध्यानमग्न बैठी उनकी मुद्रा, वेदों में उनकी विद्वता, और भक्तों के रक्षक के रूप में उनकी भूमिका की स्तुति करते हुए।',
     benefits: 'Recited daily by Ayyappa devotees during the Mandala-Makaravilakku pilgrimage season and as part of the 41-day vratam preceding the Sabarimala yatra.', benefitsHi: 'अयप्पा भक्तों द्वारा मंडल-मकरविलक्कु तीर्थयात्रा के मौसम में प्रतिदिन, तथा सबरीमाला यात्रा से पूर्व के 41-दिवसीय व्रतम के भाग के रूप में पाठ किया जाता है।',
   },
+  {
+    slug: 'bajrang-baan',
+    title: 'Bajrang Baan',
+    titleHi: 'बजरंग बाण',
+    metaTitle: 'Bajrang Baan Lyrics — PanchangPath',
+    deity: 'Hanuman', deityHi: 'श्री हनुमान जी',
+    icon: '🐒',
+    lyricsHi: `॥ दोहा ॥
+निश्चय प्रेम प्रतीति ते, बिनय करै सनमान।
+तेहि के कारज सकल शुभ, सिद्ध करै हनुमान॥
+
+॥ चौपाई ॥
+जय हनुमन्त सन्त हितकारी। सुनि लीजै प्रभु अरज हमारी॥
+जन के काज विलम्ब न कीजै। आतुर दौरि महा सुख दीजै॥
+
+जैसे कूदि सिन्धु वहि पारा। सुरसा बदन पैठि बिस्तारा॥
+आगे जाय लंकिनी रोका। मारेहु लात गई सुर लोका॥
+
+जाय विभीषण को सुख दीन्हा। सीता निरखि परम पद लीन्हा॥
+बाग उजारि सिन्धु महं बोरा। अति आतुर यम कातर तोरा॥
+
+अक्षय कुमार मारि संहारा। लूम लपेटि लंक को जारा॥
+लाह समान लंक जरि गई। जय जय धुनि सुर पुर महं भई॥
+
+अब विलम्ब केहि कारण स्वामी। कृपा करहुं उर अन्तर्यामी॥
+जय जय लक्ष्मण प्राण के दाता। आतुर होइ दुःख करहुं निपाता॥
+
+जय गिरिधर जय जय सुख सागर। सुर समूह समरथ भटनागर॥
+ॐ हनु हनु हनु हनु हनुमन्त हठीले। बैरिहिं मारू बज्र की कीले॥
+
+गदा बज्र लै बैरिहिं मारो। महाराज प्रभु दास उबारो॥
+ॐकार हुंकार महाप्रभु धावो। बज्र गदा हनु विलम्ब न लावो॥
+
+ॐ ह्रीं ह्रीं ह्रीं हनुमन्त कपीसा। ॐ हुं हुं हुं हनु अरि उर शीशा॥
+सत्य होउ हरि शपथ पायके। रामदूत धरु मारु धाय के॥
+
+जय जय जय हनुमन्त अगाधा। दुःख पावत जन केहि अपराधा॥
+पूजा जप तप नेम अचारा। नहिं जानत कछु दास तुम्हारा॥
+
+वन उपवन मग गिरि गृह माहीं। तुमरे बल हम डरपत नाहीं॥
+पाय परौं कर जोरि मनावों। यह अवसर अब केहि गोहरावों॥
+
+जय अंजनि कुमार बलवन्ता। शंकर सुवन धीर हनुमन्ता॥
+बदन कराल काल कुल घालक। राम सहाय सदा प्रतिपालक॥
+
+भूत प्रेत पिशाच निशाचर। अग्नि बैताल काल मारीमर॥
+इन्हें मारु तोहि शपथ राम की। राखु नाथ मरजाद नाम की॥
+
+जनकसुता हरि दास कहावो। ताकी शपथ विलम्ब न लावो॥
+जय जय जय धुनि होत अकाशा। सुमिरत होत दुसह दुःख नाशा॥
+
+चरण शरण करि जोरि मनावों। यहि अवसर अब केहि गोहरावों॥
+उठु उठु चलु तोहिं राम दुहाई। पांय परौं कर जोरि मनाई॥
+
+ॐ चं चं चं चं चपल चलन्ता। ॐ हनु हनु हनु हनु हनुमन्ता॥
+ॐ हं हं हांक देत कपि चञ्चल। ॐ सं सं सहम पराने खल दल॥
+
+अपने जन को तुरत उबारो। सुमिरत होय आनन्द हमारो॥
+यहि बजरंग बाण जेहि मारो। ताहि कहो फिर कौन उबारो॥
+
+पाठ करै बजरंग बाण की। हनुमत रक्षा करै प्राण की॥
+यह बजरंग बाण जो जापै। तेहि ते भूत प्रेत सब कांपे॥
+
+धूप देय अरु जपै हमेशा। ताके तन नहिं रहे कलेशा॥
+
+॥ दोहा ॥
+प्रेम प्रतीतिहिं कपि भजै, सदा धरै उर ध्यान।
+तेहि के कारज सकल शुभ, सिद्ध करै हनुमान॥`,
+    transliteration: `Nishchay prem pratiti te, binay kare sanmaan,
+Tehi ke karaj sakal shubh, siddh kare Hanuman.
+
+Jai Hanumant sant hitkari, suni leejai prabhu araj hamari.
+Jan ke kaaj vilamb na keeje, aatur dauri maha sukh deeje.
+
+Jaise koodi sindhu vahi paara, Sursa badan paithi bistaara.
+Aage jaay Lankini roka, maarehu laat gayi sur loka.
+
+Jaay Vibheeshan ko sukh deenha, Sita nirakhi param pad leenha.
+Baag ujaari sindhu mahan bora, ati aatur Yam kaatar tora.
+
+Akshay Kumar maari sanhaara, loom lapeti Lank ko jaara.
+Laah samaan Lank jari gayi, jai jai dhuni sur pur mahan bhayi.
+
+Ab vilamb kehi kaaran swami, kripa karahun ur antaryami.
+Jai jai Lakshman praan ke daata, aatur hoi dukh karahun nipaata.
+
+Jai Giridhar jai jai sukh saagar, sur samooh samarath bhatnaagar.
+Om hanu hanu hanu hanu Hanumant hatheele, bairihin maaru vajra ki keele.
+
+Gada vajra lai bairihin maaro, maharaj prabhu daas ubaaro.
+Omkaar hunkaar mahaprabhu dhaavo, vajra gada hanu vilamb na laavo.
+
+Om hreem hreem hreem Hanumant kapeesa, Om hun hun hun hanu ari ur sheesha.
+Satya hou Hari shapath paayke, Ramdoot dharu maaru dhaay ke.
+
+Jai jai jai Hanumant agaadha, dukh paavat jan kehi apraadha.
+Puja jap tap nem achaara, nahin jaanat kachhu daas tumhaara.
+
+Van upvan mag giri grih maahin, tumre bal ham darpat naahin.
+Paay parun kar jori manaavon, yah avsar ab kehi goharaavon.
+
+Jai Anjani Kumar balvanta, Shankar suvan dheer Hanumanta.
+Badan karaal kaal kul ghaalak, Ram sahaay sada pratipaalak.
+
+Bhoot pret pishaach nishaachar, agni betaal kaal maarimar.
+Inhen maaru tohi shapath Ram ki, raakhu naath marjaad naam ki.
+
+Janaksuta Hari daas kahaavo, taki shapath vilamb na laavo.
+Jai jai jai dhuni hot akaasha, sumirat hot dusah dukh naasha.
+
+Charan sharan kari jori manaavon, yahi avsar ab kehi goharaavon.
+Uthu uthu chalu tohin Ram duhaai, paanay parun kar jori manaai.
+
+Om chan chan chan chan chapal chalanta, Om hanu hanu hanu hanu Hanumanta.
+Om han han haank det kapi chanchal, Om san san saham paraane khal dal.
+
+Apne jan ko turat ubaaro, sumirat hoy aanand hamaaro.
+Yahi Bajrang Baan jehi maaro, taahi kaho phir kaun ubaaro.
+
+Paath kare Bajrang Baan ki, Hanumat raksha kare praan ki.
+Yah Bajrang Baan jo jaape, tehi te bhoot pret sab kaampe.
+
+Dhoop dey aru jape hamesha, taake tan nahin rahe kalesha.
+
+Prem pratitihin kapi bhajai, sada dharai ur dhyaan,
+Tehi ke karaj sakal shubh, siddh kare Hanuman.`,
+    meaning: 'Bajrang Baan ("the arrow of Bajrang Bali," a name for Hanuman) is a Hindi devotional composition traditionally attributed to Goswami Tulsidas, the same poet-saint credited with the Hanuman Chalisa, and follows a similar chaupai-and-doha structure. It recounts episodes from Hanuman\'s life — swallowing the sun as an infant, leaping across the ocean to Lanka, subduing the demoness Lankini, meeting Vibhishan and Sita, burning Lanka with his tail, and coming to Lakshman\'s aid — while invoking his protection through verses laced with bija mantras (Om hanu hanu hanu..., Om hreem hreem hreem...). Some printed versions include additional verses beyond this text; this page follows the shorter, more commonly printed form.', meaningHi: 'बजरंग बाण ("बजरंग बली अर्थात हनुमान जी का बाण") एक हिंदी भक्ति रचना है, जिसे परंपरागत रूप से गोस्वामी तुलसीदास — हनुमान चालीसा के रचयिता — की कृति माना जाता है, और यह चौपाई-दोहा शैली में रचित है। इसमें हनुमान जी के जीवन की घटनाओं — शिशु रूप में सूर्य को निगलना, समुद्र लांघकर लंका पहुंचना, लंकिनी का दमन, विभीषण व सीता से भेंट, लंका दहन, और लक्ष्मण की सहायता — का वर्णन बीज मंत्रों (ॐ हनु हनु हनु..., ॐ ह्रीं ह्रीं ह्रीं...) के साथ किया गया है। कुछ मुद्रित संस्करणों में इससे अधिक छंद भी मिलते हैं; यह पृष्ठ अधिक प्रचलित, संक्षिप्त रूप का अनुसरण करता है।',
+    benefits: 'The verses themselves describe protection from evil spirits, ghosts and other afflictions for those who recite them with faith, and state that offering dhoop (incense) while chanting keeps the reciter free from bodily suffering. Their urgent, imploring tone ("uthu uthu chalu" — rise, rise, come at once) reflects why devotees traditionally turn to this text when seeking Hanuman\'s swift help in a moment of difficulty, rather than as routine daily recitation.', benefitsHi: 'इसके छंदों में स्वयं यह वर्णित है कि श्रद्धापूर्वक पाठ करने वालों को भूत-प्रेत तथा अन्य कष्टों से रक्षा मिलती है, और जप के साथ धूप देने से पाठकर्ता का शरीर क्लेश से मुक्त रहता है। इसका तीव्र, आर्त स्वर ("उठु उठु चलु" — उठो, उठो, शीघ्र आओ) यह दर्शाता है कि भक्त परंपरागत रूप से संकट के क्षणों में हनुमान जी की त्वरित सहायता पाने हेतु इस पाठ का सहारा लेते हैं, न कि नियमित दैनिक पाठ के रूप में।',
+  },
 ];
