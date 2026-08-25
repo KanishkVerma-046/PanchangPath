@@ -35,38 +35,23 @@ const GOWRI_STYLE: Record<string,{bg:string;fg:string}> = {
 };
 const gowriQLabel = (q: string) => q==='best'?'Best':q==='good'?'Good':q==='neutral'?'Neutral':'Avoid';
 
-// Mirrors the three Q&A cards the client <script> below renders unconditionally on load
-// (renderInfoGrid()) — text kept in sync by hand since that block isn't prerendered. Only
-// genuine Q&A-shaped content on this page; nothing else here qualifies for FAQPage schema.
+// Static reference content (not date/location-dependent) — prerendered directly at build
+// time instead of client-JS-injected, same pattern as the Abhijit "What is" panel. Also
+// backs the FAQPage schema below, so the two stay in sync by construction.
+const PANCHAKA_INFO = [
+  { title: 'What is Panchaka?', titleHi: 'पंचक क्या है?', text: 'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.', textHi: 'पंचक का अर्थ है "पांच का समूह।" यह तब होता है जब चंद्रमा अंतिम 5 नक्षत्रों से गुजरता है: धनिष्ठा (उत्तरार्ध), शतभिषा, पूर्वाभाद्रपद, उत्तराभाद्रपद और रेवती — जो कुंभ और मीन राशियों में फैले हैं। अवधि: प्रत्येक माह लगभग 5 दिन।' },
+  { title: 'What to avoid in Panchaka?', titleHi: 'पंचक में क्या टालें?', text: 'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.', textHi: 'मृत्यु पंचक: अंतिम संस्कार से बचें। अग्नि पंचक: अग्नि संबंधी कार्यों से बचें। राज पंचक: दक्षिण दिशा की यात्रा से बचें। चोर पंचक: कीमती वस्तुओं की सुरक्षा करें। रोग पंचक: स्वास्थ्य जोखिमों से बचें। सामान्य दैनिक कार्य प्रायः प्रभावित नहीं होते।' },
+  { title: 'How is Panchak different from Rahu Kaal?', titleHi: 'पंचक, राहु काल से कैसे अलग है?', text: "They're unrelated systems on different time scales. Rahu Kaal is a short daily window (roughly 75-105 minutes) that occurs once every single day, timed off that day's sunrise-to-sunset span. Panchaka is a lunar-calendar period of about 5 consecutive days each month, set by which Nakshatra the Moon occupies. A date can fall in both, either, or neither — checking one doesn't tell you anything about the other.", textHi: 'ये अलग-अलग समयावधि की स्वतंत्र प्रणालियां हैं। राहु काल एक छोटी दैनिक अवधि (लगभग 75-105 मिनट) है जो हर दिन उस दिन के सूर्योदय-सूर्यास्त के अनुसार तय होती है। पंचक चंद्र-आधारित लगभग 5 दिनों की मासिक अवधि है, जो चंद्रमा के नक्षत्र पर निर्भर करती है। कोई तिथि दोनों में, किसी एक में, या किसी में भी नहीं पड़ सकती — एक की जांच दूसरे के बारे में कुछ नहीं बताती।' },
+];
+
 const panchakaFaqJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'What is Panchaka?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What to avoid in Panchaka?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'How is Panchak different from Rahu Kaal?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: "They're unrelated systems on different time scales. Rahu Kaal is a short daily window (roughly 75-105 minutes) that occurs once every single day, timed off that day's sunrise-to-sunset span. Panchaka is a lunar-calendar period of about 5 consecutive days each month, set by which Nakshatra the Moon occupies. A date can fall in both, either, or neither — checking one doesn't tell you anything about the other.",
-      },
-    },
-  ],
+  mainEntity: PANCHAKA_INFO.map(item => ({
+    '@type': 'Question',
+    name: item.title,
+    acceptedAnswer: { '@type': 'Answer', text: item.text },
+  })),
 };
 ---
 
@@ -159,8 +144,17 @@ const panchakaFaqJsonLd = {
         </div>
       </div>
 
-      <!-- Panchaka info -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;" id="pk-info-grid"></div>
+      <!-- Panchaka info: static reference content, prerendered at build time (not
+           date/location-dependent) so it's visible to no-JS crawlers, same pattern as
+           Abhijit's "What is" panel. Language toggle handled by the generic [data-hi] walker. -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;" id="pk-info-grid">
+        {PANCHAKA_INFO.map(item => (
+          <div class="card" style="padding:16px;">
+            <p data-hi={item.titleHi} style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">{item.title}</p>
+            <p data-hi={item.textHi} style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">{item.text}</p>
+          </div>
+        ))}
+      </div>
 
       <!-- Gowri legend -->
       <h3 data-hi="गौरी पंचांगम गाइड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Gowri Panchangam Guide</h3>
@@ -325,17 +319,6 @@ function calculate(){
   }
 }
 
-function renderInfoGrid(){
-  const infoGrid=document.getElementById('pk-info-grid');
-  if(!infoGrid) return;
-  infoGrid.innerHTML=[
-    {title:'What is Panchaka?',titleHi:'पंचक क्या है?',text:'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.',textHi:'पंचक का अर्थ है "पांच का समूह।" यह तब होता है जब चंद्रमा अंतिम 5 नक्षत्रों से गुजरता है: धनिष्ठा (उत्तरार्ध), शतभिषा, पूर्वाभाद्रपद, उत्तराभाद्रपद और रेवती — जो कुंभ और मीन राशियों में फैले हैं। अवधि: प्रत्येक माह लगभग 5 दिन।'},
-    {title:'What to avoid in Panchaka?',titleHi:'पंचक में क्या टालें?',text:'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.',textHi:'मृत्यु पंचक: अंतिम संस्कार से बचें। अग्नि पंचक: अग्नि संबंधी कार्यों से बचें। राज पंचक: दक्षिण दिशा की यात्रा से बचें। चोर पंचक: कीमती वस्तुओं की सुरक्षा करें। रोग पंचक: स्वास्थ्य जोखिमों से बचें। सामान्य दैनिक कार्य प्रायः प्रभावित नहीं होते।'},
-    {title:'How is Panchak different from Rahu Kaal?',titleHi:'पंचक, राहु काल से कैसे अलग है?',text:'They\'re unrelated systems on different time scales. Rahu Kaal is a short daily window (roughly 75-105 minutes) that occurs once every single day, timed off that day\'s sunrise-to-sunset span. Panchaka is a lunar-calendar period of about 5 consecutive days each month, set by which Nakshatra the Moon occupies. A date can fall in both, either, or neither — checking one doesn\'t tell you anything about the other.',textHi:'ये अलग-अलग समयावधि की स्वतंत्र प्रणालियां हैं। राहु काल एक छोटी दैनिक अवधि (लगभग 75-105 मिनट) है जो हर दिन उस दिन के सूर्योदय-सूर्यास्त के अनुसार तय होती है। पंचक चंद्र-आधारित लगभग 5 दिनों की मासिक अवधि है, जो चंद्रमा के नक्षत्र पर निर्भर करती है। कोई तिथि दोनों में, किसी एक में, या किसी में भी नहीं पड़ सकती — एक की जांच दूसरे के बारे में कुछ नहीं बताती।'},
-  ].map(i=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?i.titleHi:i.title}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">${isHindi?i.textHi:i.text}</p></div>`).join('');
-}
-renderInfoGrid();
-
 function renderGowriLegend(){
   const gowriLegend=document.getElementById('gowri-legend');
   if(!gowriLegend) return;
@@ -363,7 +346,6 @@ function applyPageLang(hindi: boolean) {
     el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
   });
   calculate();
-  renderInfoGrid();
   renderGowriLegend();
 }
 document.addEventListener('langchange', (e: Event) => {

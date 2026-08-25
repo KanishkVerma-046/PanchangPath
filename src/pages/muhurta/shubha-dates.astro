@@ -1,5 +1,32 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { MUHURTA_CRITERIA } from '../../lib/muhurta';
+
+// Criteria panel: static reference content — prerendered directly at build time instead of
+// client-JS-injected, same pattern as the Abhijit "What is" panel. Shows the default activity
+// ('general', matching the client script's `currentActivity` default now that Vehicle/Property
+// have their own static routes) so it's visible to no-JS crawlers. Mirrors CRITERIA_DESC below.
+const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAK_NAMES_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
+const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+const TITHI_NAMES_HI=['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा','प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','अमावस्या'];
+const VARA_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const VARA_NAMES_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const CRITERIA_DESC: Record<'business'|'general', string> = {
+  business: 'Best nakshatras: Ashwini, Rohini, Mrigashira, Punarvasu, Pushya, Uttara Phalguni, Hasta, Swati, Uttara Ashadha, Shravana, Revati. Mercury (Wed) and Jupiter (Thu) days are ideal.',
+  general: 'Broadly auspicious Nakshatras: Rohini, Mrigashira, Punarvasu, Pushya, Uttara Phalguni, Hasta, Swati, Anuradha, Uttara Ashadha, Shravana, Revati.',
+};
+const CRITERIA_DESC_HI: Record<'business'|'general', string> = {
+  business: 'सर्वोत्तम नक्षत्र: अश्विनी, रोहिणी, मृगशिरा, पुनर्वसु, पुष्य, उत्तर फाल्गुनी, हस्त, स्वाति, उत्तराषाढ़ा, श्रावण, रेवती। बुध (बुधवार) और गुरु (गुरुवार) के दिन आदर्श हैं।',
+  general: 'व्यापक रूप से शुभ नक्षत्र: रोहिणी, मृगशिरा, पुनर्वसु, पुष्य, उत्तर फाल्गुनी, हस्त, स्वाति, अनुराधा, उत्तराषाढ़ा, श्रावण, रेवती।',
+};
+const critSrc = MUHURTA_CRITERIA.general;
+const SD_CRITERIA = [
+  { label: 'Description', labelHi: 'विवरण', text: CRITERIA_DESC.general, textHi: CRITERIA_DESC_HI.general },
+  { label: 'Good Nakshatras', labelHi: 'शुभ नक्षत्र', text: critSrc.goodNakshatras.map(i => NAK_NAMES[i]).join(', '), textHi: critSrc.goodNakshatras.map(i => NAK_NAMES_HI[i]).join(', ') },
+  { label: 'Good Tithis', labelHi: 'शुभ तिथियां', text: critSrc.goodTithis.map(i => TITHI_NAMES[i]).join(', '), textHi: critSrc.goodTithis.map(i => TITHI_NAMES_HI[i]).join(', ') },
+  { label: 'Good Weekdays', labelHi: 'शुभ वार', text: critSrc.goodVaras.map(i => VARA_NAMES[i]).join(', '), textHi: critSrc.goodVaras.map(i => VARA_NAMES_HI[i]).join(', ') },
+];
 ---
 
 <Layout title="Shubha Dates — Business & General Muhurat — PanchangPath" description="Find auspicious dates for a business launch or any important activity — scored live by Nakshatra, Tithi, Vara and Yoga. Vehicle and Property Purchase have their own dedicated finders.">
@@ -71,8 +98,18 @@ import Layout from '../../layouts/Layout.astro';
         <div id="sd-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:40px;"></div>
       </div>
 
-      <!-- Criteria cards by activity -->
-      <div id="sd-criteria" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:24px;"></div>
+      <!-- Criteria cards by activity: static reference content, prerendered at build time for
+           the default 'general' activity so it's visible to no-JS crawlers, same pattern as
+           Abhijit's "What is" panel. Client JS overwrites this when the visitor switches tabs;
+           language toggle is handled by the generic [data-hi] walker. -->
+      <div id="sd-criteria" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:24px;">
+        {SD_CRITERIA.map(c => (
+          <div class="card" style="padding:14px;">
+            <p data-hi={c.labelHi} style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">{c.label}</p>
+            <p data-hi={c.textHi} style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">{c.text}</p>
+          </div>
+        ))}
+      </div>
 
       <!-- How the score works -->
       <div class="card" style="padding:24px;">

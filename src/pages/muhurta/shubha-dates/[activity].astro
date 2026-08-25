@@ -1,6 +1,6 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { SHUBHA_DATES_ACTIVITY_PAGES } from '../../../lib/muhurta';
+import { SHUBHA_DATES_ACTIVITY_PAGES, MUHURTA_CRITERIA } from '../../../lib/muhurta';
 
 // Only Vehicle and Property get their own static route (Task 3, 2026-08-22) — each was
 // previously only reachable via /muhurta/shubha-dates?activity=vehicle|property, which
@@ -17,6 +17,31 @@ export function getStaticPaths() {
 
 const { activity } = Astro.props as { activity: keyof typeof SHUBHA_DATES_ACTIVITY_PAGES };
 const meta = SHUBHA_DATES_ACTIVITY_PAGES[activity];
+
+// Criteria panel: static reference content (depends only on this page's fixed `activity`,
+// not date/location) — prerendered directly at build time instead of client-JS-injected,
+// same pattern as the Abhijit "What is" panel. Mirrors the client script's CRITERIA_DESC.
+const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
+const NAK_NAMES_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
+const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima','Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Amavasya'];
+const TITHI_NAMES_HI=['प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','पूर्णिमा','प्रतिपदा','द्वितीया','तृतीया','चतुर्थी','पंचमी','षष्ठी','सप्तमी','अष्टमी','नवमी','दशमी','एकादशी','द्वादशी','त्रयोदशी','चतुर्दशी','अमावस्या'];
+const VARA_NAMES=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const VARA_NAMES_HI=['रविवार','सोमवार','मंगलवार','बुधवार','गुरुवार','शुक्रवार','शनिवार'];
+const CRITERIA_DESC: Record<'vehicle'|'property', string> = {
+  vehicle: 'Best nakshatras: Ashwini (speed), Rohini, Mrigashira, Punarvasu, Pushya, Hasta, Swati, Shravana, Revati. Good on Monday, Wednesday, Thursday, Friday, and Sunday. Avoid Bharani, Ardra, Ashlesha, Jyeshtha, Mula, Shatabhisha, Purva Bhadrapada.',
+  property: 'Best nakshatras: Rohini, Punarvasu, Pushya, Uttara Phalguni, Hasta, Shravana, Dhanishtha, Uttara Bhadrapada, Revati. Avoid Tuesday (Mars) and Saturday (Saturn).',
+};
+const CRITERIA_DESC_HI: Record<'vehicle'|'property', string> = {
+  vehicle: 'सर्वोत्तम नक्षत्र: अश्विनी (गति), रोहिणी, मृगशिरा, पुनर्वसु, पुष्य, हस्त, स्वाति, श्रावण, रेवती। सोमवार, बुधवार, गुरुवार, शुक्रवार और रविवार को शुभ। भरणी, आर्द्रा, आश्लेषा, ज्येष्ठा, मूल, शतभिषा, पूर्वभाद्रपद से बचें।',
+  property: 'सर्वोत्तम नक्षत्र: रोहिणी, पुनर्वसु, पुष्य, उत्तर फाल्गुनी, हस्त, श्रावण, धनिष्ठा, उत्तर भाद्रपदा, रेवती। मंगलवार (मंगल) और शनिवार (शनि) से बचें।',
+};
+const critSrc = MUHURTA_CRITERIA[activity];
+const SD_CRITERIA = [
+  { label: 'Description', labelHi: 'विवरण', text: CRITERIA_DESC[activity], textHi: CRITERIA_DESC_HI[activity] },
+  { label: 'Good Nakshatras', labelHi: 'शुभ नक्षत्र', text: critSrc.goodNakshatras.map(i => NAK_NAMES[i]).join(', '), textHi: critSrc.goodNakshatras.map(i => NAK_NAMES_HI[i]).join(', ') },
+  { label: 'Good Tithis', labelHi: 'शुभ तिथियां', text: critSrc.goodTithis.map(i => TITHI_NAMES[i]).join(', '), textHi: critSrc.goodTithis.map(i => TITHI_NAMES_HI[i]).join(', ') },
+  { label: 'Good Weekdays', labelHi: 'शुभ वार', text: critSrc.goodVaras.map(i => VARA_NAMES[i]).join(', '), textHi: critSrc.goodVaras.map(i => VARA_NAMES_HI[i]).join(', ') },
+];
 
 const OTHER_TABS = [
   { id: 'vehicle',  label: '🚗 Vehicle Purchase',  labelHi: '🚗 वाहन खरीद',    href: '/muhurta/shubha-dates/vehicle' },
@@ -78,8 +103,18 @@ const OTHER_TABS = [
         <div id="sd-list" style="display:flex;flex-direction:column;gap:10px;margin-bottom:40px;"></div>
       </div>
 
-      <!-- Criteria card for this activity -->
-      <div id="sd-criteria" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:24px;"></div>
+      <!-- Criteria card for this activity: static reference content, prerendered at build
+           time (depends only on this page's fixed activity, not date/location) so it's
+           visible to no-JS crawlers, same pattern as Abhijit's "What is" panel. Language
+           toggle handled by the generic [data-hi] walker. -->
+      <div id="sd-criteria" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:24px;">
+        {SD_CRITERIA.map(c => (
+          <div class="card" style="padding:14px;">
+            <p data-hi={c.labelHi} style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">{c.label}</p>
+            <p data-hi={c.textHi} style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">{c.text}</p>
+          </div>
+        ))}
+      </div>
 
       <!-- How the score works -->
       <div class="card" style="padding:24px;">
@@ -245,20 +280,6 @@ fromInput.value=now.toISOString().split('T')[0];
 const threeMonths=new Date(now); threeMonths.setMonth(threeMonths.getMonth()+3);
 toInput.value=threeMonths.toISOString().split('T')[0];
 
-function renderCriteria(){
-  const crit=CRITERIA[currentActivity];
-  const critEl=document.getElementById('sd-criteria');
-  if(critEl){
-    critEl.innerHTML=[
-      {label:isHindi?'विवरण':'Description',text:isHindi?crit.descHi:crit.desc},
-      {label:isHindi?'शुभ नक्षत्र':'Good Nakshatras',text:crit.naks.map(i=>isHindi?NAK_NAMES_HI[i]:NAK_NAMES[i]).join(', ')},
-      {label:isHindi?'शुभ तिथियां':'Good Tithis',text:crit.tithis.map(i=>isHindi?TITHI_NAMES_HI[i]:TITHI_NAMES[i]).join(', ')},
-      {label:isHindi?'शुभ वार':'Good Weekdays',text:crit.varas.map(i=>isHindi?VARA_NAMES_HI[i]:VARA_NAMES[i]).join(', ')},
-    ].map(c=>`<div class="card" style="padding:14px;"><p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">${c.label}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${c.text}</p></div>`).join('');
-  }
-}
-renderCriteria();
-
 function findDates(scroll=true){
   const fromStr=fromInput.value, toStr=toInput.value;
   const cityName=sel.value;
@@ -326,7 +347,6 @@ function applyPageLang(hindi: boolean) {
     if (!el.dataset.en) el.dataset.en = el.textContent || '';
     el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
   });
-  renderCriteria();
   const secEl = document.getElementById('sd-results');
   if (secEl && secEl.style.display === 'block') findDates(false);
 }

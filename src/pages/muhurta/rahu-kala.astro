@@ -24,39 +24,23 @@ const KALAM_META = [
   { key: 'yamaganda', slot: defaultSlots.yamaganda, name: 'Yamaganda', lord: 'Yama', color: '#374151', bg: '#f3f4f6', desc: 'Inauspicious — ruled by Yama. Avoid new ventures and travel.' },
 ];
 
-// Mirrors the "What is Rahu Kala?" / "What to avoid?" / "What are the remedies for Rahu Kala?"
-// cards the client <script> below renders unconditionally on load (renderInfo()) — text kept
-// in sync by hand since that block isn't prerendered. Only genuine Q&A-shaped content on this
-// page; nothing else here qualifies for FAQPage schema.
+// Static reference content (not date/location-dependent) — prerendered directly at build
+// time instead of client-JS-injected, same pattern as the Abhijit "What is" panel. Also
+// backs the FAQPage schema below, so the two stay in sync by construction.
+const KALAM_INFO = [
+  { title: 'What is Rahu Kala?', titleHi: 'राहु काल क्या है?', text: 'Rahu is the north lunar node — a shadow planet in Jyotish. During Rahu Kala (roughly one-eighth of daylight hours, typically 75-105 minutes depending on season and location), Rahu\'s malefic influence is strongest. Auspicious activities started during this time are believed to be obstructed.', textHi: 'राहु उत्तरी चंद्र नोड है — ज्योतिष में एक छाया ग्रह। राहु काल (दिन की लंबाई का लगभग आठवां हिस्सा, आमतौर पर मौसम और स्थान के अनुसार 75-105 मिनट) के दौरान राहु का अशुभ प्रभाव सबसे प्रबल होता है। इस दौरान शुरू किए गए शुभ कार्यों में बाधा आने की मान्यता है।' },
+  { title: 'What to avoid during Rahu Kala?', titleHi: 'राहु काल में क्या टालें?', text: 'Do not start new work, travel, sign contracts, or conduct ceremonies during Rahu Kala, Gulika Kala, or Yamaganda. Routine activities already in progress are unaffected.', textHi: 'राहु काल, गुलिक काल, या यमगण्ड के दौरान नया कार्य आरंभ न करें, यात्रा न करें, अनुबंध पर हस्ताक्षर न करें, या समारोह आयोजित न करें। पहले से चल रहे नियमित कार्य प्रभावित नहीं होते।' },
+  { title: 'What are the remedies for Rahu Kala?', titleHi: 'राहु काल के उपाय क्या हैं?', text: 'If you must work during Rahu Kala, pray to Lord Ganesha or chant "Om Rahave Namah" 108 times before starting. Alternatively, begin the work a minute before Rahu Kala starts.', textHi: 'यदि राहु काल के दौरान कार्य करना आवश्यक हो, तो आरंभ करने से पहले भगवान गणेश की प्रार्थना करें या "ॐ राहवे नमः" का 108 बार जप करें। वैकल्पिक रूप से, राहु काल शुरू होने से एक मिनट पहले कार्य आरंभ करें।' },
+];
+
 const rahuKalaFaqJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'What is Rahu Kala?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: "Rahu is the north lunar node — a shadow planet in Jyotish. During Rahu Kala (roughly one-eighth of daylight hours, typically 75-105 minutes depending on season and location), Rahu's malefic influence is strongest. Auspicious activities started during this time are believed to be obstructed.",
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What to avoid during Rahu Kala?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Do not start new work, travel, sign contracts, or conduct ceremonies during Rahu Kala, Gulika Kala, or Yamaganda. Routine activities already in progress are unaffected.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'What are the remedies for Rahu Kala?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'If you must work during Rahu Kala, pray to Lord Ganesha or chant "Om Rahave Namah" 108 times before starting. Alternatively, begin the work a minute before Rahu Kala starts.',
-      },
-    },
-  ],
+  mainEntity: KALAM_INFO.map(item => ({
+    '@type': 'Question',
+    name: item.title,
+    acceptedAnswer: { '@type': 'Answer', text: item.text },
+  })),
 };
 ---
 
@@ -128,8 +112,17 @@ const rahuKalaFaqJsonLd = {
         ))}
       </div>
 
-      <!-- Info -->
-      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;" id="kalam-info"></div>
+      <!-- Info: static reference content, prerendered at build time (not date/location-
+           dependent) so it's visible to no-JS crawlers, same pattern as Abhijit's "What is"
+           panel. Language toggle is handled by the generic [data-hi] walker in the script below. -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:24px;" id="kalam-info">
+        {KALAM_INFO.map(item => (
+          <div class="card" style="padding:16px;">
+            <p data-hi={item.titleHi} style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">{item.title}</p>
+            <p data-hi={item.textHi} style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">{item.text}</p>
+          </div>
+        ))}
+      </div>
 
       <!-- How it's calculated -->
       <div class="card" style="padding:24px;max-width:780px;">
@@ -295,17 +288,6 @@ function calculate(){
   }
 }
 
-function renderInfo(){
-  const info=document.getElementById('kalam-info');
-  if(!info) return;
-  info.innerHTML=[
-    {name:'What is Rahu Kala?',nameHi:'राहु काल क्या है?',text:'Rahu is the north lunar node — a shadow planet in Jyotish. During Rahu Kala (roughly one-eighth of daylight hours, typically 75-105 minutes depending on season and location), Rahu\'s malefic influence is strongest. Auspicious activities started during this time are believed to be obstructed.',textHi:'राहु उत्तरी चंद्र नोड है — ज्योतिष में एक छाया ग्रह। राहु काल (दिन की लंबाई का लगभग आठवां हिस्सा, आमतौर पर मौसम और स्थान के अनुसार 75-105 मिनट) के दौरान राहु का अशुभ प्रभाव सबसे प्रबल होता है। इस दौरान शुरू किए गए शुभ कार्यों में बाधा आने की मान्यता है।'},
-    {name:'What to avoid during Rahu Kala?',nameHi:'राहु काल में क्या टालें?',text:'Do not start new work, travel, sign contracts, or conduct ceremonies during Rahu Kala, Gulika Kala, or Yamaganda. Routine activities already in progress are unaffected.',textHi:'राहु काल, गुलिक काल, या यमगण्ड के दौरान नया कार्य आरंभ न करें, यात्रा न करें, अनुबंध पर हस्ताक्षर न करें, या समारोह आयोजित न करें। पहले से चल रहे नियमित कार्य प्रभावित नहीं होते।'},
-    {name:'What are the remedies for Rahu Kala?',nameHi:'राहु काल के उपाय क्या हैं?',text:'If you must work during Rahu Kala, pray to Lord Ganesha or chant "Om Rahave Namah" 108 times before starting. Alternatively, begin the work a minute before Rahu Kala starts.',textHi:'यदि राहु काल के दौरान कार्य करना आवश्यक हो, तो आरंभ करने से पहले भगवान गणेश की प्रार्थना करें या "ॐ राहवे नमः" का 108 बार जप करें। वैकल्पिक रूप से, राहु काल शुरू होने से एक मिनट पहले कार्य आरंभ करें।'},
-  ].map(item=>`<div class="card" style="padding:16px;"><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">${isHindi?item.nameHi:item.name}</p><p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.6;">${isHindi?item.textHi:item.text}</p></div>`).join('');
-}
-renderInfo();
-
 document.getElementById('rk-calc')?.addEventListener('click',calculate);
 calculate();
 
@@ -317,7 +299,6 @@ function applyPageLang(hindi: boolean) {
     el.textContent = hindi ? (el.dataset.hi as string) : (el.dataset.en as string);
   });
   calculate();
-  renderInfo();
 }
 document.addEventListener('langchange', (e: Event) => {
   applyPageLang((e as CustomEvent).detail.langCode === 'hi');
