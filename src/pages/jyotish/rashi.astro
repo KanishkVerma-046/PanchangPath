@@ -19,6 +19,11 @@ const FAQ_ITEMS = [
     a: "Mainly to convert your local birth time into the correct universal time for the calculation. This calculator's Moon-longitude computation (<code>moonLongitude()</code> in <code>astro-core.ts</code>, the same function used sitewide for Rashi, Nakshatra, and Panchang) is geocentric — it doesn't apply a location-specific (topocentric/parallax) correction, a real effect that can shift the Moon's apparent position by up to roughly a degree near the horizon. That's a characteristic of how this site currently computes the Moon everywhere, not a claim that location is astronomically irrelevant to the Moon's position in general. In practice, your city selection here matters for getting the time zone right; it's your Lagna, not your Rashi, that's genuinely location-sensitive.",
     html: true,
   },
+  {
+    q: 'What\'s the difference between Rashi and Nakshatra?',
+    a: 'Both come from the same Moon position, just sliced differently. Rashi divides the zodiac into 12 signs of 30° each; Nakshatra divides it into 27 lunar mansions of 13°20′ each. Because the two grids don\'t line up evenly, a single Rashi can span parts of two or more Nakshatras. See the <a href="/jyotish/nakshatra">Nakshatra calculator</a> for that separate 13°20′-based reading, including your Pada and naming syllable.',
+    html: true,
+  },
 ];
 ---
 
