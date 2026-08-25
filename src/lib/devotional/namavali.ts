@@ -126,6 +126,37 @@ export const NAMAVALIS: DevotionalItem[] = [
     benefits: 'Recited or used for Archana with lotus flowers on Fridays, during Diwali and Varalakshmi Vratam, invoking wealth, prosperity and well-being.', benefitsHi: 'शुक्रवार, दिवाली और वरलक्ष्मी व्रतम के दौरान कमल के फूलों से अर्चना के लिए पाठ या उपयोग किया जाता है, जो धन, समृद्धि और कल्याण का आह्वान करता है।',
   },
   {
+    slug: 'vishnu-ashtottara-shatanamavali',
+    title: 'Vishnu Ashtottara Shatanamavali',
+    titleHi: 'विष्णु अष्टोत्तरशतनामावली',
+    deity: 'Vishnu', deityHi: 'भगवान विष्णु',
+    icon: '🪷',
+    lyricsHi: `१. विष्णुः २. लक्ष्मीपतिः ३. कृष्णः ४. वैकुण्ठः ५. गरुडध्वजः ६. परब्रह्म ७. जगन्नाथः ८. वासुदेवः ९. त्रिविक्रमः १०. दैत्यान्तकः
+११. मधुरिपुः १२. तार्क्ष्यवाहनः १३. सनातनः १४. नारायणः १५. पद्मनाभः १६. हृषीकेशः १७. सुधाप्रदः १८. माधवः १९. पुण्डरीकाक्षः २०. स्थितिकर्ता
+२१. परात्परः २२. वनमाली २३. यज्ञरूपः २४. चक्रपाणिः २५. गदाधरः २६. उपेन्द्रः २७. केशवः २८. हंसः २९. समुद्रमथनः ३०. हरिः
+३१. गोविन्दः ३२. ब्रह्मजनकः ३३. कैटभासुरमर्दनः ३४. श्रीधरः ३५. कामजनकः ३६. शेषशायी ३७. चतुर्भुजः ३८. पाञ्चजन्यधरः ३९. श्रीमान् ४०. शार्ङ्गपाणिः
+४१. जनार्दनः ४२. पीताम्बरधरः ४३. देवः ४४. सूर्यचन्द्रविलोचनः ४५. मत्स्यरूपः ४६. कूर्मतनुः ४७. क्रोडरूपः ४८. नृकेसरी ४९. वामनः ५०. भार्गवः
+५१. रामः ५२. बली ५३. कल्की ५४. हयाननः ५५. विश्वम्भरः ५६. शिशुमारः ५७. श्रीकरः ५८. कपिलः ५९. ध्रुवः ६०. दत्तत्रेयः
+६१. अच्युतः ६२. अनन्तः ६३. मुकुन्दः ६४. दधिवामनः ६५. धन्वन्तरिः ६६. श्रीनिवासः ६७. प्रद्युम्नः ६८. पुरुषोत्तमः ६९. श्रीवत्सकौस्तुभधरः ७०. मुरारातिः
+७१. अधोक्षजः ७२. ऋषभः ७३. मोहिनीरूपधारी ७४. सङ्कर्षणः ७५. पृथुः ७६. क्षीराब्धिशायी ७७. भूतात्मा ७८. अनिरुद्धः ७९. भक्तवत्सलः ८०. नरः
+८१. गजेन्द्रवरदः ८२. त्रिधामा ८३. भूतभावनः ८४. श्वेतद्वीपसुवास्तव्यः ८५. सनकादिमुनिध्येयः ८६. भगवान् ८७. शङ्करप्रियः ८८. नीलकान्तः ८९. धराकान्तः ९०. वेदात्मा
+९१. बादरायणः ९२. भागीरथीजन्मभूमिपादपद्मः ९३. सतांप्रभुः ९४. स्वभूः ९५. विभुः ९६. घनश्यामः ९७. जगत्कारणः ९८. अव्ययः ९९. बुद्धावतारः १००. शान्तात्मा
+१०१. लीलामानुषविग्रहः १०२. दामोदरः १०३. विराड्रूपः १०४. भूतभव्यभवत्प्रभुः १०५. आदिदेवः १०६. देवदेवः १०७. प्रह्लादपरिपालकः १०८. श्रीमहाविष्णुः`,
+    transliteration: `1. Vishnuh 2. Lakshmipatih 3. Krishnah 4. Vaikunthah 5. Garudadhwajah 6. Parabrahma 7. Jagannathah 8. Vasudevah 9. Trivikramah 10. Daityantakah
+11. Madhuripuh 12. Tarkshyavahanah 13. Sanatanah 14. Narayanah 15. Padmanabhah 16. Hrishikeshah 17. Sudhapradah 18. Madhavah 19. Pundarikakshah 20. Sthitikarta
+21. Paratparah 22. Vanamali 23. Yajnarupah 24. Chakrapanih 25. Gadadharah 26. Upendrah 27. Keshavah 28. Hamsah 29. Samudramathanah 30. Harih
+31. Govindah 32. Brahmajanakah 33. Kaitabhasuramardanah 34. Shridharah 35. Kamajanakah 36. Sheshashayi 37. Chaturbhujah 38. Panchajanyadharah 39. Shriman 40. Sharngapanih
+41. Janardanah 42. Pitambaradharah 43. Devah 44. Suryachandravilochanah 45. Matsyarupah 46. Kurmatanuh 47. Krodarupah 48. Nrikesari 49. Vamanah 50. Bhargavah
+51. Ramah 52. Bali 53. Kalki 54. Hayananah 55. Vishwambharah 56. Shishumarah 57. Shrikarah 58. Kapilah 59. Dhruvah 60. Dattatreyah
+61. Achyutah 62. Anantah 63. Mukundah 64. Dadhivamanah 65. Dhanvantarih 66. Shrinivasah 67. Pradyumnah 68. Purushottamah 69. Shrivatsakaustubhadharah 70. Muraratih
+71. Adhokshajah 72. Rishabhah 73. Mohinirupadhari 74. Sankarshanah 75. Prithuh 76. Kshirabdhishayi 77. Bhutatma 78. Aniruddhah 79. Bhaktavatsalah 80. Narah
+81. Gajendravaradah 82. Tridhama 83. Bhutabhavanah 84. Shvetadvipasuvastavyah 85. Sanakadimunidhyeyah 86. Bhagavan 87. Shankarapriyah 88. Nilakanthah 89. Dharakantah 90. Vedatma
+91. Badarayanah 92. Bhagirathijanmabhumipadapadmah 93. Satamprabhuh 94. Svabhuh 95. Vibhuh 96. Ghanashyamah 97. Jagatkaranah 98. Avyayah 99. Buddhavatarah 100. Shantatma
+101. Lilamanushavigrahah 102. Damodarah 103. Viradrupah 104. Bhutabhavyabhavatprabhuh 105. Adidevah 106. Devadevah 107. Prahladaparipalakah 108. Shrimahavishnuh.`,
+    meaning: 'This is a list of 108 names of Lord Vishnu, preserver of the universe in the Trimurti, describing his cosmic forms and roles — Narayana (refuge of all beings), Padmanabha (lotus-naveled), Hrishikesha (lord of the senses) — his residence Vaikuntha and consort Lakshmi (Lakshmipati, Shrinivasa), and his major avataras including Matsya, Kurma, Krodarupa (Varaha), Nrikesari (Narasimha), Vamana, Bhargava (Parashurama), Rama, Krishna and Kalki.', meaningHi: 'यह भगवान विष्णु के 108 नामों की सूची है, जो त्रिमूर्ति में जगत के पालनकर्ता हैं, और जिनके ब्रह्माण्डीय रूपों तथा भूमिकाओं का वर्णन करती है — नारायण (सभी प्राणियों के आश्रय), पद्मनाभ (कमल-नाभि वाले), हृषीकेश (इंद्रियों के स्वामी) — उनके निवास वैकुण्ठ और अर्धांगिनी लक्ष्मी (लक्ष्मीपति, श्रीनिवास), तथा मत्स्य, कूर्म, क्रोडरूप (वराह), नृकेसरी (नरसिंह), वामन, भार्गव (परशुराम), राम, कृष्ण और कल्कि सहित उनके प्रमुख अवतारों के साथ।',
+    benefits: 'Recited or used for Archana (offering a tulsi leaf or flower with each name) during Vishnu puja, especially on Ekadashi and Thursdays, as well as in daily worship.', benefitsHi: 'विष्णु पूजा के दौरान, विशेष रूप से एकादशी और गुरुवार को, तथा दैनिक पूजा में भी, प्रत्येक नाम के साथ तुलसी पत्र या फूल अर्पित करते हुए अर्चना के लिए पाठ या उपयोग किया जाता है।',
+  },
+  {
     slug: 'saraswati-ashtottara-shatanamavali',
     title: 'Saraswati Ashtottara Shatanamavali',
     titleHi: 'सरस्वती अष्टोत्तरशतनामावली',
