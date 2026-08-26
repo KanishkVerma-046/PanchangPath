@@ -215,6 +215,44 @@ export const RASHI_PROFILES: RashiProfile[] = [
   { name: 'Meena', h: 'मीन', en: 'Pisces', lord: 'Jupiter', elem: 'Water', qual: 'Dual', color: 'Sea Green, Lavender', colorHi: 'समुद्री हरा, लैवेंडर', day: 'Thursday', gem: 'Yellow Sapphire', gemHi: 'पुखराज', compat: 'Cancer, Scorpio', num: '3, 7', desc: 'Compassionate, imaginative and spiritual. Meena is sensitive and artistic, with deep empathy and intuition.', descHi: 'दयालु, कल्पनाशील और आध्यात्मिक। मीन संवेदनशील और कलात्मक है, गहरी सहानुभूति और अंतर्ज्ञान के साथ।' },
 ];
 
+// ── Vedic Sun sign personality reference ──────────────────────────────────
+// Promoted 2026-08-27 (Jyotish Tier-2 prerender pass) from sunsign.astro's client-only
+// SOLAR_TRAITS/SOLAR_TRAITS_HI arrays — 12 fully static "solar personality" paragraphs, indexed
+// Mesha..Meena same as RASHI_PROFILES above, zero dependency on any computed value (only which one
+// paragraph to display depends on the visitor's birth data). Kept separate from RASHI_PROFILES.desc
+// deliberately: that field describes the Rashi (Moon sign) generally, this describes the Sun's
+// expression through the same sign specifically — different framing, not a duplicate. Both
+// sunsign.astro's frontmatter (new "All 12 Vedic Sun Signs" reference grid) and its client <script>
+// import this single array so they can't diverge.
+export const SOLAR_TRAITS: string[] = [
+  'Your solar self is bold, pioneering and fiercely independent. The Sun in Mesha gives you a natural drive to initiate, lead and compete. You possess an entrepreneurial spirit and infectious enthusiasm, though patience is a lifelong lesson. Your courage is your greatest asset.',
+  'The Sun in Vrishabha bestows a patient, steady and deeply sensual nature. You build slowly and surely, valuing security, beauty and lasting results. Reliable and determined, you rarely give up — but can be resistant to change. Your strength lies in persistence and loyalty.',
+  'Your solar energy is quick, curious and multi-faceted. The Sun in Mithuna makes you a natural communicator, thinker and adapter. You thrive on variety and mental stimulation, with a sharp wit and gift for languages. Learning to focus is your great challenge and reward.',
+  'The Sun in Karka illuminates through emotional depth, nurturing and intuition. Home, family and roots are central to your identity. You are deeply empathetic and protective of those you love, with a powerful inner world and psychic sensitivity.',
+  'The Sun rules Simha and shines brightest here — gifting you with charisma, generosity and a natural dramatic flair. You were born to lead, create and be seen. Pride and a need for recognition can challenge you, but your warmth and loyalty make you a natural centre of any group.',
+  'Your solar nature is analytical, precise and deeply service-oriented. The Sun in Kanya drives you to improve, refine and be of genuine use. You notice what others miss and have a powerful intellect, though self-criticism can undermine your confidence. Perfection-seeking is both your strength and your shadow.',
+  'The Sun in Tula seeks balance, beauty and harmonious connection. You are naturally diplomatic, charming and fair-minded, with a refined aesthetic sense. Partnership is central to your solar purpose. Indecision and people-pleasing are the edges you must navigate.',
+  'Intense, perceptive and deeply transformative — the Sun in Vrishchika gives you extraordinary willpower and the courage to dive into the darkest corners of life. You are drawn to mystery, power and psychological depth. Trust is earned slowly, but your loyalty is fierce and lasting.',
+  'The Sun in Dhanu is adventurous, philosophical and eternally optimistic. You seek truth, wisdom and the freedom to explore — in thought, culture and geography. Honesty is your core value, sometimes delivered bluntly. Your solar purpose is to expand horizons and inspire others.',
+  'Disciplined, ambitious and profoundly responsible, the Sun in Makara gives you an unmatched capacity for long-term effort. You build legacies, respect structures and are willing to sacrifice immediate comfort for lasting achievement. Status and integrity matter deeply to you.',
+  'The Sun in Kumbha is original, humanitarian and intellectually independent. You are drawn to ideals, communities and visions of a better future. Friendly yet detached, you march to your own drum. Your solar purpose is to liberate, innovate and serve the collective.',
+  'The Sun in Meena is compassionate, imaginative and spiritually attuned. You feel everything deeply and have an innate connection to the unseen. Artistic, empathetic and selfless, you are here to serve as a bridge between worlds. Boundaries and groundedness are the skills to cultivate.',
+];
+export const SOLAR_TRAITS_HI: string[] = [
+  'आपका सौर स्वभाव साहसी, अग्रणी और अत्यंत स्वतंत्र है। मेष में सूर्य आपको पहल करने, नेतृत्व करने और प्रतिस्पर्धा करने की स्वाभाविक प्रवृत्ति देता है। आपमें उद्यमशील भावना और संक्रामक उत्साह है, हालांकि धैर्य जीवनभर का सबक है। आपका साहस आपकी सबसे बड़ी पूंजी है।',
+  'वृषभ में सूर्य धैर्यवान, स्थिर और गहरे संवेदनशील स्वभाव देता है। आप धीरे-धीरे और मजबूती से निर्माण करते हैं, सुरक्षा, सौंदर्य और स्थायी परिणामों को महत्व देते हैं। भरोसेमंद और दृढ़, आप शायद ही हार मानते हैं — लेकिन बदलाव के प्रति प्रतिरोधी हो सकते हैं। आपकी शक्ति दृढ़ता और वफादारी में है।',
+  'आपकी सौर ऊर्जा तीव्र, जिज्ञासु और बहुआयामी है। मिथुन में सूर्य आपको स्वाभाविक संचारक, विचारक और अनुकूलक बनाता है। आप विविधता और मानसिक उत्तेजना में फलते-फूलते हैं, तीक्ष्ण बुद्धि और भाषाओं के प्रति गुण के साथ। ध्यान केंद्रित करना सीखना आपकी बड़ी चुनौती और प्रतिफल दोनों है।',
+  'कर्क में सूर्य भावनात्मक गहराई, पालन-पोषण और अंतर्ज्ञान से प्रकाशित होता है। घर, परिवार और जड़ें आपकी पहचान के केंद्र में हैं। आप अपने प्रियजनों के प्रति गहराई से सहानुभूतिपूर्ण और सुरक्षात्मक हैं, एक शक्तिशाली आंतरिक जगत और मानसिक संवेदनशीलता के साथ।',
+  'सूर्य सिंह का स्वामी है और यहां सबसे तेज चमकता है — आपको करिश्मा, उदारता और स्वाभाविक नाटकीय आकर्षण प्रदान करता है। आप नेतृत्व करने, सृजन करने और दिखने के लिए जन्मे हैं। अभिमान और पहचान की आवश्यकता आपको चुनौती दे सकती है, लेकिन आपकी गर्मजोशी और वफादारी आपको किसी भी समूह का स्वाभाविक केंद्र बनाती है।',
+  'आपका सौर स्वभाव विश्लेषणात्मक, सटीक और गहराई से सेवा-उन्मुख है। कन्या में सूर्य आपको सुधारने, परिष्कृत करने और वास्तविक उपयोगी बनने के लिए प्रेरित करता है। आप वह देखते हैं जो दूसरे चूक जाते हैं और शक्तिशाली बुद्धि रखते हैं, हालांकि आत्म-आलोचना आपके आत्मविश्वास को कमजोर कर सकती है। पूर्णता की खोज आपकी शक्ति और छाया दोनों है।',
+  'तुला में सूर्य संतुलन, सौंदर्य और सामंजस्यपूर्ण संबंध चाहता है। आप स्वाभाविक रूप से कूटनीतिक, आकर्षक और निष्पक्ष हैं, एक परिष्कृत सौंदर्य बोध के साथ। साझेदारी आपके सौर उद्देश्य के केंद्र में है। अनिर्णय और लोगों को खुश करने की प्रवृत्ति वे सीमाएं हैं जिन्हें आपको संभालना होगा।',
+  'तीव्र, अंतर्दृष्टिपूर्ण और गहराई से परिवर्तनकारी — वृश्चिक में सूर्य आपको असाधारण इच्छाशक्ति और जीवन के सबसे अंधेरे कोनों में उतरने का साहस देता है। आप रहस्य, शक्ति और मनोवैज्ञानिक गहराई की ओर आकर्षित होते हैं। विश्वास धीरे-धीरे अर्जित होता है, लेकिन आपकी वफादारी उग्र और स्थायी है।',
+  'धनु में सूर्य साहसिक, दार्शनिक और सदैव आशावादी है। आप सत्य, ज्ञान और अन्वेषण की स्वतंत्रता चाहते हैं — विचार, संस्कृति और भूगोल में। ईमानदारी आपका मूल मूल्य है, कभी-कभी बेबाकी से व्यक्त। आपका सौर उद्देश्य क्षितिज विस्तृत करना और दूसरों को प्रेरित करना है।',
+  'अनुशासित, महत्वाकांक्षी और गहराई से जिम्मेदार, मकर में सूर्य आपको दीर्घकालिक प्रयास की अद्वितीय क्षमता देता है। आप विरासत बनाते हैं, संरचनाओं का सम्मान करते हैं और स्थायी उपलब्धि के लिए तत्काल सुविधा त्यागने को तैयार रहते हैं। प्रतिष्ठा और सत्यनिष्ठा आपके लिए गहराई से मायने रखते हैं।',
+  'कुम्भ में सूर्य मौलिक, मानवतावादी और बौद्धिक रूप से स्वतंत्र है। आप आदर्शों, समुदायों और बेहतर भविष्य की दृष्टि की ओर आकर्षित होते हैं। मित्रवत फिर भी अलग, आप अपनी राह पर चलते हैं। आपका सौर उद्देश्य मुक्त करना, नवाचार करना और सामूहिक की सेवा करना है।',
+  'मीन में सूर्य दयालु, कल्पनाशील और आध्यात्मिक रूप से जुड़ा हुआ है। आप हर चीज गहराई से महसूस करते हैं और अदृश्य से एक सहज संबंध रखते हैं। कलात्मक, सहानुभूतिपूर्ण और निःस्वार्थ, आप यहां दुनियाओं के बीच सेतु बनने के लिए हैं। सीमाएं और आधार बनाना वे कौशल हैं जिन्हें विकसित करना है।',
+];
+
 // ── Lagna house reference ─────────────────────────────────────────────────
 // Promoted 2026-08-26 (Jyotish Tier-1 prerender pass): lagna.astro's client script has always
 // carried this static 12-house significance table (HOUSES/HOUSES_HI) interleaved with the
