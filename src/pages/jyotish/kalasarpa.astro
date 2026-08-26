@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { KALASARPA_TYPES, KALASARPA_EFFECTS } from '../../lib/jyotish';
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
@@ -57,6 +58,25 @@ const FAQ_ITEMS = [
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">All 12 Kalasarpa Types — Reference</h3>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+        {KALASARPA_TYPES.map((t, i) => (
+          <div class="card" style="padding:16px;">
+            <h4 style="font-size:14px;font-weight:700;color:var(--color-ink);margin:0 0 8px;">{i + 1}. {t} Kalasarpa</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="two-col">
+              <div>
+                <p style="font-size:10.5px;font-weight:600;color:var(--color-saffron-deep);margin:0 0 3px;text-transform:uppercase;letter-spacing:0.04em;">Anuloma</p>
+                <p style="font-size:12.5px;color:var(--color-body-text);margin:0;line-height:1.55;">{KALASARPA_EFFECTS[i].a}</p>
+              </div>
+              <div>
+                <p style="font-size:10.5px;font-weight:600;color:var(--color-mute);margin:0 0 3px;text-transform:uppercase;letter-spacing:0.04em;">Viloma</p>
+                <p style="font-size:12.5px;color:var(--color-body-text);margin:0;line-height:1.55;">{KALASARPA_EFFECTS[i].v}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="कालसर्प योग के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Kalasarpa Yoga</h2>
         <p data-hi="कालसर्प योग ('समय का सर्प') तब बनता है जब सभी सात शास्त्रीय ग्रह — सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र और शनि — राहु-केतु अक्ष के एक ओर सीमित हो जाते हैं। लग्न से राहु जिस भाव में स्थित है उसके आधार पर 12 नामित प्रकार हैं। कहा जाता है कि यह देरी, संघर्ष और अचानक उतार-चढ़ाव लाता है, लेकिन साथ ही तीव्र एकाग्रता और कर्म पूर्ण होने पर उल्लेखनीय उपलब्धि की संभावना भी। यदि एक भी ग्रह अक्ष से बाहर हो, तो योग आंशिक या अनुपस्थित माना जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Kalasarpa Yoga (the "serpent of time") occurs when all seven classical planets — Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn — are confined to one side of the Rahu–Ketu axis. There are 12 named types depending on the house Rahu occupies from the Lagna. It is said to bring delays, struggles and sudden ups and downs, but also intense focus and the potential for remarkable achievement once the karma is worked through. If even one planet falls outside the axis, the yoga is considered partial or absent.</p>
@@ -73,6 +93,7 @@ const FAQ_ITEMS = [
   .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
   #pos-table th { text-align:left;padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.04em; }
   #pos-table td { padding:8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
+  @media (max-width:640px){ .two-col{ grid-template-columns:1fr !important; } }
 </style>
 
 <script>
@@ -80,6 +101,7 @@ import { LOCATIONS } from '../../lib/locations';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import { allTropicalLons } from '../../lib/kundali';
 import { calcLagna } from '../../lib/astro-core';
+import { KALASARPA_TYPES, KALASARPA_EFFECTS } from '../../lib/jyotish';
 
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
@@ -96,33 +118,6 @@ const n360=a=>((a%360)+360)%360;
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
-const KALASARPA_TYPES=['Ananta','Kulika','Vasuki','Shankhapala','Padma','Mahapadma','Takshaka','Karkotak','Shankhachud','Ghatak','Vishadhar','Sheshanaga'];
-const KS_EFFECTS=[
-{a:'Early life brings persistent career and financial struggles requiring extraordinary effort. Delays test patience deeply, yet those who persevere achieve remarkable success. Many great public figures carry this yoga.',v:'Intense ambition and drive for leadership arise, but relationships and health may suffer. True transformation comes through selfless service and the cultivation of humility.'},
-{a:'Instability in wealth and family life — often through sudden loss — is the hallmark of this type. The desire for material security is tested repeatedly. Healing arts and service-based vocations provide the most fulfilling outlet.',v:'Challenges arise through the maternal lineage and through deep attachments to comfort and possessions. Releasing accumulated clinging becomes the central spiritual practice.'},
-{a:'Delays and confusion afflict siblings, communication and business partnerships. The intellect is brilliant but scattered. Research, writing and solitary intellectual pursuits compensate for frustrations in personal relationships.',v:'Mental restlessness and a relentless hunger for knowledge can come at the cost of material stability. Adaptability is both the greatest gift and the greatest challenge.'},
-{a:'Emotional turbulence and disruption to home, mother and the inner life define the early path. Deep sensitivity may cause the native to absorb collective suffering. Water rituals and devotional practice bring profound relief.',v:'Intense psychic sensitivity and an unsettled home life push the native toward surrender. Peace is found through devotion and dedicated spiritual practice rather than outer security.'},
-{a:'One of the most powerful types — associated with extraordinary eventual achievement. Obstacles in progeny, creative expression and authority characterise the early years. Spiritual discipline and persistence unlock remarkable inner potential.',v:'Ego conflicts and battles for recognition are recurring tests. Humility and willingness to serve without credit are the keys that unlock this yoga\'s latent greatness.'},
-{a:'Karmic delays in health, service and analytical work shape the path. A methodical mind struggles with perfectionism and self-criticism. Service, healing and ego-surrender transform this yoga into mastery.',v:'The discriminating faculty becomes hyper-developed, producing intense self-doubt. A spiritual practice emphasising acceptance and self-compassion is the essential remedy.'},
-{a:'Disruptions and sudden separations in marriage and close partnerships are recurring. Legal troubles are possible. Exceptional artistic gifts are the compensating grace — channelling creativity resolves much karma.',v:'Restlessness in partnerships and a tendency toward abrupt separations arise. Deep inner work and devoted creative practice bring the balance that eludes outer relationships.'},
-{a:'Sudden reversals of fortune, intense transformation and a magnetic personality characterise Karkotak. Betrayal and regeneration are recurring themes. Occult knowledge and deep psychology offer the path of power and resolution.',v:'The secretive nature intensifies and the pull toward extremes becomes compelling. Shadow work and psycho-spiritual practice are essential for conscious evolution.'},
-{a:'Philosophical crises and challenges in dharma, higher education and travel mark the path. Faith is tested repeatedly. Those who persist through spiritual drought find profound and lasting wisdom on the other side.',v:'Conflict between personal belief and outer reality creates recurring suffering. Pilgrimage, scriptural study and the practice of teaching what one is learning bring deep relief.'},
-{a:'Obstacles in career, public life and dealings with authority make Ghatak one of the most visible and testing types. The native works with exceptional diligence, often with long-delayed recognition. Worldly success eventually arrives, built on character.',v:'Conflict with institutions and authority figures recurs. Service in a genuinely humble capacity, rather than the pursuit of power, opens the door to lasting achievement.'},
-{a:'Social isolation and gains through unconventional or hidden means characterise Vishadhar. The native is ahead of their time — a visionary humanitarian often misunderstood by contemporaries. Technology and service to the marginalised are natural callings.',v:'Eccentric tendencies intensify and the longing to belong while remaining apart creates a painful paradox. Community service and innovative humanitarian work resolve this tension.'},
-{a:'Losses, expenses and a deep pull toward spiritual renunciation mark the most karmically loaded Kalasarpa type. The material world offers little lasting satisfaction, but the path to moksha and inner liberation becomes directly accessible.',v:'The confusion between spiritual seeking and self-undoing must be consciously navigated. Surrender to a living spiritual tradition and devotional art are the liberating paths.'}];
-const KS_EFFECTS_HI=[
-{a:'प्रारंभिक जीवन में करियर और वित्तीय संघर्ष निरंतर बने रहते हैं जिनके लिए असाधारण प्रयास की आवश्यकता होती है। देरी धैर्य की गहरी परीक्षा लेती है, फिर भी जो टिके रहते हैं वे उल्लेखनीय सफलता प्राप्त करते हैं। कई महान सार्वजनिक हस्तियां यह योग रखती हैं।',v:'नेतृत्व की तीव्र महत्वाकांक्षा और लालसा उत्पन्न होती है, लेकिन रिश्ते और स्वास्थ्य प्रभावित हो सकते हैं। सच्चा परिवर्तन निःस्वार्थ सेवा और विनम्रता के अभ्यास से आता है।'},
-{a:'धन और पारिवारिक जीवन में अस्थिरता — अक्सर अचानक हानि के रूप में — इस प्रकार की पहचान है। भौतिक सुरक्षा की इच्छा बार-बार परखी जाती है। उपचार कला और सेवा-आधारित व्यवसाय सबसे संतोषजनक मार्ग प्रदान करते हैं।',v:'मातृ वंश के माध्यम से और सुख-सुविधाओं व वस्तुओं के प्रति गहरे लगाव के माध्यम से चुनौतियां आती हैं। संचित मोह को छोड़ना केंद्रीय आध्यात्मिक अभ्यास बन जाता है।'},
-{a:'भाई-बहनों, संचार और व्यावसायिक साझेदारियों में देरी और भ्रम बना रहता है। बुद्धि प्रखर परंतु बिखरी हुई होती है। शोध, लेखन और एकांत बौद्धिक कार्य व्यक्तिगत संबंधों की निराशा की भरपाई करते हैं।',v:'मानसिक बेचैनी और ज्ञान की अथक भूख भौतिक स्थिरता की कीमत पर आ सकती है। अनुकूलनशीलता ही सबसे बड़ा उपहार और सबसे बड़ी चुनौती दोनों है।'},
-{a:'घर, मां और आंतरिक जीवन में भावनात्मक उथल-पुथल और व्यवधान प्रारंभिक मार्ग को परिभाषित करते हैं। गहरी संवेदनशीलता के कारण सामूहिक पीड़ा को आत्मसात करना पड़ सकता है। जल अनुष्ठान और भक्ति अभ्यास गहरी राहत लाते हैं।',v:'तीव्र मानसिक संवेदनशीलता और अस्थिर घरेलू जीवन व्यक्ति को समर्पण की ओर धकेलते हैं। शांति बाहरी सुरक्षा के बजाय भक्ति और समर्पित आध्यात्मिक अभ्यास से मिलती है।'},
-{a:'सबसे शक्तिशाली प्रकारों में से एक — असाधारण अंतिम उपलब्धि से जुड़ा हुआ। संतान, रचनात्मक अभिव्यक्ति और अधिकार में बाधाएं प्रारंभिक वर्षों की विशेषता हैं। आध्यात्मिक अनुशासन और दृढ़ता उल्लेखनीय आंतरिक क्षमता को खोलते हैं।',v:'अहंकार संघर्ष और पहचान के लिए लड़ाइयां बार-बार होने वाली परीक्षाएं हैं। विनम्रता और बिना श्रेय के सेवा करने की इच्छा ही इस योग की गुप्त महानता को खोलने वाली कुंजियां हैं।'},
-{a:'स्वास्थ्य, सेवा और विश्लेषणात्मक कार्य में कर्मिक देरी मार्ग को आकार देती है। व्यवस्थित मन पूर्णतावाद और आत्म-आलोचना से जूझता है। सेवा, उपचार और अहंकार-समर्पण इस योग को निपुणता में बदल देते हैं।',v:'विवेक क्षमता अति-विकसित हो जाती है, जिससे तीव्र आत्म-संदेह उत्पन्न होता है। स्वीकृति और आत्म-करुणा पर जोर देने वाला आध्यात्मिक अभ्यास आवश्यक उपाय है।'},
-{a:'विवाह और घनिष्ठ साझेदारियों में व्यवधान और अचानक अलगाव बार-बार होते हैं। कानूनी परेशानियां संभव हैं। असाधारण कलात्मक प्रतिभा क्षतिपूर्ति करने वाली कृपा है — रचनात्मकता को दिशा देना अधिकांश कर्म का समाधान करता है।',v:'साझेदारियों में बेचैनी और अचानक अलगाव की प्रवृत्ति उत्पन्न होती है। गहरा आंतरिक कार्य और समर्पित रचनात्मक अभ्यास वह संतुलन लाते हैं जो बाहरी रिश्तों में नहीं मिलता।'},
-{a:'भाग्य में अचानक उलटफेर, तीव्र परिवर्तन और चुंबकीय व्यक्तित्व करकोटक की विशेषताएं हैं। विश्वासघात और पुनर्जनन बार-बार आने वाले विषय हैं। गुप्त ज्ञान और गहरा मनोविज्ञान शक्ति और समाधान का मार्ग प्रदान करते हैं।',v:'गोपनीय स्वभाव तीव्र हो जाता है और अतियों की ओर खिंचाव बलवान होता जाता है। सचेत विकास के लिए छाया-कार्य और मनो-आध्यात्मिक अभ्यास आवश्यक हैं।'},
-{a:'दर्शन संबंधी संकट और धर्म, उच्च शिक्षा तथा यात्रा में चुनौतियां मार्ग को चिह्नित करती हैं। आस्था बार-बार परखी जाती है। जो आध्यात्मिक सूखे के दौर से गुजरते हैं वे दूसरी ओर गहन और स्थायी ज्ञान पाते हैं।',v:'व्यक्तिगत विश्वास और बाहरी वास्तविकता के बीच संघर्ष बार-बार पीड़ा उत्पन्न करता है। तीर्थयात्रा, शास्त्र अध्ययन और जो सीखा जा रहा है उसे सिखाने का अभ्यास गहरी राहत लाता है।'},
-{a:'करियर, सार्वजनिक जीवन और अधिकारियों के साथ व्यवहार में बाधाएं घातक को सबसे दृश्यमान और परीक्षा लेने वाले प्रकारों में से एक बनाती हैं। व्यक्ति असाधारण परिश्रम से काम करता है, अक्सर देर से पहचान मिलती है। सांसारिक सफलता अंततः चरित्र पर निर्मित होकर आती है।',v:'संस्थाओं और अधिकारियों के साथ संघर्ष बार-बार होता है। शक्ति की खोज के बजाय वास्तव में विनम्र क्षमता में सेवा करना स्थायी उपलब्धि का द्वार खोलता है।'},
-{a:'सामाजिक अलगाव और अपरंपरागत या छिपे साधनों से लाभ विषधर की विशेषताएं हैं। व्यक्ति अपने समय से आगे है — एक दूरदर्शी मानवतावादी जिसे अक्सर समकालीन लोग गलत समझते हैं। प्रौद्योगिकी और वंचितों की सेवा स्वाभाविक बुलावे हैं।',v:'सनकी प्रवृत्तियां तीव्र होती हैं और अलग रहते हुए भी संबंधित होने की चाहत एक पीड़ादायक विरोधाभास पैदा करती है। सामुदायिक सेवा और नवोन्मेषी मानवतावादी कार्य इस तनाव का समाधान करते हैं।'},
-{a:'हानि, खर्च और आध्यात्मिक त्याग की गहरी लालसा सबसे अधिक कर्मिक भार वाले कालसर्प प्रकार को चिह्नित करते हैं। भौतिक संसार बहुत कम स्थायी संतुष्टि प्रदान करता है, लेकिन मोक्ष और आंतरिक मुक्ति का मार्ग सीधे सुलभ हो जाता है।',v:'आध्यात्मिक खोज और आत्म-विनाश के बीच का भ्रम सचेत रूप से पार करना होगा। किसी जीवंत आध्यात्मिक परंपरा और भक्ति कला के प्रति समर्पण मुक्तिदायक मार्ग हैं।'}];
 const PLANETS=[['surya','Sun'],['chandra','Moon'],['mangal','Mars'],['budha','Mercury'],['guru','Jupiter'],['shukra','Venus'],['shani','Saturn']];
 const PLANET_HI={Sun:'सूर्य',Moon:'चंद्र',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 
@@ -172,7 +167,7 @@ function calculate(){
     const lagnaSign=Math.floor(n360(calcLagna(jd,loc.lat,loc.lng)-ay)/30);
     const rahuHouse=((rahuSign-lagnaSign+12)%12)+1; // 1-12
     const type=KALASARPA_TYPES[rahuHouse-1];
-    const eff=KS_EFFECTS[rahuHouse-1];
+    const eff=KALASARPA_EFFECTS[rahuHouse-1];
 
     let bg,html;
     const nodeIcons=(color)=>'<div style="display:flex;justify-content:center;gap:8px;margin-bottom:6px;">'+planetIconSvg('rahu',36,color)+planetIconSvg('ketu',36,color)+'</div>';
@@ -191,7 +186,7 @@ function calculate(){
     document.getElementById('ks-banner').innerHTML=html;
 
     if(present){
-      const effectText=tr(isAnuloma?eff.a:eff.v,isAnuloma?KS_EFFECTS_HI[rahuHouse-1].a:KS_EFFECTS_HI[rahuHouse-1].v);
+      const effectText=tr(isAnuloma?eff.a:eff.v,isAnuloma?eff.aHi:eff.vHi);
       document.getElementById('effect-title').textContent=tr(type+' Kalasarpa ('+direction+') — Effects & Remedies',type+' कालसर्प ('+direction+') — प्रभाव और उपाय');
       document.getElementById('effect').textContent=effectText;
       document.getElementById('remedies').innerHTML='<p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">'+tr('Classical Remedies','शास्त्रीय उपाय')+'</p><ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;"><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Worship Lord Shiva and recite the Maha Mrityunjaya Mantra daily.','भगवान शिव की पूजा करें और प्रतिदिन महामृत्युंजय मंत्र का जाप करें।')+'</li><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Perform Kalasarpa Dosha Nivaran Puja — traditionally at Trimbakeshwar (Nashik) or Sri Kalahasteeswara temple.','कालसर्प दोष निवारण पूजा करें — पारंपरिक रूप से त्र्यंबकेश्वर (नासिक) या श्री कालहस्तीश्वर मंदिर में।')+'</li><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Chant Rahu Beej Mantra ("Om Bhram Bhreem Bhraum Sah Rahave Namah") on Saturdays and Ketu Beej Mantra on Tuesdays.','शनिवार को राहु बीज मंत्र ("ॐ भ्रां भ्रीं भ्रौं सः राहवे नमः") और मंगलवार को केतु बीज मंत्र का जाप करें।')+'</li><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Donate to Naga temples and offer milk, flowers and turmeric on Naga Panchami.','नाग मंदिरों में दान करें और नाग पंचमी पर दूध, फूल व हल्दी अर्पित करें।')+'</li><li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">'+tr('Keeping a Kalasarpa Yantra in the puja room and meditating on it regularly is also beneficial.','पूजा कक्ष में कालसर्प यंत्र रखना और नियमित रूप से उस पर ध्यान करना भी लाभकारी है।')+'</li></ul>';
