@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { NAKSHATRAS } from '../../lib/jyotish';
+import { NAKSHATRA_LIST, nakshatraIconSvg } from '../../lib/icons/nakshatra';
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
@@ -77,7 +79,21 @@ const FAQ_ITEMS = [
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;margin-bottom:24px;"></div>
 
       <h3 data-hi="सभी 27 नक्षत्र" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 27 Nakshatras</h3>
-      <div id="all-naks" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:36px;"></div>
+      <div id="all-naks" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:36px;">
+        {NAKSHATRAS.map((nk, i) => (
+          <div class="card" style="padding:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
+              <div style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--color-saffron-deep);flex-shrink:0;" set:html={nakshatraIconSvg(NAKSHATRA_LIST[i].id, 16)} />
+                <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{nk.n}</span>
+              </div>
+              <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">{i + 1}</span>
+            </div>
+            <p style="font-size:11px;color:var(--color-mute);margin:0;">{nk.h} · {nk.lord}</p>
+            <p style="font-size:10.5px;color:var(--color-body-text);margin:4px 0 0;">{nk.gana} · {nk.yoni}</p>
+          </div>
+        ))}
+      </div>
 
       <div class="card" style="padding:28px;">
         <h2 data-hi="नक्षत्रों के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Nakshatras</h2>
@@ -106,8 +122,9 @@ const FAQ_ITEMS = [
 
 <script>
 import { LOCATIONS } from '../../lib/locations';
-import { NAKSHATRA_ICONS } from '../../lib/icons/nakshatra';
+import { NAKSHATRA_LIST, nakshatraIconSvg as nakIconSvg } from '../../lib/icons/nakshatra';
 import { moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
+import { NAKSHATRAS, NAKSHATRA_TRAITS_HI } from '../../lib/jyotish';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
 const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -120,69 +137,13 @@ const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मं
 const GANA_HI={Deva:'देव',Manushya:'मनुष्य',Rakshasa:'राक्षस'};
 const NADI_HI={Adi:'आदि',Madhya:'मध्य',Antya:'अंत्य'};
 const VARNA_HI={Brahmin:'ब्राह्मण',Kshatriya:'क्षत्रिय',Vaishya:'वैश्य',Shudra:'शूद्र',Mleccha:'म्लेच्छ'};
-const NAKS_ID=['ashwini','bharani','krittika','rohini','mrigashira','ardra','punarvasu','pushya','ashlesha','magha','purva-phalguni','uttara-phalguni','hasta','chitra','swati','vishakha','anuradha','jyeshtha','mula','purva-ashadha','uttara-ashadha','shravana','dhanishta','shatabhisha','purva-bhadrapada','uttara-bhadrapada','revati'];
-function nakIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${NAKSHATRA_ICONS[id]}</svg>`;}
+const NAKS_ID=NAKSHATRA_LIST.map(l=>l.id);
 const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
 const n360=a=>((a%360)+360)%360;
 const toR=d=>d*Math.PI/180;
 
-const NAKS=[
-{n:'Ashwini',h:'अश्विनी',lord:'Ketu',yoni:'Horse',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Ashwini Kumaras',sym:'Horse head',p:['Chu','Che','Cho','La'],traits:'Quick-minded and energetically pioneering, you start projects with great enthusiasm and possess natural healing instincts. Impatience can undermine follow-through, but your courage and spontaneity make you a natural trailblazer and leader.'},
-{n:'Bharani',h:'भरणी',lord:'Venus',yoni:'Elephant',gana:'Manushya',nadi:'Madhya',varna:'Mleccha',deity:'Yama',sym:'Yoni',p:['Li','Lu','Le','Lo'],traits:'Intense, creative and deeply responsible, you carry great burdens with strength and purpose. Passionate and fiercely determined, you are drawn to life\'s extremes — beauty, art and deep transformation. Truth matters to you above all.'},
-{n:'Krittika',h:'कृत्तिका',lord:'Sun',yoni:'Sheep',gana:'Rakshasa',nadi:'Antya',varna:'Brahmin',deity:'Agni',sym:'Razor/Flame',p:['A','I','U','E'],traits:'Sharp-minded, ambitious and highly critical, you burn away the impure and demand excellence from yourself and others. Your fiery clarity can be uncompromising, but it is also your greatest strength — cutting through illusion to find truth.'},
-{n:'Rohini',h:'रोहिणी',lord:'Moon',yoni:'Serpent',gana:'Manushya',nadi:'Antya',varna:'Shudra',deity:'Brahma',sym:'Ox cart',p:['O','Va','Vi','Vu'],traits:'Charming, artistic and deeply sensual, you have a natural magnetism and love of beauty, fertility and comfort. Highly creative and pleasure-loving, you may become possessive of what you cherish. Stability and aesthetic richness are your life\'s rewards.'},
-{n:'Mrigashira',h:'मृगशिरा',lord:'Mars',yoni:'Serpent',gana:'Deva',nadi:'Madhya',varna:'Vaishya',deity:'Soma',sym:'Deer head',p:['Ve','Vo','Ka','Ki'],traits:'Eternally curious and gently searching, you are a seeker of the ideal — in love, knowledge and beauty. Sensitive, communicative and restless, you bring fresh perspectives and creative insight wherever you go.'},
-{n:'Ardra',h:'आर्द्रा',lord:'Rahu',yoni:'Dog',gana:'Manushya',nadi:'Adi',varna:'Mleccha',deity:'Rudra',sym:'Teardrop',p:['Ku','Gha','Ing','Ja'],traits:'Intense and transformative, you possess a sharp and penetrating intellect capable of thriving through storms of change. Your life may include dramatic disruptions, but each one deepens your insight. Raw, honest and unafraid of the dark.'},
-{n:'Punarvasu',h:'पुनर्वसु',lord:'Jupiter',yoni:'Cat',gana:'Deva',nadi:'Adi',varna:'Brahmin',deity:'Aditi',sym:'Quiver',p:['Ke','Ko','Ha','Hi'],traits:'Optimistic, philosophical and gifted with renewal, you bounce back from difficulties with inspiring resilience. Generous, expansive and freedom-loving, you are happiest when learning, growing and sharing wisdom with others.'},
-{n:'Pushya',h:'पुष्य',lord:'Saturn',yoni:'Sheep',gana:'Deva',nadi:'Madhya',varna:'Kshatriya',deity:'Brihaspati',sym:'Lotus',p:['Hu','He','Ho','Da'],traits:'Nurturing, devoted and deeply traditional, you are a natural caretaker who brings stability, prosperity and spiritual warmth to those around you. Patient and principled, your inner strength grows steadily over time.'},
-{n:'Ashlesha',h:'अश्लेषा',lord:'Mercury',yoni:'Cat',gana:'Rakshasa',nadi:'Antya',varna:'Mleccha',deity:'Nagas',sym:'Coiled serpent',p:['Di','Du','De','Do'],traits:'Shrewd, perceptive and emotionally complex, you possess great strategic intelligence and a powerful ability to read people. Persuasive and resilient, you can be secretive, but your determination and psychological depth are formidable gifts.'},
-{n:'Magha',h:'मघा',lord:'Ketu',yoni:'Rat',gana:'Rakshasa',nadi:'Antya',varna:'Shudra',deity:'Pitris',sym:'Throne',p:['Ma','Mi','Mu','Me'],traits:'Proud, regal and rooted in ancestral tradition, you are a natural leader with a strong sense of lineage and dignity. Generous and commanding, you thrive in positions of authority and honour the past as a foundation for greatness.'},
-{n:'Purva Phalguni',h:'पूर्व फाल्गुनी',lord:'Venus',yoni:'Rat',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Bhaga',sym:'Bed front',p:['Mo','Ta','Ti','Tu'],traits:'Creative, romantic and pleasure-loving, you radiate natural charisma and a love of luxury, beauty and sensory experience. Generous in love and friendship, you are a devoted partner and gifted artist who thrives in rest and celebration.'},
-{n:'Uttara Phalguni',h:'उत्तर फाल्गुनी',lord:'Sun',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Aryaman',sym:'Bed back',p:['Te','To','Pa','Pi'],traits:'Reliable, helpful and ethically disciplined, you are the steady, dependable pillar others lean on. Balancing creativity with service, you seek long-term relationships and commitments built on mutual respect and shared values.'},
-{n:'Hasta',h:'हस्त',lord:'Moon',yoni:'Buffalo',gana:'Deva',nadi:'Adi',varna:'Vaishya',deity:'Savitar',sym:'Hand',p:['Pu','Sha','Na','Tha'],traits:'Clever, resourceful and exceptionally skilled with your hands, you are a master of craft, humour and practical intelligence. Sharp-witted and adaptable, you manifest your intentions quickly and have a gift for healing and service.'},
-{n:'Chitra',h:'चित्रा',lord:'Mars',yoni:'Tiger',gana:'Rakshasa',nadi:'Madhya',varna:'Kshatriya',deity:'Vishwakarma',sym:'Bright jewel',p:['Pe','Po','Ra','Ri'],traits:'Artistic, glamorous and technically brilliant, you have an extraordinary aesthetic sensibility and a relentless drive for perfection. Innovative, visually gifted and detail-oriented, you build beautiful things with precision and passion.'},
-{n:'Swati',h:'स्वाती',lord:'Rahu',yoni:'Buffalo',gana:'Deva',nadi:'Adi',varna:'Mleccha',deity:'Vayu',sym:'Coral',p:['Ru','Re','Ro','Ta'],traits:'Independent, diplomatic and fair-minded like the wind, you bend without breaking and excel in commerce, networking and mediation. Self-motivated and socially skilled, you value personal freedom and bring balance wherever you go.'},
-{n:'Vishakha',h:'विशाखा',lord:'Jupiter',yoni:'Tiger',gana:'Rakshasa',nadi:'Madhya',varna:'Brahmin',deity:'Indra-Agni',sym:'Gateway',p:['Ti','Tu','Te','To'],traits:'Goal-oriented, ambitious and fiercely competitive, you are a driven achiever who stays focused until every aim is fulfilled. Patient and persistent beneath your intensity, you have great power to transform society through principled leadership.'},
-{n:'Anuradha',h:'अनुराधा',lord:'Saturn',yoni:'Deer',gana:'Deva',nadi:'Adi',varna:'Kshatriya',deity:'Mitra',sym:'Lotus',p:['Na','Ni','Nu','Ne'],traits:'Devoted, organized and resilient, you excel at building lasting friendships and sustaining organisations. Spiritually inclined and adaptable, you thrive through adversity and your quiet loyalty inspires deep bonds of trust in all relationships.'},
-{n:'Jyeshtha',h:'ज्येष्ठा',lord:'Mercury',yoni:'Deer',gana:'Rakshasa',nadi:'Madhya',varna:'Brahmin',deity:'Indra',sym:'Amulet',p:['No','Ya','Yi','Yu'],traits:'Senior, protective and intensely responsible, you carry a deep sense of duty toward those in your care. Proud and courageous, with a fierce loyalty that demands respect. Jealousy and control are the shadows you are here to master.'},
-{n:'Mula',h:'मूल',lord:'Ketu',yoni:'Dog',gana:'Rakshasa',nadi:'Antya',varna:'Mleccha',deity:'Nirriti',sym:'Tied roots',p:['Ye','Yo','Bha','Bhi'],traits:'Philosophical, investigative and unafraid to uproot the old, you dive to the root of everything. A truth-seeker who questions foundations and transforms through destruction. Freedom, inquiry and spiritual liberation are your deepest drives.'},
-{n:'Purva Ashadha',h:'पूर्वाषाढा',lord:'Venus',yoni:'Monkey',gana:'Manushya',nadi:'Adi',varna:'Brahmin',deity:'Apas',sym:'Fan',p:['Bhu','Dha','Bha','Pha'],traits:'Optimistic, proud and powerfully persuasive, you have a magnetic drive and an unshakeable belief in your path. Resilient under opposition and gifted with natural leadership, you inspire others through your vision and spirited determination.'},
-{n:'Uttara Ashadha',h:'उत्तराषाढा',lord:'Sun',yoni:'Mongoose',gana:'Manushya',nadi:'Madhya',varna:'Kshatriya',deity:'Vishvadevas',sym:'Planks',p:['Bhe','Bho','Ja','Ji'],traits:'Ethical, determined and universally principled, you move slowly but surely toward lofty, lasting goals. An enduring leader with a broad perspective and deep integrity — your victories, once won, are never easily reversed.'},
-{n:'Shravana',h:'श्रवण',lord:'Moon',yoni:'Monkey',gana:'Deva',nadi:'Antya',varna:'Mleccha',deity:'Vishnu',sym:'Three footprints',p:['Khi','Khu','Khe','Kho'],traits:'An exceptional listener and lifelong learner, you have an organized mind, wide knowledge and a deep connection to the spoken and sacred word. Social, empathetic and skilled in communication, you preserve and transmit wisdom across generations.'},
-{n:'Dhanishtha',h:'धनिष्ठा',lord:'Mars',yoni:'Lion',gana:'Rakshasa',nadi:'Madhya',varna:'Shudra',deity:'Vasus',sym:'Drum',p:['Ga','Gi','Gu','Ge'],traits:'Musical, courageous and powerfully ambitious, you have natural rhythm, group leadership and the drive to accumulate wealth. Generous by nature but career-focused, you may at times prioritise achievement over intimate relationships.'},
-{n:'Shatabhisha',h:'शतभिषा',lord:'Rahu',yoni:'Horse',gana:'Rakshasa',nadi:'Adi',varna:'Mleccha',deity:'Varuna',sym:'Empty circle',p:['Go','Sa','Si','Su'],traits:'Independent, scientific and deeply philosophical, you are drawn to healing, hidden knowledge and the mysteries of the cosmos. Introspective and secretive, you carry strong humanitarian ideals and work best when given complete creative freedom.'},
-{n:'Purva Bhadrapada',h:'पूर्वभाद्रपदा',lord:'Jupiter',yoni:'Lion',gana:'Manushya',nadi:'Madhya',varna:'Brahmin',deity:'Aja Ekapada',sym:'Funeral cot front',p:['Se','So','Da','Di'],traits:'Intense, passionate and deeply idealistic, you are willing to sacrifice comfort and convention for your beliefs. Spiritually powerful and courageous, you can be extreme or impulsive — yet your visionary fire ignites real transformation.'},
-{n:'Uttara Bhadrapada',h:'उत्तरभाद्रपदा',lord:'Saturn',yoni:'Cow',gana:'Manushya',nadi:'Antya',varna:'Kshatriya',deity:'Ahir Budhnya',sym:'Funeral cot back',p:['Du','Tha','Jha','Nya'],traits:'Wise, patient and profoundly compassionate, you are a deep thinker with extraordinary inner strength and spiritual endurance. A quiet warrior who serves selflessly, your power grows beneath the surface and impacts lives in ways rarely visible.'},
-{n:'Revati',h:'रेवती',lord:'Mercury',yoni:'Elephant',gana:'Deva',nadi:'Antya',varna:'Brahmin',deity:'Pushan',sym:'Fish/Drum',p:['De','Do','Cha','Chi'],traits:'Compassionate, nurturing and deeply spiritual, you carry a universal love and the gift of empathy. Artistic, imaginative and gentle, you are a bridge-builder who completes cycles and guides souls gently across transitions and thresholds.'}];
-const NAKS_TRAITS_HI=[
-'तीव्र बुद्धि और ऊर्जावान रूप से अग्रणी, आप उत्साह के साथ कार्य आरंभ करते हैं और स्वाभाविक उपचार क्षमता रखते हैं। अधीरता निरंतरता को कमजोर कर सकती है, लेकिन आपका साहस और सहजता आपको एक स्वाभाविक अग्रदूत और नेता बनाती है।',
-'तीव्र, रचनात्मक और गहराई से जिम्मेदार, आप बड़े बोझ को शक्ति और उद्देश्य के साथ उठाते हैं। जुनूनी और दृढ़, आप जीवन की चरम सीमाओं — सौंदर्य, कला और गहरे परिवर्तन — की ओर आकर्षित होते हैं। सत्य आपके लिए सबसे अधिक मायने रखता है।',
-'तीक्ष्ण बुद्धि, महत्वाकांक्षी और अत्यंत आलोचनात्मक, आप अशुद्धि को जला देते हैं और स्वयं व दूसरों से उत्कृष्टता की मांग करते हैं। आपकी अग्निमय स्पष्टता कठोर हो सकती है, लेकिन यह आपकी सबसे बड़ी शक्ति भी है — भ्रम को काटकर सत्य तक पहुंचना।',
-'आकर्षक, कलात्मक और गहराई से कामुक, आपमें स्वाभाविक चुंबकत्व और सौंदर्य, उर्वरता व आराम के प्रति प्रेम है। अत्यंत रचनात्मक और सुख-प्रिय, आप जो प्रिय है उसके प्रति स्वामित्व की भावना रख सकते हैं। स्थिरता और सौंदर्यात्मक समृद्धि आपके जीवन के पुरस्कार हैं।',
-'सदैव जिज्ञासु और कोमलता से खोजते हुए, आप प्रेम, ज्ञान और सौंदर्य में आदर्श के खोजी हैं। संवेदनशील, संचारशील और बेचैन, आप जहां भी जाते हैं ताजा दृष्टिकोण और रचनात्मक अंतर्दृष्टि लाते हैं।',
-'तीव्र और परिवर्तनकारी, आपमें एक तीक्ष्ण और भेदक बुद्धि है जो परिवर्तन के तूफानों से गुजरने में सक्षम है। आपके जीवन में नाटकीय व्यवधान आ सकते हैं, लेकिन हर एक आपकी अंतर्दृष्टि को गहरा करता है। कच्चे, ईमानदार और अंधकार से निर्भय।',
-'आशावादी, दार्शनिक और नवीनीकरण के उपहार से संपन्न, आप कठिनाइयों से प्रेरणादायक लचीलेपन के साथ उबरते हैं। उदार, विस्तृत और स्वतंत्रता-प्रिय, आप सीखने, बढ़ने और दूसरों के साथ ज्ञान बांटने में सबसे प्रसन्न रहते हैं।',
-'पालन-पोषण करने वाला, समर्पित और गहराई से पारंपरिक, आप एक स्वाभाविक देखभालकर्ता हैं जो आसपास के लोगों को स्थिरता, समृद्धि और आध्यात्मिक गर्मजोशी प्रदान करते हैं। धैर्यवान और सिद्धांतवादी, आपकी आंतरिक शक्ति समय के साथ स्थिर रूप से बढ़ती है।',
-'चतुर, अंतर्दृष्टिपूर्ण और भावनात्मक रूप से जटिल, आपमें महान रणनीतिक बुद्धि और लोगों को पढ़ने की शक्तिशाली क्षमता है। मनाने में कुशल और लचीले, आप गोपनीय हो सकते हैं, लेकिन आपकी दृढ़ता और मनोवैज्ञानिक गहराई असाधारण उपहार हैं।',
-'गर्वित, राजसी और पैतृक परंपरा में निहित, आप एक स्वाभाविक नेता हैं जिसमें वंश और गरिमा की प्रबल भावना है। उदार और आदेशात्मक, आप अधिकार के पदों पर फलते-फूलते हैं और महानता की नींव के रूप में अतीत का सम्मान करते हैं।',
-'रचनात्मक, रोमांटिक और सुख-प्रिय, आप स्वाभाविक करिश्मा और विलासिता, सौंदर्य व संवेदी अनुभव के प्रति प्रेम बिखेरते हैं। प्रेम और मित्रता में उदार, आप एक समर्पित साथी और प्रतिभाशाली कलाकार हैं जो विश्राम व उत्सव में फलते-फूलते हैं।',
-'विश्वसनीय, सहायक और नैतिक रूप से अनुशासित, आप वह स्थिर, भरोसेमंद स्तंभ हैं जिस पर दूसरे निर्भर करते हैं। रचनात्मकता को सेवा के साथ संतुलित करते हुए, आप पारस्परिक सम्मान और साझा मूल्यों पर निर्मित दीर्घकालिक रिश्ते और प्रतिबद्धताएं चाहते हैं।',
-'चतुर, साधनसंपन्न और अपने हाथों से असाधारण रूप से कुशल, आप शिल्प, हास्य और व्यावहारिक बुद्धि के स्वामी हैं। तीक्ष्ण-बुद्धि और अनुकूलनशील, आप अपने इरादों को तेजी से साकार करते हैं और उपचार व सेवा का उपहार रखते हैं।',
-'कलात्मक, चमकदार और तकनीकी रूप से प्रतिभाशाली, आपमें असाधारण सौंदर्य-बोध और पूर्णता के लिए अथक प्रयास है। नवोन्मेषी, दृश्य रूप से प्रतिभाशाली और विस्तार-उन्मुख, आप सटीकता और जुनून के साथ सुंदर चीजें बनाते हैं।',
-'हवा की तरह स्वतंत्र, कूटनीतिक और निष्पक्ष, आप बिना टूटे झुकते हैं और वाणिज्य, नेटवर्किंग व मध्यस्थता में उत्कृष्ट हैं। स्व-प्रेरित और सामाजिक रूप से कुशल, आप व्यक्तिगत स्वतंत्रता को महत्व देते हैं और जहां भी जाते हैं संतुलन लाते हैं।',
-'समर्पित, संगठित और लचीले, आप स्थायी मित्रता बनाने और संगठनों को बनाए रखने में उत्कृष्ट हैं। आध्यात्मिक रूप से इच्छुक और अनुकूलनशील, आप विपरीत परिस्थितियों से फलते-फूलते हैं और आपकी शांत निष्ठा सभी रिश्तों में गहरे विश्वास के बंधन को प्रेरित करती है।',
-'वरिष्ठ, सुरक्षात्मक और अत्यंत जिम्मेदार, आप अपनी देखभाल में रहने वालों के प्रति कर्तव्य की गहरी भावना रखते हैं। गर्वित और साहसी, प्रबल निष्ठा के साथ जो सम्मान की मांग करती है। ईर्ष्या और नियंत्रण वे छायाएं हैं जिन्हें आपको साधना है।',
-'दार्शनिक, अन्वेषक और पुराने को उखाड़ने से न डरने वाले, आप हर चीज की जड़ तक जाते हैं। एक सत्य-खोजी जो नींवों पर प्रश्न उठाता है और विनाश के माध्यम से रूपांतरित होता है। स्वतंत्रता, जिज्ञासा और आध्यात्मिक मुक्ति आपकी गहरी प्रेरणाएं हैं।',
-'आशावादी, गर्वित और शक्तिशाली रूप से प्रेरक, आपमें चुंबकीय ऊर्जा और अपने मार्ग में अटूट विश्वास है। विरोध के सामने लचीले और स्वाभाविक नेतृत्व से संपन्न, आप अपनी दृष्टि और उत्साही दृढ़ संकल्प से दूसरों को प्रेरित करते हैं।',
-'नैतिक, दृढ़ और सार्वभौमिक रूप से सिद्धांतवादी, आप धीरे लेकिन निश्चित रूप से उच्च, स्थायी लक्ष्यों की ओर बढ़ते हैं। व्यापक दृष्टिकोण और गहरी सत्यनिष्ठा वाले स्थायी नेता — आपकी जीतें, एक बार प्राप्त होने पर, आसानी से पलटती नहीं हैं।',
-'एक असाधारण श्रोता और आजीवन शिक्षार्थी, आपमें एक व्यवस्थित मन, व्यापक ज्ञान और बोले गए व पवित्र शब्द से गहरा जुड़ाव है। सामाजिक, सहानुभूतिपूर्ण और संचार में कुशल, आप पीढ़ियों में ज्ञान को संरक्षित और प्रसारित करते हैं।',
-'संगीतमय, साहसी और शक्तिशाली रूप से महत्वाकांक्षी, आपमें स्वाभाविक लय, समूह नेतृत्व और धन संचय करने की प्रेरणा है। स्वभाव से उदार लेकिन करियर-केंद्रित, आप कभी-कभी घनिष्ठ रिश्तों से अधिक उपलब्धि को प्राथमिकता दे सकते हैं।',
-'स्वतंत्र, वैज्ञानिक और गहराई से दार्शनिक, आप उपचार, छिपे ज्ञान और ब्रह्मांड के रहस्यों की ओर आकर्षित होते हैं। आत्मनिरीक्षक और गोपनीय, आप प्रबल मानवतावादी आदर्श रखते हैं और पूर्ण रचनात्मक स्वतंत्रता मिलने पर सबसे अच्छा काम करते हैं।',
-'तीव्र, जुनूनी और गहराई से आदर्शवादी, आप अपने विश्वासों के लिए आराम और परंपरा त्यागने को तैयार हैं। आध्यात्मिक रूप से शक्तिशाली और साहसी, आप चरम या आवेगी हो सकते हैं — फिर भी आपकी दूरदर्शी अग्नि वास्तविक परिवर्तन प्रज्ज्वलित करती है।',
-'विवेकपूर्ण, धैर्यवान और गहराई से करुणामय, आप असाधारण आंतरिक शक्ति और आध्यात्मिक सहनशक्ति वाले गहन विचारक हैं। एक शांत योद्धा जो निःस्वार्थ भाव से सेवा करता है, आपकी शक्ति सतह के नीचे बढ़ती है और जीवन को उन तरीकों से प्रभावित करती है जो शायद ही दिखाई देते हैं।',
-'दयालु, पालन-पोषण करने वाले और गहराई से आध्यात्मिक, आप एक सार्वभौमिक प्रेम और सहानुभूति का उपहार वहन करते हैं। कलात्मक, कल्पनाशील और कोमल, आप एक सेतु-निर्माता हैं जो चक्रों को पूर्ण करता है और आत्माओं को कोमलता से संक्रमणों व दहलीजों के पार मार्गदर्शन करता है।'];
-
+const NAKS=NAKSHATRAS.map((nk,i)=>({...nk,sym:nk.symbol}));
 const sel=document.getElementById('f-city');function renderCityOptions(){
   const selected=sel.value;
   sel.innerHTML=LOCS.map(l=>'<option value="'+l.name+'">'+(LANG_HI?(l.nameHi||l.name):l.name)+'</option>').join('');
@@ -209,7 +170,7 @@ function calculate(){
     document.getElementById('n-name').textContent=nk.n+' \xb7 '+nk.h;
     document.getElementById('n-meta').textContent=tr('Pada','पद')+' '+pada+' \xb7 '+tr('Ruled by','स्वामी')+' '+tr(nk.lord,PLANET_HI[nk.lord])+' \xb7 '+tr('Deity','देवता')+': '+nk.deity;
     document.getElementById('trait-title').textContent=nk.n+' — '+tr('Personality Profile','व्यक्तित्व प्रोफाइल');
-    document.getElementById('trait-text').textContent=tr(nk.traits,NAKS_TRAITS_HI[idx]);
+    document.getElementById('trait-text').textContent=tr(nk.traits,NAKSHATRA_TRAITS_HI[idx]);
     document.getElementById('n-badges').innerHTML=
       `<span class="badge badge-saffron">${tr(nk.gana,GANA_HI[nk.gana])} ${tr('Gana','गण')}</span><span class="badge">${tr(nk.nadi,NADI_HI[nk.nadi])} ${tr('Nadi','नाड़ी')}</span><span class="badge">${tr(nk.yoni,YONI_HI[nk.yoni]||nk.yoni)} ${tr('Yoni','योनि')}</span><span class="badge">${tr('Syllable','अक्षर')}: ${nk.p[pada-1]}</span>`;
     document.getElementById('attr-list').innerHTML=[
