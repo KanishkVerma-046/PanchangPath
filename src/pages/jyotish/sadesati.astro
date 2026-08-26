@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { SADESATI_PHASES } from '../../lib/jyotish';
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
@@ -54,6 +55,17 @@ const FAQ_ITEMS = [
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">The Three Phases — General Reference</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;" class="phase-grid">
+        {SADESATI_PHASES.map((p) => (
+          <div class="card" style="padding:14px;">
+            <p style="font-size:12px;font-weight:700;color:var(--color-saffron-deep);margin:0 0 1px;">{p.name}</p>
+            <p style="font-size:12px;font-weight:600;color:var(--color-ink);margin:0 0 5px;">{p.house}</p>
+            <p style="font-size:12px;color:var(--color-body-text);line-height:1.5;margin:0;">{p.desc}</p>
+          </div>
+        ))}
+      </div>
+
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="शनि साढ़े साती के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Shani Sadesati</h2>
         <p data-hi="शनि (शनिदेव) को राशिचक्र का चक्कर पूरा करने में लगभग 29.5 वर्ष लगते हैं, यानी हर राशि में लगभग 2.5 वर्ष। साढ़े साती ('सात साढ़े') वह अवधि है जब शनि आपकी जन्म चंद्र राशि से बारहवीं, पहली और दूसरी राशि से गुजरता है — कुल मिलाकर लगभग 7.5 वर्ष। यह लगभग हर 30 वर्ष में दोहराई जाती है, इसलिए अधिकांश लोग इसे जीवन में दो से तीन बार अनुभव करते हैं। कठिन परीक्षाओं और सबकों के लिए जानी जाने वाली साढ़े साती अंततः परिपक्वता, अनुशासन और स्थायी विकास की अवधि है। यहां दी गई तिथियां अनुमानित हैं (शनि के निरयण राशि प्रवेश से गणना की गई)।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Saturn (Shani) takes about 29.5 years to circle the zodiac, spending roughly 2.5 years in each sign. Sadesati ("seven and a half") is the period when Saturn passes through the 12th, 1st and 2nd signs from your natal Moon — about 7.5 years in total. It recurs roughly every 30 years, so most people experience it two to three times in a lifetime. Though known for tests and hard lessons, Sadesati is ultimately a period of maturity, discipline and lasting growth. Dates here are approximate (computed from Saturn's sidereal sign ingress).</p>
@@ -75,6 +87,7 @@ import { LOCATIONS } from '../../lib/locations';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import { moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
 import { planetLongitude } from '../../lib/astro-core';
+import { SADESATI_PHASES } from '../../lib/jyotish';
 
 const SHANI_SVG = PLANET_ICONS.shani;
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
@@ -185,11 +198,7 @@ function calculate(){
     // Sub-phase dates for the reference Sadesati period (active, or next, or last)
     const refPeriod=active||periods.find(p=>p.start>todayJD)||(periods.length?periods[periods.length-1]:null);
     const subBds=refPeriod?findSubPhases(refPeriod.start,refPeriod.end,setSigns):null;
-    const phaseData=[
-      [tr('Rising','उदय'),tr('12th House','बारहवां भाव')+' ('+trRashi(setSigns[0])+')',tr('Saturn enters the sign before your Moon. Mental restlessness, unexpected expenses, confusion and health concerns arise. A time to let go of the old and prepare inwardly for transformation.','शनि आपके चंद्रमा से पहले की राशि में प्रवेश करता है। मानसिक बेचैनी, अप्रत्याशित खर्च, भ्रम और स्वास्थ्य संबंधी चिंताएं उत्पन्न होती हैं। यह पुराने को छोड़ने और परिवर्तन के लिए आंतरिक रूप से तैयार होने का समय है।')],
-      [tr('Peak','शिखर'),tr('1st House — Janma Shani','पहला भाव — जन्म शनि')+' ('+trRashi(setSigns[1])+')',tr('The most intense 2.5-year phase. Core life pillars are tested: career, health, relationships and self-image. Humility and discipline are the keys to endurance and growth.','सबसे तीव्र 2.5 वर्ष का चरण। जीवन के मूल स्तंभ परखे जाते हैं: करियर, स्वास्थ्य, रिश्ते और आत्म-छवि। विनम्रता और अनुशासन ही सहनशक्ति और विकास की कुंजी हैं।')],
-      [tr('Setting','अस्त'),tr('2nd House','दूसरा भाव')+' ('+trRashi(setSigns[2])+')',tr('Saturn moves past your Moon. Pressure eases gradually. Focus shifts to family, finances and speech. The hard lessons of the first two phases crystallise into lasting wisdom.','शनि आपके चंद्रमा को पार कर जाता है। दबाव धीरे-धीरे कम होता है। ध्यान परिवार, वित्त और वाणी पर केंद्रित हो जाता है। पहले दो चरणों के कठिन सबक स्थायी ज्ञान में परिणत होते हैं।')],
-    ];
+    const phaseData=SADESATI_PHASES.map((p,i)=>[tr(p.name,p.nameHi),tr(p.house,p.houseHi)+' ('+trRashi(setSigns[i])+')',tr(p.desc,p.descHi)]);
     document.getElementById('phases').innerHTML=phaseData.map((p,i)=>{
       let dateStr='';
       if(subBds&&subBds.length>i+1){

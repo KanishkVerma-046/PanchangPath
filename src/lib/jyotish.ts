@@ -285,6 +285,22 @@ export const KALASARPA_EFFECTS: KalasarpaEffect[] = [
   { a: 'Losses, expenses and a deep pull toward spiritual renunciation mark the most karmically loaded Kalasarpa type. The material world offers little lasting satisfaction, but the path to moksha and inner liberation becomes directly accessible.', v: 'The confusion between spiritual seeking and self-undoing must be consciously navigated. Surrender to a living spiritual tradition and devotional art are the liberating paths.', aHi: 'हानि, खर्च और आध्यात्मिक त्याग की गहरी लालसा सबसे अधिक कर्मिक भार वाले कालसर्प प्रकार को चिह्नित करते हैं। भौतिक संसार बहुत कम स्थायी संतुष्टि प्रदान करता है, लेकिन मोक्ष और आंतरिक मुक्ति का मार्ग सीधे सुलभ हो जाता है।', vHi: 'आध्यात्मिक खोज और आत्म-विनाश के बीच का भ्रम सचेत रूप से पार करना होगा। किसी जीवंत आध्यात्मिक परंपरा और भक्ति कला के प्रति समर्पण मुक्तिदायक मार्ग हैं।' },
 ];
 
+// ── Shani Sadesati phase reference ────────────────────────────────────────
+// Promoted 2026-08-27 (Jyotish Tier-2 prerender pass) from sadesati.astro's client-only
+// `phaseData` literal built fresh inside calculate() — the name/house-label/description for each
+// of the 3 sub-phases (Rising/Peak/Setting) never depended on any computed value; only the
+// personal rashi name in parens and the exact date range next to it are birth-chart-specific,
+// and those stay computed client-side. This static half is the source for sadesati.astro's new
+// always-visible "The Three Phases — General Reference" section; the existing personal
+// #phases panel keeps combining this text with the visitor's own rashi/dates, now reading the
+// static portion from here instead of a local copy.
+export interface SadesatiPhase { name: string; nameHi: string; house: string; houseHi: string; desc: string; descHi: string; }
+export const SADESATI_PHASES: SadesatiPhase[] = [
+  { name: 'Rising', nameHi: 'उदय', house: '12th House', houseHi: 'बारहवां भाव', desc: 'Saturn enters the sign before your Moon. Mental restlessness, unexpected expenses, confusion and health concerns arise. A time to let go of the old and prepare inwardly for transformation.', descHi: 'शनि आपके चंद्रमा से पहले की राशि में प्रवेश करता है। मानसिक बेचैनी, अप्रत्याशित खर्च, भ्रम और स्वास्थ्य संबंधी चिंताएं उत्पन्न होती हैं। यह पुराने को छोड़ने और परिवर्तन के लिए आंतरिक रूप से तैयार होने का समय है।' },
+  { name: 'Peak', nameHi: 'शिखर', house: '1st House — Janma Shani', houseHi: 'पहला भाव — जन्म शनि', desc: 'The most intense 2.5-year phase. Core life pillars are tested: career, health, relationships and self-image. Humility and discipline are the keys to endurance and growth.', descHi: 'सबसे तीव्र 2.5 वर्ष का चरण। जीवन के मूल स्तंभ परखे जाते हैं: करियर, स्वास्थ्य, रिश्ते और आत्म-छवि। विनम्रता और अनुशासन ही सहनशक्ति और विकास की कुंजी हैं।' },
+  { name: 'Setting', nameHi: 'अस्त', house: '2nd House', houseHi: 'दूसरा भाव', desc: 'Saturn moves past your Moon. Pressure eases gradually. Focus shifts to family, finances and speech. The hard lessons of the first two phases crystallise into lasting wisdom.', descHi: 'शनि आपके चंद्रमा को पार कर जाता है। दबाव धीरे-धीरे कम होता है। ध्यान परिवार, वित्त और वाणी पर केंद्रित हो जाता है। पहले दो चरणों के कठिन सबक स्थायी ज्ञान में परिणत होते हैं।' },
+];
+
 // ── Pitru Paksha / Shraddha engine ────────────────────────────────────────
 // Promoted 2026-08-26 (Jyotish Tier-1 prerender pass) verbatim from shraddha.astro's client
 // <script> (computePitruPaksha and its helpers) — zero personal-input dependency (year only), the
