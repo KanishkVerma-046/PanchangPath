@@ -31,6 +31,12 @@ export const NAKSHATRA_ICONS: Record<string, string> = {
   "revati": "<path d=\"M4.5 12c3-4.5 8-6.5 12-4a8 8 0 0 1 3 4 8 8 0 0 1-3 4c-4 2.5-9 .5-12-4Z\"/><circle cx=\"15.3\" cy=\"10.6\" r=\"0.8\"/><line x1=\"4.5\" y1=\"12\" x2=\"2.5\" y2=\"9\"/><line x1=\"4.5\" y1=\"12\" x2=\"2.5\" y2=\"15\"/>",
 };
 
+/** Shared by nakshatra.astro's build-time "All 27 Nakshatras" grid and its client <script> —
+ *  both wrap the same NAKSHATRA_ICONS markup identically so the two render paths can't diverge. */
+export function nakshatraIconSvg(id: string, size: number): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${NAKSHATRA_ICONS[id]}</svg>`;
+}
+
 export interface NAKSHATRAMeta {
   id: string;
   name: string;
