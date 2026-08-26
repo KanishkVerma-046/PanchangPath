@@ -1,7 +1,7 @@
 // Shared astronomy engine — the one place every astronomy-engine call lives, plus the small
 // geometry/utility functions that sit directly on top of it (ayanamsha, rise/set, Lagna).
 // See docs/superpowers/plans/2026-07-21-full-site-astronomy-engine-scope.md §4 for the design.
-import { SunPosition, EclipticGeoMoon, GeoVector, Ecliptic, Body, Observer, SearchRiseSet } from 'astronomy-engine';
+import { SunPosition, EclipticGeoMoon, GeoVector, Ecliptic, Body, Observer, SearchRiseSet, MakeTime, Rotation_EQJ_ECT, RotateVector, Vector } from 'astronomy-engine';
 
 function toRad(d: number) { return d * Math.PI / 180; }
 function toDeg(r: number) { return r * 180 / Math.PI; }
@@ -46,10 +46,26 @@ export function ketuLongitude(jd: number): number {
   return norm360(rahuLongitude(jd) + 180);
 }
 
-// Lahiri ayanamsha (degrees) — moved verbatim from panchang.ts, no logic change.
+// True (nutation-included) Lahiri/Chitra Paksha ayanamsha (degrees), replacing the old 3-term
+// hand-fit polynomial (~53" drift by 2026, growing) with astronomy-engine's IAU 2006/P03
+// precession+nutation model. "True" (not mean) is the correct choice here, not just the easier
+// one: sunLongitude()/moonLongitude()/planetLongitude() above already return true/apparent
+// (nutation-included) ecliptic longitudes via astronomy-engine's Ecliptic()/SunPosition()/
+// EclipticGeoMoon() — a mean ayanamsha would introduce a frame mismatch up to nutation's ~17"
+// amplitude into every sidereal longitude on the site. Independently confirmed against a
+// Swiss-Ephemeris-computed published reference table (sub-arcsecond match, 1975-2026).
+// CALIBRATION anchors the J2000-epoch rotation angle to that table's 2000-01-01 00:00 UT value
+// (23 51'12" = 23.853333 deg) — see docs/superpowers/plans/2026-08-26-three-initiative-scoping.md
+// Initiative 1 for the full derivation and verification history.
+const AYANAMSHA_CALIBRATION_DEG = 23.8572521318;
+
 export function lahiriAyanamsha(jd: number): number {
-  const T = (jd - 2451545.0) / 36525;
-  return 23.85 + 1.3612 * T - 0.000136 * T * T;
+  const t = MakeTime(jd - 2451545.0);
+  const rot = Rotation_EQJ_ECT(t);
+  const v = new Vector(1, 0, 0, t);
+  const rv = RotateVector(rot, v);
+  const angle = toDeg(Math.atan2(rv.y, rv.x));
+  return norm360(angle + AYANAMSHA_CALIBRATION_DEG);
 }
 
 // Equation of Time in minutes (Meeus, Astronomical Algorithms ch. 28) — moved verbatim.
