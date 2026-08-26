@@ -322,3 +322,278 @@ export function classifyShaniGochara(house: number): GocharaEffect {
   if ([3, 6, 11].includes(house)) return { label: 'Favorable', cls: 'favorable' };
   return { label: 'Neutral', cls: 'neutral' };
 }
+
+// ── Illustrative-example prerendering: Kundali Generator + Janma Kundali ────
+// Added 2026-08-27 for the site's "synthetic illustrative example" product decision (see
+// docs/superpowers/plans/2026-08-26-three-initiative-scoping.md, Initiative 2, Tier 4): these
+// two calculators' entire JS-only result is a genuine personal computation with no separate
+// static reference content, so the crawlable default is a clearly-fictional sample birth
+// (1 Jan 2000, 06:00, New Delhi) rather than "today" (which would read as a real stranger's
+// live chart) or a real named person (which would make a permanent public claim about them).
+// The functions below are pure data/string builders shared by each page's frontmatter (which
+// prerenders this exact synthetic default) and its client <script> (which recomputes on load
+// using the same default input values, then on every real Calculate click) -- same
+// extract-before-prerender pattern as every other calculator on this site.
+
+export const SYNTHETIC_EXAMPLE_BIRTH = { y: 2000, m: 1, d: 1, hh: 6, mm: 0, lat: 28.6139, lng: 77.209, tz: 5.5, city: 'New Delhi' };
+
+/** Sign (0-11) each of the 12 rashi lords rules, indexed by graha id (astro-core's OuterPlanet
+ *  keys plus surya/chandra) -- e.g. RASHI_LORD_KEY[0] === 'mangal' (Mars rules Mesha). */
+export const RASHI_LORD_KEY: string[] = ['mangal', 'shukra', 'budha', 'chandra', 'surya', 'budha', 'shukra', 'mangal', 'guru', 'shani', 'shani', 'guru'];
+
+export const PLANET_EXALT_SIGN: Record<string, number> = { surya: 0, chandra: 1, mangal: 9, budha: 5, guru: 3, shukra: 11, shani: 6 };
+export const PLANET_DEBIL_SIGN: Record<string, number> = { surya: 6, chandra: 7, mangal: 3, budha: 11, guru: 9, shukra: 5, shani: 0 };
+export const PLANET_OWN_SIGNS: Record<string, number[]> = { surya: [4], chandra: [3], mangal: [0, 7], budha: [2, 5], guru: [8, 11], shukra: [1, 6], shani: [9, 10] };
+
+export interface KundaliRow { key: string; sign: number; sidLon: number; nakIdx: number; nakPada: number; isRetrograde: boolean; }
+export interface KundaliChartData {
+  ay: number;
+  lagna: number;
+  lagnaSign: number;
+  signOfHouse: number[];
+  planetsByHouse: Record<number, string[]>;
+  planetsBySign: Record<number, string[]>;
+  moonSign: number;
+  sunSign: number;
+  moonNak: { idx: number; pada: number };
+  atmakarakaKey: string;
+  rows: KundaliRow[];
+}
+
+/** Core sidereal chart data shared by the Kundali Generator and Janma Kundali pages -- signs,
+ *  houses, per-planet longitude/nakshatra/retrograde, and Atmakaraka. Presentation (English/Hindi
+ *  labels, HTML) is deliberately left to each call site, same split as evaluateMangalDosha(). */
+export function computeKundaliChartData(jd: number, lat: number, lng: number): KundaliChartData {
+  const L = allTropicalLons(jd);
+  const ay = L.ayanamsha;
+  const Lp = allTropicalLons(jd + 1);
+  const sid: Record<string, number> = {};
+  GRAHA_META.forEach(g => { sid[g.id] = n360((L as any)[g.id] - ay); });
+  const lagnaTrop = calcLagna(jd, lat, lng);
+  const lagna = n360(lagnaTrop - ay);
+  const lagnaSign = Math.floor(lagna / 30);
+
+  const signOfHouse: number[] = [];
+  for (let h = 0; h < 12; h++) signOfHouse[h] = (lagnaSign + h) % 12;
+  const planetsByHouse: Record<number, string[]> = {};
+  const planetsBySign: Record<number, string[]> = {};
+  for (let h = 0; h < 12; h++) planetsByHouse[h] = [];
+  for (let s = 0; s < 12; s++) planetsBySign[s] = [];
+  planetsByHouse[0].push('La');
+  planetsBySign[lagnaSign].push('La');
+
+  let akKey = '', akDeg = -1;
+  const rows: KundaliRow[] = GRAHA_META.map(g => {
+    const s = sid[g.id];
+    const sign = Math.floor(s / 30);
+    const house = ((sign - lagnaSign) + 12) % 12;
+    planetsByHouse[house].push(g.abbr);
+    planetsBySign[sign].push(g.abbr);
+    const { idx: nakIdx, pada: nakPada } = siderealNakshatraPada(s);
+    let isRetrograde = false;
+    if (g.id === 'rahu' || g.id === 'ketu') isRetrograde = true;
+    else if (g.id !== 'surya' && g.id !== 'chandra') {
+      const cur = n360((L as any)[g.id] - ay);
+      const nxt = n360((Lp as any)[g.id] - Lp.ayanamsha);
+      let diff = nxt - cur;
+      if (diff > 180) diff -= 360;
+      if (diff < -180) diff += 360;
+      isRetrograde = diff < 0;
+    }
+    let degInSign = s % 30;
+    if (g.id === 'rahu') degInSign = 30 - (s % 30);
+    if (g.id !== 'ketu' && degInSign > akDeg) { akDeg = degInSign; akKey = g.id; }
+    return { key: g.id, sign, sidLon: s, nakIdx, nakPada, isRetrograde };
+  });
+
+  const moonSign = Math.floor(sid.chandra / 30);
+  const sunSign = Math.floor(sid.surya / 30);
+  const moonNak = siderealNakshatraPada(sid.chandra);
+
+  return { ay, lagna, lagnaSign, signOfHouse, planetsByHouse, planetsBySign, moonSign, sunSign, moonNak, atmakarakaKey: akKey, rows };
+}
+
+// ── North Indian chart drawing (Kundali Generator: 320px, 4-style page) ─────
+export function kundaliNorthChart(signOfHouse: number[], planetsByHouse: Record<number, string[]>, size = 320): string {
+  const S = size;
+  const f: [number, number][] = [[0.5, 0.25], [0.25, 0.12], [0.12, 0.25], [0.25, 0.5], [0.12, 0.75], [0.25, 0.88], [0.5, 0.75], [0.75, 0.88], [0.88, 0.75], [0.75, 0.5], [0.88, 0.25], [0.75, 0.12]];
+  let lines = `<line x1="0" y1="0" x2="${S}" y2="${S}"/><line x1="${S}" y1="0" x2="0" y2="${S}"/><polygon points="${S / 2},0 ${S},${S / 2} ${S / 2},${S} 0,${S / 2}" fill="none"/>`;
+  let txt = '';
+  for (let h = 0; h < 12; h++) {
+    const cx = f[h][0] * S, cy = f[h][1] * S;
+    txt += `<text x="${cx}" y="${cy - 18}" text-anchor="middle" font-size="10" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${signOfHouse[h] + 1}</text>`;
+    const pls = planetsByHouse[h] || [];
+    pls.forEach((p, i) => {
+      const perRow = 3, col = i % perRow, row = Math.floor(i / perRow);
+      const px = cx + (col - (Math.min(pls.length, perRow) - 1) / 2) * 22;
+      const py = cy + row * 14;
+      txt += `<text x="${px}" y="${py}" text-anchor="middle" font-size="11" font-weight="600" fill="${p === 'La' ? 'var(--color-saffron-deep)' : 'var(--color-kundali-label)'}" stroke="none">${p}</text>`;
+    });
+  }
+  return `<svg viewBox="-2 -2 ${S + 4} ${S + 4}" width="100%" style="max-width:${S}px;stroke:var(--color-kundali-grid);stroke-width:1;"><rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-kundali-bg)"/>${lines}${txt}</svg>`;
+}
+
+const KUNDALI_SOUTH_SIGN: number[][] = [[11, 0, 1, 2], [10, -1, -1, 3], [9, -1, -1, 4], [8, 7, 6, 5]];
+export function kundaliSouthChart(planetsBySign: Record<number, string[]>, lagnaSign: number): string {
+  const C = 80, S = C * 4;
+  let svg = `<svg viewBox="0 0 ${S} ${S}" width="100%" style="max-width:320px;">`;
+  svg += `<rect x="${C}" y="${C}" width="${2 * C}" height="${2 * C}" fill="var(--color-kundali-bg)" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
+  svg += `<text x="${C + C}" y="${C + C}" text-anchor="middle" dominant-baseline="middle" font-size="30" fill="var(--color-kundali-grid)" stroke="none">&#x1F549;</text>`;
+  for (let r = 0; r < 4; r++) { for (let c = 0; c < 4; c++) {
+    const s = KUNDALI_SOUTH_SIGN[r][c]; if (s === -1) continue;
+    const x = c * C, y = r * C, isL = s === lagnaSign;
+    svg += `<rect x="${x}" y="${y}" width="${C}" height="${C}" fill="${isL ? 'rgba(220,130,50,0.08)' : 'var(--color-kundali-bg)'}" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
+    svg += `<text x="${x + 4}" y="${y + 12}" font-size="9" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${s + 1}</text>`;
+    if (isL) svg += `<line x1="${x}" y1="${y}" x2="${x + 22}" y2="${y}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/><line x1="${x}" y1="${y}" x2="${x}" y2="${y + 22}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/>`;
+    const plts = planetsBySign[s] || [];
+    plts.forEach((p, i) => { svg += `<text x="${x + 5 + (i % 3) * 24}" y="${y + 28 + Math.floor(i / 3) * 14}" font-size="11" font-weight="600" fill="${p === 'La' ? 'var(--color-saffron-deep)' : 'var(--color-kundali-label)'}" stroke="none">${p}</text>`; });
+  } }
+  svg += '</svg>'; return svg;
+}
+
+const KUNDALI_EAST_CELLS: (number[] | null)[][] = [[[10, 11], [0], [1, 2]], [[9], null, [3]], [[8, 7], [6], [5, 4]]];
+export function kundaliEastChart(signOfHouse: number[], planetsByHouse: Record<number, string[]>): string {
+  const C = 100, S = 300;
+  let svg = `<svg viewBox="0 0 ${S} ${S}" width="100%" style="max-width:300px;">`;
+  svg += `<rect x="${C}" y="${C}" width="${C}" height="${C}" fill="var(--color-kundali-bg)" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
+  svg += `<text x="${C + C / 2}" y="${C + C / 2}" text-anchor="middle" dominant-baseline="middle" font-size="26" fill="var(--color-kundali-grid)" stroke="none">&#x1F549;</text>`;
+  for (let r = 0; r < 3; r++) { for (let c = 0; c < 3; c++) {
+    if (r === 1 && c === 1) continue;
+    const houses = KUNDALI_EAST_CELLS[r][c]!;
+    const x = c * C, y = r * C, isLagna = houses.includes(0);
+    svg += `<rect x="${x}" y="${y}" width="${C}" height="${C}" fill="${isLagna ? 'rgba(220,130,50,0.08)' : 'var(--color-kundali-bg)'}" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
+    svg += `<text x="${x + 4}" y="${y + 12}" font-size="9" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${houses.map(h => h + 1).join(',')}</text>`;
+    if (isLagna) svg += `<text x="${x + C - 4}" y="${y + 12}" text-anchor="end" font-size="9" fill="var(--color-saffron-deep)" stroke="none">La</text>`;
+    let allP: string[] = []; houses.forEach(h => { allP = allP.concat(planetsByHouse[h] || []); });
+    allP.forEach((p, i) => { svg += `<text x="${x + 6 + (i % 3) * 28}" y="${y + 32 + Math.floor(i / 3) * 14}" font-size="11" font-weight="600" fill="${p === 'La' ? 'var(--color-saffron-deep)' : 'var(--color-kundali-label)'}" stroke="none">${p}</text>`; });
+  } }
+  svg += '</svg>'; return svg;
+}
+
+const KUNDALI_WEST_SIGN: number[][] = [[0, 1, 2, 3], [11, -1, -1, 4], [10, -1, -1, 5], [9, 8, 7, 6]];
+export function kundaliWestChart(planetsBySign: Record<number, string[]>, lagnaSign: number): string {
+  const C = 80, S = C * 4;
+  let svg = `<svg viewBox="0 0 ${S} ${S}" width="100%" style="max-width:320px;">`;
+  svg += `<rect x="${C}" y="${C}" width="${2 * C}" height="${2 * C}" fill="var(--color-kundali-bg)" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
+  svg += `<text x="${C + C}" y="${C + C}" text-anchor="middle" dominant-baseline="middle" font-size="30" fill="var(--color-kundali-grid)" stroke="none">&#x1F549;</text>`;
+  for (let r = 0; r < 4; r++) { for (let c = 0; c < 4; c++) {
+    const s = KUNDALI_WEST_SIGN[r][c]; if (s === -1) continue;
+    const x = c * C, y = r * C, isL = s === lagnaSign;
+    svg += `<rect x="${x}" y="${y}" width="${C}" height="${C}" fill="${isL ? 'rgba(220,130,50,0.08)' : 'var(--color-kundali-bg)'}" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
+    svg += `<text x="${x + 4}" y="${y + 12}" font-size="9" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${s + 1}</text>`;
+    if (isL) svg += `<line x1="${x}" y1="${y}" x2="${x + 22}" y2="${y}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/><line x1="${x}" y1="${y}" x2="${x}" y2="${y + 22}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/>`;
+    const plts = planetsBySign[s] || [];
+    plts.forEach((p, i) => { svg += `<text x="${x + 5 + (i % 3) * 24}" y="${y + 28 + Math.floor(i / 3) * 14}" font-size="11" font-weight="600" fill="${p === 'La' ? 'var(--color-saffron-deep)' : 'var(--color-kundali-label)'}" stroke="none">${p}</text>`; });
+  } }
+  svg += '</svg>'; return svg;
+}
+
+/** Smaller North Indian chart variant for the Janma Kundali report page (280px, single style). */
+export function janmaNorthChart(signOfHouse: number[], planetsByHouse: Record<number, string[]>): string {
+  const S = 280;
+  const f: [number, number][] = [[0.5, 0.25], [0.25, 0.12], [0.12, 0.25], [0.25, 0.5], [0.12, 0.75], [0.25, 0.88], [0.5, 0.75], [0.75, 0.88], [0.88, 0.75], [0.75, 0.5], [0.88, 0.25], [0.75, 0.12]];
+  let lines = `<line x1="0" y1="0" x2="${S}" y2="${S}"/><line x1="${S}" y1="0" x2="0" y2="${S}"/><polygon points="${S / 2},0 ${S},${S / 2} ${S / 2},${S} 0,${S / 2}" fill="none"/>`;
+  let txt = '';
+  for (let h = 0; h < 12; h++) {
+    const cx = f[h][0] * S, cy = f[h][1] * S;
+    txt += `<text x="${cx}" y="${cy - 16}" text-anchor="middle" font-size="9" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${signOfHouse[h] + 1}</text>`;
+    const pls = planetsByHouse[h] || [];
+    pls.forEach((p, i) => {
+      const perRow = 3, col = i % perRow, row = Math.floor(i / perRow);
+      const px = cx + (col - (Math.min(pls.length, perRow) - 1) / 2) * 20;
+      const py = cy + row * 13;
+      txt += `<text x="${px}" y="${py}" text-anchor="middle" font-size="10" font-weight="600" fill="${p === 'La' ? 'var(--color-saffron-deep)' : 'var(--color-kundali-label)'}" stroke="none">${p}</text>`;
+    });
+  }
+  return `<svg viewBox="-2 -2 ${S + 4} ${S + 4}" width="100%" style="max-width:280px;stroke:var(--color-kundali-grid);stroke-width:1;"><rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-kundali-bg)"/>${lines}${txt}</svg>`;
+}
+
+// ── Janma Kundali report: house lords, dignity, yogas, Vimshottari Dasha ────
+
+export interface HouseLordRow { house: number; sign: number; lordKey: string; lordSign: number; lordHouse: number; }
+
+export type DignityLabel = 'exalted' | 'debilitated' | 'own' | '';
+export function planetDignity(key: string, sign: number): DignityLabel {
+  if (PLANET_EXALT_SIGN[key] === sign) return 'exalted';
+  if (PLANET_DEBIL_SIGN[key] === sign) return 'debilitated';
+  if (PLANET_OWN_SIGNS[key]?.includes(sign)) return 'own';
+  return '';
+}
+
+export type YogaKey = 'gajakesari' | 'budhaditya' | 'chandraMangal' | 'mahapurusha_guru' | 'mahapurusha_shukra'
+  | 'mahapurusha_mangal' | 'mahapurusha_budha' | 'mahapurusha_shani' | 'rajaYoga15' | 'rajaYoga19' | 'kemadruma';
+
+/** Detects the same 9 classical yoga checks the Janma Kundali report has always run (see the
+ *  page's FAQ for each rule's exact definition and known cross-source disagreements). Returns
+ *  just the keys present -- descriptive name/text stays with each call site, same split as
+ *  evaluateMangalDosha(). */
+export function detectJanmaYogas(chart: KundaliChartData): YogaKey[] {
+  const sid: Record<string, number> = {};
+  chart.rows.forEach(r => { sid[r.key] = r.sidLon; });
+  const { lagnaSign, moonSign, signOfHouse } = chart;
+  const present: YogaKey[] = [];
+
+  const guruSign = Math.floor(sid.guru / 30);
+  if ([0, 3, 6, 9].includes((guruSign - moonSign + 12) % 12)) present.push('gajakesari');
+  if (Math.floor(sid.surya / 30) === Math.floor(sid.budha / 30)) present.push('budhaditya');
+  const marsSign = Math.floor(sid.mangal / 30);
+  const marsFromMoon = (marsSign - moonSign + 12) % 12;
+  if (marsFromMoon === 0 || marsFromMoon === 6) present.push('chandraMangal');
+
+  (['guru', 'shukra', 'mangal', 'budha', 'shani'] as const).forEach(k => {
+    const sg = Math.floor(sid[k] / 30);
+    const house = (sg - lagnaSign + 12) % 12;
+    if ((PLANET_OWN_SIGNS[k]?.includes(sg) || PLANET_EXALT_SIGN[k] === sg) && [0, 3, 6, 9].includes(house)) {
+      present.push((`mahapurusha_${k}`) as YogaKey);
+    }
+  });
+
+  const lordKeyOfHouse = (n: number) => RASHI_LORD_KEY[signOfHouse[n]];
+  const l1k = lordKeyOfHouse(0), l5k = lordKeyOfHouse(4), l9k = lordKeyOfHouse(8);
+  if (l1k !== l5k && Math.floor(sid[l1k] / 30) === Math.floor(sid[l5k] / 30)) present.push('rajaYoga15');
+  if (l1k !== l9k && Math.floor(sid[l1k] / 30) === Math.floor(sid[l9k] / 30)) present.push('rajaYoga19');
+
+  const moonHouse = (moonSign - lagnaSign + 12) % 12;
+  const adjHouses = [(moonHouse + 11) % 12, (moonHouse + 1) % 12];
+  const hasNeighbour = chart.rows.some(r => r.key !== 'chandra' && r.key !== 'rahu' && r.key !== 'ketu'
+    && adjHouses.includes((r.sign - lagnaSign + 12) % 12));
+  if (!hasNeighbour) present.push('kemadruma');
+
+  return present;
+}
+
+export const DASHA_ORDER: string[] = ['ketu', 'shukra', 'surya', 'chandra', 'mangal', 'rahu', 'guru', 'shani', 'budha'];
+export const DASHA_YEARS: Record<string, number> = { ketu: 7, shukra: 20, surya: 6, chandra: 10, mangal: 7, rahu: 18, guru: 16, shani: 19, budha: 17 };
+
+export interface JanmaKundaliData {
+  chart: KundaliChartData;
+  houseLords: HouseLordRow[];
+  yogas: YogaKey[];
+  dashaLordKey: string;
+  dashaYears: number;
+  dashaFractionElapsed: number; // 0..1, how far into the birth dasha the Moon already was
+}
+
+/** Everything the Janma Kundali report needs beyond computeKundaliChartData: house-lord
+ *  placements, the 9 yoga checks, and the birth (Vimshottari) Dasha lord + elapsed fraction.
+ *  Calendar dates for the Dasha sequence and any "currently active" row are deliberately left to
+ *  each call site (they depend on the real birth Date and, for the active row, the real current
+ *  instant -- a live/"NOW" concern that must stay client-recomputed, per this project's
+ *  established prerendering convention). */
+export function computeJanmaKundaliData(jd: number, lat: number, lng: number): JanmaKundaliData {
+  const chart = computeKundaliChartData(jd, lat, lng);
+  const houseLords: HouseLordRow[] = [];
+  for (let h = 0; h < 12; h++) {
+    const sign = chart.signOfHouse[h];
+    const lordKey = RASHI_LORD_KEY[sign];
+    const lordSign = Math.floor(chart.rows.find(r => r.key === lordKey)!.sidLon / 30);
+    const lordHouse = (lordSign - chart.lagnaSign + 12) % 12;
+    houseLords.push({ house: h, sign, lordKey, lordSign, lordHouse });
+  }
+  const yogas = detectJanmaYogas(chart);
+  const moonNakSpan = 360 / 27;
+  const moonFrac = (chart.rows.find(r => r.key === 'chandra')!.sidLon % moonNakSpan) / moonNakSpan;
+  const dashaLordKey = DASHA_ORDER[chart.moonNak.idx % 9];
+  const dashaYears = DASHA_YEARS[dashaLordKey];
+  return { chart, houseLords, yogas, dashaLordKey, dashaYears, dashaFractionElapsed: moonFrac };
+}

@@ -3,6 +3,29 @@ import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { computeKundaliChartData, kundaliNorthChart, jdFull, SYNTHETIC_EXAMPLE_BIRTH, formatDegMin } from '../../lib/kundali';
+import { NAKSHATRAS } from '../../lib/jyotish';
+
+// Illustrative-example prerender (see kundali.ts's SYNTHETIC_EXAMPLE_BIRTH comment): a clearly-
+// fictional sample birth, not "today" (which would read as a real stranger's live chart) and not
+// a real named person (which would make a permanent public claim about them). The client <script>
+// below pre-fills the form with this exact same date/time/place and recalculates on load, so the
+// prerendered and hydrated content start identical -- same pattern as every other calculator's
+// "today, New Delhi" default, just with a synthetic default instead.
+const EB = SYNTHETIC_EXAMPLE_BIRTH;
+const ebDate = new Date(Date.UTC(EB.y, EB.m - 1, EB.d, EB.hh, EB.mm) - EB.tz * 3600000);
+const ebJD = jdFull(ebDate);
+const ebChart = computeKundaliChartData(ebJD, EB.lat, EB.lng);
+const ebChartSvg = kundaliNorthChart(ebChart.signOfHouse, ebChart.planetsByHouse);
+const EB_DATE_STR = `${EB.y}-${String(EB.m).padStart(2, '0')}-${String(EB.d).padStart(2, '0')}`;
+const EB_TIME_STR = `${String(EB.hh).padStart(2, '0')}:${String(EB.mm).padStart(2, '0')}`;
+
+const EB_PLANET_EN: Record<string, string> = { surya: 'Sun', chandra: 'Moon', mangal: 'Mars', budha: 'Mercury', guru: 'Jupiter', shukra: 'Venus', shani: 'Saturn', rahu: 'Rahu', ketu: 'Ketu' };
+const EB_RASHI = ['Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya', 'Tula', 'Vrishchika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'];
+const EB_RASHI_EN = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+const EB_RASHI_LORD = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter'];
+const ebAkName = EB_PLANET_EN[ebChart.atmakarakaKey];
+const ebMoonNakName = NAKSHATRAS[ebChart.moonNak.idx].n;
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
@@ -55,7 +78,8 @@ const FAQ_ITEMS = [
         </div>
         <button id="f-calc" class="btn-primary" data-hi="कुंडली बनाएं" style="height:38px;padding:0 20px;">Generate Kundali</button>
       </div>
-      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
+      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Date of birth: {EB_DATE_STR}</p>
+      <p id="example-note" style="font-size:12px;color:var(--color-mute);margin:-16px 0 20px;">Showing an illustrative example (synthetic sample birth, not a real person) — enter your own birth details above and click Generate Kundali for your chart.</p>
 
       <!-- Chart style selector -->
       <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:28px;">
@@ -66,18 +90,29 @@ const FAQ_ITEMS = [
         <button class="style-btn" data-style="west" data-hi="पश्चिम भारतीय">West Indian</button>
       </div>
 
-      <div id="result" style="display:none;">
+      <div id="result">
         <div style="display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start;" class="kund-layout">
           <!-- Chart -->
           <div>
             <div class="card" style="padding:20px;">
               <h2 id="chart-title" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Lagna Chart (D-1)</h2>
-              <p id="chart-sub" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;font-family:var(--font-mono);"></p>
-              <div id="chart-box"></div>
+              <p id="chart-sub" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;font-family:var(--font-mono);">{EB_RASHI[ebChart.lagnaSign]} Lagna &middot; {EB_DATE_STR} {EB_TIME_STR} &middot; {EB.city}</p>
+              <div id="chart-box" set:html={ebChartSvg} />
             </div>
             <div class="card" style="padding:18px;margin-top:16px;">
               <h3 data-hi="जन्म सारांश" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">Birth Summary</h3>
-              <div id="summary-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+              <div id="summary-list" style="display:flex;flex-direction:column;gap:8px;">
+                {[
+                  ['Lagna (Asc)', `${EB_RASHI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]})`],
+                  ['Lagna Lord', EB_RASHI_LORD[ebChart.lagnaSign]],
+                  ['Moon Rashi', `${EB_RASHI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]})`],
+                  ['Sun Rashi', `${EB_RASHI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]})`],
+                  ['Nakshatra', `${ebMoonNakName} (Pada ${ebChart.moonNak.pada})`],
+                  ['Ayanamsha', `${ebChart.ay.toFixed(3)}° Lahiri`],
+                ].map(([label, val]) => (
+                  <div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;"><span style="color:var(--color-mute);">{label}</span><span style="color:var(--color-ink);font-weight:600;text-align:right;">{val}</span></div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -85,11 +120,32 @@ const FAQ_ITEMS = [
           <div>
             <div class="card" style="padding:20px;overflow-x:auto;">
               <h3 data-hi="ग्रह स्थिति (ग्रह स्फुट)" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Planetary Positions (Graha Sphuta)</h3>
-              <table style="width:100%;border-collapse:collapse;font-size:13px;" id="planet-table"></table>
+              <table style="width:100%;border-collapse:collapse;font-size:13px;" id="planet-table">
+                <tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>Nakshatra</th><th>Pada</th><th>Motion</th></tr>
+                {ebChart.rows.map(row => (
+                  <tr>
+                    <td style="color:var(--color-ink);font-weight:600;">{EB_PLANET_EN[row.key]}</td>
+                    <td>{EB_RASHI[row.sign]}</td>
+                    <td style="font-family:var(--font-mono);">{formatDegMin(row.sidLon)}</td>
+                    <td>{NAKSHATRAS[row.nakIdx].n}</td>
+                    <td>{row.nakPada}</td>
+                    <td style={row.isRetrograde ? 'color:#dc2626;' : 'color:var(--color-body-text);'}>{row.isRetrograde ? 'Vakri' : 'Margi'}</td>
+                  </tr>
+                ))}
+              </table>
             </div>
             <div class="card" style="padding:20px;margin-top:16px;">
               <h3 data-hi="मुख्य व्याख्याएं" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Key Interpretations</h3>
-              <div id="interp" style="display:flex;flex-direction:column;gap:12px;"></div>
+              <div id="interp" style="display:flex;flex-direction:column;gap:12px;">
+                {[
+                  ['Lagna (Ascendant)', `The rising sign is ${EB_RASHI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]}), ruled by ${EB_RASHI_LORD[ebChart.lagnaSign]}. The Lagna shapes physical body, temperament and how others first perceive a person.`],
+                  ['Moon Sign (Rashi)', `The Moon is in ${EB_RASHI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]}) in ${ebMoonNakName} nakshatra. This is the emotional core and the rashi used for daily Rashifal and most muhurta decisions.`],
+                  ['Sun Sign', `The Sun is in ${EB_RASHI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]}), representing soul, vitality, ego and one's relationship with authority and the father.`],
+                  ['Atmakaraka', `${ebAkName} holds the highest degree in its sign and is the Atmakaraka — the soul planet of the Jaimini system, signifying the deepest desires and the main lesson of this lifetime.`],
+                ].map(([title, text]) => (
+                  <div><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">{title}</p><p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0;">{text}</p></div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -128,8 +184,7 @@ const FAQ_ITEMS = [
 <script>
 import { LOCATIONS } from '../../lib/locations';
 import { PLANET_ICONS } from '../../lib/icons/planets';
-import { allTropicalLons } from '../../lib/kundali';
-import { calcLagna } from '../../lib/astro-core';
+import { computeKundaliChartData, kundaliNorthChart, kundaliSouthChart, kundaliEastChart, kundaliWestChart, siderealNakshatraPada, formatDegMin, SYNTHETIC_EXAMPLE_BIRTH } from '../../lib/kundali';
 
 function planetIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-3px;margin-right:4px;">${PLANET_ICONS[id]}</svg>`;}
 let currentStyle = 'north';
@@ -142,7 +197,6 @@ const MO_HI=['जनवरी','फरवरी','मार्च','अप्र
 function formatLongDate(y,m,d){const wd=new Date(Date.UTC(y,m-1,d,12)).getUTCDay();return t(`${WD_EN[wd]}, ${d} ${MO_EN[m-1]} ${y}`,`${WD_HI[wd]}, ${d} ${MO_HI[m-1]} ${y}`);}
 const LOCS=LOCATIONS.map(l=>({name:l.name,nameHi:l.nameHi,lat:l.lat,lng:l.lng,tz:l.tzOffset}));
 function toJD(y,m,d,h){h=h||0;if(m<=2){y--;m+=12;}const A=Math.floor(y/100),B=2-A+Math.floor(A/4);return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+d+h/24+B-1524.5;}
-const n360=a=>((a%360)+360)%360;
 
 const RASHI=['Mesha','Vrishabha','Mithuna','Karka','Simha','Kanya','Tula','Vrishchika','Dhanu','Makara','Kumbha','Meena'];
 const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
@@ -154,84 +208,7 @@ function trRashi(i){return t(RASHI[i],RASHI_HI[i]);}
 function trNak(i){return t(NAKS[i],NAKS_HI[i]);}
 const PLANETS=[['surya','Sun','Sy'],['chandra','Moon','Ch'],['mangal','Mars','Ma'],['budha','Mercury','Bu'],['guru','Jupiter','Gu'],['shukra','Venus','Sk'],['shani','Saturn','Sa'],['rahu','Rahu','Ra'],['ketu','Ketu','Ke']];
 const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि',Rahu:'राहु',Ketu:'केतु'};
-function fmtDMS(lon){const d=lon%30;const deg=Math.floor(d);const mn=Math.floor((d-deg)*60);return deg+'\xb0'+String(mn).padStart(2,'0')+"'";}
-function nakInfo(sid){const idx=Math.floor(sid/(360/27));const pada=Math.floor((sid%(360/27))/((360/27)/4))+1;return{name:NAKS[idx],idx,pada};}
-
-// ── North Indian chart (diamond/kite) ──
-function drawNorthChart(signOfHouse,planetsByHouse){
-  const S=320;
-  const f=[[0.5,0.25],[0.25,0.12],[0.12,0.25],[0.25,0.5],[0.12,0.75],[0.25,0.88],[0.5,0.75],[0.75,0.88],[0.88,0.75],[0.75,0.5],[0.88,0.25],[0.75,0.12]];
-  let lines=`<line x1="0" y1="0" x2="${S}" y2="${S}"/><line x1="${S}" y1="0" x2="0" y2="${S}"/><polygon points="${S/2},0 ${S},${S/2} ${S/2},${S} 0,${S/2}" fill="none"/>`;
-  let txt='';
-  for(let h=0;h<12;h++){
-    const cx=f[h][0]*S,cy=f[h][1]*S;
-    txt+=`<text x="${cx}" y="${cy-18}" text-anchor="middle" font-size="10" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${signOfHouse[h]+1}</text>`;
-    const pls=planetsByHouse[h]||[];
-    pls.forEach((p,i)=>{const perRow=3;const col=i%perRow;const row=Math.floor(i/perRow);const px=cx+(col-(Math.min(pls.length,perRow)-1)/2)*22;const py=cy+row*14;txt+=`<text x="${px}" y="${py}" text-anchor="middle" font-size="11" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-kundali-label)'}" stroke="none">${p}</text>`;});
-  }
-  return `<svg viewBox="-2 -2 ${S+4} ${S+4}" width="100%" style="max-width:320px;stroke:var(--color-kundali-grid);stroke-width:1;"><rect x="0" y="0" width="${S}" height="${S}" fill="var(--color-kundali-bg)"/>${lines}${txt}</svg>`;
-}
-
-// ── South Indian chart (fixed-sign 4×4 grid) ──
-// Signs fixed clockwise: Pisces top-left → Aries → ... → Aquarius left
-const SOUTH_SIGN=[[11,0,1,2],[10,-1,-1,3],[9,-1,-1,4],[8,7,6,5]];
-function drawSouthChart(planetsBySign,lagnaSign){
-  const C=80,S=C*4;
-  let svg=`<svg viewBox="0 0 ${S} ${S}" width="100%" style="max-width:320px;">`;
-  svg+=`<rect x="${C}" y="${C}" width="${2*C}" height="${2*C}" fill="var(--color-kundali-bg)" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
-  svg+=`<text x="${C+C}" y="${C+C}" text-anchor="middle" dominant-baseline="middle" font-size="30" fill="var(--color-kundali-grid)" stroke="none">&#x1F549;</text>`;
-  for(let r=0;r<4;r++){for(let c=0;c<4;c++){
-    const s=SOUTH_SIGN[r][c];if(s===-1)continue;
-    const x=c*C,y=r*C,isL=s===lagnaSign;
-    svg+=`<rect x="${x}" y="${y}" width="${C}" height="${C}" fill="${isL?'rgba(220,130,50,0.08)':'var(--color-kundali-bg)'}" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
-    svg+=`<text x="${x+4}" y="${y+12}" font-size="9" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${s+1}</text>`;
-    if(isL){svg+=`<line x1="${x}" y1="${y}" x2="${x+22}" y2="${y}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/><line x1="${x}" y1="${y}" x2="${x}" y2="${y+22}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/>`;}
-    const plts=planetsBySign[s]||[];
-    plts.forEach((p,i)=>{svg+=`<text x="${x+5+(i%3)*24}" y="${y+28+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-kundali-label)'}" stroke="none">${p}</text>`;});
-  }}
-  svg+='</svg>';return svg;
-}
-
-// ── East Indian chart (Bengali 3×3 grid, Lagna top-centre) ──
-// Corner cells hold 2 houses each; edge cells hold 1; centre = Om
-const EAST_CELLS=[[[10,11],[0],[1,2]],[[9],null,[3]],[[8,7],[6],[5,4]]];
-function drawEastChart(signOfHouse,planetsByHouse){
-  const C=100,S=300;
-  let svg=`<svg viewBox="0 0 ${S} ${S}" width="100%" style="max-width:300px;">`;
-  svg+=`<rect x="${C}" y="${C}" width="${C}" height="${C}" fill="var(--color-kundali-bg)" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
-  svg+=`<text x="${C+C/2}" y="${C+C/2}" text-anchor="middle" dominant-baseline="middle" font-size="26" fill="var(--color-kundali-grid)" stroke="none">&#x1F549;</text>`;
-  for(let r=0;r<3;r++){for(let c=0;c<3;c++){
-    if(r===1&&c===1)continue;
-    const houses=EAST_CELLS[r][c];
-    const x=c*C,y=r*C,isLagna=houses.includes(0);
-    svg+=`<rect x="${x}" y="${y}" width="${C}" height="${C}" fill="${isLagna?'rgba(220,130,50,0.08)':'var(--color-kundali-bg)'}" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
-    svg+=`<text x="${x+4}" y="${y+12}" font-size="9" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${houses.map(h=>h+1).join(',')}</text>`;
-    if(isLagna){svg+=`<text x="${x+C-4}" y="${y+12}" text-anchor="end" font-size="9" fill="var(--color-saffron-deep)" stroke="none">La</text>`;}
-    let allP=[];houses.forEach(h=>{allP=allP.concat(planetsByHouse[h]||[]);});
-    allP.forEach((p,i)=>{svg+=`<text x="${x+6+(i%3)*28}" y="${y+32+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-kundali-label)'}" stroke="none">${p}</text>`;});
-  }}
-  svg+='</svg>';return svg;
-}
-
-// ── West Indian chart (Gujarati/Marathi — fixed-sign like South but signs run anti-clockwise) ──
-// Top row L→R: Aries Taurus Gemini Cancer; left col T→B: Pisces Aquarius Capricorn; etc.
-const WEST_SIGN=[[0,1,2,3],[11,-1,-1,4],[10,-1,-1,5],[9,8,7,6]];
-function drawWestChart(planetsBySign,lagnaSign){
-  const C=80,S=C*4;
-  let svg=`<svg viewBox="0 0 ${S} ${S}" width="100%" style="max-width:320px;">`;
-  svg+=`<rect x="${C}" y="${C}" width="${2*C}" height="${2*C}" fill="var(--color-kundali-bg)" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
-  svg+=`<text x="${C+C}" y="${C+C}" text-anchor="middle" dominant-baseline="middle" font-size="30" fill="var(--color-kundali-grid)" stroke="none">&#x1F549;</text>`;
-  for(let r=0;r<4;r++){for(let c=0;c<4;c++){
-    const s=WEST_SIGN[r][c];if(s===-1)continue;
-    const x=c*C,y=r*C,isL=s===lagnaSign;
-    svg+=`<rect x="${x}" y="${y}" width="${C}" height="${C}" fill="${isL?'rgba(220,130,50,0.08)':'var(--color-kundali-bg)'}" stroke="var(--color-kundali-grid)" stroke-width="1.5"/>`;
-    svg+=`<text x="${x+4}" y="${y+12}" font-size="9" fill="var(--color-kundali-house)" stroke="none" font-family="var(--font-mono)">${s+1}</text>`;
-    if(isL){svg+=`<line x1="${x}" y1="${y}" x2="${x+22}" y2="${y}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/><line x1="${x}" y1="${y}" x2="${x}" y2="${y+22}" stroke="var(--color-saffron-deep)" stroke-width="2.5"/>`;}
-    const plts=planetsBySign[s]||[];
-    plts.forEach((p,i)=>{svg+=`<text x="${x+5+(i%3)*24}" y="${y+28+Math.floor(i/3)*14}" font-size="11" font-weight="600" fill="${p==='La'?'var(--color-saffron-deep)':'var(--color-kundali-label)'}" stroke="none">${p}</text>`;});
-  }}
-  svg+='</svg>';return svg;
-}
+function fmtDMS(lon){return formatDegMin(lon);}
 
 // Style selector wiring
 document.querySelectorAll('.style-btn').forEach(btn=>{
@@ -245,10 +222,10 @@ document.querySelectorAll('.style-btn').forEach(btn=>{
 function redrawChart(){
   const{signOfHouse,planetsByHouse,planetsBySign,lagnaSign}=window._lastCalc;
   let html;
-  if(currentStyle==='north')html=drawNorthChart(signOfHouse,planetsByHouse);
-  else if(currentStyle==='south')html=drawSouthChart(planetsBySign,lagnaSign);
-  else if(currentStyle==='east')html=drawEastChart(signOfHouse,planetsByHouse);
-  else html=drawWestChart(planetsBySign,lagnaSign);
+  if(currentStyle==='north')html=kundaliNorthChart(signOfHouse,planetsByHouse);
+  else if(currentStyle==='south')html=kundaliSouthChart(planetsBySign,lagnaSign);
+  else if(currentStyle==='east')html=kundaliEastChart(signOfHouse,planetsByHouse);
+  else html=kundaliWestChart(planetsBySign,lagnaSign);
   document.getElementById('chart-box').innerHTML=html;
 }
 
@@ -259,9 +236,12 @@ function renderCityOptions(){
   if(selected) citySel.value=selected;
 }
 renderCityOptions();
-const today=new Date();
-document.getElementById('f-date').value=today.toISOString().split('T')[0];
-document.getElementById('f-time').value='12:00';
+const EB=SYNTHETIC_EXAMPLE_BIRTH;
+const ebDateStr=`${EB.y}-${String(EB.m).padStart(2,'0')}-${String(EB.d).padStart(2,'0')}`;
+const ebTimeStr=`${String(EB.hh).padStart(2,'0')}:${String(EB.mm).padStart(2,'0')}`;
+document.getElementById('f-date').value=ebDateStr;
+document.getElementById('f-time').value=ebTimeStr;
+citySel.value=EB.city;
 
 function calculate(){
   try{
@@ -273,26 +253,12 @@ function calculate(){
     const[y,m,d]=dateStr.split('-').map(Number);
     const de=document.getElementById('date-echo');
     if(de){de.textContent=t('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);de.hidden=false;}
+    const noteEl=document.getElementById('example-note');
+    if(noteEl)noteEl.style.display=(dateStr===ebDateStr&&timeStr===ebTimeStr&&cityName===EB.city)?'':'none';
     const[hh,mm]=timeStr.split(':').map(Number);
     const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
-    const L=allTropicalLons(jd);const ay=L.ayanamsha;
-    const Lp=allTropicalLons(jd+1);
-    const sid={};PLANETS.forEach(([k])=>sid[k]=n360(L[k]-ay));
-    const lagnaTrop=calcLagna(jd,loc.lat,loc.lng);
-    const lagna=n360(lagnaTrop-ay);
-    const lagnaSign=Math.floor(lagna/30);
-
-    const signOfHouse=[];for(let h=0;h<12;h++)signOfHouse[h]=(lagnaSign+h)%12;
-    const planetsByHouse={};for(let h=0;h<12;h++)planetsByHouse[h]=[];
-    const planetsBySign={};for(let s=0;s<12;s++)planetsBySign[s]=[];
-    planetsByHouse[0].push('La');
-    planetsBySign[lagnaSign].push('La');
-    PLANETS.forEach(([k,,abbr])=>{
-      const sign=Math.floor(sid[k]/30);
-      const house=((sign-lagnaSign)+12)%12;
-      planetsByHouse[house].push(abbr);
-      planetsBySign[sign].push(abbr);
-    });
+    const chart=computeKundaliChartData(jd,loc.lat,loc.lng);
+    const{ay,lagna,lagnaSign,signOfHouse,planetsByHouse,planetsBySign,moonSign,sunSign,moonNak,atmakarakaKey}=chart;
 
     window._lastCalc={signOfHouse,planetsByHouse,planetsBySign,lagnaSign};
     redrawChart();
@@ -300,9 +266,6 @@ function calculate(){
     document.getElementById('chart-title').textContent=(name?name+"'s ":'')+t('Lagna Chart (D-1)','लग्न चार्ट (डी-1)');
     document.getElementById('chart-sub').textContent=trRashi(lagnaSign)+' '+t('Lagna','लग्न')+' \xb7 '+dateStr+' '+timeStr+' \xb7 '+(LANG_HI?(loc.nameHi||loc.name):loc.name);
 
-    const moonSign=Math.floor(sid.chandra/30);
-    const sunSign=Math.floor(sid.surya/30);
-    const moonNak=nakInfo(sid.chandra);
     document.getElementById('summary-list').innerHTML=[
       [t('Lagna (Asc)','लग्न'),trRashi(lagnaSign)+' ('+RASHI_EN[lagnaSign]+')'],
       [t('Lagna Lord','लग्न स्वामी'),t(RASHI_LORD[lagnaSign],PLANET_HI[RASHI_LORD[lagnaSign]])],
@@ -312,16 +275,12 @@ function calculate(){
       [t('Ayanamsha','अयनांश'),ay.toFixed(3)+'\xb0 Lahiri'],
     ].map(r=>`<div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;"><span style="color:var(--color-mute);">${r[0]}</span><span style="color:var(--color-ink);font-weight:600;text-align:right;">${r[1]}</span></div>`).join('');
 
+    const akName=PLANETS.find(([k])=>k===atmakarakaKey)[1];
     let rows=`<tr><th>${t('Graha','ग्रह')}</th><th>${t('Rashi','राशि')}</th><th>${t('Degree','अंश')}</th><th>${t('Nakshatra','नक्षत्र')}</th><th>${t('Pada','पद')}</th><th>${t('Motion','गति')}</th></tr>`;
-    let akName='',akDeg=-1;
     PLANETS.forEach(([k,full])=>{
-      const s=sid[k];const sign=Math.floor(s/30);const nk=nakInfo(s);
-      let motion=t('Margi','मार्गी');
-      if(k==='rahu'||k==='ketu')motion=t('Vakri','वक्री');
-      else if(k!=='surya'&&k!=='chandra'){const cur=n360(L[k]-ay);const nxt=n360(Lp[k]-Lp.ayanamsha);let diff=nxt-cur;if(diff>180)diff-=360;if(diff<-180)diff+=360;motion=diff<0?t('Vakri','वक्री'):t('Margi','मार्गी');}
-      let degInSign=s%30;if(k==='rahu')degInSign=30-(s%30);
-      if(k!=='ketu'&&degInSign>akDeg){akDeg=degInSign;akName=full;}
-      rows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${t(full,PLANET_HI[full])}</td><td>${trRashi(sign)}</td><td style="font-family:var(--font-mono);">${fmtDMS(s)}</td><td>${trNak(nk.idx)}</td><td>${nk.pada}</td><td style="color:${(motion===t('Vakri','वक्री'))?'#dc2626':'var(--color-body-text)'};">${motion}</td></tr>`;
+      const row=chart.rows.find(r=>r.key===k);
+      const motion=row.isRetrograde?t('Vakri','वक्री'):t('Margi','मार्गी');
+      rows+=`<tr><td style="color:var(--color-ink);font-weight:600;">${planetIconSvg(k,14)}${t(full,PLANET_HI[full])}</td><td>${trRashi(row.sign)}</td><td style="font-family:var(--font-mono);">${fmtDMS(row.sidLon)}</td><td>${trNak(row.nakIdx)}</td><td>${row.nakPada}</td><td style="color:${row.isRetrograde?'#dc2626':'var(--color-body-text)'};">${motion}</td></tr>`;
     });
     document.getElementById('planet-table').innerHTML=rows;
 
