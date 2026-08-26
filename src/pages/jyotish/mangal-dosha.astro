@@ -3,6 +3,58 @@ import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { evaluateMangalDosha } from '../../lib/mangalDosha';
+import { calcLagna, planetLongitude } from '../../lib/astro-core';
+import { moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
+import { jdFull, SYNTHETIC_EXAMPLE_BIRTH } from '../../lib/kundali';
+
+function planetIconSvg(id: string, size: number, color: string): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;
+}
+
+// Illustrative-example prerender -- see kundali.ts's SYNTHETIC_EXAMPLE_BIRTH comment: a clearly-
+// fictional sample birth, not "today" (a real stranger's live result) and not a real named
+// person (which would make a permanent public claim like "so-and-so has Mangal Dosha" about
+// them). The client <script> pre-fills this same date/time/place and recalculates on load using
+// this same evaluateMangalDosha(), so prerendered and hydrated content start identical.
+const EB = SYNTHETIC_EXAMPLE_BIRTH;
+const EB_RASHI = ['Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya', 'Tula', 'Vrishchika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'];
+const EB_DATE_STR = `${EB.y}-${String(EB.m).padStart(2, '0')}-${String(EB.d).padStart(2, '0')}`;
+const EB_TIME_STR = `${String(EB.hh).padStart(2, '0')}:${String(EB.mm).padStart(2, '0')}`;
+const n360eb = (a: number) => ((a % 360) + 360) % 360;
+function angDiffEb(a: number, b: number): number { const d = n360eb(a - b); return d > 180 ? 360 - d : d; }
+
+const ebDate = new Date(Date.UTC(EB.y, EB.m - 1, EB.d, EB.hh, EB.mm) - EB.tz * 3600000);
+const ebJD = jdFull(ebDate);
+const ebAy = lahiriAyanamsha(ebJD);
+const ebMarsSign = Math.floor(n360eb(planetLongitude('mars', ebJD) - ebAy) / 30);
+const ebMoonSign = Math.floor(n360eb(moonLongitude(ebJD) - ebAy) / 30);
+const ebVenusSign = Math.floor(n360eb(planetLongitude('venus', ebJD) - ebAy) / 30);
+const ebLagnaSign = Math.floor(n360eb(calcLagna(ebJD, EB.lat, EB.lng) - ebAy) / 30);
+const ebSidMars = n360eb(planetLongitude('mars', ebJD) - ebAy);
+const ebSidGuru = n360eb(planetLongitude('jupiter', ebJD) - ebAy);
+const ebSidMoon = n360eb(moonLongitude(ebJD) - ebAy);
+const ebDGuruMars = angDiffEb(ebSidGuru, ebSidMars);
+const ebDMoonMars = angDiffEb(ebSidMoon, ebSidMars);
+const ebMd = evaluateMangalDosha({ marsSign: ebMarsSign, lagnaSign: ebLagnaSign, moonSign: ebMoonSign, venusSign: ebVenusSign, jupiterMarsOrbDeg: ebDGuruMars, moonMarsOrbDeg: ebDMoonMars });
+
+const EB_REF_LABELS = ['Lagna (Ascendant)', 'Moon', 'Venus'];
+const EB_FULL_RULE_LABEL: Record<string, string> = { ownSign: 'Mars in own sign', exalted: 'Mars exalted in Makara', yogakarakaLagna: 'Cancer/Leo Lagna (Yogakaraka Mars)', jupiterConjunct: 'Jupiter conjunct Mars' };
+const ebAppliedFullRules = ebMd.cancelRules.filter(c => c.applies && EB_FULL_RULE_LABEL[c.key]).map(c => EB_FULL_RULE_LABEL[c.key]);
+let ebSeverityLabel = 'No Mangal Dosha', ebSevColor = '#15803d';
+if (ebMd.severity === 'cancelled') { ebSeverityLabel = 'Cancelled (Bhanga)'; ebSevColor = '#0891b2'; }
+else if (ebMd.severity === 'high') { ebSeverityLabel = 'High'; ebSevColor = '#dc2626'; }
+else if (ebMd.severity === 'low') { ebSeverityLabel = 'Low to Medium'; ebSevColor = '#b45309'; }
+const ebBg = ebMd.severity === 'none' || ebMd.severity === 'cancelled' ? 'var(--color-auspicious-soft)' : (ebMd.severity === 'high' ? 'var(--color-inauspicious-soft)' : 'var(--color-warning-soft)');
+
+const EB_RULE_COPY: Record<string, { rule: string; strength: string }> = {
+  ownSign: { rule: 'Mars in own sign (Mesha or Vrishchika)', strength: 'Full' },
+  exalted: { rule: 'Mars exalted (Makara)', strength: 'Full' },
+  yogakarakaLagna: { rule: 'Cancer or Leo Lagna (Yogakaraka)', strength: 'Full' },
+  jupiterConjunct: { rule: 'Jupiter conjunct Mars (within 10°)', strength: 'Full' },
+  weakSign: { rule: 'Mars in weakening sign (Karka, Simha, Kumbha, Meena)', strength: 'Partial' },
+  moonConjunct: { rule: 'Moon conjunct Mars (within 10°)', strength: 'Moderate' },
+};
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq('before deciding a match is incompatible'),
@@ -45,23 +97,69 @@ const FAQ_ITEMS = [
         <div><label for="f-city" class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
         <button id="f-calc" class="btn-primary" data-hi="दोष जांचें" style="height:38px;padding:0 20px;">Check Dosha</button>
       </div>
-      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
+      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Date of birth: {EB_DATE_STR}</p>
+      <p id="example-note" style="font-size:12px;color:var(--color-mute);margin:-16px 0 20px;">Showing an illustrative example (synthetic sample birth, not a real person) — enter your own birth details above and click Check Dosha for your result.</p>
 
-      <div id="result" style="display:none;">
-        <div class="card" id="dosha-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
+      <div id="result">
+        <div class="card" id="dosha-banner" style={`padding:32px;text-align:center;margin-bottom:24px;background:${ebBg};`}>
+          {ebMd.severity === 'none' && (
+            <>
+              <div style="display:flex;justify-content:center;margin-bottom:6px;" set:html={planetIconSvg('mangal', 40, '#15803d')} />
+              <h2 style="font-size:24px;font-weight:700;color:#15803d;margin:0 0 6px;">No Mangal Dosha</h2>
+              <p style="font-size:14px;color:var(--color-body-text);margin:0;">Mars in {EB_RASHI[ebMarsSign]} does not fall in a dosha house from Lagna, Moon or Venus.</p>
+            </>
+          )}
+          {ebMd.severity === 'cancelled' && (
+            <>
+              <div style="display:flex;justify-content:center;margin-bottom:6px;" set:html={planetIconSvg('mangal', 40, ebSevColor)} />
+              <h2 style={`font-size:22px;font-weight:700;color:${ebSevColor};margin:0 0 6px;`}>Mangal Dosha — Cancelled (Bhanga)</h2>
+              <p style="font-size:14px;color:var(--color-body-text);margin:0;">Mars in {EB_RASHI[ebMarsSign]} does place a dosha from {ebMd.doshaCount} of 3 references, but {ebAppliedFullRules.join(' and ')} is a classically recognised cancellation.</p>
+            </>
+          )}
+          {(ebMd.severity === 'high' || ebMd.severity === 'low') && (
+            <>
+              <div style="display:flex;justify-content:center;margin-bottom:6px;" set:html={planetIconSvg('mangal', 40, ebSevColor)} />
+              <h2 style={`font-size:24px;font-weight:700;color:${ebSevColor};margin:0 0 6px;`}>Mangal Dosha Present</h2>
+              <p style="font-size:14px;color:var(--color-body-text);margin:0;">Severity: <b style={`color:${ebSevColor};`}>{ebSeverityLabel}</b> &middot; Mars in {EB_RASHI[ebMarsSign]} &middot; Dosha from {ebMd.doshaCount} of 3 references</p>
+            </>
+          )}
+        </div>
         <div class="card" style="padding:20px;margin-bottom:24px;overflow-x:auto;">
           <h3 data-hi="मंगल स्थिति विश्लेषण" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Mars Position Analysis</h3>
-          <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pos-table"></table>
+          <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pos-table">
+            <tr><th>Reference</th><th>Sign</th><th>Mars House</th><th>Status</th></tr>
+            {ebMd.referenceHouses.map((r, i) => (
+              <tr><td style="color:var(--color-ink);font-weight:600;">From {EB_REF_LABELS[i]}</td><td>{EB_RASHI[r.sign]}</td><td>House {r.house}</td><td><span style={`color:${r.isDosha ? '#dc2626' : '#15803d'};font-weight:600;`}>{r.isDosha ? 'Dosha' : 'Clear'}</span></td></tr>
+            ))}
+          </table>
         </div>
         <div class="card" style="padding:24px;">
           <h3 data-hi="इसका क्या अर्थ है" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">What this means</h3>
-          <p id="meaning" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;"></p>
+          <p id="meaning" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0;">
+            {ebMd.severity === 'none' && `Mars is favourably placed and does not create Mangal Dosha for this example chart.`}
+            {ebMd.severity === 'cancelled' && `Mars falls in a dosha-causing house from ${ebMd.doshaCount} reference point${ebMd.doshaCount > 1 ? 's' : ''}, but a classical cancellation condition — ${ebAppliedFullRules.join(', ')} — is present, which the classical texts treat as clearing the dosha rather than merely softening it.`}
+            {(ebMd.severity === 'high' || ebMd.severity === 'low') && `Mars falls in a dosha-causing house from ${ebMd.doshaCount} reference point${ebMd.doshaCount > 1 ? 's' : ''}. No classical full-cancellation condition applies here.`}
+          </p>
         </div>
         <div class="card" style="padding:20px;overflow-x:auto;">
           <h3 data-hi="निवारण विश्लेषण (मंगल दोष भंग)" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Cancellation Analysis (Mangal Dosha Bhanga)</h3>
-          <table id="cancel-table" style="width:100%;border-collapse:collapse;font-size:13px;"></table>
+          <table id="cancel-table" style="width:100%;border-collapse:collapse;font-size:13px;">
+            <tr><th>Rule</th><th>Strength</th><th>Status</th></tr>
+            {ebMd.cancelRules.map(c => (
+              <tr><td style="color:var(--color-ink);font-weight:600;">{EB_RULE_COPY[c.key].rule}</td><td>{EB_RULE_COPY[c.key].strength}</td><td><span style={`color:${c.applies ? '#15803d' : '#9ca3af'};font-weight:600;`}>{c.applies ? '✓ Applies' : '× Not applicable'}</span></td></tr>
+            ))}
+          </table>
         </div>
-        <div id="remedy-panel" class="card" style="padding:20px;display:none;"></div>
+        <div id="remedy-panel" class="card" style={`padding:20px;${ebMd.present ? '' : 'display:none;'}`}>
+          <h3 style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">Recommended Remedies</h3>
+          <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
+            <li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Recite the Mangal Mantra — "Om Angarakaya Namah" — 108 times every Tuesday.</li>
+            <li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Worship Lord Hanuman or Lord Kartikeya (Murugan) on Tuesdays.</li>
+            <li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Observe a Tuesday fast and donate red lentils (masoor dal), red cloth or red flowers.</li>
+            <li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">Consider Red Coral (Moonga) in gold on the ring finger — consult a qualified Jyotishi before wearing.</li>
+            <li style="font-size:14px;color:var(--color-body-text);line-height:1.6;">A Mangal Shanti Puja performed by a trained priest provides deeper karmic relief.</li>
+          </ul>
+        </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
@@ -100,6 +198,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 import { moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
 import { planetLongitude, calcLagna } from '../../lib/astro-core';
 import { evaluateMangalDosha } from '../../lib/mangalDosha';
+import { SYNTHETIC_EXAMPLE_BIRTH } from '../../lib/kundali';
 
 const MANGAL_SVG = PLANET_ICONS.mangal;
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
@@ -126,8 +225,12 @@ const sel=document.getElementById('f-city');function renderCityOptions(){
   if(selected) sel.value=selected;
 }
 renderCityOptions();
-document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
-document.getElementById('f-time').value='12:00';
+const EB=SYNTHETIC_EXAMPLE_BIRTH;
+const ebDateStr=`${EB.y}-${String(EB.m).padStart(2,'0')}-${String(EB.d).padStart(2,'0')}`;
+const ebTimeStr=`${String(EB.hh).padStart(2,'0')}:${String(EB.mm).padStart(2,'0')}`;
+document.getElementById('f-date').value=ebDateStr;
+document.getElementById('f-time').value=ebTimeStr;
+sel.value=EB.city;
 
 function calculate(){
   try{
@@ -137,6 +240,8 @@ function calculate(){
     const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
     const de=document.getElementById('date-echo');
     if(de){de.textContent=tr('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);de.hidden=false;}
+    const noteEl=document.getElementById('example-note');
+    if(noteEl)noteEl.style.display=(dateStr===ebDateStr&&timeStr===ebTimeStr&&document.getElementById('f-city').value===EB.city)?'':'none';
     const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
     const ay=lahiriAyanamsha(jd);
     const marsSign=Math.floor(n360(planetLongitude('mars',jd)-ay)/30);
