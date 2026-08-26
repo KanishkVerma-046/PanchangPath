@@ -3,6 +3,17 @@ import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { RUDRAKSHA } from '../../lib/jyotish';
+
+const PLANET_ID: Record<string, string> = { Sun: 'surya', Moon: 'chandra', Mars: 'mangal', Mercury: 'budha', Jupiter: 'guru', Venus: 'shukra', Saturn: 'shani', Rahu: 'rahu', Ketu: 'ketu' };
+// Mirrors rudraksha.astro's client-side planetLabel(): only single-planet rows (an exact key
+// match) get an icon — multi-planet rows ("Venus / Jupiter", "All Planets") render as text only,
+// same as the client, so the two render paths stay visually consistent.
+function planetIconLabel(planetStr: string, color: string): string {
+  if (!PLANET_ID[planetStr]) return planetStr;
+  const svg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-2px;">${PLANET_ICONS[PLANET_ID[planetStr]]}</svg>`;
+  return `${svg} ${planetStr}`;
+}
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq('before buying an expensive rudraksha or gemstone'),
@@ -78,7 +89,21 @@ const FAQ_ITEMS = [
 
       <!-- All 14 Mukhis reference -->
       <h3 data-hi="सभी 14 मुखी — संदर्भ गाइड" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">All 14 Mukhis — Reference Guide</h3>
-      <div id="all-mukhis" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:36px;"></div>
+      <div id="all-mukhis" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:36px;">
+        {RUDRAKSHA.map(r => (
+          <div class="card" style={`padding:12px;border-top:2px solid ${r.color};`}>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span style={`width:28px;height:28px;border-radius:50%;background:${r.color}22;border:1.5px solid ${r.color};color:${r.color};font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;`}>{r.mukhi}</span>
+              <div>
+                <span style="font-size:12px;font-weight:600;color:var(--color-ink);">{r.mukhi}-Mukhi</span>
+                <span style="font-size:10px;color:var(--color-mute);margin-left:6px;" set:html={planetIconLabel(r.planet, r.color)} />
+              </div>
+            </div>
+            <p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;">{r.deity}</p>
+            <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.4;">{r.benefit.split('.')[0]}.</p>
+          </div>
+        ))}
+      </div>
 
       <div class="card" style="padding:28px;">
         <h2 data-hi="रुद्राक्ष के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rudraksha</h2>
@@ -104,6 +129,7 @@ import { LOCATIONS } from '../../lib/locations';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import { moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
 import { calcLagna } from '../../lib/astro-core';
+import { RUDRAKSHA } from '../../lib/jyotish';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
 const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -134,35 +160,19 @@ function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
 const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 
-const RUDRAKSHA=[
-  {m:1,deity:'Shiva (Mahadeva)',planet:'Sun',color:'#f59e0b',b:'Supreme consciousness, strong willpower, heart health and leadership. Removes sins of the past and connects the wearer to divine energy.',bHi:'सर्वोच्च चेतना, प्रबल इच्छाशक्ति, हृदय स्वास्थ्य और नेतृत्व। भूतकाल के पापों को दूर करता है और धारक को दिव्य ऊर्जा से जोड़ता है।',mantra:'Om Hreem Namah',day:'Sunday',metal:'Gold',wear:'Right hand / neck'},
-  {m:2,deity:'Ardhanareeshvara',planet:'Moon',color:'#6366f1',b:'Emotional balance, harmony in relationships, calms the mind. Strengthens bonds and improves communication between partners.',bHi:'भावनात्मक संतुलन, रिश्तों में सामंजस्य, मन को शांत करता है। बंधनों को मजबूत करता है और साझेदारों के बीच संवाद में सुधार करता है।',mantra:'Om Namah',day:'Monday',metal:'Silver',wear:'Left hand / neck'},
-  {m:3,deity:'Agni / Brahma',planet:'Mars',color:'#ef4444',b:'Confidence, freedom from past karma and fear. Boosts courage, vitality and helps overcome enemies. Good for siblings and communication.',bHi:'आत्मविश्वास, पूर्व कर्म और भय से मुक्ति। साहस, जीवनशक्ति बढ़ाता है और शत्रुओं पर विजय पाने में सहायक। भाई-बहनों और संचार के लिए शुभ।',mantra:'Om Kleem Namah',day:'Tuesday',metal:'Copper',wear:'Right hand'},
-  {m:4,deity:'Brahma',planet:'Mercury',color:'#10b981',b:'Intellect, creativity and concentration. Removes mental fog and enhances communication, learning and creative power.',bHi:'बुद्धि, रचनात्मकता और एकाग्रता। मानसिक धुंधलापन दूर करता है और संचार, सीखने व रचनात्मक क्षमता बढ़ाता है।',mantra:'Om Hreem Namah',day:'Wednesday',metal:'Gold',wear:'Right hand'},
-  {m:5,deity:'Kalagni / Pancha Rudra',planet:'Jupiter',color:'#f59e0b',b:'General wellbeing, wisdom, peace of mind and spiritual growth. The most universally safe and beneficial bead — suitable for all.',bHi:'सामान्य कल्याण, ज्ञान, मानसिक शांति और आध्यात्मिक विकास। सबसे सुरक्षित और लाभकारी दाना — सभी के लिए उपयुक्त।',mantra:'Om Hreem Namah',day:'Thursday',metal:'Gold',wear:'Any finger / neck'},
-  {m:6,deity:'Kartikeya',planet:'Venus',color:'#a78bfa',b:'Willpower, attraction, material comforts and luxury. Enhances creativity, relationships and removes obstacles from personal life.',bHi:'इच्छाशक्ति, आकर्षण, भौतिक सुख-सुविधाएं और विलासिता। रचनात्मकता, रिश्तों को बढ़ाता है और व्यक्तिगत जीवन की बाधाएं दूर करता है।',mantra:'Om Hreem Hoom Namah',day:'Friday',metal:'Silver',wear:'Right hand'},
-  {m:7,deity:'Mahalakshmi / Saptarishi',planet:'Saturn',color:'#3b82f6',b:'Financial prosperity, removes poverty and illness. Channels Saturn energy positively for career stability and longevity.',bHi:'आर्थिक समृद्धि, दरिद्रता और रोग दूर करता है। करियर स्थिरता व दीर्घायु के लिए शनि ऊर्जा को सकारात्मक दिशा देता है।',mantra:'Om Hoom Namah',day:'Saturday',metal:'Gold/Silver',wear:'Right hand'},
-  {m:8,deity:'Ganesha',planet:'Rahu',color:'#8b5cf6',b:'Removes obstacles and negativity. Brings success in endeavors, protects against black magic and sudden misfortune.',bHi:'बाधाएं और नकारात्मकता दूर करता है। प्रयासों में सफलता लाता है, तंत्र-मंत्र और अचानक दुर्भाग्य से रक्षा करता है।',mantra:'Om Ganeshaya Namah',day:'Saturday',metal:'Gold',wear:'Right hand'},
-  {m:9,deity:'Durga / Bhairava',planet:'Ketu',color:'#ec4899',b:'Fearlessness, spiritual power and liberation. Enhances intuition, protects from evil eye and accelerates spiritual growth.',bHi:'निर्भयता, आध्यात्मिक शक्ति और मुक्ति। अंतर्ज्ञान बढ़ाता है, बुरी नजर से रक्षा करता है और आध्यात्मिक विकास को गति देता है।',mantra:'Om Hreem Hoom Namah',day:'Tuesday',metal:'Copper',wear:'Right hand'},
-  {m:10,deity:'Vishnu (Dashavatara)',planet:'All Planets',color:'#0ea5e9',b:'Peace, divine protection and harmony. Balances all planetary energies simultaneously. Suitable for anyone facing multiple challenges.',bHi:'शांति, दिव्य सुरक्षा और सामंजस्य। सभी ग्रहों की ऊर्जाओं को एक साथ संतुलित करता है। कई चुनौतियों का सामना कर रहे किसी भी व्यक्ति के लिए उपयुक्त।',mantra:'Om Hreem Namah Namah',day:'Any',metal:'Gold',wear:'Neck'},
-  {m:11,deity:'Hanuman / Ekadasha Rudra',planet:'Sun',color:'#f97316',b:'Meditation, intuition and the spirit of adventure. Enhances leadership qualities and removes ego. Good for spiritual practitioners.',bHi:'ध्यान, अंतर्ज्ञान और साहसिक भावना। नेतृत्व गुण बढ़ाता है और अहंकार दूर करता है। आध्यात्मिक साधकों के लिए शुभ।',mantra:'Om Hreem Hoom Namah',day:'Sunday',metal:'Gold',wear:'Neck'},
-  {m:12,deity:'Aditya (Sun God)',planet:'Sun',color:'#eab308',b:'Radiance, leadership and removal of obstacles. Enhances fame, confidence and connection to the solar divine energy.',bHi:'तेज, नेतृत्व और बाधाओं का निवारण। प्रसिद्धि, आत्मविश्वास और सौर दिव्य ऊर्जा से जुड़ाव बढ़ाता है।',mantra:'Om Kraum Sraum Raum Namah',day:'Sunday',metal:'Gold',wear:'Right hand / neck'},
-  {m:13,deity:'Vishwakarma / Kartikeya',planet:'Venus / Jupiter',color:'#14b8a6',b:'Prosperity, worldly success and creative power. Bestows all material and spiritual pleasures and heightens sensory perception.',bHi:'समृद्धि, सांसारिक सफलता और रचनात्मक शक्ति। सभी भौतिक और आध्यात्मिक सुख प्रदान करता है और इंद्रिय बोध को तीव्र करता है।',mantra:'Om Hreem Namah',day:'Friday',metal:'Silver',wear:'Right hand'},
-  {m:14,deity:'Shiva (Deva Mani)',planet:'Saturn / Rahu',color:'#1e3a5f',b:'The highest protection and ultimate divine power. Enhances intuition, third-eye awareness and spiritual transformation. Use with guidance.',bHi:'सर्वोच्च सुरक्षा और परम दिव्य शक्ति। अंतर्ज्ञान, तृतीय नेत्र जागरूकता और आध्यात्मिक रूपांतरण बढ़ाता है। मार्गदर्शन के साथ उपयोग करें।',mantra:'Om Namah',day:'Saturday',metal:'Silver',wear:'Neck (after consultation)'}
-];
 
 function mukhiForPlanet(pl){return RUDRAKSHA.find(r=>r.planet.split(' / ').includes(pl)||r.planet===pl)||RUDRAKSHA[4];}
 
 function rudCard(r,label,big){
   return `<div class="card" style="padding:18px;border-top:3px solid ${r.color};${big?'border-left:none;':''}">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
-      <span style="width:${big?48:38}px;height:${big?48:38}px;border-radius:50%;background:${r.color}22;border:2px solid ${r.color};color:${r.color};font-weight:800;font-size:${big?20:16}px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.m}</span>
+      <span style="width:${big?48:38}px;height:${big?48:38}px;border-radius:50%;background:${r.color}22;border:2px solid ${r.color};color:${r.color};font-weight:800;font-size:${big?20:16}px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${r.mukhi}</span>
       <div>
-        <h4 style="font-size:${big?17:15}px;font-weight:700;color:var(--color-ink);margin:0;">${r.m}-${tr('Mukhi Rudraksha','मुखी रुद्राक्ष')}</h4>
+        <h4 style="font-size:${big?17:15}px;font-weight:700;color:var(--color-ink);margin:0;">${r.mukhi}-${tr('Mukhi Rudraksha','मुखी रुद्राक्ष')}</h4>
         <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">${label} &middot; ${planetLabel(r.planet,r.color)}</p>
       </div>
     </div>
-    <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${tr(r.b,r.bHi)}</p>
+    <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">${tr(r.benefit,r.benefitHi)}</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 14px;font-size:12px;">
       ${[[tr('Deity','देवता'),tr(r.deity,DEITY_HI[r.deity]||r.deity)],[tr('Mantra','मंत्र'),r.mantra],[tr('Metal','धातु'),tr(r.metal,METAL_HI[r.metal]||r.metal)],[tr('Wear on','पहनें'),tr(r.wear,WEAR_HI[r.wear]||r.wear)],[tr('Auspicious Day','शुभ दिन'),tr(r.day,DAY_HI[r.day]||r.day)]].map(x=>`<div><span style="color:var(--color-mute);">${x[0]}: </span><span style="color:var(--color-ink);font-weight:600;">${x[1]}</span></div>`).join('')}
     </div>
@@ -181,9 +191,9 @@ function showResults(lagnaSign,moonSign){
   ].map(r=>`<div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">${r[0]}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">${r[1]}</p></div>`).join('');
 
   document.getElementById('rec-primary').innerHTML=rudCard(mukhiForPlanet(lagnaLord),tr('Primary — Lagna Lord','मुख्य — लग्नेश'),true);
-  const seen=new Set([mukhiForPlanet(lagnaLord).m]);
+  const seen=new Set([mukhiForPlanet(lagnaLord).mukhi]);
   const sec=[];
-  const r2=mukhiForPlanet(moonLord);if(!seen.has(r2.m)){sec.push(rudCard(r2,tr('For Moon Lord','चंद्रेश हेतु'),false));seen.add(r2.m);}
+  const r2=mukhiForPlanet(moonLord);if(!seen.has(r2.mukhi)){sec.push(rudCard(r2,tr('For Moon Lord','चंद्रेश हेतु'),false));seen.add(r2.mukhi);}
   if(!seen.has(5)){sec.push(rudCard(RUDRAKSHA[4],tr('Universal (safe for all)','सार्वभौमिक (सभी हेतु सुरक्षित)'),false));seen.add(5);}
   document.getElementById('rec-rudraksha').innerHTML=sec.join('')||(sec.length===0?'<p style="font-size:13px;color:var(--color-mute);">'+tr('No additional recommendations (Lagna and Moon lords share the same Rudraksha).','कोई अतिरिक्त अनुशंसा नहीं (लग्नेश और चंद्रेश एक ही रुद्राक्ष साझा करते हैं)।')+'</p>':'');
   document.getElementById('result').style.display='block';
@@ -257,14 +267,14 @@ function renderAllMukhis(){
   document.getElementById('all-mukhis').innerHTML=RUDRAKSHA.map(r=>
     `<div class="card" style="padding:12px;border-top:2px solid ${r.color};">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-        <span style="width:28px;height:28px;border-radius:50%;background:${r.color}22;border:1.5px solid ${r.color};color:${r.color};font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">${r.m}</span>
+        <span style="width:28px;height:28px;border-radius:50%;background:${r.color}22;border:1.5px solid ${r.color};color:${r.color};font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;">${r.mukhi}</span>
         <div>
-          <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${r.m}-${tr('Mukhi','मुखी')}</span>
+          <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${r.mukhi}-${tr('Mukhi','मुखी')}</span>
           <span style="font-size:10px;color:var(--color-mute);margin-left:6px;">${planetLabel(r.planet,r.color)}</span>
         </div>
       </div>
       <p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;">${tr(r.deity,DEITY_HI[r.deity]||r.deity)}</p>
-      <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.4;">${LANG_HI?r.bHi.split('।')[0]+'।':r.b.split('.')[0]+'.'}</p>
+      <p style="font-size:11px;color:var(--color-body-text);margin:0;line-height:1.4;">${LANG_HI?r.benefitHi.split('।')[0]+'।':r.benefit.split('.')[0]+'.'}</p>
     </div>`).join('');
 }
 renderAllMukhis();
