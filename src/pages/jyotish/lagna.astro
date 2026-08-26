@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { RASHI_ICONS } from '../../lib/icons/rashi';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { LAGNA_HOUSES } from '../../lib/jyotish';
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
@@ -74,6 +75,16 @@ const FAQ_ITEMS = [
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">The 12 Houses — General Significance</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px;">
+        {LAGNA_HOUSES.map((h, i) => (
+          <div style="padding:10px 12px;border-radius:7px;background:var(--color-canvas-soft-2);">
+            <span style="font-size:12px;font-weight:600;color:var(--color-ink);">House {i + 1}</span>
+            <p style="font-size:11px;color:var(--color-mute);margin:3px 0 0;line-height:1.4;">{h}</p>
+          </div>
+        ))}
+      </div>
+
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="लग्न के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About the Lagna</h2>
         <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">The Lagna (Ascendant) is the rashi rising on the eastern horizon at the exact moment and place of birth — Vedic astrology's First House, and the reference point every other house is measured from. Because Earth completes a full rotation in roughly 24 hours, a new sign rises approximately every two hours, so an accurate birth time genuinely matters: the Ascendant's ecliptic longitude advances by about one degree every four minutes on average, which is enough to shift the Lagna's exact Nakshatra Pada, and near a sign boundary, the sign itself.</p>
@@ -103,6 +114,7 @@ import { LOCATIONS } from '../../lib/locations';
 import { RASHI_ICONS } from '../../lib/icons/rashi';
 import { allTropicalLons } from '../../lib/kundali';
 import { calcLagna } from '../../lib/astro-core';
+import { LAGNA_HOUSES, LAGNA_HOUSES_HI } from '../../lib/jyotish';
 
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
@@ -153,8 +165,12 @@ const NAKS_HI=['अश्विनी','भरणी','कृत्तिका'
 function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 function trNak(i){return tr(NAKS[i],NAKS_HI[i]);}
 const PLANETS=[['surya','Su'],['chandra','Mo'],['mangal','Ma'],['budha','Me'],['guru','Ju'],['shukra','Ve'],['shani','Sa'],['rahu','Ra'],['ketu','Ke']];
-const HOUSES=['Self, body, personality','Wealth, family, speech','Courage, siblings, effort','Home, mother, happiness','Children, intellect, romance','Enemies, health, debts','Marriage, partnership','Longevity, transformation','Fortune, dharma, father','Career, status, karma','Gains, friends, desires','Loss, expenses, moksha'];
-const HOUSES_HI=['स्वयं, शरीर, व्यक्तित्व','धन, परिवार, वाणी','साहस, भाई-बहन, प्रयास','घर, मां, सुख','संतान, बुद्धि, प्रेम','शत्रु, स्वास्थ्य, ऋण','विवाह, साझेदारी','आयु, परिवर्तन','भाग्य, धर्म, पिता','करियर, प्रतिष्ठा, कर्म','लाभ, मित्र, इच्छाएं','हानि, व्यय, मोक्ष'];
+// Promoted 2026-08-26 (Jyotish Tier-1 prerender pass): the static half of the 12-house table now
+// lives in ../../lib/jyotish (LAGNA_HOUSES/LAGNA_HOUSES_HI), shared with lagna.astro's frontmatter
+// "12 Houses — General Significance" reference table, so the two can't diverge. The computed
+// per-chart signOfHouse mapping below stays client-only and personal, unchanged.
+const HOUSES=LAGNA_HOUSES;
+const HOUSES_HI=LAGNA_HOUSES_HI;
 const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 
 const sel=document.getElementById('f-city');function renderCityOptions(){
