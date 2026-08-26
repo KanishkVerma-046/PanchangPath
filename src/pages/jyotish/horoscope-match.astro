@@ -54,9 +54,10 @@ const FAQ_ITEMS = [
           <p id="g-date-echo" style="font-size:11.5px;color:var(--color-mute);margin:8px 0 0;" hidden></p>
         </div>
       </div>
-      <div style="text-align:center;margin-bottom:32px;">
+      <div style="text-align:center;margin-bottom:12px;">
         <button id="f-calc" class="btn-primary" data-hi="कुंडली मिलाएं" style="height:42px;padding:0 32px;font-size:15px;">Match Horoscopes</button>
       </div>
+      <p id="example-note" style="font-size:12px;color:var(--color-mute);text-align:center;margin:0 0 20px;">Showing an illustrative example match (two synthetic sample birth dates, not real people) — enter your own birth details above and click Match Horoscopes for your result.</p>
 
       <div id="result" style="display:none;">
         <div class="card" id="score-banner" style="padding:28px;text-align:center;margin-bottom:24px;"></div>
@@ -169,6 +170,13 @@ function calculate(){
     const g=moonNakRashi(document.getElementById('g-date').value,document.getElementById('g-time').value,gLoc);
     echoDate('b-date-echo',document.getElementById('b-date').value);
     echoDate('g-date-echo',document.getElementById('g-date').value);
+
+    const noteEl=document.getElementById('example-note');
+    if(noteEl){
+      const isDefault=document.getElementById('b-date').value==='1995-06-15'&&document.getElementById('b-time').value==='10:30'
+        &&document.getElementById('g-date').value==='1997-09-20'&&document.getElementById('g-time').value==='14:15';
+      noteEl.style.display=isDefault?'':'none';
+    }
 
     const kutas=[
       [tr('Varna','वर्ण'),kVarna(b,g),tr('Spiritual / ego compatibility','आध्यात्मिक / अहं अनुकूलता')],
