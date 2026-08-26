@@ -2,6 +2,13 @@
 import Layout from '../../layouts/Layout.astro';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { RASHI_PROFILES } from '../../lib/jyotish';
+import { RASHI_ICONS } from '../../lib/icons/rashi';
+
+const RASHI_ID_LIST = ['mesha', 'vrishabha', 'mithuna', 'karka', 'simha', 'kanya', 'tula', 'vrishchika', 'dhanu', 'makara', 'kumbha', 'meena'];
+function rashiSvg(id: string, size: number): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${RASHI_ICONS[id]}</svg>`;
+}
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
@@ -74,6 +81,23 @@ const FAQ_ITEMS = [
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">All 12 Rashis</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px;">
+        {RASHI_PROFILES.map((r, i) => (
+          <div class="card" style="padding:14px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span style="color:var(--color-saffron-deep);flex-shrink:0;" set:html={rashiSvg(RASHI_ID_LIST[i], 20)} />
+              <div>
+                <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{r.name} &middot; {r.h}</span>
+                <span style="font-size:10.5px;color:var(--color-mute);display:block;">{r.en} &middot; {r.elem} &middot; {r.qual}</span>
+              </div>
+            </div>
+            <p style="font-size:11.5px;color:var(--color-body-text);margin:0 0 6px;line-height:1.5;">{r.desc}</p>
+            <p style="font-size:10.5px;color:var(--color-mute);margin:0;">Lord: {r.lord} &middot; Gem: {r.gem} &middot; Day: {r.day}</p>
+          </div>
+        ))}
+      </div>
+
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="राशि के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Rashi</h2>
         <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Your Rashi — also called Chandra Rashi or Janma Rashi — is the zodiac sign the Moon occupied at the moment of your birth, and it's the single most-used placement in everyday Vedic astrology: it's the sign Rashifal predictions, Muhurta timing, and gemstone recommendations are built around, distinct from the Sun-based sign most Western horoscopes use.</p>
@@ -103,6 +127,7 @@ const FAQ_ITEMS = [
 import { LOCATIONS } from '../../lib/locations';
 import { RASHI_ICONS } from '../../lib/icons/rashi';
 import { moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
+import { RASHI_PROFILES } from '../../lib/jyotish';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
 const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -120,47 +145,26 @@ const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpi
 const RASHI_HI=['मेष','वृषभ','मिथुन','कर्क','सिंह','कन्या','तुला','वृश्चिक','धनु','मकर','कुम्भ','मीन'];
 const RASHI_ID=['mesha','vrishabha','mithuna','karka','simha','kanya','tula','vrishchika','dhanu','makara','kumbha','meena'];
 function rashiIconSvg(id,size){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${RASHI_ICONS[id]}</svg>`;}
-const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
-const ELEM=['Fire','Earth','Air','Water','Fire','Earth','Air','Water','Fire','Earth','Air','Water'];
-const QUAL=['Movable','Fixed','Dual','Movable','Fixed','Dual','Movable','Fixed','Dual','Movable','Fixed','Dual'];
+// Promoted 2026-08-26 (Jyotish Tier-1 prerender pass): these used to be this page's own literal
+// arrays, now derived from the single RASHI_PROFILES export (../../lib/jyotish) that also feeds
+// rashi.astro's frontmatter "All 12 Rashis" reference grid, so the two render paths can't diverge.
+const LORD=RASHI_PROFILES.map(r=>r.lord);
+const ELEM=RASHI_PROFILES.map(r=>r.elem);
+const QUAL=RASHI_PROFILES.map(r=>r.qual);
 const NAKS=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
 const NAKS_HI=['अश्विनी','भरणी','कृत्तिका','रोहिणी','मृगशिरा','आर्द्रा','पुनर्वसु','पुष्य','आश्लेषा','मघा','पूर्व फाल्गुनी','उत्तर फाल्गुनी','हस्त','चित्रा','स्वाति','विशाखा','अनुराधा','ज्येष्ठा','मूल','पूर्वाषाढ़ा','उत्तराषाढ़ा','श्रावण','धनिष्ठा','शतभिषा','पूर्व भाद्रपदा','उत्तर भाद्रपदा','रेवती'];
-const COLOR=['Red, Orange','White, Cream','Green, Yellow','Silver, Pearl','Gold, Orange','Grey, Dark Green','White, Light Blue','Red, Maroon','Yellow, Orange','Black, Dark Blue','Sky Blue, Violet','Sea Green, Lavender'];
-const DAY=['Tuesday','Friday','Wednesday','Monday','Sunday','Wednesday','Friday','Tuesday','Thursday','Saturday','Saturday','Thursday'];
-const GEM=['Red Coral','Diamond / Pearl','Emerald','Pearl','Ruby','Emerald','Diamond','Red Coral','Yellow Sapphire','Blue Sapphire','Blue Sapphire','Yellow Sapphire'];
-const COMPAT=['Leo, Sagittarius','Virgo, Capricorn','Libra, Aquarius','Scorpio, Pisces','Aries, Sagittarius','Taurus, Capricorn','Gemini, Aquarius','Cancer, Pisces','Aries, Leo','Taurus, Virgo','Gemini, Libra','Cancer, Scorpio'];
-const NUM=['1, 9','2, 6','3, 5','2, 7','1, 4','3, 5','1, 6','2, 3','3, 9','6, 8','4, 8','3, 7'];
-const DESC=[
-'Energetic, pioneering and bold. Mesha natives are natural leaders — courageous, competitive and quick to act, though sometimes impatient.',
-'Steady, patient and sensual. Vrishabha values comfort, beauty and security, with strong determination and loyalty.',
-'Curious, witty and communicative. Mithuna is versatile and intellectual, thriving on variety, learning and conversation.',
-'Nurturing, emotional and intuitive. Karka is deeply caring and protective of family, with a strong inner world.',
-'Confident, generous and charismatic. Simha loves recognition and leads with warmth, pride and creativity.',
-'Analytical, practical and meticulous. Kanya is service-minded, detail-oriented and seeks perfection.',
-'Harmonious, diplomatic and charming. Tula craves balance, partnership and beauty, with a strong sense of fairness.',
-'Intense, passionate and secretive. Vrishchika is determined and transformative, with deep emotional power.',
-'Optimistic, philosophical and adventurous. Dhanu loves freedom, travel and the pursuit of truth and wisdom.',
-'Ambitious, disciplined and responsible. Makara is hardworking and practical, climbing steadily toward goals.',
-'Innovative, humanitarian and independent. Kumbha is original and forward-thinking, valuing ideals and community.',
-'Compassionate, imaginative and spiritual. Meena is sensitive and artistic, with deep empathy and intuition.'];
-const DESC_HI=[
-'ऊर्जावान, अग्रणी और साहसी। मेष निवासी स्वाभाविक नेता होते हैं — साहसी, प्रतिस्पर्धी और तुरंत कार्य करने वाले, हालांकि कभी-कभी अधीर।',
-'स्थिर, धैर्यवान और कामुक। वृषभ आराम, सौंदर्य और सुरक्षा को महत्व देता है, प्रबल दृढ़ता और वफादारी के साथ।',
-'जिज्ञासु, चतुर और संचारशील। मिथुन बहुमुखी और बौद्धिक है, विविधता, सीखने और बातचीत में फलता-फूलता है।',
-'पालन-पोषण करने वाला, भावुक और सहज-ज्ञानी। कर्क परिवार के प्रति गहराई से देखभाल करने वाला और सुरक्षात्मक है, प्रबल आंतरिक जगत के साथ।',
-'आत्मविश्वासी, उदार और करिश्माई। सिंह पहचान पसंद करता है और गर्मजोशी, गर्व व रचनात्मकता के साथ नेतृत्व करता है।',
-'विश्लेषणात्मक, व्यावहारिक और सूक्ष्म। कन्या सेवा-प्रधान, विस्तार-उन्मुख है और पूर्णता की खोज करती है।',
-'सामंजस्यपूर्ण, कूटनीतिक और आकर्षक। तुला संतुलन, साझेदारी और सौंदर्य चाहता है, प्रबल निष्पक्षता की भावना के साथ।',
-'तीव्र, जुनूनी और गोपनीय। वृश्चिक दृढ़ और परिवर्तनकारी है, गहरी भावनात्मक शक्ति के साथ।',
-'आशावादी, दार्शनिक और साहसिक। धनु स्वतंत्रता, यात्रा और सत्य व ज्ञान की खोज पसंद करता है।',
-'महत्वाकांक्षी, अनुशासित और जिम्मेदार। मकर परिश्रमी और व्यावहारिक है, लक्ष्यों की ओर स्थिर रूप से बढ़ता है।',
-'नवोन्मेषी, मानवतावादी और स्वतंत्र। कुम्भ मौलिक और अग्रगामी सोच वाला है, आदर्शों और समुदाय को महत्व देता है।',
-'दयालु, कल्पनाशील और आध्यात्मिक। मीन संवेदनशील और कलात्मक है, गहरी सहानुभूति और अंतर्ज्ञान के साथ।'];
+const COLOR=RASHI_PROFILES.map(r=>r.color);
+const DAY=RASHI_PROFILES.map(r=>r.day);
+const GEM=RASHI_PROFILES.map(r=>r.gem);
+const COMPAT=RASHI_PROFILES.map(r=>r.compat);
+const NUM=RASHI_PROFILES.map(r=>r.num);
+const DESC=RASHI_PROFILES.map(r=>r.desc);
+const DESC_HI=RASHI_PROFILES.map(r=>r.descHi);
 const EL_HI={Fire:'अग्नि',Earth:'पृथ्वी',Air:'वायु',Water:'जल'};
 const QUAL_HI={Movable:'चर',Fixed:'स्थिर',Dual:'द्विस्वभाव'};
 const DAY_HI={Sunday:'रविवार',Monday:'सोमवार',Tuesday:'मंगलवार',Wednesday:'बुधवार',Thursday:'गुरुवार',Friday:'शुक्रवार',Saturday:'शनिवार'};
-const COLOR_HI=['लाल, नारंगी','सफेद, क्रीम','हरा, पीला','चांदी, मोती','सोना, नारंगी','ग्रे, गहरा हरा','सफेद, हल्का नीला','लाल, मैरून','पीला, नारंगी','काला, गहरा नीला','आसमानी नीला, बैंगनी','समुद्री हरा, लैवेंडर'];
-const GEM_HI=['लाल मूंगा','हीरा / मोती','पन्ना','मोती','माणिक्य','पन्ना','हीरा','लाल मूंगा','पुखराज','नीलम','नीलम','पुखराज'];
+const COLOR_HI=RASHI_PROFILES.map(r=>r.colorHi);
+const GEM_HI=RASHI_PROFILES.map(r=>r.gemHi);
 const PLANET_HI={Sun:'सूर्य',Moon:'चंद्रमा',Mars:'मंगल',Mercury:'बुध',Jupiter:'गुरु',Venus:'शुक्र',Saturn:'शनि'};
 const SIGN_EN_TO_HI={};RASHI_EN.forEach((n,i)=>{SIGN_EN_TO_HI[n]=RASHI_HI[i];});
 function trCompat(list){return list.split(', ').map(n=>SIGN_EN_TO_HI[n]||n).join(', ');}
