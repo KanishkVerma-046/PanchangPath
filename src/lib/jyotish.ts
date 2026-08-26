@@ -91,23 +91,33 @@ export interface Gemstone {
   name: string;     // gemstone English
   nameHi: string;   // gemstone Hindi
   substitute: string;
+  substituteHi: string;
   metal: string;
+  metalHi: string;
   finger: string;
+  fingerHi: string;
   day: string;
+  dayHi: string;
   color: string;
   desc: string;
+  descHi: string;
 }
 
+// Replaced 2026-08-27 (Jyotish Tier-2 prerender pass): this export previously held a 9-planet
+// (incl. Rahu/Ketu) array with no Hindi translation for substitute/metal/finger/day/desc — dead
+// code, never imported anywhere. gemstone.astro's client script carried its own richer, fully
+// bilingual 7-planet version (Sun..Saturn only — the calculator's LORD[] rashi-lord mapping never
+// assigns a gemstone to Rahu/Ketu, so those two entries were never live content). Promoted that
+// richer version here verbatim; both gemstone.astro's frontmatter (new "All 7 Planetary Gemstones"
+// reference grid) and its client <script> now import this single array so they can't diverge.
 export const GEMSTONES: Gemstone[] = [
-  { planet: 'Sun', p: 'Surya', name: 'Ruby', nameHi: 'माणिक्य', substitute: 'Red Garnet', metal: 'Gold', finger: 'Ring', day: 'Sunday', color: '#dc2626', desc: 'Enhances leadership, vitality, and confidence. Recommended for a weak Sun.' },
-  { planet: 'Moon', p: 'Chandra', name: 'Pearl', nameHi: 'मोती', substitute: 'Moonstone', metal: 'Silver', finger: 'Little', day: 'Monday', color: '#6366f1', desc: 'Brings emotional stability, clarity of mind, and strengthens intuition.' },
-  { planet: 'Mars', p: 'Mangal', name: 'Red Coral', nameHi: 'मूंगा', substitute: 'Red Carnelian', metal: 'Gold/Copper', finger: 'Ring', day: 'Tuesday', color: '#f97316', desc: 'Boosts courage, energy, and helps overcome obstacles and enemies.' },
-  { planet: 'Mercury', p: 'Budha', name: 'Emerald', nameHi: 'पन्ना', substitute: 'Green Tourmaline', metal: 'Gold', finger: 'Little', day: 'Wednesday', color: '#10b981', desc: 'Improves intellect, communication, business acumen, and memory.' },
-  { planet: 'Jupiter', p: 'Guru', name: 'Yellow Sapphire', nameHi: 'पुखराज', substitute: 'Yellow Topaz / Citrine', metal: 'Gold', finger: 'Index', day: 'Thursday', color: '#f59e0b', desc: 'Brings wisdom, prosperity, good fortune, and spiritual growth.' },
-  { planet: 'Venus', p: 'Shukra', name: 'Diamond', nameHi: 'हीरा', substitute: 'White Sapphire / Zircon', metal: 'White Gold/Platinum', finger: 'Middle', day: 'Friday', color: '#a78bfa', desc: 'Attracts love, luxury, beauty, and material comforts.' },
-  { planet: 'Saturn', p: 'Shani', name: 'Blue Sapphire', nameHi: 'नीलम', substitute: 'Amethyst / Blue Spinel', metal: 'Gold/Silver', finger: 'Middle', day: 'Saturday', color: '#3b82f6', desc: 'Removes obstacles, brings discipline, longevity, and career stability.' },
-  { planet: 'Rahu', p: 'Rahu', name: 'Hessonite', nameHi: 'गोमेद', substitute: 'Orange Zircon', metal: 'Silver', finger: 'Middle', day: 'Saturday', color: '#78716c', desc: 'Mitigates Rahu\'s malefic effects, brings clarity and spiritual advancement.' },
-  { planet: 'Ketu', p: 'Ketu', name: 'Cat\'s Eye', nameHi: 'लहसुनिया', substitute: 'Alexandrite', metal: 'Silver', finger: 'Middle', day: 'Tuesday', color: '#84cc16', desc: 'Removes Ketu doshas, enhances psychic abilities and detachment.' },
+  { planet: 'Sun', p: 'Surya', name: 'Ruby', nameHi: 'माणिक्य', substitute: 'Red Garnet', substituteHi: 'लाल गार्नेट', metal: 'Gold', metalHi: 'सोना', finger: 'Ring', fingerHi: 'अनामिका', day: 'Sunday', dayHi: 'रविवार', color: '#dc2626', desc: 'Enhances leadership, vitality, and confidence. Recommended for a weak Sun.', descHi: 'नेतृत्व क्षमता, जीवनशक्ति और आत्मविश्वास बढ़ाता है। कमजोर सूर्य के लिए अनुशंसित।' },
+  { planet: 'Moon', p: 'Chandra', name: 'Pearl', nameHi: 'मोती', substitute: 'Moonstone', substituteHi: 'मूनस्टोन', metal: 'Silver', metalHi: 'चांदी', finger: 'Little', fingerHi: 'कनिष्ठा', day: 'Monday', dayHi: 'सोमवार', color: '#6366f1', desc: 'Brings emotional stability, clarity of mind, and strengthens intuition.', descHi: 'भावनात्मक स्थिरता, मानसिक स्पष्टता लाता है और अंतर्ज्ञान को मजबूत करता है।' },
+  { planet: 'Mars', p: 'Mangal', name: 'Red Coral', nameHi: 'मूंगा', substitute: 'Red Carnelian', substituteHi: 'लाल कार्नेलियन', metal: 'Gold/Copper', metalHi: 'सोना/तांबा', finger: 'Ring', fingerHi: 'अनामिका', day: 'Tuesday', dayHi: 'मंगलवार', color: '#f97316', desc: 'Boosts courage, energy, and helps overcome obstacles and enemies.', descHi: 'साहस और ऊर्जा बढ़ाता है, बाधाओं व शत्रुओं पर विजय पाने में सहायक है।' },
+  { planet: 'Mercury', p: 'Budha', name: 'Emerald', nameHi: 'पन्ना', substitute: 'Green Tourmaline', substituteHi: 'हरा टूमलाइन', metal: 'Gold', metalHi: 'सोना', finger: 'Little', fingerHi: 'कनिष्ठा', day: 'Wednesday', dayHi: 'बुधवार', color: '#10b981', desc: 'Improves intellect, communication, business acumen, and memory.', descHi: 'बुद्धि, संचार, व्यापारिक कुशलता और स्मरण शक्ति में सुधार करता है।' },
+  { planet: 'Jupiter', p: 'Guru', name: 'Yellow Sapphire', nameHi: 'पुखराज', substitute: 'Yellow Topaz / Citrine', substituteHi: 'येलो टोपाज़ / सिट्रीन', metal: 'Gold', metalHi: 'सोना', finger: 'Index', fingerHi: 'तर्जनी', day: 'Thursday', dayHi: 'गुरुवार', color: '#f59e0b', desc: 'Brings wisdom, prosperity, good fortune, and spiritual growth.', descHi: 'ज्ञान, समृद्धि, सौभाग्य और आध्यात्मिक विकास लाता है।' },
+  { planet: 'Venus', p: 'Shukra', name: 'Diamond', nameHi: 'हीरा', substitute: 'White Sapphire / Zircon', substituteHi: 'व्हाइट सफायर / जिरकॉन', metal: 'White Gold/Platinum', metalHi: 'व्हाइट गोल्ड/प्लेटिनम', finger: 'Middle', fingerHi: 'मध्यमा', day: 'Friday', dayHi: 'शुक्रवार', color: '#a78bfa', desc: 'Attracts love, luxury, beauty, and material comforts.', descHi: 'प्रेम, वैभव, सौंदर्य और भौतिक सुख-सुविधाएं आकर्षित करता है।' },
+  { planet: 'Saturn', p: 'Shani', name: 'Blue Sapphire', nameHi: 'नीलम', substitute: 'Amethyst / Blue Spinel', substituteHi: 'एमेथिस्ट / ब्लू स्पिनल', metal: 'Gold/Silver', metalHi: 'सोना/चांदी', finger: 'Middle', fingerHi: 'मध्यमा', day: 'Saturday', dayHi: 'शनिवार', color: '#3b82f6', desc: 'Removes obstacles, brings discipline, longevity, and career stability.', descHi: 'बाधाएं दूर करता है, अनुशासन, दीर्घायु और करियर स्थिरता लाता है।' },
 ];
 
 export interface RudrakshaBead {

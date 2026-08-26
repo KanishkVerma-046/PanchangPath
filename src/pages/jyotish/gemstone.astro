@@ -3,6 +3,11 @@ import Layout from '../../layouts/Layout.astro';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
+import { GEMSTONES } from '../../lib/jyotish';
+
+function planetSvg(id: string, size: number, color?: string): string {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color || 'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;
+}
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq('before buying an expensive stone'),
@@ -56,6 +61,23 @@ const FAQ_ITEMS = [
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
+      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">All 7 Planetary Gemstones</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:16px;">
+        {GEMSTONES.map((g) => (
+          <div class="card" style="padding:16px;border-top:3px solid {g.color};">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+              <span style="width:32px;height:32px;border-radius:50%;background:{g.color};flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;" set:html={planetSvg(g.p.toLowerCase(), 18, '#fff')} />
+              <div>
+                <p style="font-size:14px;font-weight:700;color:var(--color-ink);margin:0;">{g.name} &middot; {g.nameHi}</p>
+                <p style="font-size:11px;color:var(--color-mute);margin:1px 0 0;">{g.planet} ({g.p})</p>
+              </div>
+            </div>
+            <p style="font-size:12px;color:var(--color-body-text);margin:0 0 10px;line-height:1.55;">{g.desc}</p>
+            <p style="font-size:11px;color:var(--color-mute);margin:0;">Metal: {g.metal} &middot; Finger: {g.finger} &middot; Day: {g.day} &middot; Substitute: {g.substitute}</p>
+          </div>
+        ))}
+      </div>
+
       <div class="card" style="padding:28px;margin-top:36px;">
         <h2 data-hi="रत्न चिकित्सा के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Gemstone Therapy</h2>
         <p data-hi="ज्योतिष में, नौ ग्रहों में से प्रत्येक एक मुख्य रत्न से जुड़ा होता है। सही रत्न पहनने से उस ग्रह की ऊर्जा मजबूत होने की मान्यता है। सबसे सामान्यतः अनुशंसित रत्न लग्न स्वामी का होता है, जो समग्र जीवनशक्ति और जीवन-दिशा का समर्थन करता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 10px;">In Jyotish, each of the nine grahas is associated with a primary gemstone. Wearing the right stone is believed to strengthen the energy of its planet. The most commonly recommended stone is that of the Lagna lord, which supports overall vitality and life direction.</p>
@@ -77,6 +99,7 @@ import { LOCATIONS } from '../../lib/locations';
 import { PLANET_ICONS } from '../../lib/icons/planets';
 import { sunTrueLongitude as sunLon, moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
 import { calcLagna } from '../../lib/astro-core';
+import { GEMSTONES } from '../../lib/jyotish';
 function planetIconSvg(id,size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;}
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
@@ -97,14 +120,8 @@ const RASHI_EN=['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpi
 function trRashi(i){return tr(RASHI[i],RASHI_HI[i]);}
 const LORD=['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 // Trikona (1,5,9) lords are most benefic for a Lagna; we recommend Lagna lord + 5th + 9th lords
-const GEMS={
-Sun:{p:'Surya',stone:'Ruby',h:'माणिक्य',sub:'Red Garnet',subHi:'लाल गार्नेट',metal:'Gold',metalHi:'सोना',finger:'Ring',fingerHi:'अनामिका',day:'Sunday',dayHi:'रविवार',color:'#dc2626',desc:'Enhances leadership, vitality, and confidence. Recommended for a weak Sun.',descHi:'नेतृत्व क्षमता, जीवनशक्ति और आत्मविश्वास बढ़ाता है। कमजोर सूर्य के लिए अनुशंसित।'},
-Moon:{p:'Chandra',stone:'Pearl',h:'मोती',sub:'Moonstone',subHi:'मूनस्टोन',metal:'Silver',metalHi:'चांदी',finger:'Little',fingerHi:'कनिष्ठा',day:'Monday',dayHi:'सोमवार',color:'#6366f1',desc:'Brings emotional stability, clarity of mind, and strengthens intuition.',descHi:'भावनात्मक स्थिरता, मानसिक स्पष्टता लाता है और अंतर्ज्ञान को मजबूत करता है।'},
-Mars:{p:'Mangal',stone:'Red Coral',h:'मूंगा',sub:'Red Carnelian',subHi:'लाल कार्नेलियन',metal:'Gold/Copper',metalHi:'सोना/तांबा',finger:'Ring',fingerHi:'अनामिका',day:'Tuesday',dayHi:'मंगलवार',color:'#f97316',desc:'Boosts courage, energy, and helps overcome obstacles and enemies.',descHi:'साहस और ऊर्जा बढ़ाता है, बाधाओं व शत्रुओं पर विजय पाने में सहायक है।'},
-Mercury:{p:'Budha',stone:'Emerald',h:'पन्ना',sub:'Green Tourmaline',subHi:'हरा टूमलाइन',metal:'Gold',metalHi:'सोना',finger:'Little',fingerHi:'कनिष्ठा',day:'Wednesday',dayHi:'बुधवार',color:'#10b981',desc:'Improves intellect, communication, business acumen, and memory.',descHi:'बुद्धि, संचार, व्यापारिक कुशलता और स्मरण शक्ति में सुधार करता है।'},
-Jupiter:{p:'Guru',stone:'Yellow Sapphire',h:'पुखराज',sub:'Yellow Topaz / Citrine',subHi:'येलो टोपाज़ / सिट्रीन',metal:'Gold',metalHi:'सोना',finger:'Index',fingerHi:'तर्जनी',day:'Thursday',dayHi:'गुरुवार',color:'#f59e0b',desc:'Brings wisdom, prosperity, good fortune, and spiritual growth.',descHi:'ज्ञान, समृद्धि, सौभाग्य और आध्यात्मिक विकास लाता है।'},
-Venus:{p:'Shukra',stone:'Diamond',h:'हीरा',sub:'White Sapphire / Zircon',subHi:'व्हाइट सफायर / जिरकॉन',metal:'White Gold/Platinum',metalHi:'व्हाइट गोल्ड/प्लेटिनम',finger:'Middle',fingerHi:'मध्यमा',day:'Friday',dayHi:'शुक्रवार',color:'#a78bfa',desc:'Attracts love, luxury, beauty, and material comforts.',descHi:'प्रेम, वैभव, सौंदर्य और भौतिक सुख-सुविधाएं आकर्षित करता है।'},
-Saturn:{p:'Shani',stone:'Blue Sapphire',h:'नीलम',sub:'Amethyst / Blue Spinel',subHi:'एमेथिस्ट / ब्लू स्पिनल',metal:'Gold/Silver',metalHi:'सोना/चांदी',finger:'Middle',fingerHi:'मध्यमा',day:'Saturday',dayHi:'शनिवार',color:'#3b82f6',desc:'Removes obstacles, brings discipline, longevity, and career stability.',descHi:'बाधाएं दूर करता है, अनुशासन, दीर्घायु और करियर स्थिरता लाता है।'}};
+const GEMS={};
+GEMSTONES.forEach(g=>{GEMS[g.planet]={p:g.p,stone:g.name,h:g.nameHi,sub:g.substitute,subHi:g.substituteHi,metal:g.metal,metalHi:g.metalHi,finger:g.finger,fingerHi:g.fingerHi,day:g.day,dayHi:g.dayHi,color:g.color,desc:g.desc,descHi:g.descHi};});
 
 const sel=document.getElementById('f-city');function renderCityOptions(){
   const selected=sel.value;
