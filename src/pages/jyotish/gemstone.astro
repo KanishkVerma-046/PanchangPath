@@ -4,10 +4,47 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
 import { GEMSTONES } from '../../lib/jyotish';
+import { calcLagna } from '../../lib/astro-core';
+import { sunTrueLongitude, moonLongitude, lahiriAyanamsha } from '../../lib/panchang';
+import { jdFull, SYNTHETIC_EXAMPLE_BIRTH } from '../../lib/kundali';
 
 function planetSvg(id: string, size: number, color?: string): string {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color || 'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;
 }
+
+// Illustrative-example prerender -- see kundali.ts's SYNTHETIC_EXAMPLE_BIRTH comment: a clearly-
+// fictional sample birth, not "today" (a real stranger's live chart) and not a real named person.
+// The client <script> pre-fills this same date/time/place and recalculates on load.
+const EB = SYNTHETIC_EXAMPLE_BIRTH;
+const EB_RASHI = ['Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya', 'Tula', 'Vrishchika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'];
+const EB_RASHI_EN = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+const EB_LORD = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter'];
+const EB_DATE_STR = `${EB.y}-${String(EB.m).padStart(2, '0')}-${String(EB.d).padStart(2, '0')}`;
+const EB_TIME_STR = `${String(EB.hh).padStart(2, '0')}:${String(EB.mm).padStart(2, '0')}`;
+
+const ebDate = new Date(Date.UTC(EB.y, EB.m - 1, EB.d, EB.hh, EB.mm) - EB.tz * 3600000);
+const ebJD = jdFull(ebDate);
+const ebAy = lahiriAyanamsha(ebJD);
+const n360eb = (a: number) => ((a % 360) + 360) % 360;
+const ebLagnaSign = Math.floor(n360eb(calcLagna(ebJD, EB.lat, EB.lng) - ebAy) / 30);
+const ebMoonSign = Math.floor(n360eb(moonLongitude(ebJD) - ebAy) / 30);
+const ebSunSign = Math.floor(n360eb(sunTrueLongitude(ebJD) - ebAy) / 30);
+
+const ebLagnaLord = EB_LORD[ebLagnaSign];
+const ebFifthLord = EB_LORD[(ebLagnaSign + 4) % 12];
+const ebNinthLord = EB_LORD[(ebLagnaSign + 8) % 12];
+const ebSeen = new Set([ebLagnaLord]);
+const ebSecondaryLords: { lord: string; role: string }[] = [];
+if (!ebSeen.has(ebFifthLord)) { ebSecondaryLords.push({ lord: ebFifthLord, role: '5th Lord (Trikona)' }); ebSeen.add(ebFifthLord); }
+if (!ebSeen.has(ebNinthLord)) { ebSecondaryLords.push({ lord: ebNinthLord, role: '9th Lord (Trikona)' }); ebSeen.add(ebNinthLord); }
+if (!ebSeen.has('Moon')) { ebSecondaryLords.push({ lord: 'Moon', role: 'For Mind & Emotions' }); ebSeen.add('Moon'); }
+
+function ebGemCard(planet: string, big: boolean, roleLabel: string) {
+  const g = GEMSTONES.find(x => x.planet === planet)!;
+  return { g, big, roleLabel };
+}
+const ebPrimaryGem = ebGemCard(ebLagnaLord, true, 'Lagna Lord (Life-Stone)');
+const ebSecondaryGems = ebSecondaryLords.map(s => ebGemCard(s.lord, false, s.role));
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq('before buying an expensive stone'),
@@ -47,17 +84,60 @@ const FAQ_ITEMS = [
         <div><label for="f-city" class="fld-label" data-hi="स्थान">Place</label><select id="f-city" class="input" style="height:38px;min-width:150px;"></select></div>
         <button id="f-calc" class="btn-primary" data-hi="गणना करें" style="height:38px;padding:0 20px;">Calculate</button>
       </div>
-      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
+      <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Date of birth: {EB_DATE_STR}</p>
+      <p id="example-note" style="font-size:12px;color:var(--color-mute);margin:-16px 0 20px;">Showing an illustrative example (synthetic sample birth, not a real person) — enter your own birth details above and click Calculate for your recommendation.</p>
 
-      <div id="result" style="display:none;">
+      <div id="result">
         <div class="card" style="padding:20px;margin-bottom:24px;">
-          <div id="birth-info" style="display:flex;gap:24px;flex-wrap:wrap;"></div>
+          <div id="birth-info" style="display:flex;gap:24px;flex-wrap:wrap;">
+            {[
+              ['Lagna (Asc)', `${EB_RASHI[ebLagnaSign]} (${EB_RASHI_EN[ebLagnaSign]})`],
+              ['Moon Rashi', `${EB_RASHI[ebMoonSign]} (${EB_RASHI_EN[ebMoonSign]})`],
+              ['Sun Rashi', `${EB_RASHI[ebSunSign]} (${EB_RASHI_EN[ebSunSign]})`],
+            ].map(([label, val]) => (
+              <div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">{label}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">{val}</p></div>
+            ))}
+          </div>
         </div>
         <h3 data-hi="मुख्य अनुशंसा" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Primary Recommendation</h3>
         <p data-hi="आपके लग्न स्वामी का जीवन रत्न — आमतौर पर आजीवन पहनने के लिए सुरक्षित।" style="font-size:12.5px;color:var(--color-mute);margin:0 0 14px;">The life-stone (Jeevan Ratna) for your Lagna lord — generally safe to wear lifelong.</p>
-        <div id="primary-gem" style="margin-bottom:28px;"></div>
+        <div id="primary-gem" style="margin-bottom:28px;">
+          <div class="card" style={`padding:18px;border-top:3px solid ${ebPrimaryGem.g.color};`}>
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+              <span style={`width:40px;height:40px;border-radius:50%;background:${ebPrimaryGem.g.color};flex-shrink:0;box-shadow:0 0 0 4px ${ebPrimaryGem.g.color}22;display:flex;align-items:center;justify-content:center;color:#fff;`} set:html={planetSvg(ebPrimaryGem.g.p.toLowerCase(), 22, '#fff')} />
+              <div>
+                <h4 style="font-size:17px;font-weight:700;color:var(--color-ink);margin:0;">{ebPrimaryGem.g.name} &middot; {ebPrimaryGem.g.nameHi}</h4>
+                <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">{ebPrimaryGem.roleLabel} &middot; {ebPrimaryGem.g.planet} ({ebPrimaryGem.g.p})</p>
+              </div>
+            </div>
+            <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">{ebPrimaryGem.g.desc}</p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12px;">
+              {[['Metal', ebPrimaryGem.g.metal], ['Finger', ebPrimaryGem.g.finger], ['Day', ebPrimaryGem.g.day], ['Substitute', ebPrimaryGem.g.substitute]].map(([k, v]) => (
+                <div><span style="color:var(--color-mute);">{k}: </span><span style="color:var(--color-ink);font-weight:600;">{v}</span></div>
+              ))}
+            </div>
+          </div>
+        </div>
         <h3 data-hi="सहायक रत्न" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Supporting Gemstones</h3>
-        <div id="secondary-gems" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;"></div>
+        <div id="secondary-gems" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;">
+          {ebSecondaryGems.map(({ g, roleLabel }) => (
+            <div class="card" style={`padding:18px;border-top:3px solid ${g.color};`}>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+                <span style={`width:32px;height:32px;border-radius:50%;background:${g.color};flex-shrink:0;box-shadow:0 0 0 4px ${g.color}22;display:flex;align-items:center;justify-content:center;color:#fff;`} set:html={planetSvg(g.p.toLowerCase(), 18, '#fff')} />
+                <div>
+                  <h4 style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">{g.name} &middot; {g.nameHi}</h4>
+                  <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">{roleLabel} &middot; {g.planet} ({g.p})</p>
+                </div>
+              </div>
+              <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">{g.desc}</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12px;">
+                {[['Metal', g.metal], ['Finger', g.finger], ['Day', g.day], ['Substitute', g.substitute]].map(([k, v]) => (
+                  <div><span style="color:var(--color-mute);">{k}: </span><span style="color:var(--color-ink);font-weight:600;">{v}</span></div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
@@ -100,6 +180,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 import { sunTrueLongitude as sunLon, moonLongitude as moonLon, lahiriAyanamsha as ayanamsha } from '../../lib/panchang';
 import { calcLagna } from '../../lib/astro-core';
 import { GEMSTONES } from '../../lib/jyotish';
+import { SYNTHETIC_EXAMPLE_BIRTH } from '../../lib/kundali';
 function planetIconSvg(id,size,color){return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${color||'currentColor'}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${PLANET_ICONS[id]}</svg>`;}
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
@@ -129,8 +210,12 @@ const sel=document.getElementById('f-city');function renderCityOptions(){
   if(selected) sel.value=selected;
 }
 renderCityOptions();
-document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
-document.getElementById('f-time').value='12:00';
+const EB=SYNTHETIC_EXAMPLE_BIRTH;
+const ebDateStr=`${EB.y}-${String(EB.m).padStart(2,'0')}-${String(EB.d).padStart(2,'0')}`;
+const ebTimeStr=`${String(EB.hh).padStart(2,'0')}:${String(EB.mm).padStart(2,'0')}`;
+document.getElementById('f-date').value=ebDateStr;
+document.getElementById('f-time').value=ebTimeStr;
+sel.value=EB.city;
 
 function gemCard(planet,big,roleLabel){
   const g=GEMS[planet];
@@ -157,6 +242,8 @@ function calculate(){
     const [y,m,d]=dateStr.split('-').map(Number);const [hh,mm]=timeStr.split(':').map(Number);
     const de=document.getElementById('date-echo');
     if(de){de.textContent=tr('Date of birth: ','जन्म तिथि: ')+formatLongDate(y,m,d);de.hidden=false;}
+    const noteEl=document.getElementById('example-note');
+    if(noteEl)noteEl.style.display=(dateStr===ebDateStr&&timeStr===ebTimeStr&&document.getElementById('f-city').value===EB.city)?'':'none';
     const jd=toJD(y,m,d,(hh+mm/60)-loc.tz);
     const ay=ayanamsha(jd);
     const lagnaSign=Math.floor(n360(calcLagna(jd,loc.lat,loc.lng)-ay)/30);
