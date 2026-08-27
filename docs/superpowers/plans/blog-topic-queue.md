@@ -2,13 +2,13 @@
 
 Durable record of candidate blog topics for PanchangPath's `/blog` section. Previously this queue existed only in chat history across two sessions and was nearly lost/re-derived from scratch — this file is the fix. Update it (strike through, move to a "Published" section, or add new candidates) as posts are written, rather than letting the queue drift back into chat-only state.
 
-**Published so far** (as of 2026-08-27): Shani Sade Sati, Krishna Janmashtami's two dates (Smarta vs. Vaishnava), Panchak, Grahan Sutak Kaal Rules.
+**Published so far** (as of 2026-08-27): Shani Sade Sati, Krishna Janmashtami's two dates (Smarta vs. Vaishnava), Panchak, Grahan Sutak Kaal Rules, Sundarkand Path at Home (how to perform).
 
 ## Tier A — from the original blog-gap-analysis session
 
 Identified before Sade Sati/Janmashtami/Panchak were written.
 
-1. **Sundarkand "how to perform at home"** — the site already has full Sundarkand content (`src/lib/devotional/`); this needs an explainer wrapper around existing material, not new source text.
+1. ~~**Sundarkand "how to perform at home"**~~ — published 2026-08-27 as `sundarkand-path-at-home-how-to-perform`: best days/timing (Tuesday/Saturday, Brahma Muhurta), single-sitting vs. multi-day schedules, preparation, and an honest "sources genuinely diverge" note on the menstruation question rather than a single confident answer.
 2. **Gochar (transit) vs. birth chart** — flagged as the single most useful conceptual anchor for the whole Rashifal/Planets section of the site.
 3. **Yoga and Karana** — completes the 5-limb Panchang explanation. Tithi, Nakshatra, and Rahu Kalam are already covered across existing posts; Yoga and Karana are the remaining two limbs.
 4. **Adhik Maas (leap month)** — a recurring term flagged as unaddressed anywhere on the site.
