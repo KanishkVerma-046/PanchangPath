@@ -557,10 +557,23 @@ export function computeAbhijitWindows(y: number, m: number, d: number, lat: numb
 
 export interface GowriSlot { name: GowriType; start: number; end: number }
 
+// The five named Panchak sub-types (plus the milder, unnamed Wed/Thu case) are set by
+// which WEEKDAY the current ~5-day Panchak span began on -- not by which of the five
+// Panchaka nakshatras the Moon currently occupies. Verified 2026-08-27 against 5
+// independent sources (bejandaruwalla.com, anytimeastro.com, prayagpandits.com,
+// smartpuja.com, plus a broader aggregate covering rashibyte.com/shubhdivas.in/
+// muhuratchoghadiya.com/kundalimatches.com); the prior nakshatra-indexed mapping here
+// had no source support and was a real bug, not a documented alternate tradition.
+export const PANCHAKA_TYPE_BY_WEEKDAY: Record<number, string> = {
+  0: 'Roga Panchak', 1: 'Raja Panchak', 2: 'Agni Panchak',
+  3: 'Samanya Panchak', 4: 'Samanya Panchak', 5: 'Chora Panchak', 6: 'Mrityu Panchak',
+};
+
 export interface PanchakaGowri {
   weekday: number;
   nakIdx: number;
   isPanchaka: boolean;
+  panchakaType: string | null;
   srMins: number;
   ssMins: number;
   gowriDay: GowriSlot[];
@@ -574,6 +587,21 @@ export function computePanchakaGowri(y: number, m: number, d: number, lat: numbe
   const moonSid = civilNorm360(moonLongitude(jd) - lahiriAyanamsha(jd));
   const nakIdx = Math.floor(moonSid / (360 / 27)) % 27;
   const isPanchaka = PANCHAKA_NAKS.includes(nakIdx);
+  // Panchak's named sub-type is fixed for the whole span by the weekday it STARTED on, so
+  // walk backward (capped at 6 days -- longer than any possible Panchaka span) to find that
+  // start day before mapping it to a name, rather than using the viewed date's own weekday.
+  let panchakaType: string | null = null;
+  if (isPanchaka) {
+    let daysBack = 0;
+    for (let i = 1; i <= 6; i++) {
+      const pJD = civilJD(y, m, d - i, 6 - tz);
+      const pNakIdx = Math.floor(civilNorm360(moonLongitude(pJD) - lahiriAyanamsha(pJD)) / (360 / 27)) % 27;
+      if (!PANCHAKA_NAKS.includes(pNakIdx)) break;
+      daysBack = i;
+    }
+    const startWeekday = new Date(Date.UTC(y, m - 1, d - daysBack)).getUTCDay();
+    panchakaType = PANCHAKA_TYPE_BY_WEEKDAY[startWeekday];
+  }
   const srMins = sunriseUTC(jd, lat, lng, true) * 60 + tz * 60;
   const ssMins = sunriseUTC(jd, lat, lng, false) * 60 + tz * 60;
   const srNextMins = sunriseUTC(jdNext, lat, lng, true) * 60 + tz * 60 + 1440;
@@ -581,7 +609,7 @@ export function computePanchakaGowri(y: number, m: number, d: number, lat: numbe
   const nightDur = (srNextMins - ssMins) / 8;
   const gowriDay = GOWRI_DAY[weekday].map((name, i) => ({ name, start: srMins + i * dayDur, end: srMins + (i + 1) * dayDur }));
   const gowriNight = GOWRI_NIGHT[weekday].map((name, i) => ({ name, start: ssMins + i * nightDur, end: ssMins + (i + 1) * nightDur }));
-  return { weekday, nakIdx, isPanchaka, srMins, ssMins, gowriDay, gowriNight };
+  return { weekday, nakIdx, isPanchaka, panchakaType, srMins, ssMins, gowriDay, gowriNight };
 }
 
 // -- Lagna Table --

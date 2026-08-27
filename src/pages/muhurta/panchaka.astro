@@ -18,7 +18,6 @@ const defaultPk = computePanchakaGowri(defY, defM, defD, NEW_DELHI.lat, NEW_DELH
 const fmt = formatMinutes12h;
 
 const NAK_NAMES = ['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const PANCHAKA_TYPES: Record<number,string> = {22:'Mrityu Panchaka',23:'Agni Panchaka',24:'Raja Panchaka',25:'Chora Panchaka',26:'Roga Panchaka'};
 
 // Presentation-only styling (bg/fg per Gowri type) — matches the client <script>'s GOWRI_DATA
 // below. Not calculation logic (that lives solely in computePanchakaGowri/GOWRI_DAY/GOWRI_NIGHT
@@ -40,7 +39,7 @@ const gowriQLabel = (q: string) => q==='best'?'Best':q==='good'?'Good':q==='neut
 // backs the FAQPage schema below, so the two stay in sync by construction.
 const PANCHAKA_INFO = [
   { title: 'What is Panchaka?', titleHi: 'पंचक क्या है?', text: 'Panchaka means "group of five." It occurs when Moon transits the last 5 Nakshatras: Dhanishtha (2nd half), Shatabhisha, Purva Bhadrapada, Uttara Bhadrapada, and Revati — which span Aquarius and Pisces. Duration: about 5 days each month.', textHi: 'पंचक का अर्थ है "पांच का समूह।" यह तब होता है जब चंद्रमा अंतिम 5 नक्षत्रों से गुजरता है: धनिष्ठा (उत्तरार्ध), शतभिषा, पूर्वाभाद्रपद, उत्तराभाद्रपद और रेवती — जो कुंभ और मीन राशियों में फैले हैं। अवधि: प्रत्येक माह लगभग 5 दिन।' },
-  { title: 'What to avoid in Panchaka?', titleHi: 'पंचक में क्या टालें?', text: 'Mrityu Panchaka: Avoid cremation/last rites. Agni Panchaka: Avoid fire-related work. Raja Panchaka: Avoid travel south. Chora Panchaka: Safeguard valuables. Roga Panchaka: Avoid health risks. Routine activities are generally unaffected.', textHi: 'मृत्यु पंचक: अंतिम संस्कार से बचें। अग्नि पंचक: अग्नि संबंधी कार्यों से बचें। राज पंचक: दक्षिण दिशा की यात्रा से बचें। चोर पंचक: कीमती वस्तुओं की सुरक्षा करें। रोग पंचक: स्वास्थ्य जोखिमों से बचें। सामान्य दैनिक कार्य प्रायः प्रभावित नहीं होते।' },
+  { title: 'What to avoid in Panchaka?', titleHi: 'पंचक में क्या टालें?', text: "Five activities are traditionally avoided through any Panchaka: cremation/last rites, roofing or roof construction, buying/storing firewood, travel toward the south, and buying a cot or bed. Which of the five named sub-types is active — Mrityu, Agni, Raja, Chora, or Roga Panchak — depends on the weekday the current Panchaka span began on (Saturday, Tuesday, Monday, Friday, and Sunday respectively; a Wednesday/Thursday start is milder Samanya Panchak). Routine daily activities are generally unaffected.", textHi: 'किसी भी पंचक के दौरान पारंपरिक रूप से पांच कार्यों से बचा जाता है: अंतिम संस्कार, छत निर्माण, लकड़ी खरीदना/संग्रहण, दक्षिण दिशा की यात्रा, और पलंग/खाट खरीदना। पांच नामित उप-प्रकारों में से कौन सक्रिय है — मृत्यु, अग्नि, राज, चोर, या रोग पंचक — यह इस बात पर निर्भर करता है कि वर्तमान पंचक अवधि किस सप्ताह के दिन शुरू हुई (क्रमशः शनिवार, मंगलवार, सोमवार, शुक्रवार, और रविवार; बुधवार/गुरुवार को शुरू होने वाला पंचक हल्का सामान्य पंचक होता है)। सामान्य दैनिक कार्य प्रायः प्रभावित नहीं होते।' },
   { title: 'How is Panchak different from Rahu Kaal?', titleHi: 'पंचक, राहु काल से कैसे अलग है?', text: "They're unrelated systems on different time scales. Rahu Kaal is a short daily window (roughly 75-105 minutes) that occurs once every single day, timed off that day's sunrise-to-sunset span. Panchaka is a lunar-calendar period of about 5 consecutive days each month, set by which Nakshatra the Moon occupies. A date can fall in both, either, or neither — checking one doesn't tell you anything about the other.", textHi: 'ये अलग-अलग समयावधि की स्वतंत्र प्रणालियां हैं। राहु काल एक छोटी दैनिक अवधि (लगभग 75-105 मिनट) है जो हर दिन उस दिन के सूर्योदय-सूर्यास्त के अनुसार तय होती है। पंचक चंद्र-आधारित लगभग 5 दिनों की मासिक अवधि है, जो चंद्रमा के नक्षत्र पर निर्भर करती है। कोई तिथि दोनों में, किसी एक में, या किसी में भी नहीं पड़ सकती — एक की जांच दूसरे के बारे में कुछ नहीं बताती।' },
 ];
 
@@ -90,7 +89,7 @@ const panchakaFaqJsonLd = {
       <div id="pk-status" style="margin-bottom:32px;">
         {defaultPk.isPanchaka ? (
           <div style="background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:16px 20px;">
-            <p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 4px;">⚠️ {PANCHAKA_TYPES[defaultPk.nakIdx] || 'Panchaka'} Active Today</p>
+            <p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 4px;">⚠️ {defaultPk.panchakaType || 'Panchaka'} Active Today</p>
             <p style="font-size:13px;color:#991b1b;margin:0 0 6px;">Moon is in <strong>{NAK_NAMES[defaultPk.nakIdx]}</strong> nakshatra (Nakshatra {defaultPk.nakIdx+1}). Panchaka is active.</p>
             <p style="font-size:12px;color:#7f1d1d;margin:0;">Avoid: funeral rites, roof construction, travel south, buying cots/beds, and storing firewood. Panchaka Shanti puja can be performed to mitigate effects.</p>
           </div>
@@ -195,7 +194,6 @@ const LOCS = [
 ];
 
 const NAK_NAMES=['Ashwini','Bharani','Krittika','Rohini','Mrigashira','Ardra','Punarvasu','Pushya','Ashlesha','Magha','Purva Phalguni','Uttara Phalguni','Hasta','Chitra','Swati','Vishakha','Anuradha','Jyeshtha','Mula','Purva Ashadha','Uttara Ashadha','Shravana','Dhanishtha','Shatabhisha','Purva Bhadrapada','Uttara Bhadrapada','Revati'];
-const PANCHAKA_TYPES: Record<number,string> = {22:'Mrityu Panchaka',23:'Agni Panchaka',24:'Raja Panchaka',25:'Chora Panchaka',26:'Roga Panchaka'};
 let isHindi = false;
 const QUALITY_HI: Record<string,string> = { Best:'सर्वोत्तम', Good:'शुभ', Neutral:'सामान्य', Avoid:'अशुभ' };
 const trQ = (q:string) => isHindi ? (QUALITY_HI[q]||q) : q;
@@ -289,7 +287,7 @@ function calculate(){
   const pkEl=document.getElementById('pk-status');
   if(pkEl){
     if(isPanchaka){
-      const pkType=PANCHAKA_TYPES[nakIdx]||'Panchaka';
+      const pkType=result.panchakaType||'Panchaka';
       const line2=isHindi?`चंद्रमा <strong>${NAK_NAMES[nakIdx]}</strong> नक्षत्र (नक्षत्र ${nakIdx+1}) में है। पंचक सक्रिय है।`:`Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> nakshatra (Nakshatra ${nakIdx+1}). Panchaka is active.`;
       const line3=isHindi?'बचें: अंतिम संस्कार, छत निर्माण, दक्षिण दिशा यात्रा, पलंग/खाट खरीदना, और लकड़ी संग्रहण। प्रभाव कम करने के लिए पंचक शांति पूजा की जा सकती है।':'Avoid: funeral rites, roof construction, travel south, buying cots/beds, and storing firewood. Panchaka Shanti puja can be performed to mitigate effects.';
       pkEl.innerHTML=`<div style="background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:16px 20px;">
