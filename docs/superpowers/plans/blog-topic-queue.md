@@ -2,14 +2,14 @@
 
 Durable record of candidate blog topics for PanchangPath's `/blog` section. Previously this queue existed only in chat history across two sessions and was nearly lost/re-derived from scratch — this file is the fix. Update it (strike through, move to a "Published" section, or add new candidates) as posts are written, rather than letting the queue drift back into chat-only state.
 
-**Published so far** (as of 2026-08-27): Shani Sade Sati, Krishna Janmashtami's two dates (Smarta vs. Vaishnava), Panchak, Grahan Sutak Kaal Rules, Sundarkand Path at Home (how to perform).
+**Published so far** (as of 2026-08-27): Shani Sade Sati, Krishna Janmashtami's two dates (Smarta vs. Vaishnava), Panchak, Grahan Sutak Kaal Rules, Sundarkand Path at Home (how to perform), Gochar vs. Kundali (transit vs. birth chart).
 
 ## Tier A — from the original blog-gap-analysis session
 
 Identified before Sade Sati/Janmashtami/Panchak were written.
 
 1. ~~**Sundarkand "how to perform at home"**~~ — published 2026-08-27 as `sundarkand-path-at-home-how-to-perform`: best days/timing (Tuesday/Saturday, Brahma Muhurta), single-sitting vs. multi-day schedules, preparation, and an honest "sources genuinely diverge" note on the menstruation question rather than a single confident answer.
-2. **Gochar (transit) vs. birth chart** — flagged as the single most useful conceptual anchor for the whole Rashifal/Planets section of the site.
+2. ~~**Gochar (transit) vs. birth chart**~~ — published 2026-08-27 as `gochar-transit-vs-birth-chart-kundali-explained`: fixed-map/moving-weather analogy (verified well-attested, not just convenient), Moon-sign-relative transit counting, links to `/jyotish/kundali`, `/planets/gochara`, `/rashifal`, `/jyotish/rashi`. Fact-checking this post surfaced a separate small content-accuracy issue on `rashifal/index.astro` (hero copy vs. disclosure proximity), logged in `docs/bugs/backlog.md` rather than fixed here.
 3. **Yoga and Karana** — completes the 5-limb Panchang explanation. Tithi, Nakshatra, and Rahu Kalam are already covered across existing posts; Yoga and Karana are the remaining two limbs.
 4. **Adhik Maas (leap month)** — a recurring term flagged as unaddressed anywhere on the site.
 5. **Gemstone/Rudraksha "no sales incentive" framing** — a real, ownable differentiator against e-commerce-driven competitors (`/jyotish/gemstone`, `/jyotish/rudraksha` exist as calculators, not sales pages); not yet used in blog form.
