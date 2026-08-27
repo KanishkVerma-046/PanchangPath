@@ -45,6 +45,7 @@ Paste this into a fresh session (fill in the bracketed part):
 
 | Title | Status | Reported |
 |---|---|---|
+| [`rashifal/index.astro`'s hero copy claims predictions are "based on planetary positions and Jyotish principles" ~70 lines away from the page's own pre-written-entries disclosure](#rashifalindexastros-hero-copy-claims-predictions-are-based-on-planetary-positions-and-jyotish-principles-70-lines-away-from-the-pages-own-pre-written-entries-disclosure) | Open | 2026-08-27 |
 | [`moonrise-moonset.astro` can't be deep-linked to a specific date or city — always shows today + last-set header location](#moonrise-moonsetastro-cant-be-deep-linked-to-a-specific-date-or-city--always-shows-today--last-set-header-location) | Open | 2026-08-22 |
 | [Shubha Dates `?activity=` variants can't rank separately — canonical tag strips the query string](#shubha-dates-activity-variants-cant-rank-separately--canonical-tag-strips-the-query-string) | Open | 2026-08-22 |
 | [`findElongationPP`'s unsigned-first-step convergence only empirically verified for 2025-2027](#findelongationpps-unsigned-first-step-convergence-only-empirically-verified-for-2025-2027) | Open | 2026-07-21 |
@@ -56,6 +57,86 @@ Paste this into a fresh session (fill in the bracketed part):
 | [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Fixed (2026-07-17) | 2026-07-17 |
 | [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Fixed (2026-07-17) | 2026-07-16 |
 | [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Fixed (2026-07-17) | 2026-07-16 |
+
+---
+
+## `rashifal/index.astro`'s hero copy claims predictions are "based on planetary positions and Jyotish principles" ~70 lines away from the page's own pre-written-entries disclosure
+
+- **Status:** Open
+- **Severity:** Low (a copy-consistency/content-accuracy issue, not a calculation bug — the honest
+  disclosure does exist on the page and is accurate; the problem is that a reader landing on the
+  page's own one-line self-description at the top would never see it)
+- **Reported:** 2026-08-27
+- **Affected files:** `src/pages/rashifal/index.astro` (hero subhead, line 29; disclosure paragraph,
+  lines 99-101)
+
+### Description
+Found while fact-checking claims for the blog post "Gochar (Transit) vs. Birth Chart" (Topic 2 of
+the 2026-08-27 blog session) — the post needed to describe accurately how PanchangPath's own
+Rashifal is generated, which required reading `src/lib/rashifal.ts` and the Rashifal pages directly
+rather than assuming.
+
+`rashifal/index.astro`'s hero subhead (line 29) reads: *"Daily horoscope for all 12 Vedic rashis
+based on planetary positions and Jyotish principles."* That's the very first descriptive sentence a
+visitor sees on the page, directly under the H1. The page's own honest disclosure — *"Predictions
+are drawn from a small set of pre-written entries that repeats every few days. They are not
+calculated from your birth chart."* — exists and is accurate, but sits at line 99-101, roughly 70
+lines later, **after** the entire 12-rashi card grid has rendered, as a small caption at the very
+bottom of the section. A visitor who reads only the hero (a very plausible read pattern for a page
+whose H1 + one-line subhead is meant to summarize the page) comes away with an impression of a
+principled/computed basis and never encounters the caveat that immediately follows it in the same
+document.
+
+By contrast, the homepage's own Rashifal description (`src/pages/index.astro` line ~303) integrates
+the disclosure into the same sentence as the feature description — "drawn from a small set of
+pre-written entries that repeats every few days rather than calculated from your individual birth
+chart" — and `RashifalFeed.astro`/`rashifal/[rashi].astro` both carry the same disclosure sentence
+near their own content. `rashifal/index.astro`'s hero is the one instance where the summary claim
+and the caveat are separated far enough that a normal scroll-and-skim reading could miss the caveat
+entirely.
+
+### Root cause
+Not confirmed via git blame in this pass (this was a read-only accuracy check, not an
+investigation) — but the shape of the gap (a page-top summary sentence that doesn't mention the
+caveat, plus a separate, accurate disclosure sentence added lower on the same page) is consistent
+with the disclosure having been added as a follow-up fix at some point without the hero subhead
+being revisited for consistency at the same time.
+
+### Suggested fix shape (not evaluated in depth — this is a logging pass, not a fix)
+Either shorten the gap (move the disclosure closer to the hero, e.g. as a small inline note directly
+under the subhead) or fold the caveat into the hero sentence itself, the way `index.astro`'s
+homepage copy already does. Whichever approach is chosen, keep the wording plain rather than
+apologetic — the site's own tone-of-voice guidance already treats "state the real limitation
+directly on the page" as the house style (see the `/about` page's own framing of this exact fact,
+`src/pages/about.astro` line 38, which states it the way a future fix here should aim to match).
+
+### Claude Code Fix Prompt
+```
+PanchangPath (panchangpath.com) — rashifal/index.astro's hero copy vs.
+disclosure proximity gap, logged in docs/bugs/backlog.md under
+"rashifal/index.astro's hero copy claims predictions are 'based on
+planetary positions and Jyotish principles' ~70 lines away from the
+page's own pre-written-entries disclosure". Read that full entry first.
+
+Do this:
+1. Confirm current state: src/pages/rashifal/index.astro line 29 (hero
+   subhead) vs. lines 99-101 (disclosure paragraph, currently rendered
+   after the full 12-rashi grid).
+2. Decide and implement a fix that keeps both statements true and close
+   together for a reader who only reads the top of the page — e.g. fold
+   the disclosure into the hero subhead itself (matching how
+   src/pages/index.astro's homepage Rashifal description already handles
+   this in one sentence), or add a short inline note directly under the
+   H1/subhead instead of only at the bottom of the grid.
+3. Check src/pages/rashifal/[rashi].astro and src/components/
+   RashifalFeed.astro for the same pattern before committing to one fix
+   shared across all three, since they already carry the same disclosure
+   sentence near their own content and shouldn't regress.
+4. Keep the tone consistent with src/pages/about.astro line 38's existing
+   phrasing of this same fact.
+5. Run `npm run build`, verify the Rashifal hub page renders correctly,
+   and update this backlog entry's Status to Fixed with today's date.
+```
 
 ---
 
