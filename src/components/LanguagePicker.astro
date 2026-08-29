@@ -11,12 +11,13 @@ const LANGS: LangOption[] = [
   { code: 'hi', nativeName: 'हिन्दी',  label: 'हिं', name: 'Hindi' },
 ];
 
-// ── Hindi language toggle: temporarily disabled site-wide (Task 0, 2026-08-15) ──
-// Flip back to true, together with the matching flag in src/layouts/Layout.astro's
-// <head> shim, to restore the toggle. While false, the pill+dropdown below is
-// rendered `hidden` (not clickable/visible) and the script never resolves to 'hi',
-// regardless of what's stored in localStorage. No Hindi markup/data is removed.
-const HINDI_ENABLED = false;
+// ── Hindi language toggle: re-enabled site-wide 2026-08-29 ──
+// Was disabled 2026-08-15 (Task 0) pending translation coverage; see the matching
+// flag + comment in src/layouts/Layout.astro's <head> shim for the full history.
+// To disable again, flip both flags back to false together. While false, the
+// pill+dropdown below renders `hidden` (not clickable/visible) and the script
+// never resolves to 'hi', regardless of what's stored in localStorage.
+const HINDI_ENABLED = true;
 ---
 
 <!-- Language picker pill + dropdown -->
