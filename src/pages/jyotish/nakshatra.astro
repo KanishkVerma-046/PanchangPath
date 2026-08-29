@@ -5,20 +5,39 @@ import { sharedCalcFaq } from '../../lib/calculatorFaq';
 import { NAKSHATRAS } from '../../lib/jyotish';
 import { NAKSHATRA_LIST, nakshatraIconSvg } from '../../lib/icons/nakshatra';
 
+// Hindi names for the "All 27 Nakshatras" reference grid (planetary lord, gana, yoni) — these
+// short vocab terms don't have a per-nakshatra Hindi field on NAKSHATRAS, so mapped locally here.
+const LORD_HI: Record<string, string> = {
+  Sun: 'सूर्य', Moon: 'चंद्र', Mars: 'मंगल', Mercury: 'बुध', Jupiter: 'गुरु',
+  Venus: 'शुक्र', Saturn: 'शनि', Rahu: 'राहु', Ketu: 'केतु',
+};
+const GANA_HI: Record<string, string> = { Deva: 'देव', Manushya: 'मनुष्य', Rakshasa: 'राक्षस' };
+const YONI_HI: Record<string, string> = {
+  Horse: 'अश्व', Elephant: 'हाथी', Sheep: 'भेड़', Serpent: 'सर्प', Dog: 'कुत्ता',
+  Cat: 'बिल्ली', Rat: 'चूहा', Cow: 'गाय', Buffalo: 'भैंस', Tiger: 'बाघ',
+  Deer: 'हिरण', Monkey: 'वानर', Mongoose: 'नेवला', Lion: 'सिंह',
+};
+
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
   {
     q: "Why does my Pada matter, and does this tool give the actual naming syllable?",
+    qHi: 'मेरा पद क्यों मायने रखता है, और क्या यह उपकरण वास्तविक नामकरण अक्षर देता है?',
     a: "Yes — the calculator lists all four padas of your Nakshatra with their traditional naming syllables, highlighting the one that's yours. This is a naming convention, not a rule: many families follow it strictly, others treat it as one input among several.",
+    aHi: 'हां — कैलकुलेटर आपके नक्षत्र के सभी चार पदों को उनके पारंपरिक नामकरण अक्षरों के साथ सूचीबद्ध करता है, और आपके वाले पद को हाइलाइट करता है। यह एक नामकरण परंपरा है, नियम नहीं: कई परिवार इसे सख्ती से मानते हैं, अन्य इसे कई इनपुट में से एक मानते हैं।',
   },
   {
     q: 'What\'s the difference between Nakshatra and Rashi (Moon sign)?',
+    qHi: 'नक्षत्र और राशि (चंद्र राशि) में क्या अंतर है?',
     a: 'Both come from the same Moon position, just sliced differently. Rashi divides the zodiac into 12 signs of 30° each; Nakshatra divides it into 27 lunar mansions of 13°20′ each. Because the two grids don\'t line up evenly, a single Nakshatra can span parts of two different Rashis. See the <a href="/jyotish/rashi">Rashi calculator</a> for that separate 30°-based reading.',
+    aHi: 'दोनों एक ही चंद्र स्थिति से आते हैं, बस अलग-अलग तरीके से विभाजित। राशि राशिचक्र को 12 राशियों में विभाजित करती है, प्रत्येक 30°; नक्षत्र इसे 27 चंद्र मंडलों में विभाजित करता है, प्रत्येक 13°20′। चूंकि दोनों ग्रिड समान रूप से मेल नहीं खाते, एक ही नक्षत्र दो अलग-अलग राशियों के हिस्सों में फैल सकता है। उस अलग 30°-आधारित रीडिंग के लिए <a href="/jyotish/rashi">राशि कैलकुलेटर</a> देखें।',
     html: true,
   },
   {
     q: 'Why do Gana and Nadi matter beyond my personal profile?',
+    qHi: 'गण और नाड़ी मेरी व्यक्तिगत प्रोफ़ाइल से परे क्यों मायने रखते हैं?',
     a: 'They\'re two of the eight Ashtakoota factors used in Kundali matching for marriage compatibility (see the <a href="/jyotish/horoscope-match">Horoscope Match calculator</a>). A shared Nadi between two charts is considered the most significant compatibility concern in that system — traditionally advised against regardless of how the other seven factors score.',
+    aHi: 'ये विवाह अनुकूलता के लिए कुंडली मिलान में उपयोग किए जाने वाले आठ अष्टकूट कारकों में से दो हैं (देखें <a href="/jyotish/horoscope-match">कुंडली मिलान कैलकुलेटर</a>)। दो कुंडलियों के बीच साझा नाड़ी उस प्रणाली में सबसे महत्वपूर्ण अनुकूलता संबंधी चिंता मानी जाती है — परंपरागत रूप से इससे बचने की सलाह दी जाती है, चाहे अन्य सात कारक कितने भी अच्छे स्कोर क्यों न करें।',
     html: true,
   },
 ];
@@ -85,12 +104,12 @@ const FAQ_ITEMS = [
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">
               <div style="display:flex;align-items:center;gap:6px;">
                 <span style="color:var(--color-saffron-deep);flex-shrink:0;" set:html={nakshatraIconSvg(NAKSHATRA_LIST[i].id, 16)} />
-                <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{nk.n}</span>
+                <span style="font-size:13px;font-weight:600;color:var(--color-ink);" data-hi={nk.h}>{nk.n}</span>
               </div>
               <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">{i + 1}</span>
             </div>
-            <p style="font-size:11px;color:var(--color-mute);margin:0;">{nk.h} · {nk.lord}</p>
-            <p style="font-size:10.5px;color:var(--color-body-text);margin:4px 0 0;">{nk.gana} · {nk.yoni}</p>
+            <p style="font-size:11px;color:var(--color-mute);margin:0;">{nk.h} · <span data-hi={LORD_HI[nk.lord] ?? nk.lord}>{nk.lord}</span></p>
+            <p style="font-size:10.5px;color:var(--color-body-text);margin:4px 0 0;"><span data-hi={GANA_HI[nk.gana] ?? nk.gana}>{nk.gana}</span> · <span data-hi={YONI_HI[nk.yoni] ?? nk.yoni}>{nk.yoni}</span></p>
           </div>
         ))}
       </div>

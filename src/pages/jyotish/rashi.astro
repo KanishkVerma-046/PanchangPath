@@ -10,25 +10,44 @@ function rashiSvg(id: string, size: number): string {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${RASHI_ICONS[id]}</svg>`;
 }
 
+// Hindi for the "All 12 Rashis" reference grid's short vocab fields with no per-row Hi field.
+const LORD_HI: Record<string, string> = {
+  Sun: 'सूर्य', Moon: 'चंद्र', Mars: 'मंगल', Mercury: 'बुध', Jupiter: 'गुरु', Venus: 'शुक्र', Saturn: 'शनि',
+};
+const ELEM_HI: Record<string, string> = { Fire: 'अग्नि', Earth: 'पृथ्वी', Air: 'वायु', Water: 'जल' };
+const QUAL_HI: Record<string, string> = { Movable: 'चर', Fixed: 'स्थिर', Dual: 'द्विस्वभाव' };
+const DAY_HI: Record<string, string> = {
+  Sunday: 'रविवार', Monday: 'सोमवार', Tuesday: 'मंगलवार', Wednesday: 'बुधवार',
+  Thursday: 'गुरुवार', Friday: 'शुक्रवार', Saturday: 'शनिवार',
+};
+
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
   {
     q: 'How is my Rashi different from my Lagna (Ascendant)?',
+    qHi: 'मेरी राशि मेरे लग्न (उदय राशि) से कैसे अलग है?',
     a: 'They come from different points in the chart. Rashi is the Moon\'s sign at birth — your emotional and mental nature, used for daily Rashifal. Lagna is the sign rising on the eastern horizon at birth — your physical body and outward personality, and the basis for all 12 houses. See the <a href="/jyotish/lagna">Lagna calculator</a> for that separate calculation.',
+    aHi: 'ये कुंडली के अलग-अलग बिंदुओं से आते हैं। राशि जन्म के समय चंद्रमा की राशि है — आपका भावनात्मक और मानसिक स्वभाव, जो दैनिक राशिफल के लिए उपयोग होता है। लग्न जन्म के समय पूर्वी क्षितिज पर उदय हो रही राशि है — आपका भौतिक शरीर और बाहरी व्यक्तित्व, और सभी 12 भावों का आधार। उस अलग गणना के लिए <a href="/jyotish/lagna">लग्न कैलकुलेटर</a> देखें।',
     html: true,
   },
   {
     q: 'Is this the same as my "zodiac sign" from Western horoscopes?',
+    qHi: 'क्या यह पाश्चात्य कुंडली से मेरी "राशि चिह्न" के समान है?',
     a: 'No. Western astrology uses the tropical zodiac, anchored to the seasons; Vedic astrology uses the sidereal zodiac, anchored to the actual background stars. Precession has opened a gap of roughly 24° between the two over the centuries — enough that most people\'s Vedic Rashi is one sign "earlier" than their familiar Western sun sign.',
+    aHi: 'नहीं। पाश्चात्य ज्योतिष उष्णकटिबंधीय राशिचक्र का उपयोग करता है, जो ऋतुओं पर आधारित है; वैदिक ज्योतिष सिडेरियल राशिचक्र का उपयोग करता है, जो वास्तविक पृष्ठभूमि तारों पर आधारित है। सदियों में अयनगति (प्रीसेशन) ने दोनों के बीच लगभग 24° का अंतर खोल दिया है — इतना कि अधिकांश लोगों की वैदिक राशि उनकी परिचित पाश्चात्य सूर्य राशि से एक राशि "पहले" होती है।',
   },
   {
     q: 'Why does the calculator ask for my birth place?',
+    qHi: 'कैलकुलेटर मेरा जन्म स्थान क्यों पूछता है?',
     a: "Mainly to convert your local birth time into the correct universal time for the calculation. This calculator's Moon-longitude computation (<code>moonLongitude()</code> in <code>astro-core.ts</code>, the same function used sitewide for Rashi, Nakshatra, and Panchang) is geocentric — it doesn't apply a location-specific (topocentric/parallax) correction, a real effect that can shift the Moon's apparent position by up to roughly a degree near the horizon. That's a characteristic of how this site currently computes the Moon everywhere, not a claim that location is astronomically irrelevant to the Moon's position in general. In practice, your city selection here matters for getting the time zone right; it's your Lagna, not your Rashi, that's genuinely location-sensitive.",
+    aHi: 'मुख्य रूप से आपके स्थानीय जन्म समय को गणना के लिए सही सार्वभौमिक समय में बदलने के लिए। इस कैलकुलेटर की चंद्र-रेखांश गणना (<code>astro-core.ts</code> में <code>moonLongitude()</code>, वही फ़ंक्शन जो साइट भर में राशि, नक्षत्र, और पंचांग के लिए उपयोग होता है) भूकेंद्रिक है — यह स्थान-विशिष्ट (टोपोसेंट्रिक/लंबन) सुधार लागू नहीं करती, जो एक वास्तविक प्रभाव है और क्षितिज के पास चंद्रमा की स्पष्ट स्थिति को लगभग एक डिग्री तक बदल सकता है। यह इस बात की विशेषता है कि यह साइट वर्तमान में चंद्रमा की गणना हर जगह कैसे करती है, यह दावा नहीं कि स्थान सामान्यतः चंद्रमा की स्थिति के लिए खगोलीय दृष्टि से अप्रासंगिक है। व्यवहार में, यहां आपका शहर चयन समय क्षेत्र सही करने के लिए मायने रखता है; आपका लग्न, न कि आपकी राशि, वास्तव में स्थान-संवेदनशील है।',
     html: true,
   },
   {
     q: 'What\'s the difference between Rashi and Nakshatra?',
+    qHi: 'राशि और नक्षत्र में क्या अंतर है?',
     a: 'Both come from the same Moon position, just sliced differently. Rashi divides the zodiac into 12 signs of 30° each; Nakshatra divides it into 27 lunar mansions of 13°20′ each. Because the two grids don\'t line up evenly, a single Rashi can span parts of two or more Nakshatras. See the <a href="/jyotish/nakshatra">Nakshatra calculator</a> for that separate 13°20′-based reading, including your Pada and naming syllable.',
+    aHi: 'दोनों एक ही चंद्र स्थिति से आते हैं, बस अलग-अलग तरीके से विभाजित। राशि राशिचक्र को 12 राशियों में विभाजित करती है, प्रत्येक 30°; नक्षत्र इसे 27 चंद्र मंडलों में विभाजित करता है, प्रत्येक 13°20′। चूंकि दोनों ग्रिड समान रूप से मेल नहीं खाते, एक ही राशि दो या अधिक नक्षत्रों के हिस्सों में फैल सकती है। उस अलग 13°20′-आधारित रीडिंग के लिए, जिसमें आपका पद और नामकरण अक्षर शामिल है, <a href="/jyotish/nakshatra">नक्षत्र कैलकुलेटर</a> देखें।',
     html: true,
   },
 ];
@@ -81,7 +100,7 @@ const FAQ_ITEMS = [
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">All 12 Rashis</h3>
+      <h3 data-hi="सभी 12 राशियां" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">All 12 Rashis</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px;">
         {RASHI_PROFILES.map((r, i) => (
           <div class="card" style="padding:14px;">
@@ -89,11 +108,11 @@ const FAQ_ITEMS = [
               <span style="color:var(--color-saffron-deep);flex-shrink:0;" set:html={rashiSvg(RASHI_ID_LIST[i], 20)} />
               <div>
                 <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{r.name} &middot; {r.h}</span>
-                <span style="font-size:10.5px;color:var(--color-mute);display:block;">{r.en} &middot; {r.elem} &middot; {r.qual}</span>
+                <span style="font-size:10.5px;color:var(--color-mute);display:block;"><span data-hi={ELEM_HI[r.elem] ?? r.elem}>{r.elem}</span> &middot; <span data-hi={QUAL_HI[r.qual] ?? r.qual}>{r.qual}</span></span>
               </div>
             </div>
-            <p style="font-size:11.5px;color:var(--color-body-text);margin:0 0 6px;line-height:1.5;">{r.desc}</p>
-            <p style="font-size:10.5px;color:var(--color-mute);margin:0;">Lord: {r.lord} &middot; Gem: {r.gem} &middot; Day: {r.day}</p>
+            <p style="font-size:11.5px;color:var(--color-body-text);margin:0 0 6px;line-height:1.5;" data-hi={r.descHi}>{r.desc}</p>
+            <p style="font-size:10.5px;color:var(--color-mute);margin:0;"><span data-hi="स्वामी">Lord</span>: <span data-hi={LORD_HI[r.lord] ?? r.lord}>{r.lord}</span> &middot; <span data-hi="रत्न">Gem</span>: <span data-hi={r.gemHi}>{r.gem}</span> &middot; <span data-hi="दिन">Day</span>: <span data-hi={DAY_HI[r.day] ?? r.day}>{r.day}</span></p>
           </div>
         ))}
       </div>

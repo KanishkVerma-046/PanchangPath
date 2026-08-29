@@ -5,19 +5,27 @@ import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
 import { KALASARPA_TYPES, KALASARPA_EFFECTS } from '../../lib/jyotish';
 
+const KALASARPA_TYPES_HI: string[] = ['अनंत', 'कुलिक', 'वासुकी', 'शंखपाल', 'पद्म', 'महापद्म', 'तक्षक', 'कर्कोटक', 'शंखचूड़', 'घातक', 'विषधर', 'शेषनाग'];
+
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
   {
     q: 'How is my specific Kalasarpa type (like Ananta or Vasuki) determined?',
+    qHi: 'मेरा विशिष्ट कालसर्प प्रकार (जैसे अनंत या वासुकी) कैसे निर्धारित किया जाता है?',
     a: 'By which house Rahu occupies, counted from your Lagna — not by Rahu\'s zodiac sign directly. Rahu in the 1st house from your Lagna gives Ananta, the 2nd gives Kulika, and so on through all 12 houses to Sheshanaga in the 12th. This matches the standard convention used across Vedic astrology references for naming the 12 types.',
+    aHi: 'इससे कि राहु आपके लग्न से गिनकर किस भाव में स्थित है — सीधे राहु की राशि से नहीं। आपके लग्न से पहले भाव में राहु होने पर अनंत, दूसरे भाव में कुलिक, और इसी तरह सभी 12 भावों से होते हुए 12वें भाव में शेषनाग तक। यह वैदिक ज्योतिष संदर्भों में 12 प्रकारों के नामकरण के लिए उपयोग होने वाली मानक परंपरा से मेल खाता है।',
   },
   {
     q: "What's the difference between Anuloma and Viloma, and does it matter?",
+    qHi: 'अनुलोम और विलोम में क्या अंतर है, और क्या यह मायने रखता है?',
     a: 'This calculator distinguishes them by zodiacal direction: in Anuloma ("with the current"), all seven planets sit on the arc running forward from Ketu to Rahu; in Viloma ("against the current"), they sit on the reverse arc, from Rahu to Ketu. Worth being upfront about, though: sources don\'t agree on how this distinction is defined in the first place. Some, like this calculator, use the zodiacal-direction framing above; others define it instead by which node — Rahu or Ketu — is "ahead" versus "behind" in the chain of planets, a related but not always identical test. Even paramarsh.app, one of the sources for this framing, states plainly that "the terminology is not uniform, so any reading must state its convention before calling a formation anuloma or viloma." What is well-corroborated across sources: Anuloma is traditionally read as the more favorable of the two directions, Viloma as more difficult — that part isn\'t in dispute, even where the exact definition mechanism is. Both still carry the core Kalasarpa themes of delay and eventual transformation.',
+    aHi: 'यह कैलकुलेटर इन्हें राशिचक्रीय दिशा से अलग करता है: अनुलोम ("धारा के साथ") में, सभी सात ग्रह केतु से राहु की ओर आगे बढ़ते चाप पर स्थित होते हैं; विलोम ("धारा के विरुद्ध") में, वे राहु से केतु की ओर उलटे चाप पर स्थित होते हैं। यह स्पष्ट करना जरूरी है: स्रोत इस बात पर सहमत नहीं हैं कि यह अंतर सबसे पहले कैसे परिभाषित किया जाए। कुछ, जैसे यह कैलकुलेटर, ऊपर दी गई राशिचक्रीय-दिशा वाली परिभाषा का उपयोग करते हैं; अन्य इसे इसके बजाय इस आधार पर परिभाषित करते हैं कि कौन सी छाया ग्रंथि — राहु या केतु — ग्रहों की श्रृंखला में "आगे" बनाम "पीछे" है, जो एक संबंधित लेकिन हमेशा समान न होने वाली कसौटी है। यहां तक कि paramarsh.app, जो इस परिभाषा के स्रोतों में से एक है, स्पष्ट रूप से कहता है कि "शब्दावली एकसमान नहीं है, इसलिए किसी भी पठन को अनुलोम या विलोम कहने से पहले अपनी परंपरा स्पष्ट करनी चाहिए।" स्रोतों में जो अच्छी तरह से पुष्ट है वह यह है: अनुलोम को परंपरागत रूप से दोनों दिशाओं में अधिक अनुकूल माना जाता है, विलोम को अधिक कठिन — यह हिस्सा विवादित नहीं है, भले ही सटीक परिभाषा तंत्र हो। दोनों में कालसर्प के मूल विषय — विलंब और अंततः रूपांतरण — बने रहते हैं।',
   },
   {
     q: 'What does "Partial" Kalasarpa mean here, and is it less serious than the full yoga?',
+    qHi: 'यहां "आंशिक" कालसर्प का क्या अर्थ है, और क्या यह पूर्ण योग से कम गंभीर है?',
     a: 'On this calculator specifically, "Partial" means all seven planets are confined to one side of the axis, but one of them sits within about 2° of Rahu or Ketu — close enough that classical sources describe the conjunction as blurring the clean enclosure and softening the yoga\'s effect. Worth noting: some other sources use "partial" differently — for a case where one planet falls fully outside the axis, which this calculator instead reports as no yoga forming at all. The terminology isn\'t fully standardized across sources, so it\'s worth checking exactly what a given site or astrologer means by "partial" before comparing results.',
+    aHi: 'इस कैलकुलेटर पर विशेष रूप से, "आंशिक" का अर्थ है कि सभी सात ग्रह अक्ष के एक तरफ सीमित हैं, लेकिन उनमें से एक राहु या केतु के लगभग 2° के भीतर स्थित है — इतना करीब कि शास्त्रीय स्रोत इस युति को स्पष्ट घेरे को धुंधला करने वाला और योग के प्रभाव को नरम करने वाला बताते हैं। ध्यान देने योग्य: कुछ अन्य स्रोत "आंशिक" शब्द का अलग तरीके से उपयोग करते हैं — उस स्थिति के लिए जहां एक ग्रह पूरी तरह से अक्ष के बाहर गिरता है, जिसे यह कैलकुलेटर इसके बजाय कोई योग न बनने के रूप में रिपोर्ट करता है। शब्दावली स्रोतों में पूरी तरह मानकीकृत नहीं है, इसलिए परिणामों की तुलना करने से पहले यह जांचना उचित है कि कोई विशेष साइट या ज्योतिषी "आंशिक" से वास्तव में क्या अर्थ रखता है।',
   },
 ];
 ---
@@ -58,19 +66,19 @@ const FAQ_ITEMS = [
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">All 12 Kalasarpa Types — Reference</h3>
+      <h3 data-hi="सभी 12 कालसर्प प्रकार — संदर्भ" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">All 12 Kalasarpa Types — Reference</h3>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
         {KALASARPA_TYPES.map((t, i) => (
           <div class="card" style="padding:16px;">
-            <h4 style="font-size:14px;font-weight:700;color:var(--color-ink);margin:0 0 8px;">{i + 1}. {t} Kalasarpa</h4>
+            <h4 style="font-size:14px;font-weight:700;color:var(--color-ink);margin:0 0 8px;" data-hi={`${i + 1}. ${KALASARPA_TYPES_HI[i]} कालसर्प`}>{i + 1}. {t} Kalasarpa</h4>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" class="two-col">
               <div>
-                <p style="font-size:10.5px;font-weight:600;color:var(--color-saffron-deep);margin:0 0 3px;text-transform:uppercase;letter-spacing:0.04em;">Anuloma</p>
-                <p style="font-size:12.5px;color:var(--color-body-text);margin:0;line-height:1.55;">{KALASARPA_EFFECTS[i].a}</p>
+                <p style="font-size:10.5px;font-weight:600;color:var(--color-saffron-deep);margin:0 0 3px;text-transform:uppercase;letter-spacing:0.04em;" data-hi="अनुलोम">Anuloma</p>
+                <p style="font-size:12.5px;color:var(--color-body-text);margin:0;line-height:1.55;" data-hi={KALASARPA_EFFECTS[i].aHi}>{KALASARPA_EFFECTS[i].a}</p>
               </div>
               <div>
-                <p style="font-size:10.5px;font-weight:600;color:var(--color-mute);margin:0 0 3px;text-transform:uppercase;letter-spacing:0.04em;">Viloma</p>
-                <p style="font-size:12.5px;color:var(--color-body-text);margin:0;line-height:1.55;">{KALASARPA_EFFECTS[i].v}</p>
+                <p style="font-size:10.5px;font-weight:600;color:var(--color-mute);margin:0 0 3px;text-transform:uppercase;letter-spacing:0.04em;" data-hi="विलोम">Viloma</p>
+                <p style="font-size:12.5px;color:var(--color-body-text);margin:0;line-height:1.55;" data-hi={KALASARPA_EFFECTS[i].vHi}>{KALASARPA_EFFECTS[i].v}</p>
               </div>
             </div>
           </div>

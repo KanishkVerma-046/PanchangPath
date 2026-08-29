@@ -1,11 +1,15 @@
 ---
 // Reuses the FAQ display pattern established in src/pages/faq.astro
-// (details/summary accordion + FAQPage JSON-LD), English-only since the
-// Hindi toggle is currently disabled and this is new copy with no Hindi
-// counterpart.
+// (details/summary accordion + FAQPage JSON-LD). qHi/aHi are swapped in via
+// data-hi + this component's own <script>, same textContent-swap mechanism
+// used site-wide (see src/pages/jyotish/kalasarpa.astro's applyPageLang).
+// The FAQPage JSON-LD stays English-only regardless of the toggle, matching
+// the established pattern in BlogDetail.astro.
 export interface CalcFaqItem {
   q: string;
+  qHi: string;
   a: string;
+  aHi: string;
   html?: boolean;
 }
 interface Props {
@@ -32,21 +36,47 @@ const faqJsonLd = {
 <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
 
 <div class="card faq-card" style="padding:28px;margin-top:24px;">
-  <h2 style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 16px;">Frequently Asked Questions</h2>
+  <h2 class="faq-heading" data-hi="अक्सर पूछे जाने वाले प्रश्न" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 16px;">Frequently Asked Questions</h2>
   <div class="faq-list">
     {items.map((item) => (
       <details class="faq-item">
         <summary class="faq-summary">
-          <span>{item.q}</span>
+          <span data-hi={item.qHi}>{item.q}</span>
           <span class="faq-caret" aria-hidden="true">▾</span>
         </summary>
         <div class="faq-answer">
-          {item.html ? <p set:html={item.a} /> : <p>{item.a}</p>}
+          {item.html ? (
+            <Fragment>
+              <p class="en-text" set:html={item.a} />
+              <p class="hi-text" style="display:none" set:html={item.aHi} />
+            </Fragment>
+          ) : (
+            <p data-hi={item.aHi}>{item.a}</p>
+          )}
         </div>
       </details>
     ))}
   </div>
 </div>
+
+<script>
+  // Plain-text q/a use data-hi + textContent swap. Rich (html:true) answers
+  // carry embedded links, so they're rendered as parallel en-text/hi-text
+  // blocks instead (data-hi's textContent swap would strip the links) —
+  // same split used in BlogDetail.astro.
+  function applyFaqLang(hindi: boolean) {
+    document.querySelectorAll<HTMLElement>('.faq-card [data-hi]').forEach((el) => {
+      if (!el.dataset.en) el.dataset.en = el.textContent || '';
+      el.textContent = hindi ? (el.dataset.hi || el.dataset.en) : el.dataset.en;
+    });
+    document.querySelectorAll<HTMLElement>('.faq-card .en-text').forEach((el) => el.style.display = hindi ? 'none' : '');
+    document.querySelectorAll<HTMLElement>('.faq-card .hi-text').forEach((el) => el.style.display = hindi ? '' : 'none');
+  }
+  document.addEventListener('langchange', (e: Event) => {
+    applyFaqLang((e as CustomEvent).detail.langCode === 'hi');
+  });
+  if (localStorage.getItem('pp-lang') === 'hi') applyFaqLang(true);
+</script>
 
 <style>
   .faq-list {

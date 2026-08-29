@@ -46,20 +46,34 @@ function ebGemCard(planet: string, big: boolean, roleLabel: string) {
 const ebPrimaryGem = ebGemCard(ebLagnaLord, true, 'Lagna Lord (Life-Stone)');
 const ebSecondaryGems = ebSecondaryLords.map(s => ebGemCard(s.lord, false, s.role));
 
+const ROLE_HI: Record<string, string> = {
+  'Lagna Lord (Life-Stone)': 'लग्न स्वामी (जीवन रत्न)',
+  '5th Lord (Trikona)': 'पंचम स्वामी (त्रिकोण)',
+  '9th Lord (Trikona)': 'नवम स्वामी (त्रिकोण)',
+  'For Mind & Emotions': 'मन और भावनाओं के लिए',
+};
+const GEM_LABEL_HI: Record<string, string> = { Metal: 'धातु', Finger: 'उंगली', Day: 'दिन', Substitute: 'विकल्प' };
+
 const FAQ_ITEMS = [
-  ...sharedCalcFaq('before buying an expensive stone'),
+  ...sharedCalcFaq('before buying an expensive stone', 'महंगा रत्न खरीदने से पहले'),
   {
     q: 'Why do I get up to four gemstone recommendations instead of just one?',
+    qHi: 'मुझे केवल एक के बजाय चार तक रत्न सिफारिशें क्यों मिलती हैं?',
     a: "The primary stone is always your Lagna lord's. The calculator then adds your 5th and 9th lords' stones (the other two Trikona houses) if they're ruled by different planets, and your Moon lord's stone if it isn't already covered — since the Moon governs mind and emotional balance specifically. If several of these houses share the same ruling planet, you'll see fewer than four cards, since the calculator doesn't repeat a stone that's already been recommended.",
+    aHi: 'प्राथमिक रत्न हमेशा आपके लग्न स्वामी का होता है। कैलकुलेटर फिर आपके 5वें और 9वें भाव स्वामियों (अन्य दो त्रिकोण भाव) के रत्न जोड़ता है यदि वे अलग-अलग ग्रहों द्वारा शासित हों, और आपके चंद्र स्वामी का रत्न यदि वह पहले से शामिल न हो — क्योंकि चंद्रमा विशेष रूप से मन और भावनात्मक संतुलन को नियंत्रित करता है। यदि इनमें से कई भावों का स्वामी ग्रह एक ही हो, तो आपको चार से कम कार्ड दिखेंगे, क्योंकि कैलकुलेटर पहले से सुझाए गए रत्न को दोहराता नहीं है।',
   },
   {
     q: 'Why does the About section single out Blue Sapphire (Neelam) for caution?',
+    qHi: 'अबाउट सेक्शन विशेष रूप से नीलम (ब्लू सैफायर) के प्रति सावधानी क्यों बरतता है?',
     a: 'Saturn\'s stone is traditionally considered the most unpredictable in Vedic gemstone therapy — capable of producing strong effects quickly, for better or worse, depending on Saturn\'s actual condition in the individual chart. That\'s the same reasoning behind this site\'s caution around the 7-mukhi and 14-mukhi Rudraksha beads (also Saturn-ruled) on the <a href="/jyotish/rudraksha">Rudraksha calculator</a> — Saturn recommendations generally warrant a second opinion before acting on them.',
+    aHi: 'शनि का रत्न पारंपरिक रूप से वैदिक रत्न चिकित्सा में सबसे अप्रत्याशित माना जाता है — यह तेज़ी से मजबूत प्रभाव उत्पन्न करने में सक्षम है, अच्छे या बुरे दोनों तरह से, यह व्यक्ति की कुंडली में शनि की वास्तविक स्थिति पर निर्भर करता है। यही तर्क <a href="/jyotish/rudraksha">रुद्राक्ष कैलकुलेटर</a> पर 7-मुखी और 14-मुखी रुद्राक्ष मनकों (जो भी शनि द्वारा शासित हैं) के प्रति इस साइट की सावधानी के पीछे है — शनि संबंधी सिफारिशों पर कार्य करने से पहले आमतौर पर दूसरी राय लेने की सलाह दी जाती है।',
     html: true,
   },
   {
     q: 'Does this calculator check whether a planet is weak or afflicted before recommending its stone?',
+    qHi: 'क्या यह कैलकुलेटर रत्न सुझाने से पहले यह जांचता है कि कोई ग्रह कमजोर या पीड़ित है?',
     a: "No. The recommendation is based purely on house lordship — which planet rules your Lagna, 5th and 9th signs — not on that planet's actual strength, dignity, or placement in your individual chart. A gemstone is traditionally meant to strengthen a planet that needs support, so whether a specific recommendation is actually appropriate for you depends on chart details this calculator doesn't evaluate. That's exactly what the About section's caution about consulting a qualified astrologer is pointing at.",
+    aHi: 'नहीं। सिफारिश पूरी तरह से भाव स्वामित्व पर आधारित है — कौन सा ग्रह आपके लग्न, 5वें और 9वें राशियों का स्वामी है — न कि आपकी व्यक्तिगत कुंडली में उस ग्रह की वास्तविक शक्ति, गरिमा, या स्थिति पर। रत्न परंपरागत रूप से किसी ऐसे ग्रह को मजबूत करने के लिए होता है जिसे सहारे की जरूरत हो, इसलिए कोई विशिष्ट सिफारिश आपके लिए वास्तव में उपयुक्त है या नहीं, यह कुंडली के उन विवरणों पर निर्भर करता है जिनका यह कैलकुलेटर मूल्यांकन नहीं करता। यही वह बात है जिसकी ओर अबाउट सेक्शन की किसी योग्य ज्योतिषी से परामर्श लेने की सलाह इशारा करती है।',
   },
 ];
 ---
@@ -91,11 +105,11 @@ const FAQ_ITEMS = [
         <div class="card" style="padding:20px;margin-bottom:24px;">
           <div id="birth-info" style="display:flex;gap:24px;flex-wrap:wrap;">
             {[
-              ['Lagna (Asc)', `${EB_RASHI[ebLagnaSign]} (${EB_RASHI_EN[ebLagnaSign]})`],
-              ['Moon Rashi', `${EB_RASHI[ebMoonSign]} (${EB_RASHI_EN[ebMoonSign]})`],
-              ['Sun Rashi', `${EB_RASHI[ebSunSign]} (${EB_RASHI_EN[ebSunSign]})`],
-            ].map(([label, val]) => (
-              <div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;">{label}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">{val}</p></div>
+              ['Lagna (Asc)', 'लग्न', `${EB_RASHI[ebLagnaSign]} (${EB_RASHI_EN[ebLagnaSign]})`],
+              ['Moon Rashi', 'चंद्र राशि', `${EB_RASHI[ebMoonSign]} (${EB_RASHI_EN[ebMoonSign]})`],
+              ['Sun Rashi', 'सूर्य राशि', `${EB_RASHI[ebSunSign]} (${EB_RASHI_EN[ebSunSign]})`],
+            ].map(([label, labelHi, val]) => (
+              <div><p class="caption-mono" style="color:var(--color-mute);margin:0 0 3px;" data-hi={labelHi}>{label}</p><p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0;">{val}</p></div>
             ))}
           </div>
         </div>
@@ -107,13 +121,13 @@ const FAQ_ITEMS = [
               <span style={`width:40px;height:40px;border-radius:50%;background:${ebPrimaryGem.g.color};flex-shrink:0;box-shadow:0 0 0 4px ${ebPrimaryGem.g.color}22;display:flex;align-items:center;justify-content:center;color:#fff;`} set:html={planetSvg(ebPrimaryGem.g.p.toLowerCase(), 22, '#fff')} />
               <div>
                 <h4 style="font-size:17px;font-weight:700;color:var(--color-ink);margin:0;">{ebPrimaryGem.g.name} &middot; {ebPrimaryGem.g.nameHi}</h4>
-                <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">{ebPrimaryGem.roleLabel} &middot; {ebPrimaryGem.g.planet} ({ebPrimaryGem.g.p})</p>
+                <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;" data-hi={ROLE_HI[ebPrimaryGem.roleLabel] ?? ebPrimaryGem.roleLabel}>{ebPrimaryGem.roleLabel} &middot; {ebPrimaryGem.g.planet} ({ebPrimaryGem.g.p})</p>
               </div>
             </div>
-            <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">{ebPrimaryGem.g.desc}</p>
+            <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;" data-hi={ebPrimaryGem.g.descHi}>{ebPrimaryGem.g.desc}</p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12px;">
-              {[['Metal', ebPrimaryGem.g.metal], ['Finger', ebPrimaryGem.g.finger], ['Day', ebPrimaryGem.g.day], ['Substitute', ebPrimaryGem.g.substitute]].map(([k, v]) => (
-                <div><span style="color:var(--color-mute);">{k}: </span><span style="color:var(--color-ink);font-weight:600;">{v}</span></div>
+              {[['Metal', ebPrimaryGem.g.metal, ebPrimaryGem.g.metalHi], ['Finger', ebPrimaryGem.g.finger, ebPrimaryGem.g.fingerHi], ['Day', ebPrimaryGem.g.day, ebPrimaryGem.g.dayHi], ['Substitute', ebPrimaryGem.g.substitute, ebPrimaryGem.g.substituteHi]].map(([k, v, vHi]) => (
+                <div><span style="color:var(--color-mute);" data-hi={GEM_LABEL_HI[k]}>{k}</span><span style="color:var(--color-mute);">: </span><span style="color:var(--color-ink);font-weight:600;" data-hi={vHi}>{v}</span></div>
               ))}
             </div>
           </div>
@@ -126,13 +140,13 @@ const FAQ_ITEMS = [
                 <span style={`width:32px;height:32px;border-radius:50%;background:${g.color};flex-shrink:0;box-shadow:0 0 0 4px ${g.color}22;display:flex;align-items:center;justify-content:center;color:#fff;`} set:html={planetSvg(g.p.toLowerCase(), 18, '#fff')} />
                 <div>
                   <h4 style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">{g.name} &middot; {g.nameHi}</h4>
-                  <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;">{roleLabel} &middot; {g.planet} ({g.p})</p>
+                  <p style="font-size:11.5px;color:var(--color-mute);margin:1px 0 0;" data-hi={ROLE_HI[roleLabel] ?? roleLabel}>{roleLabel} &middot; {g.planet} ({g.p})</p>
                 </div>
               </div>
-              <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;">{g.desc}</p>
+              <p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0 0 12px;" data-hi={g.descHi}>{g.desc}</p>
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:12px;">
-                {[['Metal', g.metal], ['Finger', g.finger], ['Day', g.day], ['Substitute', g.substitute]].map(([k, v]) => (
-                  <div><span style="color:var(--color-mute);">{k}: </span><span style="color:var(--color-ink);font-weight:600;">{v}</span></div>
+                {[['Metal', g.metal, g.metalHi], ['Finger', g.finger, g.fingerHi], ['Day', g.day, g.dayHi], ['Substitute', g.substitute, g.substituteHi]].map(([k, v, vHi]) => (
+                  <div><span style="color:var(--color-mute);" data-hi={GEM_LABEL_HI[k]}>{k}</span><span style="color:var(--color-mute);">: </span><span style="color:var(--color-ink);font-weight:600;" data-hi={vHi}>{v}</span></div>
                 ))}
               </div>
             </div>

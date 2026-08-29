@@ -19,6 +19,7 @@ function planetIconSvg(id: string, size: number, color: string): string {
 // this same evaluateMangalDosha(), so prerendered and hydrated content start identical.
 const EB = SYNTHETIC_EXAMPLE_BIRTH;
 const EB_RASHI = ['Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya', 'Tula', 'Vrishchika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'];
+const EB_RASHI_HI = ['मेष', 'वृषभ', 'मिथुन', 'कर्क', 'सिंह', 'कन्या', 'तुला', 'वृश्चिक', 'धनु', 'मकर', 'कुम्भ', 'मीन'];
 const EB_DATE_STR = `${EB.y}-${String(EB.m).padStart(2, '0')}-${String(EB.d).padStart(2, '0')}`;
 const EB_TIME_STR = `${String(EB.hh).padStart(2, '0')}:${String(EB.mm).padStart(2, '0')}`;
 const n360eb = (a: number) => ((a % 360) + 360) % 360;
@@ -39,6 +40,8 @@ const ebDMoonMars = angDiffEb(ebSidMoon, ebSidMars);
 const ebMd = evaluateMangalDosha({ marsSign: ebMarsSign, lagnaSign: ebLagnaSign, moonSign: ebMoonSign, venusSign: ebVenusSign, jupiterMarsOrbDeg: ebDGuruMars, moonMarsOrbDeg: ebDMoonMars });
 
 const EB_REF_LABELS = ['Lagna (Ascendant)', 'Moon', 'Venus'];
+const EB_REF_LABELS_HI = ['लग्न', 'चंद्रमा', 'शुक्र'];
+const ebFullRulesHi = ebMd.cancelRules.filter(c => c.applies && EB_FULL_RULE_LABEL[c.key]).map(c => EB_RULE_COPY[c.key].ruleHi);
 const EB_FULL_RULE_LABEL: Record<string, string> = { ownSign: 'Mars in own sign', exalted: 'Mars exalted in Makara', yogakarakaLagna: 'Cancer/Leo Lagna (Yogakaraka Mars)', jupiterConjunct: 'Jupiter conjunct Mars' };
 const ebAppliedFullRules = ebMd.cancelRules.filter(c => c.applies && EB_FULL_RULE_LABEL[c.key]).map(c => EB_FULL_RULE_LABEL[c.key]);
 let ebSeverityLabel = 'No Mangal Dosha', ebSevColor = '#15803d';
@@ -57,22 +60,30 @@ const EB_RULE_COPY: Record<string, { rule: string; strength: string }> = {
 };
 
 const FAQ_ITEMS = [
-  ...sharedCalcFaq('before deciding a match is incompatible'),
+  ...sharedCalcFaq('before deciding a match is incompatible', 'किसी जोड़े को असंगत मानने से पहले'),
   {
     q: 'Why does the calculator check Mars from three different points (Lagna, Moon, and Venus) instead of just one?',
+    qHi: 'कैलकुलेटर मंगल की जांच केवल एक के बजाय तीन अलग-अलग बिंदुओं (लग्न, चंद्र, और शुक्र) से क्यों करता है?',
     a: 'Because that\'s the standard method for a complete Mangal Dosha assessment — a person is only considered fully clear if Mars avoids the dosha houses (1st, 2nd, 4th, 7th, 8th, 12th) from all three reference points, not just one. The more of the three points where Mars falls in a dosha house, the more significant the affliction is traditionally considered — which is exactly why this calculator reports how many of the three references flagged it, not just a single yes/no.',
+    aHi: 'क्योंकि यह पूर्ण मंगल दोष आकलन के लिए मानक विधि है — किसी व्यक्ति को केवल तभी पूरी तरह से मुक्त माना जाता है जब मंगल तीनों संदर्भ बिंदुओं से दोष भावों (पहला, दूसरा, चौथा, सातवां, आठवां, बारहवां) से बचता हो, केवल एक से नहीं। तीनों बिंदुओं में से जितने अधिक में मंगल किसी दोष भाव में पड़ता है, पीड़ा को परंपरागत रूप से उतना ही अधिक महत्वपूर्ण माना जाता है — यही कारण है कि यह कैलकुलेटर बताता है कि तीन संदर्भों में से कितनों ने इसे चिह्नित किया, न कि केवल एक हां/नहीं।',
   },
   {
     q: 'The page lists "both partners are Manglik" and "the dosha weakens after age 28" as cancellation rules above, but the Cancellation Analysis table doesn\'t check them — why?',
+    qHi: 'पृष्ठ ऊपर "दोनों साथी मांगलिक हैं" और "28 वर्ष की आयु के बाद दोष कमज़ोर पड़ जाता है" को निवारण नियमों के रूप में सूचीबद्ध करता है, लेकिन निवारण विश्लेषण तालिका इनकी जांच नहीं करती — ऐसा क्यों?',
     a: 'Because neither one can be evaluated from a single birth chart. "Both partners Manglik" requires comparing two separate charts against each other, which is outside what a one-person calculator can check — that\'s a factor to apply yourself once you have both results. The age-28 rule isn\'t a chart placement at all; it\'s a general statement about timing that applies the same way regardless of any specific chart detail. The six rules in the Cancellation Analysis table are the ones this calculator can verify directly from your birth data: Mars in its own sign, Mars exalted, a Cancer/Leo Lagna (where Mars is a yogakaraka), Mars in a weakening sign, and close conjunction with Jupiter or the Moon.',
+    aHi: 'क्योंकि इनमें से किसी का भी आकलन एक अकेली कुंडली से नहीं किया जा सकता। "दोनों साथी मांगलिक हैं" के लिए दो अलग-अलग कुंडलियों की एक-दूसरे से तुलना आवश्यक है, जो एक-व्यक्ति कैलकुलेटर की जांच सीमा से बाहर है — यह एक ऐसा कारक है जिसे आपको दोनों परिणाम मिलने के बाद स्वयं लागू करना होगा। 28 वर्ष की आयु वाला नियम कोई कुंडली-स्थिति है ही नहीं; यह समय के बारे में एक सामान्य कथन है जो किसी भी विशिष्ट कुंडली विवरण की परवाह किए बिना समान रूप से लागू होता है। निवारण विश्लेषण तालिका के छह नियम वे हैं जिन्हें यह कैलकुलेटर सीधे आपके जन्म डेटा से सत्यापित कर सकता है: मंगल अपनी स्वयं की राशि में, मंगल उच्च का, कर्क/सिंह लग्न (जहां मंगल योगकारक है), मंगल कमजोर पड़ने वाली राशि में, और गुरु या चंद्रमा के साथ निकट युति।',
   },
   {
     q: 'What does a "Cancelled (Bhanga)" result mean, and how is it different from "Present, Low to Medium"?',
+    qHi: '"निवारित (भंग)" परिणाम का क्या अर्थ है, और यह "मौजूद, निम्न से मध्यम" से कैसे अलग है?',
     a: 'Both mean Mars falls in a dosha house from at least one reference point — the difference is which cancellation condition, if any, applies. Four of the six rules — Mars in its own sign, Mars exalted, a Cancer/Leo Lagna, and a close Jupiter conjunction — are described as full, near-unanimous cancellations across the classical sources this calculator was cross-checked against, so when any of those applies the result is "Cancelled" rather than "Present." The other two rules — Mars in a weakening sign, and a close Moon conjunction — are recognised in the same sources but with more mixed treatment (one source explicitly calls the Moon\'s influence "a mild modifier" rather than a full cancellation), so they only lower the severity rating rather than flipping the verdict to Cancelled. A Cancelled result is not the same as "nothing to worry about" — it means a specific, classically-recognised exception applies to a placement that would otherwise be flagged, not that the placement was never a placement worth checking.',
+    aHi: 'दोनों का अर्थ है कि मंगल कम से कम एक संदर्भ बिंदु से किसी दोष भाव में पड़ता है — अंतर यह है कि कौन सी निवारण शर्त, यदि कोई हो, लागू होती है। छह में से चार नियम — मंगल अपनी स्वयं की राशि में, मंगल उच्च का, कर्क/सिंह लग्न, और गुरु के साथ निकट युति — को इस कैलकुलेटर द्वारा जांचे गए शास्त्रीय स्रोतों में पूर्ण, लगभग सर्वसम्मत निवारण के रूप में वर्णित किया गया है, इसलिए जब इनमें से कोई भी लागू होता है तो परिणाम "मौजूद" के बजाय "निवारित" होता है। अन्य दो नियम — मंगल कमजोर पड़ने वाली राशि में, और चंद्रमा के साथ निकट युति — इन्हीं स्रोतों में मान्यता प्राप्त हैं लेकिन अधिक मिश्रित उपचार के साथ (एक स्रोत स्पष्ट रूप से चंद्रमा के प्रभाव को पूर्ण निवारण के बजाय "एक हल्का संशोधक" कहता है), इसलिए वे केवल गंभीरता रेटिंग को कम करते हैं, फैसले को निवारित में नहीं बदलते। निवारित परिणाम "चिंता की कोई बात नहीं" के समान नहीं है — इसका अर्थ है कि एक ऐसी स्थिति पर एक विशिष्ट, शास्त्रीय रूप से मान्यता प्राप्त अपवाद लागू होता है जो अन्यथा चिह्नित होती, यह नहीं कि वह स्थिति कभी जांचने लायक ही नहीं थी।',
   },
   {
     q: 'How is the severity (High vs. Low-to-Medium) determined?',
+    qHi: 'गंभीरता (उच्च बनाम निम्न-से-मध्यम) कैसे निर्धारित की जाती है?',
     a: "This calculator's own reasonable rule of thumb, applying the general principle sources agree on — more afflicted reference points and a poorly-placed Mars mean a more significant dosha — rather than a single universally fixed formula. Specifically: it's rated High when Mars falls in a dosha house from 2 or more of the three references and none of the six cancellation rules apply at all; if any rule applies but none of them is full-strength, or only 1 of 3 references is affected, it's rated Low to Medium; if a full-strength rule applies, the result is Cancelled instead of a severity rating. Different sources grade severity somewhat differently, so treat this rating as directional rather than an authoritative classification.",
+    aHi: 'यह कैलकुलेटर का अपना उचित अंगूठे का नियम है, जो उस सामान्य सिद्धांत को लागू करता है जिस पर स्रोत सहमत हैं — अधिक पीड़ित संदर्भ बिंदु और खराब स्थिति वाला मंगल अधिक महत्वपूर्ण दोष का मतलब है — न कि कोई एक सार्वभौमिक रूप से निश्चित सूत्र। विशेष रूप से: इसे उच्च रेट किया जाता है जब मंगल तीन में से 2 या अधिक संदर्भों से किसी दोष भाव में पड़ता है और छह में से कोई भी निवारण नियम बिल्कुल लागू नहीं होता; यदि कोई नियम लागू होता है लेकिन उनमें से कोई भी पूर्ण-शक्ति वाला नहीं है, या केवल 3 में से 1 संदर्भ प्रभावित है, तो इसे निम्न से मध्यम रेट किया जाता है; यदि कोई पूर्ण-शक्ति नियम लागू होता है, तो परिणाम गंभीरता रेटिंग के बजाय निवारित होता है। अलग-अलग स्रोत गंभीरता को कुछ अलग तरीके से दर्जा देते हैं, इसलिए इस रेटिंग को एक आधिकारिक वर्गीकरण के बजाय दिशात्मक मानें।',
   },
 ];
 ---

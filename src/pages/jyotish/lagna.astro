@@ -3,21 +3,27 @@ import Layout from '../../layouts/Layout.astro';
 import { RASHI_ICONS } from '../../lib/icons/rashi';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
-import { LAGNA_HOUSES } from '../../lib/jyotish';
+import { LAGNA_HOUSES, LAGNA_HOUSES_HI } from '../../lib/jyotish';
 
 const FAQ_ITEMS = [
   ...sharedCalcFaq(),
   {
     q: "What's the difference between my Lagna and my Rashi (Moon sign)?",
+    qHi: 'मेरे लग्न और मेरी राशि (चंद्र राशि) में क्या अंतर है?',
     a: "They're based on different things entirely. Your Rashi is the sign the Moon occupied at birth — it reflects your mind and emotional nature, and is what daily Rashifal predictions use. Your Lagna is the sign rising on the eastern horizon at birth — it reflects your body, outward personality and life direction, and sets up the entire 12-house framework. Most people have a different Lagna than Rashi; only someone born near sunrise tends to have the two align.",
+    aHi: 'ये पूरी तरह से अलग-अलग चीजों पर आधारित हैं। आपकी राशि वह राशि है जिसमें जन्म के समय चंद्रमा स्थित था — यह आपके मन और भावनात्मक स्वभाव को दर्शाती है, और दैनिक राशिफल भविष्यवाणियां इसी का उपयोग करती हैं। आपका लग्न वह राशि है जो जन्म के समय पूर्वी क्षितिज पर उदय हो रही थी — यह आपके शरीर, बाहरी व्यक्तित्व और जीवन दिशा को दर्शाता है, और संपूर्ण 12-भाव ढांचे को स्थापित करता है। अधिकांश लोगों की राशि और लग्न अलग-अलग होते हैं; केवल सूर्योदय के आसपास जन्मे व्यक्ति के लिए ही ये दोनों मेल खाते हैं।',
   },
   {
     q: 'Why does the tool need my birth time down to the minute?',
+    qHi: 'यह उपकरण मेरा जन्म समय मिनट तक सटीक क्यों मांगता है?',
     a: 'Because the Lagna moves fast: about one degree every four minutes, or a full sign roughly every two hours. A 10-minute error in birth time shifts the Lagna by about 2.5° — usually not enough to change which sign is rising, but enough to shift the exact degree, Nakshatra Pada, and house cusps. If your birth was close to a sign changeover, even a few minutes can change the result.',
+    aHi: 'क्योंकि लग्न तेज़ी से बदलता है: लगभग हर चार मिनट में एक डिग्री, या लगभग हर दो घंटे में एक पूरी राशि। जन्म समय में 10 मिनट की त्रुटि लग्न को लगभग 2.5° तक बदल देती है — आमतौर पर उदय राशि बदलने के लिए पर्याप्त नहीं, लेकिन सटीक डिग्री, नक्षत्र पद, और भाव सीमाओं को बदलने के लिए पर्याप्त है। यदि आपका जन्म किसी राशि-परिवर्तन के करीब हुआ था, तो कुछ मिनट भी परिणाम बदल सकते हैं।',
   },
   {
     q: "What if I don't know my exact birth time?",
+    qHi: 'यदि मुझे अपना सटीक जन्म समय नहीं पता है तो क्या होगा?',
     a: 'Without a reasonably accurate time, the Lagna calculation isn\'t reliable — a birth certificate\'s rounded time, or a family\'s rough recollection, can be off by enough to land you in the wrong sign. If you only know your birth date, the <a href="/jyotish/rashi">Rashi calculator</a> or <a href="/jyotish/nakshatra">Nakshatra calculator</a> are more forgiving, since the Moon moves more slowly than the Ascendant.',
+    aHi: 'बिना उचित सटीक समय के, लग्न की गणना विश्वसनीय नहीं है — जन्म प्रमाणपत्र का पूर्णांकित समय, या परिवार की अस्पष्ट याद, इतना गलत हो सकता है कि आप गलत राशि में पहुंच जाएं। यदि आपको केवल अपनी जन्म तिथि पता है, तो <a href="/jyotish/rashi">राशि कैलकुलेटर</a> या <a href="/jyotish/nakshatra">नक्षत्र कैलकुलेटर</a> अधिक सहनशील हैं, क्योंकि चंद्रमा लग्न (उदय बिंदु) की तुलना में अधिक धीरे गति करता है।',
     html: true,
   },
 ];
@@ -75,12 +81,12 @@ const FAQ_ITEMS = [
       </div>
       <div id="err" style="display:none;padding:16px;background:var(--color-inauspicious-soft);border-radius:8px;color:#b91c1c;font-size:14px;"></div>
 
-      <h3 style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">The 12 Houses — General Significance</h3>
+      <h3 data-hi="12 भाव — सामान्य महत्व" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:36px 0 14px;">The 12 Houses — General Significance</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:16px;">
         {LAGNA_HOUSES.map((h, i) => (
           <div style="padding:10px 12px;border-radius:7px;background:var(--color-canvas-soft-2);">
-            <span style="font-size:12px;font-weight:600;color:var(--color-ink);">House {i + 1}</span>
-            <p style="font-size:11px;color:var(--color-mute);margin:3px 0 0;line-height:1.4;">{h}</p>
+            <span style="font-size:12px;font-weight:600;color:var(--color-ink);" data-hi={`भाव ${i + 1}`}>House {i + 1}</span>
+            <p style="font-size:11px;color:var(--color-mute);margin:3px 0 0;line-height:1.4;" data-hi={LAGNA_HOUSES_HI[i]}>{h}</p>
           </div>
         ))}
       </div>

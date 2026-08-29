@@ -8,15 +8,21 @@ const FAQ_ITEMS = [
   ...sharedCalcFaq(),
   {
     q: "Why doesn't this calculator ask for my birth time or location, unlike most other tools on this site?",
+    qHi: 'यह कैलकुलेटर, इस साइट के अधिकांश अन्य उपकरणों के विपरीत, मेरा जन्म समय या स्थान क्यों नहीं मांगता?',
     a: 'Because full moons repeat roughly every 29.5 days, a difference of a few hours in birth time essentially never changes which lunar cycle counts as your first — only a birth within hours of an actual full moon could shift the count, and even then by at most one moon out of a thousand. Birth date alone is precise enough for a milestone this many decades out.',
+    aHi: 'क्योंकि पूर्णिमा लगभग हर 29.5 दिनों में दोहराई जाती है, जन्म समय में कुछ घंटों का अंतर लगभग कभी नहीं बदलता कि कौन सा चंद्र चक्र आपका पहला माना जाए — केवल किसी वास्तविक पूर्णिमा के कुछ घंटों के भीतर हुआ जन्म ही गिनती को बदल सकता है, और तब भी हजार में से अधिक से अधिक एक चंद्रमा जितना। इतने दशकों दूर के पड़ाव के लिए केवल जन्म तिथि ही पर्याप्त सटीक है।',
   },
   {
     q: 'How precise is the estimated date?',
+    qHi: 'अनुमानित तिथि कितनी सटीक है?',
     a: "The date comes from a real astronomical calculation — an iterative solve for the exact Moon-Sun elongation crossing, the same method used elsewhere on this site — not a rough rule of thumb. The one source of drift: after finding your precise first full moon, the calculator adds 999 more cycles at the mean synodic month length (29.530589 days) rather than solving each one individually, so the final date can land a day or so off from a fully rigorous month-by-month calculation, for the same reason the page's own note already states — the Moon's elliptical orbit makes real synodic months a few hours longer or shorter than the mean, and those small differences accumulate slightly over 999 cycles.",
+    aHi: 'यह तिथि एक वास्तविक खगोलीय गणना से आती है — सटीक चंद्र-सूर्य कोणीय दूरी के मिलन बिंदु के लिए एक पुनरावृत्त समाधान, वही पद्धति जो इस साइट पर अन्यत्र उपयोग होती है — न कि कोई अनुमानित नियम। बहाव का एक स्रोत: आपकी सटीक पहली पूर्णिमा खोजने के बाद, कैलकुलेटर प्रत्येक चक्र को अलग से हल करने के बजाय औसत सिनॉडिक मास लंबाई (29.530589 दिन) पर 999 और चक्र जोड़ता है, इसलिए अंतिम तिथि पूरी तरह से कठोर माह-दर-माह गणना से एक दिन के आसपास भिन्न हो सकती है, उसी कारण से जो पृष्ठ की अपनी टिप्पणी पहले ही बताती है — चंद्रमा की अण्डाकार कक्षा वास्तविक सिनॉडिक महीनों को औसत से कुछ घंटे लंबा या छोटा बनाती है, और ये छोटे अंतर 999 चक्रों में थोड़ा जमा हो जाते हैं।',
   },
   {
     q: 'Is the 1000th full moon exactly your 80th birthday?',
+    qHi: 'क्या 1000वीं पूर्णिमा ठीक आपके 80वें जन्मदिन पर होती है?',
     a: "No — it falls a little after, in a person's early 80s, since 1000 lunar cycles run longer than 80 solar years (see the About section above for the precise figure). It's a separate, purely lunar milestone from a birthday, which is why it's calculated in full moons rather than years.",
+    aHi: 'नहीं — यह थोड़ा बाद में, व्यक्ति के 80 के दशक के शुरुआती वर्षों में आती है, क्योंकि 1000 चंद्र चक्र 80 सौर वर्षों से अधिक लंबे होते हैं (सटीक आंकड़े के लिए ऊपर अबाउट सेक्शन देखें)। यह जन्मदिन से एक अलग, विशुद्ध रूप से चंद्र पड़ाव है, यही कारण है कि इसकी गणना वर्षों के बजाय पूर्णिमाओं में की जाती है।',
   },
 ];
 ---

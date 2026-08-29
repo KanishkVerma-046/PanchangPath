@@ -4,18 +4,24 @@ import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
 
 const FAQ_ITEMS = [
-  ...sharedCalcFaq('before a marriage decision'),
+  ...sharedCalcFaq('before a marriage decision', 'विवाह का निर्णय लेने से पहले'),
   {
     q: 'Why do Nadi and Bhakoot matter more than the other six kutas?',
+    qHi: 'नादी और भकूट अन्य छह कूटों से अधिक महत्वपूर्ण क्यों हैं?',
     a: 'They carry the most points (8 and 7 respectively, out of 36) and are the two the calculator specifically calls out as a "dosha" if they score zero — visible in the result\'s warning notes regardless of how high the total score is otherwise. Nadi relates to health and progeny; Bhakoot to emotional, financial and family harmony — both considered foundational enough in classical Ashtakoota that a failure here is traditionally treated as a serious concern even alongside an otherwise strong match.',
+    aHi: 'इनके सबसे अधिक अंक होते हैं (क्रमशः 8 और 7, कुल 36 में से) और ये वे दो कूट हैं जिन्हें कैलकुलेटर विशेष रूप से "दोष" के रूप में चिह्नित करता है यदि इनका स्कोर शून्य हो — यह परिणाम की चेतावनी टिप्पणियों में स्पष्ट दिखता है, चाहे कुल स्कोर कितना भी अधिक क्यों न हो। नादी स्वास्थ्य और संतान से संबंधित है; भकूट भावनात्मक, आर्थिक और पारिवारिक सामंजस्य से — दोनों को शास्त्रीय अष्टकूट में इतना बुनियादी माना जाता है कि यहां असफलता को परंपरागत रूप से एक गंभीर चिंता माना जाता है, भले ही बाकी मिलान मजबूत क्यों न हो।',
   },
   {
     q: 'Does this calculator check for classical Nadi or Bhakoot dosha cancellations?',
+    qHi: 'क्या यह कैलकुलेटर शास्त्रीय नादी या भकूट दोष के निवारण (कैंसिलेशन) की जांच करता है?',
     a: "No, and this is worth being precise about: it flags that a dosha is present, but doesn't verify whether any classical cancellation condition actually applies to your specific chart. The result text points you toward what to check — for Nadi, \"check for cancellations (same rashi different nakshatra, etc.)\"; for Bhakoot, \"check the Graha Maitri score above for possible cancellation\" — but neither is a computed check: the calculator doesn't automatically compare your Graha Maitri score against the Bhakoot dosha for you, even though both numbers are sitting in the same table. So a \"dosha present\" result shouldn't be read as \"and here's whether it's cancelled for you\" — it isn't; the result text is pointing you toward the comparison, not making it. Treat both notes as a pointer to what to ask an astrologer, not as an answer.",
+    aHi: 'नहीं, और यहां सटीक होना जरूरी है: यह बताता है कि कोई दोष मौजूद है, लेकिन यह सत्यापित नहीं करता कि आपकी विशिष्ट कुंडली में कोई शास्त्रीय निवारण शर्त वास्तव में लागू होती है या नहीं। परिणाम टेक्स्ट आपको बताता है कि क्या जांचना है — नादी के लिए, "निवारण की जांच करें (जैसे समान राशि पर अलग नक्षत्र, आदि)"; भकूट के लिए, "संभावित निवारण के लिए ऊपर दिया गया ग्रह मैत्री स्कोर देखें" — लेकिन इनमें से कोई भी परिकलित जांच नहीं है: कैलकुलेटर स्वचालित रूप से आपके ग्रह मैत्री स्कोर की तुलना भकूट दोष से नहीं करता, भले ही दोनों संख्याएं एक ही तालिका में हों। इसलिए "दोष मौजूद है" परिणाम को यह नहीं समझा जाना चाहिए कि "और यहां बताया गया है कि यह आपके लिए निवारित है या नहीं" — ऐसा नहीं है; परिणाम टेक्स्ट आपको तुलना की ओर इशारा कर रहा है, तुलना कर नहीं रहा। दोनों टिप्पणियों को किसी ज्योतिषी से पूछने के संकेत के रूप में लें, उत्तर के रूप में नहीं।',
   },
   {
     q: 'Why might my score differ slightly from another Kundali-matching site?',
+    qHi: 'मेरा स्कोर किसी अन्य कुंडली-मिलान साइट से थोड़ा अलग क्यों हो सकता है?',
     a: "Small differences between sites are common and don't necessarily mean either is wrong. They typically come from which ayanamsha is used (this site uses Lahiri, the most common choice in Indian software), or from small variations in how a specific tradition defines edge cases within a kuta — sources describing the Ashtakoota system don't always agree on every sub-rule down to the last detail. If two results disagree by more than a couple of points, compare the individual kuta breakdown rather than just the total to see exactly where the difference is.",
+    aHi: 'साइटों के बीच छोटे अंतर सामान्य हैं और इसका जरूरी नहीं कि यह मतलब हो कि कोई एक गलत है। ये आमतौर पर इस बात से आते हैं कि कौन सा अयनांश उपयोग किया जा रहा है (यह साइट लाहिड़ी उपयोग करती है, जो भारतीय सॉफ्टवेयर में सबसे आम विकल्प है), या किसी कूट के भीतर सीमा-मामलों को परिभाषित करने के तरीके में छोटे अंतर से — अष्टकूट प्रणाली का वर्णन करने वाले स्रोत हमेशा हर उप-नियम पर अंतिम विवरण तक सहमत नहीं होते। यदि दो परिणाम दो अंकों से अधिक भिन्न हैं, तो केवल कुल के बजाय व्यक्तिगत कूट विभाजन की तुलना करें ताकि यह देखा जा सके कि अंतर वास्तव में कहां है।',
   },
 ];
 ---

@@ -10,18 +10,24 @@ const ppStart = PP_SCHEDULE[0].date;
 const ppEnd = PP_SCHEDULE[PP_SCHEDULE.length - 1].date;
 
 const FAQ_ITEMS = [
-  ...sharedCalcFaq('before scheduling a Shraddha ceremony'),
+  ...sharedCalcFaq('before scheduling a Shraddha ceremony', 'श्राद्ध समारोह की तारीख तय करने से पहले'),
   {
     q: 'Why does this calculator use a different tithi rule than the rest of the site?',
+    qHi: 'यह कैलकुलेटर साइट के बाकी हिस्से से अलग तिथि नियम का उपयोग क्यों करता है?',
     a: "Because Shraddha specifically follows the Aparahna Vyapini rule — the tithi that's active during the afternoon window (the 4th of five equal daylight parts) is the one that governs the ritual, even if a different tithi was present at sunrise. Panchang elements like festivals and daily Tithi/Nakshatra use a sunrise-based rule instead, which is why this page doesn't reuse that logic even though both ultimately come from the same underlying Sun/Moon position functions.",
+    aHi: 'क्योंकि श्राद्ध विशेष रूप से अपराह्न व्यापिनी नियम का पालन करता है — जो तिथि दोपहर बाद की खिड़की (दिन के पांच बराबर भागों में से चौथे) के दौरान सक्रिय होती है, वही अनुष्ठान को नियंत्रित करती है, भले ही सूर्योदय के समय कोई अलग तिथि रही हो। त्योहारों और दैनिक तिथि/नक्षत्र जैसे पंचांग तत्व इसके बजाय सूर्योदय-आधारित नियम का उपयोग करते हैं, यही कारण है कि यह पृष्ठ उस तर्क को दोहराता नहीं है, भले ही दोनों अंततः एक ही अंतर्निहित सूर्य/चंद्र स्थिति फ़ंक्शनों से आते हों।',
   },
   {
     q: 'What are Vriddhi and Kshaya tithis, and how does this calculator handle them?',
+    qHi: 'वृद्धि और क्षय तिथियां क्या हैं, और यह कैलकुलेटर इन्हें कैसे संभालता है?',
     a: "These are the two edge cases where a simple \"one tithi per day\" mapping breaks down. Vriddhi is when a tithi is long enough to overlap two consecutive days' Aparahna windows — this calculator assigns it to the first of the two days, per convention. Kshaya is the opposite: a tithi so short it doesn't overlap any day's Aparahna window at all — this calculator assigns it to whichever day's window falls temporally closest to the tithi's actual span.",
+    aHi: 'ये दो सीमांत मामले हैं जहां "प्रति दिन एक तिथि" का सरल मानचित्रण टूट जाता है। वृद्धि तब होती है जब कोई तिथि इतनी लंबी हो कि वह लगातार दो दिनों की अपराह्न खिड़कियों को ओवरलैप करे — यह कैलकुलेटर परंपरा के अनुसार इसे दोनों में से पहले दिन को सौंपता है। क्षय इसके विपरीत है: एक तिथि इतनी छोटी कि वह किसी भी दिन की अपराह्न खिड़की को बिल्कुल भी ओवरलैप न करे — यह कैलकुलेटर इसे उस दिन को सौंपता है जिसकी खिड़की तिथि की वास्तविक अवधि के समय में सबसे निकट पड़ती है।',
   },
   {
     q: "What if I don't know the exact tithi of a family member's passing?",
+    qHi: 'यदि मुझे परिवार के किसी सदस्य के निधन की सटीक तिथि नहीं पता है तो क्या करूं?',
     a: 'Observe Sarva Pitru Amavasya instead — the final day of Pitru Paksha, specifically set aside for ancestors whose tithi isn\'t known, alongside anyone who passed on any Amavasya. This calculator\'s "By Tithi Directly" mode doesn\'t have an "unknown" option deliberately — Sarva Pitru Amavasya is the traditional answer, so it\'s covered by the About section\'s note rather than a separate form option.',
+    aHi: 'इसके बजाय सर्व पितृ अमावस्या मनाएं — पितृ पक्ष का अंतिम दिन, जो विशेष रूप से उन पूर्वजों के लिए निर्धारित है जिनकी तिथि ज्ञात नहीं है, साथ ही उन सभी के लिए जिनका निधन किसी भी अमावस्या को हुआ हो। इस कैलकुलेटर के "सीधे तिथि द्वारा" मोड में जानबूझकर कोई "अज्ञात" विकल्प नहीं है — सर्व पितृ अमावस्या ही पारंपरिक उत्तर है, इसलिए इसे एक अलग फॉर्म विकल्प के बजाय अबाउट सेक्शन की टिप्पणी में शामिल किया गया है।',
   },
 ];
 ---

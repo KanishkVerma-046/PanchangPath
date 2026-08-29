@@ -16,18 +16,24 @@ function planetIconLabel(planetStr: string, color: string): string {
 }
 
 const FAQ_ITEMS = [
-  ...sharedCalcFaq('before buying an expensive rudraksha or gemstone'),
+  ...sharedCalcFaq('before buying an expensive rudraksha or gemstone', 'महंगा रुद्राक्ष या रत्न खरीदने से पहले'),
   {
     q: 'Why does the calculator offer two ways to find my Rudraksha?',
+    qHi: 'कैलकुलेटर मेरा रुद्राक्ष खोजने के दो तरीके क्यों देता है?',
     a: '"By Birth Details" computes your Lagna and Moon Rashi precisely from a full chart calculation — use this if you don\'t already know them. "By Rashi / Lagna" skips straight to the recommendation if you already know your signs from another source (a previous chart reading, a family priest, another tool) and just want them mapped to a mukhi instantly.',
+    aHi: '"जन्म विवरण द्वारा" एक पूर्ण कुंडली गणना से आपके लग्न और चंद्र राशि की सटीक गणना करता है — यदि आप उन्हें पहले से नहीं जानते तो इसका उपयोग करें। "राशि / लग्न द्वारा" सीधे सिफारिश पर पहुंच जाता है यदि आप किसी अन्य स्रोत (पिछली कुंडली रीडिंग, परिवार के पुरोहित, किसी अन्य उपकरण) से पहले से अपनी राशियां जानते हैं और बस उन्हें तुरंत किसी मुखी से मैप करवाना चाहते हैं।',
   },
   {
     q: 'Why is my primary recommendation based on my Lagna lord rather than my Moon sign or Nakshatra?',
+    qHi: 'मेरी प्राथमिक सिफारिश मेरी चंद्र राशि या नक्षत्र के बजाय मेरे लग्न स्वामी पर आधारित क्यों है?',
     a: "Because the planet ruling your Ascendant is traditionally treated as the most personally significant remedial planet — it governs your body, personality and overall life direction. This is one common, sourced approach to Rudraksha selection, not the only one: some traditions instead recommend based on your Nakshatra, or on a specific planet that's weak or afflicted in your individual chart, which a general calculator like this one can't fully assess.",
+    aHi: 'क्योंकि आपके लग्न पर शासन करने वाला ग्रह परंपरागत रूप से सबसे व्यक्तिगत रूप से महत्वपूर्ण उपचारात्मक ग्रह माना जाता है — यह आपके शरीर, व्यक्तित्व और समग्र जीवन दिशा को नियंत्रित करता है। यह रुद्राक्ष चयन का एक सामान्य, स्रोत-आधारित तरीका है, एकमात्र नहीं: कुछ परंपराएं इसके बजाय आपके नक्षत्र के आधार पर, या आपकी व्यक्तिगत कुंडली में किसी विशिष्ट कमजोर या पीड़ित ग्रह के आधार पर सिफारिश करती हैं, जिसका इस जैसा सामान्य कैलकुलेटर पूरी तरह से आकलन नहीं कर सकता।',
   },
   {
     q: 'Is it safe to wear any Rudraksha without consulting an astrologer?',
+    qHi: 'क्या किसी ज्योतिषी से परामर्श किए बिना कोई भी रुद्राक्ष पहनना सुरक्षित है?',
     a: "Not universally. As noted above, the 5-mukhi is considered safe for nearly everyone, but 7-mukhi (Saturn) and 14-mukhi (Saturn-Rahu) beads are traditionally recommended only after a Jyotishi reviews your full chart, since Saturn's energy is believed to intensify whatever pattern — positive or negative — is already present.",
+    aHi: 'सार्वभौमिक रूप से नहीं। जैसा ऊपर बताया गया है, 5-मुखी को लगभग सभी के लिए सुरक्षित माना जाता है, लेकिन 7-मुखी (शनि) और 14-मुखी (शनि-राहु) मनकों की सिफारिश परंपरागत रूप से केवल किसी ज्योतिषी द्वारा आपकी पूरी कुंडली की समीक्षा के बाद ही की जाती है, क्योंकि माना जाता है कि शनि की ऊर्जा जो भी पैटर्न — सकारात्मक या नकारात्मक — पहले से मौजूद है, उसे तीव्र कर देती है।',
   },
 ];
 ---
