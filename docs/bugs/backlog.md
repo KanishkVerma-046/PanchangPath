@@ -231,7 +231,13 @@ otherwise-good factors is unaffected (no false new exclusions introduced).
 
 ## `muhurta/vivah.astro` and `muhurta/griha-pravesh.astro` list "Adhika Masa" as an avoided period in their own on-page copy, but no such check exists in `muhurta.ts`'s actual scoring logic
 
-- **Status:** Open
+- **Status:** Open. Extended 2026-08-29 by [a follow-up entry above](#griha-pravesh-muhurat-scoring-has-no-adhika-masa-check--a-real-2026-date-may-18-scores-12-of-12-excellent-during-adhik-jyeshtha-maas),
+  which adds a concrete, run-and-verified reproduction for Griha Pravesh specifically (May 18, 2026
+  scores 12 of 12 "Excellent" during 2026's real Adhik Jyeshtha Maas window) plus a corrected
+  suggested-fix shape — the "reuse the eclipse-data implementation" idea floated below turned out not
+  to hold up (that eclipse-data check was done by hand, not as a reusable function; see that entry for
+  the real fix shape, built on `getHinduCalendarInfo()` instead). Fixing that entry closes this one too;
+  don't fix them independently.
 - **Severity:** Low-Medium (a copy-vs-implementation accuracy gap, same class as the Rashifal entry
   below — the pages tell a visitor a real thing is being checked when it isn't; not a wrong-answer
   bug in the sense of miscalculating something the code does attempt)
