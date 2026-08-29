@@ -45,6 +45,7 @@ Paste this into a fresh session (fill in the bracketed part):
 
 | Title | Status | Reported |
 |---|---|---|
+| [Griha Pravesh Muhurat scoring has no Adhika Masa check — a real 2026 date (May 18) scores 12 of 12 "Excellent" during Adhik Jyeshtha Maas](#griha-pravesh-muhurat-scoring-has-no-adhika-masa-check--a-real-2026-date-may-18-scores-12-of-12-excellent-during-adhik-jyeshtha-maas) | Open | 2026-08-29 |
 | [`muhurta/vivah.astro` and `muhurta/griha-pravesh.astro` list "Adhika Masa" as an avoided period in their own on-page copy, but no such check exists in `muhurta.ts`'s actual scoring logic](#muhurtavivahastro-and-muhurtagriha-praveshastro-list-adhika-masa-as-an-avoided-period-in-their-own-on-page-copy-but-no-such-check-exists-in-muhurtatss-actual-scoring-logic) | Open | 2026-08-27 |
 | [`rashifal/index.astro`'s hero copy claims predictions are "based on planetary positions and Jyotish principles" ~70 lines away from the page's own pre-written-entries disclosure](#rashifalindexastros-hero-copy-claims-predictions-are-based-on-planetary-positions-and-jyotish-principles-70-lines-away-from-the-pages-own-pre-written-entries-disclosure) | Open | 2026-08-27 |
 | [`moonrise-moonset.astro` can't be deep-linked to a specific date or city — always shows today + last-set header location](#moonrise-moonsetastro-cant-be-deep-linked-to-a-specific-date-or-city--always-shows-today--last-set-header-location) | Open | 2026-08-22 |
@@ -58,6 +59,173 @@ Paste this into a fresh session (fill in the bracketed part):
 | [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Fixed (2026-07-17) | 2026-07-17 |
 | [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Fixed (2026-07-17) | 2026-07-16 |
 | [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Fixed (2026-07-17) | 2026-07-16 |
+
+---
+
+## Griha Pravesh Muhurat scoring has no Adhika Masa check — a real 2026 date (May 18) scores 12 of 12 "Excellent" during Adhik Jyeshtha Maas
+
+- **Status:** Open
+- **Severity:** Medium (a concrete, verified false-positive — not just a copy-vs-code mismatch. The tool
+  actively surfaces a date as "Excellent" with zero warnings during a month classical tradition holds
+  should defer exactly this kind of ceremony)
+- **Reported:** 2026-08-29
+- **Affected files:** `src/pages/muhurta/griha-pravesh.astro` (`scoreGP()`, the client scoring script),
+  `src/lib/muhurta.ts` (`KHARMAS_RASHIS`/`CHATURMAS_RASHIS`/`sunRashiVoidCheck()` — no Adhika Masa
+  equivalent exists), `src/pages/muhurta/vivah.astro` (same underlying gap in its own scoring script)
+
+### Description
+Found while writing and fact-checking the blog post ["Griha Pravesh Muhurat: How Auspicious Housewarming
+Dates Are Actually Chosen"](/blog/griha-pravesh-muhurat-how-its-chosen) (published 2026-08-29). This is a
+more detailed, concretely-reproduced version of the gap already logged in [the original vivah/griha-pravesh
+Adhika Masa entry](#muhurtavivahastro-and-muhurtagriha-praveshastro-list-adhika-masa-as-an-avoided-period-in-their-own-on-page-copy-but-no-such-check-exists-in-muhurtatss-actual-scoring-logic)
+(2026-08-27, below) — that entry established the gap exists (on-page copy names Adhika Masa, the scoring
+code doesn't implement it) but didn't run the tool against a real Adhika Masa window to see what it
+actually produces. This entry adds that concrete reproduction.
+
+2026's Adhik Jyeshtha Maas ran May 17 – June 15 (cross-referenced via WebSearch against multiple
+independent sites, including adhikmaas.com's dedicated 2026 dates page). That window falls entirely
+outside both of Griha Pravesh's real checks — well before Chaturmas (2026: Jul 25 – Nov 21, per
+`CHATURMAS_WINDOWS` in `muhurta.ts`) and nowhere near either Kharmas window (Sun in Dhanu/Meena) — so
+neither check has any reason to flag any date inside it.
+
+To confirm this produces an actual bad result rather than just a documentation gap, `griha-pravesh.astro`'s
+own scoring script (`calcDay`/`scoreGP`, used unmodified) was bundled with esbuild against the real
+`src/lib/panchang.ts` and `src/lib/muhurta.ts` source files and run over the full Adhik Jyeshtha window for
+New Delhi. Result: **May 18, 2026** — a Monday, in Rohini Nakshatra, on a Shukla Dwitiya Tithi, with a
+favorable Yoga — scores the maximum 12 out of 12 and would surface as an "Excellent" result with zero
+warnings. Top 5 scoring dates in the window:
+
+```
+2026-05-18  score=12  notes=[Monday (good weekday); Rohini (good nakshatra); Shukla Dwitiya; Auspicious yoga]  bad=[]
+2026-05-21  score=10  notes=[Thursday (good weekday); Pushya (good nakshatra); Shukla Panchami]  bad=[]
+2026-05-25  score=10  notes=[Monday (good weekday); Uttara Phalguni (good nakshatra); Shukla Dashami]  bad=[]
+2026-05-27  score=10  notes=[Wednesday (good weekday); Chitra (good nakshatra); Shukla Ekadashi]  bad=[]
+2026-05-28  score=10  notes=[Thursday (good weekday); Chitra (good nakshatra); Shukla Dwadashi]  bad=[]
+```
+
+(The verification script was a temporary, uncommitted `.mjs` file that imported the real exported
+functions — `sunTrueLongitude`/`moonLongitude`/`lahiriAyanamsha` from `panchang.ts`,
+`MUHURTA_CRITERIA`/`sunRashiVoidCheck`/`KHARMAS_RASHIS`/`CHATURMAS_RASHIS` from `muhurta.ts` — and
+reimplemented `calcDay`/`scoreGP` verbatim from `griha-pravesh.astro`'s own script, not from memory. It was
+deleted after running and is not part of any commit; a future session re-verifying this should write its
+own equivalent script the same way rather than expect one to exist in the repo.)
+
+### Root cause
+Same root cause as the earlier entry below: `griha-pravesh.astro`'s "Months to Avoid" info panel (line 60)
+names Kharmas, Adhika Masa, and Shraadh Paksha as avoided periods, but its actual scoring (`scoreGP()`)
+only implements two exclusions — `sunRashiVoidCheck(...KHARMAS_RASHIS)` and
+`sunRashiVoidCheck(...CHATURMAS_RASHIS)`. There is no `isAdhikaMasa()` or equivalent function anywhere in
+`src/lib/muhurta.ts`, confirmed via `grep -n -i adhika src/lib/muhurta.ts`, which returns exactly one hit —
+a comment near `CHATURMAS_WINDOWS` explaining why that table is hand-verified per year, not an
+implementation of anything.
+
+`vivah.astro` line 53 carries the identical unimplemented claim in its own "Avoided periods" copy
+("...Chaturmas..., Adhika Masa, eclipse periods..."), and its actual scoring
+(`sunRashiVoidCheck(...KHARMAS_RASHIS)`, `isChaturmas()`, `isCombust()` for Venus combustion) has the same
+gap, confirmed via the same grep. This entry's live-run reproduction was only done for Griha Pravesh, not
+independently re-run for Vivah against a concrete date — but the code-level absence of any Adhika Masa
+check is confirmed for both the same way.
+
+### Recurring-pattern note
+This continues the pattern already flagged in [the original vivah/griha-pravesh Adhika Masa entry
+below](#muhurtavivahastro-and-muhurtagriha-praveshastro-list-adhika-masa-as-an-avoided-period-in-their-own-on-page-copy-but-no-such-check-exists-in-muhurtatss-actual-scoring-logic)
+(2026-08-27), itself the third instance found in one day alongside the [rashifal/index.astro
+entry](#rashifalindexastros-hero-copy-claims-predictions-are-based-on-planetary-positions-and-jyotish-principles-70-lines-away-from-the-pages-own-pre-written-entries-disclosure) —
+on-page copy asserting a capability the underlying scoring/calculation code doesn't implement. This entry
+doesn't add a new instance of the pattern; it adds a concrete, run-and-verified reproduction of the second
+instance (Griha Pravesh specifically), which the earlier entry established but didn't demonstrate against
+an actual date and score.
+
+### Suggested fix shape
+Rather than building Sankranti-less-month detection from scratch, reuse the amanta-month machinery already
+in `src/lib/panchang.ts`'s `getHinduCalendarInfo()` — it already computes the amanta month index
+(`amantaIdx`) for any given date by forward-searching the surrounding Amavasya and checking the Sun's
+sidereal rashi at that moment. Adhika Masa is defined as a lunar month containing no Sankranti, which shows
+up as two consecutive lunar months resolving to the same amanta index; `getHinduCalendarInfo()` doesn't
+currently do that consecutive-month comparison itself (it returns one month's name for one date, not a
+leap-month flag), but it's the correct building block rather than reimplementing the Amavasya-finding step
+independently.
+
+One caveat worth being explicit about: despite `muhurta.ts`'s own comment (near `CHATURMAS_WINDOWS`)
+describing a "repeated-amanta-month-name approach already used elsewhere in the codebase for eclipse data"
+as prior art, checking `planetaryEvents.ts`'s actual eclipse-entry comments (added in commit `5eb1793`)
+shows that check was done by hand for each eclipse date individually — cross-referencing
+`getHinduCalendarInfo()`'s output against a live drikpanchang.com fetch — not wrapped into a reusable
+function anywhere. **There is no existing standalone `isAdhikaMasa()`-equivalent to import as-is; one needs
+to be written new**, built on `getHinduCalendarInfo()`'s Amavasya/amanta-index logic as its foundation
+rather than starting from raw astronomy calls.
+
+Add the new function to `src/lib/muhurta.ts` alongside `KHARMAS_RASHIS`/`CHATURMAS_RASHIS`/
+`sunRashiVoidCheck()`, following that file's existing pattern of one shared function multiple pages import.
+Since neither `griha-pravesh.astro` nor `vivah.astro` currently has any Adhika Masa logic to conflict with,
+**one shared function can serve both scoring loops without needing separate fixes** — the existing
+structural difference between the two tools' Chaturmas handling (`griha-pravesh.astro` uses the solar-rashi
+approximation `sunRashiVoidCheck(...CHATURMAS_RASHIS)` directly; `vivah.astro` uses `isChaturmas()`, which
+prefers the hand-verified `CHATURMAS_WINDOWS` lunar table and falls back to the same solar approximation)
+doesn't carry over to Adhika Masa, since that would be a new, independent check with no such fallback table
+today. Each page's own "How the Score Works" prose (`griha-pravesh.astro` ~line 73, `vivah.astro` ~line 73)
+should be updated alongside the scoring change to document the new check the way Kharmas/Chaturmas already
+are, and the "Months to Avoid"/"Avoided periods" info panels no longer need a caveat once the claim becomes
+true.
+
+### Claude Code Fix Prompt
+```
+PanchangPath (panchangpath.com) — implement a real Adhika Masa check for
+the Griha Pravesh and Vivah Muhurat scoring engines, per the gap logged in
+docs/bugs/backlog.md under "Griha Pravesh Muhurat scoring has no Adhika
+Masa check -- a real 2026 date (May 18) scores 12 of 12 'Excellent' during
+Adhik Jyeshtha Maas". Read that full entry first, and also the earlier,
+related entry it builds on ("muhurta/vivah.astro and
+muhurta/griha-pravesh.astro list 'Adhika Masa' as an avoided period...",
+2026-08-27) for the original copy-vs-code finding.
+
+Context: both griha-pravesh.astro and vivah.astro name Adhika Masa in
+their own "avoided periods" on-page copy, but neither's actual scoring
+checks for it -- confirmed via grep -n -i adhika src/lib/muhurta.ts (one
+comment, no implementation) and by running griha-pravesh.astro's own
+scoring logic against 2026's real Adhik Jyeshtha Maas window (May 17 -
+Jun 15): May 18, 2026 scores a perfect 12/12 "Excellent" with zero
+warnings despite falling inside that month.
+
+Do this:
+1. Write a new isAdhikaMasa(y, m, d) (or similar) function in
+   src/lib/muhurta.ts. Build it on top of the amanta-month machinery
+   already in src/lib/panchang.ts's getHinduCalendarInfo() (which
+   computes the amanta month index for any date via an Amavasya
+   forward-search) rather than reimplementing Sankranti/Amavasya-finding
+   from scratch -- Adhika Masa is the case where a lunar month contains
+   no Sankranti, which shows up as two consecutive lunar months resolving
+   to the same amanta index. There is no existing reusable
+   Adhika-Masa-detection function anywhere in the codebase to import as-is
+   (the "repeated-amanta-month-name" comment near CHATURMAS_WINDOWS refers
+   to a one-off manual cross-check done for eclipse dates in commit
+   5eb1793, not a coded function) -- this needs to be written new, just
+   built on the existing amanta-index building block rather than from raw
+   astronomy calls.
+2. Wire the new check into both griha-pravesh.astro's scoreGP() and
+   vivah.astro's scoring function, following the same shared-function
+   pattern KHARMAS_RASHIS/CHATURMAS_RASHIS/sunRashiVoidCheck() already use
+   across multiple pages -- one function should serve both, since neither
+   has any existing Adhika Masa logic to conflict with.
+3. Decide the point/veto treatment for consistency with the existing
+   Kharmas/Chaturmas penalties on each page (Griha Pravesh: -4/-10; Vivah:
+   -5/-10) -- probably a similarly heavy penalty or an outright veto,
+   given how strongly tradition defers major ceremonies during Adhika
+   Masa.
+4. Update each page's own "How the Score Works" prose section to document
+   the new check, matching how Kharmas and Chaturmas are already
+   explained there.
+5. Run npm run build, re-verify May 18, 2026 (and ideally a full sweep of
+   the Adhik Jyeshtha window) no longer scores "Excellent" on Griha
+   Pravesh, and do the equivalent spot-check for Vivah against the same
+   window. Update this bug's Status line to "Fixed (<date>, commit
+   <hash>)" once verified, and consider whether the earlier 2026-08-27
+   entry's Status should be updated too, since this fix would close both.
+
+Verify: npm run build succeeds; a date inside a real Adhika Masa window no
+longer scores "Excellent" on either tool; a date outside Adhika Masa with
+otherwise-good factors is unaffected (no false new exclusions introduced).
+```
 
 ---
 
