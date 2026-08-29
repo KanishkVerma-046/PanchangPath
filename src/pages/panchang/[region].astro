@@ -15,9 +15,26 @@ export function getStaticPaths() {
 const { region: slug } = Astro.params;
 const regionDef = getRegionBySlug(slug!)!;
 
+// Hindi names for each script, sourced from Hindi Wikipedia's own article titles for
+// each script (e.g. "बंगाली लिपि", "तमिल लिपि") rather than invented. For most of these
+// languages the script genuinely shares its name with the language in Hindi (unlike
+// Devanagari, which isn't tied to one language) — this is linguistically correct, not
+// a translation gap, and mirrors the English UI, which already shows the same word
+// twice for these regions (regionDef.name === regionDef.script for all of them, e.g.
+// name: 'Bengali', script: 'Bengali'). This map replaces the old blanket
+// `?? regionDef.nameHi` fallback with explicit, sourced entries for every script value
+// instead of relying on an implicit coincidence.
 const SCRIPT_HI: Record<string, string> = {
   'Devanagari': 'देवनागरी',
   'Devanagari / English': 'देवनागरी / अंग्रेज़ी',
+  'Bengali': 'बंगाली',
+  'Assamese': 'असमिया',
+  'Tamil': 'तमिल',
+  'Malayalam': 'मलयालम',
+  'Gujarati': 'गुजराती',
+  'Kannada': 'कन्नड़',
+  'Telugu': 'तेलुगु',
+  'Odia': 'ओड़िया',
 };
 const scriptHi = SCRIPT_HI[regionDef.script] ?? regionDef.nameHi;
 
