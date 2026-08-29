@@ -22,8 +22,11 @@ const EB_TIME_STR = `${String(EB.hh).padStart(2, '0')}:${String(EB.mm).padStart(
 
 const EB_PLANET_EN: Record<string, string> = { surya: 'Sun', chandra: 'Moon', mangal: 'Mars', budha: 'Mercury', guru: 'Jupiter', shukra: 'Venus', shani: 'Saturn', rahu: 'Rahu', ketu: 'Ketu' };
 const EB_RASHI = ['Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya', 'Tula', 'Vrishchika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'];
+const EB_RASHI_HI = ['मेष', 'वृषभ', 'मिथुन', 'कर्क', 'सिंह', 'कन्या', 'तुला', 'वृश्चिक', 'धनु', 'मकर', 'कुम्भ', 'मीन'];
 const EB_RASHI_EN = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
 const EB_RASHI_LORD = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter'];
+const EB_RASHI_LORD_HI: Record<string, string> = { Sun: 'सूर्य', Moon: 'चंद्र', Mars: 'मंगल', Mercury: 'बुध', Jupiter: 'गुरु', Venus: 'शुक्र', Saturn: 'शनि' };
+const EB_PLANET_HI: Record<string, string> = { surya: 'सूर्य', chandra: 'चंद्र', mangal: 'मंगल', budha: 'बुध', guru: 'गुरु', shukra: 'शुक्र', shani: 'शनि', rahu: 'राहु', ketu: 'केतु' };
 const ebAkName = EB_PLANET_EN[ebChart.atmakarakaKey];
 const ebMoonNakName = NAKSHATRAS[ebChart.moonNak.idx].n;
 
@@ -101,22 +104,22 @@ const FAQ_ITEMS = [
           <!-- Chart -->
           <div>
             <div class="card" style="padding:20px;">
-              <h2 id="chart-title" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">Lagna Chart (D-1)</h2>
-              <p id="chart-sub" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;font-family:var(--font-mono);">{EB_RASHI[ebChart.lagnaSign]} Lagna &middot; {EB_DATE_STR} {EB_TIME_STR} &middot; {EB.city}</p>
+              <h2 id="chart-title" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;" data-hi="लग्न कुंडली (डी-1)">Lagna Chart (D-1)</h2>
+              <p id="chart-sub" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;font-family:var(--font-mono);" data-hi={`${EB_RASHI_HI[ebChart.lagnaSign]} लग्न · ${EB_DATE_STR} ${EB_TIME_STR} · ${EB.city}`}>{EB_RASHI[ebChart.lagnaSign]} Lagna &middot; {EB_DATE_STR} {EB_TIME_STR} &middot; {EB.city}</p>
               <div id="chart-box" set:html={ebChartSvg} />
             </div>
             <div class="card" style="padding:18px;margin-top:16px;">
               <h3 data-hi="जन्म सारांश" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">Birth Summary</h3>
               <div id="summary-list" style="display:flex;flex-direction:column;gap:8px;">
                 {[
-                  ['Lagna (Asc)', `${EB_RASHI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]})`],
-                  ['Lagna Lord', EB_RASHI_LORD[ebChart.lagnaSign]],
-                  ['Moon Rashi', `${EB_RASHI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]})`],
-                  ['Sun Rashi', `${EB_RASHI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]})`],
-                  ['Nakshatra', `${ebMoonNakName} (Pada ${ebChart.moonNak.pada})`],
-                  ['Ayanamsha', `${ebChart.ay.toFixed(3)}° Lahiri`],
-                ].map(([label, val]) => (
-                  <div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;"><span style="color:var(--color-mute);">{label}</span><span style="color:var(--color-ink);font-weight:600;text-align:right;">{val}</span></div>
+                  ['Lagna (Asc)', 'लग्न', `${EB_RASHI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]})`, `${EB_RASHI_HI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]})`],
+                  ['Lagna Lord', 'लग्न स्वामी', EB_RASHI_LORD[ebChart.lagnaSign], EB_RASHI_LORD_HI[EB_RASHI_LORD[ebChart.lagnaSign]]],
+                  ['Moon Rashi', 'चंद्र राशि', `${EB_RASHI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]})`, `${EB_RASHI_HI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]})`],
+                  ['Sun Rashi', 'सूर्य राशि', `${EB_RASHI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]})`, `${EB_RASHI_HI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]})`],
+                  ['Nakshatra', 'नक्षत्र', `${ebMoonNakName} (Pada ${ebChart.moonNak.pada})`, `${NAKSHATRAS[ebChart.moonNak.idx].h} (पद ${ebChart.moonNak.pada})`],
+                  ['Ayanamsha', 'अयनांश', `${ebChart.ay.toFixed(3)}° Lahiri`, `${ebChart.ay.toFixed(3)}° लाहिड़ी`],
+                ].map(([label, labelHi, val, valHi]) => (
+                  <div style="display:flex;justify-content:space-between;gap:10px;font-size:12.5px;"><span style="color:var(--color-mute);" data-hi={labelHi}>{label}</span><span style="color:var(--color-ink);font-weight:600;text-align:right;" data-hi={valHi}>{val}</span></div>
                 ))}
               </div>
             </div>
@@ -127,13 +130,13 @@ const FAQ_ITEMS = [
             <div class="card" style="padding:20px;overflow-x:auto;">
               <h3 data-hi="ग्रह स्थिति (ग्रह स्फुट)" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Planetary Positions (Graha Sphuta)</h3>
               <table style="width:100%;border-collapse:collapse;font-size:13px;" id="planet-table">
-                <tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>Nakshatra</th><th>Pada</th><th>Motion</th></tr>
+                <tr><th data-hi="ग्रह">Graha</th><th data-hi="राशि">Rashi</th><th data-hi="अंश">Degree</th><th data-hi="नक्षत्र">Nakshatra</th><th data-hi="पद">Pada</th><th data-hi="गति">Motion</th></tr>
                 {ebChart.rows.map(row => (
                   <tr>
-                    <td style="color:var(--color-ink);font-weight:600;">{EB_PLANET_EN[row.key]}</td>
-                    <td>{EB_RASHI[row.sign]}</td>
+                    <td style="color:var(--color-ink);font-weight:600;" data-hi={EB_PLANET_HI[row.key]}>{EB_PLANET_EN[row.key]}</td>
+                    <td data-hi={EB_RASHI_HI[row.sign]}>{EB_RASHI[row.sign]}</td>
                     <td style="font-family:var(--font-mono);">{formatDegMin(row.sidLon)}</td>
-                    <td>{NAKSHATRAS[row.nakIdx].n}</td>
+                    <td data-hi={NAKSHATRAS[row.nakIdx].h}>{NAKSHATRAS[row.nakIdx].n}</td>
                     <td>{row.nakPada}</td>
                     <td style={row.isRetrograde ? 'color:#dc2626;' : 'color:var(--color-body-text);'}>{row.isRetrograde ? 'Vakri' : 'Margi'}</td>
                   </tr>
@@ -144,12 +147,12 @@ const FAQ_ITEMS = [
               <h3 data-hi="मुख्य व्याख्याएं" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Key Interpretations</h3>
               <div id="interp" style="display:flex;flex-direction:column;gap:12px;">
                 {[
-                  ['Lagna (Ascendant)', `The rising sign is ${EB_RASHI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]}), ruled by ${EB_RASHI_LORD[ebChart.lagnaSign]}. The Lagna shapes physical body, temperament and how others first perceive a person.`],
-                  ['Moon Sign (Rashi)', `The Moon is in ${EB_RASHI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]}) in ${ebMoonNakName} nakshatra. This is the emotional core and the rashi used for daily Rashifal and most muhurta decisions.`],
-                  ['Sun Sign', `The Sun is in ${EB_RASHI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]}), representing soul, vitality, ego and one's relationship with authority and the father.`],
-                  ['Atmakaraka', `${ebAkName} holds the highest degree in its sign and is the Atmakaraka — the soul planet of the Jaimini system, signifying the deepest desires and the main lesson of this lifetime.`],
-                ].map(([title, text]) => (
-                  <div><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">{title}</p><p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0;">{text}</p></div>
+                  ['Lagna (Ascendant)', 'लग्न', `The rising sign is ${EB_RASHI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]}), ruled by ${EB_RASHI_LORD[ebChart.lagnaSign]}. The Lagna shapes physical body, temperament and how others first perceive a person.`, `उदय राशि ${EB_RASHI_HI[ebChart.lagnaSign]} है, जिसका स्वामी ${EB_RASHI_LORD_HI[EB_RASHI_LORD[ebChart.lagnaSign]]} है। लग्न शारीरिक बनावट, स्वभाव और दूसरे व्यक्ति को पहली बार कैसे देखते हैं, इसे आकार देता है।`],
+                  ['Moon Sign (Rashi)', 'चंद्र राशि', `The Moon is in ${EB_RASHI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]}) in ${ebMoonNakName} nakshatra. This is the emotional core and the rashi used for daily Rashifal and most muhurta decisions.`, `चंद्रमा ${EB_RASHI_HI[ebChart.moonSign]} राशि में ${NAKSHATRAS[ebChart.moonNak.idx].h} नक्षत्र में है। यह भावनात्मक केंद्र है और दैनिक राशिफल व अधिकांश मुहूर्त निर्णयों में प्रयुक्त राशि है।`],
+                  ['Sun Sign', 'सूर्य राशि', `The Sun is in ${EB_RASHI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]}), representing soul, vitality, ego and one's relationship with authority and the father.`, `सूर्य ${EB_RASHI_HI[ebChart.sunSign]} राशि में है, जो आत्मा, जीवनशक्ति, अहंकार और अधिकार व पिता के साथ संबंध को दर्शाता है।`],
+                  ['Atmakaraka', 'आत्मकारक', `${ebAkName} holds the highest degree in its sign and is the Atmakaraka — the soul planet of the Jaimini system, signifying the deepest desires and the main lesson of this lifetime.`, `${EB_PLANET_HI[ebChart.atmakarakaKey]} अपनी राशि में सबसे अधिक अंश पर है और आत्मकारक है — जैमिनी प्रणाली का आत्मा-सूचक ग्रह, जो इस जन्म की गहरी इच्छाओं और मुख्य सीख को दर्शाता है।`],
+                ].map(([title, titleHi, text, textHi]) => (
+                  <div><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;" data-hi={titleHi}>{title}</p><p style="font-size:14px;color:var(--color-body-text);line-height:1.6;margin:0;" data-hi={textHi}>{text}</p></div>
                 ))}
               </div>
             </div>

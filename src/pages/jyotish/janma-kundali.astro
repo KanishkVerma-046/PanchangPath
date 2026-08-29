@@ -4,7 +4,7 @@ import { PLANET_ICONS } from '../../lib/icons/planets';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
 import { computeJanmaKundaliData, janmaNorthChart, jdFull, SYNTHETIC_EXAMPLE_BIRTH, planetDignity, DASHA_ORDER, DASHA_YEARS, type YogaKey } from '../../lib/kundali';
-import { LAGNA_HOUSES, NAKSHATRAS } from '../../lib/jyotish';
+import { LAGNA_HOUSES, LAGNA_HOUSES_HI, NAKSHATRAS } from '../../lib/jyotish';
 
 // Illustrative-example prerender -- see kundali.ts's SYNTHETIC_EXAMPLE_BIRTH comment and
 // jyotish/kundali.astro's identical pattern: a clearly-fictional sample birth, not "today" (which
@@ -22,14 +22,19 @@ const EB_DATE_STR = `${EB.y}-${String(EB.m).padStart(2, '0')}-${String(EB.d).pad
 const EB_TIME_STR = `${String(EB.hh).padStart(2, '0')}:${String(EB.mm).padStart(2, '0')}`;
 
 const EB_PLANET_EN: Record<string, string> = { surya: 'Sun', chandra: 'Moon', mangal: 'Mars', budha: 'Mercury', guru: 'Jupiter', shukra: 'Venus', shani: 'Saturn', rahu: 'Rahu', ketu: 'Ketu' };
+const EB_PLANET_HI: Record<string, string> = { surya: 'सूर्य', chandra: 'चंद्र', mangal: 'मंगल', budha: 'बुध', guru: 'गुरु', shukra: 'शुक्र', shani: 'शनि', rahu: 'राहु', ketu: 'केतु' };
 const EB_RASHI = ['Mesha', 'Vrishabha', 'Mithuna', 'Karka', 'Simha', 'Kanya', 'Tula', 'Vrishchika', 'Dhanu', 'Makara', 'Kumbha', 'Meena'];
+const EB_RASHI_HI = ['मेष', 'वृषभ', 'मिथुन', 'कर्क', 'सिंह', 'कन्या', 'तुला', 'वृश्चिक', 'धनु', 'मकर', 'कुम्भ', 'मीन'];
 const EB_RASHI_EN = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo', 'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
 const EB_RASHI_LORD = ['Mars', 'Venus', 'Mercury', 'Moon', 'Sun', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Saturn', 'Jupiter'];
+const EB_RASHI_LORD_HI: Record<string, string> = { Sun: 'सूर्य', Moon: 'चंद्र', Mars: 'मंगल', Mercury: 'बुध', Jupiter: 'गुरु', Venus: 'शुक्र', Saturn: 'शनि' };
 const EB_DIGNITY_LABEL: Record<string, string> = { exalted: 'Exalted', debilitated: 'Debilitated', own: 'Own Sign', '': '' };
+const EB_DIGNITY_LABEL_HI: Record<string, string> = { exalted: 'उच्च', debilitated: 'नीच', own: 'स्वराशि', '': '' };
 const ebMoonNakName = NAKSHATRAS[ebChart.moonNak.idx].n;
 const ebSunSid = ebChart.rows.find(r => r.key === 'surya')!.sidLon;
 const ebMoonSid = ebChart.rows.find(r => r.key === 'chandra')!.sidLon;
 const ebPaksha = ebMoonSid > ebSunSid && ebMoonSid - ebSunSid < 180 ? 'Shukla (Waxing)' : 'Krishna (Waning)';
+const ebPakshaHi = ebMoonSid > ebSunSid && ebMoonSid - ebSunSid < 180 ? 'शुक्ल (बढ़ता चंद्र)' : 'कृष्ण (घटता चंद्र)';
 
 const YOGA_COPY_EN: Record<YogaKey, { name: string; desc: string; badge: string }> = {
   gajakesari: { name: 'Gajakesari Yoga', desc: 'Jupiter in kendra from Moon — brings wisdom, reputation and prosperity.', badge: 'auspicious' },
@@ -44,7 +49,20 @@ const YOGA_COPY_EN: Record<YogaKey, { name: string; desc: string; badge: string 
   rajaYoga19: { name: 'Raja Yoga (1-9 Lords)', desc: 'Lords of Lagna and 9th house conjunct — excellent fortune, leadership and dharmic life.', badge: 'auspicious' },
   kemadruma: { name: 'Kemadruma Yoga', desc: 'Moon without planets in adjacent houses — may cause emotional isolation; mitigated if Moon is in kendra.', badge: 'caution' },
 };
-const ebYogaDisplay = ebYogas.length ? ebYogas.map(k => YOGA_COPY_EN[k]) : [{ name: 'No prominent yogas detected', desc: 'The chart has a balanced, ordinary planetary configuration.', badge: '' }];
+const YOGA_COPY_HI: Record<YogaKey, { name: string; desc: string }> = {
+  gajakesari: { name: 'गजकेसरी योग', desc: 'चंद्रमा से केंद्र में गुरु — ज्ञान, प्रतिष्ठा और समृद्धि लाता है।' },
+  budhaditya: { name: 'बुधादित्य योग', desc: 'सूर्य और बुध की युति — बुद्धि, विश्लेषणात्मक क्षमता और संवाद कौशल बढ़ाती है।' },
+  chandraMangal: { name: 'चंद्र-मंगल योग', desc: 'चंद्रमा और मंगल की युति या प्रतियुति — महत्वाकांक्षा और आर्थिक दृढ़ता को बढ़ावा देती है।' },
+  mahapurusha_guru: { name: 'हंस योग (महापुरुष)', desc: 'गुरु स्वराशि (धनु/मीन) या उच्च (कर्क) में और केंद्र में।' },
+  mahapurusha_shukra: { name: 'मालव्य योग (महापुरुष)', desc: 'शुक्र स्वराशि (वृषभ/तुला) या उच्च (मीन) में और केंद्र में।' },
+  mahapurusha_mangal: { name: 'रुचक योग (महापुरुष)', desc: 'मंगल स्वराशि (मेष/वृश्चिक) या उच्च (मकर) में और केंद्र में।' },
+  mahapurusha_budha: { name: 'भद्र योग (महापुरुष)', desc: 'बुध स्वराशि (मिथुन/कन्या) या उच्च (कन्या) में और केंद्र में।' },
+  mahapurusha_shani: { name: 'शश योग (महापुरुष)', desc: 'शनि स्वराशि (मकर/कुम्भ) या उच्च (तुला) में और केंद्र में।' },
+  rajaYoga15: { name: 'राज योग (1-5 स्वामी)', desc: 'लग्न और पंचम भाव के स्वामियों की युति — अधिकार, रचनात्मकता और समृद्धि।' },
+  rajaYoga19: { name: 'राज योग (1-9 स्वामी)', desc: 'लग्न और नवम भाव के स्वामियों की युति — उत्कृष्ट सौभाग्य, नेतृत्व और धर्ममय जीवन।' },
+  kemadruma: { name: 'केमद्रुम योग', desc: 'चंद्रमा के निकटवर्ती भावों में कोई ग्रह न होना — भावनात्मक अलगाव का कारण बन सकता है; चंद्रमा केंद्र में हो तो प्रभाव कम हो जाता है।' },
+};
+const ebYogaDisplay = ebYogas.length ? ebYogas.map(k => ({ ...YOGA_COPY_EN[k], nameHi: YOGA_COPY_HI[k].name, descHi: YOGA_COPY_HI[k].desc })) : [{ name: 'No prominent yogas detected', nameHi: 'कोई प्रमुख योग नहीं मिला', desc: 'The chart has a balanced, ordinary planetary configuration.', descHi: 'कुंडली में एक संतुलित, सामान्य ग्रह विन्यास है।', badge: '' }];
 
 const ebDashaLordEn = EB_PLANET_EN[ebDashaLordKey];
 const ebConsumed = ebDashaFrac * ebDashaYears;
@@ -61,8 +79,9 @@ const ebDashaRows = Array.from({ length: 9 }, (_, i) => {
   const yrs = DASHA_YEARS[lordKey];
   const st = ebT, en = ebT + yrs * EB_MS_PER_YR;
   const from = i === 0 ? 'Birth' : ebFmtDt(st);
+  const fromHi = i === 0 ? 'जन्म' : ebFmtDt(st);
   ebT = en;
-  return { lord: EB_PLANET_EN[lordKey], yrs, from, to: ebFmtDt(en) };
+  return { lord: EB_PLANET_EN[lordKey], lordHi: EB_PLANET_HI[lordKey], yrs, from, fromHi, to: ebFmtDt(en) };
 });
 
 const FAQ_ITEMS = [
@@ -119,8 +138,8 @@ const FAQ_ITEMS = [
         <!-- Row 1: Chart + Birth Summary -->
         <div style="display:grid;grid-template-columns:300px 1fr;gap:24px;margin-bottom:24px;" class="r1">
           <div class="card" style="padding:20px;">
-            <h2 id="chart-title" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">Lagna Chart</h2>
-            <p id="chart-sub" style="font-size:11px;color:var(--color-mute);margin:0 0 12px;font-family:var(--font-mono);">{EB_RASHI[ebChart.lagnaSign]} Lagna &middot; {EB_DATE_STR} {EB_TIME_STR} &middot; {EB.city}</p>
+            <h2 id="chart-title" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 3px;" data-hi="लग्न कुंडली">Lagna Chart</h2>
+            <p id="chart-sub" style="font-size:11px;color:var(--color-mute);margin:0 0 12px;font-family:var(--font-mono);" data-hi={`${EB_RASHI_HI[ebChart.lagnaSign]} लग्न · ${EB_DATE_STR} ${EB_TIME_STR} · ${EB.city}`}>{EB_RASHI[ebChart.lagnaSign]} Lagna &middot; {EB_DATE_STR} {EB_TIME_STR} &middot; {EB.city}</p>
             <div id="chart-box" set:html={ebChartSvg} />
           </div>
           <div>
@@ -128,16 +147,16 @@ const FAQ_ITEMS = [
               <h3 data-hi="जन्म सारांश" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Birth Summary</h3>
               <div id="summary-list" style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;">
                 {[
-                  ['Lagna (Ascendant)', `${EB_RASHI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]})`],
-                  ['Lagna Lord', EB_RASHI_LORD[ebChart.lagnaSign]],
-                  ['Lagna Degree', `${Math.floor(ebChart.lagna % 30)}°${String(Math.floor(((ebChart.lagna % 30) % 1) * 60)).padStart(2, '0')}'`],
-                  ['Moon Rashi', `${EB_RASHI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]})`],
-                  ['Sun Rashi', `${EB_RASHI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]})`],
-                  ['Janma Nakshatra', `${ebMoonNakName} pada ${ebChart.moonNak.pada}`],
-                  ['Paksha', ebPaksha],
-                  ['Ayanamsha', `${ebChart.ay.toFixed(3)}° Lahiri`],
-                ].map(([label, val]) => (
-                  <div><p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);">{(label as string).toUpperCase()}</p><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0;">{val}</p></div>
+                  ['Lagna (Ascendant)', 'लग्न', `${EB_RASHI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]})`, `${EB_RASHI_HI[ebChart.lagnaSign]} (${EB_RASHI_EN[ebChart.lagnaSign]})`],
+                  ['Lagna Lord', 'लग्न स्वामी', EB_RASHI_LORD[ebChart.lagnaSign], EB_RASHI_LORD_HI[EB_RASHI_LORD[ebChart.lagnaSign]]],
+                  ['Lagna Degree', 'लग्न अंश', `${Math.floor(ebChart.lagna % 30)}°${String(Math.floor(((ebChart.lagna % 30) % 1) * 60)).padStart(2, '0')}'`, `${Math.floor(ebChart.lagna % 30)}°${String(Math.floor(((ebChart.lagna % 30) % 1) * 60)).padStart(2, '0')}'`],
+                  ['Moon Rashi', 'चंद्र राशि', `${EB_RASHI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]})`, `${EB_RASHI_HI[ebChart.moonSign]} (${EB_RASHI_EN[ebChart.moonSign]})`],
+                  ['Sun Rashi', 'सूर्य राशि', `${EB_RASHI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]})`, `${EB_RASHI_HI[ebChart.sunSign]} (${EB_RASHI_EN[ebChart.sunSign]})`],
+                  ['Janma Nakshatra', 'जन्म नक्षत्र', `${ebMoonNakName} pada ${ebChart.moonNak.pada}`, `${NAKSHATRAS[ebChart.moonNak.idx].h} पद ${ebChart.moonNak.pada}`],
+                  ['Paksha', 'पक्ष', ebPaksha, ebPakshaHi],
+                  ['Ayanamsha', 'अयनांश', `${ebChart.ay.toFixed(3)}° Lahiri`, `${ebChart.ay.toFixed(3)}° लाहिड़ी`],
+                ].map(([label, labelHi, val, valHi]) => (
+                  <div><p style="font-size:11px;color:var(--color-mute);margin:0 0 2px;font-family:var(--font-mono);" data-hi={(labelHi as string).toUpperCase()}>{(label as string).toUpperCase()}</p><p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0;" data-hi={valHi}>{val}</p></div>
                 ))}
               </div>
             </div>
@@ -148,21 +167,22 @@ const FAQ_ITEMS = [
         <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:24px;">
           <h3 data-hi="ग्रह स्फुट — ग्रह स्थिति" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Graha Sphuta — Planetary Positions</h3>
           <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:640px;" id="planet-table">
-            <tr><th>Graha</th><th>Rashi</th><th>Degree</th><th>House</th><th>Nakshatra</th><th>Pada</th><th>Motion</th><th>Dignity</th></tr>
+            <tr><th data-hi="ग्रह">Graha</th><th data-hi="राशि">Rashi</th><th data-hi="अंश">Degree</th><th data-hi="भाव">House</th><th data-hi="नक्षत्र">Nakshatra</th><th data-hi="पद">Pada</th><th data-hi="गति">Motion</th><th data-hi="बल">Dignity</th></tr>
             {ebChart.rows.map(row => {
               const dig = planetDignity(row.key, row.sign);
               const house = ((row.sign - ebChart.lagnaSign) + 12) % 12;
               const motion = (row.key === 'rahu' || row.key === 'ketu') ? 'Vakri (always)' : (row.isRetrograde ? 'Vakri' : 'Margi');
+              const motionHi = (row.key === 'rahu' || row.key === 'ketu') ? 'वक्री (सदैव)' : (row.isRetrograde ? 'वक्री' : 'मार्गी');
               return (
                 <tr>
-                  <td style="color:var(--color-ink);font-weight:600;">{EB_PLANET_EN[row.key]}</td>
-                  <td>{EB_RASHI[row.sign]}</td>
+                  <td style="color:var(--color-ink);font-weight:600;" data-hi={EB_PLANET_HI[row.key]}>{EB_PLANET_EN[row.key]}</td>
+                  <td data-hi={EB_RASHI_HI[row.sign]}>{EB_RASHI[row.sign]}</td>
                   <td style="font-family:var(--font-mono);">{Math.floor(row.sidLon % 30)}&deg;{String(Math.floor(((row.sidLon % 30) % 1) * 60)).padStart(2, '0')}'</td>
                   <td style="text-align:center;">{house + 1}</td>
-                  <td>{NAKSHATRAS[row.nakIdx].n}</td>
+                  <td data-hi={NAKSHATRAS[row.nakIdx].h}>{NAKSHATRAS[row.nakIdx].n}</td>
                   <td>{row.nakPada}</td>
-                  <td style={row.isRetrograde ? 'color:#dc2626;' : 'color:var(--color-body-text);'}>{motion}</td>
-                  <td class={dig === 'exalted' ? 'dignity-exalt' : dig === 'debilitated' ? 'dignity-debil' : dig === 'own' ? 'dignity-own' : ''}>{EB_DIGNITY_LABEL[dig]}</td>
+                  <td style={row.isRetrograde ? 'color:#dc2626;' : 'color:var(--color-body-text);'} data-hi={motionHi}>{motion}</td>
+                  <td class={dig === 'exalted' ? 'dignity-exalt' : dig === 'debilitated' ? 'dignity-debil' : dig === 'own' ? 'dignity-own' : ''} data-hi={EB_DIGNITY_LABEL_HI[dig]}>{EB_DIGNITY_LABEL[dig]}</td>
                 </tr>
               );
             })}
@@ -173,14 +193,14 @@ const FAQ_ITEMS = [
         <div class="card" style="padding:20px;overflow-x:auto;margin-bottom:24px;">
           <h3 data-hi="भाव स्वामी — भाव विश्लेषण" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Bhava Lords — House Analysis</h3>
           <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:560px;" id="house-table">
-            <tr><th>House</th><th>Rashi</th><th>Lord</th><th>Lord is in</th><th>Significance</th></tr>
+            <tr><th data-hi="भाव">House</th><th data-hi="राशि">Rashi</th><th data-hi="स्वामी">Lord</th><th data-hi="स्वामी की स्थिति">Lord is in</th><th data-hi="महत्व">Significance</th></tr>
             {ebHouseLords.map(hl => (
               <tr>
-                <td style="font-weight:600;color:var(--color-ink);">H{hl.house + 1}</td>
-                <td>{EB_RASHI[hl.sign]}</td>
-                <td>{EB_PLANET_EN[hl.lordKey]}</td>
-                <td>H{hl.lordHouse + 1} ({EB_RASHI[hl.lordSign]})</td>
-                <td style="font-size:12px;color:var(--color-mute);">{LAGNA_HOUSES[hl.house]}</td>
+                <td style="font-weight:600;color:var(--color-ink);" data-hi={`भाव ${hl.house + 1}`}>H{hl.house + 1}</td>
+                <td data-hi={EB_RASHI_HI[hl.sign]}>{EB_RASHI[hl.sign]}</td>
+                <td data-hi={EB_PLANET_HI[hl.lordKey]}>{EB_PLANET_EN[hl.lordKey]}</td>
+                <td data-hi={`भाव ${hl.lordHouse + 1} (${EB_RASHI_HI[hl.lordSign]})`}>H{hl.lordHouse + 1} ({EB_RASHI[hl.lordSign]})</td>
+                <td style="font-size:12px;color:var(--color-mute);" data-hi={LAGNA_HOUSES_HI[hl.house]}>{LAGNA_HOUSES[hl.house]}</td>
               </tr>
             ))}
           </table>
@@ -193,8 +213,8 @@ const FAQ_ITEMS = [
             <div id="yoga-list" style="display:flex;flex-direction:column;gap:10px;">
               {ebYogaDisplay.map(y => (
                 <div style={`padding:10px 12px;border-radius:8px;background:${y.badge === 'auspicious' ? 'var(--color-auspicious-soft)' : y.badge === 'caution' ? 'var(--color-inauspicious-soft)' : 'var(--color-canvas-soft)'};`}>
-                  <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">{y.name}</p>
-                  <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">{y.desc}</p>
+                  <p style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 3px;" data-hi={y.nameHi}>{y.name}</p>
+                  <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;" data-hi={y.descHi}>{y.desc}</p>
                 </div>
               ))}
             </div>
@@ -204,15 +224,15 @@ const FAQ_ITEMS = [
             <p data-hi="जन्म से शुरू होने वाला 120-वर्षीय ग्रह अवधि चक्र" style="font-size:12px;color:var(--color-mute);margin:0 0 12px;">120-year planetary period cycle from birth</p>
             <div id="dasha-balance" style="margin-bottom:12px;">
               <div style="padding:10px 14px;background:var(--color-canvas-soft);border-radius:8px;">
-                <p style="font-size:11px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);">BIRTH DASHA BALANCE</p>
-                <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;">{ebDashaLordEn} — {ebRemaining.toFixed(1)} yrs remaining</p>
-                <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;">Janma Nakshatra: {ebMoonNakName} ({(ebDashaFrac * 100).toFixed(0)}% elapsed in {ebDashaLordEn} dasha)</p>
+                <p style="font-size:11px;color:var(--color-mute);margin:0 0 3px;font-family:var(--font-mono);" data-hi="जन्म दशा शेष">BIRTH DASHA BALANCE</p>
+                <p style="font-size:15px;font-weight:700;color:var(--color-ink);margin:0;" data-hi={`${EB_PLANET_HI[ebDashaLordKey]} — ${ebRemaining.toFixed(1)} वर्ष शेष`}>{ebDashaLordEn} — {ebRemaining.toFixed(1)} yrs remaining</p>
+                <p style="font-size:12px;color:var(--color-mute);margin:2px 0 0;" data-hi={`जन्म नक्षत्र: ${NAKSHATRAS[ebChart.moonNak.idx].h} (${EB_PLANET_HI[ebDashaLordKey]} दशा में ${(ebDashaFrac * 100).toFixed(0)}% पूर्ण)`}>Janma Nakshatra: {ebMoonNakName} ({(ebDashaFrac * 100).toFixed(0)}% elapsed in {ebDashaLordEn} dasha)</p>
               </div>
             </div>
             <table style="width:100%;border-collapse:collapse;font-size:12.5px;" id="dasha-table">
-              <tr><th>Dasha Lord</th><th>Years</th><th>From</th><th>To</th></tr>
+              <tr><th data-hi="दशा स्वामी">Dasha Lord</th><th data-hi="वर्ष">Years</th><th data-hi="से">From</th><th data-hi="तक">To</th></tr>
               {ebDashaRows.map(r => (
-                <tr><td>{r.lord}</td><td>{r.yrs}</td><td>{r.from}</td><td>{r.to}</td></tr>
+                <tr><td data-hi={r.lordHi}>{r.lord}</td><td>{r.yrs}</td><td data-hi={r.fromHi}>{r.from}</td><td>{r.to}</td></tr>
               ))}
             </table>
           </div>
