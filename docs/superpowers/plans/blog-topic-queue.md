@@ -2,7 +2,7 @@
 
 Durable record of candidate blog topics for PanchangPath's `/blog` section. Previously this queue existed only in chat history across two sessions and was nearly lost/re-derived from scratch — this file is the fix. Update it (strike through, move to a "Published" section, or add new candidates) as posts are written, rather than letting the queue drift back into chat-only state.
 
-**Published so far** (as of 2026-08-29): Shani Sade Sati, Krishna Janmashtami's two dates (Smarta vs. Vaishnava), Panchak, Grahan Sutak Kaal Rules, Sundarkand Path at Home (how to perform), Gochar vs. Kundali (transit vs. birth chart), Yoga and Karana (completing the five limbs), Adhik Maas (the leap month), Gemstone/Rudraksha no-sales-incentive framing, Mangal Dosha cancellation, Kalasarpa Yoga types. **All 5 Tier A topics are now published — Tier A is complete.** Tier B: 3 of 5 done.
+**Published so far** (as of 2026-08-29): Shani Sade Sati, Krishna Janmashtami's two dates (Smarta vs. Vaishnava), Panchak, Grahan Sutak Kaal Rules, Sundarkand Path at Home (how to perform), Gochar vs. Kundali (transit vs. birth chart), Yoga and Karana (completing the five limbs), Adhik Maas (the leap month), Gemstone/Rudraksha no-sales-incentive framing, Mangal Dosha cancellation, Kalasarpa Yoga types. **All 5 Tier A topics are now published — Tier A is complete.** Tier B: 2 of 4 done.
 
 ## Tier A — from the original blog-gap-analysis session
 
