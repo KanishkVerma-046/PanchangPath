@@ -2,7 +2,7 @@
 
 Durable record of candidate blog topics for PanchangPath's `/blog` section. Previously this queue existed only in chat history across two sessions and was nearly lost/re-derived from scratch — this file is the fix. Update it (strike through, move to a "Published" section, or add new candidates) as posts are written, rather than letting the queue drift back into chat-only state.
 
-**Published so far** (as of 2026-08-27): Shani Sade Sati, Krishna Janmashtami's two dates (Smarta vs. Vaishnava), Panchak, Grahan Sutak Kaal Rules, Sundarkand Path at Home (how to perform), Gochar vs. Kundali (transit vs. birth chart), Yoga and Karana (completing the five limbs), Adhik Maas (the leap month), Gemstone/Rudraksha no-sales-incentive framing. **All 5 Tier A topics are now published — Tier A is complete.**
+**Published so far** (as of 2026-08-29): Shani Sade Sati, Krishna Janmashtami's two dates (Smarta vs. Vaishnava), Panchak, Grahan Sutak Kaal Rules, Sundarkand Path at Home (how to perform), Gochar vs. Kundali (transit vs. birth chart), Yoga and Karana (completing the five limbs), Adhik Maas (the leap month), Gemstone/Rudraksha no-sales-incentive framing, Mangal Dosha cancellation. **All 5 Tier A topics are now published — Tier A is complete.** Tier B: 2 of 5 done.
 
 ## Tier A — from the original blog-gap-analysis session
 
@@ -18,7 +18,7 @@ Identified before Sade Sati/Janmashtami/Panchak were written.
 
 Surfaced by checking which live calculator/tool pages have no dedicated blog treatment.
 
-1. **Mangal Dosha / Manglik** — touched briefly in the Kundali post, no dedicated deep-dive, despite `/jyotish/mangal-dosha` existing.
+1. ~~**Mangal Dosha / Manglik**~~ — published 2026-08-29 as `mangal-dosha-cancellation-what-it-actually-means`: verified the six-rule cancellation logic in `src/lib/mangalDosha.ts` (own sign, exaltation, Cancer/Leo Yogakaraka Lagna, and Jupiter conjunction as full cancellations; weakening sign and Moon conjunction as severity-reducing only) directly against the code before writing about it — confirmed accurate, no copy-vs-code gap remains on this page. Cross-checked the classical cancellation conditions against multiple independent sources and included two genuine, sourced disagreements honestly: the "dosha weakens after age 28" claim (widely repeated but explicitly disputed by several of the same sources that report it) and "both partners Manglik auto-cancels" (a real but non-blanket factor, not a magic rule). No new copy-vs-code discrepancies found elsewhere during this pass.
 2. **Kalasarpa Yoga** — same situation; `/jyotish/kalasarpa` exists, only passing mention so far.
 3. **Nakshatra (27 birth stars)** — `/jyotish/nakshatra` exists, never covered in depth.
 4. ~~**Grahan (eclipse) Sutak rules**~~ — published 2026-08-27 as `grahan-sutak-kaal-rules-visibility-explained`, drawing on the eclipse-visibility/Sutak policy work already completed sitewide (see `project_eclipse_sutak_policy` memory / commit `1ab19f9`).
