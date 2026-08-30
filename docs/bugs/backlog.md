@@ -45,6 +45,7 @@ Paste this into a fresh session (fill in the bracketed part):
 
 | Title | Status | Reported |
 |---|---|---|
+| [Mangal Dosha severity banner loses its bold styling after the first Hindi/English language toggle](#mangal-dosha-severity-banner-loses-its-bold-styling-after-the-first-hindienglish-language-toggle) | Open | 2026-08-30 |
 | [Griha Pravesh Muhurat scoring has no Adhika Masa check — a real 2026 date (May 18) scores 12 of 12 "Excellent" during Adhik Jyeshtha Maas](#griha-pravesh-muhurat-scoring-has-no-adhika-masa-check--a-real-2026-date-may-18-scores-12-of-12-excellent-during-adhik-jyeshtha-maas) | Open | 2026-08-29 |
 | [`muhurta/vivah.astro` and `muhurta/griha-pravesh.astro` list "Adhika Masa" as an avoided period in their own on-page copy, but no such check exists in `muhurta.ts`'s actual scoring logic](#muhurtavivahastro-and-muhurtagriha-praveshastro-list-adhika-masa-as-an-avoided-period-in-their-own-on-page-copy-but-no-such-check-exists-in-muhurtatss-actual-scoring-logic) | Open | 2026-08-27 |
 | [`rashifal/index.astro`'s hero copy claims predictions are "based on planetary positions and Jyotish principles" ~70 lines away from the page's own pre-written-entries disclosure](#rashifalindexastros-hero-copy-claims-predictions-are-based-on-planetary-positions-and-jyotish-principles-70-lines-away-from-the-pages-own-pre-written-entries-disclosure) | Open | 2026-08-27 |
@@ -59,6 +60,94 @@ Paste this into a fresh session (fill in the bracketed part):
 | [Festivals page title and subtitle stuck at stale 2025-2026 (site now covers 2025-2027)](#festivals-page-title-and-subtitle-stuck-at-stale-2025-2026-site-now-covers-2025-2027) | Fixed (2026-07-17) | 2026-07-17 |
 | [Tithi/Nakshatra/Yoga/Karana boundary end-times run 45min–2.5h too early](#tithinakshatrayogakarana-boundary-end-times-run-45min25h-too-early) | Fixed (2026-07-17) | 2026-07-16 |
 | [`index.astro` inline sunrise/sunset missing Equation-of-Time term](#indexastro-inline-sunrisesunset-missing-equation-of-time-term) | Fixed (2026-07-17) | 2026-07-16 |
+
+---
+
+## Mangal Dosha severity banner loses its bold styling after the first Hindi/English language toggle
+
+- **Status:** Open
+- **Severity:** Low (cosmetic only — the text content itself stays correct in both languages; only
+  the bold weight on one word is lost, and only after a visitor actually toggles the language)
+- **Reported:** 2026-08-30
+- **Affected files:** `src/pages/jyotish/mangal-dosha.astro` line ~135 (the severity-banner `<p>`)
+
+### Description
+Found during the 2026-08-29/30 Hindi translation project's Track B (Jyotish prerender pages) while
+wiring up `data-hi` for `mangal-dosha.astro`'s illustrative-example result block. The severity
+banner renders as:
+
+```astro
+<p ... data-hi={`गंभीरता: ${ebSeverityLabelHi} · मंगल ${EB_RASHI_HI[ebMarsSign]} में · 3 में से ${ebMd.doshaCount} संदर्भों से दोष`}>
+  Severity: <b style={`color:${ebSevColor};`}>{ebSeverityLabel}</b> &middot; Mars in {EB_RASHI[ebMarsSign]} &middot; Dosha from {ebMd.doshaCount} of 3 references
+</p>
+```
+
+The `<p>` carries a `data-hi` attribute with the full Hindi sentence as one plain string, but its
+English content has a nested `<b>` around the severity word (`{ebSeverityLabel}`, e.g. "High") for
+color/weight emphasis. This is the only `data-hi` element on the page (and one of very few
+sitewide) whose English content contains a nested tag rather than being plain text.
+
+**Reproduction:** load `/jyotish/mangal-dosha` with the Hindi toggle on (`localStorage.pp-lang =
+'hi'`, or click the language pill), or toggle language after the page loads. On the very first
+toggle to Hindi, the severity word's bold/colored styling disappears. Toggling back to English does
+**not** restore it — the text reads correctly ("High"/"अधिक" etc.) in both languages from then on,
+but the `<b>` emphasis is gone permanently for that page load.
+
+### Root cause
+The sitewide `data-hi` toggle pattern (used across every calculator page's `applyPageLang()`, e.g.
+`src/pages/jyotish/kalasarpa.astro`) is:
+
+```js
+document.querySelectorAll('[data-hi]').forEach(el => {
+  if (!el.dataset.en) el.dataset.en = el.textContent || '';
+  el.textContent = hindi ? el.dataset.hi : el.dataset.en;
+});
+```
+
+`el.textContent` is a plain-text assignment: reading it strips all child element structure down to
+a flat string, and writing it replaces all children with a single text node. The very first time
+this runs for the severity `<p>`, `el.dataset.en = el.textContent` already flattens away the `<b>`
+before anything is toggled — so even the "restore English" path re-inserts plain, unstyled text.
+This is a generic limitation of the site's per-element `data-hi`/textContent-swap mechanism whenever
+an element's English markup contains a nested tag; it is NOT a problem for the vast majority of
+`data-hi` usage sitewide, which is plain text. The one other place this project intentionally works
+around the same limitation is `BlogDetail.astro`/`CalculatorFaq.astro`'s FAQ items with embedded
+links, which use a completely different mechanism (parallel `.en-text`/`.hi-text` blocks toggled via
+`display:none`, preserving full markup in both languages) specifically because `data-hi`'s
+textContent swap would strip an `<a href>`.
+
+### Claude Code Fix Prompt
+```
+PanchangPath (panchangpath.com) — fix the Mangal Dosha severity banner
+bold-styling loss logged in docs/bugs/backlog.md under "Mangal Dosha
+severity banner loses its bold styling after the first Hindi/English
+language toggle". Read that full entry first for context (root cause:
+the sitewide data-hi/textContent-swap pattern flattens any nested tags
+the first time it runs, and this <p> in mangal-dosha.astro is one of the
+few data-hi elements sitewide with a nested <b> for the severity word).
+
+Fix: in src/pages/jyotish/mangal-dosha.astro (~line 135), replace the
+single data-hi <p> with the same en-text/hi-text block-level pattern
+already used for markup-preserving translations elsewhere on the site
+(see BlogDetail.astro's .en-text/.hi-text <article> pair, or
+CalculatorFaq.astro's html:true item handling) — i.e. render two parallel
+<p> elements, one classed .en-text with the existing <b> markup, one
+classed .hi-text with the Hindi text and its own <b style={...}> around
+the translated severity label, toggled via display:none the same way
+applyPageLang() already handles .en-text/.hi-text elsewhere on pages that
+have them, or via a small local addition to this page's own
+applyPageLang() if it doesn't already handle that class pair. Do not
+change the generic [data-hi] textContent-swap loop itself — it's correct
+for the rest of the page and the rest of the site; scope the fix to this
+one element.
+
+Verify via Playwright: load /jyotish/mangal-dosha, toggle to Hindi, check
+the severity word is still wrapped in a styled/colored element (not
+plain text) and the Hindi label is correct; toggle back to English and
+confirm the original <b> styling is restored. Build, deploy, and confirm
+live on panchangpath.com (cache-busted) per this project's established
+verification pattern.
+```
 
 ---
 
