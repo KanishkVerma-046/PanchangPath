@@ -55,7 +55,7 @@ Fixed 2026-07-21 (full-site astronomy-engine migration): the old hand-rolled Kep
 
 ### Devotional Library pattern
 Every category follows the same shape:
-1. `src/lib/devotional/<category>.ts` exports an array of `DevotionalItem` (interface in `types.ts`: `slug`, `title`, `titleHi`, `deity?`, `deityHi?`, `icon`, `lyricsHi`, `transliteration?`, `meaning?`, `benefits?`).
+1. `src/lib/devotional/<category>.ts` exports an array of `DevotionalItem` (interface in `types.ts`: `slug`, `title`, `titleHi`, `deity?`, `deityHi?`, `icon`, `lyricsHi`, `transliteration?`, `meaning?`, `meaningHi?`, `benefits?`, `benefitsHi?`, `metaTitle?`, `metaDesc?`). `meaning`/`benefits` **do** have Hindi counterparts (`meaningHi`/`benefitsHi`) — verified 2026-08-29 that every populated `meaning`/`benefits` entry across all 11 built categories has a matching Hindi one, 1:1. Only `metaTitle`/`metaDesc` (the `<title>`/meta-description overrides added by commit `e58cc47`) are genuinely English-only, by design — don't conflate the two.
 2. `src/pages/devotional/<category>/index.astro` renders `<DevotionalIndexGrid category={...} items={...} />`.
 3. `src/pages/devotional/<category>/[slug].astro` has `getStaticPaths()` over the array and renders `<DevotionalDetail item={...} category={...} prev={...} next={...} />` (optionally with custom `*Label` props).
 4. Flip the category's `built: false → true` in `CATEGORY_META` (`src/lib/devotional/types.ts`).
