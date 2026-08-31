@@ -46,3 +46,13 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
+      - name: Submit sitemap to IndexNow
+        # Safety net, not the primary mechanism -- catches anything published
+        # without an explicit per-URL IndexNow call (see CLAUDE.md). Runs after
+        # `npm run deploy` above, which already built dist/sitemap.xml via the
+        # `build` npm script, so this submits the sitemap that was just deployed.
+        # The IndexNow key is public by design (see
+        # public/40561200baba459aa3fc4b890c7e49df.txt), not a secret, so no
+        # repo secret is needed for this step.
+        run: node scripts/indexnow-submit.mjs --sitemap dist/sitemap.xml
