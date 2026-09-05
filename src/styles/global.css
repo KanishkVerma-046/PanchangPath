@@ -319,6 +319,39 @@ a:hover .arrow-chip, button:hover .arrow-chip { transform: translate(2px, -2px);
   .reveal { opacity: 1; translate: 0 0; filter: none; transition: none; }
 }
 
+/* ── Mobile: minimal motion ──
+   Requested 2026-09-05 after a mobile perf investigation. Desktop keeps its
+   full animation set unchanged; mobile gets near-instant state changes.
+   filter: blur() is the standout cost here — .reveal used it on scroll-in
+   for basically every card/section site-wide, and animating blur is one of
+   the most GPU-expensive things a mobile browser can be asked to do, worse
+   on mid/low-end Android GPUs than the desktop dev machines this was
+   probably last eyeballed on.
+   Two separate properties because transitions and @keyframes animations are
+   independent mechanisms: transition-duration covers hover/press feedback,
+   dropdown/drawer open-close, and .reveal's entrance; animation-* covers the
+   continuous @keyframes effects (live-status pulses/blinks, decorative
+   spins). animation-iteration-count:1 is required alongside the near-zero
+   duration for anything using `infinite` — a 0.001ms animation that still
+   loops forever is *more* frequent repaint work than the original slower
+   one, not less. No transitionend/animationend listeners exist anywhere in
+   this codebase (checked before adding this), so collapsing every duration
+   to near-zero doesn't desync any JS that was waiting on a real animation
+   length. */
+@media (max-width: 768px) {
+  *, *::before, *::after {
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal, .reveal.in-view {
+    filter: none !important;
+  }
+}
+
 /* Elements that are both .reveal AND a hover-animated surface (.card,
    .card-luxe) need both transitions merged into one rule — see comment
    above for why this can't just be two separate class rules. */

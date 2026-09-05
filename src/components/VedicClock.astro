@@ -152,6 +152,8 @@
 </section>
 
 <script>
+import { onVisible } from '../lib/lazy-init';
+
 // ── Module state ────────────────────────────────────────────────────────────
 let vcSrMins = 360;     // sunrise in minutes from midnight (default 6:00 AM)
 let vcSsMins = 1080;    // sunset in minutes from midnight (default 6:00 PM)
@@ -222,8 +224,6 @@ function vcBuildDialTicks() {
     g.appendChild(line);
   }
 }
-vcBuildDialTicks();
-
 // ── Live tick (runs every 400 ms — smooth enough for Vipal = 0.4 s) ─────────
 function vcTick() {
   const now    = new Date();
@@ -354,7 +354,7 @@ function vcTick() {
   vcSet("vc-sr-val",  data.srFormatted);
   vcSet("vc-ss-val",  data.ssFormatted);
   vcSet("vc-daylen",  data.dayLen);
-  vcTick();
+  if (vcActive) vcTick();
 };
 
 // ── Mode toggle ─────────────────────────────────────────────────────────────
@@ -366,7 +366,7 @@ document.querySelectorAll<HTMLButtonElement>(".vc-seg-btn").forEach(btn => {
       b.classList.toggle("active", on);
       b.setAttribute("aria-pressed", String(on));
     });
-    vcTick();
+    if (vcActive) vcTick();
   });
 });
 
@@ -377,13 +377,24 @@ document.querySelectorAll<HTMLButtonElement>(".vc-seg-btn").forEach(btn => {
 document.addEventListener('langchange', (e: Event) => {
   const evt = e as CustomEvent;
   vcIsHindi = evt.detail.langCode === 'hi';
-  vcTick();
+  if (vcActive) vcTick();
 });
 if (localStorage.getItem('pp-lang') === 'hi') vcIsHindi = true;
 
 // ── Start ────────────────────────────────────────────────────────────────────
-vcTick();
-setInterval(vcTick, 400);
+// Deferred until the card is about to scroll into view — see lazy-init.ts.
+// Building the 60-tick SVG dial and starting the 400ms tick loop up front
+// was forcing DOM work (and a page-wide relayout) on every load even when
+// this section was never scrolled to.
+let vcActive = false;
+function vcActivate() {
+  if (vcActive) return;
+  vcActive = true;
+  vcBuildDialTicks();
+  vcTick();
+  setInterval(vcTick, 400);
+}
+onVisible(document.getElementById('vedic-clock-section'), vcActivate);
 </script>
 
 <style>
@@ -491,9 +502,13 @@ setInterval(vcTick, 400);
 /* ── Two-column body ── */
 .vc-body {
   display: grid;
-  grid-template-columns: 1fr 260px;
+  grid-template-columns: minmax(0, 1fr) 260px;
   gap: 32px;
   align-items: start;
+}
+.vc-body > .vc-face,
+.vc-body > .vc-info-panel {
+  min-width: 0;
 }
 
 /* ── Clock face ── */
@@ -667,12 +682,15 @@ setInterval(vcTick, 400);
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  min-width: 0;
 }
 .vc-eq-val {
   font-size: 13px;
   font-weight: 600;
   color: var(--color-ink);
   text-align: right;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 .vc-explainer {
   font-size: 12.5px;
@@ -683,15 +701,16 @@ setInterval(vcTick, 400);
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .vc-body { grid-template-columns: 1fr; }
+  .vc-body { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 600px) {
   .vc-card > .bezel-inner { padding: 20px; }
-  .vc-ghati-num { font-size: 48px; }
-  .vc-pal-num   { font-size: 40px; }
-  .vc-vipal-num { font-size: 34px; }
-  .vc-sep { font-size: 40px; }
-  .vc-col { min-width: 64px; }
+  .vc-face { padding: 20px 14px; }
+  .vc-ghati-num { font-size: 42px; }
+  .vc-pal-num   { font-size: 36px; }
+  .vc-vipal-num { font-size: 30px; }
+  .vc-sep { font-size: 36px; padding: 4px 2px 0; }
+  .vc-col { min-width: 56px; }
   .vc-strip { flex-direction: column; align-items: flex-start; }
   .vc-weekday-txt { margin-left: 0; }
 }

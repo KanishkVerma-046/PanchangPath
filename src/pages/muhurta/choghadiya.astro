@@ -71,7 +71,7 @@ const fmt = formatMinutes12h;
                   <span style={`font-size:10px;font-weight:600;color:${qColor};background:${info.bgColor};padding:1px 6px;border-radius:100px;border:1px solid ${info.color}33;`}>{qLabel}</span>
                 </div>
                 <p style={`font-size:11px;color:${info.color};margin:0 0 2px;font-family:var(--font-mono);`}>{fmt(slot.start)} – {fmt(slot.end)}</p>
-                <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;">{info.nameHi} · {info.planet}</p>
+                <p style="font-size:11px;color:var(--color-mute);margin:2px 0 0;">{info.nameHi} · {info.planet}</p>
               </div>
             );
           })}
@@ -96,7 +96,7 @@ const fmt = formatMinutes12h;
                   <span style={`font-size:10px;font-weight:600;color:${qColor};background:${info.bgColor};padding:1px 6px;border-radius:100px;border:1px solid ${info.color}33;`}>{qLabel}</span>
                 </div>
                 <p style={`font-size:11px;color:${info.color};margin:0 0 2px;font-family:var(--font-mono);`}>{fmt(slot.start)} – {fmt(slot.end)}</p>
-                <p style="font-size:10px;color:var(--color-mute);margin:2px 0 0;">{info.nameHi} · {info.planet}</p>
+                <p style="font-size:11px;color:var(--color-mute);margin:2px 0 0;">{info.nameHi} · {info.planet}</p>
               </div>
             );
           })}
@@ -205,7 +205,7 @@ function makeSlot(name:string,startMins:number,endMins:number,isCurrent:boolean)
       <span style="font-size:10px;font-weight:600;color:${qColor};${isCurrent?'':'background:'+d.bg+';padding:1px 6px;border-radius:100px;border:1px solid '+d.fg+'33;'}">${trQ(d.q)}${isCurrent?(isHindi?' · अभी':' · NOW'):''}</span>
     </div>
     <p style="font-size:11px;color:${fg};margin:0 0 2px;font-family:var(--font-mono);">${fmtMins(startMins)} – ${fmtMins(endMins)}</p>
-    <p style="font-size:10px;color:${muted};margin:2px 0 0;">${d.hi} · ${d.planet}</p>
+    <p style="font-size:11px;color:${muted};margin:2px 0 0;">${d.hi} · ${d.planet}</p>
   </div>`;
 }
 
@@ -256,8 +256,8 @@ function renderLegend(){
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <span style="width:10px;height:10px;border-radius:50%;background:${d.fg};flex-shrink:0;"></span>
         <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${name}</span>
-        <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${d.hi}</span>
-        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626'};">${trQ(d.q)}</span>
+        <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">${d.hi}</span>
+        <span style="margin-left:auto;font-size:11px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#b45309':d.q==='Neutral'?'#6d28d9':'#dc2626'};">${trQ(d.q)}</span>
       </div>
       <p style="font-size:11px;color:var(--color-mute);margin:0 0 4px;font-family:var(--font-mono);">${isHindi?'ग्रह':'Planet'}: ${d.planet}</p>
       <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${isHindi?d.suitableHi:d.suitable}</p>

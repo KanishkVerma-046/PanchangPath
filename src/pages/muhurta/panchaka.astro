@@ -119,8 +119,8 @@ const panchakaFaqJsonLd = {
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
                   <span style={`font-size:13px;font-weight:700;color:${style.fg};`}>{slot.name}</span>
                 </div>
-                <p style="font-size:10px;color:var(--color-mute);margin:0;">{fmt(slot.start)} – {fmt(slot.end)}</p>
-                <p style={`font-size:10px;color:${style.fg};margin:2px 0 0;`}>{gowriQLabel(q)}</p>
+                <p style="font-size:11px;color:var(--color-mute);margin:0;">{fmt(slot.start)} – {fmt(slot.end)}</p>
+                <p style={`font-size:11px;color:${style.fg};margin:2px 0 0;`}>{gowriQLabel(q)}</p>
               </div>
             );
           })}
@@ -138,8 +138,8 @@ const panchakaFaqJsonLd = {
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
                   <span style={`font-size:13px;font-weight:700;color:${style.fg};`}>{slot.name}</span>
                 </div>
-                <p style="font-size:10px;color:var(--color-mute);margin:0;">{fmt(slot.start)} – {fmt(slot.end)}</p>
-                <p style={`font-size:10px;color:${style.fg};margin:2px 0 0;`}>{gowriQLabel(q)}</p>
+                <p style="font-size:11px;color:var(--color-mute);margin:0;">{fmt(slot.start)} – {fmt(slot.end)}</p>
+                <p style={`font-size:11px;color:${style.fg};margin:2px 0 0;`}>{gowriQLabel(q)}</p>
               </div>
             );
           })}
@@ -258,8 +258,8 @@ function makeGowriSlot(name:string,s:number,e:number,isCurrent:boolean){
       <span style="font-size:13px;font-weight:700;color:${fg};">${name}</span>
       ${isCurrent?`<span style="font-size:9px;font-weight:700;background:color-mix(in srgb, var(--color-on-primary), transparent 80%);color:var(--color-on-primary);padding:1px 6px;border-radius:100px;">${isHindi?'अभी':'NOW'}</span>`:''}
     </div>
-    <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 40%)':'var(--color-mute)'};margin:0;">${fmtMins(s)} – ${fmtMins(e)}</p>
-    <p style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':d.fg};margin:2px 0 0;">${trQ(d.q)}</p>
+    <p style="font-size:11px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 40%)':'var(--color-mute)'};margin:0;">${fmtMins(s)} – ${fmtMins(e)}</p>
+    <p style="font-size:11px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':d.fg};margin:2px 0 0;">${trQ(d.q)}</p>
   </div>`;
 }
 
@@ -328,7 +328,7 @@ function renderGowriLegend(){
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
         <span style="width:8px;height:8px;border-radius:50%;background:${d.fg};flex-shrink:0;"></span>
         <span style="font-size:12px;font-weight:600;color:var(--color-ink);">${name}</span>
-        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'||d.q==='Good'?d.fg:'#dc2626'};">${trQ(d.q)}</span>
+        <span style="margin-left:auto;font-size:11px;font-weight:600;color:${d.q==='Best'||d.q==='Good'?d.fg:'#dc2626'};">${trQ(d.q)}</span>
       </div>
       <p style="font-size:11px;color:var(--color-body-text);margin:0;">${isHindi?d.suitableHi:d.suitable}</p>
     </div>

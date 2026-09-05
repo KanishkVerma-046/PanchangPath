@@ -90,10 +90,29 @@ const currentYear = new Date().getFullYear();
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={imageUrl} />
   <meta name="twitter:image:alt" content={imageAlt} />
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Tiro+Devanagari+Hindi:ital@0;1&family=JetBrains+Mono:wght@400&display=swap" />
+  <!-- Self-hosted fonts (public/fonts.css + public/fonts/*.woff2) — same
+       families/weights/styles as before, served same-origin. Was a Google
+       Fonts <link>: that added an extra cross-origin CSS→font round trip and
+       staggered each font's arrival, and each arrival forced a full-page
+       reflow (measured ~300-600ms per font on a throttled mid-range phone,
+       the dominant cost in a mobile perf audit). Preloading the two fonts
+       used above the fold (body + heading) lets them start downloading
+       immediately instead of waiting on fonts.css to parse. -->
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Inter-latin.woff2" crossorigin />
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/Cormorant-normal-latin.woff2" crossorigin />
+  <!-- Loaded non-blocking (classic loadCSS media=print trick): fonts.css is
+       just @font-face rules, not layout/visual CSS, so there's no
+       flash-of-unstyled-content risk in deferring it — text already renders
+       in its fallback font immediately via font-display:swap regardless of
+       when this parses, and the two font files above are already fetching
+       via preload independent of this file's load order. This was one of
+       three render-blocking stylesheets a Lighthouse audit flagged; the
+       other two (global.css and index.astro's own styles) are left blocking
+       on purpose — deferring the site's actual layout/color CSS would cause
+       a real unstyled flash across all 440 pages for a few hundred ms of
+       gain, which isn't worth it on a site this design-invested. -->
+  <link rel="stylesheet" href="/fonts.css" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="/fonts.css" /></noscript>
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@graph': [

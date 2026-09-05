@@ -75,7 +75,7 @@ const horaQColor = (q: string) => q==='Best'?'#15803d':q==='Good'?'#1d4ed8':q===
                   <span style={`width:8px;height:8px;border-radius:50%;background:${meta.color};flex-shrink:0;`}></span>
                   <div style="flex:1;min-width:0;">
                     <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{slot.planet}</span>
-                    <span style="font-size:10px;color:var(--color-mute);margin-left:6px;font-family:var(--font-mono);">{meta.hi}</span>
+                    <span style="font-size:11px;color:var(--color-mute);margin-left:6px;font-family:var(--font-mono);">{meta.hi}</span>
                   </div>
                   <div style="text-align:right;">
                     <span style="font-size:11px;color:var(--color-body-text);font-family:var(--font-mono);">{fmt(slot.start)}</span>
@@ -97,7 +97,7 @@ const horaQColor = (q: string) => q==='Best'?'#15803d':q==='Good'?'#1d4ed8':q===
                   <span style={`width:8px;height:8px;border-radius:50%;background:${meta.color};flex-shrink:0;`}></span>
                   <div style="flex:1;min-width:0;">
                     <span style="font-size:13px;font-weight:600;color:var(--color-ink);">{slot.planet}</span>
-                    <span style="font-size:10px;color:var(--color-mute);margin-left:6px;font-family:var(--font-mono);">{meta.hi}</span>
+                    <span style="font-size:11px;color:var(--color-mute);margin-left:6px;font-family:var(--font-mono);">{meta.hi}</span>
                   </div>
                   <div style="text-align:right;">
                     <span style="font-size:11px;color:var(--color-body-text);font-family:var(--font-mono);">{fmt(slot.start)}</span>
@@ -208,7 +208,7 @@ function makeHoraRow(planet:string,startMins:number,endMins:number,isCurrent:boo
     <span style="width:8px;height:8px;border-radius:50%;background:${d.color};flex-shrink:0;"></span>
     <div style="flex:1;min-width:0;">
       <span style="font-size:13px;font-weight:600;color:${isCurrent?'var(--color-on-primary)':'var(--color-ink)'};">${planet}</span>
-      <span style="font-size:10px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':'var(--color-mute)'};margin-left:6px;font-family:var(--font-mono);">${d.hi}</span>
+      <span style="font-size:11px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 50%)':'var(--color-mute)'};margin-left:6px;font-family:var(--font-mono);">${d.hi}</span>
     </div>
     <div style="text-align:right;">
       <span style="font-size:11px;color:${isCurrent?'color-mix(in srgb, var(--color-on-primary), transparent 20%)':'var(--color-body-text)'};font-family:var(--font-mono);">${fmtMins(startMins)}</span>
@@ -260,8 +260,8 @@ function renderGuide(){
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <span style="width:10px;height:10px;border-radius:50%;background:${d.color};flex-shrink:0;"></span>
         <span style="font-size:13px;font-weight:600;color:var(--color-ink);">${planet}</span>
-        <span style="font-size:10px;color:var(--color-mute);font-family:var(--font-mono);">${d.hi}</span>
-        <span style="margin-left:auto;font-size:10px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#1d4ed8':d.q==='Avoid'?'#dc2626':'#6b7280'};">${trQ(d.q)}</span>
+        <span style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);">${d.hi}</span>
+        <span style="margin-left:auto;font-size:11px;font-weight:600;color:${d.q==='Best'?'#15803d':d.q==='Good'?'#1d4ed8':d.q==='Avoid'?'#dc2626':'#6b7280'};">${trQ(d.q)}</span>
       </div>
       <p style="font-size:14px;color:var(--color-body-text);margin:0;line-height:1.5;">${isHindi?d.suitableHi:d.suitable}</p>
     </div>

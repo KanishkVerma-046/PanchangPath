@@ -153,8 +153,6 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
 </section>
 
 <script>
-import { getRashiByNameLetter } from '../lib/rashifal';
-
 // ─── Language ────────────────────────────────────────────────────────────────
 // Mirrors the applyPageLang() pattern used by rashifal/index.astro: Header.astro's
 // global [data-hi] swap only fires once per langchange, so JS-generated strings
@@ -260,7 +258,14 @@ const RASHI_ID: Record<string, string> = {
   Tula:"tula",Vrishchika:"vrishchika",Dhanu:"dhanu",Makara:"makara",Kumbha:"kumbha",Meena:"meena",
 };
 
-function findByName(name: string): string | undefined {
+// Dynamically imported on first use instead of statically at the top of this
+// module — lib/rashifal.ts's default export also carries the full RASHIS data
+// array (every rashi's daily/weekly/monthly/yearly prediction text, in both
+// languages), and a static import of just this one helper still pulls that
+// whole ~120KB module into the homepage's initial JS bundle. Most visitors
+// never touch this "find by name" tool, so load it only if they do.
+async function findByName(name: string): Promise<string | undefined> {
+  const { getRashiByNameLetter } = await import('../lib/rashifal');
   const rashi = getRashiByNameLetter(name);
   return rashi?.name; // e.g. "Mesha" — keeps the capitalized-name contract RASHI_HI/RASHI_ID below expect
 }
@@ -312,11 +317,11 @@ function showResult(el: HTMLElement, rashi: string, dateStr?: string) {
   el.hidden = false;
 }
 
-document.getElementById('name-find-btn')?.addEventListener('click', () => {
+document.getElementById('name-find-btn')?.addEventListener('click', async () => {
   const val = (document.getElementById('name-input') as HTMLInputElement)?.value ?? '';
   const result = document.getElementById('name-result') as HTMLElement;
   if (!val.trim()) { result.textContent = rfIsHindi ? 'कृपया एक नाम दर्ज करें।' : 'Please enter a name.'; result.hidden = false; return; }
-  const rashi = findByName(val);
+  const rashi = await findByName(val);
   if (rashi) showResult(result, rashi);
   else { result.textContent = rfIsHindi ? 'इस नाम से राशि निर्धारित नहीं हो सकी। जन्म तिथि टूल आज़माएं।' : 'Could not determine Rashi from this name. Try the birth date tool.'; result.hidden = false; }
 });

@@ -927,6 +927,13 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     .search-wrap { max-width: none; }
     .clock-widget { display: none; }
     #header-top { height: 52px; }
+
+    /* Touch targets: 32px square icon buttons are below the 44px guideline.
+       A pure height bump costs no horizontal room (unlike widening these
+       pills, which the language/location pickers' own mobile rules already
+       ration carefully — see their @media max-width:480px comments), so it's
+       safe to take here independent of that width budget. */
+    .hdr-icon-btn { width: 38px; height: 38px; }
   }
   @media (max-width: 480px) {
     .header-container { padding: 0 12px; }

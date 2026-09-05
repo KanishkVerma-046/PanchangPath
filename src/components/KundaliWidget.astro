@@ -14,7 +14,7 @@ const initChartSvg = drawNorthDiamond(init);
 ---
 
 <!-- ─── Lagna Kundali Widget ─── -->
-<section class="kw-section">
+<section class="kw-section" id="kundali-widget-root">
   <p class="eyebrow reveal">Live Birth Chart</p>
   <div class="kw-card bezel-outer reveal">
    <div class="bezel-inner">
@@ -402,6 +402,7 @@ text.kwc-chip:hover { fill: var(--color-saffron-deep) !important; }
 <!-- ─── Client script ─── -->
 <script>
 import { calculateKundali, drawNorthDiamond, drawSouthGrid } from '../lib/kundali';
+import { onVisible } from '../lib/lazy-init';
 
 const PLANET_ICONS: Record<string, string> = JSON.parse(document.getElementById('planet-icons-data')!.textContent || '{}');
 
@@ -507,10 +508,14 @@ function updateTimestamp(date: Date, cityName: string) {
 
 // ─── State ────────────────────────────────────────────────────────────────────
 let kwLat = 28.6139, kwLng = 77.2090, kwCity = 'New Delhi';
+let kwActivated = false;
 
 // Global function called by index.astro after location changes
 (window as any).updateKundaliWidget = function(lat: number, lng: number, cityName: string) {
   kwLat = lat; kwLng = lng; kwCity = cityName;
+  // If the widget hasn't scrolled into view yet, skip the render — activate()
+  // (below) will pick up these updated coordinates whenever it does.
+  if (!kwActivated) return;
   const now = new Date();
   const data = calculateKundali(now, lat, lng, 0);
   fullRender(data);
@@ -519,11 +524,27 @@ let kwLat = 28.6139, kwLng = 77.2090, kwCity = 'New Delhi';
 
 // ─── Init & live Lagna update ─────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  // Initial calculation
-  const now = new Date();
-  const data = calculateKundali(now, kwLat, kwLng, 0);
-  fullRender(data);
-  updateTimestamp(now, kwCity);
+  // The server-rendered chart/table (see the frontmatter's initChartSvg) is
+  // already correct as of build time, so there's no empty-state flash here —
+  // only the "make it live" recompute below is deferred until the widget is
+  // about to scroll into view, instead of running (and forcing a page-wide
+  // relayout) on every load regardless of whether anyone scrolls to it.
+  function activate() {
+    kwActivated = true;
+    const now = new Date();
+    const data = calculateKundali(now, kwLat, kwLng, 0);
+    fullRender(data);
+    updateTimestamp(now, kwCity);
+
+    // Live Lagna update every 2 minutes (Lagna changes ~2° per minute)
+    setInterval(() => {
+      const now = new Date();
+      const data = calculateKundali(now, kwLat, kwLng, 0);
+      fullRender(data);
+      updateTimestamp(now, kwCity);
+    }, 120_000);
+  }
+  onVisible(document.getElementById('kundali-widget-root'), activate);
 
   // Tab switching
   document.querySelectorAll<HTMLElement>('.kw-tab').forEach(btn => {
@@ -562,13 +583,5 @@ document.addEventListener('DOMContentLoaded', () => {
       updateLagnaInfo(currentData);
     }
   });
-
-  // Live Lagna update every 2 minutes (Lagna changes ~2° per minute)
-  setInterval(() => {
-    const now = new Date();
-    const data = calculateKundali(now, kwLat, kwLng, 0);
-    fullRender(data);
-    updateTimestamp(now, kwCity);
-  }, 120_000);
 });
 </script>

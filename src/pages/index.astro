@@ -58,7 +58,7 @@ const TIMELINE_SEGMENTS = [
     <MandalaWatermark size={760} opacity={0.09} />
 
     <!-- Floating stat chip — asymmetric "physical card" accent, desktop only -->
-    <div class="hero-float-chip bezel-outer reveal" style="transition-delay:280ms;">
+    <div class="hero-float-chip bezel-outer">
       <div class="bezel-inner">
         <p class="eyebrow" style="margin:0 0 6px;">Right now</p>
         <p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 2px;font-family:var(--font-heading);">{panchang.tithi.paksha} {panchang.tithi.name}</p>
@@ -68,11 +68,11 @@ const TIMELINE_SEGMENTS = [
 
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;position:relative;padding-top:80px;padding-bottom:64px;">
 
-      <p class="eyebrow reveal" data-hi="द्रिक पंचांग · लाहिड़ी अयनांश">Drik Panchang · Lahiri Ayanamsha</p>
+      <p class="eyebrow" data-hi="द्रिक पंचांग · लाहिड़ी अयनांश">Drik Panchang · Lahiri Ayanamsha</p>
 
       <!-- Festival badge -->
       {todayFestivals.length > 0 && (
-        <div class="reveal" style="margin-bottom:22px;transition-delay:60ms;">
+        <div style="margin-bottom:22px;">
           <a href="/festivals" style="display:inline-flex;align-items:center;gap:8px;background:var(--color-saffron-soft);color:var(--color-saffron-deep);font-size:13px;font-weight:500;padding:5px 12px;border-radius:100px;text-decoration:none;border:1px solid rgba(200,146,42,0.4);">
             <span>🪔</span>
             <span class="en-text">{todayFestivals[0].name} today</span>
@@ -83,17 +83,17 @@ const TIMELINE_SEGMENTS = [
       )}
 
       <!-- Headline -->
-      <h1 class="reveal hero-headline" style="text-wrap:balance;color:var(--color-ink);margin:0 0 18px;max-width:680px;transition-delay:120ms;" id="hero-title">
+      <h1 class="hero-headline" style="text-wrap:balance;color:var(--color-ink);margin:0 0 18px;max-width:680px;" id="hero-title">
         <span class="en-text">Today's <span class="gold-foil-text">Panchang.</span></span>
         <span class="hi-text" style="display:none">आज का <span class="gold-foil-text">पंचांग.</span></span>
       </h1>
-      <p class="reveal" style="font-size:17px;color:var(--color-body-text);margin:0 0 36px;line-height:1.6;max-width:520px;transition-delay:180ms;" id="hero-sub">
+      <p style="font-size:17px;color:var(--color-body-text);margin:0 0 36px;line-height:1.6;max-width:520px;" id="hero-sub">
         <span class="en-text">Precise Hindu almanac for <strong id="loc-display" style="color:var(--color-ink);">{loc.name}</strong> — auto-detected from your location.</span>
         <span class="hi-text" style="display:none"><strong id="loc-display-hi" style="color:var(--color-ink);">{loc.nameHi ?? loc.name}</strong> के लिए सटीक हिंदू पंचांग — आपके स्थान से स्वतः पहचाना गया।</span>
       </p>
 
       <!-- Controls row -->
-      <div class="reveal" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;transition-delay:240ms;">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
         <!-- Date picker -->
         <div style="display:flex;align-items:center;gap:8px;background:var(--color-canvas);border:1px solid var(--color-hairline);border-radius:8px;padding:6px 12px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-mute)" stroke-width="2">
@@ -309,7 +309,7 @@ const TIMELINE_SEGMENTS = [
   </div>
 
   <!-- SEO CONTENT: Full feature guide -->
-  <section style="padding:40px 0 56px;">
+  <section id="seo-content-section" style="padding:40px 0 56px;">
     <div class="container" style="max-width:840px;margin:0 auto;padding:0 24px;">
       <p class="eyebrow reveal">About PanchangPath</p>
       <h2 class="reveal" style="font-size:28px;font-weight:600;letter-spacing:-0.9px;color:var(--color-ink);margin:0 0 20px;transition-delay:60ms;"><span class="en-text">Panchang, Muhurta, Jyotish & Devotional Tools — All in One Place</span><span class="hi-text" style="display:none">पंचांग, मुहूर्त, ज्योतिष और भक्ति उपकरण — सब एक ही स्थान पर</span></h2>
@@ -998,5 +998,37 @@ setInterval(() => { const p = calcPanchang(currentDate, currentLoc); drawTimelin
     #sun-moon-grid { grid-template-columns: 1fr 1fr !important; }
     #sun-abhijit-grid { grid-template-columns: 1fr !important; }
   }
+
+  #panchang-section    { content-visibility: auto; contain-intrinsic-height: auto 1412px; }
+  #seo-content-section { content-visibility: auto; contain-intrinsic-height: auto 6778px; }
+</style>
+
+<!-- is:global (not scoped to this file) because most of these sections are
+     rendered by child components (VedicClock, KundaliWidget, FestivalFeed,
+     PlanetaryEventsFeed, RashifalFeed) — an Astro scoped <style> in this file
+     cannot match elements from another component's own template.
+     content-visibility lets the browser skip layout and paint work for
+     off-screen sections until they're about to scroll into view, instead of
+     laying out the whole ~16,000px homepage on every load. A mobile perf
+     audit found this (not font loading, not JS) was the dominant load-time
+     cost — even with all scripts disabled, the initial layout pass over this
+     page's full DOM still took ~3s on a throttled mid-range phone.
+     contain-intrinsic-height reserves each section's real height so the
+     scrollbar/page height don't jump once a section is actually measured.
+     Excludes the hero and the "Today's Panchang" summary card just below it,
+     which are meant to be visible (or nearly so) immediately. -->
+<style is:global>
+  #vedic-clock-section,
+  #kundali-widget-root,
+  .ff-section,
+  .pef-section,
+  .rf-section {
+    content-visibility: auto;
+  }
+  #vedic-clock-section { contain-intrinsic-height: auto 1142px; }
+  #kundali-widget-root { contain-intrinsic-height: auto 996px; }
+  .ff-section           { contain-intrinsic-height: auto 455px; }
+  .pef-section          { contain-intrinsic-height: auto 1260px; }
+  .rf-section           { contain-intrinsic-height: auto 1107px; }
 </style>
 </Layout>
