@@ -87,24 +87,24 @@ function monthLabelHi(key: string): string {
   <!-- Hero -->
   <section class="ev-hero">
     <div class="ev-hero-inner">
-      <nav class="ev-breadcrumb" aria-label="Breadcrumb">
+      <nav class="ev-breadcrumb reveal" aria-label="Breadcrumb">
         <a href="/" data-hi="होम">Home</a>
         <span aria-hidden="true">›</span>
         <span data-hi="ग्रह घटनाएं">Planetary Events</span>
       </nav>
-      <h1 class="ev-heading">
+      <h1 class="ev-heading reveal" style="transition-delay:60ms;">
         <span class="en-text">Planetary Events</span>&nbsp;
         <span class="hi-text" style="display:none">ग्रह घटनाएँ</span>
       </h1>
-      <p class="ev-sub en-text">
+      <p class="ev-sub en-text reveal" style="transition-delay:120ms;">
         Sign transits, retrogrades, eclipses, conjunctions, and seasonal crossings — next 12 months.
       </p>
-      <p class="ev-sub hi-text" style="display:none">
+      <p class="ev-sub hi-text reveal" style="display:none;transition-delay:120ms;">
         ग्रह राशि परिवर्तन, वक्री, ग्रहण, युति, और ऋतु परिवर्तन — अगले 12 महीने।
       </p>
 
       <!-- Type legend -->
-      <div class="ev-legend" role="group" aria-label="Event types">
+      <div class="ev-legend reveal" style="transition-delay:180ms;" role="group" aria-label="Event types">
         <span class="ev-tag ev-tag-transit" data-hi="राशि परिवर्तन">Transit</span>
         <span class="ev-tag ev-tag-retro" data-hi="वक्री">Retrograde</span>
         <span class="ev-tag ev-tag-direct" data-hi="मार्गी">Direct</span>
@@ -310,7 +310,7 @@ function monthLabelHi(key: string): string {
   text-decoration: none;
   color: inherit;
   border-bottom: 1px solid var(--color-hairline);
-  transition: background 0.15s;
+  transition: background 160ms var(--ease-out);
 }
 .ev-row:last-child { border-bottom: none; }
 .ev-row:hover { background: var(--color-canvas-soft); }
@@ -374,7 +374,7 @@ function monthLabelHi(key: string): string {
   padding: 14px 14px 14px 6px;
   align-self: center;
   flex-shrink: 0;
-  transition: color 0.15s;
+  transition: color 160ms var(--ease-out);
 }
 .ev-row:hover .ev-arrow { color: var(--color-saffron); }
 

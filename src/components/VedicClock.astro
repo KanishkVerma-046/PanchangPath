@@ -6,7 +6,8 @@
 <section id="vedic-clock-section" style="padding:0 0 40px;">
   <h2 class="sr-only"><span class="en-text">Vedic Clock</span><span class="hi-text" style="display:none">वैदिक घड़ी</span></h2>
   <div class="vc-wrap">
-    <div class="card vc-card">
+    <div class="vc-card bezel-outer reveal">
+     <div class="bezel-inner">
 
       <!-- ── Card header ── -->
       <div class="vc-hd">
@@ -145,6 +146,7 @@
 
       </div><!-- /.vc-body -->
 
+     </div><!-- /bezel-inner -->
     </div><!-- /.vc-card -->
   </div>
 </section>
@@ -391,7 +393,7 @@ setInterval(vcTick, 400);
   margin: 0 auto;
   padding: 0 24px;
 }
-.vc-card {
+.vc-card > .bezel-inner {
   padding: 28px 32px;
   border-top: 3px solid var(--color-saffron);
 }
@@ -445,10 +447,11 @@ setInterval(vcTick, 400);
   font-weight: 500;
   color: var(--color-mute);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
   white-space: nowrap;
 }
 .vc-seg-btn:hover { color: var(--color-ink); }
+.vc-seg-btn:active { transform: scale(0.94); }
 .vc-seg-btn.active {
   background: var(--color-ink);
   color: var(--color-on-primary);
@@ -683,7 +686,7 @@ setInterval(vcTick, 400);
   .vc-body { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-  .vc-card { padding: 20px; }
+  .vc-card > .bezel-inner { padding: 20px; }
   .vc-ghati-num { font-size: 48px; }
   .vc-pal-num   { font-size: 40px; }
   .vc-vipal-num { font-size: 34px; }

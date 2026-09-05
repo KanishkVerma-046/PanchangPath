@@ -217,12 +217,13 @@ if (currentLang !== 'en') {
   overflow: hidden;
   max-height: 70vh;
   overflow-y: auto;
-  animation: lng-in 0.13s ease both;
+  animation: lng-in 160ms var(--ease-out) both;
   overscroll-behavior: contain;
+  transform-origin: top right;
 }
 @keyframes lng-in {
-  from { opacity: 0; transform: translateY(-6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ── Section head ──

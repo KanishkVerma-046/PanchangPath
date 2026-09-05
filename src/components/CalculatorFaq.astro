@@ -35,7 +35,8 @@ const faqJsonLd = {
 
 <script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
 
-<div class="card faq-card" style="padding:28px;margin-top:24px;">
+<div class="card faq-card reveal" style="padding:28px;margin-top:24px;">
+  <p class="eyebrow">FAQ</p>
   <h2 class="faq-heading" data-hi="अक्सर पूछे जाने वाले प्रश्न" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 16px;">Frequently Asked Questions</h2>
   <div class="faq-list">
     {items.map((item) => (
@@ -91,6 +92,7 @@ const faqJsonLd = {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-elevation);
     overflow: hidden;
+    transition: box-shadow 220ms var(--ease-in-out);
   }
   .faq-item[open] { box-shadow: var(--shadow-card-hover); }
 
@@ -113,7 +115,7 @@ const faqJsonLd = {
     flex-shrink: 0;
     color: var(--color-saffron-deep);
     font-size: 13px;
-    transition: transform 0.2s;
+    transition: transform 220ms var(--ease-in-out);
   }
   .faq-item[open] .faq-caret { transform: rotate(180deg); }
 

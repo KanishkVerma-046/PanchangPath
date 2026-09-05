@@ -12,9 +12,12 @@ const { code, heading, headingHi, message, messageHi } = Astro.props;
 
 <section style="padding:80px 0;text-align:center;">
   <div class="container">
-    <p class="caption-mono" style="color:var(--color-mute);margin:0 0 12px;">{code}</p>
-    <h1 style="font-size:28px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0 0 12px;" data-hi={headingHi}>{heading}</h1>
-    <p style="font-size:15px;color:var(--color-body-text);margin:0 0 28px;" data-hi={messageHi}>{message}</p>
-    <a href="/" class="btn-primary" style="display:inline-block;padding:10px 24px;text-decoration:none;" data-hi="होम पर वापस जाएं">Back to Home</a>
+    <p class="eyebrow reveal">{code}</p>
+    <h1 class="reveal" style="font-size:28px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0 0 12px;transition-delay:60ms;" data-hi={headingHi}>{heading}</h1>
+    <p class="reveal" style="font-size:15px;color:var(--color-body-text);margin:0 0 28px;transition-delay:120ms;" data-hi={messageHi}>{message}</p>
+    <a href="/" class="btn-primary reveal" style="display:inline-flex;align-items:center;gap:8px;padding:0 24px;text-decoration:none;transition-delay:180ms;">
+      <span data-hi="होम पर वापस जाएं">Back to Home</span>
+      <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
   </div>
 </section>

@@ -7,10 +7,13 @@ import Layout from '../../layouts/Layout.astro';
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
-      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">गृह प्रवेश मुहूर्त</p>
-      <h1 data-hi="गृह प्रवेश मुहूर्त" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Griha Pravesh Muhurat</h1>
-      <p data-hi="वैदिक पंचांग नियमों के आधार पर नए घर में प्रवेश या गृहप्रवेश समारोह के लिए सबसे शुभ तिथियां खोजें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Find the most auspicious dates to enter a new home or conduct a housewarming ceremony, based on Vedic Panchang rules.</p>
+      <a href="/muhurta" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--color-mute);text-decoration:none;">
+        <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span>
+        <span data-hi="मुहूर्त उपकरण">Muhurta Tools</span>
+      </a>
+      <p class="eyebrow reveal" style="margin:12px 0 8px;">गृह प्रवेश मुहूर्त</p>
+      <h1 class="reveal" data-hi="गृह प्रवेश मुहूर्त" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;transition-delay:60ms;">Griha Pravesh Muhurat</h1>
+      <p class="reveal" data-hi="वैदिक पंचांग नियमों के आधार पर नए घर में प्रवेश या गृहप्रवेश समारोह के लिए सबसे शुभ तिथियां खोजें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;transition-delay:120ms;">Find the most auspicious dates to enter a new home or conduct a housewarming ceremony, based on Vedic Panchang rules.</p>
     </div>
   </section>
 
@@ -246,7 +249,9 @@ function findGPDates(scroll=true){
       const isTop=i===0;
       const tc=isTop?'var(--color-on-primary)':'var(--color-ink)';
       const mut=isTop?'color-mix(in srgb, var(--color-on-primary), transparent 40%)':'var(--color-mute)';
-      return `<div class="card" style="padding:18px;${isTop?'background:var(--color-ink);':''}">
+      const openTag=isTop?'<div class="bezel-outer"><div class="bezel-inner" style="padding:18px;background:var(--color-ink);">':'<div class="card" style="padding:18px;">';
+      const closeTag=isTop?'</div></div>':'</div>';
+      return `${openTag}
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
           <div>
             <p style="font-size:16px;font-weight:700;color:${tc};margin:0;">${formatDateHi(r.date, isHindi, { weekday: 'long' })}</p>
@@ -264,7 +269,7 @@ function findGPDates(scroll=true){
           <p style="font-size:10px;color:color-mix(in srgb, var(--color-on-primary), transparent 50%);margin:0 0 2px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.05em;">Avoid Rahu Kala</p>
           <p style="font-size:12px;color:color-mix(in srgb, var(--color-on-primary), transparent 15%);margin:0;">${fmtMins(r.res.rahuStart)} – ${fmtMins(r.res.rahuEnd)}</p>
         </div>`:''}
-      </div>`;
+      ${closeTag}`;
     }).join('');
   }
   secEl.style.display='block';

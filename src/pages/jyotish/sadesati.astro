@@ -33,10 +33,10 @@ const FAQ_ITEMS = [
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
-      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शनि साढ़ेसाती · SHANI SADESATI</p>
-      <h1 data-hi="शनि साढ़े साती कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shani Sadesati Calculator</h1>
-      <p data-hi="साढ़े साती वह 7.5 वर्ष की अवधि है जब शनि आपकी चंद्र राशि से पहले, ऊपर और बाद की राशि में गोचर करता है। अपनी स्थिति और पूर्ण समयरेखा जानें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Sadesati is the 7.5-year period when Saturn transits the sign before, over, and after your Moon sign. Find your status and full timeline.</p>
+      <a href="/jyotish" class="reveal" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--color-mute);text-decoration:none;"><span class="arrow-chip"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span><span data-hi="ज्योतिष उपकरण">Jyotish Tools</span></a>
+      <p class="eyebrow reveal" style="margin:12px 0 8px;transition-delay:40ms;">शनि साढ़ेसाती · SHANI SADESATI</p>
+      <h1 class="reveal" data-hi="शनि साढ़े साती कैलकुलेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;transition-delay:80ms;">Shani Sadesati Calculator</h1>
+      <p class="reveal" data-hi="साढ़े साती वह 7.5 वर्ष की अवधि है जब शनि आपकी चंद्र राशि से पहले, ऊपर और बाद की राशि में गोचर करता है। अपनी स्थिति और पूर्ण समयरेखा जानें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;transition-delay:120ms;">Sadesati is the 7.5-year period when Saturn transits the sign before, over, and after your Moon sign. Find your status and full timeline.</p>
     </div>
   </section>
 
@@ -51,7 +51,9 @@ const FAQ_ITEMS = [
       <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
 
       <div id="result" style="display:none;">
-        <div class="card" id="ss-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
+        <div class="bezel-outer" style="margin-bottom:24px;">
+         <div class="bezel-inner" id="ss-banner" style="padding:32px;text-align:center;"></div>
+        </div>
         <h3 data-hi="आजीवन साढ़े साती समयरेखा" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 14px;">Lifetime Sadesati Timeline</h3>
         <div id="timeline" style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;"></div>
         <div class="card" style="padding:24px;">

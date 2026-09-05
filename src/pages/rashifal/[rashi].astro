@@ -71,7 +71,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
   <!-- Rashi hero banner -->
   <section style={`background:${rashi.gradient};padding:48px 0 40px;`}>
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
-      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div class="reveal" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
         <div style="filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2));">
           <RashiIcon name={rashi.id} color="#fff" size={64} />
         </div>
@@ -124,7 +124,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">☀️</span>
                 <div>
-                  <h2 class="caption-mono" data-hi="दैनिक राशिफल" style="color:var(--color-mute);margin:0;font-weight:400;">Daily Rashifal</h2>
+                  <h2 class="eyebrow" data-hi="दैनिक राशिफल" style="margin:0;">Daily Rashifal</h2>
                   <p id="rp-daily-date" data-hi={dateLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">{dateLabel}</p>
                 </div>
               </div>
@@ -138,7 +138,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">🗓️</span>
                 <div>
-                  <h2 class="caption-mono" data-hi="साप्ताहिक राशिफल" style="color:var(--color-mute);margin:0;font-weight:400;">Weekly Rashifal</h2>
+                  <h2 class="eyebrow" data-hi="साप्ताहिक राशिफल" style="margin:0;">Weekly Rashifal</h2>
                   <p data-hi="वर्तमान सप्ताह का अवलोकन" style="font-size:13px;color:var(--color-body-text);margin:0;">Current week's overview</p>
                 </div>
               </div>
@@ -152,7 +152,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">📆</span>
                 <div>
-                  <h2 class="caption-mono" data-hi="मासिक राशिफल" style="color:var(--color-mute);margin:0;font-weight:400;">Monthly Rashifal</h2>
+                  <h2 class="eyebrow" data-hi="मासिक राशिफल" style="margin:0;">Monthly Rashifal</h2>
                   <p data-hi={monthYearLabelHi} style="font-size:13px;color:var(--color-body-text);margin:0;">
                     {monthYearLabel}
                   </p>
@@ -168,7 +168,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
                 <span style="font-size:20px;">🌟</span>
                 <div>
-                  <h2 class="caption-mono" data-hi="वार्षिक राशिफल" style="color:var(--color-mute);margin:0;font-weight:400;">Yearly Rashifal</h2>
+                  <h2 class="eyebrow" data-hi="वार्षिक राशिफल" style="margin:0;">Yearly Rashifal</h2>
                   <p data-hi={`${today.getFullYear()} अवलोकन`} style="font-size:13px;color:var(--color-body-text);margin:0;">{today.getFullYear()} Overview</p>
                 </div>
               </div>
@@ -187,7 +187,10 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
               <p data-hi="प्रश्नावली दैवज्ञ से पूछें" style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 3px;">Ask the Prashnavali Oracle</p>
               <p data-hi="अपने गहनतम प्रश्न पर ध्यान केंद्रित करें और एक दिव्य लौकिक उत्तर प्राप्त करें" style="font-size:12.5px;color:var(--color-body-text);margin:0;">Focus on your deepest question and receive a divine cosmic answer</p>
             </div>
-            <span data-hi="खोलें →" style="margin-left:auto;font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open →</span>
+            <span style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--color-saffron-deep);">
+              <span data-hi="खोलें">Open</span>
+              <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </span>
           </a>
         </div>
 
@@ -195,7 +198,7 @@ const nextRashi = allRashis[(currentIdx + 1) % allRashis.length];
         <aside class="rd-sidebar">
           <!-- Rashi details -->
           <div class="card" style="padding:20px;margin-bottom:12px;">
-            <p class="caption-mono" data-hi={`${rashi.nameHi} · अवलोकन`} style="color:var(--color-mute);margin:0 0 16px;">{rashi.name} · Overview</p>
+            <p class="eyebrow" data-hi={`${rashi.nameHi} · अवलोकन`}>{rashi.name} · Overview</p>
             <div class="rd-info-grid">
               <div class="rd-info-item">
                 <span class="rd-info-label" data-hi="स्वामी ग्रह">Ruling Planet</span>
@@ -345,12 +348,13 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   font-size: 12.5px;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.15s;
+  transition: background 160ms var(--ease-out), transform 160ms var(--ease-out);
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   white-space: nowrap;
 }
 .rashi-nav-btn:hover { background: rgba(255,255,255,0.25); }
+.rashi-nav-btn:active { transform: scale(0.96); }
 
 .rp-tab {
   height: 36px;
@@ -363,10 +367,11 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   font-weight: 500;
   color: var(--color-body-text);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition: background 160ms var(--ease-out), color 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .rp-tab:hover { border-color: var(--color-saffron); color: var(--color-saffron-deep); }
 .rp-tab.active { background: var(--color-ink); color: var(--color-on-primary); border-color: var(--color-ink); }
+.rp-tab:active { transform: scale(0.95); }
 
 .rd-info-grid { display: flex; flex-direction: column; gap: 10px; }
 .rd-info-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; }

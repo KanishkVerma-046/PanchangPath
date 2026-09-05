@@ -35,9 +35,9 @@ const DESC_HI: Record<string, string> = {
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <MandalaWatermark size={480} opacity={0.06} />
     <div class="container" style="position:relative;">
-      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">भक्ति साहित्य · DEVOTIONAL LIBRARY</p>
-      <h1 data-hi="भक्ति सामग्री पुस्तकालय" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Devotional Content Library</h1>
-      <p data-hi="हिंदू भक्ति ग्रंथों का एक निःशुल्क, बढ़ता हुआ संग्रह — आरती, चालीसा, स्तोत्र, अष्टकम्, वैदिक मंत्र, यंत्र, नामावली, दुर्गा सप्तशती, सुंदरकांड, व्रत कथा और पूजा विधि मार्गदर्शिकाएं — प्रत्येक में देवनागरी बोल, लिप्यंतरण और अर्थ सहित।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">A free, growing collection of Hindu devotional texts — Aartis, Chalisas, Stotrams, Ashtakams, Vedic Mantras, Yantras, Namavalis, the Durga Saptashati, Sundarkand, Vrat Kathas and Puja Vidhi guides — each with Devanagari lyrics, transliteration and meaning.</p>
+      <p class="eyebrow reveal">भक्ति साहित्य · Devotional Library</p>
+      <h1 class="reveal" data-hi="भक्ति सामग्री पुस्तकालय" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;transition-delay:60ms;">Devotional Content Library</h1>
+      <p class="reveal" data-hi="हिंदू भक्ति ग्रंथों का एक निःशुल्क, बढ़ता हुआ संग्रह — आरती, चालीसा, स्तोत्र, अष्टकम्, वैदिक मंत्र, यंत्र, नामावली, दुर्गा सप्तशती, सुंदरकांड, व्रत कथा और पूजा विधि मार्गदर्शिकाएं — प्रत्येक में देवनागरी बोल, लिप्यंतरण और अर्थ सहित।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;transition-delay:120ms;">A free, growing collection of Hindu devotional texts — Aartis, Chalisas, Stotrams, Ashtakams, Vedic Mantras, Yantras, Namavalis, the Durga Saptashati, Sundarkand, Vrat Kathas and Puja Vidhi guides — each with Devanagari lyrics, transliteration and meaning.</p>
     </div>
   </section>
 
@@ -45,9 +45,9 @@ const DESC_HI: Record<string, string> = {
   <section style="padding:36px 0 48px;">
     <div class="container">
       <div class="dv-cat-grid">
-        {categories.map((c) => (
+        {categories.map((c, i) => (
           c.built ? (
-            <a href={c.url} class="dv-cat-card card">
+            <a href={c.url} class="dv-cat-card card reveal" style={`transition-delay:${Math.min(i, 8) * 40}ms;`}>
               <span class="dv-cat-icon" style={`background:${c.gradient}`}>{c.icon}</span>
               <div class="dv-cat-body">
                 <h3 class="dv-cat-title"><span class="en-text">{c.label}</span><span class="hi-text" style="display:none">{c.labelHi}</span></h3>
@@ -56,7 +56,7 @@ const DESC_HI: Record<string, string> = {
               </div>
             </a>
           ) : (
-            <div class="dv-cat-card dv-cat-soon card">
+            <div class="dv-cat-card dv-cat-soon card reveal" style={`transition-delay:${Math.min(i, 8) * 40}ms;`}>
               <span class="dv-cat-icon" style={`background:${c.gradient}`}>{c.icon}</span>
               <div class="dv-cat-body">
                 <h3 class="dv-cat-title"><span class="en-text">{c.label}</span><span class="hi-text" style="display:none">{c.labelHi}</span></h3>

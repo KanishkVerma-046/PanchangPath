@@ -15,7 +15,9 @@ const initChartSvg = drawNorthDiamond(init);
 
 <!-- ─── Lagna Kundali Widget ─── -->
 <section class="kw-section">
-  <div class="kw-card">
+  <p class="eyebrow reveal">Live Birth Chart</p>
+  <div class="kw-card bezel-outer reveal">
+   <div class="bezel-inner">
 
     <!-- Header row -->
     <div class="kw-header">
@@ -86,9 +88,15 @@ const initChartSvg = drawNorthDiamond(init);
     <!-- Footer -->
     <div class="kw-footer">
       <span class="kw-note" data-hi="लाहिड़ी अयनांश · उष्णकटिबंधीय से नाक्षत्र">Lahiri Ayanamsha · Tropical-to-Sidereal</span>
-      <a href="/jyotish/kundali" class="ps-more-link" data-hi="पूर्ण कुंडली →">Full Kundali →</a>
+      <a href="/jyotish/kundali" class="ps-more-link">
+        <span data-hi="पूर्ण कुंडली">Full Kundali</span>
+        <span class="arrow-chip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
     </div>
 
+   </div><!-- .bezel-inner -->
   </div><!-- .kw-card -->
 
   <!-- Planet detail popup -->
@@ -111,13 +119,8 @@ const initChartSvg = drawNorthDiamond(init);
   position: relative;
 }
 
-.kw-card {
-  background: var(--color-canvas);
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-lg, 12px);
-  box-shadow: var(--shadow-elevation);
-  overflow: hidden;
-}
+/* Background/border/radius/shadow/overflow now come from
+   .bezel-outer/.bezel-inner (see global.css). */
 
 /* ── Header ── */
 .kw-header {
@@ -171,8 +174,9 @@ const initChartSvg = drawNorthDiamond(init);
   border: none;
   cursor: pointer;
   color: var(--color-mute);
-  transition: background 0.15s, color 0.15s;
+  transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
+.kw-tab:active { transform: scale(0.94); }
 .kw-tab + .kw-tab { border-left: 1px solid var(--color-hairline); }
 .kw-tab.active {
   background: var(--color-saffron);

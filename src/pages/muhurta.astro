@@ -30,9 +30,9 @@ const quickDateLabelHi = formatDateIST(new Date(), true, { weekday: 'long', mont
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <MandalaWatermark size={480} opacity={0.06} />
     <div class="container" style="position:relative;">
-      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;">मुहूर्त · Shubh Muhurta</p>
-      <h1 data-hi="मुहूर्त उपकरण" style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Muhurta Tools.</h1>
-      <p data-hi="संपूर्ण शुभ मुहूर्त टूलकिट — दैनिक चौघड़िया, ग्रह होरा, लग्न तालिका, और जीवन की महत्वपूर्ण घटनाओं के लिए तिथि खोजक। सभी गणनाएं द्रिक खगोलीय पद्धति और लाहिड़ी अयनांश पर आधारित हैं।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:540px;">Complete auspicious timing toolkit — daily Choghadiya, planetary hours, Lagna table, and life-event date finders. All calculations use Drik astronomical method with Lahiri ayanamsha.</p>
+      <p class="eyebrow reveal">मुहूर्त · Shubh Muhurta</p>
+      <h1 class="reveal" data-hi="मुहूर्त उपकरण" style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;transition-delay:60ms;">Muhurta Tools.</h1>
+      <p class="reveal" data-hi="संपूर्ण शुभ मुहूर्त टूलकिट — दैनिक चौघड़िया, ग्रह होरा, लग्न तालिका, और जीवन की महत्वपूर्ण घटनाओं के लिए तिथि खोजक। सभी गणनाएं द्रिक खगोलीय पद्धति और लाहिड़ी अयनांश पर आधारित हैं।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:540px;transition-delay:120ms;">Complete auspicious timing toolkit — daily Choghadiya, planetary hours, Lagna table, and life-event date finders. All calculations use Drik astronomical method with Lahiri ayanamsha.</p>
     </div>
   </section>
 
@@ -78,7 +78,7 @@ const quickDateLabelHi = formatDateIST(new Date(), true, { weekday: 'long', mont
           { href:'/muhurta/abhijit', icon:'☀️', title:'Abhijit Muhurat', titleHi:'अभिजित मुहूर्त', desc:'The most auspicious midday window. Also Do Ghati & Brahma Muhurta.', descHi:'दिन का सबसे शुभ समय। साथ ही दो घटी व ब्रह्म मुहूर्त भी।' },
           { href:'/muhurta/panchaka', icon:'🌙', title:'Panchaka & Gowri', titleHi:'पंचक · गौरी पंचांग', desc:'Panchaka inauspicious periods and Gowri Panchangam for South India.', descHi:'पंचक अशुभ अवधि और दक्षिण भारत के लिए गौरी पंचांगम।' },
         ].map(t => (
-          <a href={t.href} class="card" style="padding:20px;text-decoration:none;display:block;transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <a href={t.href} class="card" style="padding:20px;text-decoration:none;display:block;">
             <div style="font-size:24px;margin-bottom:10px;">{t.icon}</div>
             <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;" data-hi={t.titleHi}>{t.title}</p>
             <p style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 8px;" data-hi={t.title}>{t.titleHi}</p>
@@ -98,7 +98,7 @@ const quickDateLabelHi = formatDateIST(new Date(), true, { weekday: 'long', mont
           { href:'/muhurta/shubha-dates?activity=business', icon:'💼', title:'Business Start', titleHi:'व्यापार मुहूर्त', desc:'Lucky dates to start a new business, shop, or venture.', descHi:'नया व्यापार, दुकान या उद्यम शुरू करने के लिए शुभ तिथियां।', badge:'', badgeHi:'' },
           { href:'/muhurta/shubha-dates', icon:'📅', title:'Shubha Dates', titleHi:'शुभ दिन', desc:'General auspicious date finder for any important activity.', descHi:'किसी भी महत्वपूर्ण कार्य के लिए सामान्य शुभ तिथि खोजक।', badge:'', badgeHi:'' },
         ].map(t => (
-          <a href={t.href} class="card" style="padding:20px;text-decoration:none;display:block;position:relative;transition:transform 0.15s,box-shadow 0.15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 4px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+          <a href={t.href} class="card" style="padding:20px;text-decoration:none;display:block;position:relative;">
             {t.badge && <span data-hi={t.badgeHi} style="position:absolute;top:12px;right:12px;font-size:9px;font-weight:700;padding:2px 8px;background:var(--color-saffron-soft);color:var(--color-saffron-deep);border-radius:100px;border:1px solid rgba(255,153,51,0.3);">{t.badge}</span>}
             <div style="font-size:24px;margin-bottom:10px;">{t.icon}</div>
             <p style="font-size:14px;font-weight:600;color:var(--color-ink);margin:0 0 2px;" data-hi={t.titleHi}>{t.title}</p>

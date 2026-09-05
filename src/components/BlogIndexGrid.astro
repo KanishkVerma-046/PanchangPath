@@ -15,9 +15,9 @@ const sorted = sortedByNewest(posts);
 <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
   <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
   <div class="container" style="position:relative;">
-    <p class="caption-mono" data-hi="ब्लॉग" style="color:var(--color-mute);margin:0 0 8px;">BLOG</p>
-    <h1 style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;" data-hi="पंचांगपथ ब्लॉग">PanchangPath Blog</h1>
-    <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;" data-hi="पंचांग, त्योहार, मुहूर्त समय, ज्योतिष और भक्ति साधना पर मार्गदर्शिकाएं।">Guides on Panchang, festivals, muhurta timing, Jyotish and devotional practice.</p>
+    <p class="eyebrow reveal" data-hi="ब्लॉग">Blog</p>
+    <h1 class="reveal" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;transition-delay:60ms;" data-hi="पंचांगपथ ब्लॉग">PanchangPath Blog</h1>
+    <p class="reveal" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;transition-delay:120ms;" data-hi="पंचांग, त्योहार, मुहूर्त समय, ज्योतिष और भक्ति साधना पर मार्गदर्शिकाएं।">Guides on Panchang, festivals, muhurta timing, Jyotish and devotional practice.</p>
   </div>
 </section>
 
@@ -28,8 +28,8 @@ const sorted = sortedByNewest(posts);
       <p class="bl-empty" data-hi="अभी तक कोई पोस्ट नहीं — जल्द ही वापस देखें।">No posts yet — check back soon.</p>
     ) : (
       <div class="bl-idx-grid">
-        {sorted.map((post) => (
-          <a href={`/blog/${post.slug}`} class="bl-idx-card card">
+        {sorted.map((post, i) => (
+          <a href={`/blog/${post.slug}`} class="bl-idx-card card reveal" style={`transition-delay:${Math.min(i, 8) * 40}ms;`}>
             <div>
               <h3 class="bl-idx-title" data-hi={post.titleHi}>{post.title}</h3>
               <p class="bl-idx-desc" data-hi={post.descriptionHi}>{post.description}</p>

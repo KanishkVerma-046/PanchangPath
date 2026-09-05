@@ -29,12 +29,14 @@ function typeLabelHi(type: string) {
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <p class="caption-mono" data-hi="पुरालेख" style="color:var(--color-mute);margin:0 0 10px;">Archive</p>
-      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;"><span class="en-text">Past Festivals &amp; Vrats.</span><span class="hi-text" style="display:none">पिछले त्योहार और व्रत।</span></h1>
-      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;"><span class="en-text">All {past.length} previously celebrated Hindu festivals and vrats, listed chronologically with full details.</span><span class="hi-text" style="display:none">सभी {past.length} पूर्व में मनाए गए हिंदू त्योहार और व्रत, विस्तृत जानकारी के साथ कालानुक्रमिक रूप से सूचीबद्ध।</span></p>
-      <p style="margin:16px 0 0;">
-        <a href="/festivals" class="en-text" style="font-size:14px;font-weight:500;color:var(--color-primary);text-decoration:none;">&larr; Back to upcoming festivals</a>
-        <a href="/festivals" class="hi-text" style="display:none;font-size:14px;font-weight:500;color:var(--color-primary);text-decoration:none;">&larr; आगामी त्योहारों पर वापस जाएं</a>
+      <p class="eyebrow reveal" data-hi="पुरालेख">Archive</p>
+      <h1 class="reveal" style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;transition-delay:60ms;"><span class="en-text">Past Festivals &amp; Vrats.</span><span class="hi-text" style="display:none">पिछले त्योहार और व्रत।</span></h1>
+      <p class="reveal" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;transition-delay:120ms;"><span class="en-text">All {past.length} previously celebrated Hindu festivals and vrats, listed chronologically with full details.</span><span class="hi-text" style="display:none">सभी {past.length} पूर्व में मनाए गए हिंदू त्योहार और व्रत, विस्तृत जानकारी के साथ कालानुक्रमिक रूप से सूचीबद्ध।</span></p>
+      <p class="reveal" style="margin:16px 0 0;transition-delay:160ms;">
+        <a href="/festivals" style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--color-saffron-deep);text-decoration:none;">
+          <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span>
+          <span class="en-text">Back to upcoming festivals</span><span class="hi-text" style="display:none">आगामी त्योहारों पर वापस जाएं</span>
+        </a>
       </p>
     </div>
   </section>

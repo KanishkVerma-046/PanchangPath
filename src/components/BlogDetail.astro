@@ -53,15 +53,15 @@ const faqJsonLd = faqPairs.length > 0 ? {
 <!-- Hero -->
 <section class="bl-hero">
   <div class="bl-hero-inner">
-    <div class="bl-breadcrumb">
+    <div class="bl-breadcrumb reveal">
       <a href="/" data-hi="होम">Home</a>
       <span aria-hidden="true">›</span>
       <a href="/blog" data-hi="ब्लॉग">Blog</a>
       <span aria-hidden="true">›</span>
       <span data-hi={post.titleHi}>{post.title}</span>
     </div>
-    <h1 class="bl-heading" data-hi={post.titleHi}>{post.title}</h1>
-    <p class="bl-hero-meta">
+    <h1 class="bl-heading reveal" style="transition-delay:60ms;" data-hi={post.titleHi}>{post.title}</h1>
+    <p class="bl-hero-meta reveal" style="transition-delay:120ms;">
       <span data-hi={publishDateLabelHi}>{publishDateLabel}</span>
       {' · '}{estimateReadingTime(post.contentHtml)} <span data-hi="मिनट में पढ़ें">min read</span>
     </p>
@@ -132,8 +132,8 @@ const faqJsonLd = faqPairs.length > 0 ? {
 .bl-article :global(ul), .bl-article :global(ol) { margin: 0 0 16px; padding-left: 22px; }
 
 .bl-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--color-hairline); }
-.bl-nav-btn { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--color-hairline); border-radius: 8px; text-decoration: none; color: var(--color-ink); transition: border-color 0.15s, background 0.15s; max-width: 260px; }
-.bl-nav-btn:hover { border-color: var(--color-saffron); background: var(--color-saffron-soft); }
+.bl-nav-btn { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--color-hairline); border-radius: 8px; text-decoration: none; color: var(--color-ink); transition: border-color 220ms var(--ease-in-out), background 220ms var(--ease-in-out), transform 220ms var(--ease-in-out); max-width: 260px; }
+.bl-nav-btn:hover { border-color: var(--color-saffron); background: var(--color-saffron-soft); transform: translateY(-2px); }
 .bl-nav-next { text-align: right; margin-left: auto; }
 .bl-nav-arrow { font-size: 18px; color: var(--color-saffron); flex-shrink: 0; }
 .bl-nav-meta { display: flex; flex-direction: column; gap: 2px; }

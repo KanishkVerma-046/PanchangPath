@@ -59,14 +59,17 @@ const pakshaHi  = p.tithi.pakshaNi;
       <!-- Full Panchang link -->
       <a href="/" class="ps-more-link">
         <span data-hi="पूर्ण पंचांग">Full Panchang</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
+        <span class="arrow-chip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </span>
       </a>
     </div>
 
     <!-- Card -->
-    <div class="ps-card card">
+    <div class="ps-card bezel-outer reveal">
+     <div class="bezel-inner">
       <!-- Card header -->
       <div class="ps-card-header">
         <div>
@@ -257,6 +260,7 @@ const pakshaHi  = p.tithi.pakshaNi;
           </div>
         </div>
       </div>
+     </div><!-- /bezel-inner -->
     </div><!-- /ps-card -->
 
   </div>
@@ -308,9 +312,10 @@ const pakshaHi  = p.tithi.pakshaNi;
     font-weight: 500;
     color: var(--color-mute);
     cursor: pointer;
-    transition: background 0.12s, color 0.12s;
+    transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
     white-space: nowrap;
   }
+  .ps-seg-btn:active { transform: scale(0.94); }
   .ps-seg-btn.active {
     background: var(--color-canvas);
     color: var(--color-ink);

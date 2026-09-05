@@ -30,16 +30,16 @@ const DESC_HI: Record<string, string> = {
 <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
   <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
   <div class="container" style="position:relative;">
-    <div class="dv-breadcrumb">
+    <div class="dv-breadcrumb reveal">
       <a href="/" data-hi="होम">Home</a>
       <span aria-hidden="true">›</span>
       <a href="/devotional" data-hi="भक्ति पुस्तकालय">Devotional</a>
       <span aria-hidden="true">›</span>
       <span data-hi={category.labelHi}>{category.label}</span>
     </div>
-    <p class="caption-mono" style="color:var(--color-mute);margin:8px 0;">{category.labelHi.toUpperCase()} · {category.icon}</p>
-    <h1 data-hi={category.labelHi} style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">{category.label}</h1>
-    <p data-hi={DESC_HI[category.id]} style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">{category.description}</p>
+    <p class="eyebrow reveal" style="transition-delay:40ms;">{category.icon} {category.labelHi.toUpperCase()}</p>
+    <h1 class="reveal" data-hi={category.labelHi} style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;transition-delay:80ms;">{category.label}</h1>
+    <p class="reveal" data-hi={DESC_HI[category.id]} style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;transition-delay:120ms;">{category.description}</p>
   </div>
 </section>
 
@@ -47,8 +47,8 @@ const DESC_HI: Record<string, string> = {
 <section style="padding:36px 0 48px;">
   <div class="container">
     <div class="dv-idx-grid">
-      {items.map((item) => (
-        <a href={`${category.url}/${item.slug}`} class="dv-idx-card card">
+      {items.map((item, i) => (
+        <a href={`${category.url}/${item.slug}`} class="dv-idx-card card reveal" style={`transition-delay:${Math.min(i, 8) * 40}ms;`}>
           <span class="dv-idx-icon">{item.icon}</span>
           <div>
             <h3 style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;"><span class="en-text">{item.title}</span><span class="hi-text" style="display:none">{item.titleHi}</span></h3>
@@ -82,7 +82,7 @@ const DESC_HI: Record<string, string> = {
 
 <style>
   .dv-breadcrumb { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--color-mute); }
-  .dv-breadcrumb a { color: var(--color-mute); text-decoration: none; }
+  .dv-breadcrumb a { color: var(--color-mute); text-decoration: none; transition: color 160ms var(--ease-out); }
   .dv-breadcrumb a:hover { color: var(--color-ink); }
   .dv-idx-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
   .dv-idx-card { display: flex; align-items: flex-start; gap: 12px; padding: 18px; text-decoration: none; min-width: 0; }

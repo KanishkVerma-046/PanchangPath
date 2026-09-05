@@ -35,10 +35,10 @@ const FAQ_ITEMS = [
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
-      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">कालसर्प योग · KALASARPA YOGA</p>
-      <h1 data-hi="कालसर्प योग डिटेक्टर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Kalasarpa Yoga Detector</h1>
-      <p data-hi="कालसर्प योग तब बनता है जब सभी सात ग्रह राहु और केतु के बीच घिरे होते हैं। अपनी कुंडली जांचने के लिए जन्म विवरण दर्ज करें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;">Kalasarpa Yoga forms when all seven planets are hemmed between Rahu and Ketu. Enter your birth details to check your chart.</p>
+      <a href="/jyotish" class="reveal" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--color-mute);text-decoration:none;"><span class="arrow-chip"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span><span data-hi="ज्योतिष उपकरण">Jyotish Tools</span></a>
+      <p class="eyebrow reveal" style="margin:12px 0 8px;transition-delay:40ms;">कालसर्प योग · KALASARPA YOGA</p>
+      <h1 class="reveal" data-hi="कालसर्प योग डिटेक्टर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;transition-delay:80ms;">Kalasarpa Yoga Detector</h1>
+      <p class="reveal" data-hi="कालसर्प योग तब बनता है जब सभी सात ग्रह राहु और केतु के बीच घिरे होते हैं। अपनी कुंडली जांचने के लिए जन्म विवरण दर्ज करें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:520px;transition-delay:120ms;">Kalasarpa Yoga forms when all seven planets are hemmed between Rahu and Ketu. Enter your birth details to check your chart.</p>
     </div>
   </section>
 
@@ -53,7 +53,9 @@ const FAQ_ITEMS = [
       <p id="date-echo" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;" hidden></p>
 
       <div id="result" style="display:none;">
-        <div class="card" id="ks-banner" style="padding:32px;text-align:center;margin-bottom:24px;"></div>
+        <div class="bezel-outer" style="margin-bottom:24px;">
+         <div class="bezel-inner" id="ks-banner" style="padding:32px;text-align:center;"></div>
+        </div>
         <div class="card" style="padding:20px;margin-bottom:24px;overflow-x:auto;">
           <h3 data-hi="राहु–केतु अक्ष बनाम ग्रह स्थिति" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">Planet Positions vs Rahu–Ketu Axis</h3>
           <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pos-table"></table>
@@ -89,7 +91,10 @@ const FAQ_ITEMS = [
         <h2 data-hi="कालसर्प योग के बारे में" style="font-size:18px;font-weight:600;color:var(--color-ink);margin:0 0 12px;">About Kalasarpa Yoga</h2>
         <p data-hi="कालसर्प योग ('समय का सर्प') तब बनता है जब सभी सात शास्त्रीय ग्रह — सूर्य, चंद्र, मंगल, बुध, गुरु, शुक्र और शनि — राहु-केतु अक्ष के एक ओर सीमित हो जाते हैं। लग्न से राहु जिस भाव में स्थित है उसके आधार पर 12 नामित प्रकार हैं। कहा जाता है कि यह देरी, संघर्ष और अचानक उतार-चढ़ाव लाता है, लेकिन साथ ही तीव्र एकाग्रता और कर्म पूर्ण होने पर उल्लेखनीय उपलब्धि की संभावना भी। यदि एक भी ग्रह अक्ष से बाहर हो, तो योग आंशिक या अनुपस्थित माना जाता है।" style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">Kalasarpa Yoga (the "serpent of time") occurs when all seven classical planets — Sun, Moon, Mars, Mercury, Jupiter, Venus and Saturn — are confined to one side of the Rahu–Ketu axis. There are 12 named types depending on the house Rahu occupies from the Lagna. It is said to bring delays, struggles and sudden ups and downs, but also intense focus and the potential for remarkable achievement once the karma is worked through. If even one planet falls outside the axis, the yoga is considered partial or absent.</p>
         <p style="font-size:14px;color:var(--color-body-text);line-height:1.7;margin:0 0 14px;">This detector names your specific type from among the traditional 12 — Ananta through Sheshanaga — the 1st house from Lagna gives Ananta, the 2nd gives Kulika, and so on through the 12th. It also distinguishes Anuloma from Viloma — this calculator defines Anuloma as all seven planets sitting on the side running forward from Ketu toward Rahu, and Viloma as the reverse; sources aren't fully consistent on how this distinction is defined (see the FAQ below), though they agree Anuloma is traditionally read as the more favorable of the two, Viloma as more difficult. A planet within about 2° of either node is flagged as forming only a partial yoga.</p>
-        <a href="/planets/rahu-ketu" data-hi="राहु और केतु की लाइव स्थिति देखें →" style="font-size:13px;font-weight:600;color:var(--color-saffron-deep);text-decoration:none;">See Rahu &amp; Ketu's live position and transit table →</a>
+        <a href="/planets/rahu-ketu" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--color-saffron-deep);text-decoration:none;">
+          <span data-hi="राहु और केतु की लाइव स्थिति देखें">See Rahu &amp; Ketu's live position and transit table</span>
+          <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
       </div>
 
       <CalculatorFaq items={FAQ_ITEMS} />

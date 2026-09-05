@@ -57,7 +57,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
     <div class="fd-hero-inner">
       <span class="fd-icon" aria-hidden="true">{icon}</span>
       <div class="fd-hero-text">
-        <div class="fd-breadcrumb">
+        <div class="fd-breadcrumb reveal">
           <a href="/" data-hi="होम">Home</a>
           <span aria-hidden="true">›</span>
           <a href="/festivals" data-hi="त्योहार">Festivals</a>
@@ -65,10 +65,10 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <span class="en-text">{f.name}</span>
           <span class="hi-text" style="display:none">{f.nameHi}</span>
         </div>
-        <h1 class="fd-heading">
+        <h1 class="fd-heading reveal" style="transition-delay:60ms;">
           <span class="en-text">{f.name}</span><span class="hi-text" style="display:none">{f.nameHi}</span>
         </h1>
-        <div class="fd-hero-badges">
+        <div class="fd-hero-badges reveal" style="transition-delay:120ms;">
           <span class={`fd-type-badge fd-type-${f.type}`} data-hi={f.type === 'major' ? '✦ प्रमुख त्योहार' : f.type === 'vrat' ? '🙏 व्रत' : '🌏 क्षेत्रीय त्योहार'}>
             {f.type === 'major' ? '✦ Major Festival' : f.type === 'vrat' ? '🙏 Vrat / Fast' : '🌏 Regional Festival'}
           </span>
@@ -92,7 +92,8 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
       <article class="fd-main">
 
         <!-- Date card -->
-        <div class="fd-date-card">
+        <div class="fd-date-card bezel-outer reveal">
+         <div class="bezel-inner fd-date-inner">
           <div class="fd-date-col">
             <p class="fd-label" data-hi="दिनांक">Date</p>
             <p class="fd-value en-text">{dateLabel}</p>
@@ -112,6 +113,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
             <p class="fd-label" data-hi="वर्ष">Year</p>
             <p class="fd-value">{f.date.slice(0, 4)}</p>
           </div>
+         </div><!-- /bezel-inner -->
         </div>
 
         <!-- Description -->
@@ -344,15 +346,8 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 }
 
 /* ── Date card ── */
-.fd-date-card {
-  display: flex;
-  gap: 0;
-  border: 1px solid var(--color-hairline);
-  border-radius: 10px;
-  box-shadow: var(--shadow-elevation);
-  overflow: hidden;
-  margin-bottom: 28px;
-}
+.fd-date-card { margin-bottom: 28px; }
+.fd-date-inner { display: flex; gap: 0; }
 .fd-date-col {
   flex: 1;
   padding: 16px 18px;
@@ -378,7 +373,7 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
   line-height: 1.4;
 }
 @media (max-width: 500px) {
-  .fd-date-card { flex-direction: column; }
+  .fd-date-inner { flex-direction: column; }
   .fd-date-sep  { width: auto; height: 1px; }
 }
 
@@ -447,9 +442,10 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
   font-weight: 500;
   color: var(--color-ink);
   text-decoration: none;
-  transition: background 0.15s;
+  transition: background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .fd-side-btn:hover { background: var(--color-saffron-soft); border-color: var(--color-saffron); }
+.fd-side-btn:active { transform: scale(0.97); }
 
 .fd-related-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .fd-related-list a {
@@ -479,10 +475,10 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
   border-radius: 8px;
   text-decoration: none;
   color: var(--color-ink);
-  transition: border-color 0.15s, background 0.15s;
+  transition: border-color 220ms var(--ease-in-out), background 220ms var(--ease-in-out), transform 220ms var(--ease-in-out);
   max-width: 260px;
 }
-.fd-nav-btn:hover { border-color: var(--color-saffron); background: var(--color-saffron-soft); }
+.fd-nav-btn:hover { border-color: var(--color-saffron); background: var(--color-saffron-soft); transform: translateY(-2px); }
 .fd-nav-next { text-align: right; margin-left: auto; }
 .fd-nav-arrow { font-size: 18px; color: var(--color-saffron); flex-shrink: 0; }
 .fd-nav-meta { display: flex; flex-direction: column; gap: 2px; }

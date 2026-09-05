@@ -60,15 +60,18 @@ function typeClass(type: string): string {
     <!-- Header -->
     <div class="pef-header">
       <div>
-        <p class="caption-mono" data-hi="आगामी" style="color:var(--color-mute);margin:0 0 6px;">Upcoming</p>
+        <p class="eyebrow" data-hi="आगामी">Upcoming</p>
         <h2 class="pef-title">
           <span class="en-text">Planetary Events</span>&nbsp;
           <span class="hi-text" style="display:none">ग्रह घटनाएँ</span>
         </h2>
       </div>
       <a href="/events" class="pef-more-link">
-        <span class="en-text">All events →</span>&nbsp;
-        <span class="hi-text" style="display:none">सभी घटनाएँ →</span>
+        <span class="en-text">All events</span>
+        <span class="hi-text" style="display:none">सभी घटनाएँ</span>
+        <span class="arrow-chip">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
       </a>
     </div>
 
@@ -239,14 +242,16 @@ function typeClass(type: string): string {
   margin: 0;
 }
 .pef-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-saffron-deep);
   text-decoration: none;
   white-space: nowrap;
   flex-shrink: 0;
 }
-.pef-more-link:hover { text-decoration: underline; }
 
 /* ── List ── */
 .pef-list {

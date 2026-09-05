@@ -20,17 +20,17 @@ const dateLabelHi = formatDateIST(today, true, { weekday: 'long' });
   <!-- Hero -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 36px;">
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
-      <p class="caption-mono" data-hi="ज्योतिष · वैदिक ज्योतिष शास्त्र" style="color:var(--color-mute);margin:0 0 10px;">Jyotish · Vedic Astrology</p>
-      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 12px;">
+      <p class="eyebrow reveal" data-hi="ज्योतिष · वैदिक ज्योतिष शास्त्र">Jyotish · Vedic Astrology</p>
+      <h1 class="reveal" style="font-size:36px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 12px;transition-delay:60ms;">
         <span class="en-text">Today's Rashifal</span>
         <span class="hi-text" style="display:none;">आज का राशिफल</span>
       </h1>
-      <p data-hi="ग्रहों की स्थिति और ज्योतिष सिद्धांतों पर आधारित सभी 12 वैदिक राशियों का दैनिक राशिफल।" style="font-size:15px;color:var(--color-body-text);margin:0 0 24px;max-width:560px;line-height:1.6;">
+      <p class="reveal" data-hi="ग्रहों की स्थिति और ज्योतिष सिद्धांतों पर आधारित सभी 12 वैदिक राशियों का दैनिक राशिफल।" style="font-size:15px;color:var(--color-body-text);margin:0 0 24px;max-width:560px;line-height:1.6;transition-delay:120ms;">
         Daily horoscope for all 12 Vedic rashis based on planetary positions and Jyotish principles.
       </p>
 
       <!-- Period tabs -->
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+      <div class="reveal" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;transition-delay:180ms;">
         <button class="period-btn active" data-period="daily" data-hi="दैनिक">Daily</button>
         <button class="period-btn" data-period="weekly" data-hi="साप्ताहिक">Weekly</button>
         <button class="period-btn" data-period="monthly" data-hi="मासिक">Monthly</button>
@@ -112,7 +112,10 @@ const dateLabelHi = formatDateIST(today, true, { weekday: 'long' });
           <div style="font-size:40px;margin-bottom:12px;">🔮</div>
           <p data-hi="प्रश्नावली" style="font-size:16px;font-weight:600;color:var(--color-ink);margin:0 0 8px;">Prashnavali</p>
           <p data-hi="एक प्रश्न सोचें, अपना मन केंद्रित करें, और लौकिक दैवज्ञ से दिव्य उत्तर प्राप्त करें।" style="font-size:13px;color:var(--color-body-text);margin:0 0 16px;line-height:1.6;">Think of a question, focus your mind, and receive a divine answer from the cosmic oracle.</p>
-          <span data-hi="दैवज्ञ खोलें →" style="font-size:13px;font-weight:600;color:var(--color-saffron-deep);">Open Oracle →</span>
+          <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--color-saffron-deep);">
+            <span data-hi="दैवज्ञ खोलें">Open Oracle</span>
+            <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+          </span>
         </a>
 
         <!-- Find by Name -->
@@ -316,10 +319,11 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   font-weight: 500;
   color: var(--color-body-text);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition: background 160ms var(--ease-out), color 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .period-btn:hover { border-color: var(--color-saffron); color: var(--color-saffron-deep); }
 .period-btn.active { background: var(--color-ink); color: var(--color-on-primary); border-color: var(--color-ink); }
+.period-btn:active { transform: scale(0.95); }
 
 .rfi-grid {
   display: grid;
@@ -331,9 +335,9 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
   overflow: hidden;
-  transition: box-shadow 0.15s;
+  transition: box-shadow 220ms var(--ease-in-out), transform 220ms var(--ease-in-out);
 }
-.rfi-card:hover { box-shadow: var(--shadow-card-hover); }
+.rfi-card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
 
 .rfi-strip {
   display: flex;
@@ -409,7 +413,7 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   text-decoration: none;
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.15s;
+  transition: box-shadow 220ms var(--ease-in-out);
 }
 .tool-card:hover { box-shadow: var(--shadow-card); }
 .prashnavali-card { background: linear-gradient(135deg, var(--color-saffron-soft) 0%, var(--color-canvas) 100%); }
@@ -438,9 +442,10 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: opacity 0.15s;
+  transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .tool-btn:hover { opacity: 0.85; }
+.tool-btn:active { transform: scale(0.95); }
 .tool-result {
   font-size: 13px;
   color: var(--color-body-text);

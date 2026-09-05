@@ -47,9 +47,9 @@ const WEEKDAYS_HI = ['रवि', 'सोम', 'मंगल', 'बुध', 'ग
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 10px;"><span class="en-text">Monthly View</span><span class="hi-text" style="display:none">मासिक दृश्य</span></p>
+      <p class="eyebrow reveal"><span class="en-text">Monthly View</span><span class="hi-text" style="display:none">मासिक दृश्य</span></p>
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-        <h1 style="font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0;" id="cal-title"><span class="en-text" id="cal-title-en">{monthName}</span><span class="hi-text" id="cal-title-hi" style="display:none">{monthNameHi}</span></h1>
+        <h1 class="reveal" style="font-size:30px;font-weight:600;letter-spacing:-1px;color:var(--color-ink);margin:0;transition-delay:60ms;" id="cal-title"><span class="en-text" id="cal-title-en">{monthName}</span><span class="hi-text" id="cal-title-hi" style="display:none">{monthNameHi}</span></h1>
         <div style="display:flex;align-items:center;gap:8px;">
           <button id="prev-month" aria-label="Previous month" class="btn-secondary" style="height:44px;width:44px;padding:0;display:flex;align-items:center;justify-content:center;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>

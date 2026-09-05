@@ -419,10 +419,10 @@ init();
   display: flex;
   flex-direction: column;
 }
-.lp-pop-open { animation: lp-in 0.14s ease both; }
+.lp-pop-open { animation: lp-in 160ms var(--ease-out) both; transform-origin: top right; }
 @keyframes lp-in {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ── Info card ── */

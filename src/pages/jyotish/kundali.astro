@@ -58,10 +58,10 @@ const FAQ_ITEMS = [
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
-      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">जन्म कुंडली · KUNDALI GENERATOR</p>
-      <h1 data-hi="कुंडली जनरेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Kundali Generator</h1>
-      <p data-hi="ग्रह स्थिति, लग्न, नक्षत्र और मुख्य व्याख्याओं सहित पूर्ण जन्म कुंडली बनाने के लिए अपना जन्म विवरण दर्ज करें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;">Enter your birth details to generate a full Vedic birth chart with planetary positions, Lagna, nakshatras and key interpretations.</p>
+      <a href="/jyotish" class="reveal" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--color-mute);text-decoration:none;"><span class="arrow-chip"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span><span data-hi="ज्योतिष उपकरण">Jyotish Tools</span></a>
+      <p class="eyebrow reveal" style="margin:12px 0 8px;transition-delay:40ms;">जन्म कुंडली · KUNDALI GENERATOR</p>
+      <h1 class="reveal" data-hi="कुंडली जनरेटर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;transition-delay:80ms;">Kundali Generator</h1>
+      <p class="reveal" data-hi="ग्रह स्थिति, लग्न, नक्षत्र और मुख्य व्याख्याओं सहित पूर्ण जन्म कुंडली बनाने के लिए अपना जन्म विवरण दर्ज करें।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:500px;transition-delay:120ms;">Enter your birth details to generate a full Vedic birth chart with planetary positions, Lagna, nakshatras and key interpretations.</p>
     </div>
   </section>
 
@@ -103,10 +103,12 @@ const FAQ_ITEMS = [
         <div style="display:grid;grid-template-columns:340px 1fr;gap:28px;align-items:start;" class="kund-layout">
           <!-- Chart -->
           <div>
-            <div class="card" style="padding:20px;">
+            <div class="bezel-outer reveal">
+             <div class="bezel-inner" style="padding:20px;">
               <h2 id="chart-title" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 4px;" data-hi="लग्न कुंडली (डी-1)">Lagna Chart (D-1)</h2>
               <p id="chart-sub" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;font-family:var(--font-mono);" data-hi={`${EB_RASHI_HI[ebChart.lagnaSign]} लग्न · ${EB_DATE_STR} ${EB_TIME_STR} · ${EB.city}`}>{EB_RASHI[ebChart.lagnaSign]} Lagna &middot; {EB_DATE_STR} {EB_TIME_STR} &middot; {EB.city}</p>
               <div id="chart-box" set:html={ebChartSvg} />
+             </div>
             </div>
             <div class="card" style="padding:18px;margin-top:16px;">
               <h3 data-hi="जन्म सारांश" style="font-size:13px;font-weight:600;color:var(--color-ink);margin:0 0 10px;">Birth Summary</h3>
@@ -179,8 +181,9 @@ const FAQ_ITEMS = [
   .fld-label { font-size:11px;font-weight:500;color:var(--color-mute);display:block;margin-bottom:5px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.06em; }
   #planet-table th { text-align:left;padding:6px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.04em; }
   #planet-table td { padding:7px 8px;border-bottom:1px solid var(--color-hairline);color:var(--color-body-text); }
-  .style-btn { padding:5px 13px;border:1px solid var(--color-hairline-strong);border-radius:6px;background:var(--color-canvas);color:var(--color-body-text);cursor:pointer;font-size:12px;font-family:var(--font-mono); }
+  .style-btn { padding:5px 13px;border:1px solid var(--color-hairline-strong);border-radius:6px;background:var(--color-canvas);color:var(--color-body-text);cursor:pointer;font-size:12px;font-family:var(--font-mono);transition:background 160ms var(--ease-out),color 160ms var(--ease-out),transform 160ms var(--ease-out); }
   .style-btn.active { background:var(--color-ink);color:var(--color-canvas);border-color:var(--color-ink); }
+  .style-btn:active { transform:scale(0.94); }
   /* minmax(0,1fr), not 1fr: a grid item defaults to min-width:auto, so the fixed-width chart
      SVG sets a min-content floor wider than a 360px viewport. That pushed every card in the
      layout to ~347px inside a 328px container, and because html has overflow-x:hidden the

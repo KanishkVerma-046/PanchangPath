@@ -41,9 +41,9 @@ function typeLabelHi(type: string) {
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:48px 0 40px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <p class="caption-mono" data-hi="पूर्ण कैलेंडर" style="color:var(--color-mute);margin:0 0 10px;">Complete Calendar</p>
-      <h1 style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;"><span class="en-text">Hindu Festivals &amp; Vrats.</span><span class="hi-text" style="display:none">हिंदू त्योहार और व्रत।</span></h1>
-      <p style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;"><span class="en-text">All major Hindu festivals, vrats, and auspicious days for {yearRange.replace('-', '–')} with detailed information.</span><span class="hi-text" style="display:none">{yearRange.replace('-', '–')} के लिए सभी प्रमुख हिंदू त्योहार, व्रत और शुभ दिन विस्तृत जानकारी के साथ।</span></p>
+      <p class="eyebrow reveal" data-hi="पूर्ण कैलेंडर">Complete Calendar</p>
+      <h1 class="reveal" style="font-size:36px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;transition-delay:60ms;"><span class="en-text">Hindu Festivals &amp; Vrats.</span><span class="hi-text" style="display:none">हिंदू त्योहार और व्रत।</span></h1>
+      <p class="reveal" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:480px;transition-delay:120ms;"><span class="en-text">All major Hindu festivals, vrats, and auspicious days for {yearRange.replace('-', '–')} with detailed information.</span><span class="hi-text" style="display:none">{yearRange.replace('-', '–')} के लिए सभी प्रमुख हिंदू त्योहार, व्रत और शुभ दिन विस्तृत जानकारी के साथ।</span></p>
     </div>
   </section>
 
@@ -112,8 +112,10 @@ function typeLabelHi(type: string) {
       <div class="container">
         <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--color-hairline);">
           <h2 style="font-size:13px;font-weight:500;color:var(--color-mute);letter-spacing:0.06em;text-transform:uppercase;font-family:var(--font-mono);margin:0;" data-hi="हाल ही में मनाए गए">Recently Celebrated</h2>
-          <a href="/festivals/archive" class="en-text" style="font-size:13px;font-weight:500;color:var(--color-primary);text-decoration:none;">View past festivals &rarr;</a>
-          <a href="/festivals/archive" class="hi-text" style="display:none;font-size:13px;font-weight:500;color:var(--color-primary);text-decoration:none;">पिछले त्योहार देखें &rarr;</a>
+          <a href="/festivals/archive" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--color-saffron-deep);text-decoration:none;">
+            <span class="en-text">View past festivals</span><span class="hi-text" style="display:none">पिछले त्योहार देखें</span>
+            <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+          </a>
         </div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           {past.map(f => {
@@ -149,6 +151,14 @@ function typeLabelHi(type: string) {
     </section>
   )}
 </Layout>
+
+<style>
+  /* Filter buttons toggle background/color via inline style in the script below;
+     this transition applies regardless of whether the change came from a class
+     or inline style, so clicks fade instead of snapping. */
+  .filter-btn { transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out); }
+  .filter-btn:active { transform: scale(0.95); }
+</style>
 
 <script>
   // Filter buttons

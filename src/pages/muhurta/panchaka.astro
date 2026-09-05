@@ -60,10 +60,13 @@ const panchakaFaqJsonLd = {
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/muhurta" data-hi="← मुहूर्त उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Muhurta Tools</a>
-      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">पंचक · गौरी पंचांग</p>
-      <h1 data-hi="पंचक और गौरी पंचांगम" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Panchaka &amp; Gowri Panchangam</h1>
-      <p data-hi="पंचक तब सक्रिय होता है जब चंद्रमा अंतिम 5 नक्षत्रों (कुंभ और मीन राशियों) से गुजरता है। गौरी पंचांगम दक्षिण भारत की 8-स्लॉट दैनिक मुहूर्त प्रणाली है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Panchaka is active when Moon transits the last 5 Nakshatras (Aquarius and Pisces signs). Gowri Panchangam is a South Indian 8-slot daily muhurta system.</p>
+      <a href="/muhurta" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--color-mute);text-decoration:none;">
+        <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span>
+        <span data-hi="मुहूर्त उपकरण">Muhurta Tools</span>
+      </a>
+      <p class="eyebrow reveal" style="margin:12px 0 8px;">पंचक · गौरी पंचांग</p>
+      <h1 class="reveal" data-hi="पंचक और गौरी पंचांगम" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;transition-delay:60ms;">Panchaka &amp; Gowri Panchangam</h1>
+      <p class="reveal" data-hi="पंचक तब सक्रिय होता है जब चंद्रमा अंतिम 5 नक्षत्रों (कुंभ और मीन राशियों) से गुजरता है। गौरी पंचांगम दक्षिण भारत की 8-स्लॉट दैनिक मुहूर्त प्रणाली है।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;transition-delay:120ms;">Panchaka is active when Moon transits the last 5 Nakshatras (Aquarius and Pisces signs). Gowri Panchangam is a South Indian 8-slot daily muhurta system.</p>
     </div>
   </section>
 
@@ -86,15 +89,15 @@ const panchakaFaqJsonLd = {
       <p id="pk-default-note" style="font-size:12px;color:var(--color-mute);margin:-20px 0 20px;">Showing Panchaka &amp; Gowri Panchangam for New Delhi — select your city above for your location.</p>
 
       <!-- Panchaka status -->
-      <div id="pk-status" style="margin-bottom:32px;">
+      <div id="pk-status" class="bezel-outer reveal" style="margin-bottom:32px;">
         {defaultPk.isPanchaka ? (
-          <div style="background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:16px 20px;">
+          <div class="bezel-inner" style="background:#fee2e2;padding:16px 20px;">
             <p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 4px;">⚠️ {defaultPk.panchakaType || 'Panchaka'} Active Today</p>
             <p style="font-size:13px;color:#991b1b;margin:0 0 6px;">Moon is in <strong>{NAK_NAMES[defaultPk.nakIdx]}</strong> nakshatra (Nakshatra {defaultPk.nakIdx+1}). Panchaka is active.</p>
             <p style="font-size:12px;color:#7f1d1d;margin:0;">Avoid: funeral rites, roof construction, travel south, buying cots/beds, and storing firewood. Panchaka Shanti puja can be performed to mitigate effects.</p>
           </div>
         ) : (
-          <div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;">
+          <div class="bezel-inner" style="background:#dcfce7;padding:16px 20px;">
             <p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 4px;">✓ No Panchaka Today</p>
             <p style="font-size:13px;color:#166534;margin:0;">Moon is in <strong>{NAK_NAMES[defaultPk.nakIdx]}</strong> — outside the Panchaka zone (Nakshatras 23–27).</p>
           </div>
@@ -290,14 +293,14 @@ function calculate(){
       const pkType=result.panchakaType||'Panchaka';
       const line2=isHindi?`चंद्रमा <strong>${NAK_NAMES[nakIdx]}</strong> नक्षत्र (नक्षत्र ${nakIdx+1}) में है। पंचक सक्रिय है।`:`Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> nakshatra (Nakshatra ${nakIdx+1}). Panchaka is active.`;
       const line3=isHindi?'बचें: अंतिम संस्कार, छत निर्माण, दक्षिण दिशा यात्रा, पलंग/खाट खरीदना, और लकड़ी संग्रहण। प्रभाव कम करने के लिए पंचक शांति पूजा की जा सकती है।':'Avoid: funeral rites, roof construction, travel south, buying cots/beds, and storing firewood. Panchaka Shanti puja can be performed to mitigate effects.';
-      pkEl.innerHTML=`<div style="background:#fee2e2;border:1px solid #fecaca;border-radius:10px;padding:16px 20px;">
+      pkEl.innerHTML=`<div class="bezel-inner" style="background:#fee2e2;padding:16px 20px;">
         <p style="font-size:14px;font-weight:700;color:#dc2626;margin:0 0 4px;">⚠️ ${pkType} ${isHindi?'आज सक्रिय':'Active Today'}</p>
         <p style="font-size:13px;color:#991b1b;margin:0 0 6px;">${line2}</p>
         <p style="font-size:12px;color:#7f1d1d;margin:0;">${line3}</p>
       </div>`;
     } else {
       const line2=isHindi?`चंद्रमा <strong>${NAK_NAMES[nakIdx]}</strong> में है — पंचक क्षेत्र (नक्षत्र 23–27) से बाहर।`:`Moon is in <strong>${NAK_NAMES[nakIdx]}</strong> — outside the Panchaka zone (Nakshatras 23–27).`;
-      pkEl.innerHTML=`<div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;">
+      pkEl.innerHTML=`<div class="bezel-inner" style="background:#dcfce7;padding:16px 20px;">
         <p style="font-size:14px;font-weight:700;color:#15803d;margin:0 0 4px;">✓ ${isHindi?'आज कोई पंचक नहीं':'No Panchaka Today'}</p>
         <p style="font-size:13px;color:#166534;margin:0;">${line2}</p>
       </div>`;

@@ -48,10 +48,13 @@ const rkRows = Array.from({ length: 12 }, (_, moonSign) => {
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
-      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">राहु · केतु · RAHU &amp; KETU</p>
-      <h1 data-hi="राहु और केतु गोचर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Rahu &amp; Ketu Transit</h1>
-      <p data-hi="राहु और केतु चंद्र-पात हैं — वे छाया बिंदु जहां चंद्रमा की कक्षा क्रांतिवृत्त को काटती है, हमेशा ठीक 180° दूरी पर। नीचे लाइव सायन स्थिति, साथ ही चंद्र राशि के अनुसार शास्त्रीय गोचर अनुकूल/प्रतिकूल तालिका।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;">Rahu and Ketu are the lunar nodes — shadow points where the Moon's orbit crosses the ecliptic, always exactly 180° apart. Live sidereal position below, plus the classical Gochara (transit) favorable/challenging table by Moon sign.</p>
+      <a href="/jyotish" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--color-mute);text-decoration:none;">
+        <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span>
+        <span data-hi="ज्योतिष उपकरण">Jyotish Tools</span>
+      </a>
+      <p class="eyebrow reveal" style="margin:12px 0 8px;">राहु · केतु · Rahu &amp; Ketu</p>
+      <h1 class="reveal" data-hi="राहु और केतु गोचर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;transition-delay:60ms;">Rahu &amp; Ketu Transit</h1>
+      <p class="reveal" data-hi="राहु और केतु चंद्र-पात हैं — वे छाया बिंदु जहां चंद्रमा की कक्षा क्रांतिवृत्त को काटती है, हमेशा ठीक 180° दूरी पर। नीचे लाइव सायन स्थिति, साथ ही चंद्र राशि के अनुसार शास्त्रीय गोचर अनुकूल/प्रतिकूल तालिका।" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;transition-delay:120ms;">Rahu and Ketu are the lunar nodes — shadow points where the Moon's orbit crosses the ecliptic, always exactly 180° apart. Live sidereal position below, plus the classical Gochara (transit) favorable/challenging table by Moon sign.</p>
     </div>
   </section>
 
@@ -70,7 +73,8 @@ const rkRows = Array.from({ length: 12 }, (_, moonSign) => {
 
       <h3 data-hi="चंद्र राशि के अनुसार गोचर प्रभाव" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Gochara (Transit) Effect by Moon Sign</h3>
       <p data-hi="शास्त्रीय वैदिक गोचर सिद्धांत: राहु और केतु आपकी जन्म चंद्र राशि से गिनकर तीसरे, छठे, या ग्यारहवें भाव ('उपचय' भाव) से गोचर करते समय अनुकूल परिणाम देते हैं। अन्य सभी स्थितियां अधिक चुनौतीपूर्ण मानी जाती हैं।" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;max-width:600px;">Classical Vedic transit theory: Rahu and Ketu give favorable results when transiting the 3rd, 6th, or 11th house counted from your natal Moon sign (the "Upachaya" houses). All other positions are considered more challenging.</p>
-      <div class="card" style="padding:20px;overflow-x:auto;">
+      <div class="bezel-outer reveal">
+       <div class="bezel-inner" style="padding:20px;overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;" id="rk-table">
           <thead><tr>
             <th data-hi="आपकी चंद्र राशि" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Your Moon Sign</th>
@@ -91,11 +95,15 @@ const rkRows = Array.from({ length: 12 }, (_, moonSign) => {
             ))}
           </tbody>
         </table>
+       </div>
       </div>
 
       <div class="card" style="padding:20px;margin-top:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
         <p data-hi="राहु का अगला राशि परिवर्तन: दिसंबर 2026 में राहु मकर और केतु कर्क राशि में प्रवेश करेंगे।" style="font-size:13px;color:var(--color-body-text);margin:0;">Rahu's next sign change: Rahu enters Capricorn and Ketu enters Cancer in December 2026.</p>
-        <a href="/events/rahu-enters-makara-2026-12" data-hi="विवरण देखें →" style="font-size:13px;font-weight:600;color:var(--color-saffron-deep);white-space:nowrap;text-decoration:none;">View transit details →</a>
+        <a href="/events/rahu-enters-makara-2026-12" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--color-saffron-deep);white-space:nowrap;text-decoration:none;">
+          <span data-hi="विवरण देखें">View transit details</span>
+          <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
       </div>
       <div class="card" style="padding:20px;margin-top:12px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;">
         <p data-hi="जब राहु और केतु आपकी कुंडली के सभी ग्रहों को दोनों ओर से घेर लेते हैं, तो कालसर्प योग बनता है — अपनी कुंडली जांचें।" style="font-size:13px;color:var(--color-body-text);margin:0;">When Rahu and Ketu hem in all other planets on either side, it forms Kalasarpa Yoga — check your own birth chart.</p>

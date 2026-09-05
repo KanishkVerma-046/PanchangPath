@@ -72,15 +72,15 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
         <LanguagePicker />
 
         <!-- Dark mode -->
-        <button id="dark-toggle" class="hdr-icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode">
-          <svg id="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+        <button id="dark-toggle" class="hdr-icon-btn icon-swap-btn" title="Toggle dark mode" aria-label="Toggle dark mode">
+          <svg id="icon-sun" class="icon-morph is-off" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="5"/>
             <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
             <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
             <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
           </svg>
-          <svg id="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg id="icon-moon" class="icon-morph is-on" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
           </svg>
         </button>
@@ -89,11 +89,11 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
         <LocationPicker />
 
         <!-- Hamburger (mobile) -->
-        <button id="hamburger" class="hdr-icon-btn hamburger-btn" aria-label="Open menu" aria-expanded="false">
-          <svg id="hamburger-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <button id="hamburger" class="hdr-icon-btn hamburger-btn icon-swap-btn" aria-label="Open menu" aria-expanded="false">
+          <svg id="hamburger-icon" class="icon-morph is-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
           </svg>
-          <svg id="close-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="display:none">
+          <svg id="close-icon" class="icon-morph is-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
             <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
@@ -128,8 +128,6 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
             <a href="/moonrise-moonset" class="dd-link" data-hi="चंद्रोदय और चंद्रास्त">Moonrise &amp; Moonset</a>
             <a href="/muhurta/rahu-kala" class="dd-link" data-hi="राहु काल">Rahu Kalam</a>
             <a href="/events" class="dd-link" data-hi="ग्रह घटनाएं">Planetary Events</a>
-            <div class="dd-divider"></div>
-            <a href="/panchang/regional" class="dd-link dd-link-accent" data-hi="🌐 क्षेत्रीय पंचांग">🌐 Regional Panchang</a>
           </div>
         </li>
         <li class="nav-item has-dropdown">
@@ -166,14 +164,8 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
             <a href="/muhurta/shubha-dates" class="dd-link" data-hi="शुभ तिथियां">Shubha Dates</a>
           </div>
         </li>
-        <li class="nav-item has-dropdown">
-          <a href="/festivals" class="nav-cat"><span class="nav-label" data-hi="व्रत और उपवास">Vrat &amp; Upavas</span> <span class="nav-caret">▾</span></a>
-          <div class="nav-dropdown">
-            <a href="/festivals?filter=vrat" class="dd-link" data-hi="व्रत कैलेंडर">Vrat Calendar</a>
-            <a href="/devotional/vrat-katha/ekadashi-vrat-katha" class="dd-link" data-hi="एकादशी">Ekadashi</a>
-            <a href="/devotional/vrat-katha/pradosh-vrat-katha" class="dd-link" data-hi="प्रदोष व्रत">Pradosh Vrat</a>
-            <a href="/devotional/vrat-katha/sankashti-chaturthi-vrat-katha" class="dd-link" data-hi="संकष्टी चतुर्थी">Sankashti Chaturthi</a>
-          </div>
+        <li class="nav-item">
+          <a href="/panchang/regional" class="nav-cat"><span class="nav-label" data-hi="क्षेत्रीय पंचांग">Regional Panchang</span></a>
         </li>
         <li class="nav-item has-dropdown">
           <a href="/festivals" class="nav-cat"><span class="nav-label" data-hi="त्योहार">Festivals</span> <span class="nav-caret">▾</span></a>
@@ -290,7 +282,6 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
           <a href="/moonrise-moonset" class="drawer-link" data-hi="चंद्रोदय और चंद्रास्त">Moonrise &amp; Moonset</a>
           <a href="/muhurta/rahu-kala" class="drawer-link" data-hi="राहु काल">Rahu Kalam</a>
           <a href="/events" class="drawer-link" data-hi="ग्रह घटनाएं">Planetary Events</a>
-          <a href="/panchang/regional" class="drawer-link" data-hi="🌐 क्षेत्रीय पंचांग">🌐 Regional Panchang</a>
         </div>
       </div>
       <div class="drawer-section">
@@ -332,15 +323,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
         </div>
       </div>
       <div class="drawer-section">
-        <button class="drawer-cat" data-target="m-vrat">
-          <span class="nav-label" data-hi="व्रत और उपवास">Vrat &amp; Upavas</span> <span class="drawer-caret">›</span>
-        </button>
-        <div class="drawer-sub" id="m-vrat">
-          <a href="/festivals?filter=vrat" class="drawer-link" data-hi="व्रत कैलेंडर">Vrat Calendar</a>
-          <a href="/devotional/vrat-katha/ekadashi-vrat-katha" class="drawer-link" data-hi="एकादशी">Ekadashi</a>
-          <a href="/devotional/vrat-katha/pradosh-vrat-katha" class="drawer-link" data-hi="प्रदोष व्रत">Pradosh Vrat</a>
-          <a href="/devotional/vrat-katha/sankashti-chaturthi-vrat-katha" class="drawer-link" data-hi="संकष्टी चतुर्थी">Sankashti Chaturthi</a>
-        </div>
+        <a href="/panchang/regional" class="drawer-cat" data-hi="क्षेत्रीय पंचांग">Regional Panchang</a>
       </div>
       <div class="drawer-section">
         <button class="drawer-cat" data-target="m-festivals">
@@ -422,13 +405,13 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     <!-- Drawer bottom controls -->
     <div class="drawer-controls">
       <!-- Language picker is in the header bar -->
-      <button id="m-dark-toggle" class="hdr-icon-btn" aria-label="Toggle dark mode">
-        <svg id="m-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+      <button id="m-dark-toggle" class="hdr-icon-btn icon-swap-btn" aria-label="Toggle dark mode">
+        <svg id="m-icon-sun" class="icon-morph is-off" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="5"/>
           <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
           <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
         </svg>
-        <svg id="m-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg id="m-icon-moon" class="icon-morph is-on" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
       </button>
@@ -443,7 +426,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
      scoped to this subtree so every var(--color-*) used below re-pairs
      automatically without touching each declaration. */
   #site-header {
-    --color-canvas: #4A1608;
+    --color-canvas: #3A0F05;
     --color-canvas-soft: rgba(255,255,255,0.06);
     --color-canvas-soft-2: rgba(255,255,255,0.11);
     --color-ink: #FDF6EC;
@@ -451,7 +434,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     --color-body-text: #E3C2A0;
     --color-mute: #C79B76;
     --color-hairline: rgba(255,246,236,0.14);
-    --color-hairline-strong: rgba(255,246,236,0.30);
+    --color-hairline-strong: rgba(212,160,23,0.35);
     --color-saffron: #F2823D;
     --color-saffron-soft: rgba(242,130,61,0.18);
     --color-saffron-deep: #FFC08A;
@@ -460,8 +443,8 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     top: 0;
     z-index: 100;
     background: var(--color-canvas);
-    border-bottom: 1px solid var(--color-hairline);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+    border-bottom: 1px solid var(--color-hairline-strong);
+    box-shadow: 0 2px 14px rgba(0,0,0,0.22);
   }
 
   .header-container {
@@ -474,7 +457,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
 
   /* ── Top bar ── */
   #header-top {
-    height: 56px;
+    height: 64px;
     border-bottom: 1px solid var(--color-hairline);
   }
   #header-top .header-container {
@@ -494,11 +477,14 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
   .logo-text-group { display: flex; flex-direction: column; line-height: 1.05; }
   .logo-text {
     font-family: var(--font-heading);
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--color-ink);
+    font-size: 19px;
+    font-weight: 700;
     letter-spacing: -0.2px;
     white-space: nowrap;
+    background: var(--gradient-gold-foil);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .logo-text-hi {
     font-size: 10px;
@@ -525,12 +511,12 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     text-decoration: none;
     flex-shrink: 0;
     background: var(--color-canvas-soft-2);
-    border: 1px solid var(--color-hairline);
+    border: 1px solid var(--color-hairline-strong);
     border-radius: var(--radius-pill);
-    padding: 4px 12px;
-    transition: background 0.15s;
+    padding: 6px 14px;
+    transition: background 0.15s, border-color 0.15s;
   }
-  .clock-widget:hover { background: var(--color-canvas-soft); }
+  .clock-widget:hover { background: var(--color-canvas-soft); border-color: var(--color-saffron-deep); }
   .clock-time {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -558,10 +544,10 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
   }
   .search-input {
     width: 100%;
-    height: 34px;
-    padding: 0 36px 0 32px;
+    height: 38px;
+    padding: 0 36px 0 34px;
     background: var(--color-canvas-soft);
-    border: 1px solid var(--color-hairline);
+    border: 1px solid var(--color-hairline-strong);
     border-radius: var(--radius-pill);
     font-family: var(--font-sans);
     font-size: 13px;
@@ -610,6 +596,8 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     box-shadow: var(--shadow-modal);
     z-index: 200;
     overflow: hidden;
+    transform-origin: top center;
+    animation: fadeIn 160ms var(--ease-out) both;
   }
   .search-dropdown:not([hidden]) { display: block; }
 
@@ -653,10 +641,29 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     border-radius: var(--radius-sm);
     color: var(--color-body-text);
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out), border-color 160ms var(--ease-out);
     padding: 0;
   }
-  .hdr-icon-btn:hover { background: var(--color-canvas-soft); color: var(--color-ink); }
+  .hdr-icon-btn:hover { background: var(--color-canvas-soft); color: var(--color-ink); border-color: var(--color-hairline-strong); }
+  .hdr-icon-btn:active { transform: scale(0.92); }
+
+  /* ── Icon morph (dark/light toggle, hamburger↔close) ──
+     Both icons are stacked in the same cell and crossfade+rotate between
+     states instead of an instant display:none/block swap. Fast (180ms) —
+     this fires on every click, so it must never feel sluggish. */
+  .icon-swap-btn { position: relative; }
+  .icon-morph {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out);
+  }
+  .icon-morph.is-on  { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  .icon-morph.is-off { opacity: 0; transform: translate(-50%, -50%) rotate(-90deg) scale(0.5); pointer-events: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .icon-morph { transition: opacity 120ms ease; }
+    .icon-morph.is-off { transform: translate(-50%, -50%); }
+  }
 
   /* Hamburger — hidden on desktop */
   .hamburger-btn { display: none; }
@@ -720,7 +727,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     text-decoration: none;
     white-space: nowrap;
     border-bottom: 2px solid transparent;
-    transition: color 0.12s, border-color 0.12s;
+    transition: color 200ms var(--ease-out), border-color 200ms var(--ease-out);
   }
   .nav-cat:hover { color: var(--color-saffron-deep); border-bottom-color: var(--color-saffron); }
   .nav-cat-trigger {
@@ -740,19 +747,20 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     left: 0;
     min-width: 180px;
     background: var(--color-canvas);
-    border: 1px solid var(--color-hairline);
+    border: 1px solid var(--color-hairline-strong);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-modal);
-    padding: 6px 0;
+    box-shadow: var(--shadow-luxe);
+    padding: 8px 0;
     z-index: 200;
     display: none;
-    animation: fadeIn 0.14s ease both;
+    animation: fadeIn 160ms var(--ease-out) both;
+    transform-origin: top left;
   }
   .nav-item.has-dropdown:hover .nav-dropdown { display: block; }
 
   .dd-link {
     display: block;
-    padding: 7px 14px;
+    padding: 9px 16px;
     font-size: 13px;
     color: var(--color-body-text);
     text-decoration: none;
@@ -841,6 +849,8 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     z-index: 10;
     max-height: 60vh;
     overflow-y: auto;
+    transform-origin: top center;
+    animation: fadeIn 160ms var(--ease-out) both;
   }
   .drawer-search-dropdown:not([hidden]) { display: block; }
   .drawer-search-result {
@@ -1062,10 +1072,14 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
       html.classList.add('light');
       html.removeAttribute('data-theme');
     }
-    if (iconSun) iconSun.style.display = isDark ? 'block' : 'none';
-    if (iconMoon) iconMoon.style.display = isDark ? 'none' : 'block';
-    if (mIconSun) mIconSun.style.display = isDark ? 'block' : 'none';
-    if (mIconMoon) mIconMoon.style.display = isDark ? 'none' : 'block';
+    iconSun?.classList.toggle('is-on', isDark);
+    iconSun?.classList.toggle('is-off', !isDark);
+    iconMoon?.classList.toggle('is-on', !isDark);
+    iconMoon?.classList.toggle('is-off', isDark);
+    mIconSun?.classList.toggle('is-on', isDark);
+    mIconSun?.classList.toggle('is-off', !isDark);
+    mIconMoon?.classList.toggle('is-on', !isDark);
+    mIconMoon?.classList.toggle('is-off', isDark);
     localStorage.setItem('dark', String(isDark));
   }
 
@@ -1126,8 +1140,8 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     overlay?.removeAttribute('inert');
     hamburger?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
-    if (hamburgerIcon) hamburgerIcon.style.display = 'none';
-    if (closeIcon) closeIcon.style.display = 'block';
+    hamburgerIcon?.classList.remove('is-on'); hamburgerIcon?.classList.add('is-off');
+    closeIcon?.classList.remove('is-off'); closeIcon?.classList.add('is-on');
   }
   function closeDrawer() {
     drawer?.classList.remove('open');
@@ -1138,8 +1152,8 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     overlay?.setAttribute('inert', '');
     hamburger?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    if (hamburgerIcon) hamburgerIcon.style.display = 'block';
-    if (closeIcon) closeIcon.style.display = 'none';
+    hamburgerIcon?.classList.remove('is-off'); hamburgerIcon?.classList.add('is-on');
+    closeIcon?.classList.remove('is-on'); closeIcon?.classList.add('is-off');
     const dsi = document.getElementById('drawer-search-input') as HTMLInputElement | null;
     const dsd = document.getElementById('drawer-search-dropdown');
     if (dsi) dsi.value = '';

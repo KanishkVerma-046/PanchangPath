@@ -16,7 +16,7 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
     <!-- Section header -->
     <div class="rf-header">
       <div>
-        <p class="caption-mono" data-hi="ज्योतिष · खगोल विद्या" style="color:var(--color-mute);margin:0 0 6px;">Jyotish · Astrology</p>
+        <p class="eyebrow" data-hi="ज्योतिष · खगोल विद्या">Jyotish · Astrology</p>
         <h2 class="rf-title">
           <span class="en-text">Today's Rashifal</span>
           <span class="hi-text" style="display:none;">आज का राशिफल</span>
@@ -32,8 +32,11 @@ const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
           <a href="/rashifal?period=yearly" id="rf-tab-yearly" class="rf-tab" role="tab" aria-selected="false" aria-controls="rashifal-grid" tabindex="-1" data-period="yearly" data-hi="वार्षिक">Yearly</a>
         </div>
         <a href="/rashifal" class="rf-more-link">
-          <span class="en-text">All Rashis →</span>
-          <span class="hi-text" style="display:none;">सभी राशियाँ →</span>
+          <span class="en-text">All Rashis</span>
+          <span class="hi-text" style="display:none;">सभी राशियाँ</span>
+          <span class="arrow-chip">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
         </a>
       </div>
     </div>
@@ -424,12 +427,14 @@ rfApplyExpandLabels();
   color: var(--color-on-primary) !important;
 }
 .rf-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-saffron-deep);
   text-decoration: none;
 }
-.rf-more-link:hover { text-decoration: underline; }
 
 /* Grid */
 .rf-grid {
@@ -447,11 +452,11 @@ rfApplyExpandLabels();
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.15s, transform 0.15s;
+  transition: box-shadow 220ms var(--ease-in-out), transform 220ms var(--ease-in-out);
 }
 .rf-card:hover {
   box-shadow: var(--shadow-card-hover);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
 
 .rf-card-thumb-link { text-decoration: none; display: block; }

@@ -1,15 +1,24 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #2B1608;
+  /* Desaturated warm-neutral scale (2026-09-05) — replaces the previous
+     saturated-brown ink/body-text/mute/canvas tokens, which read as visibly
+     "brown" across ~90% of every page's text and background rather than as
+     neutrals. See ui-ux-pro-max color-search + redesign-existing-projects
+     color audit: premium/luxury palettes keep saturation near-zero on
+     neutrals and reserve saturated color (saffron/gold/wine below) strictly
+     for accents. Same warmth direction, just desaturated — not a shift
+     toward cold/blue. Validated as a scoped per-page override on the
+     homepage before being promoted here site-wide. */
+  --color-ink: #1C1917;
   --color-on-primary: #ffffff;
-  --color-body-text: #5A4636;
-  --color-mute: #755F4D;
+  --color-body-text: #57534E;
+  --color-mute: #78716C;
   --color-hairline: #E8D9BE;
   --color-hairline-strong: #C9AE7E;
-  --color-canvas: #FFFBF3;
-  --color-canvas-soft: #FDF6EC;
-  --color-canvas-soft-2: #F5E7C8;
+  --color-canvas: #FDFCFA;
+  --color-canvas-soft: #F8F6F2;
+  --color-canvas-soft-2: #F1EDE6;
   --color-link: #B5390A;
   --color-link-deep: #7F2700;
   --color-success: #16803D;
@@ -20,9 +29,9 @@
   --color-violet: #7928ca;
   --color-cyan: #50e3c2;
   --color-highlight-pink: #ff0080;
-  --color-saffron: #B5390A;
-  --color-saffron-soft: #FBE4D2;
-  --color-saffron-deep: #7F2700;
+  --color-saffron: #A22F09;
+  --color-saffron-soft: #F8DCC7;
+  --color-saffron-deep: #6B2000;
   --color-gold: #C8922A;
   --color-gold-soft: #FBF0D9;
   --color-gold-deep: #97690F;
@@ -33,15 +42,21 @@
   --color-inauspicious: #C81E1E;
   --color-inauspicious-soft: #FBE0DE;
 
+  /* Second accent, used sparingly (badges, hover states, one section band)
+     so saffron/gold don't have to carry 100% of the "premium" signal. */
+  --color-wine: #5C1029;
+  --color-wine-soft: #F3DCE1;
+  --color-wine-deep: #3D0A1B;
+
   /* Heading text — distinct token from --color-ink so dark mode can turn
      headings gold without recoloring every block of primary content text. */
-  --color-heading: #2B1608;
+  --color-heading: #1C1917;
 
   /* Kundali SVG/grid chart — its own palette so the birth chart can read as
      a distinct "celestial star map" accent in dark mode. */
-  --color-kundali-bg: #FDF6EC;
+  --color-kundali-bg: #F8F6F2;
   --color-kundali-grid: #C9AE7E;
-  --color-kundali-label: #2B1608;
+  --color-kundali-label: #1C1917;
   --color-kundali-house: #8C7660;
 
   --font-sans: 'Inter', 'Tiro Devanagari Hindi', system-ui, -apple-system, sans-serif;
@@ -53,15 +68,27 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
+  --radius-2xl: 26px;
   --radius-pill: 100px;
   --radius-full: 9999px;
 
-  --shadow-card: 0px 1px 2px rgba(122,34,0,0.04), 0px 3px 14px rgba(122,34,0,0.09), inset 0 0 0 1px rgba(200,146,42,0.35);
-  --shadow-card-hover: 0px 2px 4px rgba(122,34,0,0.07), 0px 10px 22px rgba(122,34,0,0.12), inset 0 0 0 1px rgba(200,146,42,0.55);
+  /* Motion — strong, intentional curves instead of the weak built-in CSS
+     easings. Entrances/reveals use --ease-out (fast start, settles gently);
+     on-screen movement (hover lifts, morphs) uses --ease-in-out. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --shadow-card: 0px 1px 2px rgba(122,34,0,0.05), 0px 4px 16px rgba(122,34,0,0.10), inset 0 0 0 1px rgba(200,146,42,0.35);
+  --shadow-card-hover: 0px 2px 4px rgba(122,34,0,0.08), 0px 12px 26px rgba(122,34,0,0.14), inset 0 0 0 1px rgba(200,146,42,0.55);
   --shadow-modal: 0px 1px 2px rgba(122,34,0,0.04), 0px 8px 16px rgba(122,34,0,0.08), 0px 24px 32px rgba(122,34,0,0.08), inset 0 0 0 1px rgba(200,146,42,0.35);
   /* Drop-shadow only (no inset border) — for elements that already declare
      their own explicit `border`, so the gold edge isn't doubled up. */
   --shadow-elevation: 0px 1px 2px rgba(122,34,0,0.04), 0px 3px 14px rgba(122,34,0,0.09);
+  /* Reserved for featured/hero surfaces only (Abhijit card, Panchang grid,
+     hero panel) — deeper ambient shadow + brighter gold edge + a faint inner
+     highlight, so it reads as a raised, considered surface rather than a
+     slightly-darker --shadow-card-hover. */
+  --shadow-luxe: 0px 2px 6px rgba(122,34,0,0.07), 0px 14px 32px rgba(122,34,0,0.16), inset 0 0 0 1px rgba(200,146,42,0.55), inset 0 1px 0 rgba(255,255,255,0.4);
 }
 
 .dark {
@@ -76,7 +103,7 @@
   --color-canvas-soft: #120800;
   --color-canvas-soft-2: #241206;
   --color-link: #D4A017;
-  --color-saffron: #B5390A;
+  --color-saffron: #C24A1A;
   --color-saffron-soft: #2a1500;
   --color-saffron-deep: #FF8C4D;
   --color-gold: #D4A017;
@@ -89,6 +116,10 @@
   --color-auspicious-soft: #052e16;
   --color-inauspicious-soft: #2A0808;
 
+  --color-wine: #C6577D;
+  --color-wine-soft: #2A0F17;
+  --color-wine-deep: #E88BA8;
+
   --color-kundali-bg: #0D0520;
   --color-kundali-grid: #4B3A7A;
   --color-kundali-label: #D4A017;
@@ -98,6 +129,7 @@
   --shadow-card-hover: 0px 2px 4px rgba(0,0,0,0.35), 0px 10px 22px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(212,160,23,0.38);
   --shadow-modal: 0px 1px 2px rgba(0,0,0,0.3), 0px 8px 16px rgba(0,0,0,0.3), 0px 24px 32px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(212,160,23,0.22);
   --shadow-elevation: 0px 1px 2px rgba(0,0,0,0.3), 0px 3px 14px rgba(0,0,0,0.25);
+  --shadow-luxe: 0px 2px 6px rgba(0,0,0,0.4), 0px 16px 34px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(212,160,23,0.45), inset 0 1px 0 rgba(212,160,23,0.15);
 }
 
 /* Many pages set heading color via inline `style="color:var(--color-ink)"`,
@@ -107,6 +139,12 @@
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
   color: var(--color-heading) !important;
 }
+
+/* Gold-foil gradient, reserved for the wordmark + one hero accent word —
+   not a general-purpose utility. Plain custom properties (not @theme
+   entries) since a gradient isn't a Tailwind color-utility value. */
+:root { --gradient-gold-foil: linear-gradient(120deg, #8A6206 0%, #E9C46A 25%, #FFF6DC 50%, #C8922A 75%, #8A6206 100%); }
+.dark { --gradient-gold-foil: linear-gradient(120deg, #8A6206 0%, #D4A017 25%, #FCEAB0 50%, #D4A017 75%, #8A6206 100%); }
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -163,9 +201,145 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--color-canvas);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  transition: box-shadow 0.15s, transform 0.15s;
+  transition: box-shadow 240ms var(--ease-in-out), transform 240ms var(--ease-in-out);
 }
-.card:hover { box-shadow: var(--shadow-card-hover); }
+.card:hover { box-shadow: var(--shadow-card-hover); transform: translateY(-2px); }
+
+/* Reserved for the page's 1-2 visual centerpieces (e.g. Panchang grid,
+   Abhijit Muhurta card, hero panel) — not a drop-in replacement for .card. */
+.card-luxe {
+  background: var(--color-canvas);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-luxe);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 240ms var(--ease-in-out);
+}
+.card-luxe::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--gradient-gold-foil);
+}
+.card-luxe:hover { box-shadow: var(--shadow-card-hover), var(--shadow-luxe); }
+
+/* Tracked-out uppercase section label ("TODAY'S PANCHANG") — the cheap,
+   high-leverage editorial-premium signal used above major section headings.
+   display:block (not inline-block) is deliberate: an eyebrow directly
+   following an inline-flex back-link (the "← Category Tools" pattern used
+   on ~50 calculator/detail pages) would otherwise share its line box with
+   nothing forcing a break, rendering both on one squished line. A flex/grid
+   child ignores its own declared display anyway ("blockified" per spec), so
+   this can't break any eyebrow already sitting inside a flex row. */
+.eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-gold-deep);
+  margin: 0 0 10px;
+}
+.dark .eyebrow { color: var(--color-gold); }
+
+/* Wordmark / single hero-word accent only — see --gradient-gold-foil above. */
+.gold-foil-text {
+  background: var(--gradient-gold-foil);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.badge-wine { background: var(--color-wine-soft); color: var(--color-wine-deep); border-color: rgba(92,16,41,0.3); }
+
+/* ── Double-bezel: nested "machined hardware" card architecture ─────────
+   Reserved for the page's marquee widgets (Panchang Summary card, Vedic
+   Clock, Kundali widget) — an outer tinted shell + an inner core with its
+   own highlight, so the widget reads as a considered physical object
+   rather than a flat div. Not a drop-in replacement for .card. */
+.bezel-outer {
+  background: color-mix(in srgb, var(--color-saffron) 7%, var(--color-canvas-soft));
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-2xl);
+  padding: 6px;
+  box-shadow: var(--shadow-luxe);
+}
+.bezel-inner {
+  background: var(--color-canvas);
+  border-radius: calc(var(--radius-2xl) - 6px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+  overflow: hidden;
+}
+.dark .bezel-inner { box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+
+/* ── Button-in-button trailing arrow ──────────────────────────────────
+   Nests a link/button's trailing arrow inside its own circular chip
+   instead of letting it sit naked next to the text. `currentColor`
+   picks up whatever text color the parent link already uses. */
+.arrow-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  transition: transform 220ms var(--ease-in-out);
+}
+a:hover .arrow-chip, button:hover .arrow-chip { transform: translate(2px, -2px); }
+
+/* ── Press feedback ── applies to any pressable pill/button. */
+.btn-primary, .btn-secondary, .ps-more-link, .ff-more-link, .pef-more-link, .rf-more-link {
+  transition: transform 160ms var(--ease-out), opacity 160ms var(--ease-out), background 160ms var(--ease-out), border-color 160ms var(--ease-out);
+}
+.btn-primary:active, .btn-secondary:active, .ps-more-link:active, .ff-more-link:active, .pef-more-link:active, .rf-more-link:active {
+  transform: scale(0.97);
+}
+
+/* ── Scroll-driven reveal ── opt-in via class="reveal"; IntersectionObserver
+   in Layout.astro adds .in-view when the element enters the viewport.
+   Elements never appear statically; entrances use --ease-out.
+   Uses the standalone `translate` property (not `transform`) deliberately —
+   .card/.card-luxe already animate `transform` on hover with their own fast
+   240ms timing, and `transition` is a shorthand: if both a reveal and a
+   hover rule declared `transform`, whichever is later in the cascade would
+   silently blow away the other's duration/easing for that property. Keeping
+   them on separate CSS properties lets both transitions coexist untouched. */
+.reveal {
+  opacity: 0;
+  translate: 0 20px;
+  filter: blur(4px);
+  transition: opacity 700ms var(--ease-out), translate 700ms var(--ease-out), filter 700ms var(--ease-out);
+}
+.reveal.in-view { opacity: 1; translate: 0 0; filter: blur(0); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; translate: 0 0; filter: none; transition: none; }
+}
+
+/* Elements that are both .reveal AND a hover-animated surface (.card,
+   .card-luxe) need both transitions merged into one rule — see comment
+   above for why this can't just be two separate class rules. */
+.card.reveal, .card-luxe.reveal {
+  transition: opacity 700ms var(--ease-out), translate 700ms var(--ease-out), filter 700ms var(--ease-out), box-shadow 240ms var(--ease-in-out), transform 240ms var(--ease-in-out);
+}
+
+/* ── Film-grain overlay ── fixed + pointer-events:none per performance
+   guardrail (never attach noise to a scrolling container). Gives the
+   cream canvas a faint physical-paper texture instead of reading as flat
+   digital vector fills. */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.dark .grain-overlay { opacity: 0.05; }
 
 .caption-mono {
   font-family: var(--font-mono);
@@ -236,10 +410,10 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 640px) { .container { padding: 0 16px; } }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.animate-in { animation: fadeIn 0.35s ease both; }
+.animate-in { animation: fadeIn 500ms var(--ease-out) both; }
 
 @keyframes pulseRing {
   0% { transform: scale(0.8); opacity: 0.8; }

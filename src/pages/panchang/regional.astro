@@ -46,24 +46,21 @@ const curYear = today.getFullYear();
   <!-- ── Hero ─────────────────────────────────────────────────────────── -->
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:52px 0 44px;">
     <div class="container" style="max-width:1200px;margin:0 auto;padding:0 24px;">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+      <div class="reveal" style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
         <a href="/" data-hi="होम" style="font-size:13px;color:var(--color-mute);text-decoration:none;">Home</a>
         <span style="color:var(--color-hairline);">/</span>
         <span data-hi="क्षेत्रीय पंचांग" style="font-size:13px;color:var(--color-mute);">Regional Panchang</span>
       </div>
-      <h1 data-hi="आपकी भाषा में पंचांग" style="font-size:38px;font-weight:700;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 14px;line-height:1.1;">
+      <h1 class="reveal" data-hi="आपकी भाषा में पंचांग" style="font-size:38px;font-weight:700;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 14px;line-height:1.1;transition-delay:60ms;">
         Panchang in Your Language
       </h1>
-      <p data-hi="प्रामाणिक महीनों के नाम, क्षेत्रीय वर्ष प्रणालियों और लिपियों के साथ 11 भारतीय क्षेत्रीय परंपराओं में आज का पंचांग देखें।" style="font-size:16px;color:var(--color-body-text);max-width:580px;margin:0 0 28px;line-height:1.65;">
+      <p class="reveal" data-hi="प्रामाणिक महीनों के नाम, क्षेत्रीय वर्ष प्रणालियों और लिपियों के साथ 11 भारतीय क्षेत्रीय परंपराओं में आज का पंचांग देखें।" style="font-size:16px;color:var(--color-body-text);max-width:580px;margin:0 0 28px;line-height:1.65;transition-delay:120ms;">
         Explore today's Panchang across 11 Indian regional traditions — each with authentic month names, regional year systems, and scripts.
       </p>
       <!-- Language script showcase -->
-      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      <div class="reg-pill-row reveal" style="display:flex;flex-wrap:wrap;gap:8px;transition-delay:180ms;">
         {REGIONS.map(r => (
-          <a href={`/panchang/${r.slug}`} style={`display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:var(--color-canvas-soft);border:1px solid var(--color-hairline);border-radius:100px;font-size:13px;font-weight:600;color:var(--color-ink);text-decoration:none;transition:all 0.12s;`}
-            onmouseover="this.style.borderColor='var(--color-saffron)';this.style.color='var(--color-saffron-deep)'"
-            onmouseout="this.style.borderColor='var(--color-hairline)';this.style.color='var(--color-ink)'"
-          >
+          <a href={`/panchang/${r.slug}`} class="reg-lang-pill">
             <span style={`font-size:16px;font-family:sans-serif;color:${TRADITION_COLORS[r.code]};`}>{r.nativeName[0]}</span>
             <span data-hi={r.nameHi}>{r.name}</span>
           </a>
@@ -171,6 +168,23 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 </script>
 
 <style>
+.reg-lang-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: var(--color-canvas-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: border-color 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
+}
+.reg-lang-pill:hover { border-color: var(--color-saffron); color: var(--color-saffron-deep); }
+.reg-lang-pill:active { transform: scale(0.95); }
+
 .reg-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
@@ -187,7 +201,7 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   color: inherit;
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.15s, transform 0.15s;
+  transition: box-shadow 220ms var(--ease-in-out), transform 220ms var(--ease-in-out);
 }
 .reg-card:hover { box-shadow: var(--shadow-card); transform: translateY(-2px); }
 .reg-accent { height: 4px; flex-shrink: 0; }
@@ -203,7 +217,7 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
 .reg-tithi-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--color-data-label); font-family: var(--font-mono); flex-shrink: 0; }
 .reg-tithi-val { font-size: 13px; font-weight: 600; color: var(--color-data-value); font-family: sans-serif; }
 .reg-city { font-size: 11.5px; color: var(--color-mute); margin: 0; }
-.reg-arrow { font-size: 18px; color: var(--color-mute); padding: 12px 20px; border-top: 1px solid var(--color-hairline); text-align: right; transition: color 0.12s; }
+.reg-arrow { font-size: 18px; color: var(--color-mute); padding: 12px 20px; border-top: 1px solid var(--color-hairline); text-align: right; transition: color 160ms var(--ease-out); }
 .reg-card:hover .reg-arrow { color: var(--color-saffron); }
 
 .cs-card { background: var(--color-canvas); border: 1px solid var(--color-hairline); border-radius: var(--radius-lg); box-shadow: var(--shadow-elevation); padding: 18px 20px; }

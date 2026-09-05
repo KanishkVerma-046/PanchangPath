@@ -34,9 +34,9 @@ const faqJsonLd = {
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.5;pointer-events:none;"></div>
     <MandalaWatermark size={480} opacity={0.06} />
     <div class="container" style="position:relative;">
-      <p class="caption-mono" style="color:var(--color-mute);margin:0 0 8px;">प्रश्नोत्तर · FAQ</p>
-      <h1 data-hi="अक्सर पूछे जाने वाले प्रश्न" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;">Frequently Asked Questions</h1>
-      <p data-hi="पंचांग की मूल बातों, हमारी गणना पद्धति, मुहूर्त, कुंडली और राशिफल उपकरणों, तथा भक्ति पुस्तकालय के बारे में सामान्य प्रश्नों के उत्तर।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;">Answers to common questions about Panchang basics, our calculation method, Muhurta timing, the Kundali &amp; Rashifal tools, and the devotional library.</p>
+      <p class="eyebrow reveal">प्रश्नोत्तर · FAQ</p>
+      <h1 class="reveal" data-hi="अक्सर पूछे जाने वाले प्रश्न" style="font-size:34px;font-weight:600;letter-spacing:-1.4px;color:var(--color-ink);margin:0 0 12px;transition-delay:60ms;">Frequently Asked Questions</h1>
+      <p class="reveal" data-hi="पंचांग की मूल बातों, हमारी गणना पद्धति, मुहूर्त, कुंडली और राशिफल उपकरणों, तथा भक्ति पुस्तकालय के बारे में सामान्य प्रश्नों के उत्तर।" style="font-size:16px;color:var(--color-body-text);margin:0;max-width:640px;line-height:1.6;transition-delay:120ms;">Answers to common questions about Panchang basics, our calculation method, Muhurta timing, the Kundali &amp; Rashifal tools, and the devotional library.</p>
 
       <!-- Category quick-nav -->
       <div class="faq-cat-nav">
@@ -107,13 +107,14 @@ const faqJsonLd = {
     border-radius: var(--radius-pill);
     padding: 6px 14px;
     text-decoration: none;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    transition: background 160ms var(--ease-out), border-color 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
   }
   .faq-cat-pill:hover {
     color: var(--color-ink);
     border-color: var(--color-hairline-strong);
     background: var(--color-canvas-soft);
   }
+  .faq-cat-pill:active { transform: scale(0.95); }
 
   .faq-section { margin-bottom: 40px; }
   .faq-section:last-of-type { margin-bottom: 32px; }
@@ -130,6 +131,7 @@ const faqJsonLd = {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-elevation);
     overflow: hidden;
+    transition: box-shadow 220ms var(--ease-in-out);
   }
   .faq-item[open] { box-shadow: var(--shadow-card-hover); }
 
@@ -152,7 +154,7 @@ const faqJsonLd = {
     flex-shrink: 0;
     color: var(--color-saffron-deep);
     font-size: 13px;
-    transition: transform 0.2s;
+    transition: transform 220ms var(--ease-in-out);
   }
   .faq-item[open] .faq-caret { transform: rotate(180deg); }
 

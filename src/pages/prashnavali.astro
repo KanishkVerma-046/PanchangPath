@@ -20,13 +20,13 @@ const answerCount = PRASHNAVALI_ANSWERS.length;
     <div class="pv-content">
       <!-- Header -->
       <div style="text-align:center;margin-bottom:48px;">
-        <p class="caption-mono" data-hi="दिव्य दैवज्ञ" style="color:var(--color-saffron-deep);margin:0 0 12px;letter-spacing:0.12em;">DIVINE ORACLE</p>
-        <h1 style="font-size:42px;font-weight:700;letter-spacing:-1.5px;color:var(--color-ink);margin:0 0 8px;">
+        <p class="eyebrow reveal" data-hi="दिव्य दैवज्ञ" style="color:var(--color-saffron-deep);">Divine Oracle</p>
+        <h1 class="reveal" style="font-size:42px;font-weight:700;letter-spacing:-1.5px;color:var(--color-ink);margin:0 0 8px;transition-delay:60ms;">
           <span class="en-text">Prashnavali</span>
           <span class="hi-text" style="display:none;">प्रश्नावली</span>
         </h1>
-        <p style="font-size:18px;color:var(--color-mute);margin:0 0 24px;font-family:var(--font-mono);">प्रश्नावली</p>
-        <p data-hi="अपनी आंखें बंद करें। गहरी सांस लें। अपने प्रश्न को अपने मन और हृदय में स्पष्ट रूप से रखें। जब आप तैयार हों, तो दैवज्ञ को स्पर्श करें।" style="font-size:16px;color:var(--color-body-text);max-width:480px;margin:0 auto;line-height:1.7;">
+        <p class="reveal" style="font-size:18px;color:var(--color-mute);margin:0 0 24px;font-family:var(--font-mono);transition-delay:90ms;">प्रश्नावली</p>
+        <p class="reveal" data-hi="अपनी आंखें बंद करें। गहरी सांस लें। अपने प्रश्न को अपने मन और हृदय में स्पष्ट रूप से रखें। जब आप तैयार हों, तो दैवज्ञ को स्पर्श करें।" style="font-size:16px;color:var(--color-body-text);max-width:480px;margin:0 auto;line-height:1.7;transition-delay:120ms;">
           Close your eyes. Breathe deeply. Hold your question clearly in your mind and heart. When you are ready, touch the oracle.
         </p>
       </div>
@@ -226,8 +226,9 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-sans);
-  transition: background 0.15s, color 0.15s;
+  transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
+.pv-mode-btn:active { transform: scale(0.95); }
 .pv-mode-btn.active {
   background: var(--color-ink);
   color: var(--color-canvas);
@@ -250,7 +251,7 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition: background 160ms var(--ease-out), color 160ms var(--ease-out), transform 160ms var(--ease-out);
   font-family: var(--font-mono);
 }
 .pv-num-btn:hover {
@@ -258,6 +259,7 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   color: #fff;
   border-color: var(--color-saffron);
 }
+.pv-num-btn:active { transform: scale(0.9); }
 @media (max-width: 480px) {
   .pv-num-grid { grid-template-columns: repeat(6, 1fr); }
 }
@@ -301,7 +303,7 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   border: 2px solid var(--color-saffron);
   border-radius: 50%;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition: transform 220ms var(--ease-in-out), box-shadow 220ms var(--ease-in-out), border-color 220ms var(--ease-in-out);
   box-shadow: 0 0 0 0 rgba(255,153,51,0);
   font-family: var(--font-sans);
   color: var(--color-ink);
@@ -361,12 +363,13 @@ if (localStorage.getItem('pp-lang') === 'hi') applyPageLang(true);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: opacity 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .pv-again-btn:hover { opacity: 0.85; }
+.pv-again-btn:active { transform: scale(0.96); }
 
 .pv-fade-in {
-  animation: pv-fade 0.5s ease both;
+  animation: pv-fade 500ms var(--ease-out) both;
 }
 @keyframes pv-fade {
   from { opacity: 0; transform: translateY(12px); }

@@ -33,25 +33,31 @@ const shColor = (cls: string) => cls === 'favorable' ? '#15803d' : cls === 'chal
   <section style="background:var(--color-canvas);border-bottom:1px solid var(--color-hairline);padding:40px 0 32px;position:relative;overflow:hidden;">
     <div class="gradient-mesh" style="position:absolute;inset:0;opacity:0.4;pointer-events:none;"></div>
     <div class="container" style="position:relative;">
-      <a href="/jyotish" data-hi="← ज्योतिष उपकरण" style="font-size:12px;color:var(--color-mute);text-decoration:none;">← Jyotish Tools</a>
-      <p class="caption-mono" style="color:var(--color-mute);margin:12px 0 8px;">शनि · SHANI (SATURN)</p>
-      <h1 data-hi="शनि गोचर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;">Shani (Saturn) Transit</h1>
-      <p style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;"><span data-hi="शनि की लाइव सायन स्थिति, साथ ही चंद्र राशि के अनुसार शास्त्रीय साढ़े साती और अष्टम शनि गोचर तालिका। अपनी जन्म कुंडली के विरुद्ध व्यक्तिगत साढ़े साती चरण जांच के लिए,">Live sidereal position of Saturn, plus the classical Sade Sati and Ashtam Shani transit table by Moon sign. For a personalized Sade Sati phase check against your own birth chart, use the</span> <a href="/jyotish/sadesati" data-hi="शनि साढ़े साती कैलकुलेटर" style="color:var(--color-saffron-deep,#d97706);">Shani Sadesati Calculator</a><span data-hi="का उपयोग करें।">.</span></p>
+      <a href="/jyotish" style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--color-mute);text-decoration:none;">
+        <span class="arrow-chip"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></span>
+        <span data-hi="ज्योतिष उपकरण">Jyotish Tools</span>
+      </a>
+      <p class="eyebrow reveal" style="margin:12px 0 8px;">शनि · Shani (Saturn)</p>
+      <h1 class="reveal" data-hi="शनि गोचर" style="font-size:30px;font-weight:600;letter-spacing:-1.2px;color:var(--color-ink);margin:0 0 10px;transition-delay:60ms;">Shani (Saturn) Transit</h1>
+      <p class="reveal" style="font-size:15px;color:var(--color-body-text);margin:0;max-width:540px;transition-delay:120ms;"><span data-hi="शनि की लाइव सायन स्थिति, साथ ही चंद्र राशि के अनुसार शास्त्रीय साढ़े साती और अष्टम शनि गोचर तालिका। अपनी जन्म कुंडली के विरुद्ध व्यक्तिगत साढ़े साती चरण जांच के लिए,">Live sidereal position of Saturn, plus the classical Sade Sati and Ashtam Shani transit table by Moon sign. For a personalized Sade Sati phase check against your own birth chart, use the</span> <a href="/jyotish/sadesati" data-hi="शनि साढ़े साती कैलकुलेटर" style="color:var(--color-saffron-deep,#d97706);">Shani Sadesati Calculator</a><span data-hi="का उपयोग करें।">.</span></p>
     </div>
   </section>
 
   <section style="padding:28px 0 48px;">
     <div class="container">
       <p id="sh-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildNow.toLocaleTimeString('en-IN')} (auto-refreshes every 60s)</p>
-      <div class="card" style="padding:20px;max-width:320px;margin-bottom:36px;" id="sh-current">
+      <div class="bezel-outer reveal" style="max-width:320px;margin-bottom:36px;" id="sh-current">
+       <div class="bezel-inner" style="padding:20px;">
         <p style="font-size:14px;font-weight:700;color:#374151;margin:0 0 6px;">Shani (Saturn)</p>
         <p style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">{RASHIS[saturnSign].name} ({RASHIS[saturnSign].en})</p>
         <p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">{formatDegMin(saturnSid)} · {NAKSHATRAS[saturnNak.idx].name} Pada {saturnNak.pada}</p>
+       </div>
       </div>
 
       <h3 data-hi="चंद्र राशि के अनुसार शनि गोचर प्रभाव" style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 6px;">Saturn Gochara (Transit) Effect by Moon Sign</h3>
       <p data-hi="साढ़े साती (आपकी चंद्र राशि से 12वें, 1ले, 2रे भाव) 7.5 वर्ष का प्रसिद्ध शनि गोचर चक्र है। अष्टम शनि (8वां भाव) भी विशेष रूप से चुनौतीपूर्ण माना जाता है। भाव 3, 6, और 11 अनुकूल हैं ('उपचय'); शेष तटस्थ हैं।" style="font-size:12px;color:var(--color-mute);margin:0 0 14px;max-width:600px;">Sade Sati (houses 12, 1, 2 from your Moon sign) is the well-known 7.5-year Saturn transit cycle. Ashtam Shani (house 8) is also considered particularly challenging. Houses 3, 6, and 11 are favorable ("Upachaya"); the rest are neutral.</p>
-      <div class="card" style="padding:20px;overflow-x:auto;">
+      <div class="bezel-outer reveal">
+       <div class="bezel-inner" style="padding:20px;overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;" id="sh-table">
           <thead><tr>
             <th data-hi="आपकी चंद्र राशि" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Your Moon Sign</th>
@@ -68,6 +74,7 @@ const shColor = (cls: string) => cls === 'favorable' ? '#15803d' : cls === 'chal
             ))}
           </tbody>
         </table>
+       </div>
       </div>
     </div>
   </section>
@@ -107,7 +114,7 @@ function render(){
   const curEl=document.getElementById('sh-current');
   if(curEl){
     const shaniName=hindiActive?'शनि':'Shani (Saturn)';
-    curEl.innerHTML=`<p style="font-size:14px;font-weight:700;color:#374151;margin:0 0 6px;">${shaniName}</p><p style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${trRashi(saturnSign)} (${RASHIS[saturnSign].en})</p><p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${formatDegMin(saturnSid)} · ${trNak(nak.idx)} Pada ${nak.pada}</p>`;
+    curEl.innerHTML=`<div class="bezel-inner" style="padding:20px;"><p style="font-size:14px;font-weight:700;color:#374151;margin:0 0 6px;">${shaniName}</p><p style="font-size:20px;font-weight:600;color:var(--color-ink);margin:0 0 4px;">${trRashi(saturnSign)} (${RASHIS[saturnSign].en})</p><p style="font-size:12px;color:var(--color-mute);margin:0;font-family:var(--font-mono);">${formatDegMin(saturnSid)} · ${trNak(nak.idx)} Pada ${nak.pada}</p></div>`;
   }
 
   let rows='';

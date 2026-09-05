@@ -86,7 +86,7 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
   <div class="dv-hero-inner">
     <span class="dv-icon" aria-hidden="true">{item.icon}</span>
     <div class="dv-hero-text">
-      <div class="dv-breadcrumb">
+      <div class="dv-breadcrumb reveal">
         <a href="/" data-hi="होम">Home</a>
         <span aria-hidden="true">›</span>
         <a href="/devotional" data-hi="भक्ति पुस्तकालय">Devotional</a>
@@ -95,11 +95,11 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
         <span aria-hidden="true">›</span>
         <span class="en-text">{item.title}</span><span class="hi-text" style="display:none">{item.titleHi}</span>
       </div>
-      <h1 class="dv-heading">
+      <h1 class="dv-heading reveal" style="transition-delay:60ms;">
         <span class="en-text">{item.title}</span><span class="hi-text" style="display:none">{item.titleHi}</span>
       </h1>
       {item.deity && (
-        <span class="dv-deity-badge">
+        <span class="dv-deity-badge reveal" style="transition-delay:120ms;">
           ✦ <span class="en-text">{item.deity}</span><span class="hi-text" style="display:none">{item.deityHi ?? item.deity}</span>
         </span>
       )}
@@ -121,11 +121,13 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
             <button id="dv-translit-toggle" class="dv-toggle-btn" type="button">Show Transliteration</button>
           )}
         </div>
-        <div class="dv-lyrics-card">
+        <div class="dv-lyrics-card bezel-outer reveal">
+         <div class="bezel-inner">
           <pre class="dv-lyrics-hi" id="dv-lyrics-hi">{item.lyricsHi}</pre>
           {item.transliteration && (
             <pre class="dv-lyrics-translit" id="dv-lyrics-translit" hidden>{item.transliteration}</pre>
           )}
+         </div>
         </div>
       </div>
 
@@ -263,11 +265,12 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
 .dv-toggle-btn {
   padding: 5px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
   background: var(--color-canvas-soft-2); border: 1px solid var(--color-hairline); color: var(--color-ink); cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .dv-toggle-btn:hover { background: var(--color-saffron-soft); border-color: var(--color-saffron); }
+.dv-toggle-btn:active { transform: scale(0.95); }
 
-.dv-lyrics-card { border: 1px solid var(--color-hairline); border-radius: 10px; box-shadow: var(--shadow-elevation); padding: 24px; background: var(--color-canvas-soft); }
+.dv-lyrics-card > .bezel-inner { padding: 24px; background: var(--color-canvas-soft); }
 .dv-lyrics-hi, .dv-lyrics-translit {
   font-family: var(--font-sans); white-space: pre-line; font-size: 16px; line-height: 2.1; color: var(--color-ink); margin: 0;
 }
@@ -281,13 +284,14 @@ const backToCategoryHi = `← ${category.labelHi} पर वापस`;
 .dv-side-body { font-size: 14px; color: var(--color-body-text); margin: 0 0 14px; line-height: 1.6; }
 .dv-side-btn {
   display: block; text-align: center; padding: 8px 16px; background: var(--color-canvas-soft); border: 1px solid var(--color-hairline);
-  border-radius: 6px; font-size: 12.5px; font-weight: 500; color: var(--color-ink); text-decoration: none; transition: background 0.15s;
+  border-radius: 6px; font-size: 12.5px; font-weight: 500; color: var(--color-ink); text-decoration: none; transition: background 160ms var(--ease-out), border-color 160ms var(--ease-out), transform 160ms var(--ease-out);
 }
 .dv-side-btn:hover { background: var(--color-saffron-soft); border-color: var(--color-saffron); }
+.dv-side-btn:active { transform: scale(0.97); }
 
 .dv-nav { display: flex; justify-content: space-between; gap: 16px; margin-top: 40px; padding-top: 28px; border-top: 1px solid var(--color-hairline); }
-.dv-nav-btn { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--color-hairline); border-radius: 8px; text-decoration: none; color: var(--color-ink); transition: border-color 0.15s, background 0.15s; max-width: 260px; }
-.dv-nav-btn:hover { border-color: var(--color-saffron); background: var(--color-saffron-soft); }
+.dv-nav-btn { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid var(--color-hairline); border-radius: 8px; text-decoration: none; color: var(--color-ink); transition: border-color 220ms var(--ease-in-out), background 220ms var(--ease-in-out), transform 220ms var(--ease-in-out); max-width: 260px; }
+.dv-nav-btn:hover { border-color: var(--color-saffron); background: var(--color-saffron-soft); transform: translateY(-2px); }
 .dv-nav-next { text-align: right; margin-left: auto; }
 .dv-nav-arrow { font-size: 18px; color: var(--color-saffron); flex-shrink: 0; }
 .dv-nav-meta { display: flex; flex-direction: column; gap: 2px; }
