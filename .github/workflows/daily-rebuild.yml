@@ -30,6 +30,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history (not the default shallow fetch-depth: 1) -- the
+          # `postdeploy` step below (scripts/indexnow-deploy-diff.mjs) needs to
+          # `git diff` against whatever commit was live before this run, which
+          # a 1-commit-deep clone wouldn't contain. Repo is small (~40MB,
+          # ~500 commits as of 2026-09), so a full clone is cheap.
+          fetch-depth: 0
         # No explicit ref: defaults to the repo's default branch (master), which is what
         # actually drives production via manual `npm run deploy`. A prior version pinned
         # this to a feature branch (chore/permission-allowlist) that fell 2 commits behind
@@ -43,16 +50,15 @@ jobs:
       - run: npm ci
 
       - run: npm run deploy
+        # `npm run deploy`'s `postdeploy` lifecycle step
+        # (scripts/indexnow-deploy-diff.mjs) automatically submits only the
+        # URLs that actually changed since the last deployment to IndexNow --
+        # see docs/superpowers/plans/2026-09-11-indexnow-diff-based-submission.md.
+        # This replaced an unconditional full-sitemap submission that ran here
+        # every day regardless of whether anything changed, which Bing
+        # Webmaster Tools flagged as "IndexNow is in batch mode". A much
+        # smaller, explicitly-rare full-sitemap fallback still runs weekly --
+        # see .github/workflows/weekly-indexnow-safety-net.yml.
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-
-      - name: Submit sitemap to IndexNow
-        # Safety net, not the primary mechanism -- catches anything published
-        # without an explicit per-URL IndexNow call (see CLAUDE.md). Runs after
-        # `npm run deploy` above, which already built dist/sitemap.xml via the
-        # `build` npm script, so this submits the sitemap that was just deployed.
-        # The IndexNow key is public by design (see
-        # public/40561200baba459aa3fc4b890c7e49df.txt), not a secret, so no
-        # repo secret is needed for this step.
-        run: node scripts/indexnow-submit.mjs --sitemap dist/sitemap.xml

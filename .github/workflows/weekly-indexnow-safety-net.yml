@@ -1,0 +1,40 @@
+name: Weekly IndexNow safety net
+
+# Rare fallback only -- NOT the primary IndexNow channel. Real content changes
+# are submitted automatically, diffed to just the changed URL(s), by the
+# `postdeploy` step of `npm run deploy` (scripts/indexnow-deploy-diff.mjs),
+# which runs on every daily-rebuild.yml deploy. That replaced a previous
+# unconditional daily full-sitemap submission that Bing Webmaster Tools
+# flagged as "IndexNow is in batch mode" -- see
+# docs/superpowers/plans/2026-09-11-indexnow-diff-based-submission.md.
+#
+# This workflow exists only to catch content the diff mapper doesn't
+# understand (e.g. a shared-component edit that ripples into many pages
+# without touching a page file or a registered content-data file directly).
+# Deliberately weekly, not daily, and deliberately a separate workflow file
+# so the rare-fallback cadence is obvious without reading a conditional step.
+
+on:
+  schedule:
+    # 19:00 UTC Monday = 00:30 IST Tuesday -- shortly after daily-rebuild.yml's
+    # own midnight run, so the sitemap it submits reflects that day's deploy.
+    - cron: '0 19 * * 1'
+  workflow_dispatch: {} # allows a manual test run from the Actions tab or `gh workflow run`
+
+permissions:
+  contents: read
+
+jobs:
+  submit-sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch live sitemap and submit to IndexNow
+        # Submits the production sitemap.xml directly (not a freshly-built one)
+        # since this workflow doesn't build or deploy -- it only re-notifies
+        # IndexNow about whatever's already live, as a fallback. The IndexNow
+        # key is public by design (see
+        # public/40561200baba459aa3fc4b890c7e49df.txt), not a secret, so no
+        # repo secret is needed.
+        run: node scripts/indexnow-submit.mjs --sitemap https://panchangpath.com/sitemap.xml
