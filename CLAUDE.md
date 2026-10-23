@@ -64,6 +64,15 @@ Every category follows the same shape:
 
 **Sourcing long/sacred texts accurately**: for anything where word-for-word fidelity matters (full stotras, chalisas, Durga Saptashati, Sundarkand), do not reconstruct from memory if a reference source is available — `WebFetch` **cannot** return verbatim text (hard ~125-character quote limit, it summarizes/paraphrases instead). Instead: `curl` the raw HTML directly (with a browser `User-Agent`), strip tags in Node (`content.replace(/<script.../gi,'').replace(/<[^>]+>/g,'')`, decode `&nbsp;`/`&#x...;` entities), then locate the verse content between a start marker (e.g. a chapter heading string) and an end marker (drikpanchang.com pages end article content right before a `A+AA-` font-size-toggle UI string, followed by prev/next nav — cut there to drop nav/footer junk). Verify extraction by checking the source's own verse-count colophon (e.g. "एवमादितः॥104॥") or sequential numbering (Doha 1→60 with no gaps/dupes) before trusting the result. See git history for the Durga Saptashati / Sundarkand commits for a working extraction script.
 
+## Brand
+
+Logo mark "Om Orbit": a gold disc carrying ॐ, ringed by 27 radial ticks (the 27 nakshatras).
+
+- **Palette**: Maroon `#3A0F05` (header bg) · Gold `#AA7B18` (on light bg) · Light gold `#D9B35F` (on maroon/dark bg) · Saffron `#F2833D` (small accent only) · Cream `#FAF5F0`
+- **Masters** (`src/assets/brand/`): `logo-mark-light.svg`, `logo-mark-dark.svg`, `logo-mark-header.svg` (disc only, no ring — used inline in the header, mobile drawer and footer), `favicon.svg`, `app-icon.svg`. The header mark stays light-gold on maroon in both themes; the drawer and footer sit on the theme-flipping canvas, so they recolour it via the `.logo-mark-themed` class and `--color-logo-disc`/`--color-logo-om` in `src/styles/global.css`.
+- **The ॐ is an outlined `<path>`** from Tiro Devanagari Hindi (SIL OFL; TTF + `OFL.txt` in `scripts/brand/fonts/`, dev-only, never shipped or added to CSS), extracted by `scripts/brand/extract-om.mjs` into `scripts/brand/om-glyph.json`. Never put `<text>`/`font-family` in a logo or favicon SVG.
+- **`node scripts/brand/build-icons.mjs` regenerates everything** — the masters, then `public/favicon.{svg,ico}`, `favicon-16x16.png`/`favicon-32x32.png`, `apple-touch-icon.png`, `icon-192.png`/`icon-512.png` (used by `site.webmanifest`), and `public/logo/` (512 px schema logo + light/dark SVGs). The OG card (`scripts/og-image-template.html` → `node scripts/generate-og-image.mjs`) uses `logo-mark-light.svg`; regenerate it after changing the masters.
+
 ## Known Issues (found via full-site audit, not yet fixed)
 
 - ~~**Wrong Yamaganda Kalam table**~~ — fixed 2026-07: `YAMAGANDA_SLOTS` in `src/lib/panchang.ts` and the duplicate `YAMAG_SLOTS` in `muhurta/rahu-kala.astro` now use the verified `[4,3,2,1,0,6,5]` table.

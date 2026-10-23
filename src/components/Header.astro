@@ -3,6 +3,7 @@
 import LocationPicker from './LocationPicker.astro';
 import LanguagePicker from './LanguagePicker.astro';
 import DeepamFlame from './motifs/DeepamFlame.astro';
+import HeaderMark from '../assets/brand/logo-mark-header.svg';
 import { getUpcomingMajorFestivals, getFestivalSlug } from '../lib/festivals';
 
 // Next 3 upcoming major festivals, computed at build time (astro build runs
@@ -26,7 +27,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
 
       <!-- LEFT: Logo -->
       <a href="/" class="logo-link" aria-label="PanchangPath पंचांग पथ - Home">
-        <span class="logo-om">🕉️</span>
+        <span class="logo-om" aria-hidden="true"><HeaderMark /></span>
         <span class="logo-text-group">
           <span class="logo-text">PanchangPath</span>
           <span class="logo-text-hi">पंचांग पथ</span>
@@ -246,7 +247,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
 <aside id="mobile-drawer" class="mobile-drawer" aria-label="Mobile navigation" aria-hidden="true" inert>
   <div class="drawer-header">
     <a href="/" class="logo-link">
-      <span class="logo-om">🕉️</span>
+      <span class="logo-om logo-mark-themed" aria-hidden="true"><HeaderMark /></span>
       <span class="logo-text-group">
         <span class="logo-text">PanchangPath</span>
         <span class="logo-text-hi">पंचांग पथ</span>
@@ -473,7 +474,8 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
     text-decoration: none;
     flex-shrink: 0;
   }
-  .logo-om { font-size: 20px; line-height: 1; }
+  .logo-om { width: 28px; height: 28px; flex-shrink: 0; display: block; }
+  .logo-om :global(svg) { display: block; width: 100%; height: 100%; }
   .logo-text-group { display: flex; flex-direction: column; line-height: 1.05; }
   .logo-text {
     font-family: var(--font-heading);

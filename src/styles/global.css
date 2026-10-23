@@ -146,6 +146,14 @@
 :root { --gradient-gold-foil: linear-gradient(120deg, #8A6206 0%, #E9C46A 25%, #FFF6DC 50%, #C8922A 75%, #8A6206 100%); }
 .dark { --gradient-gold-foil: linear-gradient(120deg, #8A6206 0%, #D4A017 25%, #FCEAB0 50%, #D4A017 75%, #8A6206 100%); }
 
+/* Footer + mobile-drawer logo: the disc-only header mark
+   (src/assets/brand/logo-mark-header.svg), recoloured per theme. Both sit on
+   --color-canvas, which flips with .dark, unlike the always-maroon header. */
+:root { --color-logo-disc: #AA7B18; --color-logo-om: #FAF5F0; }
+.dark { --color-logo-disc: #D9B35F; --color-logo-om: #3A0F05; }
+.logo-mark-themed circle { fill: var(--color-logo-disc); }
+.logo-mark-themed path { fill: var(--color-logo-om); }
+
 *, *::before, *::after { box-sizing: border-box; }
 
 /* overflow-x:hidden is a safety net, not the actual fix for the bug that led
