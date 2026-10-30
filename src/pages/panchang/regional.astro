@@ -3,11 +3,14 @@ import Layout from '../../layouts/Layout.astro';
 import { REGIONS } from '../../lib/panchang-i18n';
 import { calculatePanchang, getHinduCalendarInfo } from '../../lib/panchang';
 import { getSolarMonthIndex } from '../../lib/panchang-i18n';
+import { istDateParts } from '../../lib/ist-date';
 
 const today = new Date();
+// India's calendar date, not the host's (UTC during the 00:00–05:30 IST daily rebuild).
+const ist = istDateParts(today);
 // Same day-of-year convention as panchang.ts's getHinduCalendarInfo() (Issue #17).
 const dayOfYear = Math.floor(
-  (Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()) - Date.UTC(today.getFullYear(), 0, 0)) / 86_400_000,
+  (Date.UTC(ist.year, ist.month - 1, ist.day) - Date.UTC(ist.year, 0, 0)) / 86_400_000,
 );
 
 const AMANTA_TO_IDX: Record<string, number> = {
@@ -23,7 +26,7 @@ const regionPreviews = REGIONS.map(r => {
   const monthName = r.monthSystem === 'solar'
     ? r.months[solarMonthIdx] ?? r.months[0]
     : r.months[AMANTA_TO_IDX[cal.amantaMonth.name] ?? 0];
-  const yearInfo = r.getYear(p.sunLongitude, today.getFullYear(), cal.vikramaSamvat, cal.shakaSamvat, dayOfYear);
+  const yearInfo = r.getYear(p.sunLongitude, ist.year, cal.vikramaSamvat, cal.shakaSamvat, dayOfYear);
   const tithiName = p.tithi.paksha === 'Shukla'
     ? r.tithiShukla[(p.tithi.number - 1) % 15]
     : r.tithiKrishna[(p.tithi.number - 1) % 15];
@@ -36,7 +39,7 @@ const TRADITION_COLORS: Record<string, string> = {
   or: '#dc2626', ne: '#4f46e5', iskcon: '#92400e',
 };
 
-const curYear = today.getFullYear();
+const curYear = ist.year;
 ---
 
 <Layout

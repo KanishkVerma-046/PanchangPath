@@ -2,13 +2,15 @@
 import Layout from '../layouts/Layout.astro';
 import { FESTIVALS_2025_2027, daysUntil, getFestivalSlug } from '../lib/festivals';
 import { formatDateHi } from '../lib/date-i18n';
+import { istTodayISO } from '../lib/ist-date';
 
 const today = new Date();
+const todayISO = istTodayISO(today);
 const festivalYears = FESTIVALS_2025_2027.map(f => +f.date.slice(0, 4));
 const yearRange = `${Math.min(...festivalYears)}-${Math.max(...festivalYears)}`;
-const upcoming = FESTIVALS_2025_2027.filter(f => f.date >= today.toISOString().split('T')[0])
+const upcoming = FESTIVALS_2025_2027.filter(f => f.date >= todayISO)
   .sort((a, b) => a.date.localeCompare(b.date));
-const past = FESTIVALS_2025_2027.filter(f => f.date < today.toISOString().split('T')[0])
+const past = FESTIVALS_2025_2027.filter(f => f.date < todayISO)
   .sort((a, b) => b.date.localeCompare(a.date))
   .slice(0, 6);
 
@@ -68,7 +70,7 @@ function typeLabelHi(type: string) {
               const fd = new Date(f.date);
               const days = daysUntil(today, f.date);
               return (
-                <a href={`/festivals/${getFestivalSlug(f)}`} class={`festival-item card`} data-type={f.type} style="padding:16px 20px;display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit;">
+                <a href={`/festivals/${getFestivalSlug(f)}`} class={`festival-item card`} data-type={f.type} data-fest-date={f.date} data-fest-hide-past style="padding:16px 20px;display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit;">
                   <!-- Date box -->
                   <div style="width:52px;flex-shrink:0;text-align:center;background:var(--color-canvas-soft-2);border-radius:8px;padding:8px 4px;">
                     <p style="font-size:20px;font-weight:700;line-height:1;color:var(--color-ink);margin:0;">{fd.getDate()}</p>
@@ -85,17 +87,15 @@ function typeLabelHi(type: string) {
                     <p style="font-size:13px;color:var(--color-body-text);margin:4px 0 0;" data-hi={f.descriptionHi}>{f.description}</p>
                   </div>
                   <!-- Countdown -->
+                  <!-- All three states are prerendered; the build-time one is visible and the
+                       client (festival-dates-client.ts) switches between them as days pass. -->
                   <div style="flex-shrink:0;text-align:right;">
-                    {days === 0 ? (
-                      <span class="badge badge-saffron" style="font-size:12px;" data-hi="आज 🎉">Today 🎉</span>
-                    ) : days === 1 ? (
-                      <span class="badge badge-auspicious" style="font-size:12px;" data-hi="कल">Tomorrow</span>
-                    ) : (
-                      <div>
-                        <p style="font-size:22px;font-weight:700;color:var(--color-ink);margin:0;letter-spacing:-0.5px;line-height:1;">{days}</p>
-                        <p style="font-size:10px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" data-hi="दिन शेष">days away</p>
-                      </div>
-                    )}
+                    <span class="badge badge-saffron" style={`font-size:12px;${days === 0 ? '' : 'display:none;'}`} data-hi="आज 🎉" data-fest-show="today">Today 🎉</span>
+                    <span class="badge badge-auspicious" style={`font-size:12px;${days === 1 ? '' : 'display:none;'}`} data-hi="कल" data-fest-show="tomorrow">Tomorrow</span>
+                    <div style={days >= 2 ? undefined : 'display:none'} data-fest-show="later">
+                      <p style="font-size:22px;font-weight:700;color:var(--color-ink);margin:0;letter-spacing:-0.5px;line-height:1;" data-fest-label="days">{days}</p>
+                      <p style="font-size:10px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" data-hi="दिन शेष">days away</p>
+                    </div>
                   </div>
                 </a>
               );
@@ -122,7 +122,7 @@ function typeLabelHi(type: string) {
             const fd = new Date(f.date);
             const daysAgo = -daysUntil(today, f.date);
             return (
-              <a href={`/festivals/${getFestivalSlug(f)}`} class="card" data-type={f.type} style="padding:16px 20px;display:flex;align-items:center;gap:16px;opacity:0.82;text-decoration:none;color:inherit;">
+              <a href={`/festivals/${getFestivalSlug(f)}`} class="card" data-type={f.type} data-fest-date={f.date} style="padding:16px 20px;display:flex;align-items:center;gap:16px;opacity:0.82;text-decoration:none;color:inherit;">
                 <!-- Date box -->
                 <div style="width:52px;flex-shrink:0;text-align:center;background:var(--color-canvas-soft-2);border-radius:8px;padding:8px 4px;">
                   <p style="font-size:20px;font-weight:700;line-height:1;color:var(--color-ink);margin:0;">{fd.getDate()}</p>
@@ -140,8 +140,8 @@ function typeLabelHi(type: string) {
                 </div>
                 <!-- Days ago -->
                 <div style="flex-shrink:0;text-align:right;">
-                  <p style="font-size:22px;font-weight:700;color:var(--color-mute);margin:0;letter-spacing:-0.5px;line-height:1;">{daysAgo}</p>
-                  <p style="font-size:10px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" data-hi="दिन पहले">{daysAgo === 1 ? 'day ago' : 'days ago'}</p>
+                  <p style="font-size:22px;font-weight:700;color:var(--color-mute);margin:0;letter-spacing:-0.5px;line-height:1;" data-fest-label="ago">{daysAgo}</p>
+                  <p style="font-size:10px;color:var(--color-mute);margin:0;font-family:var(--font-mono);" data-hi="दिन पहले" data-fest-label="ago-unit">{daysAgo === 1 ? 'day ago' : 'days ago'}</p>
                 </div>
               </a>
             );
@@ -161,13 +161,17 @@ function typeLabelHi(type: string) {
 </style>
 
 <script>
+  import { initFestivalDates } from '../lib/festival-dates-client';
+
   // Filter buttons
   const btns = document.querySelectorAll('.filter-btn');
   const items = document.querySelectorAll('.festival-item');
 
   function hideEmptyMonthSections() {
     document.querySelectorAll('.month-section').forEach(sec => {
-      const visible = sec.querySelectorAll('.festival-item:not([style*="none"])').length;
+      // Check display itself: a [style*="none"] selector also matched every item's
+      // `text-decoration:none`, so any filter click used to hide every month.
+      const visible = [...sec.querySelectorAll<HTMLElement>('.festival-item')].filter(el => el.style.display !== 'none').length;
       (sec as HTMLElement).style.display = visible ? 'block' : 'none';
     });
   }
@@ -183,11 +187,15 @@ function typeLabelHi(type: string) {
       const filter = btn.getAttribute('data-filter');
       items.forEach(item => {
         const type = item.getAttribute('data-type');
-        (item as HTMLElement).style.display = (filter === 'all' || type === filter) ? 'flex' : 'none';
+        // Entries that have passed since the last build stay hidden whatever the filter.
+        const passed = item.hasAttribute('data-fest-past');
+        (item as HTMLElement).style.display = !passed && (filter === 'all' || type === filter) ? 'flex' : 'none';
       });
       hideEmptyMonthSections();
     });
   });
+
+  initFestivalDates(hideEmptyMonthSections);
 
   // Deep-link support: /festivals?filter=vrat|major|regional (header nav "Vrat Calendar")
   const filterParam = new URLSearchParams(location.search).get('filter');

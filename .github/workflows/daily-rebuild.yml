@@ -49,6 +49,15 @@ jobs:
 
       - run: npm ci
 
+      # GitHub often starts this scheduled run hours late, and anywhere between 00:00 and
+      # 05:30 IST the UTC date is still the previous day. Every build-time "today" goes
+      # through src/lib/ist-date.ts, so the start time no longer matters -- this line records
+      # the date the build actually used, read through that same helper.
+      - name: Log build date (IST)
+        run: >-
+          node --experimental-strip-types -e "import('./src/lib/ist-date.ts').then(m =>
+          console.log('Build date (IST): ' + m.istTodayISO() + ' | started ' + new Date().toISOString()))"
+
       - run: npm run deploy
         # `npm run deploy`'s `postdeploy` lifecycle step
         # (scripts/indexnow-deploy-diff.mjs) automatically submits only the

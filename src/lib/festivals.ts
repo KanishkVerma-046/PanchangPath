@@ -1,3 +1,5 @@
+import { istTodayISO, daysBetweenISO } from './ist-date';
+
 export interface Festival {
   date: string; // YYYY-MM-DD
   name: string;
@@ -186,6 +188,10 @@ export const FESTIVALS_2025_2027: Festival[] = [
       { q: 'What time does the Karva Chauth fast end?', a: "The vrat ends after sighting the moon through a sieve, then looking at the husband's face. Moonrise time varies by city and date — check today's moonrise for your location using PanchangPath's Moonrise & Moonset tool." },
     ],
     relatedLinks: [{ label: 'Moonrise & Moonset (live, city-specific)', href: '/moonrise-moonset' }] },
+  // Added 2026-10-30. Kartik Krishna Ashtami (Purnimanta), observed when Ashtami prevails at dusk/star-sighting: drikpanchang.com and daanyam.in (Delhi-NCR timings) both give Nov 1; this site's Tithi engine has Ashtami from before sunset Nov 1.
+  { date: '2026-11-01', name: 'Ahoi Ashtami',             nameHi: 'अहोई अष्टमी',            type: 'vrat',     description: "Mothers fast from dawn until the stars appear, praying to Ahoi Mata for their children's long life and wellbeing.", descriptionHi: 'माताएँ संतान की लंबी आयु और कल्याण के लिए अहोई माता की पूजा कर तारे दिखने तक व्रत रखती हैं।',
+    metaTitle: 'Ahoi Ashtami 2026: Date & Significance',
+    metaDesc: "Ahoi Ashtami 2026 falls on Sunday, November 1 — mothers fast until the stars appear, praying to Ahoi Mata for their children's long life and wellbeing." },
   // Narak Chaturdashi date corrected 2026-08-27 (Initiative 3 Batch 1 audit): was 2026-11-07, but drikpanchang.com plus 2 independent sources (calendarlabs.com, ganeshaspeaks.com) agree on Nov 8 -- Chaturdashi tithi (10:47 AM Nov 7 -> 11:27 AM Nov 8) is present at Nov 8 sunrise, gone by Nov 7 sunrise (Udaya Tithi rule); this also means Narak Chaturdashi and Diwali coincide on the same calendar day in 2026 (the "Amavasya/Chaturdashi collapse" pattern seen in 2024) -- order in this array is unaffected since checkFestivalOrder.mjs's rule only flags Narak Chaturdashi strictly *after* Diwali, not equal. Govardhan Puja follows the day-after-Diwali convention (some regions observe day-of instead)
   { date: '2026-11-06', name: 'Dhanteras',                nameHi: 'धनतेरस',                type: 'major',    description: 'Festival of wealth — buying gold and silver brings prosperity.', descriptionHi: 'धन का त्योहार — सोना और चांदी खरीदने से समृद्धि आती है।',      longDesc: 'Dhanteras marks the beginning of the five-day Diwali festival. "Dhan" means wealth and "Teras" refers to the 13th day of the lunar fortnight. Purchasing gold, silver, or new utensils on this day is considered highly auspicious as it is said to multiply wealth.', longDescHi: 'धनतेरस पांच दिवसीय दिवाली उत्सव के आरंभ का प्रतीक है। "धन" का अर्थ है संपत्ति और "तेरस" चंद्र पक्ष के 13वें दिन को संदर्भित करता है। इस दिन सोना, चांदी, या नए बर्तन खरीदना अत्यंत शुभ माना जाता है क्योंकि इससे धन में वृद्धि होती है।',
     metaTitle: 'Dhanteras 2026: Date & Significance',
@@ -215,6 +221,18 @@ export const FESTIVALS_2025_2027: Festival[] = [
   { date: '2026-11-21', name: 'Dev Uthani Ekadashi',      nameHi: 'देव उठनी एकादशी',       type: 'major',    description: 'Lord Vishnu awakens from four-month cosmic sleep — weddings resume.', descriptionHi: 'भगवान विष्णु चार महीने की ब्रह्मांडीय निद्रा से जागते हैं — विवाह पुनः आरंभ होते हैं।',  longDesc: 'Dev Uthani Ekadashi (Prabodhini Ekadashi) marks the end of the Chaturmas period when Lord Vishnu awakens from his four-month cosmic sleep. All auspicious occasions including weddings, upanayana, and griha pravesh that were paused during Chaturmas resume from this day.', longDescHi: 'देव उठनी एकादशी (प्रबोधिनी एकादशी) चातुर्मास काल के समापन का प्रतीक है जब भगवान विष्णु अपनी चार महीने की ब्रह्मांडीय निद्रा से जागते हैं। विवाह, उपनयन और गृह प्रवेश सहित सभी शुभ कार्य जो चातुर्मास के दौरान रुके हुए थे, इस दिन से पुनः आरंभ होते हैं।',
     metaTitle: 'Dev Uthani Ekadashi 2026: Date & Significance',
     metaDesc: "Dev Uthani Ekadashi 2026 falls on Saturday, November 21 — Lord Vishnu awakens from his four-month cosmic sleep, and weddings resume." },
+  // Added 2026-10-30. Kartik Shukla Dwadashi: hindutone.com (citing drikpanchang.com) and the Dev Uthani Ekadashi sources give Nov 21; this site's Tithi engine has Dwadashi at sunrise Nov 21. Some families hold it on Ekadashi or any day up to Kartik Purnima.
+  { date: '2026-11-21', name: 'Tulsi Vivah',              nameHi: 'तुलसी विवाह',            type: 'vrat',     description: 'Ceremonial marriage of the Tulsi plant to Lord Vishnu as Shaligram, opening the Hindu wedding season.', descriptionHi: 'तुलसी का शालिग्राम रूप में भगवान विष्णु से विवाह — इसी के साथ विवाहों का शुभ मौसम आरंभ होता है।',
+    metaTitle: 'Tulsi Vivah 2026: Date & Significance',
+    metaDesc: 'Tulsi Vivah 2026 falls on Saturday, November 21 — the ceremonial marriage of Tulsi to Lord Vishnu as Shaligram, opening the Hindu wedding season.' },
+  // Added 2026-10-30. Kartik Purnima: hindutone.com, panchangbodh.com and thedivineindia.com agree on Nov 24 (one tourism blog's Nov 25 is an outlier); this site's Tithi engine has Purnima at sunrise and dusk Nov 24.
+  { date: '2026-11-24', name: 'Kartik Purnima / Dev Deepawali', nameHi: 'कार्तिक पूर्णिमा / देव दीपावली', type: 'major', description: "A sacred dawn bath and lamps at dusk — Varanasi's ghats glow with lakhs of diyas for Dev Deepawali.", descriptionHi: 'प्रातः पवित्र स्नान और संध्या को दीपदान — देव दीपावली पर वाराणसी के घाट लाखों दीयों से जगमगाते हैं।',
+    metaTitle: 'Kartik Purnima & Dev Deepawali 2026: Date',
+    metaDesc: "Kartik Purnima 2026 falls on Tuesday, November 24 — a sacred dawn bath and Dev Deepawali, when Varanasi's ghats glow with lakhs of diyas." },
+  // Added 2026-10-30. Margashirsha Shukla Panchami: drikpanchang.com (Hyderabad listing) and hindutone.com give Dec 14 (festivalsofindia.in gives Dec 13, when the tithi begins in the afternoon); this site's Tithi engine has Panchami at sunrise Dec 14.
+  { date: '2026-12-14', name: 'Vivah Panchami',           nameHi: 'विवाह पंचमी',            type: 'regional', description: 'Celebrates the divine wedding of Lord Rama and Sita, especially in Ayodhya and Janakpur.', descriptionHi: 'भगवान राम और माता सीता के विवाह का उत्सव — विशेषकर अयोध्या और जनकपुर में।',
+    metaTitle: 'Vivah Panchami 2026: Date & Significance',
+    metaDesc: 'Vivah Panchami 2026 falls on Monday, December 14 — celebrating the divine wedding of Lord Rama and Sita, especially in Ayodhya and Janakpur.' },
   { date: '2026-12-25', name: 'Christmas',                nameHi: 'क्रिसमस',               type: 'regional', description: 'National public holiday celebrated across India.', descriptionHi: 'पूरे भारत में मनाया जाने वाला राष्ट्रीय सार्वजनिक अवकाश।',
     metaTitle: 'Christmas 2026: Date & Holiday Info',
     metaDesc: 'Christmas 2026 falls on Friday, December 25 — a national public holiday observed across India alongside its worldwide religious significance.' },
@@ -348,6 +366,7 @@ const FESTIVAL_ICON: Record<string, string> = {
   'Maha Navami': '🌺',
   'Vijayadashami / Dussehra': '🏹',
   'Karva Chauth': '🌙',
+  'Ahoi Ashtami': '🌟',
   'Dhanteras': '💰',
   'Narak Chaturdashi': '🪔',
   'Diwali': '🪔',
@@ -355,6 +374,9 @@ const FESTIVAL_ICON: Record<string, string> = {
   'Bhai Dooj': '🎀',
   'Chhath Puja': '☀️',
   'Dev Uthani Ekadashi': '🙏',
+  'Tulsi Vivah': '🌿',
+  'Kartik Purnima / Dev Deepawali': '🌕',
+  'Vivah Panchami': '💐',
   'Christmas': '⭐',
 };
 
@@ -414,17 +436,23 @@ export function getFestivalSlug(f: Festival): string {
 
 // ── Query helpers ─────────────────────────────────────────────────────────
 
-export function getUpcomingFestivals(date: Date, count = 5): Festival[] {
-  const dateStr = date.toISOString().split('T')[0];
+// Every "as of" below is resolved to India's calendar date (see ist-date.ts) — never the
+// UTC date (toISOString) or the build machine's local date.
+
+export function getUpcomingFestivals(asOf: Date = new Date(), count = 5): Festival[] {
+  const dateStr = istTodayISO(asOf);
   return FESTIVALS_2025_2027
     .filter(f => f.date >= dateStr)
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, count);
 }
 
-export function getTodayFestivals(date: Date): Festival[] {
-  const dateStr = date.toISOString().split('T')[0];
-  return FESTIVALS_2025_2027.filter(f => f.date === dateStr);
+export function getFestivalsOn(dateISO: string): Festival[] {
+  return FESTIVALS_2025_2027.filter(f => f.date === dateISO);
+}
+
+export function getTodayFestivals(asOf: Date = new Date()): Festival[] {
+  return getFestivalsOn(istTodayISO(asOf));
 }
 
 // ── "Major" festival tier (nav/search "next 3 upcoming") ────────────────────
@@ -457,17 +485,15 @@ const MAJOR_FESTIVAL_NAMES = new Set<string>([
  * new year of synthesized dates) — callers should tolerate a shorter array.
  */
 export function getUpcomingMajorFestivals(count: number, asOf: Date = new Date()): Festival[] {
-  const dateStr = asOf.toISOString().split('T')[0];
+  const dateStr = istTodayISO(asOf);
   return FESTIVALS_2025_2027
     .filter(f => f.date >= dateStr && MAJOR_FESTIVAL_NAMES.has(f.name))
     .sort((a, b) => a.date.localeCompare(b.date))
     .slice(0, count);
 }
 
-export function daysUntil(date: Date, festivalDate: string): number {
-  const today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  const fd    = new Date(festivalDate);
-  return Math.round((fd.getTime() - today.getTime()) / 86_400_000);
+export function daysUntil(asOf: Date, festivalDate: string): number {
+  return daysBetweenISO(istTodayISO(asOf), festivalDate);
 }
 
 export function formatCountdown(days: number): string {

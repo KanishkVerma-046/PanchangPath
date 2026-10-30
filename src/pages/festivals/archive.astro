@@ -2,9 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import { FESTIVALS_2025_2027, getFestivalSlug } from '../../lib/festivals';
 import { formatDateHi } from '../../lib/date-i18n';
+import { istTodayISO } from '../../lib/ist-date';
 
-const today = new Date();
-const todayStr = today.toISOString().split('T')[0];
+const todayStr = istTodayISO();
 
 const past = FESTIVALS_2025_2027
   .filter(f => f.date < todayStr)

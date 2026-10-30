@@ -4,11 +4,14 @@ import { getFestivalIcon, getFestivalGradient, getFestivalSlug, daysUntil, forma
 import { formatDateHi } from '../lib/date-i18n';
 
 interface Props {
+  /** Upcoming festivals in date order. Pass more than `visible`: the extras are prerendered
+   *  hidden and shown client-side as earlier entries pass (see festival-dates-client.ts). */
   festivals: Festival[];
   today: Date;
+  visible?: number;
 }
 
-const { festivals, today } = Astro.props;
+const { festivals, today, visible = 8 } = Astro.props;
 ---
 
 <section class="ff-section">
@@ -33,8 +36,8 @@ const { festivals, today } = Astro.props;
     </div>
 
     <!-- Scrollable card strip -->
-    <ul class="ff-scroll" role="list">
-      {festivals.map(f => {
+    <ul class="ff-scroll" role="list" data-fest-max={visible}>
+      {festivals.map((f, i) => {
         const days      = daysUntil(today, f.date);
         const countdown = formatCountdown(days);
         const countdownHi = formatCountdownHi(days);
@@ -47,20 +50,20 @@ const { festivals, today } = Astro.props;
         const isToday   = days === 0;
 
         return (
-          <li class="ff-card-li">
-            <a href={`/festivals/${slug}`} class={`ff-card ${isToday ? 'ff-today' : ''}`}>
+          <li class="ff-card-li" data-fest-date={f.date} style={i >= visible ? 'display:none' : undefined}>
+            <a href={`/festivals/${slug}`} class={`ff-card ${isToday ? 'ff-today' : ''}`} data-fest-today-class="ff-today">
               <!-- Thumbnail -->
               <div class="ff-thumb" style={`background:${gradient}`}>
                 <span class="ff-icon" aria-hidden="true">{icon}</span>
-                {isToday && <div class="ff-today-glow" aria-hidden="true"></div>}
+                <div class="ff-today-glow" aria-hidden="true" data-fest-show="today" style={isToday ? undefined : 'display:none'}></div>
               </div>
 
               <!-- Content -->
               <div class="ff-content">
                 <!-- Badges row -->
                 <div class="ff-badges">
-                  <span class={`ff-countdown ${isToday ? 'ff-countdown-today' : days <= 7 ? 'ff-countdown-soon' : ''}`}>
-                    {isToday && <span class="ff-dot" aria-hidden="true"></span>}
+                  <span class={`ff-countdown ${isToday ? 'ff-countdown-today' : days <= 7 ? 'ff-countdown-soon' : ''}`} data-fest-label="countdown" data-fest-today-class="ff-countdown-today" data-fest-soon-class="ff-countdown-soon">
+                    <span class="ff-dot" aria-hidden="true" data-fest-show="today" style={isToday ? undefined : 'display:none'}></span>
                     <span class="en-text">{countdown}</span>
                     <span class="hi-text" style="display:none">{countdownHi}</span>
                   </span>
@@ -103,6 +106,9 @@ const { festivals, today } = Astro.props;
 </section>
 
 <script>
+  import { initFestivalDates } from '../lib/festival-dates-client';
+  initFestivalDates();
+
   // ── Scroll-in reveal: slide-up + fade-in, staggered 60ms per card ──
   (function () {
     const cards = Array.from(document.querySelectorAll<HTMLElement>('.ff-card'));

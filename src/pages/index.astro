@@ -9,7 +9,8 @@ import PlanetaryEventsFeed from '../components/PlanetaryEventsFeed.astro';
 import RashifalFeed from '../components/RashifalFeed.astro';
 import VedicClock from '../components/VedicClock.astro';
 import { calculatePanchang, getHinduCalendarInfo } from '../lib/panchang';
-import { getUpcomingFestivals, getTodayFestivals, daysUntil } from '../lib/festivals';
+import { getUpcomingFestivals, getFestivalsOn, daysUntil } from '../lib/festivals';
+import { istTodayISO, addDaysISO } from '../lib/ist-date';
 import { computeUpcomingEvents } from '../lib/planetaryEvents';
 import { getDefaultLocation } from '../lib/locations';
 import { formatDateAtOffset } from '../lib/date-i18n';
@@ -19,8 +20,18 @@ const today = new Date();
 const loc = getDefaultLocation(); // New Delhi, will be overridden client-side
 const panchang = calculatePanchang(today, loc.lat, loc.lng, loc.tzOffset);
 const hinduCal = getHinduCalendarInfo(today, panchang.sunLongitude, panchang.moonLongitude, panchang.tithi.paksha);
-const todayFestivals = getTodayFestivals(today);
-const upcoming = getUpcomingFestivals(today, 8);
+// All festival "today"s are India's calendar date (ist-date.ts), never the build machine's
+// UTC date — the daily rebuild runs between 00:00 and 05:30 IST, when UTC is a day behind.
+const todayISO = istTodayISO(today);
+// Banner candidates for the build day and the next day; the client shows whichever matches
+// India's date when the page is viewed (festival-dates-client.ts), so a page served before
+// the next rebuild lands still shows the right festival.
+const bannerFestivals = [todayISO, addDaysISO(todayISO, 1)]
+  .map(date => getFestivalsOn(date)[0])
+  .filter(f => f !== undefined);
+// 8 shown + 4 prerendered-hidden spares that the client reveals as earlier entries pass.
+const FESTIVAL_CARDS_VISIBLE = 8;
+const upcoming = getUpcomingFestivals(today, FESTIVAL_CARDS_VISIBLE + 4);
 const planetaryEvents = computeUpcomingEvents(today, 180);
 
 // Build-time label for the default location's (New Delhi/IST) calendar day -- must read
@@ -71,16 +82,16 @@ const TIMELINE_SEGMENTS = [
       <p class="eyebrow" data-hi="द्रिक पंचांग · लाहिड़ी अयनांश">Drik Panchang · Lahiri Ayanamsha</p>
 
       <!-- Festival badge -->
-      {todayFestivals.length > 0 && (
-        <div style="margin-bottom:22px;">
+      {bannerFestivals.map(f => (
+        <div style={`margin-bottom:22px;${f.date === todayISO ? '' : 'display:none;'}`} data-fest-date={f.date} data-fest-show="today">
           <a href="/festivals" style="display:inline-flex;align-items:center;gap:8px;background:var(--color-saffron-soft);color:var(--color-saffron-deep);font-size:13px;font-weight:500;padding:5px 12px;border-radius:100px;text-decoration:none;border:1px solid rgba(200,146,42,0.4);">
             <span>🪔</span>
-            <span class="en-text">{todayFestivals[0].name} today</span>
-            <span class="hi-text" style="display:none">आज {todayFestivals[0].nameHi} है</span>
+            <span class="en-text">{f.name} today</span>
+            <span class="hi-text" style="display:none">आज {f.nameHi} है</span>
             <span style="opacity:0.6;">→</span>
           </a>
         </div>
-      )}
+      ))}
 
       <!-- Headline -->
       <h1 class="hero-headline" style="text-wrap:balance;color:var(--color-ink);margin:0 0 18px;max-width:680px;" id="hero-title">
@@ -100,7 +111,7 @@ const TIMELINE_SEGMENTS = [
             <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
           </svg>
           <input type="date" id="date-picker" aria-label="Select date" class="input" style="border:none;background:transparent;height:auto;padding:0;font-size:14px;width:140px;color:var(--color-ink);"
-            value={today.toISOString().split('T')[0]} />
+            value={todayISO} />
         </div>
         <!-- Location is set via 📍 pin in the header -->
       </div>
@@ -296,7 +307,7 @@ const TIMELINE_SEGMENTS = [
   </div>
 
   <!-- UPCOMING FESTIVALS & VRATS FEED -->
-  <FestivalFeed festivals={upcoming} today={today} />
+  <FestivalFeed festivals={upcoming} today={today} visible={FESTIVAL_CARDS_VISIBLE} />
 
   <!-- UPCOMING PLANETARY EVENTS FEED -->
   <PlanetaryEventsFeed events={planetaryEvents} today={today} />

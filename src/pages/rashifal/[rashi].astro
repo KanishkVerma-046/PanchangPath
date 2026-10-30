@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction, type Rashi } from '../../lib/rashifal';
 import RashiIcon from '../../components/icons/RashiIcon.astro';
 import BreadcrumbSchema from '../../components/seo/BreadcrumbSchema.astro';
-import { formatDateHi, formatDateIST, formatMonthYearHi, WD_EN_LONG, WD_HI_LONG } from '../../lib/date-i18n';
+import { formatDateIST, WD_EN_LONG, WD_HI_LONG } from '../../lib/date-i18n';
 
 export function getStaticPaths() {
   return RASHIS.map(r => ({ params: { rashi: r.id }, props: { rashi: r } }));
@@ -18,8 +18,8 @@ const today = new Date();
 // the build host's local timezone (see date-i18n.ts).
 const dateLabel = formatDateIST(today, false, { weekday: 'long' });
 const dateLabelHi = formatDateIST(today, true, { weekday: 'long' });
-const monthYearLabel = formatMonthYearHi(today, false);
-const monthYearLabelHi = formatMonthYearHi(today, true);
+const monthYearLabel = formatDateIST(today, false, { day: false, year: true });
+const monthYearLabelHi = formatDateIST(today, true, { day: false, year: true });
 const ELEMENT_HI: Record<string, string> = { Fire: 'अग्नि', Earth: 'पृथ्वी', Air: 'वायु', Water: 'जल' };
 const QUALITY_HI: Record<string, string> = { Cardinal: 'चर', Fixed: 'स्थिर', Mutable: 'द्विस्वभाव' };
 // Common Hindi-romanization variant (final schwa dropped) for the meta description --

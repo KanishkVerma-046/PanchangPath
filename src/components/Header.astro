@@ -12,7 +12,12 @@ import { getUpcomingMajorFestivals, getFestivalSlug } from '../lib/festivals';
 // slugs (e.g. "Diwali 2025" showing on an August 2026 build). See
 // getUpcomingMajorFestivals in src/lib/festivals.ts for the major-festival
 // tier definition and the "fewer than 3 remain" fallback behavior.
-const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
+// One spare beyond the 3 shown is prerendered hidden: the client
+// (festival-dates-client.ts, data-fest-max) hides an entry once its date has passed
+// in India and reveals the spare, so the menu stays right between daily rebuilds.
+const NAV_FESTIVALS_SHOWN = 3;
+const upcomingFestivals = getUpcomingMajorFestivals(NAV_FESTIVALS_SHOWN + 1).map(f => ({
+  date: f.date,
   label: `${f.name} ${f.date.slice(0, 4)}`,
   labelHi: `${f.nameHi} ${f.date.slice(0, 4)}`,
   url: `/festivals/${getFestivalSlug(f)}`,
@@ -170,10 +175,10 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
         </li>
         <li class="nav-item has-dropdown">
           <a href="/festivals" class="nav-cat"><span class="nav-label" data-hi="त्योहार">Festivals</span> <span class="nav-caret">▾</span></a>
-          <div class="nav-dropdown">
+          <div class="nav-dropdown" data-fest-max={NAV_FESTIVALS_SHOWN}>
             <a href="/festivals" class="dd-link" data-hi="सभी त्योहार">All Festivals</a>
-            {upcomingFestivals.map(f => (
-              <a href={f.url} class="dd-link" data-hi={f.labelHi}>{f.label}</a>
+            {upcomingFestivals.map((f, i) => (
+              <a href={f.url} class="dd-link" data-hi={f.labelHi} data-fest-date={f.date} style={i >= NAV_FESTIVALS_SHOWN ? 'display:none' : undefined}>{f.label}</a>
             ))}
           </div>
         </li>
@@ -330,10 +335,10 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
         <button class="drawer-cat" data-target="m-festivals">
           <span class="nav-label" data-hi="त्योहार">Festivals</span> <span class="drawer-caret">›</span>
         </button>
-        <div class="drawer-sub" id="m-festivals">
+        <div class="drawer-sub" id="m-festivals" data-fest-max={NAV_FESTIVALS_SHOWN}>
           <a href="/festivals" class="drawer-link" data-hi="सभी त्योहार">All Festivals</a>
-          {upcomingFestivals.map(f => (
-            <a href={f.url} class="drawer-link" data-hi={f.labelHi}>{f.label}</a>
+          {upcomingFestivals.map((f, i) => (
+            <a href={f.url} class="drawer-link" data-hi={f.labelHi} data-fest-date={f.date} style={i >= NAV_FESTIVALS_SHOWN ? 'display:none' : undefined}>{f.label}</a>
           ))}
         </div>
       </div>
@@ -956,15 +961,19 @@ const upcomingFestivals = getUpcomingMajorFestivals(3).map(f => ({
   import { sunTrueLongitude, moonLongitude, lahiriAyanamsha, TITHIS, NAKSHATRAS } from '../lib/panchang';
   import { formatDateHi } from '../lib/date-i18n';
   import { getUpcomingMajorFestivals, getFestivalSlug } from '../lib/festivals';
+  import { initFestivalDates } from '../lib/festival-dates-client';
+
+  // Sitewide: refreshes every build-time relative festival label and past/upcoming list
+  // (the nav entries above, plus any page's [data-fest-*] markup) against India's date.
+  initFestivalDates();
 
   // Next 3 upcoming major festivals for the search index — same helper/tier
   // definition as the dropdown/drawer above (which are computed server-side
   // at build time in the frontmatter); this client <script> can't read those
   // frontmatter variables directly (see CLAUDE.md's Critical Gotchas), so it
   // recomputes via the same shared src/lib/festivals.ts helper instead of
-  // duplicating a hardcoded list. Runs against the visitor's own clock rather
-  // than the build clock, which — for a manually-deployed static site — is if
-  // anything more current than a build-time snapshot, not less.
+  // duplicating a hardcoded list. Runs against the current instant rather than
+  // the build clock, resolved to India's date like everywhere else (ist-date.ts).
   const upcomingFestivalSearchItems = getUpcomingMajorFestivals(3).map(f => ({
     label: `${f.name} ${f.date.slice(0, 4)}`,
     url: `/festivals/${getFestivalSlug(f)}`,

@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Tooltip from '../components/Tooltip.astro';
 import HeaderMark from '../assets/brand/logo-mark-header.svg';
+import { istDateParts } from '../lib/ist-date';
 
 interface Props {
   title?: string;
@@ -26,7 +27,7 @@ const siteUrl = 'https://panchangpath.com';
 const canonicalUrl = canonical ?? `${siteUrl}${Astro.url.pathname}`;
 const imageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`;
 
-const currentYear = new Date().getFullYear();
+const currentYear = istDateParts().year;
 ---
 
 <!doctype html>

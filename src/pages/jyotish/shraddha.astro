@@ -3,8 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import CalculatorFaq from '../../components/CalculatorFaq.astro';
 import { sharedCalcFaq } from '../../lib/calculatorFaq';
 import { computePitruPaksha } from '../../lib/jyotish';
+import { istDateParts } from '../../lib/ist-date';
 
-const ppYear = new Date().getFullYear();
+const ppYear = istDateParts().year;
 const PP_SCHEDULE = computePitruPaksha(ppYear);
 const ppStart = PP_SCHEDULE[0].date;
 const ppEnd = PP_SCHEDULE[PP_SCHEDULE.length - 1].date;
@@ -141,6 +142,7 @@ const FAQ_ITEMS = [
 import { TITHI_ICONS } from '../../lib/icons/tithi';
 import { sunTrueLongitude, moonLongitude } from '../../lib/panchang';
 import { computePitruPaksha, PP_TITHI_NOTE_HI } from '../../lib/jyotish';
+import { istDateParts, istTodayISO } from '../../lib/ist-date';
 let LANG_HI = localStorage.getItem('pp-lang') === 'hi';
 function tr(en, hi) { return LANG_HI ? hi : en; }
 const WD_EN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -157,7 +159,7 @@ const n360=a=>((a%360)+360)%360;
 const TITHI_NAMES=['Pratipada','Dwitiya','Tritiya','Chaturthi','Panchami','Shashthi','Saptami','Ashtami','Navami','Dashami','Ekadashi','Dwadashi','Trayodashi','Chaturdashi','Purnima/Amavasya'];
 
 function fmtSched(p){return tr(`${MONTHS[p.m-1]} ${p.d}`,`${MONTHS_HI[p.m-1]} ${p.d}`);}
-const ppYear=new Date().getFullYear();
+const ppYear=istDateParts().year;
 const PP_SCHEDULE=computePitruPaksha(ppYear);
 function renderPPHeadings(){
   document.getElementById('pp-heading').textContent=tr(`Pitru Paksha ${ppYear} Schedule`,`पितृ पक्ष ${ppYear} अनुसूची`);
@@ -165,7 +167,7 @@ function renderPPHeadings(){
 }
 renderPPHeadings();
 
-document.getElementById('f-date').value=new Date().toISOString().split('T')[0];
+document.getElementById('f-date').value=istTodayISO();
 document.getElementById('f-time').value='12:00';
 
 function calculate(){

@@ -72,13 +72,14 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <span class={`fd-type-badge fd-type-${f.type}`} data-hi={f.type === 'major' ? '✦ प्रमुख त्योहार' : f.type === 'vrat' ? '🙏 व्रत' : '🌏 क्षेत्रीय त्योहार'}>
             {f.type === 'major' ? '✦ Major Festival' : f.type === 'vrat' ? '🙏 Vrat / Fast' : '🌏 Regional Festival'}
           </span>
-          {!isPast && (
-            <span class={`fd-countdown-badge ${isToday ? 'fd-countdown-today' : ''}`}>
-              {isToday && <span class="fd-dot" aria-hidden="true"></span>}
-              <span class="en-text">{countdown}</span>
-              <span class="hi-text" style="display:none">{countdownHi}</span>
-            </span>
-          )}
+          <!-- Always rendered so the client (festival-dates-client.ts) can update or hide it as
+               days pass between rebuilds; hidden at build time once the festival is past. -->
+          <span class={`fd-countdown-badge ${isToday ? 'fd-countdown-today' : ''}`} style={isPast ? 'display:none' : undefined}
+            data-fest-date={f.date} data-fest-show="upcoming" data-fest-label="countdown" data-fest-today-class="fd-countdown-today">
+            <span class="fd-dot" aria-hidden="true" data-fest-show="today" style={isToday ? undefined : 'display:none'}></span>
+            <span class="en-text">{countdown}</span>
+            <span class="hi-text" style="display:none">{countdownHi}</span>
+          </span>
         </div>
       </div>
     </div>
@@ -104,8 +105,9 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
           <div class="fd-date-sep"></div>
           <div class="fd-date-col">
             <p class="fd-label" data-hi="उलटी गिनती">Countdown</p>
-            <p class="fd-value" style={isToday ? 'color:var(--color-saffron-deep)' : isPast ? 'color:var(--color-mute)' : ''} data-hi={isPast ? `${Math.abs(days)} दिन पहले` : countdownHi}>
-              {isPast ? `${Math.abs(days)} days ago` : countdown}
+            <p class="fd-value" style={isToday ? 'color:var(--color-saffron-deep)' : isPast ? 'color:var(--color-mute)' : ''} data-hi={isPast ? `${Math.abs(days)} दिन पहले` : countdownHi}
+              data-fest-date={f.date} data-fest-label="countdown-or-ago">
+              {isPast ? `${Math.abs(days)} ${days === -1 ? 'day' : 'days'} ago` : countdown}
             </p>
           </div>
           <div class="fd-date-sep"></div>
@@ -220,6 +222,9 @@ const next      = idx < allSorted.length - 1 ? allSorted[idx + 1] : null;
 </Layout>
 
 <script>
+  import { initFestivalDates } from '../../lib/festival-dates-client';
+  initFestivalDates();
+
   function applyPageLang(hindi: boolean) {
     document.querySelectorAll('.en-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'none' : 'block');
     document.querySelectorAll('.hi-text').forEach(el => (el as HTMLElement).style.display = hindi ? 'block' : 'none');

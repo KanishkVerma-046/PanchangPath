@@ -1,3 +1,5 @@
+import { istDateParts } from './ist-date';
+
 export interface Rashi {
   id: string;
   name: string;
@@ -1112,14 +1114,16 @@ export function getWeeklyPrediction(rashi: Rashi, date: Date, hindi = false): st
   return arr[week % arr.length];
 }
 
+// Month/year in India (see ist-date.ts), not the host's: on the 1st of a month the daily
+// rebuild runs while the host's local (UTC) date is still the previous month.
 export function getMonthlyPrediction(rashi: Rashi, date: Date, hindi = false): string {
   const arr = (hindi && rashi.predictionsHi) ? rashi.predictionsHi.monthly : rashi.predictions.monthly;
-  return arr[date.getMonth() % arr.length];
+  return arr[(istDateParts(date).month - 1) % arr.length];
 }
 
 export function getYearlyPrediction(rashi: Rashi, date: Date, hindi = false): string {
   const arr = (hindi && rashi.predictionsHi) ? rashi.predictionsHi.yearly : rashi.predictions.yearly;
-  return arr[date.getFullYear() % arr.length];
+  return arr[istDateParts(date).year % arr.length];
 }
 
 // Built directly from each rashi's canonical `nameLetters` array above (RASHIS, in Mesha->Meena order).

@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { computeUpcomingEvents, formatCountdownLabel, formatEventDateTime, INDIA_VISIBILITY_LABEL } from '../../lib/planetaryEvents';
 import type { EventType } from '../../lib/planetaryEvents';
 import { formatMonthYearHi } from '../../lib/date-i18n';
+import { istDateParts } from '../../lib/ist-date';
 
 const today = new Date();
 const allEvents = computeUpcomingEvents(today, 365);
@@ -16,7 +17,7 @@ const allEvents = computeUpcomingEvents(today, 365);
 // "Build-time default" comments) -- it's only ever stale for at most the one day between a
 // year boundary and the next rebuild. Do NOT copy this "just use the build year" shortcut onto
 // a page that isn't rebuilt daily; that would reintroduce the exact staleness bug this replaced.
-const titleYear = today.getFullYear();
+const titleYear = istDateParts(today).year;
 
 // Group by month
 const byMonth: Record<string, typeof allEvents> = {};

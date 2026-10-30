@@ -1,13 +1,15 @@
 ---
 import { RASHIS, getDailyPrediction, getWeeklyPrediction, getMonthlyPrediction, getYearlyPrediction } from '../lib/rashifal';
 import RashiIcon from './icons/RashiIcon.astro';
-import { formatDateHi } from '../lib/date-i18n';
+import { formatDateIST } from '../lib/date-i18n';
 
 interface Props { today: Date; }
 const { today } = Astro.props;
 
-const dateLabel = formatDateHi(today, false, { weekday: 'long' });
-const dateLabelHi = formatDateHi(today, true, { weekday: 'long' });
+// India's date, matching the IST-anchored daily prediction below it (rashifal.ts) — the
+// build machine's local date is a day behind during the 00:00–05:30 IST rebuild window.
+const dateLabel = formatDateIST(today, false, { weekday: 'long' });
+const dateLabelHi = formatDateIST(today, true, { weekday: 'long' });
 ---
 
 <section class="rf-section">
