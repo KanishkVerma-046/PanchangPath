@@ -3,7 +3,7 @@
 // scripts/indexnow-deploy-diff.mjs to submit only genuinely-changed URLs to
 // IndexNow after a deploy, instead of the whole sitemap.
 import { execSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { register } from 'node:module';
 import { tmpdir } from 'node:os';
 import { dirname, join, posix } from 'node:path';
@@ -117,6 +117,77 @@ export async function loadArrayAtCommit(registryEntry, commit, repoRoot) {
   }
 }
 
+// Static import specifiers (excluding `import type`, which renders nothing) and dynamic import()s.
+const STATIC_IMPORT_RE = /^\s*import\s+(?!type\s)(?:[^'"]*?\sfrom\s*)?['"]([^'"]+)['"]/gm;
+const DYNAMIC_IMPORT_RE = /\bimport\(\s*['"]([^'"]+)['"]\s*\)/g;
+const RESOLVE_SUFFIXES = ['', '.ts', '.astro', '.mjs', '/index.ts'];
+
+function listFiles(dir, repoRoot) {
+  const abs = join(repoRoot, dir);
+  if (!existsSync(abs)) return [];
+  return readdirSync(abs).flatMap((name) => {
+    const rel = posix.join(dir, name);
+    return statSync(join(repoRoot, rel)).isDirectory() ? listFiles(rel, repoRoot) : [rel];
+  });
+}
+
+/**
+ * Live URLs of the static pages whose rendered content is built from `dataFile`: every page
+ * whose import graph reaches it. Site chrome (the .astro components that src/layouts/ pulls
+ * in, e.g. the Header's "next 3 festivals" nav) is not followed: it renders on every page,
+ * so following it would resubmit the whole site — the "batch mode" Bing flagged. Shared .ts
+ * modules are always followed, chrome or not.
+ */
+export function pagesDependingOn(dataFile, repoRoot = process.cwd()) {
+  const importsCache = new Map();
+  const importsOf = (file) => {
+    if (importsCache.has(file)) return importsCache.get(file);
+    const deps = [];
+    const abs = join(repoRoot, file);
+    if (existsSync(abs) && !file.endsWith('.css') && !file.endsWith('.svg')) {
+      const text = readFileSync(abs, 'utf8');
+      const specs = [...text.matchAll(STATIC_IMPORT_RE), ...text.matchAll(DYNAMIC_IMPORT_RE)].map((m) => m[1]);
+      for (const spec of specs) {
+        if (!spec.startsWith('.')) continue;
+        const target = posix.normalize(posix.join(posix.dirname(file), spec));
+        const hit = RESOLVE_SUFFIXES.map((s) => target + s).find((c) => existsSync(join(repoRoot, c)) && statSync(join(repoRoot, c)).isFile());
+        if (hit) deps.push(hit);
+      }
+    }
+    importsCache.set(file, deps);
+    return deps;
+  };
+
+  // Everything the layouts render, transitively; only its .astro components count as chrome.
+  const chrome = new Set();
+  const stack = listFiles('src/layouts', repoRoot);
+  while (stack.length) {
+    const f = stack.pop();
+    if (chrome.has(f)) continue;
+    chrome.add(f);
+    stack.push(...importsOf(f));
+  }
+  const isChromeComponent = (f) => chrome.has(f) && f.endsWith('.astro');
+
+  const urls = [];
+  for (const page of listFiles('src/pages', repoRoot)) {
+    const url = pageFileToUrl(page);
+    if (!url) continue;
+    const seen = new Set();
+    const queue = [...importsOf(page)];
+    let reaches = false;
+    while (queue.length && !reaches) {
+      const f = queue.pop();
+      if (seen.has(f)) continue;
+      seen.add(f);
+      if (f === dataFile) reaches = true;
+      else if (!isChromeComponent(f)) queue.push(...importsOf(f));
+    }
+    if (reaches) urls.push(url);
+  }
+  return urls.sort();
+}
+
 function slugOf(item, slugFn) {
   if (slugFn) return slugFn(item);
   return item.slug;
@@ -137,10 +208,11 @@ function diffContentArray(oldArr, oldSlugFn, newArr, newSlugFn) {
 
 /**
  * Returns the deduped list of live URLs whose content changed between
- * prevCommit and currentCommit, based on which source files differ.
+ * prevCommit and currentCommit, based on which source files differ. A null
+ * currentCommit diffs against the working tree (for dry runs before committing).
  */
 export async function getChangedUrls(prevCommit, currentCommit, repoRoot = process.cwd()) {
-  const diffOutput = execSync(`git diff --name-only ${prevCommit} ${currentCommit}`, {
+  const diffOutput = execSync(`git diff --name-only ${prevCommit}${currentCommit ? ` ${currentCommit}` : ''}`, {
     cwd: repoRoot,
     encoding: 'utf8',
   });
@@ -155,6 +227,8 @@ export async function getChangedUrls(prevCommit, currentCommit, repoRoot = proce
 
   for (const entry of CONTENT_REGISTRY) {
     if (!changedFiles.includes(entry.file)) continue;
+    // Listing/summary pages built from the same data (e.g. /, /festivals/, /calendar/).
+    for (const url of pagesDependingOn(entry.file, repoRoot)) urls.add(url);
     try {
       const [oldData, newData] = await Promise.all([
         loadArrayAtCommit(entry, prevCommit, repoRoot),

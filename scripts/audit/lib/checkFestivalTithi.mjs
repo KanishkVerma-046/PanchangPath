@@ -38,8 +38,10 @@ export const EXPECTED_TITHI = {
   'Ganesh Chaturthi': S(4),
   'Ganesh Visarjan': S(14),
   'Navratri Begins': S(1),
+  'Durga Ashtami': S(8),
   'Maha Navami': S(9),
   'Vijayadashami / Dussehra': S(10),
+  'Sharad Purnima': S(15),
   'Karva Chauth': K(4),
   'Ahoi Ashtami': K(8),
   'Dhanteras': K(13),
@@ -52,6 +54,7 @@ export const EXPECTED_TITHI = {
   'Tulsi Vivah': S(12),
   'Kartik Purnima / Dev Deepawali': S(15),
   'Vivah Panchami': S(5),
+  'Gita Jayanti / Mokshada Ekadashi': S(11),
 };
 
 /** Festivals fixed by the solar or Gregorian calendar, not a Tithi — never checked. */
@@ -64,18 +67,38 @@ export const NON_TITHI = new Set(['Lohri', 'Makar Sankranti', 'Pongal', 'Christm
  * plausible.
  */
 export const ALLOWLIST = [
-  { name: 'Akshaya Tritiya', date: '2026-04-19', reason: 'Tritiya begins 10:49 AM, Purvahna rule; DrikPanchang + 2 sources (festivals.ts comment, 2026-08-27 audit).' },
+  // 2025 (dates audited 2026-10-30 against DrikPanchang New Delhi + prokerala.com)
+  { name: 'Basant Panchami', date: '2025-02-02', reason: 'Panchami begins after sunrise and prevails by sunset; DrikPanchang New Delhi + prokerala.com give Feb 2.' },
+  { name: 'Maha Shivaratri', date: '2025-02-26', reason: 'Nishita-kala rule: Chaturdashi prevails at midnight; DrikPanchang New Delhi + prokerala.com.' },
+  { name: 'Holika Dahan', date: '2025-03-13', reason: 'Pradosh-vyapini Purnima (begins after sunrise, prevails at sunset); DrikPanchang New Delhi + prokerala.com.' },
+  { name: 'Holi', date: '2025-03-14', reason: 'Day after Holika Dahan (Purnima still at sunrise); DrikPanchang New Delhi + prokerala.com.' },
+  { name: 'Krishna Janmashtami', date: '2025-08-15', reason: 'Smarta date, Nishita rule: Ashtami begins 11:49 PM and prevails at midnight; DrikPanchang New Delhi + prokerala.com (ISKCON: Aug 16).' },
+  { name: 'Dhanteras', date: '2025-10-18', reason: 'Pradosh-vyapini Trayodashi (prevails at sunset); DrikPanchang New Delhi + prokerala.com.' },
+  { name: 'Diwali', date: '2025-10-20', reason: 'Pradosh-vyapini Amavasya: 3:44 PM Oct 20 -> 5:54 PM Oct 21 covers only Oct 20\'s evening; DrikPanchang New Delhi (prokerala.com, Ujjain: Oct 21).' },
+  { name: 'Chhath Puja', date: '2025-10-27', reason: '6 AM sampling artifact: Shashthi prevails at true sunrise (6:30 AM); DrikPanchang New Delhi + prokerala.com.' },
+  { name: 'Dev Uthani Ekadashi', date: '2025-11-01', reason: 'Smarta date: Ekadashi 9:11 AM Nov 1 -> 7:31 AM Nov 2; DrikPanchang New Delhi + prokerala.com (Vaishnava: Nov 2).' },
+  // 2026
+  { name: 'Maha Shivaratri', date: '2026-02-15', reason: 'Nishita-kala rule: Chaturdashi 5:04 PM Feb 15 -> 5:34 PM Feb 16 prevails at midnight; DrikPanchang New Delhi + prokerala.com.' },
+  { name: 'Ugadi / Gudi Padwa', date: '2026-03-19', reason: 'Amavasya ends 6:52 AM Mar 19 and Pratipada ends before Mar 20\'s sunrise, so the day it begins is taken; DrikPanchang New Delhi + prokerala.com.' },
+  { name: 'Ram Navami', date: '2026-03-26', reason: 'Smarta date, Madhyahna rule: Navami from 11:48 AM Mar 26; DrikPanchang New Delhi + prokerala.com (ISKCON: Mar 27).' },
+  { name: 'Akshaya Tritiya', date: '2026-04-19', reason: 'Tritiya 10:49 AM Apr 19 -> 7:27 AM Apr 20, Purvahna rule (puja muhurat 10:49 AM-12:20 PM Apr 19); DrikPanchang New Delhi + 2 sources.' },
   { name: 'Ganesh Chaturthi', date: '2026-09-14', reason: 'Madhyahna-vyapini Chaturthi (begins after sunrise); reconfirmed via WebSearch in the 2026-08-22 SEO pass (CLAUDE.md).' },
-  { name: 'Maha Navami', date: '2026-10-19', reason: 'Published consensus date; Navami begins after sunrise and prevails by evening.' },
+  { name: 'Maha Navami', date: '2026-10-19', reason: 'Ashtami ends 10:51 AM, then Navami prevails; DrikPanchang New Delhi lists Maha Navami (and Durga Ashtami) on Oct 19.' },
+  { name: 'Vijayadashami / Dussehra', date: '2026-10-20', reason: 'Aparahna rule: Dashami from 12:50 PM covers Aparahna (1:14-3:30 PM); DrikPanchang New Delhi + panchangbodh.com (prokerala.com, Ujjain: Oct 21).' },
+  { name: 'Sharad Purnima', date: '2026-10-25', reason: 'Night rule: Purnima begins 11:55 AM and prevails through the night; DrikPanchang New Delhi + prokerala.com.' },
   { name: 'Ahoi Ashtami', date: '2026-11-01', reason: 'Observed when Ashtami prevails at dusk; DrikPanchang + daanyam.in (festivals.ts comment).' },
+  { name: 'Dhanteras', date: '2026-11-06', reason: 'Pradosh rule: Trayodashi 10:30 AM Nov 6 -> 10:47 AM Nov 7; DrikPanchang New Delhi + muhuratchoghadiya.com.' },
   { name: 'Diwali', date: '2026-11-08', reason: 'Pradosh-vyapini Amavasya (begins after sunrise, prevails at sunset); date corrected and verified 2026-07 (CLAUDE.md).' },
-  { name: 'Tulsi Vivah', date: '2026-11-21', reason: '6 AM sampling artifact: Dwadashi prevails at true sunrise (6:48 AM); hindutone.com citing DrikPanchang (festivals.ts comment).' },
+  { name: 'Dev Uthani Ekadashi', date: '2026-11-20', reason: 'Smarta date: Ekadashi 7:15 AM Nov 20 -> before Nov 21\'s sunrise (touches no sunrise); DrikPanchang New Delhi + prokerala.com (Vaishnava: Nov 21).' },
+  { name: 'Tulsi Vivah', date: '2026-11-21', reason: '6 AM sampling artifact: Dwadashi prevails at true sunrise (6:48 AM); DrikPanchang New Delhi + prokerala.com give Nov 21.' },
+  // 2027
   { name: 'Maha Shivaratri', date: '2027-03-06', reason: 'Nishita-kala rule: Chaturdashi prevails at midnight; 2027 block matched DrikPanchang (festivals.ts comment).' },
   { name: 'Holika Dahan', date: '2027-03-21', reason: 'Pradosh-vyapini Purnima (begins 6:21 PM); verified against DrikPanchang New Delhi, 2026-08-27 audit (festivals.ts comment).' },
   { name: 'Holi', date: '2027-03-22', reason: 'Day after Holika Dahan (Purnima still at sunrise); verified against DrikPanchang New Delhi, 2026-08-27 audit (festivals.ts comment).' },
   { name: 'Navratri Begins', date: '2027-09-30', reason: 'Pratipada begins after sunrise; DrikPanchang-verified in the 2026-08-27 audit (CLAUDE.md, Batch 2).' },
   { name: 'Maha Navami', date: '2027-10-08', reason: 'Navami begins after sunrise and prevails by evening; 2027 block matched DrikPanchang (festivals.ts comment).' },
   { name: 'Vijayadashami / Dussehra', date: '2027-10-09', reason: 'Aparahna-vyapini Dashami (begins after sunrise); 2027 block matched DrikPanchang (festivals.ts comment).' },
+  { name: 'Sharad Purnima', date: '2027-10-14', reason: 'Night rule: Purnima 6:49 PM Oct 14 -> 7:16 PM Oct 15 prevails at midnight Oct 14; DrikPanchang New Delhi + prokerala.com.' },
   { name: 'Karva Chauth', date: '2027-10-18', reason: 'Chaturthi at moonrise (begins after sunset); DrikPanchang-verified in the 2026-08-27 audit (CLAUDE.md, Batch 2).' },
 ];
 

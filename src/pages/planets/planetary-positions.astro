@@ -65,9 +65,9 @@ const initRows = initKundali.grahas.map(g => {
             <th data-hi="अस्त/उदित" style="text-align:left;padding:6px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-mute);font-weight:600;font-size:11px;text-transform:uppercase;">Combustion</th>
           </tr></thead>
           <tbody id="pp-body">
-            {initRows.map(({ g, nak, pada }) => (
+            {initRows.map(({ g, nak, pada, sig }) => (
               <tr>
-                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">{g.name}</td>
+                <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);color:var(--color-ink);font-weight:600;">{sig.full}</td>
                 <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{g.signName} ({RASHIS[g.sign].en})</td>
                 <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);font-family:var(--font-mono);">{formatDegMin(g.siderealLon)}</td>
                 <td style="padding:7px 10px;border-bottom:1px solid var(--color-hairline);">{nak.name}</td>
