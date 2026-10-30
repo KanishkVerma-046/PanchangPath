@@ -4,6 +4,7 @@ import MandalaWatermark from '../components/motifs/MandalaWatermark.astro';
 import { computeChoghadiyaSlots, CHOGHADIYA_INFO } from '../lib/muhurta';
 import { formatMinutes12h } from '../lib/time-format';
 import { formatDateIST } from '../lib/date-i18n';
+import { istDateParts } from '../lib/ist-date';
 
 // Build-time default: today (IST, matching the daily-rebuild cron's clock) at New Delhi, the
 // site's default location. Uses the exact same computeChoghadiyaSlots() the client <script>
@@ -11,11 +12,7 @@ import { formatDateIST } from '../lib/date-i18n';
 // CLAUDE.md's 2026-08-18 SEO-prerender rollout note. The live "NOW" highlight stays
 // client-only (a build-time snapshot of "now" would be stale by the time anyone sees it).
 const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
-const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
-const istNow = new Date(Date.now() + IST_OFFSET_MS);
-const defY = istNow.getUTCFullYear();
-const defM = istNow.getUTCMonth() + 1;
-const defD = istNow.getUTCDate();
+const { year: defY, month: defM, day: defD } = istDateParts();
 
 const defaultQuickChog = computeChoghadiyaSlots(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
 const fmt = formatMinutes12h;

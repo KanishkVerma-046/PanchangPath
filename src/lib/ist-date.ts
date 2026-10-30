@@ -24,8 +24,16 @@ export interface IstDateParts {
   weekday: number;
 }
 
+/**
+ * `now` shifted by +05:30: a Date whose UTC getters (getUTCHours(), getUTCDate(), …) read
+ * India's wall-clock time at that instant. It is not itself the real instant.
+ */
+export function istWallClock(now: Date = new Date()): Date {
+  return new Date(now.getTime() + IST_OFFSET_MS);
+}
+
 export function istDateParts(now: Date = new Date()): IstDateParts {
-  const ist = new Date(now.getTime() + IST_OFFSET_MS);
+  const ist = istWallClock(now);
   return {
     year: ist.getUTCFullYear(),
     month: ist.getUTCMonth() + 1,

@@ -2,17 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import { computeLagnaTable } from '../../lib/muhurta';
 import { formatMinutes12h } from '../../lib/time-format';
+import { istDateParts } from '../../lib/ist-date';
 
 // Build-time default: today (IST, matching the daily-rebuild cron's clock) at New Delhi, the
 // site's default location. Uses the exact same computeLagnaTable() the client <script> below
 // calls for date/location changes, so server and client can never disagree — see CLAUDE.md's
 // 2026-08-18 SEO-prerender rollout note.
 const NEW_DELHI = { name: 'New Delhi', lat: 28.6139, lng: 77.209, tz: 5.5 };
-const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
-const istNow = new Date(Date.now() + IST_OFFSET_MS);
-const defY = istNow.getUTCFullYear();
-const defM = istNow.getUTCMonth() + 1;
-const defD = istNow.getUTCDate();
+const { year: defY, month: defM, day: defD } = istDateParts();
 
 const defaultLagna = computeLagnaTable(defY, defM, defD, NEW_DELHI.lat, NEW_DELHI.lng, NEW_DELHI.tz);
 const fmt = formatMinutes12h;

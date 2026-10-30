@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { calculateKundali, siderealNakshatraPada, formatDegMin, RASHIS } from '../../lib/kundali';
 import { NAKSHATRAS } from '../../lib/panchang';
+import { istWallClock } from '../../lib/ist-date';
 
 // Build-time default: "now" (IST, matching the daily-rebuild cron's clock). This page is
 // location-independent (graha longitudes don't depend on an observer's lat/lng), so there's
@@ -9,9 +10,11 @@ import { NAKSHATRAS } from '../../lib/panchang';
 // calculateKundali() is the exact same function the client <script> below calls; lat/lng/tz
 // are passed as 0 because only .grahas is used here, never .lagna (which is the only field
 // they'd affect) — see CLAUDE.md's 2026-08-18 SEO-prerender rollout note.
-const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
-const buildNow = new Date(Date.now() + IST_OFFSET_MS);
-const initKundali = calculateKundali(buildNow, 0, 0, 0);
+// Positions come from the real build instant, exactly like the client <script>'s render(); the
+// +05:30-shifted wall clock is only for the IST "Last updated" label.
+const buildInstant = new Date();
+const buildIst = istWallClock(buildInstant);
+const initKundali = calculateKundali(buildInstant, 0, 0, 0);
 
 const PLANET_SIGNIFICANCE: Record<string, { full: string; desc: string; nameHi: string; descHi: string }> = {
   surya:   { full: 'Surya (Sun)', desc: 'Soul, vitality, self-confidence, authority, father, government service, and overall health.', nameHi: 'सूर्य', descHi: 'आत्मा, जीवन शक्ति, आत्मविश्वास, अधिकार, पिता, सरकारी सेवा, और समग्र स्वास्थ्य।' },
@@ -48,7 +51,7 @@ const initRows = initKundali.grahas.map(g => {
 
   <section style="padding:28px 0 48px;">
     <div class="container">
-      <p id="pp-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildNow.toLocaleTimeString('en-IN')} (auto-refreshes every 60s)</p>
+      <p id="pp-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildIst.toLocaleTimeString('en-IN', { timeZone: 'UTC' })} (auto-refreshes every 60s)</p>
       <div class="bezel-outer reveal" style="margin-bottom:32px;">
        <div class="bezel-inner" style="padding:20px;overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;" id="pp-table">

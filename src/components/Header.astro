@@ -958,7 +958,7 @@ const upcomingFestivals = getUpcomingMajorFestivals(NAV_FESTIVALS_SHOWN + 1).map
 </style>
 
 <script>
-  import { sunTrueLongitude, moonLongitude, lahiriAyanamsha, TITHIS, NAKSHATRAS } from '../lib/panchang';
+  import { liveTithiNakshatra, watchLiveTithiNakshatra, type LiveTithiNakshatra } from '../lib/live-panchang';
   import { formatDateHi } from '../lib/date-i18n';
   import { getUpcomingMajorFestivals, getFestivalSlug } from '../lib/festivals';
   import { initFestivalDates } from '../lib/festival-dates-client';
@@ -1010,66 +1010,20 @@ const upcomingFestivals = getUpcomingMajorFestivals(NAV_FESTIVALS_SHOWN + 1).map
   requestAnimationFrame(clockTick);
 
   // ── Live status strip (Tithi · Nakshatra · City) ──
-  // Sun/Moon longitude + Lahiri ayanamsha now imported from src/lib/panchang.ts
-  // (astronomy-engine backed, shared with the rest of the site) instead of being
-  // duplicated inline — client <script> tags without define:vars/is:inline ARE
-  // processed by Vite and can import local TS modules; see CLAUDE.md's Critical
-  // Gotchas for the corrected note on this.
-  function stripToRad(d: number) { return d * Math.PI / 180; }
-  function stripNorm360(a: number) { return ((a % 360) + 360) % 360; }
-
-  function stripJulianDay(year: number, month: number, day: number, hour = 0): number {
-    if (month <= 2) { year -= 1; month += 12; }
-    const A = Math.floor(year / 100);
-    const B = 2 - A + Math.floor(A / 4);
-    return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + hour / 24 + B - 1524.5;
-  }
-
-  function updateStatusStrip() {
+  // Tithi/Nakshatra come from src/lib/live-panchang.ts, the same function the homepage's
+  // "Right now" card uses, so the two always agree. It also schedules the refresh: at the
+  // next Tithi/Nakshatra change, at least once a minute, and on pageshow/visibilitychange.
+  function updateStatusStrip(live: LiveTithiNakshatra = liveTithiNakshatra()) {
     const loc = (window as any).__initLoc || { lat: 28.6139, lng: 77.2090, tzOffset: 5.5, name: 'New Delhi' };
-    const now = new Date();
-    // Tithi/Nakshatra here are instant-based (Sun/Moon ecliptic longitude at this real
-    // moment) — unlike sunrise/Lagna elsewhere on the site, no location offset belongs
-    // in this calculation at all; the previous formula (`now.getHours() - loc.tzOffset`)
-    // silently assumed the visitor's own browser clock was already reading in the
-    // *selected location's* timezone, which is never true — Date getters always reflect
-    // the visitor's own device, regardless of which city is picked. Confirmed live: the
-    // same real instant produced a full Tithi apart between an Asia/Kolkata and an
-    // America/Los_Angeles browser. Julian Day is a UTC-referenced quantity by definition
-    // (same convention as astro-core.ts/panchang.ts), so read it straight from the
-    // instant's own UTC getters — timezone-independent by construction, no offset to add
-    // or get wrong, same "absolute instant, not host-local" proof pattern as the daily
-    // Rashifal IST fix, just with the correct target offset (none) for what this
-    // computation actually represents.
-    const jd = stripJulianDay(now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate(), now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600);
-    const sunLon = sunTrueLongitude(jd);
-    const moonLon = moonLongitude(jd);
-    const ayanamsha = lahiriAyanamsha(jd);
-    const moonSidereal = stripNorm360(moonLon - ayanamsha);
-    const elongation = stripNorm360(moonLon - sunLon);
-    const tithiIdx = Math.floor(elongation / 12) % 30;
-    const paksha = tithiIdx < 15 ? 'Shukla' : 'Krishna';
-    const pakshaHi = tithiIdx < 15 ? 'शुक्ल' : 'कृष्ण';
-    const nakIdx = Math.floor(moonSidereal / (360 / 27)) % 27;
-
     const tithiEl = document.getElementById('status-tithi');
     const nakEl = document.getElementById('status-nakshatra');
     const cityEl = document.getElementById('status-city');
-    if (tithiEl) {
-      tithiEl.textContent = isHindi
-        ? `${pakshaHi} ${TITHIS[tithiIdx].nameHi}`
-        : `${paksha} ${TITHIS[tithiIdx].name}`;
-    }
-    if (nakEl) {
-      nakEl.textContent = isHindi
-        ? `${NAKSHATRAS[nakIdx].nameHi} नक्षत्र`
-        : `${NAKSHATRAS[nakIdx].name} Nakshatra`;
-    }
+    if (tithiEl) tithiEl.textContent = isHindi ? live.tithiHi : live.tithi;
+    if (nakEl) nakEl.textContent = isHindi ? live.nakshatraHi : live.nakshatra;
     if (cityEl) cityEl.textContent = isHindi ? (loc.nameHi || loc.name) : loc.name;
   }
-  updateStatusStrip();
-  setInterval(updateStatusStrip, 60000);
-  window.addEventListener('locationchange', updateStatusStrip);
+  watchLiveTithiNakshatra(updateStatusStrip);
+  window.addEventListener('locationchange', () => updateStatusStrip());
 
   // ── Dark mode ──
   const html = document.documentElement;

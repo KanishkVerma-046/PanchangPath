@@ -1,4 +1,4 @@
-import { istDateParts } from './ist-date';
+import { istDateParts, IST_OFFSET_MS } from './ist-date';
 
 export interface Rashi {
   id: string;
@@ -1082,8 +1082,6 @@ export function getRashiById(id: string): Rashi | undefined {
 // solve, just caused by location instead of a stale build. Date.getTime() is an absolute,
 // timezone-independent instant; adding the IST offset and reading it back with UTC getters
 // (also timezone-independent) is the only way to get a host-environment-independent result.
-const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
-
 export function getDailyPrediction(rashi: Rashi, date: Date, hindi = false): string {
   const istMs = date.getTime() + IST_OFFSET_MS;
   const istYear = new Date(istMs).getUTCFullYear();

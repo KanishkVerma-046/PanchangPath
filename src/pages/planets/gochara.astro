@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { lahiriAyanamsha, julianDay } from '../../lib/panchang';
 import { planetLongitude, rahuLongitude } from '../../lib/astro-core';
 import { RASHIS, houseFromMoon, classifyGochara, classifyShaniGochara } from '../../lib/kundali';
+import { istWallClock } from '../../lib/ist-date';
 
 // Build-time default: "now" (IST, matching the daily-rebuild cron's clock). This page is
 // location-independent (a planet's rashi doesn't depend on an observer's lat/lng), so there's
@@ -10,9 +11,11 @@ import { RASHIS, houseFromMoon, classifyGochara, classifyShaniGochara } from '..
 // Uses the exact same houseFromMoon()/classifyGochara()/classifyShaniGochara() the client
 // <script> below calls, so server and client can never disagree — see CLAUDE.md's
 // 2026-08-18 SEO-prerender rollout note.
-const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
-const buildNow = new Date(Date.now() + IST_OFFSET_MS);
-const buildJD = julianDay(buildNow.getUTCFullYear(), buildNow.getUTCMonth() + 1, buildNow.getUTCDate(), buildNow.getUTCHours() + buildNow.getUTCMinutes() / 60);
+// Positions come from the real build instant, read through its UTC fields exactly like the client
+// <script>'s render(); the +05:30-shifted wall clock is only for the IST "Last updated" label.
+const buildInstant = new Date();
+const buildIst = istWallClock(buildInstant);
+const buildJD = julianDay(buildInstant.getUTCFullYear(), buildInstant.getUTCMonth() + 1, buildInstant.getUTCDate(), buildInstant.getUTCHours() + buildInstant.getUTCMinutes() / 60);
 const n360 = (a: number) => ((a % 360) + 360) % 360;
 const buildAy = lahiriAyanamsha(buildJD);
 
@@ -52,7 +55,7 @@ const gcCellColor = (cls: string) => cls === 'favorable' ? '#15803d' : cls === '
 
   <section style="padding:28px 0 48px;">
     <div class="container">
-      <p id="gc-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildNow.toLocaleTimeString('en-IN')} (auto-refreshes every 60s)</p>
+      <p id="gc-updated" style="font-size:11px;color:var(--color-mute);font-family:var(--font-mono);margin:0 0 16px;">Last updated: {buildIst.toLocaleTimeString('en-IN', { timeZone: 'UTC' })} (auto-refreshes every 60s)</p>
       <div class="bezel-outer reveal">
        <div class="bezel-inner" style="padding:20px;overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:13px;min-width:640px;" id="gc-table">

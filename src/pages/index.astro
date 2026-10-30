@@ -15,6 +15,7 @@ import { computeUpcomingEvents } from '../lib/planetaryEvents';
 import { getDefaultLocation } from '../lib/locations';
 import { formatDateAtOffset } from '../lib/date-i18n';
 import { parseMinutes12h } from '../lib/time-format';
+import { tithiNakshatraLabels } from '../lib/live-panchang';
 
 const today = new Date();
 const loc = getDefaultLocation(); // New Delhi, will be overridden client-side
@@ -33,6 +34,9 @@ const bannerFestivals = [todayISO, addDaysISO(todayISO, 1)]
 const FESTIVAL_CARDS_VISIBLE = 8;
 const upcoming = getUpcomingFestivals(today, FESTIVAL_CARDS_VISIBLE + 4);
 const planetaryEvents = computeUpcomingEvents(today, 180);
+// Hero chip's no-JS fallback: the build day's sunrise Tithi/Nakshatra, formatted by the same
+// helper the live values use.
+const sunriseLabels = tithiNakshatraLabels(panchang.tithi.number - 1, panchang.nakshatra.number - 1);
 
 // Build-time label for the default location's (New Delhi/IST) calendar day -- must read
 // loc.tzOffset-shifted fields, not the build machine's own local calendar date (which is
@@ -68,12 +72,23 @@ const TIMELINE_SEGMENTS = [
     <div class="gradient-mesh" style="position:absolute;inset:0;pointer-events:none;opacity:0.7;"></div>
     <MandalaWatermark size={760} opacity={0.09} />
 
-    <!-- Floating stat chip — asymmetric "physical card" accent, desktop only -->
+    <!-- Floating stat chip — asymmetric "physical card" accent, desktop only. Prerendered with
+         the build day's sunrise values (no-JS fallback, labelled as such); the script below
+         swaps in the live values from live-panchang.ts, the same function as the header strip. -->
     <div class="hero-float-chip bezel-outer">
       <div class="bezel-inner">
-        <p class="eyebrow" style="margin:0 0 6px;">Right now</p>
-        <p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 2px;font-family:var(--font-heading);">{panchang.tithi.paksha} {panchang.tithi.name}</p>
-        <p style="font-size:12px;color:var(--color-mute);margin:0;">{panchang.nakshatra.name} Nakshatra</p>
+        <p class="eyebrow" style="margin:0 0 6px;">
+          <span class="en-text" id="now-chip-label">At sunrise</span>
+          <span class="hi-text" id="now-chip-label-hi" style="display:none">सूर्योदय पर</span>
+        </p>
+        <p style="font-size:15px;font-weight:600;color:var(--color-ink);margin:0 0 2px;font-family:var(--font-heading);">
+          <span class="en-text" id="now-chip-tithi">{sunriseLabels.tithi}</span>
+          <span class="hi-text" id="now-chip-tithi-hi" style="display:none">{sunriseLabels.tithiHi}</span>
+        </p>
+        <p style="font-size:12px;color:var(--color-mute);margin:0;">
+          <span class="en-text" id="now-chip-nakshatra">{sunriseLabels.nakshatra}</span>
+          <span class="hi-text" id="now-chip-nakshatra-hi" style="display:none">{sunriseLabels.nakshatraHi}</span>
+        </p>
       </div>
     </div>
 
@@ -482,6 +497,7 @@ import {
 } from '../lib/panchang';
 import { formatDateHi } from '../lib/date-i18n';
 import { formatMinutes12h, formatMinutes24h, formatMinutes24Plus, formatDurationMins } from '../lib/time-format';
+import { watchLiveTithiNakshatra } from '../lib/live-panchang';
 
 // ── Global display state ──
 let timeFormat: '12h' | '24h' | '24p' = '12h';
@@ -613,6 +629,17 @@ function setText(id: string, val: string) {
   const el = document.getElementById(id);
   if (el) el.textContent = val;
 }
+
+// Hero "Right now" chip: the live Tithi/Nakshatra from the same function, refreshed on the
+// same schedule, as the header status strip. Replaces the prerendered "At sunrise" fallback.
+watchLiveTithiNakshatra(live => {
+  setText('now-chip-label', 'Right now');
+  setText('now-chip-label-hi', 'अभी');
+  setText('now-chip-tithi', live.tithi);
+  setText('now-chip-tithi-hi', live.tithiHi);
+  setText('now-chip-nakshatra', live.nakshatra);
+  setText('now-chip-nakshatra-hi', live.nakshatraHi);
+});
 
 // Shared long-date formatter for #date-display — uses the centralized
 // site-wide Hindi day/month-name convention (src/lib/date-i18n.ts), Arabic

@@ -3,10 +3,16 @@
 // scripts/indexnow-deploy-diff.mjs to submit only genuinely-changed URLs to
 // IndexNow after a deploy, instead of the whole sitemap.
 import { execSync } from 'node:child_process';
-import { writeFileSync, unlinkSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { register } from 'node:module';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join, posix } from 'node:path';
 import { pathToFileURL } from 'node:url';
+
+// src/lib data modules import each other extensionlessly (e.g. festivals.ts ->
+// './ist-date'), which Vite resolves but plain Node doesn't. Register the same
+// resolver the test suite uses, so this works however the script is launched.
+register('./ts-extension-resolve.mjs', import.meta.url);
 
 const SITE = 'https://panchangpath.com';
 
@@ -14,7 +20,7 @@ const SITE = 'https://panchangpath.com';
 // *template* file (e.g. src/pages/blog/[slug].astro) is deliberately not
 // mapped here -- it's a code change that could affect every entry, too many
 // to name individually. Editing the *data* file is mapped precisely below.
-const CONTENT_REGISTRY = [
+export const CONTENT_REGISTRY = [
   { file: 'src/lib/blog.ts', exportName: 'BLOG_POSTS', urlPrefix: '/blog' },
   { file: 'src/lib/festivals.ts', exportName: 'FESTIVALS_2025_2027', urlPrefix: '/festivals', slugFn: 'getFestivalSlug' },
   { file: 'src/lib/devotional/aarti.ts', exportName: 'AARTIS', urlPrefix: '/devotional/aarti' },
@@ -56,26 +62,58 @@ async function importFresh(absPath) {
   return mod;
 }
 
-async function loadArrayAtHead(registryEntry, repoRoot) {
+export async function loadArrayAtHead(registryEntry, repoRoot) {
   const absPath = join(repoRoot, registryEntry.file);
   const mod = await importFresh(absPath);
   return { arr: mod[registryEntry.exportName] ?? [], slugFn: registryEntry.slugFn ? mod[registryEntry.slugFn] : null };
 }
 
-async function loadArrayAtCommit(registryEntry, commit, repoRoot) {
-  let content;
+const RELATIVE_IMPORT_RE = /(?:\bfrom\s*|\bimport\s*\(?\s*)['"](\.{1,2}\/[^'"]+)['"]/g;
+
+function gitHasFile(commit, file, repoRoot) {
   try {
-    content = execSync(`git show ${commit}:${registryEntry.file}`, { cwd: repoRoot, encoding: 'utf8' });
+    execSync(`git cat-file -e ${commit}:${file}`, { cwd: repoRoot, stdio: 'ignore' });
+    return true;
   } catch {
-    return { arr: [], slugFn: null }; // file didn't exist at that commit (newly added) -- everything in it is "new"
+    return false;
   }
-  const tmpFile = join(tmpdir(), `indexnow-diff-${Date.now()}-${Math.random().toString(36).slice(2)}.ts`);
-  writeFileSync(tmpFile, content, 'utf8');
+}
+
+// Writes `file` as it was at `commit`, plus every module it relatively imports
+// (transitively), into destRoot at their repo-relative paths -- so the snapshot's
+// own relative imports resolve against that commit's versions of its neighbours.
+// Returns false if `file` itself didn't exist at that commit.
+function materializeAtCommit(file, commit, repoRoot, destRoot) {
+  if (!gitHasFile(commit, file, repoRoot)) return false;
+  const seen = new Set();
+  const queue = [file];
+  while (queue.length) {
+    const current = queue.pop();
+    if (seen.has(current)) continue;
+    seen.add(current);
+    const content = execSync(`git show ${commit}:${current}`, { cwd: repoRoot, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+    const dest = join(destRoot, current);
+    mkdirSync(dirname(dest), { recursive: true });
+    writeFileSync(dest, content, 'utf8');
+    for (const [, spec] of content.matchAll(RELATIVE_IMPORT_RE)) {
+      const target = posix.normalize(posix.join(posix.dirname(current), spec));
+      const resolved = [target, `${target}.ts`].find((candidate) => gitHasFile(commit, candidate, repoRoot));
+      if (resolved) queue.push(resolved); // unresolvable: leave it for the import to fail loudly
+    }
+  }
+  return true;
+}
+
+export async function loadArrayAtCommit(registryEntry, commit, repoRoot) {
+  const snapshotRoot = mkdtempSync(join(tmpdir(), 'indexnow-diff-'));
   try {
-    const mod = await importFresh(tmpFile);
+    if (!materializeAtCommit(registryEntry.file, commit, repoRoot, snapshotRoot)) {
+      return { arr: [], slugFn: null }; // file didn't exist at that commit (newly added) -- everything in it is "new"
+    }
+    const mod = await importFresh(join(snapshotRoot, registryEntry.file));
     return { arr: mod[registryEntry.exportName] ?? [], slugFn: registryEntry.slugFn ? mod[registryEntry.slugFn] : null };
   } finally {
-    unlinkSync(tmpFile);
+    rmSync(snapshotRoot, { recursive: true, force: true });
   }
 }
 
